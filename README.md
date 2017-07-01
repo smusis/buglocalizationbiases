@@ -13,7 +13,6 @@ Not Localized.xlsx - Not Localized contains bug ids for which none of the buggy 
 All the above three files contain bug ids from the projects: Apache HTTPClient, Apache Jackrabbit and Apache Lucene. 
 
 OldNewCommits.csv - Contains all the buggy and bug-fix commits 
-
 Format:
 New (Bug-fix) Commit, Old (Buggy) Commit, Bug Id, Project
 
