@@ -1,0 +1,23 @@
+Create new method optimize(int maxNumSegments) in IndexWriter
+
+
+
+Description:
+Spinning this out from the discussion in LUCENE-847.
+
+I think having a way to "slightly optimize" your index would be useful
+for many applications.
+
+The current optimize() call is very expensive for large indices
+because it always optimizes fully down to 1 segment.  If we add a new
+method which instead is allowed to stop optimizing once it has <=
+maxNumSegments segments in the index, this would allow applications to
+eg optimize down to say <= 10 segments after doing a bunch of updates.
+This should be a nice compromise of gaining good speedups of searching
+while not spending the full (and typically very high) cost of
+optimizing down to a single segment.
+
+Since LUCENE-847 is now formalizing an API for decoupling merge policy
+from IndexWriter, if we want to add this new optimize method we need
+to take it into account in LUCENE-847.
+

@@ -1,0 +1,23 @@
+make Query.createWeight public (or add back Query.createQueryWeight())
+
+
+
+Description:
+Now that the QueryWeight class has been removed, the public QueryWeight createQueryWeight() method on Query was also removed
+
+i have cases where i want to create a weight for a sub query (outside of the org.apache.lucene.search package) and i don't want the weight normalized (think BooleanQuery outside of the o.a.l.search package)
+
+in order to do this, i have to create a static Utils class inside o.a.l.search, pass in the Query and searcher, and have the static method call the protected createWeight method
+this should not be necessary
+
+This could be fixed in one of 2 ways:
+1. make createWeight() public on Query (breaks back compat)
+2. add the following method:
+{code}
+public Weight createQueryWeight(Searcher searcher) throws IOException {
+  return createWeight(searcher);
+}
+{code}
+
+createWeight(Searcher) should then be deprectated in favor of the publicly accessible method
+

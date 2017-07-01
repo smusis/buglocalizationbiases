@@ -1,0 +1,11 @@
+Refactor FieldCacheRangeFilter.FieldCacheDocIdSet to be separate class and fix the dangerous matchDoc() throws AIOOBE requirement
+
+
+
+Description:
+Followup from LUCENE-3593:
+The FieldCacheRangeFilter.FieldCacheDocIdSet class has a strange requirement on the abstract matchDoc(): It should throw AIOOBE if the docId is > maxDoc. This check should be done by caller as especially on trunk, e.g. FieldCacheTermsFilter does not seem to always throw this exception correctly (getOrd() is a method and no array in TermsIndex cache).
+
+Also in 3.x the Filter does not correctly respect deletions when a FieldCache based on a reopened reader is used.
+
+This issue will refactor this and fix the bugs and moves the docId check up to the iterator.

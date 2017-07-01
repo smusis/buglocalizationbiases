@@ -1,0 +1,19 @@
+reorder arguments of Field constructor to be more intuitive
+
+
+
+Description:
+I think Field should take (name, value, type) not (name, type, value) ?
+
+This seems more intuitive and consistent with previous releases
+
+Take this change to some code I had for example:
+{noformat}
+-    d1.add(new Field("foo", "bar", Field.Store.YES, Field.Index.ANALYZED));
++    d1.add(new Field("foo", TextField.TYPE_STORED, "bar"));
+{noformat}
+
+I think it would be better if it was
+{noformat}
+document.add(new Field("foo", "bar", TextField.TYPE_STORED));
+{noformat}

@@ -1,0 +1,6 @@
+Instantiating SimpleFSLockFactory by its String param constructor throws an IllegalStateException
+
+
+
+Description:
+

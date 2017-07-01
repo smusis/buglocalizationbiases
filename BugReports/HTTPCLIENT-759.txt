@@ -1,0 +1,6 @@
+DefaultClientRequestDirector doesn't release connections back to ClientConnectionManager on exceptions
+
+
+
+Description:
+See HTTPCLIENT-747 for more info.  Basically the deal is that an entry is always allocated, but currently it's only released if execute(..) completes normally.

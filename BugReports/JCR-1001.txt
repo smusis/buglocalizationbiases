@@ -1,0 +1,6 @@
+SPI: prefer 'Iterator' instead of specialized subclasses
+
+
+
+Description:
+in the F2F we agreed that the SPI should rather use 'Iterator' instead of specialized subclassed (or RangeIterator).

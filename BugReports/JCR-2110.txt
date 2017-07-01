@@ -1,0 +1,8 @@
+o.a.j.spi.commons.query.sql2.ParserTest uses platform encoding with non-ASCII characters
+
+
+
+Description:
+The ParserTest class loads a series of test SQL statements from test.sql2.txt, which contains a few non-ASCII characters (good to test those!). Unfortunately the file is read using the default platform encoding, which breaks the Linux-based test builds.
+
+I'll recode the file to UTF-8 and explicitly specify the encoding when the file is read.

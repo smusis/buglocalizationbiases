@@ -1,0 +1,9 @@
+Lazy Atomic Loading Stopwords in SmartCN 
+
+
+
+Description:
+The default constructor in SmartChineseAnalyzer loads the default (jar embedded) stopwords each time the constructor is invoked. 
+This should be atomically loaded only once in an unmodifiable set.
+
+

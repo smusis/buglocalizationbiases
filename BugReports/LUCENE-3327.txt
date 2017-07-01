@@ -1,0 +1,6 @@
+TestFSTs.testRandomWords throws AIOBE when "verbose"=true
+
+
+
+Description:
+Seems like invalid utf-8 sometimes gets passed to Bytesref.utf8ToString() in the verbose "println"s.

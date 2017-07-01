@@ -1,0 +1,18 @@
+You cannot sort on fields that don't exist
+
+
+
+Description:
+While it's possible to search for fields that don't exist (you'll get 0 hits),  
+you'll get an exception if you try to sort by a field that has no values. The  
+exception is this:  
+  
+if (termEnum.term() == null) {  
+  throw new RuntimeException ("no terms in field " + field);  
+}  
+  
+I'll attach a change suggested by Yonik Seeley that removes this exception. 
+ 
+Also, the if-condition above is incomplete anyway, so currently the exception 
+is not always thrown (as termEnum .term() might well be != null but point to a 
+term in a different field already)

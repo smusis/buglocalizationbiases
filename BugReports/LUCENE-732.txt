@@ -1,0 +1,37 @@
+Support DateTools in QueryParser
+
+
+
+Description:
+The QueryParser currently uses the deprecated class DateField to create RangeQueries with date values. However, most users probably use DateTools to store date values in their indexes, because this is the recommended way since DateField has been deprecated. In that case RangeQueries with date values produced by the QueryParser won't work with those indexes.
+
+This patch replaces the use of DateField in QueryParser by DateTools. Because DateTools can produce date values with different resolutions, this patch adds the following methods to QueryParser:
+
+  /**
+   * Sets the default date resolution used by RangeQueries for fields for which no
+   * specific date resolutions has been set. Field specific resolutions can be set
+   * with {@link #setDateResolution(String, DateTools.Resolution)}.
+   *  
+   * @param dateResolution the default date resolution to set
+   */
+  public void setDateResolution(DateTools.Resolution dateResolution);
+  
+  /**
+   * Sets the date resolution used by RangeQueries for a specific field.
+   *  
+   * @param field field for which the date resolution is to be set 
+   * @param dateResolution date resolution to set
+   */
+  public void setDateResolution(String fieldName, DateTools.Resolution dateResolution);
+
+(I also added the corresponding getter methods).
+
+Now the user can set a default date resolution used for all fields or, with the second method, field specific date resolutions.
+The initial default resolution, which is used if the user does not set a different resolution, is DateTools.Resolution.DAY. 
+
+Please let me know if you think we should use a different resolution as default.
+
+I extended TestQueryParser to test this new feature.
+
+All unit tests pass.
+

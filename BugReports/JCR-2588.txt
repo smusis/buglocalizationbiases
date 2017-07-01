@@ -1,0 +1,6 @@
+UserManager.getAuthorizable() may fail with InvalidQueryException
+
+
+
+Description:
+Happens when the principal name contains an apostrophe.

@@ -1,0 +1,8 @@
+Flexible query parser does not support open ranges and range queries with mixed inclusive and exclusive ranges
+
+
+
+Description:
+Flexible query parser does not support open ranges and range queries with mixed inclusive and exclusive ranges.
+
+These two problems were found while developing LUCENE-1768.

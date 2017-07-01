@@ -1,0 +1,8 @@
+DirectoryTaxonomyWriter should throw a proper exception if it was closed
+
+
+
+Description:
+DirTaxoWriter may throw random exceptions (NPE, Already Closed - depend on what API you call) after it has been closed/rollback. We should detect up front that it is already closed, and throw AlreadyClosedException.
+
+Also, on LUCENE-3573 Doron pointed out a problem with DTW.rollback -- it should call close() rather than refreshReader. I will fix that as well in this issue.

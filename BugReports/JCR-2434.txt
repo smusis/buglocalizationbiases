@@ -1,0 +1,12 @@
+Occasional IndexingQueueTest failure
+
+
+
+Description:
+Usually the following assertion fails:
+
+junit.framework.AssertionFailedError
+	at junit.framework.Assert.fail(Assert.java:47)
+	at junit.framework.Assert.assertTrue(Assert.java:20)
+	at junit.framework.Assert.assertTrue(Assert.java:27)
+	at org.apache.jackrabbit.core.query.lucene.IndexingQueueTest.testQueue(IndexingQueueTest.java:77)

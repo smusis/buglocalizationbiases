@@ -1,0 +1,6 @@
+Allow using FST to hold terms data in DocValues.BYTES_*_SORTED
+
+
+
+Description:
+

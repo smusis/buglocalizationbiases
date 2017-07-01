@@ -1,0 +1,14 @@
+Rethink LocalizedTestCaseRunner with JUnit 4 - Clover OOM
+
+
+
+Description:
+As a spinn off from this [conversation|http://www.lucidimagination.com/search/document/ae20885bf5baedc5/build_failed_in_hudson_lucene_3_x_116#7ed351341152ee2d] we should rethink the way how we execute testcases with different locals since glover reports appears to throw OOM errors b/c Junit treats each local as a single test case run.
+
+Here are some options:
+* select the local at random only run the test with a single local
+* set the local via system property -Dtest.locale=en.EN
+* run with the default locale only -Dtest.skiplocale=true
+* one from the above but only if instrumented with clover (let common tests run all the locale)
+
+

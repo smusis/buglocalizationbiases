@@ -1,0 +1,8 @@
+NodeTypeRegistry.registerNodeType(NodeTypeDef) does not verify that the referenced namespaces are registered
+
+
+
+Description:
+currently it's possible to register a node type using a defintion that contains references to unregistered namespaces.
+
+using such a  node type in content would lead to unpredictable results.

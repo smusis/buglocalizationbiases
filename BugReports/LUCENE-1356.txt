@@ -1,0 +1,7 @@
+Allow easy extensions of TopDocCollector
+
+
+
+Description:
+TopDocCollector's members and constructor are declared either private or package visible. It makes it hard to extend it as if you want to extend it you can reuse its *hq* and *totatlHits* members, but need to define your own. It also forces you to override getTotalHits() and topDocs().
+By changing its members and constructor (the one that accepts a PQ) to protected, we allow users to extend it in order to get a different view of 'top docs' (like TopFieldCollector does), but still enjoy its getTotalHits() and topDocs() method implementations.

@@ -1,0 +1,15 @@
+Versioning does not make use of tx
+
+
+
+Description:
+for example:
+
+- begin transaction
+- create node
+- add mix:versionable
+- save --> will create version
+- checkin
+- cancel transaction
+
+should not leave any traces in versioning

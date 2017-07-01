@@ -1,0 +1,10 @@
+isCurrent() and getVersion() on an NRT reader are broken
+
+
+
+Description:
+Right now isCurrent() will always return true for an NRT reader and getVersion() will always return the version of the last commit.  This is because the NRT reader holds the live segmentInfos.
+
+I think isCurrent() should return "false" when any further changes have occurred with the writer, else true.   This is actually fairly easy to determine, since the writer tracks how many docs & deletions are buffered in RAM and these counters only increase with each change.
+
+getVersion should return the version as of when the reader was created.

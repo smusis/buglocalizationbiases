@@ -1,0 +1,29 @@
+Netscape proxy problem wtih POST
+
+
+
+Description:
+Description:
+
+When using httpClient to POST to a http url through a Netscape proxy server, 
+the httpClient failed due to read error when reading status line.  The log seem 
+to indicate that the proxy is talking HTTP/1.0 and does not expect the POST 
+data to come.  I am using a modified version of the ClientApp from examples.  I 
+will attach both the test program and log files.
+
+Workaround:
+
+If use PostMethod.setUseExpect (true), it will work.  But in many cases, it 
+would be slower.
+
+Related issues:
+
+In doing the test, I also found out that the httpClient PostMehtod does not 
+work when the request body is NOT set (not calling setRequestBody).  It also 
+does not work with empty body (setRequestBody ("")).  The attached 
+clientApp.properties file has flags to test each case and I will attach the 
+logs as well.  Excuse my ignorance, I do not know for sure what the HTTP spec. 
+says about the body in the POST method.  But at least if the caller/app is 
+wrong in not setting the body, some exception should be thrown.  It could also 
+be my server's problem, please let me know if that is the case (I am using 
+weblogic server 6.1).

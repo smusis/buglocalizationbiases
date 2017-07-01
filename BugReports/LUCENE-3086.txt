@@ -1,0 +1,11 @@
+add ElisionsFilter to ItalianAnalyzer
+
+
+
+Description:
+we set this up for french by default, but we don't for italian.
+we should enable it with the standard italian contractions (e.g. definite articles).
+
+the various stemmers for these languages assume this is already being taken care of
+and don't do anything about it... in general things like snowball assume really dumb
+tokenization, that you will split on the word-internal ', and they add these to stoplists.

@@ -1,0 +1,15 @@
+Let the AbstractISMLockingTest tests fail properly
+
+
+
+Description:
+The tests in the AbstractISMLockingTest class call junit.framework.Assert.fail() on threads that are not managed by the JUnit framework. Therefore, such calls to fail are not interpreted as test failures, but are merely logged to the console and the build succeeds. This is easy to see with a stub implementation of the ISMLocking type which returns non-null references from the two acquire methods and the downgrade method: many of the following stacktraces appear, but the build succeeds.
+
+Exception in thread "Thread-1" junit.framework.AssertionFailedError: acquireWriteLock must block
+	at junit.framework.Assert.fail(Assert.java:47)
+	at org.apache.jackrabbit.core.state.AbstractISMLockingTest.checkBlocking(AbstractISMLockingTest.java:214)
+	at org.apache.jackrabbit.core.state.AbstractISMLockingTest$1.run(AbstractISMLockingTest.java:88)
+	at java.lang.Thread.run(Thread.java:613)
+
+
+

@@ -1,0 +1,22 @@
+add back Document.getValues()
+
+
+
+Description:
+I'm porting some code to trunk's new Doc/Field apis, and i keep running into this pattern:
+{noformat}
+String[] values = doc.getValues("field");
+{noformat}
+
+But with the new apis, this becomes a little too verbose:
+
+{noformat}
+IndexableField[] fields = doc.getFields("field");
+String[] values = new String[fields.length];
+for (int i = 0; i < values.length; i++) {
+  values[i] = fields[i].stringValue();
+}
+{noformat}
+
+I think we should probably add back the sugar api (with the same name) ?
+

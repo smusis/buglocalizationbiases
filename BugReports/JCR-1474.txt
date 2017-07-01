@@ -1,0 +1,11 @@
+consistency check fails with derbypm if bundle size exceeds 32k
+
+
+
+Description:
+due to a 'problem' in derby DERBY-1486 interleaved reads on a bundle that is larger than about 32k results in an error:
+  ERROR XJ073: The data in this BLOB or CLOB is no longer available.  
+               The BLOB or CLOBs transaction may be committed, or its 
+               connection is closed.
+
+this issue was already addressed in JCR-1039 but not fixed for the consistency check.

@@ -1,0 +1,6 @@
+allow AbstractFileSystemTest.getFileSystem to throw an Exception
+
+
+
+Description:
+

@@ -1,0 +1,6 @@
+Avoid item state reads during Session.logout()
+
+
+
+Description:
+Local item states are discarded during Session.logout(). Currently the CachingHierarchyManager is still registered as a item state listener at that time and will cause numerous ItemStateManager.hasItemState() calls. This is unnecessary and just adds overhead to the logout call. In addition it will also contribute to a potential lock contention on the SharedItemStateManager.

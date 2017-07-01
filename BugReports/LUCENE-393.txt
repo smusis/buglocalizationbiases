@@ -1,0 +1,30 @@
+Inconsistent scoring with SpanTermQuery in BooleanQuery
+
+
+
+Description:
+When a SpanTermQuery is added to a BooleanQuery, incorrect results are 
+returned.
+
+I am running Lucene 1.9 RC1 on Windows XP.  I have a test case which has 
+several tests.  It has an index with 4 identical documents in it.
+
+When two TermQuerys are used in a BooleanQuery, the score looks like this:
+  4 hits for search: two term queries
+    ID:1 (score:0.54932046)
+    ID:2 (score:0.54932046)
+    ID:3 (score:0.54932046)
+    ID:4 (score:0.54932046)
+
+Notice how it is correctly setting the score to be the same for each document.
+
+When two SpanQuerys are used in a BooleanQuery, the score looks like this:
+  2 hits for search: two span queries
+    ID:1 (score:0.3884282)
+    ID:4 (score:0.1942141)
+
+Notice how it only returned two documents instead of four.  And the two it did 
+return have differing scores.
+
+I believe that there is an error in the scoring algorithm that is making the 
+other two documents not show up.

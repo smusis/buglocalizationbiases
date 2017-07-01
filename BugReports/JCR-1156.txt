@@ -1,0 +1,15 @@
+DatabaseJournal refactoring for subclassing capability
+
+
+
+Description:
+In the 1.3 upgrade to JackRabbit, the DatabasePersistenceManager class was refactored to allow easy subclassing.  On my project, the subclassing is required because the DBAs have a specific naming convention for database columns, and the default JackRabbit columns don't fit within the naming convention.
+
+At this point, we're cutting over to a clustered setup in preparation for production.  In my design, I would like to use the database for journaling.  But once again, the DBAs will want to change the column names to their own naming convention.  The existing DatabaseJournal class is not set up for the same type of subclassing that the PersistenceManager (or even the FileSystem) hierarchies.  I'd like the DatabaseJournal class to be updated accordingly.
+
+In specific, here are the changes I'm looking for:
+
+* Extract protected instance variables for selectRevisionsStmtSql, updateGlobalStmtSql, selectGlobalStmtSql, and insertRevisionStmtSql.
+* Extract method protected void buildSQLStatements() which sets up the above sqls, and allows subclasses to override.
+* Update the existing prepareStatements method to use the above instance variables.
+* Update the init method to call the buildSQLStatements method before the call to prepareStatements.

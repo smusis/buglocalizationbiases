@@ -1,0 +1,6 @@
+Use bundle persistence in default configuration
+
+
+
+Description:
+The default repository configuration files in jackrabbit-core and -webapp still use the old simple database persistence. They should be updated to use bundle persistence in the 1.4 release.

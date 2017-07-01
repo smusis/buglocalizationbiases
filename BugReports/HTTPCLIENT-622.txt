@@ -1,0 +1,6 @@
+leak in MultiThreadedHttpConnectionManager.ConnectionPool.mapHosts
+
+
+
+Description:
+Once entries are added to MultiThreadedHttpConnectionManager.ConnectionPool.mapHosts, they are never cleaned up unless MultiThreadedHttpConnectionManager is shutdown.

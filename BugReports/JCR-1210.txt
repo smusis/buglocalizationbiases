@@ -1,0 +1,10 @@
+WebDAV: pack AbstractWebdavServlet with the jackrabbit-webdav project
+
+
+
+Description:
+suggestion posted by alan cabrera on the dev list:
+
+"Quite a handy servlet.  Too bad it's in jackrabbit-server.  Would this not be better placed in jackrabbit-webdav?  I'm writing my own server bits under WEBDAV and would prefer not to have JCR/Jackrabbit stuff.  I realize that this is a fussy preference."
+
+

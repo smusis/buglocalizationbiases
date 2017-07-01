@@ -1,0 +1,6 @@
+Remove HitCollector
+
+
+
+Description:
+Remove the rest of HitCollectors

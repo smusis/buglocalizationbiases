@@ -1,0 +1,10 @@
+All implementations of SchemeSocketFactory.createSocket(HttpParams params) ignore the params
+
+
+
+Description:
+Only TestTSCCMWithServer.StallingSocketFactory.createSocket(HttpParams params) ever uses the HttpParams parameter.
+
+All non-test implementations of the method ignore the parameter.
+
+Not sure why this version of the method exists if the parameter is never used - the parameterless method from SocketFactory could be used instead.

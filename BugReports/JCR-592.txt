@@ -1,0 +1,7 @@
+Use only the standard Maven repository for dependencies
+
+
+
+Description:
+The JCR API jars are now available in the standard Maven repository, see http://jira.codehaus.org/browse/MAVENUPLOAD-1050. We could thus remove the dependency on the Day repository, as requested in http://jira.codehaus.org/browse/MEV-453.
+

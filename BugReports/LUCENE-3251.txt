@@ -1,0 +1,40 @@
+Directory#copy leaks file handles
+
+
+
+Description:
+Directory#copy doesn't close the target directories output stream if sourceDir.openInput(srcFile) throws an Exception. Before LUCENE-3218 Directory#copy wasn't used extensively so this wasn't likely to happen during tests. Today we had a failure on the 3.x branch that is likely caused by this bug:
+
+{noformat}
+[junit] Testsuite: org.apache.lucene.index.TestAddIndexes
+    [junit] Testcase: testAddIndexesWithRollback(org.apache.lucene.index.TestAddIndexes):	Caused an ERROR
+    [junit] MockDirectoryWrapper: cannot close: there are still open files: {_co.cfs=1}
+    [junit] java.lang.RuntimeException: MockDirectoryWrapper: cannot close: there are still open files: {_co.cfs=1}
+    [junit] 	at org.apache.lucene.store.MockDirectoryWrapper.close(MockDirectoryWrapper.java:483)
+    [junit] 	at org.apache.lucene.index.TestAddIndexes$RunAddIndexesThreads.closeDir(TestAddIndexes.java:693)
+    [junit] 	at org.apache.lucene.index.TestAddIndexes.testAddIndexesWithRollback(TestAddIndexes.java:924)
+    [junit] 	at org.apache.lucene.util.LuceneTestCase$LuceneTestCaseRunner.runChild(LuceneTestCase.java:1277)
+    [junit] 	at org.apache.lucene.util.LuceneTestCase$LuceneTestCaseRunner.runChild(LuceneTestCase.java:1195)
+    [junit] Caused by: java.lang.RuntimeException: unclosed IndexOutput: _co.cfs
+    [junit] 	at org.apache.lucene.store.MockDirectoryWrapper.addFileHandle(MockDirectoryWrapper.java:410)
+    [junit] 	at org.apache.lucene.store.MockCompoundFileDirectoryWrapper.<init>(MockCompoundFileDirectoryWrapper.java:39)
+    [junit] 	at org.apache.lucene.store.MockDirectoryWrapper.createCompoundOutput(MockDirectoryWrapper.java:439)
+    [junit] 	at org.apache.lucene.index.SegmentMerger.createCompoundFile(SegmentMerger.java:128)
+    [junit] 	at org.apache.lucene.index.IndexWriter.addIndexes(IndexWriter.java:3101)
+    [junit] 	at org.apache.lucene.index.TestAddIndexes$CommitAndAddIndexes3.doBody(TestAddIndexes.java:839)
+    [junit] 	at org.apache.lucene.index.TestAddIndexes$RunAddIndexesThreads$1.run(TestAddIndexes.java:667)
+    [junit] 
+    [junit] 
+    [junit] Tests run: 18, Failures: 0, Errors: 1, Time elapsed: 9.034 sec
+    [junit] 
+    [junit] ------------- Standard Output ---------------
+    [junit] java.lang.IllegalStateException: CFS has pending open files
+    [junit] 	at org.apache.lucene.store.CompoundFileWriter.close(CompoundFileWriter.java:143)
+    [junit] 	at org.apache.lucene.store.CompoundFileDirectory.close(CompoundFileDirectory.java:181)
+    [junit] 	at org.apache.lucene.store.DefaultCompoundFileDirectory.close(DefaultCompoundFileDirectory.java:58)
+    [junit] 	at org.apache.lucene.store.MockCompoundFileDirectoryWrapper.close(MockCompoundFileDirectoryWrapper.java:55)
+    [junit] 	at org.apache.lucene.index.SegmentMerger.createCompoundFile(SegmentMerger.java:139)
+    [junit] 	at org.apache.lucene.index.IndexWriter.addIndexes(IndexWriter.java:3101)
+    [junit] 	at org.apache.lucene.index.TestAddIndexes$CommitAndAddIndexes3.doBody(TestAddIndexes.java:839)
+    [junit] 	at org.apache.lucene.index.TestAddIndexes$RunAddIndexesThreads$1.run(TestAddIndexes.java:667)
+{noformat}

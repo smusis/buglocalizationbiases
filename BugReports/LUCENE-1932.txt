@@ -1,0 +1,8 @@
+Convert PrecedenceQueryParser to new TokenStream API
+
+
+
+Description:
+Adriano Crestani provided a patch, that updates the PQP to use the new TokenStream API...all tests still pass. 
+I hope this helps to keep the PQP 
+

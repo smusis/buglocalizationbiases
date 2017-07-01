@@ -1,0 +1,10 @@
+[PATCH] Ant macro for javadocs and javadocs-internal
+
+
+
+Description:
+This removes the duplication introduced in build.xml 
+when the javadocs-internal build target was added. 
+ 
+Regards, 
+Paul Elschot

@@ -1,0 +1,12 @@
+allow an alg file to specify the default codec
+
+
+
+Description:
+I already committed this one by accident so I better open an issue!
+
+I added this:
+
+  default.codec = Pulsing
+
+so that your alg file can specify the codec to be used when writing new segments in an index.

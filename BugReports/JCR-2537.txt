@@ -1,0 +1,8 @@
+spi2davex: clear uri-lookup after removing node identified with uniqueID
+
+
+
+Description:
+some test cases of DocumentViewImportTest fail in the setup (line 325 of AbstractImportXmlTest) since the uri resolved from the specified
+nodeID still refers to the node removed during the initial import before. this would equally cause problems whenever a referenceable node was
+replaced by another node and can easily be fixed by clearing the uri-cache after the removal as it was already done for move.

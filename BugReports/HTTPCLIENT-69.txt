@@ -1,0 +1,10 @@
+User/Developer Documentation
+
+
+
+Description:
+- quotes from user's on why they used it.
+- better project docs, including checkstyle and clover reports, and changelog
+- examples showing how to configure logging and why you may want to
+- Links on HttpClient to 'sister' projects such as Slide, Cactus and Latka to
+show where how it's being used.

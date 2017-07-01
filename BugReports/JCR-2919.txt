@@ -1,0 +1,10 @@
+Security of token base authentication
+
+
+
+Description:
+Token based authentication as implemented with JCR-2851 seems to exhibit a security issue: the token returned by the server consists of the identifier of a (newly created) node in the repository. An attacker who is able to guess (or acquire by other means i.e. via log files) that identifier will be granted access to the repository. Worse yet, JCR-2857 introduces sequential node ids. Guessing is a piece of cake in such a setup.
+
+I think we should decouple authentication secrets from node ids. A simple solution would be to store the secret in a token attribute and delegate generation of the secret to a dedicated handler. Such a handler can then use a secure random generator, private/public key encryption or whatever other method that is deemed appropriate to generate the authentication secret. 
+
+Initial discussion see: http://markmail.org/thread/aspetgvmj2qud25a

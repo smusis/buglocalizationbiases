@@ -1,0 +1,34 @@
+TestIndexWriterOnDiskFull.testAddIndexOnDiskFull fails with java.lang.IllegalStateException: CFS has pending open files 
+
+
+
+Description:
+{noformat}
+ Testsuite: org.apache.lucene.index.TestIndexWriterOnDiskFull
+    [junit] Testcase: testAddIndexOnDiskFull(org.apache.lucene.index.TestIndexWriterOnDiskFull):	Caused an ERROR
+    [junit] CFS has pending open files
+    [junit] java.lang.IllegalStateException: CFS has pending open files
+    [junit] 	at org.apache.lucene.store.CompoundFileWriter.close(CompoundFileWriter.java:162)
+    [junit] 	at org.apache.lucene.store.CompoundFileDirectory.close(CompoundFileDirectory.java:206)
+    [junit] 	at org.apache.lucene.index.IndexWriter.createCompoundFile(IndexWriter.java:4099)
+    [junit] 	at org.apache.lucene.index.IndexWriter.mergeMiddle(IndexWriter.java:3661)
+    [junit] 	at org.apache.lucene.index.IndexWriter.merge(IndexWriter.java:3260)
+    [junit] 	at org.apache.lucene.index.SerialMergeScheduler.merge(SerialMergeScheduler.java:37)
+    [junit] 	at org.apache.lucene.index.IndexWriter.maybeMerge(IndexWriter.java:1902)
+    [junit] 	at org.apache.lucene.index.IndexWriter.forceMerge(IndexWriter.java:1716)
+    [junit] 	at org.apache.lucene.index.IndexWriter.forceMerge(IndexWriter.java:1670)
+    [junit] 	at org.apache.lucene.index.TestIndexWriterOnDiskFull.testAddIndexOnDiskFull(TestIndexWriterOnDiskFull.java:304)
+    [junit] 	at org.apache.lucene.util.LuceneTestCase$3$1.evaluate(LuceneTestCase.java:529)
+    [junit] 	at org.apache.lucene.util.LuceneTestCaseRunner.runChild(LuceneTestCaseRunner.java:165)
+    [junit] 	at org.apache.lucene.util.LuceneTestCaseRunner.runChild(LuceneTestCaseRunner.java:57)
+    [junit] 
+    [junit] 
+    [junit] Tests run: 4, Failures: 0, Errors: 1, Time elapsed: 31.96 sec
+    [junit] 
+    [junit] ------------- Standard Error -----------------
+    [junit] NOTE: reproduce with: ant test -Dtestcase=TestIndexWriterOnDiskFull -Dtestmethod=testAddIndexOnDiskFull -Dtests.seed=-7dd066d256827211:127c018cbf5b0975:20481cd18a7d8b6e -Dtests.multiplier=3 -Dtests.nightly=true -Dargs="-Dfile.encoding=ISO8859-1"
+    [junit] NOTE: test params are: codec=SimpleText, sim=RandomSimilarityProvider(queryNorm=true,coord=false): {field=DFR GB1, id=DFR I(F)L1, content=IB SPL-D3(800.0), f=DFR G2}, locale=de_AT, timezone=America/Cambridge_Bay
+    [junit] NOTE: all tests run in this JVM:
+    [junit] [TestAssertions, TestSearchForDuplicates, TestMockAnalyzer, TestDocValues, TestPerFieldPostingsFormat, TestDocument, TestAddIndexes, TestConcurrentMergeScheduler, TestCrashCausesCorruptIndex, TestDocCount, TestDocumentsWriterDeleteQueue, TestFieldInfos, TestFilterIndexReader, TestFlex, TestIndexInput, TestIndexWriter, TestIndexWriterMergePolicy, TestIndexWriterMerging, TestIndexWriterNRTIsCurrent, TestIndexWriterOnDiskFull]
+    [junit] NOTE: FreeBSD 8.2-RELEASE amd64/Sun Microsystems Inc. 1.6.0 (64-bit)/cpus=16,threads=1,free=39156976,total=180748288
+{noformat}

@@ -1,0 +1,15 @@
+Broken javadocs->site docs links
+
+
+
+Description:
+See the java-dev mailing list discussion: [http://www.nabble.com/Broken-javadocs-%3Esite-docs-links-to20369092.html].
+
+When the Lucene Java website transitioned to versioning some of the documentation, links from some javadocs were not modified to follow the resources.  I found broken links to gettingstarted.html and queryparsersyntax.html.  Here is one example, to gettingstarted.html (the link text is "demo"): 
+
+[http://lucene.apache.org/java/2_4_0/api/org/apache/lucene/document/package-summary.html]
+
+The attached patch converts absolute URLs from javadocs to versioned docs to be relative, and modifies the "javadocs-all" target in build.xml to add a path element named "all", so that both versions of the javadocs (all: core+contrib; and separated: core, contribs) can use the same relative URLs.  Adding a path element to the "javadocs-all" target is necessary because currently the "all" javadocs have one fewer path element than the separated javadocs.
+
+I left as-is one absolute URL, in the o.a.l.index.SegmentInfos javadocs, to fileformats.html, because SegmentInfos is a package-private class, and the javadocs targets in build.xml only generate javadocs for public classes.
+

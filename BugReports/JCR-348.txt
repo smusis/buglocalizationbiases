@@ -1,0 +1,34 @@
+Add automatic default configuration
+
+
+
+Description:
+We should provide a simple way to start a Jackrabbit repository with default configuration. The current First Hops document exposes too much configuration details to be really friendly to first-time users.
+
+I'd like to provide a default TransientRepository constructor that looks for "repository.xml" as the configuration file and "repository" as the repository home directory. If either of these does not exist, it is automatically created using default settings. This way the repository setup would boil down to:
+
+    Repository repository = new TransientRepository();
+
+As an added feature I'm planning to support system properties "org.apache.jackrabbit.repository.conf" and "org.apache.jackrabbit.repository.home" for overriding the defaults.
+
+This improvement would make it easier to write and set up "Hello, World!" -type applications, thus helping interested people to try out Jackrabbit. This feature will also make it easier to provide a standard template for test classes that exhibit some error condition. Like this:
+
+    import javax.jcr.*;
+    import org.apache.jackrabbit.core.TransientRepository;
+    public Example {
+        public static void main(String[] args) {
+            try {
+                Repository repository = new TransientRepository();
+                Session session = repository.login();
+                try {
+                    // YOUR CODE HERE
+                } finally {
+                    session.close();
+                }
+            } catch (Exception e) {
+                e.printStackTRace();
+            }
+        }
+    }
+
+I'm targetting this for inclusion in 1.0 as it affects none of the existing code and it will probably be very helpful for the expected number of new users we are going to see after 1.0 is out.

@@ -1,0 +1,137 @@
+Sorting produces duplicates
+
+
+
+Description:
+If you run the code below the exception will be thrown. I believe that it isn't 
+correct behaviour (the duplicities, of course), index id of hits should be 
+unique as it is without sort.
+
+Lucene versions:
+1.4-final
+1.4.1
+CVS 1.5-rc1-dev
+
+
+import org.apache.lucene.analysis.standard.StandardAnalyzer;
+import org.apache.lucene.document.Document;
+import org.apache.lucene.document.Field;
+import org.apache.lucene.index.IndexReader;
+import org.apache.lucene.index.IndexWriter;
+import org.apache.lucene.queryParser.ParseException;
+import org.apache.lucene.queryParser.QueryParser;
+import org.apache.lucene.search.Hits;
+import org.apache.lucene.search.IndexSearcher;
+import org.apache.lucene.search.Query;
+import org.apache.lucene.search.Searcher;
+import org.apache.lucene.search.Sort;
+import org.apache.lucene.search.SortField;
+import org.apache.lucene.store.Directory;
+import org.apache.lucene.store.RAMDirectory;
+
+import java.io.IOException;
+import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.ListIterator;
+import java.util.Set;
+
+/**
+ * Run this test with Lucene 1.4 final or 1.4.1
+ */
+public class DuplicityTest
+{
+    public static void main(String[] args) throws IOException, ParseException
+    {
+        Directory directory = create_index();
+
+        search_index(directory);
+    }
+
+    private static void search_index(Directory directory) throws IOException, 
+ParseException
+    {
+        IndexReader reader = IndexReader.open(directory);
+        Searcher searcher = new IndexSearcher(reader);
+
+        Sort sort = new Sort(new SortField("co", SortField.INT, false));
+
+        Query q = QueryParser.parse("sword", "text", new StandardAnalyzer());
+
+        find_duplicity(searcher.search(q), "no sort");
+
+        find_duplicity(searcher.search(q, sort), "using sort");
+
+        searcher.close();
+        reader.close();
+    }
+
+    private static void find_duplicity(Hits hits, String message) throws 
+IOException
+    {
+        System.out.println(message + " hits size: " + hits.length());
+
+        Set set = new HashSet();
+        for (int i = 0; i < hits.length(); i++) {
+//            System.out.println(hits.id(i) + ": " + hits.doc(i).toString());
+            Integer id = new Integer(hits.id(i));
+            if (!set.contains(id))
+                set.add(id);
+            else
+                throw new RuntimeException("duplicity found, index id: " + id);
+        }
+        System.out.println("no duplicity found");
+    }
+
+    private static LinkedList words;
+
+    static {
+        words = new LinkedList();
+
+        words.add("word");
+        words.add("sword");
+        words.add("dwarf");
+        words.add("whale");
+        words.add("male");
+    }
+
+    private static Directory create_index() throws IOException
+    {
+        Directory directory = new RAMDirectory();
+
+        ListIterator e_words1 = words.listIterator();
+        ListIterator e_words2 = words.listIterator(words.size());
+
+        IndexWriter writer = new IndexWriter(directory, new StandardAnalyzer(), 
+true);
+
+        int co = 1;
+
+        for (int i = 0; i < 300; i++) {
+
+            if (!e_words1.hasNext()) {
+                e_words1 = words.listIterator();
+                e_words1.hasNext();
+            }
+            String word1 = (String)e_words1.next();
+            if (!e_words2.hasPrevious()) {
+                e_words2 = words.listIterator(words.size());
+                e_words2.hasPrevious();
+            }
+            String word2 = (String)e_words2.previous();
+
+            Document doc = new Document();
+
+            doc.add(Field.Keyword("co", String.valueOf(co)));
+            doc.add(Field.Text("text", word1 + " " + word2));
+            writer.addDocument(doc);
+
+            if (i % 20 == 0)
+                co++;
+        }
+        writer.optimize();
+        System.err.println("index size: " + writer.docCount());
+        writer.close();
+
+        return directory;
+    }
+}

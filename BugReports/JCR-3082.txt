@@ -1,0 +1,48 @@
+occasional index out of bounds exception while running UserManagerImplTest.testFindAuthorizableByRelativePath
+
+
+
+Description:
+Stack trace:
+
+java.lang.ArrayIndexOutOfBoundsException: 8
+	at org.apache.jackrabbit.core.query.lucene.MultiScorer.score(MultiScorer.java:89)
+	at org.apache.lucene.search.ConjunctionScorer.score(ConjunctionScorer.java:133)
+	at org.apache.lucene.search.BooleanScorer2$2.score(BooleanScorer2.java:182)
+	at org.apache.lucene.search.BooleanScorer2.score(BooleanScorer2.java:303)
+	at org.apache.jackrabbit.core.query.lucene.LuceneQueryHits.nextScoreNode(LuceneQueryHits.java:68)
+	at org.apache.jackrabbit.core.query.lucene.QueryHitsAdapter.nextScoreNodes(QueryHitsAdapter.java:54)
+	at org.apache.jackrabbit.core.query.lucene.FilterMultiColumnQueryHits.nextScoreNodes(FilterMultiColumnQueryHits.java:63)
+	at org.apache.jackrabbit.core.query.lucene.QueryResultImpl.collectScoreNodes(QueryResultImpl.java:328)
+	at org.apache.jackrabbit.core.query.lucene.QueryResultImpl.getResults(QueryResultImpl.java:291)
+	at org.apache.jackrabbit.core.query.lucene.SingleColumnQueryResult.<init>(SingleColumnQueryResult.java:66)
+	at org.apache.jackrabbit.core.query.lucene.QueryImpl.execute(QueryImpl.java:134)
+	at org.apache.jackrabbit.core.query.QueryImpl$1.perform(QueryImpl.java:130)
+	at org.apache.jackrabbit.core.query.QueryImpl$1.perform(QueryImpl.java:1)
+	at org.apache.jackrabbit.core.session.SessionState.perform(SessionState.java:200)
+	at org.apache.jackrabbit.core.query.QueryImpl.execute(QueryImpl.java:126)
+	at org.apache.jackrabbit.core.security.user.IndexNodeResolver.findNodes(IndexNodeResolver.java:109)
+	at org.apache.jackrabbit.core.security.user.UserManagerImpl.findAuthorizables(UserManagerImpl.java:498)
+	at org.apache.jackrabbit.core.security.user.UserManagerImpl.findAuthorizables(UserManagerImpl.java:462)
+	at org.apache.jackrabbit.core.security.user.UserManagerImplTest.testFindAuthorizableByRelativePath(UserManagerImplTest.java:560)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(Unknown Source)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(Unknown Source)
+	at java.lang.reflect.Method.invoke(Unknown Source)
+	at junit.framework.TestCase.runTest(TestCase.java:154)
+	at junit.framework.TestCase.runBare(TestCase.java:127)
+	at junit.framework.TestResult$1.protect(TestResult.java:106)
+	at junit.framework.TestResult.runProtected(TestResult.java:124)
+	at junit.framework.TestResult.run(TestResult.java:109)
+	at junit.framework.TestCase.run(TestCase.java:118)
+	at org.apache.jackrabbit.test.AbstractJCRTest.run(AbstractJCRTest.java:456)
+	at junit.framework.TestSuite.runTest(TestSuite.java:208)
+	at junit.framework.TestSuite.run(TestSuite.java:203)
+	at org.eclipse.jdt.internal.junit.runner.junit3.JUnit3TestReference.run(JUnit3TestReference.java:130)
+	at org.eclipse.jdt.internal.junit.runner.TestExecution.run(TestExecution.java:38)
+	at org.eclipse.jdt.internal.junit.runner.RemoteTestRunner.runTests(RemoteTestRunner.java:467)
+	at org.eclipse.jdt.internal.junit.runner.RemoteTestRunner.runTests(RemoteTestRunner.java:683)
+	at org.eclipse.jdt.internal.junit.runner.RemoteTestRunner.run(RemoteTestRunner.java:390)
+	at org.eclipse.jdt.internal.junit.runner.RemoteTestRunner.main(RemoteTestRunner.java:197)
+
+

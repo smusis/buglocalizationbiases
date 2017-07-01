@@ -1,0 +1,11 @@
+cache does not honor must-revalidate or proxy-revalidate Cache-Control directives
+
+
+
+Description:
+http://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.9.4
+
+There are a couple of missed requirements here regarding must-revalidate and proxy-revalidate (which applies only to shared caches).
+1. When a cache entry with this directive is revalidated, it must be an end-to-end revalidation (meaning it must include 'max-age=0' on the request).
+2. If the revalidation with the origin fails, the cache MUST NOT return a stale entry and MUST return a 504 response.
+

@@ -1,0 +1,16 @@
+Exception in deleteDocument, undeleteAll or setNorm in IndexReader can fail to release write lock on close
+
+
+
+Description:
+I hit this while working on LUCENE-140
+
+We have 3 cases in the IndexReader methods above where we have this pattern:
+
+  if (directoryOwner) acquireWriteLock();
+  doSomething();
+  hasChanges = true;
+
+The problem is if you hit an exception in doSomething(), and hasChanges was not already true, then hasChanges will not have been set to true yet the write lock is held.  If you then try to close the reader without making any other changes, then the write lock is not released because in IndexReader.close() (well, in commit()) we only release write lock if hasChanges is true.
+
+I think the simple fix is to swap the order of hasChanges = true and doSomething().  I already fixed one case of this under LUCENE-140 commit yesterday; I will fix the other two under this issue.

@@ -1,0 +1,6 @@
+Unable to add/lock and unlock/remove Node with shared Session in 2 Transactions
+
+
+
+Description:
+If you try to unlock and remove a node the NodeState can be run out of sync between the two operations.

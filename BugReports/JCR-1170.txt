@@ -1,0 +1,10 @@
+Repository lock keeps file open
+
+
+
+Description:
+The RepositoryLock opens a RandomAccessFile, but does not close it. The problematic line is:
+
+lock = new RandomAccessFile(file, "rw").getChannel().tryLock();
+
+This is usually not a problem as the file will be closed when the RandomAccessFile object is garbage collected. However, if called a lot in a short time frame, this results in 'too many open files' in some environments (for example Linux). 

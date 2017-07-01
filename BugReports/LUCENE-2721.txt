@@ -1,0 +1,33 @@
+Random Failure TestSizeBoundedOptimize#testFirstSegmentTooLarge
+
+
+
+Description:
+I am seeing this on trunk  
+
+{noformat}
+
+[junit] Testsuite: org.apache.lucene.index.TestSizeBoundedOptimize
+    [junit] Testcase: testFirstSegmentTooLarge(org.apache.lucene.index.TestSizeBoundedOptimize):	FAILED
+    [junit] expected:<2> but was:<1>
+    [junit] junit.framework.AssertionFailedError: expected:<2> but was:<1>
+    [junit] 	at org.apache.lucene.util.LuceneTestCase$LuceneTestCaseRunner.runChild(LuceneTestCase.java:882)
+    [junit] 	at org.apache.lucene.util.LuceneTestCase$LuceneTestCaseRunner.runChild(LuceneTestCase.java:848)
+    [junit] 	at org.apache.lucene.index.TestSizeBoundedOptimize.testFirstSegmentTooLarge(TestSizeBoundedOptimize.java:160)
+    [junit] 
+    [junit] 
+    [junit] Tests run: 1, Failures: 1, Errors: 0, Time elapsed: 0.658 sec
+    [junit] 
+    [junit] ------------- Standard Output ---------------
+    [junit] NOTE: reproduce with: ant test -Dtestcase=TestSizeBoundedOptimize -Dtestmethod=testFirstSegmentTooLarge -Dtests.seed=7354441978302993522:-457602792543755447 -Dtests.multiplier=3
+    [junit] NOTE: test params are: codec=Standard, locale=sv_SE, timezone=Mexico/BajaNorte
+    [junit] ------------- ---------------- ---------------
+    [junit] ------------- Standard Error -----------------
+    [junit] NOTE: all tests run in this JVM:
+    [junit] [TestSizeBoundedOptimize]
+    [junit] ------------- ---------------- ---------------
+    [junit] Test org.apache.lucene.index.TestSizeBoundedOptimize FAILED
+{noformat}
+
+when running with this seed
+ant test -Dtestcase=TestSizeBoundedOptimize -Dtestmethod=testFirstSegmentTooLarge -Dtests.seed=7354441978302993522:-457602792543755447 -Dtests.multiplier=3

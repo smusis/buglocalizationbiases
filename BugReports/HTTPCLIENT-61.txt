@@ -1,0 +1,7 @@
+configurable User-Agent string
+
+
+
+Description:
+User configurable item to set the user agent without haveing to set it on a per
+HttpMethod basis.

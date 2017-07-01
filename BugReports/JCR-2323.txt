@@ -1,0 +1,8 @@
+InputStream.read return value is ignored.
+
+
+
+Description:
+RepositoryImpl.loadRootNodeId reads from an InputStreamReader using read(...) and ignores the return values.
+
+This results in a problem if the input stream doesn't read all bytes.

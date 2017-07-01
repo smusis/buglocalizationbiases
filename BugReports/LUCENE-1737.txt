@@ -1,0 +1,21 @@
+Always use bulk-copy when merging stored fields and term vectors
+
+
+
+Description:
+Lucene has nice optimizations in place during merging of stored fields
+(LUCENE-1043) and term vectors (LUCENE-1120) whereby the bytes are
+bulk copied to the new segmetn.  This is much faster than decoding &
+rewriting one document at a time.
+
+However the optimization is rather brittle: it relies on the mapping
+of field name to number to be the same ("congruent") for the segment
+being merged.
+
+Unfortunately, the field mapping will be congruent only if the app
+adds the same fields in precisely the same order to each document.
+
+I think we should fix IndexWriter to assign the same field number for
+a given field that has been assigned in the past.  Ie, when writing a
+new segment, we pre-seed the field numbers based on past segments.
+All other aspects of FieldInfo would remain fully dynamic.

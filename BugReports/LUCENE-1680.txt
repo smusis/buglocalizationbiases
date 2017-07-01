@@ -1,0 +1,10 @@
+Make prefixLength accessible to PrefixTermEnum subclasses
+
+
+
+Description:
+PrefixTermEnum#difference() offers a way to influence scoring based on the difference between the prefix Term and a term in the enumeration. To effectively use this facility the length of the prefix should be accessible to subclasses. Currently the prefix term is private to PrefixTermEnum. I added a getter for the prefix length and made PrefixTermEnum#endEnum(), PrefixTermEnum#termCompare() final for consistency with other TermEnum subclasses.
+
+Patch is attached.
+
+Simon

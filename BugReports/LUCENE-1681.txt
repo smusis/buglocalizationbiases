@@ -1,0 +1,12 @@
+DocValues infinite loop caused by - a call to getMinValue | getMaxValue | getAverageValue
+
+
+
+Description:
+org.apache.lucene.search.function.DocValues offers 3 public (optional) methods to access value statistics like min, max and average values of the internal values. A call to one of the methods will result in an infinite loop. The internal counter is not incremented. 
+I added a testcase, javadoc and a slightly different implementation to it. I guess this is not breaking any back compat. as a call to those methodes would have caused an infinite loop anyway.
+I changed the return value of all of those methods to Float.NaN if the DocValues implementation does not contain any values.
+
+It might be considerable to fix this in 2.4.2 and 2.3.3
+
+

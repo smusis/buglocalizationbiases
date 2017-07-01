@@ -1,0 +1,16 @@
+JCA will not compile with J2EE1.3 classes
+
+
+
+Description:
+In JCAManagedConnectionFactory, the constructor invoked to throw ResourceException does not exist under J2EE1.3 / JCA1.1 classes.
+ throw new ResourceException(e)  -  line 136 and line 277.
+
+Instead the code needs to do something like:
+
+            ResourceException exception = new ResourceException("Failed to create session");
+            exception.setLinkedException(e);
+            throw exception;
+
+This will allow it to compile/run under J2EE1.3
+

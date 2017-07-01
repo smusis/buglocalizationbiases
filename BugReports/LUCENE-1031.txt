@@ -1,0 +1,6 @@
+Fixes a handful of misspellings/mistakes in changes.txt
+
+
+
+Description:
+There are a handful of misspellings/mistakes in changes.txt. This patch fixes them. Avoided the one or two British to English conversions <g>

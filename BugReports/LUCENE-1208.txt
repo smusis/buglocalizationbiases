@@ -1,0 +1,12 @@
+Deadlock case in IndexWriter on exception just before flush
+
+
+
+Description:
+If a document hits a non-aborting exception, eg something goes wrong
+in tokenStream.next(), and, that document had triggered a flush
+(due to RAM or doc count) then DocumentsWriter will deadlock because
+that thread marks the flush as pending but fails to clear it on
+exception.
+
+I have a simple test case showing this, and a fix fixing it.

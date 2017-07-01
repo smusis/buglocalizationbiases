@@ -1,0 +1,40 @@
+norms reading fails with FileNotFound in exceptional case
+
+
+
+Description:
+If we can't get to the bottom of this, we can always add the fileExists check back...
+
+{noformat}
+    [junit] Testsuite: org.apache.lucene.index.TestIndexWriterExceptions
+    [junit] Testcase: testRandomExceptionsThreads(org.apache.lucene.index.TestIndexWriterExceptions):	Caused an ERROR
+    [junit] No sub-file with id _nrm.cfs found (fileName=_19_nrm.cfs files: [.fdt, .fnm, .per, .fdx])
+    [junit] java.io.FileNotFoundException: No sub-file with id _nrm.cfs found (fileName=_19_nrm.cfs files: [.fdt, .fnm, .per, .fdx])
+    [junit] 	at org.apache.lucene.store.CompoundFileDirectory.createSlicer(CompoundFileDirectory.java:313)
+    [junit] 	at org.apache.lucene.store.CompoundFileDirectory.<init>(CompoundFileDirectory.java:65)
+    [junit] 	at org.apache.lucene.codecs.lucene40.Lucene40DocValuesProducer.<init>(Lucene40DocValuesProducer.java:48)
+    [junit] 	at org.apache.lucene.codecs.lucene40.Lucene40NormsFormat$Lucene40NormsDocValuesProducer.<init>(Lucene40NormsFormat.java:70)
+    [junit] 	at org.apache.lucene.codecs.lucene40.Lucene40NormsFormat.docsProducer(Lucene40NormsFormat.java:49)
+    [junit] 	at org.apache.lucene.codecs.lucene40.Lucene40NormsFormat.docsProducer(Lucene40NormsFormat.java:62)
+    [junit] 	at org.apache.lucene.index.SegmentCoreReaders.<init>(SegmentCoreReaders.java:122)
+    [junit] 	at org.apache.lucene.index.SegmentReader.<init>(SegmentReader.java:54)
+    [junit] 	at org.apache.lucene.index.DirectoryReader$1.doBody(DirectoryReader.java:65)
+    [junit] 	at org.apache.lucene.index.SegmentInfos$FindSegmentsFile.run(SegmentInfos.java:660)
+    [junit] 	at org.apache.lucene.index.DirectoryReader.open(DirectoryReader.java:55)
+    [junit] 	at org.apache.lucene.index.IndexReader.open(IndexReader.java:242)
+    [junit] 	at org.apache.lucene.index.TestIndexWriterExceptions.testRandomExceptionsThreads(TestIndexWriterExceptions.java:304)
+    [junit] 	at org.apache.lucene.util.LuceneTestCase$3$1.evaluate(LuceneTestCase.java:530)
+    [junit] 	at org.apache.lucene.util.LuceneTestCaseRunner.runChild(LuceneTestCaseRunner.java:165)
+    [junit] 	at org.apache.lucene.util.LuceneTestCaseRunner.runChild(LuceneTestCaseRunner.java:57)
+    [junit] 
+    [junit] 
+    [junit] Tests run: 22, Failures: 0, Errors: 1, Time elapsed: 3.439 sec
+    [junit] 
+    [junit] ------------- Standard Error -----------------
+    [junit] NOTE: reproduce with: ant test -Dtestcase=TestIndexWriterExceptions -Dtestmethod=testRandomExceptionsThreads -Dtests.seed=-4ea45cb40d17460b:-459bfb455a2351b9:1abd8f0f3a0611b9 -Dargs="-Dfile.encoding=UTF-8"
+    [junit] NOTE: test params are: codec=Lucene40: {field=MockVariableIntBlock(baseBlockSize=31), id=PostingsFormat(name=NestedPulsing), content=Pulsing40(freqCutoff=2 minBlockSize=58 maxBlockSize=186), contents=MockVariableIntBlock(baseBlockSize=31), content1=MockVariableIntBlock(baseBlockSize=31), content2=PostingsFormat(name=MockSep), content4=Pulsing40(freqCutoff=2 minBlockSize=58 maxBlockSize=186), content5=MockFixedIntBlock(blockSize=964), content6=PostingsFormat(name=Memory), content7=PostingsFormat(name=MockRandom), crash=PostingsFormat(name=NestedPulsing), subid=PostingsFormat(name=NestedPulsing)}, sim=RandomSimilarityProvider(queryNorm=false,coord=true): {other=DFR GB3(800.0), contents=IB SPL-L3(800.0), content=DFR GL3(800.0), id=DFR I(F)L1, field=IB LL-DZ(0.3), content1=DFR I(ne)BZ(0.3), content2=DFR I(n)3(800.0), content3=DFR GZ(0.3), content4=DFR I(ne)B2, content5=IB LL-L3(800.0), content6=IB SPL-D2, crash=DFR I(F)3(800.0), content7=DFR I(F)B3(800.0), subid=IB LL-L1}, locale=de_CH, timezone=Canada/Saskatchewan
+    [junit] NOTE: all tests run in this JVM:
+    [junit] [TestAssertions, TestNumericTokenStream, TestSimpleAttributeImpl, TestImpersonation, TestPulsingReuse, TestDocument, TestAddIndexes, TestAtomicUpdate, TestByteSlices, TestCheckIndex, TestConcurrentMergeScheduler, TestConsistentFieldNumbers, TestCrashCausesCorruptIndex, TestDocCount, TestDocumentWriter, TestFlex, TestForceMergeForever, TestIndexInput, TestIndexReader, TestIndexWriterConfig, TestIndexWriterExceptions]
+    [junit] NOTE: Linux 3.0.0-14-generic amd64/Sun Microsystems Inc. 1.6.0_24 (64-bit)/cpus=8,threads=1,free=186661872,total=245104640
+{noformat}
+

@@ -1,0 +1,7 @@
+SerializationTest and AbstractImportXmlTest leak temporary files
+
+
+
+Description:
+Both test classes leak temporary files when setUp() fails.
+

@@ -1,0 +1,8 @@
+Replace deprecated TermAttribute by new CharTermAttribute
+
+
+
+Description:
+After LUCENE-2302 is merged to trunk with flex, we need to carry over all tokenizers and consumers of the TokenStreams to the new CharTermAttribute.
+
+We should also think about adding a AttributeFactory that creates a subclass of CharTermAttributeImpl that returns collation keys in toBytesRef() accessor. CollationKeyFilter is then obsolete, instead you can simply convert every TokenStream to indexing only CollationKeys by changing the attribute implementation.

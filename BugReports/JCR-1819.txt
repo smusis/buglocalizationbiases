@@ -1,0 +1,17 @@
+JCR2SPI: Add specific deep loading of Nodes and Properties
+
+
+
+Description:
+with jcr2spi an item is 'deep' loaded whenever the hierarchy is not complete. while for Session#itemExists or Session#getItem it is ok to try loading a Node first and if not found a Property, this is inconvenient (and generates unnecessary round trips to the SPI) for those cases, where the original JCR call indicates whether a Node or Property is expected.
+
+This is the case for Node.getNode(String relPath) and Node.getProperty(String relPath) ((and maybe others))
+
+Therefore i suggest to add specific methods
+
+HierarchyManager#getNodeEntry
+HierarchyManager#getPropertyEntry
+NodeEntry#getDeepNodeEntry
+NodeEntry#getDeepPropertyEntry
+
+(or something similar)

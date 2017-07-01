@@ -1,0 +1,6 @@
+FastVectorHighlighter: highlighted term is out of alignment in multi-valued NOT_ANALYZED field
+
+
+
+Description:
+

@@ -1,0 +1,7 @@
+toplevel exception cleanup
+
+
+
+Description:
+HttpClient.execute should throw only one exception, for easier general use.
+HttpMethod constructors (HttpGet, HttpPut, etc..) should throw IllegalArgumentException in the string constructor (imply the string is pre-checked).  People wanting to see a URIException can use 'new HttpGet(new URI(uri))' and trigger the exception from the explicit URI creation.

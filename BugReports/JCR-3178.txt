@@ -1,0 +1,9 @@
+Improve error messages for index aggregates
+
+
+
+Description:
+In the case where an index aggregate fails because of a node that doesn't exist the logged warn messages contain a full stack-trace.
+Besides the fact that this can be misleading (you may think that there's something wrong that you need to fix right away) it is also borderline useless.
+
+The desired behavior would be to just log an "info" message mentioning that a certain node was skipped, similar to what the SeachManager does.

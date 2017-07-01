@@ -1,0 +1,9 @@
+improved snowball testing
+
+
+
+Description:
+Snowball project has test vocabulary files for each language in their svn repository, along with expected output.
+
+We should use these tests to ensure all languages are working correctly, and it might be helpful in the future for identifying back breaks/changes if we ever want to upgrade snowball, etc.
+

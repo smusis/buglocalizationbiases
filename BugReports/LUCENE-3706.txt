@@ -1,0 +1,9 @@
+add offsets into lucene40 postings
+
+
+
+Description:
+LUCENE-3684 added support for IndexOptions.DOCS_AND_FREQS_AND_POSITIONS_AND_OFFSETS, but
+only SimpleText implements it.
+
+I think we should implement it in the other 4.0 codecs (starting with Lucene40PostingsFormat).

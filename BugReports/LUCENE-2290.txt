@@ -1,0 +1,7 @@
+Remove unnecessary String concatenation in IndexWriter
+
+
+
+Description:
+I've noticed a couple of places in IndexWriter where a boolean string is created by bool + "", or integer by int + "". There are some places (in setDiagonstics) where a string is concatenated with an empty String ...
+The patch uses Boolean.toString and Integer.toString, as well as remove the unnecessary str + "".

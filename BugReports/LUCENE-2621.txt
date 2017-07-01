@@ -1,0 +1,8 @@
+Extend Codec to handle also stored fields and term vectors
+
+
+
+Description:
+Currently Codec API handles only writing/reading of term-related data, while stored fields data and term frequency vector data writing/reading is handled elsewhere.
+
+I propose to extend the Codec API to handle this data as well.

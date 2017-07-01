@@ -1,0 +1,12 @@
+Support multi-selector OR constraints in join queries
+
+
+
+Description:
+Our current join implementation doesn't support OR constraints that refer to more than one selector. For example the following query is not possible:
+
+    SELECT a.* FROM [my:type] AS a INNER JOIN [my:type] as b ON a.foo = b.bar WHERE a.baz = 'x' OR b.baz = 'y'
+
+This limitation is a result of the way the join execution splits the query into per-selector components and merges the result based on the given join condition.
+
+A simple but often inefficient solution would be to process such OR constraints as post-processing filters like we already do for some other more complex constraint types.

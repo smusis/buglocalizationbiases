@@ -1,0 +1,10 @@
+ContentLengthInputStream does not implement available() properly
+
+
+
+Description:
+ContentLengthInputStream should either extend FilterInputStream or should delegate available() to wrappedStream.
+
+Otherwise, available() on the response stream (an instance of AutoCloseInputStream, which is properly extending FilterInputStream, and, therefore, delegating to the ContentLengthInputStream) always returns 0.
+
+This issue is important for the clients that try to improve performance by processing all data that can be read in a non-blocking way before blocking on the network.

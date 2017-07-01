@@ -1,0 +1,23 @@
+FSDirectory.copyBytes isn't safe for SimpleFSDirectory
+
+
+
+Description:
+the copyBytes optimization from LUCENE-2574 is not safe for SimpleFSDirectory, but works fine for NIOFSDirectory.
+
+With SimpleFSDirectory, the copyBytes optimization causes index corruption.
+
+see http://www.lucidimagination.com/search/document/36d2dbfc691909d5/bug_triggered_by_testindexwriter_testrandomstoredfields for background
+
+here are my steps to reproduce (most of the time, at least on windows):
+{noformat}
+1. edit line 87 of TestIndexWriter to plugin the seed:
+    random = newRandom(3312389322103990899L);
+2. edit line 5138 of TestIndexWriter to force SimpleFSDirectory:
+    Directory dir = new SimpleFSDirectory(index);
+3. run this command:
+    ant clean test-core -Dtestcase=TestIndexWriter
+-Dtestmethod=testRandomStoredFields -Dtests.iter=10
+-Dtests.codec="MockVariableIntBlock(29)"
+{noformat}
+

@@ -1,0 +1,6 @@
+CachingHttpClient.execute() does not catch the IOException thrown by HttpCache.getCacheEntry()
+
+
+
+Description:
+The IOException caused by the HttpCache is not caught and thus the whole http request fails. I would expect the response to be retrieved from the backend when the cache fails for some reason.

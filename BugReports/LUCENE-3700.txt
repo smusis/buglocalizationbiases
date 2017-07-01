@@ -1,0 +1,8 @@
+optionally support naist-jdic for kuromoji
+
+
+
+Description:
+This is an alternative dictionary, somewhat larger (~25%).
+
+we can support it in build.xml so if a user wants to build with it, they can (the resulting jar file will be 500KB larger)

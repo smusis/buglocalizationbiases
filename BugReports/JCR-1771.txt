@@ -1,0 +1,6 @@
+jcr2spi: avoid unnecessary roundtrips with NodeEntry.getPropertyEntry
+
+
+
+Description:
+Since NodeInfo.getPropertyIds always returns the complete set of property names, there is no need for an extra round trip to the SPI upon NodeEntry.getPropertyEntry. The corresponding code could be simplified.

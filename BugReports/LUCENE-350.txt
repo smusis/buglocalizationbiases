@@ -1,0 +1,6 @@
+counter field in segments file is not documented in fileformats.xml
+
+
+
+Description:
+The counter field in the current segments file format is not documented.

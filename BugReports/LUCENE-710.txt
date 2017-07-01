@@ -1,0 +1,86 @@
+Implement "point in time" searching without relying on filesystem semantics
+
+
+
+Description:
+This was touched on in recent discussion on dev list:
+
+  http://www.gossamer-threads.com/lists/lucene/java-dev/41700#41700
+
+and then more recently on the user list:
+
+  http://www.gossamer-threads.com/lists/lucene/java-user/42088
+
+Lucene's "point in time" searching currently relies on how the
+underlying storage handles deletion files that are held open for
+reading.
+
+This is highly variable across filesystems.  For example, UNIX-like
+filesystems usually do "close on last delete", and Windows filesystem
+typically refuses to delete a file open for reading (so Lucene retries
+later).  But NFS just removes the file out from under the reader, and
+for that reason "point in time" searching doesn't work on NFS
+(see LUCENE-673 ).
+
+With the lockless commits changes (LUCENE-701 ), it's quite simple to
+re-implement "point in time searching" so as to not rely on filesystem
+semantics: we can just keep more than the last segments_N file (as
+well as all files they reference).
+
+This is also in keeping with the design goal of "rely on as little as
+possible from the filesystem".  EG with lockless we no longer re-use
+filenames (don't rely on filesystem cache being coherent) and we no
+longer use file renaming (because on Windows it can fails).  This
+would be another step of not relying on semantics of "deleting open
+files".  The less we require from filesystem the more portable Lucene
+will be!
+
+Where it gets interesting is what "policy" we would then use for
+removing segments_N files.  The policy now is "remove all but the last
+one".  I think we would keep this policy as the default.  Then you
+could imagine other policies:
+
+  * Keep past N day's worth
+
+  * Keep the last N
+
+  * Keep only those in active use by a reader somewhere (note: tricky
+    how to reliably figure this out when readers have crashed, etc.)
+
+  * Keep those "marked" as rollback points by some transaction, or
+    marked explicitly as a "snaphshot".
+
+  * Or, roll your own: the "policy" would be an interface or abstract
+    class and you could make your own implementation.
+
+I think for this issue we could just create the framework
+(interface/abstract class for "policy" and invoke it from
+IndexFileDeleter) and then implement the current policy (delete all
+but most recent segments_N) as the default policy.
+
+In separate issue(s) we could then create the above more interesting
+policies.
+
+I think there are some important advantages to doing this:
+
+  * "Point in time" searching would work on NFS (it doesn't now
+    because NFS doesn't do "delete on last close"; see LUCENE-673 )
+    and any other Directory implementations that don't work
+    currently.
+
+  * Transactional semantics become a possibility: you can set a
+    snapshot, do a bunch of stuff to your index, and then rollback to
+    the snapshot at a later time.
+
+  * If a reader crashes or machine gets rebooted, etc, it could choose
+    to re-open the snapshot it had previously been using, whereas now
+    the reader must always switch to the last commit point.
+
+  * Searchers could search the same snapshot for follow-on actions.
+    Meaning, user does search, then next page, drill down (Solr),
+    drill up, etc.  These are each separate trips to the server and if
+    searcher has been re-opened, user can get inconsistent results (=
+    lost trust).  But with, one series of search interactions could
+    explicitly stay on the snapshot it had started with.
+
+

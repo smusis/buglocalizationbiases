@@ -1,0 +1,18 @@
+Mavenize Project
+
+
+
+Description:
+Mavenize project pending mailing list feedback.
+
+I'm attaching an out-dated zip that has some useful "stuff" to review or build upon.
+
+Proposed flow:
+
+1) Review the maven specific elements in the zip:
+- project.xml, header.txt, license.txt, notice.txt, checkstyle.xml, project.properties, xdocs directory. NOTE: I know the license.txt and maybe header.txt are not correct per earlier discussions.
+2) Once new package layout/code is in svn - we can refactor this and move the maven related files into place.
+
+Thoughts,
+  a) One of the artifacts generated is the bat file and supporting directory with the jar to run the sample app - could use some ideas on how maven should generate this.
+  b) How the local maven repo gets the jcr-api.jar? My current thinking is 'same as any non-redistributable artifact'. The user is responsible for downloading it to a local repository.

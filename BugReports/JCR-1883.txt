@@ -1,0 +1,56 @@
+Moved node disappears
+
+
+
+Description:
+Moving a node and then refreshing it can make it disappear.
+
+deleteDirectory(new File("repository"));
+Repository rep = new TransientRepository();
+Session session = rep.login(new SimpleCredentials("", new char[0]));
+Node root = session.getRootNode();
+Node a = root.addNode("a");
+Node b = a.addNode("b");
+session.save();
+session.move("/a/b", "/b");
+b.refresh(false);
+// session.save(); // no effect
+for (NodeIterator it = root.getNodes(); it.hasNext();) {
+    Node n = it.nextNode();
+    System.out.println(n.getName());
+    for (NodeIterator it2 = n.getNodes(); it2.hasNext();) {
+        System.out.println("  " + it2.nextNode().getName());
+    }
+}
+
+In the trunk, the node 'b' is not listed after the refresh (not under the root page, and not under a). The output is:
+jcr:system
+  jcr:versionStorage
+  jcr:nodeTypes
+a
+
+
+Jackrabbit 1.4.x throws an exception:
+
+jcr:system
+  jcr:versionStorage
+  jcr:nodeTypes
+a
+Exception in thread "main" javax.jcr.RepositoryException: failed to resolve name of acee31c4-c33b-4ed4-b1b5-39db6f17fb09
+	at org.apache.jackrabbit.core.HierarchyManagerImpl.getName(HierarchyManagerImpl.java:451)
+	at org.apache.jackrabbit.core.CachingHierarchyManager.getName(CachingHierarchyManager.java:287)
+	at org.apache.jackrabbit.core.NodeImpl.getName(NodeImpl.java:1931)
+	at org.apache.jackrabbit.core.fuzz.TestMoveRemoveRefresh.test(TestMoveRemoveRefresh.java:33)
+	at org.apache.jackrabbit.core.fuzz.TestMoveRemoveRefresh.main(TestMoveRemoveRefresh.java:15)
+
+
+void deleteDirectory(File file) {
+    if (file.isDirectory()) {
+        File[] list = file.listFiles();
+        for(int i=0; i<list.length; i++) {
+            deleteDirectory(list[i]);
+        }
+    }
+    file.delete();
+}
+

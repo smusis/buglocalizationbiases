@@ -1,0 +1,14 @@
+AbstractConnPool constructor calls thread.Start()
+
+
+
+Description:
+AbstractConnPool constructor calls thread.Start()
+
+Findbugs says:
+
+Constructor invokes Thread.start()
+
+The constructor starts a thread. This is likely to be wrong if the class is ever extended/subclassed, since the thread will be started before the subclass constructor is started.
+
+The class is not final (and the constructor is protected) which suggests that the class is intended to be extended...

@@ -1,0 +1,6 @@
+Ant contrib test can fail if there is a space in path to lucene project
+
+
+
+Description:
+A couple contrib ant tests get the path to test files through a URL object, and so the path is URL encoded. Normally fine, but if you have a space in your path (/svn stuff/lucene/contrib/ant) then it will have %20 for the space and (at least on my Ubuntu system) the test will fail with filenotfound. This patch simply replaces all %20 with " ". Not sure if we want/need to take it any further.

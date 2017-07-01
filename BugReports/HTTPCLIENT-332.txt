@@ -1,0 +1,33 @@
+Connection timeout logic redesign
+
+
+
+Description:
+Changelog:
+
+* CreateSocket method with timeout parameter added to the ProtocolSocketFactory
+interface
+
+* TimeoutController related code factored out of HttpConnection class and moved
+into ControllerThreadSocketFactory helper class
+
+* ReflectionSocketFactory helper class added. This factory encapsulates
+reflection code to call JDK 1.4 Socket#connect method if supported
+
+* All protocol socket factories now attempt to initially use
+ReflectionSocketFactory if required to create a socket within a given limit of
+time. If reflection fails protocol socket factories fall back onto the good ol'
+ControllerThreadSocketFactory
+
+Benefits:
+
+* HttpConnection code got a lot cleaner
+* When running in modern JREs expensive timeout controller thread per connection
+attempt is no longer needed
+* Ugly code intended to work around limitations of the older JREs is now
+confined to a few helper classes that can be easily thrown away once we move
+onto Java 1.4
+
+Let me know what you think
+
+Oleg

@@ -1,0 +1,26 @@
+use isBinary cached variable instead of instanceof in Field
+
+
+
+Description:
+Field class can hold three types of values, 
+See: AbstractField.java  protected Object fieldsData = null; 
+
+currently, mainly RTTI (instanceof) is used to determine the type of the value stored in particular instance of the Field, but for binary value we have mixed RTTI and cached variable "boolean isBinary" 
+
+This patch makes consistent use of cached variable isBinary.
+
+Benefit: consistent usage of method to determine run-time type for binary case  (reduces chance to get out of sync on cached variable). It should be slightly faster as well.
+
+Thinking aloud: 
+Would it not make sense to maintain type with some integer/byte"poor man's enum" (Interface with a couple of constants)
+code:java{
+public static final interface Type{
+public static final byte BOOLEAN = 0;
+public static final byte STRING = 1;
+public static final byte READER = 2;
+....
+}
+}
+
+and use that instead of isBinary + instanceof? 

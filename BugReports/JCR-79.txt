@@ -1,0 +1,17 @@
+EventFilter misses Events for same Nodetype
+
+
+
+Description:
+If an ObservationListener registers with a NodeType-filter, 
+it only gets informed about events on Sub-NodeTypes of the ones specified in the filter but not on the NodeType itself.
+
+Example:
+========
+ObservationManager om = wsp.getObservationManager();
+om.addEventListener(listener, Event.PROPERTY_ADDED, "/", true, null, new String[]{"nt:unstructured"}, true);
+
+would receive notifications on nodes of type "rep:root", which is based on "nt:unstructured" but not of "nt:unstructured"
+
+
+

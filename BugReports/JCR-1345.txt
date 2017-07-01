@@ -1,0 +1,193 @@
+ClassCastException when updating properties using WebDAV
+
+
+
+Description:
+When issuing PROPPATCH commands, a ClassCastException is raised.
+
+e.g. 
+
+PROPPATCH /jackrabbit-webapp-1.4/repository/default/test/test_file_v.txt HTTP/1.1
+Host: localhost:9000
+Connection: TE
+TE: trailers, deflate, gzip, compress
+User-Agent: UCI DAV Explorer/0.91 RPT-HTTPClient/0.3-3E
+Translate: f
+Authorization: Basic Y3Jvc3NqYTp0ZXN0
+Accept-Encoding: deflate, gzip, x-gzip, compress, x-compress
+Content-type: text/xml
+Content-length: 170
+
+<A:propertyupdate xmlns:A="DAV:">
+<A:set>
+<A:prop>
+<A:auto-version>checkout-checkin</A:auto-version>
+</A:prop>
+</A:set>
+</A:propertyupdate>
+
+
+results in
+
+
+
+24.01.2008 15:38:34 *ERROR* [Webdav]: Servlet.service() for servlet Webdav threw
+ exception (StandardWrapperValve.java, line 257)
+java.lang.ClassCastException: org.apache.jackrabbit.webdav.property.DefaultDavPr
+operty
+        at org.apache.jackrabbit.webdav.simple.DavResourceImpl.alterProperties(D
+avResourceImpl.java:456)
+        at org.apache.jackrabbit.webdav.server.AbstractWebdavServlet.doPropPatch
+(AbstractWebdavServlet.java:457)
+        at org.apache.jackrabbit.webdav.server.AbstractWebdavServlet.execute(Abs
+tractWebdavServlet.java:234)
+        at org.apache.jackrabbit.webdav.server.AbstractWebdavServlet.service(Abs
+tractWebdavServlet.java:192)
+        at javax.servlet.http.HttpServlet.service(HttpServlet.java:803)
+        at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(Appl
+icationFilterChain.java:269)
+        at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationF
+ilterChain.java:188)
+        at org.apache.catalina.core.StandardWrapperValve.invoke(StandardWrapperV
+alve.java:210)
+        at org.apache.catalina.core.StandardContextValve.invoke(StandardContextV
+alve.java:174)
+        at org.apache.catalina.core.StandardHostValve.invoke(StandardHostValve.j
+ava:127)
+        at org.apache.catalina.valves.ErrorReportValve.invoke(ErrorReportValve.j
+ava:117)
+        at org.apache.catalina.core.StandardEngineValve.invoke(StandardEngineVal
+ve.java:108)
+        at org.apache.catalina.connector.CoyoteAdapter.service(CoyoteAdapter.jav
+a:151)
+        at org.apache.coyote.http11.Http11Processor.process(Http11Processor.java
+:870)
+        at org.apache.coyote.http11.Http11BaseProtocol$Http11ConnectionHandler.p
+rocessConnection(Http11BaseProtocol.java:665)
+        at org.apache.tomcat.util.net.PoolTcpEndpoint.processSocket(PoolTcpEndpo
+int.java:528)
+        at org.apache.tomcat.util.net.LeaderFollowerWorkerThread.runIt(LeaderFol
+lowerWorkerThread.java:81)
+        at org.apache.tomcat.util.threads.ThreadPool$ControlRunnable.run(ThreadP
+ool.java:685)
+        at java.lang.Thread.run(Thread.java:595)
+24.01.2008 15:38:34 *ERROR* [Webdav]: Servlet.service() for servlet Webdav threw
+ exception (SLF4JLocationAwareLog.java, line 174)
+java.lang.ClassCastException: org.apache.jackrabbit.webdav.property.DefaultDavPr
+operty
+        at org.apache.jackrabbit.webdav.simple.DavResourceImpl.alterProperties(D
+avResourceImpl.java:456)
+        at org.apache.jackrabbit.webdav.server.AbstractWebdavServlet.doPropPatch
+(AbstractWebdavServlet.java:457)
+        at org.apache.jackrabbit.webdav.server.AbstractWebdavServlet.execute(Abs
+tractWebdavServlet.java:234)
+        at org.apache.jackrabbit.webdav.server.AbstractWebdavServlet.service(Abs
+tractWebdavServlet.java:192)
+        at javax.servlet.http.HttpServlet.service(HttpServlet.java:803)
+        at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(Appl
+icationFilterChain.java:269)
+        at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationF
+ilterChain.java:188)
+        at org.apache.catalina.core.StandardWrapperValve.invoke(StandardWrapperV
+alve.java:210)
+        at org.apache.catalina.core.StandardContextValve.invoke(StandardContextV
+alve.java:174)
+        at org.apache.catalina.core.StandardHostValve.invoke(StandardHostValve.j
+ava:127)
+        at org.apache.catalina.valves.ErrorReportValve.invoke(ErrorReportValve.j
+ava:117)
+        at org.apache.catalina.core.StandardEngineValve.invoke(StandardEngineVal
+ve.java:108)
+        at org.apache.catalina.connector.CoyoteAdapter.service(CoyoteAdapter.jav
+a:151)
+        at org.apache.coyote.http11.Http11Processor.process(Http11Processor.java
+:870)
+        at org.apache.coyote.http11.Http11BaseProtocol$Http11ConnectionHandler.p
+rocessConnection(Http11BaseProtocol.java:665)
+        at org.apache.tomcat.util.net.PoolTcpEndpoint.processSocket(PoolTcpEndpo
+int.java:528)
+        at org.apache.tomcat.util.net.LeaderFollowerWorkerThread.runIt(LeaderFol
+lowerWorkerThread.java:81)
+        at org.apache.tomcat.util.threads.ThreadPool$ControlRunnable.run(ThreadP
+ool.java:685)
+        at java.lang.Thread.run(Thread.java:595)
+24.01.2008 15:53:54 *ERROR* [Webdav]: Servlet.service() for servlet Webdav threw
+ exception (StandardWrapperValve.java, line 257)
+java.lang.ClassCastException: org.apache.jackrabbit.webdav.property.DefaultDavPr
+operty
+        at org.apache.jackrabbit.webdav.simple.DavResourceImpl.alterProperties(D
+avResourceImpl.java:456)
+        at org.apache.jackrabbit.webdav.server.AbstractWebdavServlet.doPropPatch
+(AbstractWebdavServlet.java:457)
+        at org.apache.jackrabbit.webdav.server.AbstractWebdavServlet.execute(Abs
+tractWebdavServlet.java:234)
+        at org.apache.jackrabbit.webdav.server.AbstractWebdavServlet.service(Abs
+tractWebdavServlet.java:192)
+        at javax.servlet.http.HttpServlet.service(HttpServlet.java:803)
+        at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(Appl
+icationFilterChain.java:269)
+        at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationF
+ilterChain.java:188)
+        at org.apache.catalina.core.StandardWrapperValve.invoke(StandardWrapperV
+alve.java:210)
+        at org.apache.catalina.core.StandardContextValve.invoke(StandardContextV
+alve.java:174)
+        at org.apache.catalina.core.StandardHostValve.invoke(StandardHostValve.j
+ava:127)
+        at org.apache.catalina.valves.ErrorReportValve.invoke(ErrorReportValve.j
+ava:117)
+        at org.apache.catalina.core.StandardEngineValve.invoke(StandardEngineVal
+ve.java:108)
+        at org.apache.catalina.connector.CoyoteAdapter.service(CoyoteAdapter.jav
+a:151)
+        at org.apache.coyote.http11.Http11Processor.process(Http11Processor.java
+:870)
+        at org.apache.coyote.http11.Http11BaseProtocol$Http11ConnectionHandler.p
+rocessConnection(Http11BaseProtocol.java:665)
+        at org.apache.tomcat.util.net.PoolTcpEndpoint.processSocket(PoolTcpEndpo
+int.java:528)
+        at org.apache.tomcat.util.net.LeaderFollowerWorkerThread.runIt(LeaderFol
+lowerWorkerThread.java:81)
+        at org.apache.tomcat.util.threads.ThreadPool$ControlRunnable.run(ThreadP
+ool.java:685)
+        at java.lang.Thread.run(Thread.java:595)
+24.01.2008 15:53:54 *ERROR* [Webdav]: Servlet.service() for servlet Webdav threw
+ exception (SLF4JLocationAwareLog.java, line 174)
+java.lang.ClassCastException: org.apache.jackrabbit.webdav.property.DefaultDavPr
+operty
+        at org.apache.jackrabbit.webdav.simple.DavResourceImpl.alterProperties(D
+avResourceImpl.java:456)
+        at org.apache.jackrabbit.webdav.server.AbstractWebdavServlet.doPropPatch
+(AbstractWebdavServlet.java:457)
+        at org.apache.jackrabbit.webdav.server.AbstractWebdavServlet.execute(Abs
+tractWebdavServlet.java:234)
+        at org.apache.jackrabbit.webdav.server.AbstractWebdavServlet.service(Abs
+tractWebdavServlet.java:192)
+        at javax.servlet.http.HttpServlet.service(HttpServlet.java:803)
+        at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(Appl
+icationFilterChain.java:269)
+        at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationF
+ilterChain.java:188)
+        at org.apache.catalina.core.StandardWrapperValve.invoke(StandardWrapperV
+alve.java:210)
+        at org.apache.catalina.core.StandardContextValve.invoke(StandardContextV
+alve.java:174)
+        at org.apache.catalina.core.StandardHostValve.invoke(StandardHostValve.j
+ava:127)
+        at org.apache.catalina.valves.ErrorReportValve.invoke(ErrorReportValve.j
+ava:117)
+        at org.apache.catalina.core.StandardEngineValve.invoke(StandardEngineVal
+ve.java:108)
+        at org.apache.catalina.connector.CoyoteAdapter.service(CoyoteAdapter.jav
+a:151)
+        at org.apache.coyote.http11.Http11Processor.process(Http11Processor.java
+:870)
+        at org.apache.coyote.http11.Http11BaseProtocol$Http11ConnectionHandler.p
+rocessConnection(Http11BaseProtocol.java:665)
+        at org.apache.tomcat.util.net.PoolTcpEndpoint.processSocket(PoolTcpEndpo
+int.java:528)
+        at org.apache.tomcat.util.net.LeaderFollowerWorkerThread.runIt(LeaderFol
+lowerWorkerThread.java:81)
+        at org.apache.tomcat.util.threads.ThreadPool$ControlRunnable.run(ThreadP
+ool.java:685)
+        at java.lang.Thread.run(Thread.java:595) 

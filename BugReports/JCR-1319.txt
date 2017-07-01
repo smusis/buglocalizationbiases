@@ -1,0 +1,38 @@
+NullPointerException when accessing the SimpleWebdavServlet at the prefix path
+
+
+
+Description:
+When accessing the SimpleWebdavServlet with the "root" path, that is the same path as set with the resource-path-prefix, a NullPointerException is thrown:
+
+java.lang.NullPointerException
+	at org.apache.jackrabbit.name.ParsingPathResolver.getQPath(ParsingPathResolver.java:91)
+	at org.apache.jackrabbit.name.CachingPathResolver.getQPath(CachingPathResolver.java:74)
+	at org.apache.jackrabbit.core.SessionImpl.getQPath(SessionImpl.java:601)
+	at org.apache.jackrabbit.core.SessionImpl.getItem(SessionImpl.java:804)
+	at org.apache.sling.jcr.api.internal.PooledSession.getItem(PooledSession.java:157)
+	at org.apache.jackrabbit.webdav.simple.ResourceFactoryImpl.getNode(ResourceFactoryImpl.java:140)
+	at org.apache.jackrabbit.webdav.simple.ResourceFactoryImpl.createResource(ResourceFactoryImpl.java:89)
+	at org.apache.jackrabbit.webdav.server.AbstractWebdavServlet.service(AbstractWebdavServlet.java:187)
+	at javax.servlet.http.HttpServlet.service(HttpServlet.java:820)
+	at org.mortbay.jetty.servlet.ServletHolder.handle(ServletHolder.java:487)
+	at org.mortbay.jetty.servlet.ServletHandler.handle(ServletHandler.java:362)
+	at org.ops4j.pax.web.service.internal.HttpServiceServletHandler.handle(HttpServiceServletHandler.java:51)
+	at org.mortbay.jetty.servlet.SessionHandler.handle(SessionHandler.java:181)
+	at org.mortbay.jetty.handler.ContextHandler.handle(ContextHandler.java:722)
+	at org.ops4j.pax.web.service.internal.HttpServiceContext.handle(HttpServiceContext.java:87)
+	at org.ops4j.pax.web.service.internal.JettyServerHandlerCollection.handle(JettyServerHandlerCollection.java:63)
+	at org.mortbay.jetty.handler.HandlerWrapper.handle(HandlerWrapper.java:139)
+	at org.mortbay.jetty.Server.handle(Server.java:324)
+	at org.mortbay.jetty.HttpConnection.handleRequest(HttpConnection.java:505)
+	at org.mortbay.jetty.HttpConnection$RequestHandler.headerComplete(HttpConnection.java:828)
+	at org.mortbay.jetty.HttpParser.parseNext(HttpParser.java:514)
+	at org.mortbay.jetty.HttpParser.parseAvailable(HttpParser.java:211)
+	at org.mortbay.jetty.HttpConnection.handle(HttpConnection.java:380)
+	at org.mortbay.jetty.bio.SocketConnector$Connection.run(SocketConnector.java:228)
+	at org.mortbay.thread.BoundedThreadPool$PoolThread.run(BoundedThreadPool.java:450)
+
+
+The problem seems to be that the ResourceFactoryImpl.createResource method (or rather the getNode method) is not prepared to a DavResourceLocator instance whose resourcePath is null.
+
+I could imagine, that the ResourceFactoryImpl.getNode() method might want to return the root node in this case ?

@@ -1,0 +1,8 @@
+RepositoryStatistics should be more flexible
+
+
+
+Description:
+Right now, Jackrabbit reports TimeSeries for things like BUNDLE_READ_COUNTER, BUNDLE_WRITE_COUNTER, etc. but there is no way to extend Jackrabbit and report TimeSeries for additional properties. That's because the type of TimeSeries are defined in RepositoryStatistics class as Type enum. Enums in Java cannot be extended which limits to TimeSeries to the Types defined in RepositoryStatistics. 
+
+I suggest that RepositoryStatistics is improved to allow additional TimeSeries. One approach is to define an additional RepositoryStatistics#getType(String) method. 

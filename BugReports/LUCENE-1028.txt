@@ -1,0 +1,6 @@
+Weight is not serializable for some of the queries
+
+
+
+Description:
+In order to work with ParallelMultiSearcher, Query weights need to be serializable.  The interface Weight extends java.io.Serializable, but it appears that some of the newer queries unnecessarily store global state in their weights, thus causing serialization errors.

@@ -1,0 +1,6 @@
+Extend apache parent pom for Apache wide configuration
+
+
+
+Description:
+Apache wide config is published in the apache parent pom, please use

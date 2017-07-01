@@ -1,0 +1,9 @@
+make spell checker test case work again
+
+
+
+Description:
+See attached path which makes the spellchecker test case work again. The problem without the patch is that consecutive calls to indexDictionary() will create a spelling index with duplicate words. Does anybody see a problem with this patch? I see that the spellchecker code is now used in Solr, isn't it? I didn't have time to test this patch inside Solr.
+
+Also see http://issues.apache.org/jira/browse/LUCENE-632, but the null check is included in this patch so the NPE described there cannot happen anymore.
+

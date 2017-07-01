@@ -1,0 +1,7 @@
+NPE in PredefinedNodeTypeTest.getPropertyDefSpec
+
+
+
+Description:
+Occurs when PropertyDefinition.getValueConstraints returns null, which is allowed by the spec.
+

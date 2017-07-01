@@ -1,0 +1,24 @@
+Missing Content-Length header causes a SocketException
+
+
+
+Description:
+Essentially, we have an invalid HTTP server (Stellent CMS actually and we will file a bug with them), 
+which is returning headers like:
+
+HTTP/1.1 401 Unauthorized
+WWW-Authenticate: Basic "Secure Realm"
+Connection: keep-alive
+
+Which is clearly missing the Content-Length header.  Now, previously HttpClient handled this 
+perfectly by reading until the end of the connection (ie: treating it like it was a Connection: close), 
+however for some reason a socket exception is being thrown and the invalid connection is added 
+back into the connection pool and then every connection to the server after that thows an 
+exception.
+
+See the thread "SocketException with invalid server" for the full discussion of the issue.
+
+I'll attach a patch that fixes the problem.  The biggest thing to consider is the changes to the 
+duplicate Connection header test cases which resolves around the question: if Connection: keep-
+alive is present but no Content-Length is provided, should the connection be closed?  The patch 
+requires the answer to be yes and I really can't see any other way to do it.

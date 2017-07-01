@@ -1,0 +1,17 @@
+Versioned node importXML fails
+
+
+
+Description:
+When importing system-view XML previously exported for a repository, any nodes with a version history cannot be reimported. This appears to be due to the version manager attempting to create a new version history for the node, which fails due to a previous history existing for the same UUID. The behavior occurs with ImportUUIDBehavior.IMPORT_UUID_COLLISION_REPLACE_EXISTING and  ImportUUIDBehavior.IMPORT_UUID_COLLISION_REMOVE_EXISTING, with the following stack trace:
+
+javax.jcr.version.VersionException: History already exists for node a892651d-1688-46cd-bb12-14f2f0b3d886
+	at org.apache.jackrabbit.core.version.VersionManagerImpl.createVersionHistory(VersionManagerImpl.java:194)
+	at org.apache.jackrabbit.core.ItemImpl.initVersionHistories(ItemImpl.java:900)
+	at org.apache.jackrabbit.core.ItemImpl.save(ItemImpl.java:1313)
+	at org.apache.jackrabbit.core.SessionImpl.save(SessionImpl.java:766)
+
+I am using the 1.0-dev version, revision 209290 obtained on 05 Jul, 2005 at 9:18:02 EST. Attached please find my repository configuration and the test code. Thanks!
+
+
+

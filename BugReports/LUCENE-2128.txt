@@ -1,0 +1,8 @@
+Further parallelizaton of ParallelMultiSearcher
+
+
+
+Description:
+When calling {{search(Query, Filter, int)}} on a ParallelMultiSearcher, the {{createWeights}} function of MultiSearcher is called, and sequentially calls {{docFreqs()}} on every sub-searcher. This can take a significant amount of time when there are lots of remote sub-searchers.
+
+

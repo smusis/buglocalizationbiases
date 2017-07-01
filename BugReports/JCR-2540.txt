@@ -1,0 +1,6 @@
+spi2dav : move/reorder not properly handled by observation
+
+
+
+Description:
+all TCK tests including move or reorder fail in the setup jcr2spi - spi2dav(ex) - jcr-server.

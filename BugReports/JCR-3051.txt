@@ -1,0 +1,6 @@
+AbstractLockTest.testLockExpiration fails intermittently 
+
+
+
+Description:
+This seems to be a timing issue. I propose to wait a bit longer for the lock to expire. 

@@ -1,0 +1,19 @@
+The "jackrabbit-pool-" thread prevents the process from stopping
+
+
+
+Description:
+If the repository is not closed, and a session is still logged in, then the process doesn't terminate because of a non-daemon thread named "jackrabbit-pool-<n>". Test case:
+
+public class TestThreadPreventsExit {
+    public static void main(String... a) throws Exception {
+        new TransientRepository().login(
+                new SimpleCredentials("", new char[0]));
+    }
+}
+
+This program doesn't stop.
+
+The non-daemon thread was introduces as part of https://issues.apache.org/jira/browse/JCR-2465
+
+The fix is to use a daemon thread.

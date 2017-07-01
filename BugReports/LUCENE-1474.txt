@@ -1,0 +1,10 @@
+Incorrect SegmentInfo.delCount when IndexReader.flush() is used
+
+
+
+Description:
+When deleted documents are flushed using IndexReader.flush() the delCount in SegmentInfo is updated based on the current value and SegmentReader.pendingDeleteCount (introduced by LUCENE-1267). It seems that pendingDeleteCount is not reset after the commit, which means after a second flush() or close() of an index reader the delCount in SegmentInfo is incorrect. A subsequent IndexReader.open() call will fail with an error when assertions are enabled. E.g.:
+
+java.lang.AssertionError: delete count mismatch: info=3 vs BitVector=2
+	at org.apache.lucene.index.SegmentReader.loadDeletedDocs(SegmentReader.java:405)
+[...]

@@ -1,0 +1,6 @@
+TCK: check for wrong repository descriptor. should be versioning instead of locking
+
+
+
+Description:
+... at least according to the comment.

@@ -1,0 +1,6 @@
+Cut Norms over to DocValues
+
+
+
+Description:
+since IR is now fully R/O and norms are inside codecs we can cut over to use a IDV impl for writing norms. LUCENE-3606 has some [ideas|https://issues.apache.org/jira/browse/LUCENE-3606?focusedCommentId=13160559&page=com.atlassian.jira.plugin.system.issuetabpanels:comment-tabpanel#comment-13160559] about how this could be implemented

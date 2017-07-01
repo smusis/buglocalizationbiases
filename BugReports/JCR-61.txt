@@ -1,0 +1,15 @@
+Docview import fails, if attribute and childelem have same name
+
+
+
+Description:
+docimport fails, if element has same name as one of the attributes of its parent element.
+
+example:
+
+<?xml version="1.0" encoding="UTF-8"?>
+<feature plugin="foobar">
+    <plugin>test</plugin>
+</feature>
+
+importing this results in a ItemExistsException: 'plugin'

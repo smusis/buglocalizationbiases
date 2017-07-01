@@ -1,0 +1,8 @@
+MemoryIndex memory estimation in toString inconsistent with getMemorySize()
+
+
+
+Description:
+After LUCENE-3867 was committed, there are some more minor problems with MemoryIndex's estimates. This patch will fix those and also add verbose test output of RAM needed for MemoryIndex vs. RAMDirectory.
+
+Interestingly, the RAMDirectory always takes (according to estimates, so even with buffer overheads) only 2/3 of the MemoryIndex (excluding IndexReaders).

@@ -1,0 +1,8 @@
+[PATCH] refactor access to SAXParser and log which parser class is used
+
+
+
+Description:
+This parser collects code that was duplicated in the SessionImpl and WorkspaceImpl class to initialize the SAXParser.
+
+Also, the actual SAXParser class being used is logged (once only) to make it easier to debug problems like JCR-984.

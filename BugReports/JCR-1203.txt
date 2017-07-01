@@ -1,0 +1,6 @@
+Reorganize test suites
+
+
+
+Description:
+I'd like to better organize the test setup in jackrabbit-core. The current test repository is located in applications/test and managed with custom ant tasks and explicit do_init/do_test surefire configuration. It would be better to have the test repository located in target/repository (with template content coming from src/test/repository) and managed using the Maven 2 integration test lifecycle phases.

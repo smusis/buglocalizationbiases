@@ -1,0 +1,6 @@
+Upgrade to Xerces 2.8.1
+
+
+
+Description:
+Besides a number of bug fixes and new features in Xerces, upgrading to a newer version would also give us better dependency metadata, and thus avoid the need of having a separate xmlParserAPIs dependency in addition to the main xercesImpl dependency. 

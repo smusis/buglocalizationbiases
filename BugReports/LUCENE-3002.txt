@@ -1,0 +1,17 @@
+Add tests.iter.min to improve controlling tests.iter's behavior
+
+
+
+Description:
+As discussed here: http://lucene.472066.n3.nabble.com/Stop-iterating-if-testsFailed-td2747426.html, this issue proposes to add tests.iter.min in order to allow one better control over how many iterations are run:
+
+* Keep tests.iter as it is today
+* Add tests.iter.min (default to tests.iter) to denote that at least N instances of the test should run until there's either a failure or tests.iter is reached.
+
+If one wants to run until the first failure, he can set tests.iter.min=1 and tests.iter=X -- up to X instances of the test will run, until the first failure.
+
+Similarly, one can set tests.iter=N to denote that at least N instances should run, regardless if there were failures, but if after N runs a failure occurred, the test should stop.
+
+Note: unlike what's proposed on the thread, tests.iter.max is dropped from this proposal as it's exactly like tests.iter, so no point in having two similar parameters.
+
+I will work on a patch tomorrow.

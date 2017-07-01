@@ -1,0 +1,12 @@
+Add org.apache.lucene.store.FSDirectory.getDirectory()
+
+
+
+Description:
+On the Apache Lucene.Net side, we have done some clean up with the upcoming 2.9.1 such that we are now depreciating improperly use of parameter type for some public APIs.  When we release 3.0, those depreciated code will be removed.
+
+One area where we had difficulty with required us to add a new method like so: Lucene.Net.Store.FSDirectory.GetDirectory().  This method does the same thing as Lucene.Net.Store.FSDirectory.GetFile().  This was necessary because we switched over from using System.IO.FileInfo to System.IO.DirectoryInfo.  Why?  In the .NET world, a file and a directory are two different things.
+
+Why did we have to add Lucene.Net.Store.FSDirectory.GetDirectory()?  Because we can't change the return type of Lucene.Net.Store.FSDirectory.GetFile() and still remain backward compatible (API wise) to be depreciated with the next release.
+
+Why ask for Java Lucene to add org.apache.lucene.store.FSDirectory.getDirectory()?  To keep the APIs 1-to-1 in par with Java Lucene and Lucene.Net.

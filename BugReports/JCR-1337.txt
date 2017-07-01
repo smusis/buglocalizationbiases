@@ -1,0 +1,6 @@
+Optimize first execution queries for DescendantSelfAxisWeight/ChildAxisQuery
+
+
+
+Description:
+The first execution of a query involving DescendantSelfAxisWeight/ChildAxisQuery is slow. Consecutive queries are faster because the hierarchy is cached

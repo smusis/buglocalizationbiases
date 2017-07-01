@@ -1,0 +1,6 @@
+Path should implement Serializable
+
+
+
+Description:
+QName already implements Serializable, for ease of use Path should also support Serializable.

@@ -1,0 +1,6 @@
+Jcr-Server: remove jcr depedency from dav-library
+
+
+
+Description:
+

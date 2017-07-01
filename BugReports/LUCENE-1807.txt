@@ -1,0 +1,8 @@
+Add convenient constructor to PerFieldAnalyzerWrapper for Dependency Injection
+
+
+
+Description:
+It would be good if PerFieldAnalyzerWrapper had a constructor which took in an analyzer map, rather than having to repeatedly call addAnalyzer -- this would make it much easier/cleaner to use this class in e.g. Spring XML configurations.
+
+Relatively trivial change, patch to be attached.

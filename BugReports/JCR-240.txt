@@ -1,0 +1,12 @@
+redefinition of xml-namespace mapping should not be allowed
+
+
+
+Description:
+the following throws an exception, but should work:
+
+// remap xml namespace -> works
+Session.setNamespacePrefix("foobar", "http://www.w3.org/XML/1998/namespace");
+
+// revert mapping -> throws exception
+Session.setNamespacePrefix("xml", "http://www.w3.org/XML/1998/namespace");

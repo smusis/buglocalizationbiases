@@ -1,0 +1,6 @@
+Promote ChildNodeEntry and ChildNodeEntries to top level classes.
+
+
+
+Description:
+The current NodeState class is quite heavy weight (source code wise) and the inner class ChildNodeEntry is used in a lot of places outside of NodeState. I think it is useful to have them promoted to top level classes.

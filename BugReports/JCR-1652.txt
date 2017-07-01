@@ -1,0 +1,6 @@
+Better 'invalid format' exception messages for value classes
+
+
+
+Description:
+The valueOf() methods of the Value classes throw an exception without information on the desired type and without the String value that gave the error.

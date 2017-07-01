@@ -1,0 +1,20 @@
+Extract JDBC Connection Init
+
+
+
+Description:
+An intermediate step to allowing a PM to be easily configurable through JNDI would be to extract the connection init. This will allow system integrators to subclass/wrap and dynamically configure a customized Simple PM. In org.apache.jackrabbit.core.state.db.SimpleDbPersistenceManager:
+
+Replace lines (296-298) with
+
+        initConnection();
+
+Add:
+	/**
+	* Initialize the JDBC connection
+	**/
+	protected void initConnection() throws Exception {
+            Class.forName(driver);
+            con = DriverManager.getConnection(url, user, password);
+            con.setAutoCommit(false);
+	}

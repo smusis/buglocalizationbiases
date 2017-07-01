@@ -1,0 +1,22 @@
+NullPointerException in DatabasePersistenceManager and DatabaseFileSystem after a failed reconnection attempt
+
+
+
+Description:
+As reported on the dev mailing-list, this is what happens:
+
+The reconnection/retry mechanism in DatabasePersistenceManager/DatabaseFileSystem seems to behave fine when the connection times out or is killed for some reason, and the DB server is in fact still running.
+However there is a problem if the connection cannot be re-established directly, for example if a transient network outage lasts longer than the few reconnection attempts.
+Inside DatabasePersistenceManager.reestablishConnection(), initConnection() will fail, and the preparedStatements map will stay empty.
+This in turn will trigger a nasty NullPointerException (never caught) next time executeStmt() is called, because the map is still empty, and there is no check for that.
+
+
+The following proposed fix from Stefan Guggisberg has been tested to work when applied on 1.2-rc2:
+
+> the simplest fix would be to remove line 783 in
+> DatabasePersistenceManager.java and line 1010 in
+> DatabaseFileSystem.java,
+> i.e. the following stmt:
+> 
+ >      preparedStatements.clear();
+

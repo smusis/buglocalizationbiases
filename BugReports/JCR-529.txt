@@ -1,0 +1,19 @@
+New versions added after a restore have bad version name
+
+
+
+Description:
+I add several versions to a node (1.0, 1.1, 1.2, 1.3, 1.4). Perform a restore to version 1.2 and add more versions. After that VersionHistory is like this:
+
+- 1.0
+- 1.1
+- 1.2
+- 1.3
+- 1.4
+- 1.3.1
+- 1.3.2
+- 1.3.3
+- 1.3.4
+- 1.3.5
+
+New versions should be 1.2.x no 1.3.x, isn't it?

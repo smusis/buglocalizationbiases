@@ -1,0 +1,6 @@
+Build instructions for contributions
+
+
+
+Description:
+Add READMEs in order to instruct how the contribution projects can ne built

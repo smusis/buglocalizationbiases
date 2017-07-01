@@ -1,0 +1,6 @@
+Avoid unnecessary index reader calls when using aggregate definitions
+
+
+
+Description:
+SearchIndex.retrieveAggregateRoot(Set<NodeId> removedIds, Map<NodeId, NodeState> map) identifies aggregate root nodes based on removed nodes and aggregate rules defined in the indexing configuration. This process requires index lookups. The method can be optimized for the case when no nodes are removed and an unnecessary call to the index reader can be avoided.

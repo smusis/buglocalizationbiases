@@ -1,0 +1,75 @@
+Deadlock with MultiThreadedHttpConnectionManager
+
+
+
+Description:
+I'm getting a dealock with the MultiThreadedHttpConnectionManager. Usually, it
+works fine, but when a web page is redirected, it blocks. 
+
+Ludovic.
+
+[ERROR] Redirect to http://sourceforge.net/
+Full thread dump Java HotSpot(TM) Client VM (1.4.2_03-b02 mixed mode):
+
+"MultiThreadedHttpConnectionManager cleanup" daemon prio=5 tid=0x02d566f0
+nid=0xe14 in Object.wait() [2e9f000..2e9fd8c]
+        at java.lang.Object.wait(Native Method)
+        - waiting on <0x10513be8> (a java.lang.ref.ReferenceQueue$Lock)
+        at java.lang.ref.ReferenceQueue.remove(Unknown Source)
+        - locked <0x10513be8> (a java.lang.ref.ReferenceQueue$Lock)
+        at java.lang.ref.ReferenceQueue.remove(Unknown Source)
+        at
+org.apache.commons.httpclient.MultiThreadedHttpConnectionManager$ReferenceQueueThread.run(MultiThreadedHttpConnectionManager.java:805)
+
+"Signal Dispatcher" daemon prio=10 tid=0x0003da00 nid=0xd44 waiting on condition
+[0..0]
+
+"Finalizer" daemon prio=9 tid=0x009bca30 nid=0xce8 in Object.wait()
+[2b5f000..2b5fd8c]
+        at java.lang.Object.wait(Native Method)
+        - waiting on <0x10504b80> (a java.lang.ref.ReferenceQueue$Lock)
+        at java.lang.ref.ReferenceQueue.remove(Unknown Source)
+        - locked <0x10504b80> (a java.lang.ref.ReferenceQueue$Lock)
+        at java.lang.ref.ReferenceQueue.remove(Unknown Source)
+        at java.lang.ref.Finalizer$FinalizerThread.run(Unknown Source)
+
+"Reference Handler" daemon prio=10 tid=0x009bb600 nid=0xfa4 in Object.wait()
+[2b1f000..2b1fd8c]
+        at java.lang.Object.wait(Native Method)
+        - waiting on <0x10504be8> (a java.lang.ref.Reference$Lock)
+        at java.lang.Object.wait(Unknown Source)
+        at java.lang.ref.Reference$ReferenceHandler.run(Unknown Source)
+        - locked <0x10504be8> (a java.lang.ref.Reference$Lock)
+
+"main" prio=5 tid=0x00035e28 nid=0xf68 in Object.wait() [7f000..7fc3c]
+        at java.lang.Object.wait(Native Method)
+        - waiting on <0x105170e8> (a
+org.apache.commons.httpclient.MultiThreadedHttpConnectionManager$ConnectionPool)
+        at
+org.apache.commons.httpclient.MultiThreadedHttpConnectionManager.doGetConnection(MultiThreadedHttpConnectionManager.java:388)
+        - locked <0x105170e8> (a
+org.apache.commons.httpclient.MultiThreadedHttpConnectionManager$ConnectionPool)
+        at
+org.apache.commons.httpclient.MultiThreadedHttpConnectionManager.getConnection(MultiThreadedHttpConnectionManager.java:296)
+        at
+org.apache.commons.httpclient.HttpClient.executeMethod(HttpClient.java:645)
+        at
+org.apache.commons.httpclient.HttpClient.executeMethod(HttpClient.java:529)
+        at net.sourceforge.cvsgrab.WebBrowser.executeMethod(WebBrowser.java:201)
+        at net.sourceforge.cvsgrab.WebBrowser.getResponse(WebBrowser.java:257)
+        at net.sourceforge.cvsgrab.WebBrowser.getDocument(WebBrowser.java:295)
+        at
+net.sourceforge.cvsgrab.CvsWebInterface.loadDocument(CvsWebInterface.java:111)
+        at
+net.sourceforge.cvsgrab.CvsWebInterface.getDocumentForDetect(CvsWebInterface.java:216)
+        at
+net.sourceforge.cvsgrab.CvsWebInterface.findInterface(CvsWebInterface.java:86)
+        at net.sourceforge.cvsgrab.CVSGrab.detectWebInterface(CVSGrab.java:688)
+        at net.sourceforge.cvsgrab.CVSGrab.grabCVSRepository(CVSGrab.java:616)
+        at net.sourceforge.cvsgrab.CVSGrab.run(CVSGrab.java:317)
+        at net.sourceforge.cvsgrab.CVSGrab.main(CVSGrab.java:206)
+
+"VM Thread" prio=5 tid=0x009f76d0 nid=0x550 runnable
+
+"VM Periodic Task Thread" prio=10 tid=0x009f8208 nid=0x560 waiting on condition
+"Suspend Checker Thread" prio=10 tid=0x009bed88 nid=0xe84 runnable

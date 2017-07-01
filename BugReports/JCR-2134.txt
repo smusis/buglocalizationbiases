@@ -1,0 +1,8 @@
+Data Store: enable and fix tests
+
+
+
+Description:
+Currently the unit test TestTwoGetStreams fails in the trunk (it worked in older versions). This should be fixed. 
+
+Also, the data store is disabled by default, so this test doesn't run by default. The data store should be enabled for testing.

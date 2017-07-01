@@ -1,0 +1,8 @@
+JSR 283: adopt CND syntax changes
+
+
+
+Description:
+the CND syntax has changed from Public Review Draft to Public Final Draft.
+
+old and new syntax are incompatible.

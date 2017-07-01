@@ -1,0 +1,19 @@
+Cookie.java hashCode method violates contract
+
+
+
+Description:
+org.apache.commons.httpclient.Cookie hashCode() does not meet object.hashCode
+() contract.  Cookie.hashCode() returns different values even though data used 
+in equals() comparison is the same.
+
+Contract:**Whenever it is invoked on the same object more than once during an 
+execution of a Java application, the hashCode method must consistently return 
+the same integer, provided no information used in equals comparisons on the 
+object is modified.**
+
+Breaks use of cookie within collections such as when using contains().
+
+Traced problem back to parent class NameValuePair.  Cookie.hashCode() calls 
+NameValuePair.hashCode() which relies on name/value hashes.  Cookie does not 
+rely on value to determine equality.

@@ -1,0 +1,12 @@
+Configuration of CacheManager memory sizes
+
+
+
+Description:
+(I already posted this as comments under JCR-619.)
+
+The maximum size for all caches in CacheManager is hardcoded to 16 megabytes and there's no way to change that. It would be nice if this as well as other CacheManager parameters were configurable. It's just a waste running Jackrabbit on a server with gigabytes of memory and only using 16 megabytes for cache...
+
+I have created a really simple and straightforward patch (jackrabbit-cachemanager-config.patch) which enables reaching the CacheManager instance through RepositoryImpl object and setting all three of its memory parameters. The memory parameters are no longer static constants, but instance fields getting initial values from constants (so the default behavior of the class remains the same).
+
+(It would be even nicer if these parameters were configurable via configuration files, but that should probably be implemented by someone close to the project.)

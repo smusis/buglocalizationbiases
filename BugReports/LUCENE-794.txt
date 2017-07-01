@@ -1,0 +1,10 @@
+Extend contrib Highlighter to properly support PhraseQuery, SpanQuery,  ConstantScoreRangeQuery
+
+
+
+Description:
+This patch adds a new Scorer class (SpanQueryScorer) to the Highlighter package that scores just like QueryScorer, but scores a 0 for Terms that did not cause the Query hit. This gives 'actual' hit highlighting for the range of SpanQuerys, PhraseQuery, and  ConstantScoreRangeQuery. New Query types are easy to add. There is also a new Fragmenter that attempts to fragment without breaking up Spans.
+
+See http://issues.apache.org/jira/browse/LUCENE-403 for some background.
+
+There is a dependency on MemoryIndex.

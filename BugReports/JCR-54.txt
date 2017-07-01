@@ -1,0 +1,8 @@
+Remove JDOM dependency
+
+
+
+Description:
+Proposed by Sylvain Wallez on the dev mailing list.
+
+Replace the JDOM code in the config, nodetype, and xml persistence manager code with equivalent standard DOM code. This change introduces some extra lines of code, but would remove an external dependency and avoid unnecessary deployment problems.

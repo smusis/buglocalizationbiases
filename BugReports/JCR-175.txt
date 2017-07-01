@@ -1,0 +1,9 @@
+Contrib JCR-Server: enable PROPPATCH for simple-davresource
+
+
+
+Description:
+implement as suggested:
+
+- jcr-properties are exposed as webdav properties
+- PROPPATCH is forwarded to javax.jcr.Property.setValue() and Item.remove()

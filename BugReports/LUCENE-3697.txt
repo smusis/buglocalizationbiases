@@ -1,0 +1,6 @@
+FastVectorHighlighter SimpleBoundaryScanner does not work well when highlighting at the beginning of the text 
+
+
+
+Description:
+The SimpleBoundaryScanner still breaks text not based on characters provided when highlighting text that end up scanning to the beginning of the text to highlight. In this case, just use the start of the text as the offset.

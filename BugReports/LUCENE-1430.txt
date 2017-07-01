@@ -1,0 +1,31 @@
+IndexReader.open(String|File) may incorrectly throw AlreadyClosedException
+
+
+
+Description:
+Spinoff from here:
+
+    http://www.nabble.com/Runtime-exception-when-creating-IndexSearcher-to20226279.html
+
+If you open an IndexSearcher/Reader, passing in String or File, then
+closeDirectory is set to true in the reader.
+
+If the index has a single segment, then SegmentReader.get is used to
+open the index.  If an IOException is hit in there, the SegmentReader
+closes itself and then closes the directory since closeDirectory is
+true.
+
+The problem is, the retry logic in SegmentInfos (to look for another
+segments_N to try) kicks in and hits an AlreadyClosedException,
+masking the original root cause.
+
+Workaround is to separately get the Directory using
+FSDirectory.getDirectory, and then instantiate IndexSearcher/Reader
+from that.
+
+This manifests as masking the root cause of a corrupted single-segment
+index with a confusing AlreadyClosedException.  You could also hit
+the false exception if the writer was in the process of committing
+(ie, a retry was really needed) or if there is some transient IO
+problem opening the index (eg too many open files).
+

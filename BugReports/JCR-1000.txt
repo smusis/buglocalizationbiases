@@ -1,0 +1,7 @@
+JCR2SPI: remove duplicate item states
+
+
+
+Description:
+the original approach with duplicate item state objects connected to each is not required any more 
+and can be simplified.

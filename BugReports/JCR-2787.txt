@@ -1,0 +1,49 @@
+IndexMerger: Synchronization issue on repository shutdown
+
+
+
+Description:
+After inserting a large number of nodes (~200000) into a repository and then closing the session, I get the following exception:
+
+19:42:40.556 [jackrabbit-pool-5] DEBUG o.a.j.core.query.lucene.IndexMerger - # of busy merge workers: 2
+19:42:40.556 [jackrabbit-pool-3] DEBUG o.a.j.core.query.lucene.IndexMerger - accepted merge request
+19:42:40.556 [jackrabbit-pool-5] DEBUG o.a.j.core.query.lucene.IndexMerger - Worker finished
+19:42:40.556 [jackrabbit-pool-3] DEBUG o.a.j.core.query.lucene.IndexMerger - create new index
+19:42:40.557 [jackrabbit-pool-3] DEBUG o.a.j.core.query.lucene.IndexMerger - get index readers from MultiIndex
+19:42:40.640 [main] INFO  c.a.kmp.generator.JpaToJcrImporter - end JCR save
+19:42:40.849 [main] INFO  o.a.j.core.TransientRepository - Session closed
+19:42:40.849 [main] INFO  o.a.jackrabbit.core.RepositoryImpl - Shutting down repository...
+19:42:40.849 [main] DEBUG o.a.j.core.query.lucene.IndexMerger - dispose IndexMerger
+19:42:40.849 [main] DEBUG o.a.j.core.query.lucene.IndexMerger - quit flag set
+19:42:40.849 [main] INFO  o.a.j.core.query.lucene.SearchIndex - Index closed: repository/repository/index
+19:42:40.850 [main] INFO  o.a.jackrabbit.core.RepositoryImpl - shutting down workspace 'default'...
+19:42:40.850 [main] INFO  o.a.j.c.o.ObservationDispatcher - Notification of EventListeners stopped.
+19:42:40.850 [main] DEBUG o.a.j.core.query.lucene.IndexMerger - dispose IndexMerger
+19:42:40.850 [main] DEBUG o.a.j.core.query.lucene.IndexMerger - quit flag set
+19:42:40.850 [main] DEBUG o.a.j.core.query.lucene.IndexMerger - IndexMerger.Worker thread stopped
+19:42:40.855 [main] DEBUG o.a.j.core.query.lucene.IndexMerger - index added: name=_6h, numDocs=890
+19:42:41.367 [jackrabbit-pool-3] DEBUG o.a.j.core.query.lucene.IndexMerger - deleting index _6g
+19:42:41.393 [main] INFO  o.a.j.core.query.lucene.SearchIndex - Index closed: repository/workspaces/default/index
+19:42:41.410 [jackrabbit-pool-3] ERROR o.a.j.core.query.lucene.IndexMerger - Error while merging indexes: 
+org.apache.lucene.store.AlreadyClosedException: this IndexWriter is closed
+	at org.apache.lucene.index.IndexWriter.ensureOpen(IndexWriter.java:412) ~[lucene-core-2.4.1.jar:2.4.1 750176 - 2009-03-04 21:56:52]
+	at org.apache.lucene.index.IndexWriter.ensureOpen(IndexWriter.java:417) ~[lucene-core-2.4.1.jar:2.4.1 750176 - 2009-03-04 21:56:52]
+	at org.apache.lucene.index.IndexWriter.startTransaction(IndexWriter.java:2511) ~[lucene-core-2.4.1.jar:2.4.1 750176 - 2009-03-04 21:56:52]
+	at org.apache.lucene.index.IndexWriter.addIndexes(IndexWriter.java:3273) ~[lucene-core-2.4.1.jar:2.4.1 750176 - 2009-03-04 21:56:52]
+	at org.apache.jackrabbit.core.query.lucene.PersistentIndex.addIndexes(PersistentIndex.java:114) ~[jackrabbit-core-2.1.1.jar:2.1.1]
+	at org.apache.jackrabbit.core.query.lucene.IndexMerger$Worker.run(IndexMerger.java:525) ~[jackrabbit-core-2.1.1.jar:2.1.1]
+	at java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:441) [na:1.6.0_20]
+	at java.util.concurrent.FutureTask$Sync.innerRun(FutureTask.java:303) [na:1.6.0_20]
+	at java.util.concurrent.FutureTask.run(FutureTask.java:138) [na:1.6.0_20]
+	at java.util.concurrent.ScheduledThreadPoolExecutor$ScheduledFutureTask.access$301(ScheduledThreadPoolExecutor.java:98) [na:1.6.0_20]
+	at java.util.concurrent.ScheduledThreadPoolExecutor$ScheduledFutureTask.run(ScheduledThreadPoolExecutor.java:207) [na:1.6.0_20]
+	at java.util.concurrent.ThreadPoolExecutor$Worker.runTask(ThreadPoolExecutor.java:886) [na:1.6.0_20]
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:908) [na:1.6.0_20]
+	at java.lang.Thread.run(Thread.java:619) [na:1.6.0_20]
+19:42:41.420 [jackrabbit-pool-3] DEBUG o.a.j.core.query.lucene.IndexMerger - Worker finished
+19:42:41.839 [main] INFO  o.a.j.c.p.b.DerbyPersistenceManager - Database 'repository/workspaces/default/db' shutdown.
+
+
+The problem is reproducible. Apparently, the Lucene index is closed before all IndexMerger worker threads are terminated. The root cause seems to be the AtomicBoolean IndexMerger.Worker.terminated which is always true. The enclosed patch solves the problem in my use case.
+
+

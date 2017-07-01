@@ -1,0 +1,16 @@
+Node.removeMixin() should not remove valid items
+
+
+
+Description:
+assume you define a mixin like:
+
+[test] mix
+- aprop (string)
++ anode (nt:base)
+
+and you add this mixin to a nt:unstructured and add 'anode' and set 'aprop'.
+then a subsequent node.removeMixin("test") will also remove 'anode' and 'aprop' although they are valid by the definition of nt:unstructured.
+
+imo, the items should only be removed if they become invalid by the definition of the resulting effective node type.
+

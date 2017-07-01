@@ -1,0 +1,6 @@
+Index nodes in parallel
+
+
+
+Description:
+CPUs with multiple cores are now standard and Jackrabbit should make use of it where it makes sense. Analyzing content while a node is indexed is quite costly, but can be broken easily into task that can be executed in parallel. E.g. index multiple nodes in parallel.

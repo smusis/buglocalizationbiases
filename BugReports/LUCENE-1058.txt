@@ -1,0 +1,12 @@
+New Analyzer for buffering tokens
+
+
+
+Description:
+In some cases, it would be handy to have Analyzer/Tokenizer/TokenFilters that could siphon off certain tokens and store them in a buffer to be used later in the processing pipeline.
+
+For example, if you want to have two fields, one lowercased and one not, but all the other analysis is the same, then you could save off the tokens to be output for a different field.
+
+Patch to follow, but I am still not sure about a couple of things, mostly how it plays with the new reuse API.
+
+See http://www.gossamer-threads.com/lists/lucene/java-dev/54397?search_string=BufferingAnalyzer;#54397

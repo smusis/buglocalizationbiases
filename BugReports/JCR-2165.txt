@@ -1,0 +1,8 @@
+Node.getReferences(String) and Node.getWeakReferences(String) issues
+
+
+
+Description:
+Node.getReferences(String) always returns empty iterator.
+
+Node.getWeakReferences() & getWeakReferences(String)  cannot handle multi-valaued reference properties

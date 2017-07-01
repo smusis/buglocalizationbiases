@@ -1,0 +1,6 @@
+Remove SegmentReader.document synchronization
+
+
+
+Description:
+This is probably the last synchronization issue in Lucene.  It is the document method in SegmentReader.  It is avoidable by using a threadlocal for FieldsReader.  

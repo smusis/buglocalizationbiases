@@ -1,0 +1,21 @@
+add Token.setTermText(), remove final
+
+
+
+Description:
+The Token class should be more friendly to classes not in it's package:
+  1) add setTermText()
+  2) remove final from class and toString()
+  3) add clone()
+
+Support for (1):
+  TokenFilters in the same package as Token are able to do things like 
+   "t.termText = t.termText.toLowerCase();" which is more efficient, but more importantly less error prone.  Without the ability to change *only* the term text, a new Token must be created, and one must remember to set all the properties correctly.  This exact issue caused this bug:
+http://issues.apache.org/jira/browse/LUCENE-437
+
+Support for (2):
+  Removing final allows one to subclass Token.  I didn't see any performance impact after removing final.
+I can go into more detail on why I want to subclass Token if anyone is interested.
+
+Support for (3):
+  - support for a synonym TokenFilter, where one needs to make two tokens from one (same args that support (1), and esp important if instance is a subclass of Token).

@@ -1,0 +1,33 @@
+TestThreadSafety.testLazyLoadThreadSafety test failure
+
+
+
+Description:
+TestThreadSafety.testLazyLoadThreadSafety failed with this error:
+
+unable to create new native thread
+
+Maybe because of SimpleText
+
+Here is the stacktrace:
+{noformat}
+ [junit] Testsuite: org.apache.lucene.search.TestThreadSafe
+    [junit] Testcase: testLazyLoadThreadSafety(org.apache.lucene.search.TestThreadSafe):	Caused an ERROR
+    [junit] unable to create new native thread
+    [junit] java.lang.OutOfMemoryError: unable to create new native thread
+    [junit] 	at java.lang.Thread.start0(Native Method)
+    [junit] 	at java.lang.Thread.start(Thread.java:614)
+    [junit] 	at org.apache.lucene.search.TestThreadSafe.doTest(TestThreadSafe.java:129)
+    [junit] 	at org.apache.lucene.search.TestThreadSafe.testLazyLoadThreadSafety(TestThreadSafe.java:148)
+    [junit] 	at org.apache.lucene.util.LuceneTestCase$LuceneTestCaseRunner.runChild(LuceneTestCase.java:795)
+    [junit] 	at org.apache.lucene.util.LuceneTestCase$LuceneTestCaseRunner.runChild(LuceneTestCase.java:768)
+    [junit] 
+    [junit] 
+    [junit] Tests run: 1, Failures: 0, Errors: 1, Time elapsed: 6.051 sec
+    [junit] 
+    [junit] ------------- Standard Output ---------------
+    [junit] NOTE: reproduce with: ant test -Dtestcase=TestThreadSafe -Dtestmethod=testLazyLoadThreadSafety -Dtests.seed=-277698010445513699:-89599297372877779
+    [junit] NOTE: test params are: codec=SimpleText, locale=zh_SG, timezone=Pacific/Tongatapu
+    [junit] ------------- ---------------- ---------------
+    [junit] TEST org.apache.lucene.search.TestThreadSafe FAILED
+{noformat}

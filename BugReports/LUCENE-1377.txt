@@ -1,0 +1,6 @@
+Add HTMLStripReader and WordDelimiterFilter from SOLR
+
+
+
+Description:
+SOLR has two classes HTMLStripReader and WordDelimiterFilter which are very useful for a wide variety of use cases.  It would be good to place them into core Lucene.

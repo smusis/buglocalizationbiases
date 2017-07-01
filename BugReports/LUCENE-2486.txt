@@ -1,0 +1,10 @@
+when opening the merged SegmentReader, IW attempts to open store files that were deleted
+
+
+
+Description:
+The issue happens when a merge runs that does not merge the doc stores, those doc stores are still being written to, IW is using CFS, and while the merge is running the doc stores get closed and turned into a cfx file.
+
+When we then try to open the reader (for warming), which as of LUCENE-2311 will now [correctly] open the doc stores, we hit FNFE because the SegmentInfo for the merge does not realize that the doc stores were turned into  a cfx.
+
+This issue does affect trunk; if you crank up the #docs in the test, it happens consistently (I will tie this to _TestUtil.getRandomMultiplier!).

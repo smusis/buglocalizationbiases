@@ -1,0 +1,20 @@
+Rework of the TermInfosReader class to remove the Terms[], TermInfos[], and the index pointer long[] and create a more memory efficient data structure.
+
+
+
+Description:
+Basically packing those three arrays into a byte array with an int array as an index offset.  
+
+The performance benefits are stagering on my test index (of size 6.2 GB, with ~1,000,000 documents and ~175,000,000 terms), the memory needed to load the terminfos into memory were reduced to 17% of there original size.  From 291.5 MB to 49.7 MB.  The random access speed has been made better by 1-2%, load time of the segments are ~40% faster as well, and full GC's on my JVM were made 7 times faster.
+
+I have already performed the work and am offering this code as a patch.  Currently all test in the trunk pass with this new code enabled.  I did write a system property switch to allow for the original implementation to be used as well.
+
+-Dorg.apache.lucene.index.TermInfosReader=default or small
+
+I have also written a blog about this patch here is the link.
+
+http://www.nearinfinity.com/blogs/aaron_mccurry/my_first_lucene_patch.html
+
+
+
+

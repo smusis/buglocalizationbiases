@@ -1,0 +1,12 @@
+Directory createOutput and openInput should take an IOContext
+
+
+
+Description:
+Today for merging we pass down a larger readBufferSize than for searching because we get better performance.
+
+I think we should generalize this to a class (IOContext), which would hold the buffer size, but then could hold other flags like DIRECT (bypass OS's buffer cache), SEQUENTIAL, etc.
+
+Then, we can make the DirectIOLinuxDirectory fully usable because we would only use DIRECT/SEQUENTIAL during merging.
+
+This will require fixing how IW pools readers, so that a reader opened for merging is not then used for searching, and vice/versa.  Really, it's only all the open file handles that need to be different -- we could in theory share del docs, norms, etc, if that were somehow possible.

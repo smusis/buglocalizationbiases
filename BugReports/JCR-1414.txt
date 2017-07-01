@@ -1,0 +1,8 @@
+Data store garbage collection: inUse not correctly synchronized
+
+
+
+Description:
+Access to the fields DbDataStore.inUse and FileDataStore.inUse is not synchronized.
+This is a problem when concurrently calling GarbageCollector.deleteUnused() 
+and accessing the data store (ConcurrentModificationException is thrown).

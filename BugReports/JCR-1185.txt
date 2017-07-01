@@ -1,0 +1,407 @@
+building trunk  fails with javacc plugin version 2.2
+
+
+
+Description:
+
+
+/Users/adc/dev/jackrabbit/jackrabbit-core/src/main/java/org/apache/jackrabbit/core/query/sql/DefaultParserVisitor.java:[23,38] cannot find symbol
+symbol: class JCRSQLParserVisitor
+class DefaultParserVisitor implements JCRSQLParserVisitor {
+
+/Users/adc/dev/jackrabbit/jackrabbit-core/src/main/java/org/apache/jackrabbit/core/query/sql/DefaultParserVisitor.java:[25,24] cannot find symbol
+symbol  : class SimpleNode
+location: class org.apache.jackrabbit.core.query.sql.DefaultParserVisitor
+
+/Users/adc/dev/jackrabbit/jackrabbit-core/src/main/java/org/apache/jackrabbit/core/query/sql/DefaultParserVisitor.java:[29,24] cannot find symbol
+symbol  : class ASTQuery
+location: class org.apache.jackrabbit.core.query.sql.DefaultParserVisitor
+
+/Users/adc/dev/jackrabbit/jackrabbit-core/src/main/java/org/apache/jackrabbit/core/query/sql/DefaultParserVisitor.java:[33,24] cannot find symbol
+symbol  : class ASTSelectList
+location: class org.apache.jackrabbit.core.query.sql.DefaultParserVisitor
+
+/Users/adc/dev/jackrabbit/jackrabbit-core/src/main/java/org/apache/jackrabbit/core/query/sql/DefaultParserVisitor.java:[37,24] cannot find symbol
+symbol  : class ASTFromClause
+location: class org.apache.jackrabbit.core.query.sql.DefaultParserVisitor
+
+/Users/adc/dev/jackrabbit/jackrabbit-core/src/main/java/org/apache/jackrabbit/core/query/sql/DefaultParserVisitor.java:[41,24] cannot find symbol
+symbol  : class ASTWhereClause
+location: class org.apache.jackrabbit.core.query.sql.DefaultParserVisitor
+
+/Users/adc/dev/jackrabbit/jackrabbit-core/src/main/java/org/apache/jackrabbit/core/query/sql/ASTPredicate.java:[21,34] cannot find symbol
+symbol: class SimpleNode
+public class ASTPredicate extends SimpleNode {
+
+/Users/adc/dev/jackrabbit/jackrabbit-core/src/main/java/org/apache/jackrabbit/core/query/sql/DefaultParserVisitor.java:[49,24] cannot find symbol
+symbol  : class ASTOrExpression
+location: class org.apache.jackrabbit.core.query.sql.DefaultParserVisitor
+
+/Users/adc/dev/jackrabbit/jackrabbit-core/src/main/java/org/apache/jackrabbit/core/query/sql/DefaultParserVisitor.java:[53,24] cannot find symbol
+symbol  : class ASTAndExpression
+location: class org.apache.jackrabbit.core.query.sql.DefaultParserVisitor
+
+/Users/adc/dev/jackrabbit/jackrabbit-core/src/main/java/org/apache/jackrabbit/core/query/sql/DefaultParserVisitor.java:[57,24] cannot find symbol
+symbol  : class ASTNotExpression
+location: class org.apache.jackrabbit.core.query.sql.DefaultParserVisitor
+
+/Users/adc/dev/jackrabbit/jackrabbit-core/src/main/java/org/apache/jackrabbit/core/query/sql/DefaultParserVisitor.java:[61,24] cannot find symbol
+symbol  : class ASTBracketExpression
+location: class org.apache.jackrabbit.core.query.sql.DefaultParserVisitor
+
+/Users/adc/dev/jackrabbit/jackrabbit-core/src/main/java/org/apache/jackrabbit/core/query/sql/ASTLiteral.java:[19,32] cannot find symbol
+symbol: class SimpleNode
+public class ASTLiteral extends SimpleNode {
+
+/Users/adc/dev/jackrabbit/jackrabbit-core/src/main/java/org/apache/jackrabbit/core/query/sql/ASTIdentifier.java:[21,35] cannot find symbol
+symbol: class SimpleNode
+public class ASTIdentifier extends SimpleNode {
+
+/Users/adc/dev/jackrabbit/jackrabbit-core/src/main/java/org/apache/jackrabbit/core/query/sql/DefaultParserVisitor.java:[73,24] cannot find symbol
+symbol  : class ASTOrderByClause
+location: class org.apache.jackrabbit.core.query.sql.DefaultParserVisitor
+
+/Users/adc/dev/jackrabbit/jackrabbit-core/src/main/java/org/apache/jackrabbit/core/query/sql/ASTContainsExpression.java:[21,43] cannot find symbol
+symbol: class SimpleNode
+public class ASTContainsExpression extends SimpleNode {
+
+/Users/adc/dev/jackrabbit/jackrabbit-core/src/main/java/org/apache/jackrabbit/core/query/sql/DefaultParserVisitor.java:[81,24] cannot find symbol
+symbol  : class ASTOrderSpec
+location: class org.apache.jackrabbit.core.query.sql.DefaultParserVisitor
+
+/Users/adc/dev/jackrabbit/jackrabbit-core/src/main/java/org/apache/jackrabbit/core/query/sql/DefaultParserVisitor.java:[85,24] cannot find symbol
+symbol  : class ASTAscendingOrderSpec
+location: class org.apache.jackrabbit.core.query.sql.DefaultParserVisitor
+
+/Users/adc/dev/jackrabbit/jackrabbit-core/src/main/java/org/apache/jackrabbit/core/query/sql/DefaultParserVisitor.java:[89,24] cannot find symbol
+symbol  : class ASTDescendingOrderSpec
+location: class org.apache.jackrabbit.core.query.sql.DefaultParserVisitor
+
+/Users/adc/dev/jackrabbit/jackrabbit-core/src/main/java/org/apache/jackrabbit/core/query/sql/DefaultParserVisitor.java:[93,24] cannot find symbol
+symbol  : class ASTLowerFunction
+location: class org.apache.jackrabbit.core.query.sql.DefaultParserVisitor
+
+/Users/adc/dev/jackrabbit/jackrabbit-core/src/main/java/org/apache/jackrabbit/core/query/sql/DefaultParserVisitor.java:[97,24] cannot find symbol
+symbol  : class ASTUpperFunction
+location: class org.apache.jackrabbit.core.query.sql.DefaultParserVisitor
+
+/Users/adc/dev/jackrabbit/jackrabbit-core/src/main/java/org/apache/jackrabbit/core/query/sql/DefaultParserVisitor.java:[101,24] cannot find symbol
+symbol  : class ASTExcerptFunction
+location: class org.apache.jackrabbit.core.query.sql.DefaultParserVisitor
+
+/Users/adc/dev/jackrabbit/jackrabbit-core/src/main/java/org/apache/jackrabbit/core/query/sql/ASTPredicate.java:[37,22] cannot find symbol
+symbol  : class JCRSQLParser
+location: class org.apache.jackrabbit.core.query.sql.ASTPredicate
+
+/Users/adc/dev/jackrabbit/jackrabbit-core/src/main/java/org/apache/jackrabbit/core/query/sql/ASTPredicate.java:[82,26] cannot find symbol
+symbol  : class JCRSQLParserVisitor
+location: class org.apache.jackrabbit.core.query.sql.ASTPredicate
+
+/Users/adc/dev/jackrabbit/jackrabbit-core/src/main/java/org/apache/jackrabbit/core/query/sql/ASTLiteral.java:[30,22] cannot find symbol
+symbol  : class JCRSQLParser
+location: class org.apache.jackrabbit.core.query.sql.ASTLiteral
+
+/Users/adc/dev/jackrabbit/jackrabbit-core/src/main/java/org/apache/jackrabbit/core/query/sql/ASTLiteral.java:[54,28] cannot find symbol
+symbol  : class JCRSQLParserVisitor
+location: class org.apache.jackrabbit.core.query.sql.ASTLiteral
+
+/Users/adc/dev/jackrabbit/jackrabbit-core/src/main/java/org/apache/jackrabbit/core/query/sql/ASTIdentifier.java:[29,23] cannot find symbol
+symbol  : class JCRSQLParser
+location: class org.apache.jackrabbit.core.query.sql.ASTIdentifier
+
+/Users/adc/dev/jackrabbit/jackrabbit-core/src/main/java/org/apache/jackrabbit/core/query/sql/ASTIdentifier.java:[42,26] cannot find symbol
+symbol  : class JCRSQLParserVisitor
+location: class org.apache.jackrabbit.core.query.sql.ASTIdentifier
+
+/Users/adc/dev/jackrabbit/jackrabbit-core/src/main/java/org/apache/jackrabbit/core/query/sql/ASTContainsExpression.java:[31,33] cannot find symbol
+symbol  : class JCRSQLParser
+location: class org.apache.jackrabbit.core.query.sql.ASTContainsExpression
+
+/Users/adc/dev/jackrabbit/jackrabbit-core/src/main/java/org/apache/jackrabbit/core/query/sql/ASTContainsExpression.java:[54,28] cannot find symbol
+symbol  : class JCRSQLParserVisitor
+location: class org.apache.jackrabbit.core.query.sql.ASTContainsExpression
+
+/Users/adc/dev/jackrabbit/jackrabbit-core/src/main/java/org/apache/jackrabbit/core/query/lucene/LuceneQueryBuilder.java:[44,56] cannot find symbol
+symbol  : class QueryParser
+location: package org.apache.jackrabbit.core.query.lucene.fulltext
+
+/Users/adc/dev/jackrabbit/jackrabbit-core/src/main/java/org/apache/jackrabbit/core/query/lucene/LuceneQueryBuilder.java:[45,56] cannot find symbol
+symbol  : class ParseException
+location: package org.apache.jackrabbit.core.query.lucene.fulltext
+
+/Users/adc/dev/jackrabbit/jackrabbit-core/src/main/java/org/apache/jackrabbit/core/query/xpath/XPathQueryBuilder.java:[55,42] cannot find symbol
+symbol: class XPathVisitor
+public class XPathQueryBuilder implements XPathVisitor, XPathTreeConstants {
+
+/Users/adc/dev/jackrabbit/jackrabbit-core/src/main/java/org/apache/jackrabbit/core/query/xpath/XPathQueryBuilder.java:[55,56] cannot find symbol
+symbol: class XPathTreeConstants
+public class XPathQueryBuilder implements XPathVisitor, XPathTreeConstants {
+
+/Users/adc/dev/jackrabbit/jackrabbit-core/src/main/java/org/apache/jackrabbit/core/query/xpath/SimpleNode.java:[23,35] cannot find symbol
+symbol: class Node
+public class SimpleNode implements Node {
+
+/Users/adc/dev/jackrabbit/jackrabbit-core/src/main/java/org/apache/jackrabbit/core/query/xpath/SimpleNode.java:[24,14] cannot find symbol
+symbol  : class Node
+location: class org.apache.jackrabbit.core.query.xpath.SimpleNode
+
+/Users/adc/dev/jackrabbit/jackrabbit-core/src/main/java/org/apache/jackrabbit/core/query/xpath/SimpleNode.java:[25,14] cannot find symbol
+symbol  : class Node
+location: class org.apache.jackrabbit.core.query.xpath.SimpleNode
+
+/Users/adc/dev/jackrabbit/jackrabbit-core/src/main/java/org/apache/jackrabbit/core/query/xpath/SimpleNode.java:[27,14] cannot find symbol
+symbol  : class XPath
+location: class org.apache.jackrabbit.core.query.xpath.SimpleNode
+
+/Users/adc/dev/jackrabbit/jackrabbit-core/src/main/java/org/apache/jackrabbit/core/query/xpath/SimpleNode.java:[33,22] cannot find symbol
+symbol  : class XPath
+location: class org.apache.jackrabbit.core.query.xpath.SimpleNode
+
+/Users/adc/dev/jackrabbit/jackrabbit-core/src/main/java/org/apache/jackrabbit/core/query/xpath/SimpleNode.java:[39,33] cannot find symbol
+symbol  : class XPath
+location: class org.apache.jackrabbit.core.query.xpath.SimpleNode
+
+/Users/adc/dev/jackrabbit/jackrabbit-core/src/main/java/org/apache/jackrabbit/core/query/xpath/SimpleNode.java:[39,18] cannot find symbol
+symbol  : class Node
+location: class org.apache.jackrabbit.core.query.xpath.SimpleNode
+
+/Users/adc/dev/jackrabbit/jackrabbit-core/src/main/java/org/apache/jackrabbit/core/query/xpath/SimpleNode.java:[49,29] cannot find symbol
+symbol  : class Node
+location: class org.apache.jackrabbit.core.query.xpath.SimpleNode
+
+/Users/adc/dev/jackrabbit/jackrabbit-core/src/main/java/org/apache/jackrabbit/core/query/xpath/SimpleNode.java:[53,11] cannot find symbol
+symbol  : class Node
+location: class org.apache.jackrabbit.core.query.xpath.SimpleNode
+
+/Users/adc/dev/jackrabbit/jackrabbit-core/src/main/java/org/apache/jackrabbit/core/query/xpath/SimpleNode.java:[57,28] cannot find symbol
+symbol  : class Node
+location: class org.apache.jackrabbit.core.query.xpath.SimpleNode
+
+/Users/adc/dev/jackrabbit/jackrabbit-core/src/main/java/org/apache/jackrabbit/core/query/xpath/SimpleNode.java:[68,11] cannot find symbol
+symbol  : class Node
+location: class org.apache.jackrabbit.core.query.xpath.SimpleNode
+
+/Users/adc/dev/jackrabbit/jackrabbit-core/src/main/java/org/apache/jackrabbit/core/query/xpath/SimpleNode.java:[79,28] cannot find symbol
+symbol  : class XPathVisitor
+location: class org.apache.jackrabbit.core.query.xpath.SimpleNode
+
+/Users/adc/dev/jackrabbit/jackrabbit-core/src/main/java/org/apache/jackrabbit/core/query/xpath/SimpleNode.java:[86,33] cannot find symbol
+symbol  : class XPathVisitor
+location: class org.apache.jackrabbit.core.query.xpath.SimpleNode
+
+/Users/adc/dev/jackrabbit/jackrabbit-core/src/main/java/org/apache/jackrabbit/core/query/xpath/SimpleNode.java:[132,29] cannot find symbol
+symbol  : class Token
+location: class org.apache.jackrabbit.core.query.xpath.SimpleNode
+
+/Users/adc/dev/jackrabbit/jackrabbit-core/src/main/java/org/apache/jackrabbit/core/query/lucene/JQOM2LuceneQueryBuilder.java:[53,56] cannot find symbol
+symbol  : class QueryParser
+location: package org.apache.jackrabbit.core.query.lucene.fulltext
+
+/Users/adc/dev/jackrabbit/jackrabbit-core/src/main/java/org/apache/jackrabbit/core/query/lucene/fulltext/FastCharStream.java:[30,45] cannot find symbol
+symbol: class CharStream
+public final class FastCharStream implements CharStream {
+
+/Users/adc/dev/jackrabbit/jackrabbit-core/src/main/java/org/apache/jackrabbit/core/query/sql/JCRSQLQueryBuilder.java:[60,43] cannot find symbol
+symbol: class JCRSQLParserVisitor
+public class JCRSQLQueryBuilder implements JCRSQLParserVisitor {
+
+/Users/adc/dev/jackrabbit/jackrabbit-core/src/main/java/org/apache/jackrabbit/core/query/sql/JCRSQLQueryBuilder.java:[81,18] cannot find symbol
+symbol  : class ASTQuery
+location: class org.apache.jackrabbit.core.query.sql.JCRSQLQueryBuilder
+
+/Users/adc/dev/jackrabbit/jackrabbit-core/src/main/java/org/apache/jackrabbit/core/query/sql/JCRSQLQueryBuilder.java:[121,31] cannot find symbol
+symbol  : class ASTQuery
+location: class org.apache.jackrabbit.core.query.sql.JCRSQLQueryBuilder
+
+/Users/adc/dev/jackrabbit/jackrabbit-core/src/main/java/org/apache/jackrabbit/core/query/sql/JCRSQLQueryBuilder.java:[201,24] cannot find symbol
+symbol  : class SimpleNode
+location: class org.apache.jackrabbit.core.query.sql.JCRSQLQueryBuilder
+
+/Users/adc/dev/jackrabbit/jackrabbit-core/src/main/java/org/apache/jackrabbit/core/query/sql/JCRSQLQueryBuilder.java:[206,24] cannot find symbol
+symbol  : class ASTQuery
+location: class org.apache.jackrabbit.core.query.sql.JCRSQLQueryBuilder
+
+/Users/adc/dev/jackrabbit/jackrabbit-core/src/main/java/org/apache/jackrabbit/core/query/sql/JCRSQLQueryBuilder.java:[279,24] cannot find symbol
+symbol  : class ASTSelectList
+location: class org.apache.jackrabbit.core.query.sql.JCRSQLQueryBuilder
+
+/Users/adc/dev/jackrabbit/jackrabbit-core/src/main/java/org/apache/jackrabbit/core/query/sql/JCRSQLQueryBuilder.java:[297,24] cannot find symbol
+symbol  : class ASTFromClause
+location: class org.apache.jackrabbit.core.query.sql.JCRSQLQueryBuilder
+
+/Users/adc/dev/jackrabbit/jackrabbit-core/src/main/java/org/apache/jackrabbit/core/query/sql/JCRSQLQueryBuilder.java:[311,24] cannot find symbol
+symbol  : class ASTWhereClause
+location: class org.apache.jackrabbit.core.query.sql.JCRSQLQueryBuilder
+
+/Users/adc/dev/jackrabbit/jackrabbit-core/src/main/java/org/apache/jackrabbit/core/query/sql/JCRSQLQueryBuilder.java:[447,24] cannot find symbol
+symbol  : class ASTOrExpression
+location: class org.apache.jackrabbit.core.query.sql.JCRSQLQueryBuilder
+
+/Users/adc/dev/jackrabbit/jackrabbit-core/src/main/java/org/apache/jackrabbit/core/query/sql/JCRSQLQueryBuilder.java:[459,24] cannot find symbol
+symbol  : class ASTAndExpression
+location: class org.apache.jackrabbit.core.query.sql.JCRSQLQueryBuilder
+
+/Users/adc/dev/jackrabbit/jackrabbit-core/src/main/java/org/apache/jackrabbit/core/query/sql/JCRSQLQueryBuilder.java:[469,24] cannot find symbol
+symbol  : class ASTNotExpression
+location: class org.apache.jackrabbit.core.query.sql.JCRSQLQueryBuilder
+
+/Users/adc/dev/jackrabbit/jackrabbit-core/src/main/java/org/apache/jackrabbit/core/query/sql/JCRSQLQueryBuilder.java:[479,24] cannot find symbol
+symbol  : class ASTBracketExpression
+location: class org.apache.jackrabbit.core.query.sql.JCRSQLQueryBuilder
+
+/Users/adc/dev/jackrabbit/jackrabbit-core/src/main/java/org/apache/jackrabbit/core/query/sql/JCRSQLQueryBuilder.java:[496,24] cannot find symbol
+symbol  : class ASTOrderByClause
+location: class org.apache.jackrabbit.core.query.sql.JCRSQLQueryBuilder
+
+/Users/adc/dev/jackrabbit/jackrabbit-core/src/main/java/org/apache/jackrabbit/core/query/sql/JCRSQLQueryBuilder.java:[505,24] cannot find symbol
+symbol  : class ASTOrderSpec
+location: class org.apache.jackrabbit.core.query.sql.JCRSQLQueryBuilder
+
+/Users/adc/dev/jackrabbit/jackrabbit-core/src/main/java/org/apache/jackrabbit/core/query/sql/JCRSQLQueryBuilder.java:[526,24] cannot find symbol
+symbol  : class ASTAscendingOrderSpec
+location: class org.apache.jackrabbit.core.query.sql.JCRSQLQueryBuilder
+
+/Users/adc/dev/jackrabbit/jackrabbit-core/src/main/java/org/apache/jackrabbit/core/query/sql/JCRSQLQueryBuilder.java:[531,24] cannot find symbol
+symbol  : class ASTDescendingOrderSpec
+location: class org.apache.jackrabbit.core.query.sql.JCRSQLQueryBuilder
+
+/Users/adc/dev/jackrabbit/jackrabbit-core/src/main/java/org/apache/jackrabbit/core/query/sql/JCRSQLQueryBuilder.java:[556,24] cannot find symbol
+symbol  : class ASTLowerFunction
+location: class org.apache.jackrabbit.core.query.sql.JCRSQLQueryBuilder
+
+/Users/adc/dev/jackrabbit/jackrabbit-core/src/main/java/org/apache/jackrabbit/core/query/sql/JCRSQLQueryBuilder.java:[566,24] cannot find symbol
+symbol  : class ASTUpperFunction
+location: class org.apache.jackrabbit.core.query.sql.JCRSQLQueryBuilder
+
+/Users/adc/dev/jackrabbit/jackrabbit-core/src/main/java/org/apache/jackrabbit/core/query/sql/JCRSQLQueryBuilder.java:[576,24] cannot find symbol
+symbol  : class ASTExcerptFunction
+location: class org.apache.jackrabbit.core.query.sql.JCRSQLQueryBuilder
+
+/Users/adc/dev/jackrabbit/jackrabbit-core/src/main/java/org/apache/jackrabbit/core/query/sql/ASTPredicate.java:[87,15] cannot find symbol
+symbol  : variable super
+location: class org.apache.jackrabbit.core.query.sql.ASTPredicate
+
+/Users/adc/dev/jackrabbit/jackrabbit-core/src/main/java/org/apache/jackrabbit/core/query/sql/ASTLiteral.java:[59,15] cannot find symbol
+symbol  : variable super
+location: class org.apache.jackrabbit.core.query.sql.ASTLiteral
+
+/Users/adc/dev/jackrabbit/jackrabbit-core/src/main/java/org/apache/jackrabbit/core/query/sql/ASTIdentifier.java:[47,15] cannot find symbol
+symbol  : variable super
+location: class org.apache.jackrabbit.core.query.sql.ASTIdentifier
+
+/Users/adc/dev/jackrabbit/jackrabbit-core/src/main/java/org/apache/jackrabbit/core/query/lucene/LuceneQueryBuilder.java:[376,12] cannot find symbol
+symbol  : class QueryParser
+location: class org.apache.jackrabbit.core.query.lucene.LuceneQueryBuilder
+
+/Users/adc/dev/jackrabbit/jackrabbit-core/src/main/java/org/apache/jackrabbit/core/query/lucene/LuceneQueryBuilder.java:[376,37] cannot find symbol
+symbol  : class QueryParser
+location: class org.apache.jackrabbit.core.query.lucene.LuceneQueryBuilder
+
+/Users/adc/dev/jackrabbit/jackrabbit-core/src/main/java/org/apache/jackrabbit/core/query/lucene/LuceneQueryBuilder.java:[378,31] cannot find symbol
+symbol  : variable QueryParser
+location: class org.apache.jackrabbit.core.query.lucene.LuceneQueryBuilder
+
+/Users/adc/dev/jackrabbit/jackrabbit-core/src/main/java/org/apache/jackrabbit/core/query/lucene/LuceneQueryBuilder.java:[440,17] cannot find symbol
+symbol  : class ParseException
+location: class org.apache.jackrabbit.core.query.lucene.LuceneQueryBuilder
+
+/Users/adc/dev/jackrabbit/jackrabbit-core/src/main/java/org/apache/jackrabbit/core/query/xpath/XPathQueryBuilder.java:[267,12] cannot find symbol
+symbol  : class XPath
+location: class org.apache.jackrabbit.core.query.xpath.XPathQueryBuilder
+
+/Users/adc/dev/jackrabbit/jackrabbit-core/src/main/java/org/apache/jackrabbit/core/query/xpath/XPathQueryBuilder.java:[269,26] cannot find symbol
+symbol  : class XPath
+location: class org.apache.jackrabbit.core.query.xpath.XPathQueryBuilder
+
+/Users/adc/dev/jackrabbit/jackrabbit-core/src/main/java/org/apache/jackrabbit/core/query/xpath/XPathQueryBuilder.java:[271,33] cannot find symbol
+symbol  : class XPath
+location: class org.apache.jackrabbit.core.query.xpath.XPathQueryBuilder
+
+/Users/adc/dev/jackrabbit/jackrabbit-core/src/main/java/org/apache/jackrabbit/core/query/xpath/XPathQueryBuilder.java:[283,17] cannot find symbol
+symbol  : class ParseException
+location: class org.apache.jackrabbit.core.query.xpath.XPathQueryBuilder
+
+/Users/adc/dev/jackrabbit/jackrabbit-core/src/main/java/org/apache/jackrabbit/core/query/xpath/XPathQueryBuilder.java:[356,17] cannot find symbol
+symbol  : variable JJTXPATH2
+location: class org.apache.jackrabbit.core.query.xpath.XPathQueryBuilder
+
+/Users/adc/dev/jackrabbit/jackrabbit-core/src/main/java/org/apache/jackrabbit/core/query/xpath/XPathQueryBuilder.java:[359,17] cannot find symbol
+symbol  : variable JJTROOT
+location: class org.apache.jackrabbit.core.query.xpath.XPathQueryBuilder
+
+/Users/adc/dev/jackrabbit/jackrabbit-core/src/main/java/org/apache/jackrabbit/core/query/xpath/XPathQueryBuilder.java:[360,17] cannot find symbol
+symbol  : variable JJTROOTDESCENDANTS
+location: class org.apache.jackrabbit.core.query.xpath.XPathQueryBuilder
+
+/Users/adc/dev/jackrabbit/jackrabbit-core/src/main/java/org/apache/jackrabbit/core/query/xpath/XPathQueryBuilder.java:[368,17] cannot find symbol
+symbol  : variable JJTSTEPEXPR
+location: class org.apache.jackrabbit.core.query.xpath.XPathQueryBuilder
+
+/Users/adc/dev/jackrabbit/jackrabbit-core/src/main/java/org/apache/jackrabbit/core/query/xpath/XPathQueryBuilder.java:[415,17] cannot find symbol
+symbol  : variable JJTNAMETEST
+location: class org.apache.jackrabbit.core.query.xpath.XPathQueryBuilder
+
+/Users/adc/dev/jackrabbit/jackrabbit-core/src/main/java/org/apache/jackrabbit/core/query/xpath/XPathQueryBuilder.java:[429,17] cannot find symbol
+symbol  : variable JJTELEMENTNAMEORWILDCARD
+location: class org.apache.jackrabbit.core.query.xpath.XPathQueryBuilder
+
+/Users/adc/dev/jackrabbit/jackrabbit-core/src/main/java/org/apache/jackrabbit/core/query/xpath/XPathQueryBuilder.java:[432,41] cannot find symbol
+symbol  : variable JJTANYNAME
+location: class org.apache.jackrabbit.core.query.xpath.XPathQueryBuilder
+
+/Users/adc/dev/jackrabbit/jackrabbit-core/src/main/java/org/apache/jackrabbit/core/query/xpath/XPathQueryBuilder.java:[437,17] cannot find symbol
+symbol  : variable JJTTEXTTEST
+location: class org.apache.jackrabbit.core.query.xpath.XPathQueryBuilder
+
+/Users/adc/dev/jackrabbit/jackrabbit-core/src/main/java/org/apache/jackrabbit/core/query/xpath/XPathQueryBuilder.java:[443,17] cannot find symbol
+symbol  : variable JJTTYPENAME
+location: class org.apache.jackrabbit.core.query.xpath.XPathQueryBuilder
+
+/Users/adc/dev/jackrabbit/jackrabbit-core/src/main/java/org/apache/jackrabbit/core/query/xpath/XPathQueryBuilder.java:[456,17] cannot find symbol
+symbol  : variable JJTOREXPR
+location: class org.apache.jackrabbit.core.query.xpath.XPathQueryBuilder
+
+/Users/adc/dev/jackrabbit/jackrabbit-core/src/main/java/org/apache/jackrabbit/core/query/xpath/XPathQueryBuilder.java:[463,17] cannot find symbol
+symbol  : variable JJTANDEXPR
+location: class org.apache.jackrabbit.core.query.xpath.XPathQueryBuilder
+
+/Users/adc/dev/jackrabbit/jackrabbit-core/src/main/java/org/apache/jackrabbit/core/query/xpath/XPathQueryBuilder.java:[470,17] cannot find symbol
+symbol  : variable JJTCOMPARISONEXPR
+location: class org.apache.jackrabbit.core.query.xpath.XPathQueryBuilder
+
+/Users/adc/dev/jackrabbit/jackrabbit-core/src/main/java/org/apache/jackrabbit/core/query/xpath/XPathQueryBuilder.java:[473,17] cannot find symbol
+symbol  : variable JJTSTRINGLITERAL
+location: class org.apache.jackrabbit.core.query.xpath.XPathQueryBuilder
+
+/Users/adc/dev/jackrabbit/jackrabbit-core/src/main/java/org/apache/jackrabbit/core/query/xpath/XPathQueryBuilder.java:[474,17] cannot find symbol
+symbol  : variable JJTDECIMALLITERAL
+location: class org.apache.jackrabbit.core.query.xpath.XPathQueryBuilder
+
+/Users/adc/dev/jackrabbit/jackrabbit-core/src/main/java/org/apache/jackrabbit/core/query/xpath/XPathQueryBuilder.java:[475,17] cannot find symbol
+symbol  : variable JJTDOUBLELITERAL
+location: class org.apache.jackrabbit.core.query.xpath.XPathQueryBuilder
+
+/Users/adc/dev/jackrabbit/jackrabbit-core/src/main/java/org/apache/jackrabbit/core/query/xpath/XPathQueryBuilder.java:[476,17] cannot find symbol
+symbol  : variable JJTINTEGERLITERAL
+location: class org.apache.jackrabbit.core.query.xpath.XPathQueryBuilder
+
+/Users/adc/dev/jackrabbit/jackrabbit-core/src/main/java/org/apache/jackrabbit/core/query/xpath/XPathQueryBuilder.java:[480,40] cannot find symbol
+symbol  : variable JJTINTEGERLITERAL
+location: class org.apache.jackrabbit.core.query.xpath.XPathQueryBuilder
+
+/Users/adc/dev/jackrabbit/jackrabbit-core/src/main/java/org/apache/jackrabbit/core/query/xpath/XPathQueryBuilder.java:[490,17] cannot find symbol
+symbol  : variable JJTUNARYMINUS
+location: class org.apache.jackrabbit.core.query.xpath.XPathQueryBuilder
+
+/Users/adc/dev/jackrabbit/jackrabbit-core/src/main/java/org/apache/jackrabbit/core/query/xpath/XPathQueryBuilder.java:[497,17] cannot find symbol
+symbol  : variable JJTFUNCTIONCALL
+location: class org.apache.jackrabbit.core.query.xpath.XPathQueryBuilder
+
+/Users/adc/dev/jackrabbit/jackrabbit-core/src/main/java/org/apache/jackrabbit/core/query/xpath/XPathQueryBuilder.java:[500,17] cannot find symbol
+symbol  : variable JJTORDERBYCLAUSE
+location: class org.apache.jackrabbit.core.query.xpath.XPathQueryBuilder
+
+/Users/adc/dev/jackrabbit/jackrabbit-core/src/main/java/org/apache/jackrabbit/core/query/xpath/XPathQueryBuilder.java:[505,17] cannot find symbol
+symbol  : variable JJTORDERMODIFIER
+location: class org.apache.jackrabbit.core.query.xpath.XPathQueryBuilder
+

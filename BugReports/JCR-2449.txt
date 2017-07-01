@@ -1,0 +1,20 @@
+Slow performance due to JCR-2138 (Prevent persistence of faulty back-references)
+
+
+
+Description:
+In revision 782898, the following code was introduced:
+
+updateReferences() {
+    for (Iterator i = local.addedStates(); i.hasNext();) {
+        ...
+        if (hasItemState(state.getId())) {
+            ...
+        }
+    }
+}
+
+This will try to fetch inexistent nodes from the persistence manager.
+Depending on the persistence manager implementation, this is very slow.
+I hope there is a way to avoid this call, or if not, speed it up.
+

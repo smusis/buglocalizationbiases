@@ -1,0 +1,11 @@
+don't download/extract 20,000 files when doing the build
+
+
+
+Description:
+When you build lucene, it downloads and extracts some data for contrib/benchmark, especially the 20,000+ files for the reuters corpus.
+this is only needed for one test, and these 20,000 files drive IDEs and such crazy.
+instead of doing this by default, we should only download/extract data if you specifically ask (like wikipedia, collation do, etc)
+
+for the qualityrun test, instead use a linedoc formatted 587-line text file, similar to reuters.first20.lines.txt already used by benchmark.
+

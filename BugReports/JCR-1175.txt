@@ -1,0 +1,6 @@
+Test cases for all FileSystem implementations
+
+
+
+Description:
+Currently we only have test cases for MemoryFileSystem, but those tests could easily be generalized to cover also the other FileSystem implementations.

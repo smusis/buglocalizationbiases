@@ -1,0 +1,12 @@
+Add NoOpMergePolicy
+
+
+
+Description:
+I'd like to add a simple and useful MP implementation which does .... nothing ! :). I've came across many places where either the following is documented or implemented: "if you want to prevent merges, set mergeFactor to a high enough value". I think a NoOpMergePolicy is just as good, and can REALLY allow you disable merges (except for maybe set mergeFactor to Int.MAX_VAL).
+
+As such, NoOpMergePolicy will be introduced as a singleton, and can be used for convenience purposes only. Also, for Parallel Index it's important, because I'd like the slices to never do any merges, unless ParallelWriter decides so. So they should be set w/ that MP.
+
+I have a patch ready. Waiting for LUCENE-2320 to go in, so that I don't need to change it afterwards.
+
+About the name - I like the name, but suggestions are welcome. I thought of a NullMergePolicy, but I don't like 'Null' used for a NoOp.

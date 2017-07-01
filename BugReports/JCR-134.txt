@@ -1,0 +1,6 @@
+Unreferenced VersionHistory should be deleted automatically.
+
+
+
+Description:
+since the creation of a VersionHistory is triggered by the creation of a mix:versionable node, the removal should happen automatically, as soon as no references to that version histroy exist anymore. this is the case, when all mix:versionable nodes (in all workspaces) belonging to that VH are deleted, and all the versions in the VH are removed i.e. only the jcr:rootVersion is left. At this point, the VH should be deleted aswell.

@@ -1,0 +1,6 @@
+org.apache.jackrabbit.server.SessionProvider needs 'releaseSession()'
+
+
+
+Description:
+the SessionProvider does not have a 'releaseSession()' method, thus the DavSessionProviderImpl just calls repSession.logout() after is DavSession is released. This should rather be handled over to the given SessionProvider.

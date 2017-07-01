@@ -1,0 +1,6 @@
+A faster JFlex-based replacement for StandardAnalyzer
+
+
+
+Description:
+JFlex (http://www.jflex.de/) can be used to generate a faster (up to several times) replacement for StandardAnalyzer. Will add a patch and a simple benchmark code in a while.

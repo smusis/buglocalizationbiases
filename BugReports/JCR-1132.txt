@@ -1,0 +1,10 @@
+XSLT pretty-printer for JCR document view export files
+
+
+
+Description:
+The attached XSLT pretty-prints Jackrabbit XML document view export files.
+
+I'm uploading it here so others can use it or improve it.
+
+For now I'm using it standalone to document content structures, later I might create a servlet that applies it live to repository content.

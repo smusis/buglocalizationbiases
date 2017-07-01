@@ -1,0 +1,11 @@
+Added New Token API impl for ASCIIFoldingFilter
+
+
+
+Description:
+I added an implementation of incrementToken to ASCIIFoldingFilter.java and extended the existing  testcase for it.
+I will attach the patch shortly.
+Beside this improvement I would like to start up a small discussion about this filter. ASCIIFoldingFitler is meant to be a replacement for ISOLatin1AccentFilter which is quite nice as it covers a superset of the latter. I have used this filter quite often but never on a as it is basis. In the most cases this filter does the correct thing (replace a special char with its ascii correspondent) but in some cases like for German umlaut it does not return the expected result. A german umlaut  like 'ä' does not translate to a but rather to 'ae'. I would like to change this but I'n not 100% sure if that is expected by all users of that filter. Another way of doing it would be to make it configurable with a flag. This would not affect performance as we only check if such a umlaut char is found. 
+Further it would be really helpful if that filter could "inject" the original/unmodified token with the same position increment into the token stream on demand. I think its a valid use-case to index the modified and unmodified token. For instance, the german word "süd" would be folded to "sud". In a query q:(süd) the filter would also fold to sud and therefore find sud which has a totally different meaning. Folding works quite well but for special cases would could add those options to make users life easier. The latter could be done in a subclass while the umlaut problem should be fixed in the base class.
+
+simon 

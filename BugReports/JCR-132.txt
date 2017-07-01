@@ -1,0 +1,11 @@
+BindableRepositoryFactory requires exact resource type
+
+
+
+Description:
+The org.apache.jackrabbit.jndi.BindableRepositoryFactory class requires the exact class name org.apache.jackrabbit.jndi.BindableRepository to be specified for the JNDI resource that the factory is responsible for. However the current deployment model 2 howto document suggest that the more generic interface name javax.jcr.Repository be used instead. Currently this suggested configuration results in a null JNDI resource .
+
+This issue should be fixed by either fixing the documentation (I can do this) or by relaxing the code in BindableRepositoryFactory. I'll attach a patch that does the latter, please comment on what you think is the best solution.
+
+This issue was detected during the mailing list thread
+http://thread.gmane.org/gmane.comp.apache.jackrabbit.devel/2303

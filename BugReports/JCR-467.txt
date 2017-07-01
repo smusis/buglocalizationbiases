@@ -1,0 +1,25 @@
+CompactNodeTypeReader fails to explain why valid JCR names cause errors
+
+
+
+Description:
+for example, you cannot use underscores in node type definitions:
+[my:example_breaks2]
+
+In fact only A-Z, a-z, 0-9, : are allowed, unless you quote the name. The error message you see when you make this mistake doesn't give any hint:
+Missing ']' delimiter for end of node type name (nodetypes.cnd, line 8)
+
+and the documentation on the website and the javadoc for CompactNodeTypeDefReader both just say:
+
+ * unquoted_string ::= ...a string...
+
+... not helpful. If you made this mistake, you end up needing to look at the source to figure out what you've done wrong. 
+
+A few suggested solutions:
+- change the documentation to say unquoted string is '[A-Za-z0-9:]+'
+- change the error message to mention the token causing the problem, eg:
+if (!currentTokenEquals(Lexer.END_NODE_TYPE_NAME)) {
+            lexer.fail("Missing '" + Lexer.END_NODE_TYPE_NAME + "' delimiter for end of node type name, found " + currentToken);
+}
+- add "st.wordChars('_','_');" to the lexer, its probably going to be the most common cause, and doesnt conflict with other rules.
+

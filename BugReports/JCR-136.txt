@@ -1,0 +1,16 @@
+Cached Item could be lost in cache
+
+
+
+Description:
+since items and itemstate are cache in week/soft reference maps, they can disappear from the caches after a GC cycle, and code like this:
+
+if (isCached(id)) {
+  return retrieveItem(id);
+}
+
+has potential to fail. log entries like:
+
+failed to build path of c2eeecbe-6126-45a2-a38a-002361095107: 3334d748-2790-4004-8bfa-09463624c7c4 has no child entry for 4897c961-f36f-4d46-87bd-f24f152138a4
+
+are the result.

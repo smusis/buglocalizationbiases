@@ -1,0 +1,8 @@
+Fix 2.9 contrib builds to succeed when JDK 1.4 is used (leaving out contribs that require 1.5)
+
+
+
+Description:
+When you build and test Lucene 2.9 with Java 1.4, building and testing of contrib fails. This patch fixes this to repect the current compiler version and disables all contribs that need Java 1.5 by checking their javac.source property.
+
+This patch can be ported to 3.x or trunk, when 1.6 contribs will appear.

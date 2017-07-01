@@ -1,0 +1,12 @@
+Disk full during addIndexes(Directory[]) can corrupt index
+
+
+
+Description:
+This is a spinoff of LUCENE-555
+
+If the disk fills up during this call then the committed segments file can reference segments that were not written.  Then the whole index becomes unusable.
+
+Does anyone know of any other cases where disk full could corrupt the index?
+
+I think disk full should worse lose the documents that were "in flight" at the time.  It shouldn't corrupt the index.

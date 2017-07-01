@@ -1,0 +1,23 @@
+Writers on two machines over NFS can hit FNFE due to stale NFS client caching
+
+
+
+Description:
+Issue spawned from this thread:
+
+  http://www.gossamer-threads.com/lists/lucene/java-user/50680
+
+When IndexFileDeleter lists the directory, looking for segments_X
+files to load, if it hits a FNFE on opening such a file it should
+catch this and treat it as if the file does not exist.
+
+On NFS (and possibly other file systems), a directory listing is not
+guaranteed to be "current"/coherent.  Specifically, if machine #1 has
+just removed file "segments_n" and shortly thereafer machine #2 does a
+dir listing, it's possible (likely?) that the dir listing will still
+show that segments_n exists.
+
+I think the fix is simple: catch the FNFE and just handle it as if the
+segments_n does not in fact exist.
+
+

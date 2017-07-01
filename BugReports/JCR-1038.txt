@@ -1,0 +1,35 @@
+java.lang.ArrayIndexOutOfBoundsException while importXML in Java 6
+
+
+
+Description:
+Using:
+- Jackrabbit 1.3
+- Java:
+  java version "1.6.0_02"
+  Java(TM) SE Runtime Environment (build 1.6.0_02-b05)
+  Java HotSpot(TM) Client VM (build 1.6.0_02-b05, mixed mode, sharing)
+
+When importing attached XML, I get an exception:
+Caused by: java.lang.ArrayIndexOutOfBoundsException
+        at java.lang.System.arraycopy(Native Method)
+        at org.apache.jackrabbit.core.xml.BufferedStringValue.append(BufferedStringValue.java:201)
+        at org.apache.jackrabbit.core.xml.SysViewImportHandler.characters(SysViewImportHandler.java:187)
+        at org.apache.jackrabbit.core.xml.ImportHandler.characters(ImportHandler.java:200)
+        at com.sun.org.apache.xerces.internal.parsers.AbstractSAXParser.characters(AbstractSAXParser.java:538)
+        at com.sun.org.apache.xerces.internal.impl.XMLDocumentFragmentScannerImpl.scanDocument(XMLDocumentFragmentScannerImpl.java:461)
+        at com.sun.org.apache.xerces.internal.parsers.XML11Configuration.parse(XML11Configuration.java:807)
+        at com.sun.org.apache.xerces.internal.parsers.XML11Configuration.parse(XML11Configuration.java:737)
+        at com.sun.org.apache.xerces.internal.parsers.XMLParser.parse(XMLParser.java:107)
+        at com.sun.org.apache.xerces.internal.parsers.AbstractSAXParser.parse(AbstractSAXParser.java:1205)
+        at com.sun.org.apache.xerces.internal.jaxp.SAXParserImpl$JAXPSAXParser.parse(SAXParserImpl.java:522)
+        at javax.xml.parsers.SAXParser.parse(SAXParser.java:395)
+        at org.apache.jackrabbit.core.SessionImpl.importXML(SessionImpl.java:1116)
+...
+
+If I use Java 1.5, then it works.
+
+java version "1.5.0_12"
+Java(TM) 2 Runtime Environment, Standard Edition (build 1.5.0_12-b04)
+Java HotSpot(TM) Client VM (build 1.5.0_12-b04, mixed mode, sharing)
+

@@ -1,0 +1,10 @@
+lucene benchmark has some unnecessary files
+
+
+
+Description:
+lucene/contrib/benchmark/.rsync-filter is only in the source pack (and in SVN), I was not aware of this file, though it was added long ago in https://issues.apache.org/jira/browse/LUCENE-848?focusedCommentId=12491404&page=com.atlassian.jira.plugin.system.issuetabpanels:comment-tabpanel#comment-12491404
+Not a blocker for this RC, just interesting to note.
+
+maybe this is related to LUCENE-3155 too, in that we could consider this one for automatic exclusion (like DS_Store), but we should fix it if its committed in SVN too.
+

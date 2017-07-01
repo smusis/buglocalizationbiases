@@ -1,0 +1,7 @@
+IndexReader.reopen()
+
+
+
+Description:
+This is Robert Engels' implementation of IndexReader.reopen() functionality, as a set of 3 new classes (this was easier for him to implement, but should probably be folded into the core, if this looks good).
+

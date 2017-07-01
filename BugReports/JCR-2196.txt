@@ -1,0 +1,6 @@
+Add cause to ItemStateException in BundleDbPersistenceManager.store()
+
+
+
+Description:
+Currently only the message of the causing exception is given to the ItemStateException. 

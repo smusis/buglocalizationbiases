@@ -1,0 +1,7 @@
+Escaped wildcard character in wildcard term not handled correctly
+
+
+
+Description:
+If an escaped wildcard character is specified in a wildcard query, it is treated as a wildcard instead of a literal.
+e.g., t\??t is converted by the QueryParser to t??t - the escape character is discarded.

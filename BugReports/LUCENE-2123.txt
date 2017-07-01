@@ -1,0 +1,8 @@
+Move FuzzyQuery rewrite as separate RewriteMode into MTQ, was: Highlighter fails to highlight FuzzyQuery
+
+
+
+Description:
+As FuzzyQuery does not allow to change the rewrite mode, highlighter fails with UOE in flex since LUCENE-2110, because it changes the rewrite mode to Boolean query. The fix is: Allow MTQ to change rewrite method and make FUZZY_REWRITE public for that.
+
+The rewrite mode will live in MTQ as TOP_TERMS_SCORING_BOOLEAN_REWRITE. Also the code will be refactored to make heavy reuse of term enumeration code and only plug in the PQ for filtering the top terms.

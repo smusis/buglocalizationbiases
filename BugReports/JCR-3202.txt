@@ -1,0 +1,8 @@
+AuthorizableImpl#memberOf and #declaredMemberOf should return RangeIterator
+
+
+
+Description:
+it would be favorable if the iterator returned by Authorizable#memberOf and #declaredMemberOf
+would return a RangeIterator in order to all the caller to determine the size without having to
+iterate.

@@ -1,0 +1,15 @@
+SetCookie / DateParser failing to parse non-standard date format
+
+
+
+Description:
+I'm receiving the following expiration date in SetCookie which DateParser 
+doesn't handle:
+
+expires=Sat,19-Apr-03 04:28:07 GMT
+
+The lack of a space between ',' and '19' is causing the problem. Is it possible 
+to add the following lines to DatePattern?
+
+"EEE,dd-MMM-yy HH:mm:ss z"
+"EEE,dd-MMM-yyyy HH:mm:ss z"

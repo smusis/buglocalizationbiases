@@ -1,0 +1,14 @@
+need members of MultipartRequestEntity to be "protected" instead of "private" to make it extendable for multipart/related
+
+
+
+Description:
+As explained in the mailing-list[1], I'd like to have some of 
+MultipartRequestEntity move from "private" visibility to "protected" visibility,
+to be able to extend as MultipartRelatedRequestEntity. Namely, the attribute
+"parts" and the method "getMultipartBoundary" would be needed.
+
+Thank you.
+
+[1]
+http://mail-archives.apache.org/mod_mbox/jakarta-httpclient-dev/200510.mbox/%3c87irw18ndm.fsf@meuh.mnc.ch%3e

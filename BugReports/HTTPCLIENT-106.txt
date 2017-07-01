@@ -1,0 +1,16 @@
+Path should not be encoded in HttpMethodBase
+
+
+
+Description:
+I suggest to change the protocol or add a new method for this one
+
+protected static String generateRequestLine(HttpConnection connection,
+	String name, String reqPath,
+	String qString, String protocol);
+so that we can choose to use URIUtil.encode(reqPath, URIUtil.pathSafe()) or not
+
+The reason is that after the encoding process, some server cannot recognize this
+Actually, I am handling a project of the Method Propfind(for getting mail from 
+Hotmail) and I find that the restriction of Hotmail server is quite high, and 
+if the address is encoded, it does not work.

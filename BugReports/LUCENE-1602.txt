@@ -1,0 +1,8 @@
+Rewrite TrieRange to use MultiTermQuery
+
+
+
+Description:
+Issue for discussion here: http://www.lucidimagination.com/search/document/46a548a79ae9c809/move_trierange_to_core_module_and_integration_issues
+
+This patch is a rewrite of TrieRange using MultiTermQuery like all other core queries. This should make TrieRange identical in functionality to core range queries.

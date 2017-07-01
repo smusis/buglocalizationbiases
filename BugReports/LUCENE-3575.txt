@@ -1,0 +1,17 @@
+Field names can be wrong for stored fields / term vectors after merging
+
+
+
+Description:
+The good news is this bug only exists in trunk... the bad news is it's
+been here for some time (created by accident in LUCENE-2881).  But the
+good news is it should strike fairly rarely.
+
+SegmentMerger sometimes incorrectly thinks it can bulk-copy TVs/stored
+fields when it cannot (because field numbers don't map to the same
+names across segments).
+
+I think it happens only with addIndexes, or indexes that have
+pre-trunk segments, and then SM falsely thinks it can bulk-merge only
+when the last field number has the same field name across segments.
+

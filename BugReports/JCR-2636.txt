@@ -1,0 +1,12 @@
+Litmus prophighunicode test failure on JRE 1.5
+
+
+
+Description:
+The WebDAV Litmus test suite contains a test case for writing and reading the Unicode character &#x10000; which can't be represented as a single 16-bit char in Java. Instead the character is stored as a surrogate pair of two 16-bit chars. Unfortunately the Xalan XML serializer used by Sun JRE 1.5 incorrectly encodes these as two separate characters in UTF-8, which leads to the following Litmus test failure:
+
+-> running `props':
+[...]
+17. prophighunicode....... pass
+18. propget............... FAIL (PROPFIND on `/default/litmus/prop2': XML parse error at line 1: not well-formed (invalid token))
+

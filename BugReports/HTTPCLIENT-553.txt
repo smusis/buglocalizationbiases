@@ -1,0 +1,14 @@
+JavaDoc getConnection methods in Connection Managers
+
+
+
+Description:
+The JavaDoc for the getConnection() methods in the Simple and MultiThreaded
+Connection managers is taken from the interface, and so is too generic.
+
+The Javadoc for the doGetConnection() method in the MultiThreaded manager is
+fine, but is not visible in the JavaDoc
+
+The Simple Mangager JavaDoc could likewise be improved
+
+[I hope to provide patches shortly]

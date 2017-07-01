@@ -1,0 +1,6 @@
+Filter to process output of ICUTokenizer and create overlapping bigrams for CJK 
+
+
+
+Description:
+The ICUTokenizer produces unigrams for CJK. We would like to use the ICUTokenizer but have overlapping bigrams created for CJK as in the CJK Analyzer.  This filter would take the output of the ICUtokenizer, read the ScriptAttribute and for selected scripts (Han, Kana), would produce overlapping bigrams.

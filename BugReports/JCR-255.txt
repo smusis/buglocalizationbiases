@@ -1,0 +1,7 @@
+Workspace operations (copy/clone) do not handle references correctly
+
+
+
+Description:
+REFERENCE properties created through Workspace.copy() or Workspace.clone() are not reflected by 
+Node.getReferences() and are as a consequence not enforced.

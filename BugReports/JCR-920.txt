@@ -1,0 +1,6 @@
+rep:excerpt() should also work on properties
+
+
+
+Description:
+Currently the rep:excerpt() function can only be used to create an excerpt with highlight information from a node, the function should also support highlighting of string properties.

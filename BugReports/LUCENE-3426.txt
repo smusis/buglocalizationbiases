@@ -1,0 +1,8 @@
+optimizer for n-gram PhraseQuery
+
+
+
+Description:
+If 2-gram is used and the length of query string is 4, for example q="ABCD", QueryParser generates (when autoGeneratePhraseQueries is true) PhraseQuery("AB BC CD") with slop 0. But it can be optimized PhraseQuery("AB CD") with appropriate positions.
+
+The idea came from the Japanese paper "N.M-gram: Implementation of Inverted Index Using N-gram with Hash Values" by Mikio Hirabayashi, et al. (The main theme of the paper is different from the idea that I'm using here, though)

@@ -1,0 +1,12 @@
+Remove deprecated TermAttribute from tokenattributes and legacy support in indexer
+
+
+
+Description:
+The title says it:
+- Remove interface TermAttribute
+- Remove empty fake implementation TermAttributeImpl extends CharTermAttributeImpl
+- Remove methods from CharTermAttributeImpl (and indirect from Token)
+- Remove sophisticated® backwards™ Layer in TermsHash*
+- Remove IAE from NumericTokenStream, if TA is available in AS
+- Fix rest of core tests (TestToken)

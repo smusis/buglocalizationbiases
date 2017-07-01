@@ -1,0 +1,8 @@
+Add more methods to manipulate QueryNodeProcessorPipeline elements
+
+
+
+Description:
+QueryNodeProcessorPipeline allows the user to define a list of processors to process a query tree. However, it's not very flexible when the user wants to extend/modify an already created pipeline, because it only provides an add method, which only allows the user to append a new processor to the pipeline.
+
+So, I propose to add new methods to manipulate the processor in a pipeline. I think the methods should not consider an index position when modifying the pipeline, hence the index position in a pipeline does not mean anything, a processor has a meaning when it's after or before another processor. Therefore, I suggest the methods should always consider another processor when inserting/modifying the pipeline. For example, insertAfter(processor, newProcessor), which will insert the "newProcessor" after the "processor".

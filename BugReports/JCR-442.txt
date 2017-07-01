@@ -1,0 +1,8 @@
+Implement a backup tool
+
+
+
+Description:
+Issue for tracking the progress of the Google Summer of Code project assigned to Nicolas Toper.  The original project requirements are:
+
+"Implement a tool for backing up and restoring content in an Apache Jackrabbit content repository. In addition to the basic content hierarchies, the tool should be able to efficiently manage binary content, node version histories, custom node types, and namespace mappings. Incremental or selective backups would be a nice addition, but not strictly necessary."

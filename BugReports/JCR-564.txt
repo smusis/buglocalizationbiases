@@ -1,0 +1,7 @@
+Remove geronimo JTA as a runtime dependency
+
+
+
+Description:
+Geronimo JTA is marked as a dependency for runtime when it should be (at most) a compile time dependency. 
+Is it possible to remedy this so when using the war or building your own, you don't get the geronimo jar stowing away?

@@ -1,0 +1,14 @@
+Eliminate synchronization contention on initial index reading in TermInfosReader ensureIndexIsRead 
+
+
+
+Description:
+synchronized method ensureIndexIsRead in TermInfosReader causes contention under heavy load
+
+Simple to reproduce: e.g. Under Solr, with all caches turned off, do a simple range search e.g. id:[0 TO 999999] on even a small index (in my case 28K docs) and under a load/stress test application, and later, examining the Thread dump (kill -3) , many threads are blocked on 'waiting for monitor entry' to this method.
+
+Rather than using Double-Checked Locking which is known to have issues, this implementation uses a state pattern, where only one thread can move the object from IndexNotRead state to IndexRead, and in doing so alters the objects behavior, i.e. once the index is loaded, the index nolonger needs a synchronized method. 
+
+In my particular test, this uncreased throughput at least 30 times.
+
+

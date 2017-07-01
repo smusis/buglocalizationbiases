@@ -1,0 +1,6 @@
+IndexReader.setNorms is no op if one of the field instances omits norms
+
+
+
+Description:
+If I add two documents to an index w/ same field, and one of them omit norms, then IndexReader.setNorms is no-op. I'll attach a patch w/ test case

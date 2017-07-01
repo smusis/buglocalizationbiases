@@ -1,0 +1,6 @@
+ValueFactory is not extensible
+
+
+
+Description:
+The Jackrabbit ValueFactory implementation should have a generic base class in jackrabbit-jcr-commons. This base class could be reused in SPI.

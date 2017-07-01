@@ -1,0 +1,6 @@
+Port fix for HTTPCLIENT-633 to 4.0
+
+
+
+Description:
+The fix for MultiThreadedHttpConnectionManager from HTTPCLIENT-633 should be ported to ThreadSafeClientConnManager in 4.0.

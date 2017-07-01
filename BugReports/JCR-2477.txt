@@ -1,0 +1,6 @@
+Log / trace wrapper: upgrade to JCR API 2.0
+
+
+
+Description:
+The JCR Log wrapper (jcrlog) currently only supports the JCR 1.0 API. It should be upgraded to 2.0. Also, the dependency to jackrabbit-core should be removed, and generics should be used.

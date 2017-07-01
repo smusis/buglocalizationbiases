@@ -1,0 +1,6 @@
+Creation of JavaDoc fails on jackrabbit-jcr-server
+
+
+
+Description:
+The creation of JavaDoc fails on project jackrabbit-jcr-server if the command "mvn javadoc:javadoc" is called on the latest checkout of jackrabbit. See attached log...

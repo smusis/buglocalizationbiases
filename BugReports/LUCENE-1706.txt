@@ -1,0 +1,15 @@
+Site search powered by Lucene/Solr
+
+
+
+Description:
+For a number of years now, the Lucene community has been criticized for not eating our own "dog food" when it comes to search. My company has built and hosts a site search (http://www.lucidimagination.com/search) that is powered by Apache Solr and Lucene and we'd like to donate it's use to the Lucene community. Additionally, it allows one to search all of the Lucene content from a single place, including web, wiki, JIRA and mail archives. See also http://www.lucidimagination.com/search/document/bf22a570bf9385c7/search_on_lucene_apache_org
+
+You can see it live on Mahout, Tika and Solr
+
+Lucid has a fault tolerant setup with replication and fail over as well as monitoring services in place. We are committed to maintaining and expanding the search capabilities on the site.
+
+The following patch adds a skin to the Forrest site that enables the Lucene site to search Lucene only content using Lucene/Solr. When a search is submitted, it automatically selects the Lucene facet such that only Lucene content is searched. From there, users can then narrow/broaden their search criteria.
+
+
+I plan on committing in a 3 or 4 days.

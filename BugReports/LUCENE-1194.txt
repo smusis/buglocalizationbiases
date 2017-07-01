@@ -1,0 +1,29 @@
+Add deleteByQuery to IndexWriter
+
+
+
+Description:
+This has been discussed several times recently:
+
+  http://markmail.org/message/awlt4lmk3533epbe
+  http://www.gossamer-threads.com/lists/lucene/java-user/57384#57384
+
+If we add deleteByQuery to IndexWriter then this is a big step towards
+allowing IndexReader to be readonly.
+
+I took the approach suggested in that first thread: I buffer delete
+queries just like we now buffer delete terms, holding the max docID
+that the delete should apply to.
+
+Then, I also decoupled flushing deletes (mapping term or query -->
+actual docIDs that need deleting) from flushing added documents, and
+now I flush deletes only when a merge is started, or on commit() or
+close().  SegmentMerger now exports the docID map it used when
+merging, and I use that to renumber the max docIDs of all pending
+deletes.
+
+Finally, I turned off tracking of memory usage of pending deletes
+since they now live beyond each flush.  Deletes are now only
+explicitly flushed if you set maxBufferedDeleteTerms to something
+other than DISABLE_AUTO_FLUSH.  Otherwise they are flushed at the
+start of every merge.

@@ -1,0 +1,6 @@
+Remove deprecated Filter.bits() and make Filter.getDocIdSet() abstract.
+
+
+
+Description:
+

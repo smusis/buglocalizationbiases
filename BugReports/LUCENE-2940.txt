@@ -1,0 +1,27 @@
+NPE in TestNRTThreads
+
+
+
+Description:
+I hit this when while(1)ing this test... I think it's because the logic on when we ask the SegmentReader to load stored fields is off...
+
+{noformat}
+*** Thread: Lucene Merge Thread #1 ***
+org.apache.lucene.index.MergePolicy$MergeException:
+java.lang.NullPointerException
+       at org.apache.lucene.index.ConcurrentMergeScheduler.handleMergeException(ConcurrentMergeScheduler.java:507)
+       at org.apache.lucene.index.ConcurrentMergeScheduler$MergeThread.run(ConcurrentMergeScheduler.java:472)
+Caused by: java.lang.NullPointerException
+       at org.apache.lucene.index.SegmentReader$FieldsReaderLocal.initialValue(SegmentReader.java:245)
+       at org.apache.lucene.index.SegmentReader$FieldsReaderLocal.initialValue(SegmentReader.java:242)
+       at org.apache.lucene.util.CloseableThreadLocal.get(CloseableThreadLocal.java:68)
+       at org.apache.lucene.index.SegmentReader.getFieldsReader(SegmentReader.java:749)
+       at org.apache.lucene.index.SegmentReader.document(SegmentReader.java:838)
+       at org.apache.lucene.index.IndexReader.document(IndexReader.java:951)
+       at org.apache.lucene.index.TestNRTThreads$1.warm(TestNRTThreads.java:86)
+       at org.apache.lucene.index.IndexWriter.mergeMiddle(IndexWriter.java:3311)
+       at org.apache.lucene.index.IndexWriter.merge(IndexWriter.java:2875)
+       at org.apache.lucene.index.ConcurrentMergeScheduler.doMerge(ConcurrentMergeScheduler.java:379)
+       at org.apache.lucene.index.ConcurrentMergeScheduler$MergeThread.run(ConcurrentMergeScheduler.java:447)
+{noformat}
+

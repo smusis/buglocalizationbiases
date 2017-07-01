@@ -1,0 +1,17 @@
+Spellchecker "Suggest Mode" Support
+
+
+
+Description:
+This is a spin-off from SOLR-2585.
+
+Currently o.a.l.s.s.SpellChecker and o.a.l.s.s.DirectSpellChecker support two "Suggest Modes":
+1. Suggest for terms that are not in the index.
+2. Suggest "more popular" terms.
+
+This issue is to add a third Suggest Mode:
+3. Suggest always.
+
+This will assist users in developing context-sensitive spell suggestions and/or did-you-mean suggestions.  See SOLR-2585 for a full discussion.
+
+Note that o.a.l.s.s.SpellChecker already can support this functionality, if the user passes in a NULL term & IndexReader.  This, however, is not intutive.  o.a.l.s.s.DirectSpellChecker currently has no support for this third Suggest Mode.

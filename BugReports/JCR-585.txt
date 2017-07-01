@@ -1,0 +1,8 @@
+Create jackrabbit-api(.jar) and the respective jackrabbit-rmi extensions
+
+
+
+Description:
+currently some of the management functions not covered in jcr, like notetype management and workspace creation, are not exposed via any specific api and therfor not accessible via rmi.
+
+create a jackrabbit api and the respective rmi extension.

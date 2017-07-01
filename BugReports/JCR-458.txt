@@ -1,0 +1,22 @@
+session.move() throws ItemExistsException despite same name siblings
+
+
+
+Description:
+code to reproduce:
+
+            Session session = r.login(new SimpleCredentials("johndoe", "".toCharArray()), wspName);
+            Node root = session.getRootNode();
+
+            // setup test case
+            if (!root.hasNode("foo")) {
+                root.addNode("foo");
+                root.save();
+            }
+            if (!root.hasNode("bar")) {
+                root.addNode("bar");
+                root.save();
+            }
+
+            session.move("/foo", "/bar");    // ==> ItemExistsException
+

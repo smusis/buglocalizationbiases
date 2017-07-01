@@ -1,0 +1,8 @@
+Correctly handle concurrent calls to addIndexes, optimize, commit
+
+
+
+Description:
+Spinoff from here:
+
+    http://mail-archives.apache.org/mod_mbox/lucene-java-dev/200807.mbox/%3Cc7b302c50807111018j58b6d08djd56b5889f6b3780d@mail.gmail.com%3E

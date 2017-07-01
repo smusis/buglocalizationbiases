@@ -1,0 +1,66 @@
+NullPointerException in CompoundFileReader
+
+
+
+Description:
+Hello,
+
+we have got a NullPointerException in the Lucene-class CompoundFileReader:
+
+java.lang.NullPointerException
+        at
+org.apache.lucene.index.CompoundFileReader.<init>(CompoundFileReader.java:94)
+        at org.apache.lucene.index.SegmentReader.<init>(SegmentReader.java:97)
+        at org.apache.lucene.index.IndexWriter.mergeSegments(IndexWriter.java:466)
+        at
+org.apache.lucene.index.IndexWriter.flushRamSegments(IndexWriter.java:426)
+        at org.apache.lucene.index.IndexWriter.close(IndexWriter.java:236)
+
+Lucene has been working fine for some days, until this NullPointerException
+has occured which has corrupted the complete index.
+
+The reason for this NullPointerException is the following Code 
+in Lucenes source file CompoundFileReader.java:
+
+    public CompoundFileReader(Directory dir, String name)
+    throws IOException
+    {
+        boolean success = false;
+        ...
+
+        try {
+            stream = dir.openFile(name);
+
+            // read the directory and init files
+            ...
+
+            success = true;
+
+        } finally {
+            if (! success) {
+                try {
+                    stream.close();
+                } catch (IOException e) { }
+            }
+        }
+    }
+
+If the IO-method-call "dir.openFile()" throws an IOExeption,
+then the variable "stream" remains its null value.
+The statement "stream.close()" in the finally clause will then cause a
+NullPointerException.
+
+I would suggest that you change the code from:
+    stream.close();
+to:
+    if ( stream != null ) {
+        stream.close();
+    }
+
+There are a lot of reasons why an IO-operation like "dir.openFile()"
+could throw an IOException.
+I cannot guarantee that such an IO exception will never occur again.
+Therefore it is better to handle such an IO exception correctly.
+
+This issue is similar to bug# 29774, except that I recommand an easy way
+to solve this problem.

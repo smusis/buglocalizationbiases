@@ -1,0 +1,9 @@
+Move generic locking tests from jcr2spi to jackrabbit-jcr-tests
+
+
+
+Description:
+once we touch the jackrabbit-jcr-tests for the JSR 283 implementation, we should also move the generic tests from jackrabbit-jcr2spi to the overall test suite.
+
+opening this issue as a reminder and as a marker issue.
+angela

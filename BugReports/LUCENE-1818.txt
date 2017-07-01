@@ -1,0 +1,28 @@
+contrib-spatial java.lang.UnsupportedOperationException on QueryWrapperFilter.getDocIdSet
+
+
+
+Description:
+We use in our Project (which is in the devel phase) the latest Snapshot release of lucene. After i updated to the latest Snapshot a few days ago one of our JUnit tests fails and throws the following error:
+
+java.lang.UnsupportedOperationException
+	at org.apache.lucene.search.Query.createWeight(Query.java:91)
+	at org.apache.lucene.search.QueryWrapperFilter.getDocIdSet(QueryWrapperFilter.java:72)
+	at org.apache.lucene.misc.ChainedFilter.getDISI(ChainedFilter.java:150)
+	at org.apache.lucene.misc.ChainedFilter.initialResult(ChainedFilter.java:173)
+	at org.apache.lucene.misc.ChainedFilter.getDocIdSet(ChainedFilter.java:211)
+	at org.apache.lucene.misc.ChainedFilter.getDocIdSet(ChainedFilter.java:141)
+	at org.apache.lucene.search.ConstantScoreQuery$ConstantScorer.<init>(ConstantScoreQuery.java:116)
+	at org.apache.lucene.search.ConstantScoreQuery$ConstantWeight.scorer(ConstantScoreQuery.java:81)
+	at org.apache.lucene.search.IndexSearcher.search(IndexSearcher.java:244)
+	at org.apache.lucene.search.IndexSearcher.search(IndexSearcher.java:172)
+	at org.apache.lucene.search.Searcher.search(Searcher.java:183)
+	at org.hibernate.search.query.QueryHits.updateTopDocs(QueryHits.java:100)
+	at org.hibernate.search.query.QueryHits.<init>(QueryHits.java:61)
+	at org.hibernate.search.query.QueryHits.<init>(QueryHits.java:51)
+	at org.hibernate.search.query.FullTextQueryImpl.getQueryHits(FullTextQueryImpl.java:373)
+	at org.hibernate.search.query.FullTextQueryImpl.list(FullTextQueryImpl.java:293)
+	...
+
+I think it appeared after the Hudson build 917... and the following commit of the Query.java http://hudson.zones.apache.org/hudson/job/Lucene-trunk/917/changes#detail4 and is in connection with this JIRA issue: LUCENE-1771
+I hope i'm at the right place and that you can fix it. Thanks!

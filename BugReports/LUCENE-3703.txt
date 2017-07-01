@@ -1,0 +1,8 @@
+DirectoryTaxonomyReader.refresh misbehaves with ref counts
+
+
+
+Description:
+DirectoryTaxonomyReader uses the internal IndexReader in order to track its own reference counting. However, when you call refresh(), it reopens the internal IndexReader, and from that point, all previous reference counting gets lost (since the new IndexReader's refCount is 1).
+
+The solution is to track reference counting in DTR itself. I wrote a simple unit test which exposes the bug (will be attached with the patch shortly).

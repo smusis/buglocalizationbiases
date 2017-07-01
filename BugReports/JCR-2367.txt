@@ -1,0 +1,6 @@
+RepositoryCopier does not copy open-scoped Locks
+
+
+
+Description:
+If you use the RepositoryCopier to make a backup of your repository and you have open-scoped (not session scoped) locks, these locks will not be copied. If you try to restore your copy of the repository all locks are gone.

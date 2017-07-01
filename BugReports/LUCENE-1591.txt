@@ -1,0 +1,11 @@
+Enable bzip compression in benchmark
+
+
+
+Description:
+bzip compression can aid the benchmark package by not requiring extracting bzip files (such as enwiki) in order to index them. The plan is to add a config parameter bzip.compression=true/false and in the relevant tasks either decompress the input file or compress the output file using the bzip streams.
+It will add a dependency on ant.jar which contains two classes similar to GZIPOutputStream and GZIPInputStream which compress/decompress files using the bzip algorithm.
+
+bzip is known to be superior in its compression performance to the gzip algorithm (~20% better compression), although it does the compression/decompression a bit slower.
+
+I wil post a patch which adds this parameter and implement it in LineDocMaker, EnwikiDocMaker and WriteLineDoc task. Maybe even add the capability to DocMaker or some of the super classes, so it can be inherited by all sub-classes.

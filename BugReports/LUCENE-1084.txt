@@ -1,0 +1,9 @@
+increase default maxFieldLength?
+
+
+
+Description:
+To my understanding, Lucene 2.3 will easily index large documents. So shouldn't we get rid of the 10,000 default limit for the field length? 10,000 isn't that much and as Lucene doesn't have any error logging by default, this is a common problem for users that is difficult to debug if you don't know where to look.
+
+A better new default might be Integer.MAX_VALUE.
+

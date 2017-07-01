@@ -1,0 +1,6 @@
+Create a sample search page
+
+
+
+Description:
+The web application should have a search page that shows how to use the query features in jackrabbit.

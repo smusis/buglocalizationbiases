@@ -1,0 +1,9 @@
+waitForResponse is using busy wait
+
+
+
+Description:
+In HttpConnection, the method waitForResponse is using busywait, instead of 
+blocking until the response is arriving.
+
+Is this on purpose, or shouldn't it handle this by blocking instead ??

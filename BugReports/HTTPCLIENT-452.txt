@@ -1,0 +1,24 @@
+DateUtil.formatDate() uses default timezone instead of GMT
+
+
+
+Description:
+DateUtil.formatDate() uses default timezone instead of GMT.  In section 3.3.1,
+RFC 2616 states:  "All HTTP date/time stamps MUST be represented in Greenwich
+Mean Time (GMT), without exception."
+
+To reproduce, run the following snippet:
+
+   public static void main(String[] args) {
+      TimeZone tz = TimeZone.getTimeZone("GMT");
+      GregorianCalendar gc = new GregorianCalendar(tz);
+      gc.set(1900 + 104, GregorianCalendar.JANUARY, 1, 0, 0, 0);
+      System.out.println(DateUtil.formatDate(gc.getTime()));
+      
+   }
+
+Expected result:
+Thu, 01 Jan 2004 00:00:00 GMT
+
+Actual result (if your default timezone is PST):
+Wed, 31 Dec 2003 16:00:00 PST

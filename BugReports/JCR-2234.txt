@@ -1,0 +1,16 @@
+changed behavior of javax.jcr.Value get* methods
+
+
+
+Description:
+stream handling semantics of javax.jcr.Value has been simplified in JCR 2.0:
+
+Section '5.10.5.1 Deprecated Binary Behavior'
+
+[...]
+Unlike in JCR 1.0, calling a get method other than getStream before 
+calling getStream on the same Value object will never cause an 
+IllegalStateException. 
+
+
+see https://jsr-283.dev.java.net/issues/show_bug.cgi?id=658

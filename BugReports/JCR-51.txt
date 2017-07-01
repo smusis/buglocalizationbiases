@@ -1,0 +1,22 @@
+Node.restore fails with multiple mixin types
+
+
+
+Description:
+Restoring a node that has more than one mixin type causes the exception below. 
+
+java.lang.NullPointerException
+	at org.apache.jackrabbit.core.NodeImpl.restoreFrozenState(NodeImpl.java:3286)
+	at org.apache.jackrabbit.core.NodeImpl.internalRestore(NodeImpl.java:3243)
+	at org.apache.jackrabbit.core.NodeImpl.internalRestore(NodeImpl.java:3210)
+	at org.apache.jackrabbit.core.NodeImpl.restore(NodeImpl.java:2821)
+	at com.gtnet.jcr.VersionedNodeTest.testNodeVersionAndRestore(VersionedNodeTest.java:311)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:39)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:25)
+	at com.intellij.rt.execution.junit2.JUnitStarter.main(JUnitStarter.java:31)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:39)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:25)
+	at com.intellij.rt.execution.application.AppMain.main(AppMain.java:78)
+

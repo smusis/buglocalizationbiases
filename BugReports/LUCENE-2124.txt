@@ -1,0 +1,13 @@
+move JDK collation to core, ICU collation to ICU contrib
+
+
+
+Description:
+As mentioned on the list, I propose we move the JDK-based CollationKeyFilter/CollationKeyAnalyzer, currently located in contrib/collation into core for collation support (language-sensitive sorting)
+
+These are not much code (the heavy duty stuff is already in core, IndexableBinaryString). 
+
+And I would also like to move the ICUCollationKeyFilter/ICUCollationKeyAnalyzer (along with the jar file they depend on) also currently located in contrib/collation into a contrib/icu.
+
+This way, we can start looking at integrating other functionality from ICU into a fully-fleshed out icu contrib.
+

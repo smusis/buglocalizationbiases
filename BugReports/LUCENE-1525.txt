@@ -1,0 +1,6 @@
+Missing dependencies in two generated maven pom files 
+
+
+
+Description:
+There are some missing dependencies in generated maven pom.xml files (benchmark and highlighter)

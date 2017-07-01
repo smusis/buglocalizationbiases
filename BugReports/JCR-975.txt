@@ -1,0 +1,6 @@
+NodeImpl.checkin() calls save() three times
+
+
+
+Description:
+The version related properties on a versionable node that is checked in are saved individually. There is no need to save them individually because such a node must not have pending changes and save() can be called safely on the node itself.

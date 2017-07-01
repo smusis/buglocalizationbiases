@@ -1,0 +1,13 @@
+ResponseCachingPolicy uses integers for sizes
+
+
+
+Description:
+ResponseCachingPolicy currently uses integers for interpreting the size of Content-Length, as well internally.
+
+This causes issues in attempting to use the module for caching entities that are over 2GB in size, the module does not fail gracefully, but throws a NumberFormatException
+
+I have a patch that fixes this, by promoting the int -> long, which should allow for larger entities to be cached, it also updates the public facing API where possible, I don't think that the promotion should break compatibility massively
+
+The changes can also be seen here:
+https://github.com/GregBowyer/httpclient/commit/1197d3f94bd2eedcec32646cd6146748ca2e6fa1

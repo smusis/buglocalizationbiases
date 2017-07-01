@@ -1,0 +1,14 @@
+Behavior on hard power shutdown
+
+
+
+Description:
+When indexing a large number of documents, upon a hard power failure  (e.g. pull the power cord), the index seems to get corrupted. We start a Java application as an Windows Service, and feed it documents. In some cases (after an index size of 1.7GB, with 30-40 index segment .cfs files) , the following is observed.
+
+The 'segments' file contains only zeros. Its size is 265 bytes - all bytes are zeros.
+The 'deleted' file also contains only zeros. Its size is 85 bytes - all bytes are zeros.
+
+Before corruption, the segments file and deleted file appear to be correct. After this corruption, the index is corrupted and lost.
+
+This is a problem observed in Lucene 1.4.3. We are not able to upgrade our customer deployments to 1.9 or later version, but would be happy to back-port a patch, if the patch is small enough and if this problem is already solved.
+

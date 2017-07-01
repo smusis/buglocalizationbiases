@@ -1,0 +1,50 @@
+Implement Connection Timeouts
+
+
+
+Description:
+I was writing test code to use the setSoTimeout(int millis) method to set a
+timeout value when connecting to a URL.  It appears to me that no matter what I
+set the timeout to be a HttpConnection will try to connect but uses some other
+timeout value(I'm guessing the OS's default value).  I looked at the code for
+HttpConnection and it uses the Socket(host,port) constructor which tries to
+connect write away.  I'd like to suggest the following code below so the timeout
+is set before first the connection is even made.
+
+/* Compile the code as is and it should timeout within a sec.  If you
+ * uncomment the first two lines after the try statement and comment
+ * out the other socket connect statements and run the code again you will
+ * notice write away that the timeout is something else because it connects
+ * right away in the constructor.  Its like the timeout is worthless at this
+ * point.  As a matter a fact the code should never get there.
+ * This all assumes that 192.168.168.50 is not on your network.
+ */
+
+import java.io.*;
+import java.net.*;
+
+public class SocketTest {
+    public static void main(String[] args) {
+        long start = System.currentTimeMillis();
+
+        try {
+            //Socket socket = new Socket("192.168.168.50",80);
+            //socket.setSoTimeout(1000);
+
+            //Setting timeout before the connection is made.
+            Socket socket = new Socket();
+            InetSocketAddress sAddress =
+                new InetSocketAddress("192.168.168.50",80);
+            socket.connect(sAddress,1000);
+
+        } catch (UnknownHostException e) {
+            System.out.println(e);
+        } catch (SocketException e) {
+            System.out.println(e);
+        } catch (IOException e) {
+            System.out.println(e);
+        }
+
+        System.out.println(System.currentTimeMillis() - start);
+    }
+}

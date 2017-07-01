@@ -1,0 +1,6 @@
+IndexReader.clone
+
+
+
+Description:
+Based on discussion http://www.nabble.com/IndexReader.reopen-issue-td18070256.html.  The problem is reopen returns the same reader if there are no changes, so if docs are deleted from the new reader, they are also reflected in the previous reader which is not always desired behavior.

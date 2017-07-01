@@ -1,0 +1,8 @@
+System Reqs page should be release specific
+
+
+
+Description:
+The System Requirements page, currently under the Main->Resources section of the website should be part of a given version's documentation, since it will be changing for a given release.  
+
+I will "deprecate" the existing one, but leave it in place(with a message) to cover the existing releases that don't have this, but will also add it to the release docs for future releases.

@@ -1,0 +1,19 @@
+MsPowerPointTextExtractor does not extract from PPTs with € sign
+
+
+
+Description:
+The MsPowerPointTextExtractor class has a problem when reading PPTs when an € sign is contained. All text following that sign is ignored. Perhaps the POI PowerPointExtractor should be used instead of parsing the data by hand. As a side effect, this would simply the code. Extracting could be done as follows:
+
+	public Reader extractText(InputStream stream, String type, String encoding) throws IOException {
+		try {
+			PowerPointExtractor extractor = new PowerPointExtractor(stream);
+			return new StringReader(extractor.getText(true,true));
+		} catch (RuntimeException e) {
+			logger.warn("Failed to extract PowerPoint text content", e);
+			return new StringReader("");
+		} finally {
+			try { stream.close(); } catch (IOException ignored) {}
+		}
+	}
+

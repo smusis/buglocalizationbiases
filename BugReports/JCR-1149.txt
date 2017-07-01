@@ -1,0 +1,13 @@
+JCR2SPI: several broken equals() comparisons
+
+
+
+Description:
+Detected by FindBugs:
+
+H C EC: Call to equals() comparing unrelated class and interface in org.apache.jackrabbit.jcr2spi.nodetype.NodeTypeManagerImpl.nodeTypeReRegistered(QName)	xythos-jcr/src/main/java/org/apache/jackrabbit/jcr2spi/nodetype	NodeTypeManagerImpl.java	line 218	1190978573312	1664752
+H C EC: Call to equals() comparing unrelated class and interface in org.apache.jackrabbit.jcr2spi.nodetype.NodeTypeManagerImpl.nodeTypeReRegistered(QName)	xythos-jcr/src/main/java/org/apache/jackrabbit/jcr2spi/nodetype	NodeTypeManagerImpl.java	line 227	1190978573312	1664753
+H C EC: Call to equals() comparing unrelated class and interface in org.apache.jackrabbit.jcr2spi.nodetype.NodeTypeManagerImpl.nodeTypeUnregistered(QName)	xythos-jcr/src/main/java/org/apache/jackrabbit/jcr2spi/nodetype	NodeTypeManagerImpl.java	line 255	1190978573312	1664754
+H C EC: Call to equals() comparing unrelated class and interface in org.apache.jackrabbit.jcr2spi.nodetype.NodeTypeManagerImpl.nodeTypeUnregistered(QName)	xythos-jcr/src/main/java/org/apache/jackrabbit/jcr2spi/nodetype	NodeTypeManagerImpl.java	line 264	1190978573312	1664755
+H C EC: org.apache.jackrabbit.jcr2spi.WorkspaceManager.canAccess(String) uses equals to compare an array and nonarray	
+

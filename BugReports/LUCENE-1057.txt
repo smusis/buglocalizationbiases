@@ -1,0 +1,6 @@
+indexing doesn't reset token state
+
+
+
+Description:
+IndexWriter (DocumentsWriter) forgets to reset the token state resulting in incorrect positionIncrements, payloads, and token types.

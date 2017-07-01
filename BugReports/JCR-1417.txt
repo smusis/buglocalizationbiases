@@ -1,0 +1,15 @@
+[PATCH] remove code stutter
+
+
+
+Description:
+Method calls getQName for no reason
+
+
+public String getName() throws RepositoryException {
+        checkStatus();
+        Name qName = getQName();
+        return session.getNameResolver().getJCRName(getQName());
+    }
+
+patch fixes it.

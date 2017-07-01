@@ -1,0 +1,8 @@
+Create or Append mode determined before obtaining write lock
+
+
+
+Description:
+If an IndexWriter("writer1") is opened in CREATE_OR_APPEND mode, it determines whether to CREATE or APPEND before obtaining the write lock.  When another IndexWriter("writer2") is in the process of creating the index, this can result in writer1 entering create mode and then waiting to obtain the lock.  When writer2 commits and releases the lock, writer1 is already in create mode and overwrites the index created by write2.
+
+This bug was probably effected by LUCENE-2386 as prior to that Lucene generated an empty commit when a new index was created.  I think the issue could still have occurred prior to that but the two IndexWriters would have needed to be opened nearly simultaneously and the first IndexWriter would need to release the lock before the second timed out.

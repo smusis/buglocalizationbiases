@@ -1,0 +1,6 @@
+.NET build scripts for Jackrabbit
+
+
+
+Description:
+Hugo Burm has created build scripts that make it possible to run Jackrabbit under .NET. We should add the scripts and excample client code as a contrib project or integrate them with the Maven build system.

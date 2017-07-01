@@ -1,0 +1,19 @@
+Index File Format - Example for frequency file .frq is wrong
+
+
+
+Description:
+Reported by Johan Stuyts - http://www.nabble.com/Possible-documentation-error--p7012445.html - 
+
+Frequency file example says: 
+
+     For example, the TermFreqs for a term which occurs once in document seven and three times in document eleven would be the following sequence of VInts: 
+         15, 22, 3 
+
+It should be: 
+
+     For example, the TermFreqs for a term which occurs once in document seven and three times in document eleven would be the following sequence of VInts: 
+         15, 8, 3 
+
+
+

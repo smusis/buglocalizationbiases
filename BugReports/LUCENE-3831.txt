@@ -1,0 +1,6 @@
+Passing a null fieldname to MemoryFields#terms in MemoryIndex throws a NPE
+
+
+
+Description:
+I found this when querying a MemoryIndex using a RegexpQuery wrapped by a SpanMultiTermQueryWrapper.  If the regexp doesn't match anything in the index, it gets rewritten to an empty SpanOrQuery with a null field value, which then triggers the NPE.

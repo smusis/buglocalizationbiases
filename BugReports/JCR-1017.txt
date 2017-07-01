@@ -1,0 +1,6 @@
+Favour QValue.getPath() over getString() where appropriate
+
+
+
+Description:
+To avoid extra conversion round trips QValue.getPath() should be used instead of  QValue.getString() where appropriate.

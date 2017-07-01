@@ -1,0 +1,8 @@
+TermVectors corruption case when autoCommit=false
+
+
+
+Description:
+I took Yonik's awesome test case (TestStressIndexing2) and extended it to also compare term vectors, and, it's failing.
+
+I still need to track down why, but it seems likely a separate issue.

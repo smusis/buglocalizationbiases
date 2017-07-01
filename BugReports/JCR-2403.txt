@@ -1,0 +1,64 @@
+insufficient privileges
+
+
+
+Description:
+HI,
+In Jackrabbit  DBStore, On the fly its creating some tables in DB .  But, In our Dev environment we do not have permission for creating tables on the fly. So, I manually inserted all the dll (tables & indexes) before the application start. Although I'm getting the following exception while running application. 
+
+Attached repository.xml.
+
+Below the log.
+
+[11/23/09 11:32:04:405 EST] 0000003a SystemOut     O WARN > org.apache.jackrabbit.core.config.ConfigurationErrorHandler[WebContainer : 3]: Warning parsing the configuration at line 4 using system id file:/usr/local/web/fda/WAS/61x/svdw0047v61fda/installedApps/afda21Network001/osa_registry.ear/osa_registry.war/WEB-INF/cfg/repository.xml: org.xml.sax.SAXParseException: Document root element "Repository", must match DOCTYPE root "null".
+[11/23/09 11:32:04:407 EST] 0000003a SystemOut     O WARN > org.apache.jackrabbit.core.config.ConfigurationErrorHandler[WebContainer : 3]: Warning parsing the configuration at line 4 using system id file:/usr/local/web/fda/WAS/61x/svdw0047v61fda/installedApps/afda21Network001/osa_registry.ear/osa_registry.war/WEB-INF/cfg/repository.xml: org.xml.sax.SAXParseException: Document is invalid: no grammar found.
+[11/23/09 11:32:04:977 EST] 0000003a SystemOut     O INFO > org.apache.jackrabbit.core.RepositoryImpl[WebContainer : 3]: Starting repository...
+[11/23/09 11:32:05:474 EST] 0000003a SystemOut     O ERROR> org.apache.jackrabbit.core.fs.db.DatabaseFileSystem[WebContainer : 3]: failed to initialize file system
+java.sql.SQLException: ORA-01031: insufficient privileges
+
+	at oracle.jdbc.driver.DatabaseError.throwSqlException(DatabaseError.java:112)
+	at oracle.jdbc.driver.T4CTTIoer.processError(T4CTTIoer.java:331)
+	at oracle.jdbc.driver.T4CTTIoer.processError(T4CTTIoer.java:288)
+	at oracle.jdbc.driver.T4C8Oall.receive(T4C8Oall.java:745)
+	at oracle.jdbc.driver.T4CStatement.doOall8(T4CStatement.java:210)
+	at oracle.jdbc.driver.T4CStatement.executeForRows(T4CStatement.java:961)
+	at oracle.jdbc.driver.OracleStatement.doExecuteWithTimeout(OracleStatement.java:1190)
+	at oracle.jdbc.driver.OracleStatement.executeUpdateInternal(OracleStatement.java:1657)
+	at oracle.jdbc.driver.OracleStatement.executeUpdate(OracleStatement.java:1626)
+	at org.apache.jackrabbit.core.fs.db.OracleFileSystem.checkSchema(OracleFileSystem.java:211)
+	at org.apache.jackrabbit.core.fs.db.DatabaseFileSystem.init(DatabaseFileSystem.java:190)
+	at org.apache.jackrabbit.core.fs.db.OracleFileSystem.init(OracleFileSystem.java:137)
+	at org.apache.jackrabbit.core.config.RepositoryConfigurationParser$2.getFileSystem(RepositoryConfigurationParser.java:762)
+	at org.apache.jackrabbit.core.config.RepositoryConfig.getFileSystem(RepositoryConfig.java:666)
+	at org.apache.jackrabbit.core.RepositoryImpl.<init>(RepositoryImpl.java:262)
+	at org.apache.jackrabbit.core.RepositoryImpl.create(RepositoryImpl.java:621)
+	at org.apache.jackrabbit.core.jndi.BindableRepository.createRepository(BindableRepository.java:140)
+	at org.apache.jackrabbit.core.jndi.BindableRepository.init(BindableRepository.java:116)
+	at org.apache.jackrabbit.core.jndi.BindableRepository.<init>(BindableRepository.java:105)
+	at org.apache.jackrabbit.core.jndi.BindableRepositoryFactory.getObjectInstance(BindableRepositoryFactory.java:51)
+	at org.apache.jackrabbit.core.jndi.RegistryHelper.registerRepository(RegistryHelper.java:74)
+	at com.ssc.soareg.jackrabbit.ContentRepository.<clinit>(ContentRepository.java:71)
+	at com.ssc.soareg.jaxr.registry.client.infomodel.ServiceImpl.<init>(ServiceImpl.java:177)
+	at com.ssc.soareg.governance.client.SOALifeCycleManagerImpl.saveBusinessServices(SOALifeCycleManagerImpl.java:259)
+	at com.ssc.soareg.registry.server.UploadServlet.service(UploadServlet.java:473)
+	at javax.servlet.http.HttpServlet.service(HttpServlet.java:856)
+	at com.ibm.ws.webcontainer.servlet.ServletWrapper.service(ServletWrapper.java:1068)
+	at com.ibm.ws.webcontainer.servlet.ServletWrapper.handleRequest(ServletWrapper.java:543)
+	at com.ibm.ws.wswebcontainer.servlet.ServletWrapper.handleRequest(ServletWrapper.java:478)
+	at com.ibm.ws.webcontainer.webapp.WebApp.handleRequest(WebApp.java:3357)
+	at com.ibm.ws.webcontainer.webapp.WebGroup.handleRequest(WebGroup.java:267)
+	at com.ibm.ws.webcontainer.WebContainer.handleRequest(WebContainer.java:811)
+	at com.ibm.ws.wswebcontainer.WebContainer.handleRequest(WebContainer.java:1455)
+	at com.ibm.ws.webcontainer.channel.WCChannelLink.ready(WCChannelLink.java:115)
+	at com.ibm.ws.http.channel.inbound.impl.HttpInboundLink.handleDiscrimination(HttpInboundLink.java:454)
+	at com.ibm.ws.http.channel.inbound.impl.HttpInboundLink.handleNewInformation(HttpInboundLink.java:383)
+	at com.ibm.ws.http.channel.inbound.impl.HttpICLReadCallback.complete(HttpICLReadCallback.java:102)
+	at com.ibm.ws.tcp.channel.impl.AioReadCompletionListener.futureCompleted(AioReadCompletionListener.java:165)
+	at com.ibm.io.async.AbstractAsyncFuture.invokeCallback(AbstractAsyncFuture.java:217)
+	at com.ibm.io.async.AsyncChannelFuture.fireCompletionActions(AsyncChannelFuture.java:161)
+	at com.ibm.io.async.AsyncFuture.completed(AsyncFuture.java:136)
+	at com.ibm.io.async.ResultHandler.complete(ResultHandler.java:195)
+	at com.ibm.io.async.ResultHandler.runEventProcessingLoop(ResultHandler.java:784)
+	at com.ibm.io.async.ResultHandler$2.run(ResultHandler.java:873)
+	at com.ibm.ws.util.ThreadPool$Worker.run(ThreadPool.java:1473)
+

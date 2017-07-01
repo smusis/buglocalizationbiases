@@ -1,0 +1,6 @@
+Login performance drop when using DefaultAccessManager
+
+
+
+Description:
+JCR-2700 caused a drop in login performance when using DefaultAccessManager. The drop is caused by the initialization of the LRU map used in CompiledPermissionsImpl. 

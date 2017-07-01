@@ -1,0 +1,16 @@
+pom.xml in sandbox/spi has wrong scm url
+
+
+
+Description:
+the pom in sandbox/spi has the wrong scm url.
+You can see the pom here:
+http://svn.apache.org/repos/asf/jackrabbit/sandbox/spi/pom.xml
+
+It probably should be:
+<scm>
+    <connection>scm:svn:http://svn.apache.org/repos/asf/jackrabbit/sandbox/spi </connection>
+    <developerConnection>scm:svn:https://svn.apache.org/repos/asf/jackrabbit/sandbox/spi </developerConnection>
+    <url>http://svn.apache.org/viewvc/jackrabbit/sandbox/spi </url>
+</scm>
+

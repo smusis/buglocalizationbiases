@@ -1,0 +1,7 @@
+hrefs in dav responses should be url-escaped
+
+
+
+Description:
+the url in an href element of a dav response should be url-escaped. currently at least one webdav client (os x's webdavfs) chokes on unescaped urls (such as /home/bcm/file with spaces in its name.txt).
+

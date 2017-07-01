@@ -1,0 +1,14 @@
+HttpMethodBase.getResponseBodyAsString(long limit)
+
+
+
+Description:
+Currently HttpMethodBase.getResponseBodyAsString() prints warning in log, and suggests using getResponseStream(). However getResponseBodyAsString() is extremely useful (as it is easy to use). So my wish is to have method
+
+getResponseBodyAsString(long limit)
+
+that should throw HttpException if response size exceeds specified limit.
+
+Same things with getResponseBody(long limit) .
+
+Original methods should be deprecated because of danger, explained in javadoc.

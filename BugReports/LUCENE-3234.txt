@@ -1,0 +1,12 @@
+Provide limit on phrase analysis in FastVectorHighlighter
+
+
+
+Description:
+With larger documents, FVH can spend a lot of time trying to find the best-scoring snippet as it examines every possible phrase formed from matching terms in the document.  If one is willing to accept
+less-than-perfect scoring by limiting the number of phrases that are examined, substantial speedups are possible.  This is analogous to the Highlighter limit on the number of characters to analyze.
+
+The patch includes an artifical test case that shows > 1000x speedup.  In a more normal test environment, with English documents and random queries, I am seeing speedups of around 3-10x when setting phraseLimit=1, which has the effect of selecting the first possible snippet in the document.  Most of our sites operate in this way (just show the first snippet), so this would be a big win for us.
+
+With phraseLimit = -1, you get the existing FVH behavior. At larger values of phraseLimit, you may not get substantial speedup in the normal case, but you do get the benefit of protection against blow-up in pathological cases.
+

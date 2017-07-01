@@ -1,0 +1,11 @@
+SpecialOperations.isFinite can have TERRIBLE TERRIBLE runtime in certain situations
+
+
+
+Description:
+in an application of mine, i experienced some very slow query times with finite automata (all the DFAs are acyclic)
+
+It turned out, the slowdown is some terrible runtime in SpecialOperations.isFinite <-- this is used to determine if the DFA is acyclic or not.
+
+(in this case I am talking about even up to minutes of cpu).
+

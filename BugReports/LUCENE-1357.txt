@@ -1,0 +1,6 @@
+SpanScorer does not respect ConstantScoreRangeQuery setting
+
+
+
+Description:
+ConstantScoreRangeQuery is actually on and can't be disabled when it should default to off with the option to turn it on.

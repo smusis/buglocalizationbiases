@@ -1,0 +1,6 @@
+Add Highlighter test for RegexQuery
+
+
+
+Description:
+

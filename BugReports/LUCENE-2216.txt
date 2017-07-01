@@ -1,0 +1,28 @@
+OpenBitSet#hashCode() may return false for identical sets.
+
+
+
+Description:
+OpenBitSet uses an internal buffer of long variables to store set bits and an additional 'wlen' index that points 
+to the highest used component inside {@link #bits} buffer.
+
+Unlike in JDK, the wlen field is not continuously maintained (on clearing bits, for example). This leads to a situation when wlen may point
+far beyond the last set bit. 
+
+The hashCode implementation iterates over all long components of the bits buffer, rotating the hash even for empty components. This is against the contract of hashCode-equals. The following test case illustrates this:
+
+{code}
+// initialize two bitsets with different capacity (bits length).
+BitSet bs1 = new BitSet(200);
+BitSet bs2 = new BitSet(64);
+// set the same bit.
+bs1.set(3);
+bs2.set(3);
+        
+// equals returns true (passes).
+assertEquals(bs1, bs2);
+// hashCode returns false (against contract).
+assertEquals(bs1.hashCode(), bs2.hashCode());
+{code}
+
+Fix and test case attached.

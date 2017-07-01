@@ -1,0 +1,6 @@
+jcr-rmi maven "site" target fails
+
+
+
+Description:
+the target "site" in jcr rmi fails because org.apache.jackrabbit.rmi.remote.SerialValue.java is empty

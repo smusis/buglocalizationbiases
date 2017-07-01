@@ -1,0 +1,9 @@
+TCK: testSaveMovedRefNode
+
+
+
+Description:
+NodeUUIDTest.testSaveMovedRefNode
+SessionUUIDTest.testSaveMovedRefNode
+
+makes the assumption, that moving a referenceable node with session A is visible as 'move' operation within session B as well.

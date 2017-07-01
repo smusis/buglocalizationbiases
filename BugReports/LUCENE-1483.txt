@@ -1,0 +1,25 @@
+Change IndexSearcher multisegment searches to search each individual segment using a single HitCollector
+
+
+
+Description:
+This issue changes how an IndexSearcher searches over multiple segments. The current method of searching multiple segments is to use a MultiSegmentReader and treat all of the segments as one. This causes filters and FieldCaches to be keyed to the MultiReader and makes reopen expensive. If only a few segments change, the FieldCache is still loaded for all of them.
+
+This patch changes things by searching each individual segment one at a time, but sharing the HitCollector used across each segment. This allows FieldCaches and Filters to be keyed on individual SegmentReaders, making reopen much cheaper. FieldCache loading over multiple segments can be much faster as well - with the old method, all unique terms for every segment is enumerated against each segment - because of the likely logarithmic change in terms per segment, this can be very wasteful. Searching individual segments avoids this cost. The term/document statistics from the multireader are used to score results for each segment.
+
+When sorting, its more difficult to use a single HitCollector for each sub searcher. Ordinals are not comparable across segments. To account for this, a new field sort enabled HitCollector is introduced that is able to collect and sort across segments (because of its ability to compare ordinals across segments). This TopFieldCollector class will collect the values/ordinals for a given segment, and upon moving to the next segment, translate any ordinals/values so that they can be compared against the values for the new segment. This is done lazily.
+
+All and all, the switch seems to provide numerous performance benefits, in both sorted and non sorted search. We were seeing a good loss on indices with lots of segments (1000?) and certain queue sizes / queries, but the latest results seem to show thats been mostly taken care of (you shouldnt be using such a large queue on such a segmented index anyway).
+
+* Introduces
+** MultiReaderHitCollector - a HitCollector that can collect across multiple IndexReaders. Old HitCollectors are wrapped to support multiple IndexReaders.
+** TopFieldCollector - a HitCollector that can compare values/ordinals across IndexReaders and sort on fields.
+** FieldValueHitQueue - a Priority queue that is part of the TopFieldCollector implementation.
+** FieldComparator - a new Comparator class that works across IndexReaders. Part of the TopFieldCollector implementation.
+** FieldComparatorSource - new class to allow for custom Comparators.
+* Alters
+** IndexSearcher uses a single HitCollector to collect hits against each individual SegmentReader. All the other changes stem from this ;)
+* Deprecates
+** TopFieldDocCollector
+** FieldSortedHitQueue
+

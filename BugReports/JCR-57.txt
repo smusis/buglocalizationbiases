@@ -1,0 +1,24 @@
+WorkspaceImpl.dispose() might cause ClassNotFoundException
+
+
+
+Description:
+Wenn using Jackrabbit in an environment, where ClassLoaders may get inactivated in the sense, the loading new classes is not possible anymore, shutting down the repository may result in a ClassNotFoundException during WorkspaceImpl.dispose().
+
+Reason for this is, that in the dispose() method, the ObservationManager is asked for all registered event listeners for them to be removed from the ObservationManager one-by-one. Asking for the listeners results in a new EventListenerIteratorImpl object being created.
+
+If now, this class has never been used during the live time of the repository, this would cause a ClassNotFoundException because the class loader is not laoding classes anymore in the specific environment.
+
+The specific environment is Eclipse, where one plugin is managing different Repository instances provided by separate plugins. When now the Jackrabbit provider plugin has already been stopped while the managing plugin tries to shutdown the Jackrabbit repository, the EventListenerIteratorImpl class cannot be loaded anymore and disposing the WorkspaceImpl in a controlled way fails.
+
+I suggest adding an ObservationManagerImpl.dispose() method, which is called by the WorkspaceImpl like :
+    WorkspaceImpl.dispose() {
+       if (obsMgr != null) {
+         obsMgr.dispose();
+         obsMgr = null;
+        }
+    }
+
+As a side effect of not calling getObservationManager[Impl]() the observation manager would also not be created if not existing yet.
+
+As a side effect to having the dispose method is, that the ObservationManagerImpl class could also do other cleanup work in addition to clearing the listener lists.

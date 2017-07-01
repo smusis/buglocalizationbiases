@@ -1,0 +1,9 @@
+PostMethod Java doc refers to wrong section of RFC1945
+
+
+
+Description:
+"The HTTP POST method is defined in section 9.5 of RFC1945" should read "The
+HTTP POST method is defined in section 8.3 of RFC1945"
+
+Change 9.5 to 8.3.

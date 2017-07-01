@@ -1,0 +1,6 @@
+ISOLatin1AccentFilter discards position increments of filtered terms
+
+
+
+Description:
+Not sure if this is a bug, but looks like one to me...

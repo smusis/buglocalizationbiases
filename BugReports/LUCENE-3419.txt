@@ -1,0 +1,6 @@
+Resolve JUnit assert deprecations
+
+
+
+Description:
+Many tests use assertEquals methods which have been deprecated.  The culprits are assertEquals(float, float), assertEquals(double, double) and assertEquals(Object[], Object[]).  Although not a big issue, they annoy me every time I see them so I'm going to fix them.

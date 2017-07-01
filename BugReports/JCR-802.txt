@@ -1,0 +1,6 @@
+Create a jackrabbit-site subproject
+
+
+
+Description:
+The Jackrabbit web site sources should be moved to a new "jackrabbit-site" subproject so that the top-level Jackrabbit POM would only be used for the multimodule build setup and generic project metadata. This way the web site could be built more easily without invoking all the subprojects, and Eclipse would also be happier since the site project wouldn't "contain" the other Jackrabbit modules.

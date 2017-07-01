@@ -1,0 +1,6 @@
+Update Spatial Lucene sort to use FieldComparatorSource
+
+
+
+Description:
+Update distance sorting to use FieldComparator sorting as opposed to SortComparator

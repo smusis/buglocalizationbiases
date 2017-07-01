@@ -1,0 +1,18 @@
+IntelliJ IDEA and Eclipse setup
+
+
+
+Description:
+Setting up Lucene/Solr in IntelliJ IDEA or Eclipse can be time-consuming.
+
+The attached patches add a new top level directory {{dev-tools/}} with sub-dirs {{idea/}} and {{eclipse/}} containing basic setup files for trunk, as well as top-level ant targets named "idea" and "eclipse" that copy these files into the proper locations.  This arrangement avoids the messiness attendant to in-place project configuration files directly checked into source control.
+
+The IDEA configuration includes modules for Lucene and Solr, each Lucene and Solr contrib, and each analysis module.  A JUnit run configuration per module is included.
+
+The Eclipse configuration includes a source entry for each source/test/resource location and classpath setup: a library entry for each jar.
+
+For IDEA, once {{ant idea}} has been run, the only configuration that must be performed manually is configuring the project-level JDK.  For Eclipse, once {{ant eclipse}} has been run, the user has to refresh the project (right-click on the project and choose Refresh).
+
+If these patches is committed, Subversion svn:ignore properties should be added/modified to ignore the destination IDEA and Eclipse configuration locations.
+
+Iam Jambour has written up on the Lucene wiki a detailed set of instructions for applying the 3.X branch patch for IDEA: http://wiki.apache.org/lucene-java/HowtoConfigureIntelliJ

@@ -1,0 +1,20 @@
+NGramFilter -- construct n-grams from a TokenStream
+
+
+
+Description:
+This filter constructs n-grams (token combinations up to a fixed size, sometimes
+called "shingles") from a token stream.
+
+The filter sets start offsets, end offsets and position increments, so
+highlighting and phrase queries should work.
+
+Position increments > 1 in the input stream are replaced by filler tokens
+(tokens with termText "_" and endOffset - startOffset = 0) in the output
+n-grams. (Position increments > 1 in the input stream are usually caused by
+removing some tokens, eg. stopwords, from a stream.)
+
+The filter uses CircularFifoBuffer and UnboundedFifoBuffer from Apache
+Commons-Collections.
+
+Filter, test case and an analyzer are attached.

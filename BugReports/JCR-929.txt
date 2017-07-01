@@ -1,0 +1,10 @@
+Under Heavy load in a Cluster HTTP Threads Block and stall requests
+
+
+
+Description:
+Under Heavy load created by mounting both nodes in the cluster in OSX Finder and then uploading large numebers of files to each node at the same time ( a few 1000), eventually one of the nodes stops responding and the Finder mount timesout and disconnects.
+
+Once that happens that node becomes unusable.
+More mount attempts will prompt for a password indicating HTTP is still running, but will timeout once the connection is authenticated.
+Access by the Web Browser will prompt for a password, conenct and provide a once only listing of any collection in the workspace. If you try to refresh that collection, the HTTP request hangs forever.

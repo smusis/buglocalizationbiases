@@ -1,0 +1,50 @@
+isHttp11 should have HttpClient scope
+
+
+
+Description:
+-----Original Message-----
+From: Kalnichevski, Oleg [mailto:oleg.kalnichevski@bearingpoint.com] 
+Sent: Wednesday, January 15, 2003 8:24 AM
+To: Commons HttpClient Project
+Cc: Rob Owen
+Subject: RE: isHttp11 and HTTP/1.0 servers 
+
+Rob
+You are basically right hands down. It does make sense for the HTTP version 
+flag to have HttpClient scope. We should address this shortcoming as a part of 
+the post-2.0-release redesign
+
+Feel free to file a bug report to make sure the issue does not go forgotten
+
+http://nagoya.apache.org/bugzilla/enter_bug.cgi?product=Commons
+
+Many thanks for bring it up
+
+Cheers
+
+Oleg
+
+-----Original Message-----
+From: Rob Owen [mailto:Rob.Owen@sas.com]
+Sent: Monday, January 13, 2003 18:31
+To: Commons HttpClient Project
+Subject: isHttp11 and HTTP/1.0 servers 
+
+
+The boolean variable http11 is set on a method by method basis. For PutMethod, 
+decisions (eg. Expect: 100-continue request header) are made prior to 
+determining the value for Http11 (chicken and egg problem) and so the default 
+(true) is used to produce the request. An HTTP/1.0 server hangs waiting for 
+the extra data on the PUT method body. 
+
+For applications that are using HttpClient (ie. they do not manipulate the 
+HTTP methods directly and cannot be expected to set the value of Http11 for 
+each method instance), shouldn't http11 have HttpClient scope ? This would 
+allow an interaction (eg. OPTIONS) to set http11 and all methods thereafter 
+would use this setting?
+  
+------
+Rob Owen
+SAS Institute Inc.
+email: Rob.Owen@sas.com

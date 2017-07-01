@@ -1,0 +1,14 @@
+Core: Misleading method naming with Workspace and Session (move283, copy283, clone283)
+
+
+
+Description:
+there seems to be leftovers from previous drafts of the jsr 283 within jackrabbit core, namely:
+
+- WorkspaceImpl#clone283
+- WorkspaceImpl#copy283
+- WorkspaceImpl#move283
+- SessionImpl#move283
+
+giving the impression that with jsr 283 those method would return 'String'. this however is not the case.
+therefore i suggest to remove those methods again.

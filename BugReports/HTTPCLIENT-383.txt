@@ -1,0 +1,11 @@
+HostConfiguration handling requires cleanup
+
+
+
+Description:
+As discussed on the mailing list, the host configuration handling currently
+appears faulty:
+
+http://marc.theaimsgroup.com/?t=109644952000001&r=1&w=2
+
+Oleg

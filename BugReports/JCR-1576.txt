@@ -1,0 +1,6 @@
+Remove RepositoryService exists()
+
+
+
+Description:
+RepositoryService exists() is not used anywhere. I suggest to remove it. 

@@ -1,0 +1,9 @@
+SPI: Add RepositoryService.getQNodeTypeDefinition
+
+
+
+Description:
+Finding of the F2F (2/3 July)
+
+similar to recent modifications to the retrieval of name spaces the node type management should be changed in order to only retrieve the complete set of node types on demand. Otherwise single node type definitions should be retrieved as required.
+To achieve this we agreed to add RepositoryService.getQNodeTypeDefinition

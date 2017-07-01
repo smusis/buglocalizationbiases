@@ -1,0 +1,60 @@
+date encoding limitation removing
+
+
+
+Description:
+currently there is some limitation to date encoding in lucene. I think it's 
+because dates should preserve lexicografical ordering, i.e. if one date precedes 
+another date then encoded values should keep same ordering.
+
+I know that it can be difficult to integrate it into existing version but there 
+is way to remove this limitation.
+Date milliseconds can be encoded as unsigned values with prefix that indicates 
+positive or negative value.
+
+In more details:
+I used hex encoding and prefix &#8216;p&#8217; and &#8216;n&#8217; for positive and negative values. I 
+got following results:
+
+Value -10000 is encoded with nffffffffffffd8f0, 
+-100	- nffffffffffffff9c
+0	- p0000000000000000
+100	- p0000000000000064
+10000	- p0000000000002710
+
+This preserves ordering between values and theirs encoding.
+
+Also hex encoding can be replaced with Character.MAX_RADIX encoding.
+
+Part of code that do this work:
+   final static char[] digits = {
+	'0' , '1' , '2' , '3' , '4' , '5' ,
+	'6' , '7' , '8' , '9' , 'a' , 'b' ,
+	'c' , 'd' , 'e' , 'f' , 'g' , 'h' ,
+	'i' , 'j' , 'k' , 'l' , 'm' , 'n' ,
+	'o' , 'p' , 'q' , 'r' , 's' , 't' ,
+	'u' , 'v' , 'w' , 'x' , 'y' , 'z'
+    };
+
+
+    char prefix;
+    if (time >= 0) {
+      prefix = 'p';
+    } else {
+      prefix = 'n';
+    }
+
+    char[] chars = new char[DATE_LEN + 1];
+    int index = DATE_LEN;
+    while (time != 0) {
+      int b = (int) (time & 0x0F);
+      chars[index--] = digits[b];
+      time = time >>> 4;
+    }
+
+    while (index >= 0) {
+      chars[index--] = '0';
+    }
+    chars[0] = prefix;
+
+    return new String(chars);

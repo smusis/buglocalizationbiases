@@ -1,0 +1,7 @@
+set jcr:encoding when importing files into simple webdav server
+
+
+
+Description:
+attached is a patch that sets the jcr:encoding property when importing files into the simple webdav server. it also strips parameters from the content type before setting the jcr:mimetype property.
+

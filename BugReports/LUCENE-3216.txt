@@ -1,0 +1,6 @@
+Store DocValues per segment instead of per field
+
+
+
+Description:
+currently we are storing docvalues per field which results in at least one file per field that uses docvalues (or at most two per field per segment depending on the impl.). Yet, we should try to by default pack docvalues into a single file if possible. To enable this we need to hold all docvalues in memory during indexing and write them to disk once we flush a segment. 

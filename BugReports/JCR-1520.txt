@@ -1,0 +1,10 @@
+DatabaseFileSystem's logger references the wrong class
+
+
+
+Description:
+In DatabaseFileSystem, the logger is constructed as
+private static Logger log = LoggerFactory.getLogger(DbFileSystem.class);
+
+It should be constructed as:
+private static Logger log = LoggerFactory.getLogger(DatabaseFileSystem.class);

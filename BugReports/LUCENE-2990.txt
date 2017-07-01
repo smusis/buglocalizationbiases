@@ -1,0 +1,6 @@
+Improve ArrayUtil/CollectionUtil.*Sort() methods to early-reaturn on empty or one-element lists/arrays
+
+
+
+Description:
+It might be a good idea to make CollectionUtil or ArrayUtil return early if the passed-in list or array's length <= 1 because sorting is unneeded then. This improves maybe automaton or other places, as for empty or one-element lists no SorterTermplate is created.

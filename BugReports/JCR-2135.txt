@@ -1,0 +1,10 @@
+UserManagement: make membership a weakreferences
+
+
+
+Description:
+the 2.0 user management code still contains a TODO asking for changing group-membership from reference to weakreference. 
+
+now that weakreferences are implemented in jackrabbit-core i'd like to make that change both in the node type definitions and the code.
+
+i'm opening this issue in order to give us the chance to keep track of node type change that may cause troubles....

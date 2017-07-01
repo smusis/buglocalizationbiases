@@ -1,0 +1,34 @@
+MultiThreadedHttpConnectionManager daemon Thread never GC'd
+
+
+
+Description:
+One of my colleagues was invoking HttpClient by way of a loop something like this:
+
+for (int i = 0; i < 300; i++) {
+    GetMethod method = new
+GetMethod("http://cvs.apache.org/viewcvs/jakarta-commons/httpclient/");
+    try {
+        HttpClient httpClient = new HttpClient(new
+MultiThreadedHttpConnectionManager());
+        httpClient.executeMethod(method);
+        byte[] bytes = method.getResponseBody();
+    } finally {
+        // always release the connection after we're done
+        method.releaseConnection();
+    }
+}
+
+He's in the process of revising his code so that he doesn't do this loop, which
+other developers might point out as a non-optimal use, but along the way, he
+discovered that the daemon thread that the MultiThreadedHttpConnectionManager
+makes does not get garbage collected.  Of course, the connection manager itself
+is also never gc'd.  While I think we can avoid this problem in our code, in the
+more general case, clients may not actually be able to control the number of
+MultiThreadedConnectionManagers they create, which could eventually cause
+problems.  This makes me think the problem is deserving of a patch.
+
+We found this problem with 2.0rc2, although presumably it also exists with the
+CVS HEAD.
+
+Patch to follow.

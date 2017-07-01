@@ -1,0 +1,8 @@
+3.x backwards tests are using Version.LUCENE_CURRENT: aren't testing backwards!
+
+
+
+Description:
+The 3.x backwards tests are mostly all using Version.LUCENE_CURRENT, therefore they don't always test the behavior as they should.
+
+I added TEST_VERSION_CURRENT = 3.0 to the backwards/LuceneTestCase, and I think we should fix all backwards tests to use TEST_VERSION_CURRENT instead.

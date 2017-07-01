@@ -1,0 +1,14 @@
+XA Transaction Recovery
+
+
+
+Description:
+If i add a node to the repository i get a XAException because i run into a Timeout ... 
+I see the Warn Message: Transaction rolled back because timeout expired.
+The default Timeout is set to 5 sec and i dont know how to set it to a higher value
+The Problem is if i restart my server websphere has a RecoveryManager and he try to recover this Transaction
+and then i get a NullpointerException in JCAManagedConnectionFactory. createManagedConnection beacuse the given 
+ConnectionRequestInfo is null.
+So i dont know why the RecoveryManager tries to recover the Transaction ? The only solution for me is to delete the Tran-Log Files wich keep Websphere to recvoer
+XA Trasnactions.
+

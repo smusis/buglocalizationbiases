@@ -1,0 +1,10 @@
+Make IndexReader/Searcher ctors readOnly=true by default
+
+
+
+Description:
+Another "change the defaults" in 3.0.
+
+Right now you get a read/write reader from IndexReader.open and new IndexSearcher(...), and reserving the right to write causes thread contention (on isDeleted).
+
+In 3.0 let's make readOnly reader the default, but still allow opening a read/write IndexReader.

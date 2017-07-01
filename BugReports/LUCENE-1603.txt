@@ -1,0 +1,24 @@
+Changes for TrieRange in FilteredTermEnum and MultiTermQuery improvement
+
+
+
+Description:
+This is a patch, that is needed for the MultiTermQuery-rewrite of TrieRange (LUCENE-1602):
+- Make the private members protected, to have access to them from the very special TrieRangeTermEnum 
+- Fix a small inconsistency (docFreq() now only returns a value, if a valid term is existing)
+- Improvement of MultiTermFilter.getDocIdSet to return DocIdSet.EMPTY_DOCIDSET, if the TermEnum is empty (less memory usage) and faster.
+- Add the getLastNumberOfTerms() to MultiTermQuery for statistics on different multi term queries and how may terms they affect, using this new functionality, the improvement of TrieRange can be shown (extract from test case there, 10000 docs index, long values):
+{code}
+[junit] Average number of terms during random search on 'field8':
+[junit]  Trie query: 244.2
+[junit]  Classical query: 3136.94
+[junit] Average number of terms during random search on 'field4':
+[junit]  Trie query: 38.3
+[junit]  Classical query: 3018.68
+[junit] Average number of terms during random search on 'field2':
+[junit]  Trie query: 18.04
+[junit]  Classical query: 3539.42
+{code}
+
+All core tests pass.
+

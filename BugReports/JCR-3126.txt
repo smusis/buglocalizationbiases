@@ -1,0 +1,7 @@
+The CredentialsWrapper should use a empty String as userId if custom Credentials are used
+
+
+
+Description:
+If custom Credentials are used we get a IllegalArgumentException from the AbstractQValueFactory while executing SessionItemStateManager.computeSystemGeneratedPropertyValues().
+The 2 Properties jcr:createdBy and jcr:lastModified could not be created.

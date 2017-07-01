@@ -1,0 +1,18 @@
+JCARepositoryHandle.login(...) methods never throw NoSuchWorkspaceException
+
+
+
+Description:
+Call sequence:
+  JCARepositoryHandle.login(Credentials, String)      // (here non-existent workspace is specified for login)
+    JCARepositoryHandle.login(JCAConnectionRequestInfo)
+      ConnectionManager.allocateConnection(ManagedConnectionFactory, ConnectionRequestInfo)
+        ...
+          JCAManagedConnection.openSession(JCAConnectionRequestInfo)
+            Repository.login(Credentials, String)        // here NoSuchWorkspaceException is thrown, catched by JCAManagedConnection.openSession(JCAConnectionRequestInfo), _set as linkedException_ to ResourceException, which is thrown
+        ...
+     Here (in JCARepositoryHandle.login(JCAConnectionRequestInfo)) ResourceException is caught, its _cause_ is retreived, and, if cause is NoSuchWorkspaceException, it's thrown, else another exception is thrown.
+
+Note, that when exception occures on lower level, it's wrapped in ResourceException using setLinkedException(), but on upper level it's unwrapped using getCause(). But cause is not set by anyone, it's null, so NoSuchWorkspaceException is never thrown here.
+
+Suggested fix is to use same mechanism on both ends: either change wrapping mechanism to exception chaining (new ResourceException(msg, cause)), or unwrap using ResourceException.getLinkedException().

@@ -1,0 +1,15 @@
+Configure the maven build for IDE project generation for IDEA and Eclipse
+
+
+
+Description:
+Can we add a plugin configuration for the maven-idea-plugin and maven-eclipse-plugin, with JDK version set for IDEA and configured source download of dependencies?
+
+Simplifies project regeneration and working with IDEA or Eclipse.
+
+I'll add a patch.
+
+Thanks!
+
+
+ 

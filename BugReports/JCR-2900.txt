@@ -1,0 +1,34 @@
+DbClusterTest failure due to network configuration
+
+
+
+Description:
+As reported by Serge, the DbClusterTest case fails when run with certain network configuration.
+
+Thomas already suggested a fix:
+
+### Eclipse Workspace Patch 1.0
+#P jackrabbit-core
+Index: src/test/java/org/apache/jackrabbit/core/cluster/DbClusterTest.java
+===================================================================
+--- 
+src/test/java/org/apache/jackrabbit/core/cluster/DbClusterTest.java (revisi
+on 1067983)
++++ 
+src/test/java/org/apache/jackrabbit/core/cluster/DbClusterTest.java (workin
+g copy)
+@@ -37,9 +37,9 @@
+     public void setUp() throws Exception {
+         deleteAll();
+         server1 = Server.createTcpServer("-tcpPort", "9001", "-baseDir",
+-                "./target/dbClusterTest/db1").start();
++                "./target/dbClusterTest/db1", "-tcpAllowOthers").start();
+         server2 = Server.createTcpServer("-tcpPort", "9002", "-baseDir",
+-                "./target/dbClusterTest/db2").start();
++                "./target/dbClusterTest/db2", "-tcpAllowOthers").start();
+         FileUtils.copyFile(
+                 new
+File("./src/test/resources/org/apache/jackrabbit/core/cluster/repository-h2
+.xml"),
+                 new File("./target/dbClusterTest/node1/repository.xml"));
+

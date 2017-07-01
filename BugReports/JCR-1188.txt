@@ -1,0 +1,15 @@
+WebDAV: Allow for Extensions of MimeResolver in the Configuration.
+
+
+
+Description:
+Currently mime type detection is done using the content type header or (if missing) using a static MimeResolver instance in 
+the IOUtil class. The MimeResolver itself reads from a properties file, that obviously does not list all possible extensions and
+mimetypes.
+
+This could be improved by:
+
+- extending the resource configuration.
+- extend the ImportContext and ExportContext interfaces
+- replacing the current usages of IOUti#MIMERESOLVER by the corresponding calls on the Context classes which 
+  themselves get a MimeResolver that is retrieved from the resource configuration.

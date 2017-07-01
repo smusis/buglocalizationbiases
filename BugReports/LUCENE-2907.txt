@@ -1,0 +1,9 @@
+automaton termsenum bug when running with multithreaded search
+
+
+
+Description:
+This one popped in hudson (with a test that runs the same query against fieldcache, and with a filter rewrite, and compares results)
+
+However, its actually worse and unrelated to the fieldcache: you can set both to filter rewrite and it will still fail.
+

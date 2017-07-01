@@ -1,0 +1,7 @@
+DirectSpellChecker throws NPE if field doesn't exist
+
+
+
+Description:
+DirectSpellchecker doesn't check that the resulting Terms is null,
+it should return an empty list here.

@@ -1,0 +1,11 @@
+VirtualItemStates of node types definitions not accessible with uuid
+
+
+
+Description:
+The VirtualNodeTypeStateProvider that maps node type definitions into the workspace under /jcr:system/jcr:nodeTypes does not implement the methods:
+
+- internalGetNodeState(NodeId id)
+- internalHasNodeState(NodeId id)
+
+This has the effect that ItemStates that reflect node type definitions are not accessible directly with their uuid.

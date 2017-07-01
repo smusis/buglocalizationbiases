@@ -1,0 +1,8 @@
+Merging multiple indexes does not maintain document order.
+
+
+
+Description:
+When I merge multiple indexes into a single, empty index, the document addition order is not being maintained.
+
+Self contained test case coming (as soon as I figure out how to attach it)

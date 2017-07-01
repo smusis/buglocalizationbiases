@@ -1,0 +1,12 @@
+Trouble undeploying jackrabbit-webapp from Tomcat
+
+
+
+Description:
+When testing jackrabbit-webapp for the 1.4 release, I again came across this issue that I've occasionally seen also before, but never qualified enough for a bug report.
+
+The Jackrabbit webapp would deploy without problems, but when I undeploy the webapp Tomcat fails to remove the Derby jar in WEB-INF/lib (I have unpackWARs enabled). This causes problems especially when I have autoDeploy enabled, as Tomcat then deploys the skeleton webapp right after undeployment, and the only way to really get rid of the webapp is to shutdown Tomcat and to manually remove the webapp on the file system.
+
+I suspect that this problem is related to Derby jar being somehow referenced even after the webapp is undeployed, causing Windows to prevent the jar file from being removed.
+
+Unless someone has some bright idea on how to resolve this, I'll consider this a known issue in Jackrabbit 1.4.

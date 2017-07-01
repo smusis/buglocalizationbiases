@@ -1,0 +1,20 @@
+Selective disabling of checks in ItemValidator
+
+
+
+Description:
+I would like to be able to selectively disable checks in ItemValidator in the scope of an operation performed through methods of the SessionState class. Doing so would provide simple means for internally modifying (for example) protected items. Currently such modifications must be done 'manually' on the item state level. This approach is very error prone and not very DRY.
+
+With my upcoming patch in place, setting a protected property would look like this:
+
+final Node parent = ...
+final Value value = ...
+SessionState sessionState = sessionContext.getSessionState();
+
+Property property = sessionState.performUnchecked(new SessionOperation<Property>() {
+    public Property perform(SessionContext context) throws RepositoryException {
+        return parent.setProperty("foo", value);
+    }
+}, ItemValidator.CHECK_CONSTRAINTS);
+
+That is, users need to have access to the session context in order to disable checks which makes this only usable from inside Jackrabbit. 

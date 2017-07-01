@@ -1,0 +1,19 @@
+We should never open an IndexInput when an IndexOutput is still open
+
+
+
+Description:
+I modified MockDirWrapper to assert this (except for
+segments_N/segments.gen, where it's expected), and, it uncovered a
+couple of places involving NRT readers where we open a shared doc
+store file that's still open for writing.
+
+First, if you install a merged segment warmer, we were failing to
+force the merge of the doc stores in this case, thus potentially
+opening the same doc stores that are also still open for writing.
+
+Second, if you're actively adding docs in other threads when you call
+IW.getReader(), the other threads could sneak in and flush new
+segments sharing the doc stores.  The returned reader then opens the
+doc store files that are still open for writing.
+

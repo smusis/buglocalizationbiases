@@ -1,0 +1,16 @@
+repository-1.5.dtd: change order of main elements
+
+
+
+Description:
+Currently the order of elements in repository.xml is:
+<!ELEMENT Repository (FileSystem,Security,Workspaces,Workspace,Versioning,SearchIndex?,Cluster?,DataStore?)>
+
+I would like to change it to
+<!ELEMENT Repository (Cluster?,FileSystem,DataStore?,Security,Workspaces,Workspace,Versioning,SearchIndex?)>
+because I think that makes more sense.
+
+Currently XML validation is disabled, and therefore the order of elements in the DTD does not need to match the repository.xml file. However as soon as XML validation is enabled, repository.xml files that use the wrong order will no longer work (the repository can not be started).
+
+There is a request to enable XML validation at http://issues.apache.org/jira/browse/JCR-1462
+

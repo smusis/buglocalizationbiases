@@ -1,0 +1,8 @@
+Virtual host setting does not apply when parsing and matching cookies
+
+
+
+Description:
+Virtual host setting does not apply when parsing and matching cookies.
+
+Problem has been reported on the httpclient-dev list by Dan Levine

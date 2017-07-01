@@ -1,0 +1,8 @@
+RMIRemoteBindingServlet fails to initialize if the RMI registry is not available
+
+
+
+Description:
+If the RMI registry is not available, the RMIRemoteBindingServlet in jcr-rmi will throw an exception in the init() method and prevent the servlet from being loaded.
+
+The same servlet can however also be mapped to the normal HTTP URL space as an alternative mechanism of making the RMI endpoint available to clients. Thus it would be better if the init() method just logged a warning instead of failing completely.

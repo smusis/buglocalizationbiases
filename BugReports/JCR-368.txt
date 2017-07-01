@@ -1,0 +1,6 @@
+Add support for simple test cases
+
+
+
+Description:
+As discussed on the mailing list, I'd like to add a simple org.apache.jackrabbit.core.TestRepository helper class that could be used in a simple unit test template.

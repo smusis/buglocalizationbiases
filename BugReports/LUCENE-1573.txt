@@ -1,0 +1,12 @@
+IndexWriter does not do the right thing when a Thread is interrupt()'d
+
+
+
+Description:
+Spinoff from here:
+
+    http://www.nabble.com/Deadlock-with-concurrent-merges-and-IndexWriter--Lucene-2.4--to22714290.html
+
+When a Thread is interrupt()'d while inside Lucene, there is a risk currently that it will cause a spinloop and starve BG merges from completing.
+
+Instead, when possible, we should allow interruption.  But unfortunately for back-compat, we will need to wrap the exception in an unchecked version.  In 3.0 we can change that to simply throw InterruptedException.

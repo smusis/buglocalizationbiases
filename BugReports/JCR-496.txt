@@ -1,0 +1,31 @@
+TCK: PropertyDefTest and NodeDefTest do not respect the value of the testroot configuration property
+
+
+
+Description:
+In PropertyDefTest and NodeDefTest, the test setup doesn't respect the value of the testroot configuration property.
+
+Proposal: use the testroot configuration property.
+
+Patch for PropertyDefTest:
+--- nodetype/PropertyDefTest.java       (revision 422074)
++++ nodetype/PropertyDefTest.java       (working copy)
+@@ -94,7 +94,7 @@
+  
+         session = helper.getReadOnlySession();
+         manager = session.getWorkspace().getNodeTypeManager();
+-        rootNode = session.getRootNode();
++        rootNode = testRootNode;
+     }
+
+Patch for NodeDefTest:
+--- nodetype/NodeDefTest.java   (revision 422074)
++++ nodetype/NodeDefTest.java   (working copy)
+@@ -68,7 +68,7 @@
+  
+         session = helper.getReadOnlySession();
+         manager = session.getWorkspace().getNodeTypeManager();
+-        rootNode = session.getRootNode();
++        rootNode = testRootNode;
+     }
+

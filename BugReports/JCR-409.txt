@@ -1,0 +1,23 @@
+Safe namespace registration
+
+
+
+Description:
+The namespace registration methods provided by the JCR NamespaceRegistry API are cumbersome to use and vulnerable to race conditions in the event of conflicting prefix mappings. This problem was discussed lately on the mailing list (see http://article.gmane.org/gmane.comp.apache.jackrabbit.devel/6805) and one symptom of the problem is the new code in NodeTypeManagerImpl (see JCR-349):
+
+    //  Registers a namespace...
+    try {
+        nsReg.getPrefix(uri);
+    } catch (NamespaceException e1) {
+        String original = prefix;
+        for (int i = 2; true; i++) {
+            try {
+                nsReg.registerNamespace(prefix, uri);
+                return;
+            } catch (NamespaceException e2) {
+                prefix = original + i;
+            }
+        }
+    }
+
+We should add an internal convenience method like NamespaceRegistryImpl.safeRegisterNamespace(String prefixHint, String uri) that, instead of throwing an exception, would automatically generate and use a unique prefix based on the given hint when a prefix conflict is detected.

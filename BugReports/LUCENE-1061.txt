@@ -1,0 +1,7 @@
+Adding a factory to QueryParser to instantiate query instances
+
+
+
+Description:
+With the new efforts with Payload and scoring functions, it would be nice to plugin custom query implementations while using the same QueryParser.
+Included is a patch with some refactoring the QueryParser to take a factory that produces query instances.

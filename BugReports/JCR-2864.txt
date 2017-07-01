@@ -1,0 +1,6 @@
+Use out-of-process text extraction
+
+
+
+Description:
+The upcoming Tika 0.9 release will contain a highly useful out-of-process text extraction feature (TIKA-416) that we should use also in Jackrabbit.

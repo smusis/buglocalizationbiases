@@ -1,0 +1,8 @@
+Improve payload error handling/reporting
+
+
+
+Description:
+If you try to load a payload more than once you get the exception:  IOException("Payload cannot be loaded more than once for the same term position.");
+
+You also get this exception if their is no payload to load, and its a bit confusing, as the message doesn't relate to the actual problem.

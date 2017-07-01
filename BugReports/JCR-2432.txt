@@ -1,0 +1,6 @@
+Escape colon in statement of jcr:contains
+
+
+
+Description:
+The colon is a special character in the lucene query parser and allows to prefix query terms with an optional field name. JCR does not specify such a feature, thus a colon in the fulltext statement should be treated as a regular character. 

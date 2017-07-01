@@ -1,0 +1,10 @@
+Distribution of commons classes
+
+
+
+Description:
+jukka started a discussion regarding distribution of commons classes a while ago:
+
+http://www.mail-archive.com/dev@jackrabbit.apache.org/msg06698.html
+
+

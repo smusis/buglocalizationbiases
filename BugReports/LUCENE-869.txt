@@ -1,0 +1,8 @@
+Make FSIndexInput and FSIndexOutput inner classes of FSDirectory
+
+
+
+Description:
+I would like make FSIndexInput and FSIndexOutput protected, static, inner classes of FSDirectory. Currently these classes are located in the same source file as FSDirectory, which means that classes outside the store package can not extend them.
+
+I don't see any performance impacts or other side effects of this trivial patch. All unit tests pass.

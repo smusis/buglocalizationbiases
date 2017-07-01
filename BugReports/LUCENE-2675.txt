@@ -1,0 +1,8 @@
+Add support for 3.0 indexes in 2.9 branch
+
+
+
+Description:
+There was a lot of user requests to be able to read Lucene 3.0 indexes also with 2.9. This would make the migration easier. There is no problem in doing that, as the new stored fields version in Lucene 3.0 is only used to mark a segment's stored fields file as no longer containing compressed fields. But index format did not really change. This patch simply allows FieldsReader to pass a Lucene 3.0 version number, but still writes segments in 2.9 format (as you could suddenly turn on compression for added documents).
+
+I added ZIP files for 3.0 indexes for TestBackwards. Without the patch it does not pass, as FieldsReader complains about incorrect version number (although it could read the file easily). If we would release maybe a 2.9.4 release of Lucene we should include that patch.

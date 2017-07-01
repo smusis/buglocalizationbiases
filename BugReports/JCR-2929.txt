@@ -1,0 +1,6 @@
+Various places do map lookups in loop instead of using entrySet iterator
+
+
+
+Description:
+Various places loop over a keyset iterator and do a map look up each time thru the loop, I plan to convert these places to use an entryset iterator to avoid this.

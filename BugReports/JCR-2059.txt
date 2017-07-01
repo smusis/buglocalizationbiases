@@ -1,0 +1,22 @@
+JSR 283: Access Property/Node from Session
+
+
+
+Description:
+New methods to access properties and nodes from the Session:
+
+- getNode(String absPath) Node
+- getNodeByIdentifier(String id) Node
+- getProperty(String absPath) Property
+
+... test for their existence:
+
+- nodeExists(String absPath) boolean
+- propertyExists(String absPath) boolean
+
+... and remove them:
+
+- removeItem(String absPath) void
+
+The functionality has been added at rev. 571494 and rev. 712984 but apart from Session.removeItem no
+test cases are present so far.

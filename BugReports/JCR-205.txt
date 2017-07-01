@@ -1,0 +1,8 @@
+Version.merge() corrupts repository
+
+
+
+Description:
+Version.merge() corrupts repository. somehow the 'protected' flags of the nt:version nodetype is not properly checked.
+this happens due to a wrong test case that calls merge on a Version instead of a normal Node.
+

@@ -1,0 +1,27 @@
+Performance improvement for TermInfosReader
+
+
+
+Description:
+Currently we have a bottleneck for multi-term queries: the dictionary lookup is being done
+twice for each term. The first time in Similarity.idf(), where searcher.docFreq() is called.
+The second time when the posting list is opened (TermDocs or TermPositions).
+
+The dictionary lookup is not cheap, that's why a significant performance improvement is
+possible here if we avoid the second lookup. An easy way to do this is to add a small LRU 
+cache to TermInfosReader. 
+
+I ran some performance experiments with an LRU cache size of 20, and an mid-size index of
+500,000 documents from wikipedia. Here are some test results:
+
+50,000 AND queries with 3 terms each:
+old:                  152 secs
+new (with LRU cache): 112 secs (26% faster)
+
+50,000 OR queries with 3 terms each:
+old:                  175 secs
+new (with LRU cache): 133 secs (24% faster)
+
+For bigger indexes this patch will probably have less impact, for smaller once more.
+
+I will attach a patch soon.

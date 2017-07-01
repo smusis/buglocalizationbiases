@@ -1,0 +1,20 @@
+If IndexWriter hits OutOfMemoryError it should not commit
+
+
+
+Description:
+While progress has been made making IndexWriter robust to OOME, I
+think there is still a real risk that an OOME at a bad time could put
+IndexWriter into a bad state such that if close() is called and
+somehow it succeeds without hitting another OOME, it risks
+introducing messing up the index.
+
+I'd like to detect if OOME has been hit in any of the methods that
+alter IW's state, and if so, do not commit changes to the index.  If
+close is called after hitting OOME, I think writer should instead
+abort.
+
+Attached patch just adds try/catch clauses to catch OOME, note that
+it was hit, and re-throw it.  Then, sync() refuses to commit a new
+segments_N if OOME was hit, and close instead calls abort when OOME
+was hit.  All tests pass.  I plan to commit in a day or two.

@@ -1,0 +1,19 @@
+Can't put non-index files (e.g. CVS, SVN directories) in a Lucene index directory
+
+
+
+Description:
+Lucene won't tolerate foreign files in its index directories.  This makes it impossible to keep an index in a CVS or Subversion repository.
+
+For instance, this exception appears when creating a RAMDirectory from a java.io.File that contains a subdirectory called ".svn".
+
+java.io.FileNotFoundException: /home/local/ejj/ic/.caches/.search/.index/.svn
+(Is a directory)
+        at java.io.RandomAccessFile.open(Native Method)
+        at java.io.RandomAccessFile.<init>(RandomAccessFile.java:212)
+        at
+org.apache.lucene.store.FSIndexInput$Descriptor.<init>(FSDirectory.java:425)
+        at org.apache.lucene.store.FSIndexInput.<init>(FSDirectory.java:434)
+        at org.apache.lucene.store.FSDirectory.openInput(FSDirectory.java:324)
+        at org.apache.lucene.store.RAMDirectory.<init>(RAMDirectory.java:61)
+        at org.apache.lucene.store.RAMDirectory.<init>(RAMDirectory.java:86)

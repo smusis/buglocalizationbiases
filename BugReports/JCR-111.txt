@@ -1,0 +1,6 @@
+org.apache.lucene.search.BooleanQuery$TooManyClauses when using '>' operator
+
+
+
+Description:
+when using a query with a '>' operator, the query engine does not scale with number of matching properties and a org.apache.lucene.search.BooleanQuery$TooManyClauses exception is thrown

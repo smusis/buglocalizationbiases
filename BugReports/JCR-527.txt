@@ -1,0 +1,9 @@
+TCK: DerefQueryLevel1Test requires support for optional jcr:deref function
+
+
+
+Description:
+Test fails if jcr:deref is not supported.  Per JSR-170, jcr:deref is optional.
+
+Proposal: introduce new configuration property which indicates whether jcr:deref is supported; if not throw NotExecutableException
+

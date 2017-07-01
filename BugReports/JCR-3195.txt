@@ -1,0 +1,12 @@
+wrong assumptions in test cases about lock tokens
+
+
+
+Description:
+Several test cases assume that Lock.getLockToken has to return null for locks not attached to the current session. However, this is optional. Citing the Javadoc for getLockToken:
+
+     * May return the lock token for this lock. If this lock is open-scoped and
+     * the current session either holds the lock token for this lock, or the
+     * repository chooses to expose the lock token to the current session, then
+     * this method will return that lock token. Otherwise this method will
+     * return <code>null</code>.

@@ -1,0 +1,6 @@
+NodeCanAddMixinTest.testCheckedIn() has wrong option check
+
+
+
+Description:
+NodeCanAddMixinTest.testCheckedIn() checks for locking option instead of versioning option.

@@ -1,0 +1,7 @@
+AbstractResource: Use jcr:createdBy to expose DAV:creator-displayname
+
+
+
+Description:
+as of jcr 2.0 the DeltaV property DAV:creator-displayname could be extracted from the jcr:createdBy property.
+the comment in abstract resource: "// creator-displayname, comment: not value available from jcr" therefore is outdated. and so is the subsequent line.

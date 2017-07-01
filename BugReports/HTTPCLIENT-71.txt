@@ -1,0 +1,10 @@
+Add support for Digest authentication to the Authenticator class
+
+
+
+Description:
+Here's some code initially whipped up by Geza for Apache Axis, now adapted to
+HTTPClient that adds support for Digest authentication to the Authenticator
+class. I have tested this code against tomcat 4.0.4 with a sample code that
+calls an Apache Axis Web Service. One caveat according to Geza, the code "Right
+now does not support qop-int".

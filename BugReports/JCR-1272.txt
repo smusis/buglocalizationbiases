@@ -1,0 +1,18 @@
+Property.getValue() throws RepositoryException with internal error
+
+
+
+Description:
+Running ConcurrentReadWriteTest (NUM_NODES=5, NUM_THREADS=3, RUN_NUM_SECONDS=120) resulted in a RepositoryException calling Property.getValue():
+
+javax.jcr.RepositoryException: Internal error while retrieving value of b3fc1ea8-3364-4236-bcc7-dea0baf90640/{}test: null: null
+
+Debugging shows that it is a NullPointerException:
+
+java.lang.NullPointerException
+	at org.apache.jackrabbit.core.PropertyImpl.getValue(PropertyImpl.java:481)
+	at org.apache.jackrabbit.core.ConcurrentReadWriteTest$1$1.execute(ConcurrentReadWriteTest.java:68)
+	at org.apache.jackrabbit.core.AbstractConcurrencyTest$Executor.run(AbstractConcurrencyTest.java:110)
+	at java.lang.Thread.run(Thread.java:619)
+
+It's probably the state which has been discarded after the sanityCheck().

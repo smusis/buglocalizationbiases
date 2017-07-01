@@ -1,0 +1,10 @@
+remove Byte/CharBuffer wrapping for collation key generation
+
+
+
+Description:
+We can remove the overhead of ByteBuffer and CharBuffer wrapping in CollationKeyFilter and ICUCollationKeyFilter.
+
+this patch moves the logic in IndexableBinaryStringTools into char[],int,int and byte[],int,int based methods, with the previous Byte/CharBuffer methods delegating to these.
+Previously, the Byte/CharBuffer methods required a backing array anyway.
+

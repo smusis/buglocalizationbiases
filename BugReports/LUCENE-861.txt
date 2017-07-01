@@ -1,0 +1,91 @@
+Contrib queries package Query implementations do not override equals()
+
+
+
+Description:
+Query implementations should override equals() so that Query instances can be cached and that Filters can know if a Query has been used before.  See the discussion in this thread.
+
+http://www.mail-archive.com/java-user@lucene.apache.org/msg13061.html
+
+Following 3 contrib Query implementations do no override equals()
+
+org.apache.lucene.search.BoostingQuery;
+org.apache.lucene.search.FuzzyLikeThisQuery;
+org.apache.lucene.search.similar.MoreLikeThisQuery;
+
+Test cases below show the problem.
+
+package com.teamware.office.lucene.search;
+
+import static org.junit.Assert.*;
+
+import org.apache.lucene.analysis.standard.StandardAnalyzer;
+import org.apache.lucene.index.Term;
+import org.apache.lucene.search.BoostingQuery;
+import org.apache.lucene.search.FuzzyLikeThisQuery;
+import org.apache.lucene.search.TermQuery;
+import org.apache.lucene.search.similar.MoreLikeThisQuery;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
+public class ContribQueriesEqualsTest
+{
+    /**
+     * @throws java.lang.Exception
+     */
+    @Before
+    public void setUp() throws Exception
+    {
+    }
+
+    /**
+     * @throws java.lang.Exception
+     */
+    @After
+    public void tearDown() throws Exception
+    {
+    }
+    
+    /**
+     *  Show that the BoostingQuery in the queries contrib package 
+     *  does not implement equals() correctly.
+     */
+    @Test
+    public void testBoostingQueryEquals()
+    {
+        TermQuery q1 = new TermQuery(new Term("subject:", "java"));
+        TermQuery q2 = new TermQuery(new Term("subject:", "java"));
+        assertEquals("Two TermQueries with same attributes should be equal", q1, q2);
+        BoostingQuery bq1 = new BoostingQuery(q1, q2, 0.1f);
+        BoostingQuery bq2 = new BoostingQuery(q1, q2, 0.1f);
+        assertEquals("BoostingQuery with same attributes is not equal", bq1, bq2);
+    }
+
+    /**
+     *  Show that the MoreLikeThisQuery in the queries contrib package 
+     *  does not implement equals() correctly.
+     */
+    @Test
+    public void testMoreLikeThisQueryEquals()
+    {
+        String moreLikeFields[] = new String[] {"subject", "body"};
+        
+        MoreLikeThisQuery mltq1 = new MoreLikeThisQuery("java", moreLikeFields, new StandardAnalyzer());
+        MoreLikeThisQuery mltq2 = new MoreLikeThisQuery("java", moreLikeFields, new StandardAnalyzer());
+        assertEquals("MoreLikeThisQuery with same attributes is not equal", mltq1, mltq2);
+    }
+    /**
+     *  Show that the FuzzyLikeThisQuery in the queries contrib package 
+     *  does not implement equals() correctly.
+     */
+    @Test
+    public void testFuzzyLikeThisQueryEquals()
+    {
+        FuzzyLikeThisQuery fltq1 = new FuzzyLikeThisQuery(10, new StandardAnalyzer());
+        fltq1.addTerms("javi", "subject", 0.5f, 2);
+        FuzzyLikeThisQuery fltq2 = new FuzzyLikeThisQuery(10, new StandardAnalyzer());
+        fltq2.addTerms("javi", "subject", 0.5f, 2);
+        assertEquals("FuzzyLikeThisQuery with same attributes is not equal", fltq1, fltq2);
+    }
+}
+

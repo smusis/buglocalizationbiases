@@ -1,0 +1,6 @@
+Use jackrabbit 1.2.1
+
+
+
+Description:
+Use Jackarabit 1.2.1

@@ -1,0 +1,14 @@
+contrib intelligent Analyzer for Chinese
+
+
+
+Description:
+I wrote a Analyzer for apache lucene for analyzing sentences in Chinese language. it's called "imdict-chinese-analyzer", the project on google code is here: http://code.google.com/p/imdict-chinese-analyzer/
+
+In Chinese, "我是中国人"(I am Chinese), should be tokenized as "我"(I)   "是"(am)   "中国人"(Chinese), not "我" "是中" "国人". So the analyzer must handle each sentence properly, or there will be mis-understandings everywhere in the index constructed by Lucene, and the accuracy of the search engine will be affected seriously!
+
+Although there are two analyzer packages in apache repository which can handle Chinese: ChineseAnalyzer and CJKAnalyzer, they take each character or every two adjoining characters as a single word, this is obviously not true in reality, also this strategy will increase the index size and hurt the performance baddly.
+
+The algorithm of imdict-chinese-analyzer is based on Hidden Markov Model (HMM), so it can tokenize chinese sentence in a really intelligent way. Tokenizaion accuracy of this model is above 90% according to the paper "HHMM-based Chinese Lexical analyzer ICTCLAL" while other analyzer's is about 60%.
+
+As imdict-chinese-analyzer is a really fast and intelligent. I want to contribute it to the apache lucene repository.

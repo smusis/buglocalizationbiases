@@ -1,0 +1,25 @@
+Node's childNodes out of sync after unsuccessful save()
+
+
+
+Description:
+If node.save() failes due to an exception in PersistanceManager.store(ChangeLog) a successive call to node.getNodes() will still contain a reference to the node which failed to be persisted.
+This is the case even after a call to refresh(false).
+You have to restart Jackrabbit in order to get rid of this reference
+
+
+UseCase in kind of dummy-code:
+
+node.addNode("new", "nt:unstructured");
+node.save();
+=> ItemStateException from persistance
+
+node.refresh(false);
+
+Iterator itr = node.getNodes();
+while(itr.hasNext()) {
+   child = itr.nextNode();
+}
+=> Exception: "Failed to build path to "new"
+
+

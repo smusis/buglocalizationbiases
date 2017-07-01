@@ -1,0 +1,7 @@
+ResourceConfig: read additional parameters for IOHandler and PropertyHandler that are covered by public setters
+
+
+
+Description:
+the reason for this is that currently default node types used in DefaultHandler cannot be changed using the resource config, which is
+a bit cumbersome and leads to useless copies of DefaultIOManager.

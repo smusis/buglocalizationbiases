@@ -1,0 +1,10 @@
+Query for all node fails after restart
+
+
+
+Description:
+The query handler initially indexes the node type definitions exposed at /jcr:system/jcr:nodetypes. However after a restart or a node type registration the UUIDs of those nodes will change because they consist of VirtualNodeStates. The index will still use the UUIDs of the initial indexing and will return a query result that refers to UUIDs that do not exist in the workspace anymore.
+
+As an short term solution we should disable indexing of VirtualNodeStates.
+
+Please note, this does not only apply to xpath queries but also sql queries of course.

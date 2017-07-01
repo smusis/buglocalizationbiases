@@ -1,0 +1,8 @@
+Improve random testing
+
+
+
+Description:
+We have quite a few random tests, but there's no way to "crank" them.
+
+The idea here is to add a multiplier which can be increased by a sysprop. For example, we could set this to something higher than 1 for hudson.

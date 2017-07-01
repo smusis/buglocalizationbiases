@@ -1,0 +1,11 @@
+Add m2e lifecycle mappings for Eclipse Indigo
+
+
+
+Description:
+When importing Jackrabbit to the latest Eclipse release (Indigo) that comes with m2e version 1.0, many of the POMs are flagged red because m2e doesn't know what to do with the custom plugin mappings we use in many components.
+
+This is a pretty contentious issue for m2e (see for example https://bugs.eclipse.org/bugs/show_bug.cgi?id=350414), and ideally it should just work without any custom workarounds on our part.
+
+However, as a workaround until the core issue is solved, the best solution is to explicitly tell m2e what to do with these plugin mappings. The extra org.eclipse.m2e:lifecycle-mapping configuration is only active when used within Eclipse, so it doesn't affect
+normal builds.

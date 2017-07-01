@@ -1,0 +1,6 @@
+Remove synchronization in SegmentReader.isDeleted
+
+
+
+Description:
+Removes SegmentReader.isDeleted synchronization by using a volatile deletedDocs variable on Java 1.5 platforms.  On Java 1.4 platforms synchronization is limited to obtaining the deletedDocs reference.

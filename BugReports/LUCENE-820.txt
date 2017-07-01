@@ -1,0 +1,17 @@
+SegmentReader.setNorm can fail to remove separate norms file, on Windows
+
+
+
+Description:
+
+While working through LUCENE-710 I hit this bug: on Windows
+only, when SegmentReader.setNorm is called, but separate norms
+(_X_N.sY) had already been previously saved, then, on closing the
+reader, we will write the next gen separate norm file correctly
+(_X_N+1.sY) but fail to delete the current one.
+
+It's quite minor because the next writer to touch the index will
+remove the stale file.
+
+This is because the Norm class still holds the IndexInput open when
+the reader commits.

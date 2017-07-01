@@ -1,0 +1,6 @@
+Lucene-core 2.9.0 missing from Maven Central Repository
+
+
+
+Description:
+Sub-projects like lucene-demos, lucene-contrib, etc. exist in central, and depend on 2.9.0 of lucene-core. However, the lucene-core 2.9.0 artifact itself is missing.

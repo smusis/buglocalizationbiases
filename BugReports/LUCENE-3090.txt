@@ -1,0 +1,6 @@
+DWFlushControl does not take active DWPT out of the loop on fullFlush
+
+
+
+Description:
+We have seen several OOM on TestNRTThreads and all of them are caused by DWFlushControl missing DWPT that are set as flushPending but can't full due to a full flush going on. Yet that means that those DWPT are filling up in the background while they should actually be checked out and blocked until the full flush finishes. Even further we currently stall on the maxNumThreadStates while we should stall on the num of active thread states. I will attach a patch tomorrow.

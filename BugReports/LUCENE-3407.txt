@@ -1,0 +1,10 @@
+wrong stats/scoring from MemoryCodec
+
+
+
+Description:
+I hit some random failures in the flexscoring branch: wierd because its not a random test.
+
+I noticed the test always failed with memorycodec, and wrote a specific test for it.
+
+I haven't traced thru it yet, but I think its likely the issue that memorycodec is somehow returning wrong stats here?

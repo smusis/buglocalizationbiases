@@ -1,0 +1,9 @@
+[PATCH] TermVectorReader and TermVectorWriter
+
+
+
+Description:
+TermVectorReader.close() closes all streams now under any condition. If an
+excpetion is catched, it is remembered an thrown when all streams are closed.
+Unnecessary variable assignment removed from code. 
+Fix typo in TermVectorReader and TermVectorWriter.

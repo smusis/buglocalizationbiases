@@ -1,0 +1,6 @@
+FilterIndexReader should overwrite isOptimized()
+
+
+
+Description:
+A call of FilterIndexReader.isOptimized() results in a NPE because FilterIndexReader does not overwrite isOptimized().

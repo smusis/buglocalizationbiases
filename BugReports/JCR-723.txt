@@ -1,0 +1,6 @@
+OpenDocument files missing in mimetypes.properties
+
+
+
+Description:
+The mime-types from Oasis OpenDocument are missing from mimetypes.properties file. 

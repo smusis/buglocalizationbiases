@@ -1,0 +1,8 @@
+New LaxRedirectStrategy class should probably call the super method first.
+
+
+
+Description:
+LaxRedirectStrategy extends the defaulRedirect class but does not call the super method as one would expect.
+
+Just adding a patch to make sure it gets called.

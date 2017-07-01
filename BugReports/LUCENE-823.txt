@@ -1,0 +1,37 @@
+Lucene fails to close file handles under certain situations
+
+
+
+Description:
+As a followon to LUCENE-820, I've added a further check in
+MockRAMDirectory to assert that there are no open files when the
+directory is closed.
+
+That check caused a few unit tests to fail, and in digging into the
+reason I uncovered these cases where Lucene fails to close file
+handles:
+
+  * TermInfosReader.close() was setting its ThreadLocal enumerators to
+    null without first closing the SegmentTermEnum in there.  It looks
+    like this was part of the fix for LUCENE-436.  I just added the
+    call to close.
+
+    This is somewhat severe since we could leak many file handles for
+    use cases that burn through threads and/or indexes.  Though,
+    FSIndexInput does have a finalize() to close itself.
+
+  * Flushing of deletes in IndexWriter opens SegmentReader to do the
+    flushing, and it correctly calls close() to close the reader.  But
+    if an exception is hit during commit and before actually closing,
+    it will leave open those handles.  I fixed this first calling
+    doCommit() and then doClose() in a finally.  The "disk full" tests
+    we now have were hitting this.
+
+  * IndexWriter's addIndexes(IndexReader[]) method was opening a
+    reader but not closing it with a try/finally.  I just put a
+    try/finally in.
+
+I've also changed some unit tests to use MockRAMDirectory instead of
+RAMDirectory to increase testing coverage of "leaking open file
+handles".
+

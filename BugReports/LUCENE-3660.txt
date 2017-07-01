@@ -1,0 +1,12 @@
+If indexwriter hits a non-ioexception from indexExists it leaks a write.lock
+
+
+
+Description:
+the rest of IW's ctor is careful about this.
+
+IndexReader.indexExists catches any IOException and returns false, but the problem
+occurs if some other exception (in my test, UnsupportedOperationException, but you
+can imagine others are possible), when trying to e.g. read in the segments file.
+
+I think we just need to move the IR.exists stuff inside the try / finally

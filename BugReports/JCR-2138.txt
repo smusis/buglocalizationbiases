@@ -1,0 +1,6 @@
+Prevent persistence of faulty back-references
+
+
+
+Description:
+The SharedItemStateManager updates reference data. Sometimes the back-references to reference properties are not updated correctly with the result that nodes cannot removed anymore. The attached patch contains JUnit test cases and a possible solution.

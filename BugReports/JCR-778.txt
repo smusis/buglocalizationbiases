@@ -1,0 +1,31 @@
+Error on query initialization - intermittent
+
+
+
+Description:
+About 1 in ten times, I get the error as shown in the stack trace below. This happens when I run test, or when I start the app. The only way to resolve (when testing) seems to be to blow away the repository. 
+
+It always happens at the point the query manager is accessed (triggering the query subsystem to start up). It DOES NOT cause an exception to be thrown back to the caller, I just noticed it in the logs. Basically the queries return NO data at all (and show up as test failures of course). 
+
+In each case when I startup the system/test, if the repository exists I use it, and (for tests) clean it by deleting the root node of the user content, and then starting again, otherwise there is nothing that exciting.
+
+Please let me know if more info is needed.
+
+
+ERROR 05-03 15:54:39,386 (LazyQueryResultImpl.java:getResults:266)  -Exception while executing query:
+java.io.IOException : No such file or directory
+    at java.io.UnixFileSystem.createFileExclusively(Native Method)
+    at java.io.File.createNewFile(File.java:850)
+    at org.apache.jackrabbit.core.query.lucene.FSDirectory$1.obtain( FSDirectory.java:119)
+    at org.apache.lucene.store.Lock.obtain(Lock.java:51)
+    at org.apache.lucene.store.Lock$With.run(Lock.java:98)
+    at org.apache.lucene.index.IndexReader.open(IndexReader.java:141)
+    at org.apache.lucene.index.IndexReader.open(IndexReader.java:136)
+    at org.apache.jackrabbit.core.query.lucene.AbstractIndex.getReadOnlyIndexReader(AbstractIndex.java:191)
+    at org.apache.jackrabbit.core.query.lucene.MultiIndex.getIndexReader (MultiIndex.java:616)
+    at org.apache.jackrabbit.core.query.lucene.SearchIndex.executeQuery(SearchIndex.java:384)
+    at org.apache.jackrabbit.core.query.lucene.LazyQueryResultImpl.executeQuery(LazyQueryResultImpl.java :204)
+    at org.apache.jackrabbit.core.query.lucene.LazyQueryResultImpl.getResults(LazyQueryResultImpl.java:244)
+    at org.apache.jackrabbit.core.query.lucene.LazyQueryResultImpl.<init>(LazyQueryResultImpl.java :161)
+    at org.apache.jackrabbit.core.query.lucene.QueryImpl.execute(QueryImpl.java:164)
+    at org.apache.jackrabbit.core.query.QueryImpl.execute(QueryImpl.java:142)

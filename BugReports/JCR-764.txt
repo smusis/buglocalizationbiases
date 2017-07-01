@@ -1,0 +1,27 @@
+PdfTextFilter may leave parsed document open in case of errors
+
+
+
+Description:
+In case of errors in a parsed PDF document jackrabbit may fail to properly close the parsed document. PDFBox will write a stack trace to system out at finalize to warn agains this.
+
+this is the resulting log:
+
+WARN org.apache.jackrabbit.core.query.LazyReader LazyReader.java(read:82) 20.02.2007 15:42:50 exception initializing reader org.apache.jackrabbit.core.query.PdfTextFilter$1: java.io.IOException: Error: Expected hex number, actual=' 2'
+java.lang.Throwable: Warning: You did not close the PDF Document
+   at org.pdfbox.cos.COSDocument.finalize(COSDocument.java:384)
+   at java.lang.ref.Finalizer.invokeFinalizeMethod(Native Method)
+   at java.lang.ref.Finalizer.runFinalizer(Finalizer.java:83)
+   at java.lang.ref.Finalizer.access$100(Finalizer.java:14)
+   at java.lang.ref.Finalizer$FinalizerThread.run(Finalizer.java:160)
+
+
+this may happens because the parse() method at
+
+parser = new PDFParser(new BufferedInputStream(in));
+parser.parse();
+
+immediately creates a document, but it can throw an exception while processing the file.
+PdfTextFilter should check if parser still holds a document and close it appropriately.
+
+

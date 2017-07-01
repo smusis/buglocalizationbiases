@@ -1,0 +1,10 @@
+Redirect to a relative URL fails
+
+
+
+Description:
+Request the url 
+http://commerce1.cera.net/discount-pcbooks/catalog/categories.asp?
+search_str=0782128092
+
+On a browser the redirect works, while with HttpClient it doesn't.

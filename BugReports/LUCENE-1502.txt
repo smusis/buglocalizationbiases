@@ -1,0 +1,49 @@
+CharArraySet behaves inconsistently in add(Object) and contains(Object)
+
+
+
+Description:
+CharArraySet's add(Object) method looks like this:
+    if (o instanceof char[]) {
+      return add((char[])o);
+    } else if (o instanceof String) {
+      return add((String)o);
+    } else if (o instanceof CharSequence) {
+      return add((CharSequence)o);
+    } else {
+      return add(o.toString());
+    }
+You'll notice that in the case of an Object (for example, Integer), the o.toString() is added. However, its contains(Object) method looks like this:
+    if (o instanceof char[]) {
+      char[] text = (char[])o;
+      return contains(text, 0, text.length);
+    } else if (o instanceof CharSequence) {
+      return contains((CharSequence)o);
+    }
+    return false;
+In case of contains(Integer), it always returns false. I've added a simple test to TestCharArraySet, which reproduces the problem:
+  public void testObjectContains() {
+    CharArraySet set = new CharArraySet(10, true);
+    Integer val = new Integer(1);
+    set.add(val);
+    assertTrue(set.contains(val));
+    assertTrue(set.contains(new Integer(1)));
+  }
+Changing contains(Object) to this, solves the problem:
+    if (o instanceof char[]) {
+      char[] text = (char[])o;
+      return contains(text, 0, text.length);
+    } 
+    return contains(o.toString());
+
+The patch also includes few minor improvements (which were discussed on the mailing list) such as the removal of the following dead code from getHashCode(CharSequence):
+      if (false && text instanceof String) {
+        code = text.hashCode();
+and simplifying add(Object):
+    if (o instanceof char[]) {
+      return add((char[])o);
+    }
+    return add(o.toString());
+(which also aligns with the equivalent contains() method).
+
+One thing that's still left open is whether we can avoid the calls to Character.toLowerCase calls in all the char[] array methods, by first converting the char[] to lowercase, and then passing it through the equals() and getHashCode() methods. It works for add(), but fails for contains(char[]) since it modifies the input array.

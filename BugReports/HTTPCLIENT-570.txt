@@ -1,0 +1,73 @@
+Failed CONNECT leaves connection in an inconsistent state
+
+
+
+Description:
+Opening a HTTPS Connection over an authenticating Proxy (Basic auth. scheme) 
+fails, if proxy credentials are not provided at the first try. 
+
+The following example code will fail:
+
+HttpClient client = new HttpClient(new MultiThreadedHttpConnectionManager());
+URL url = new URL("https://examplehttpsurl");
+  
+//first try 
+GetMethod get = new GetMethod(url.toExternalForm());
+HostConfiguration hc = new HostConfiguration();
+hc.setHost(url.getHost(), 443, "https");
+hc.setProxy("proxyhost", 4711);
+
+try {
+  client.executeMethod(hc, get);
+} catch (Exception e){
+  LOG.error("",e);
+} finally {
+  get.releaseConnection();
+}
+
+//returns 407 (expected)
+LOG.debug("Answer: " + get.getStatusLine().toString()); 
+
+//retry with credentials (normally requested from the user)
+client.getState().setProxyCredentials(new AuthScope("proxyhost",4711),
+      new NTCredentials("USER", "PASS", "", ""));
+
+get = new GetMethod(url.toExternalForm());
+
+try {
+  client.executeMethod(hc, get);
+} catch (Exception e) {
+  e.printStackTrace();
+} finally {
+  get.releaseConnection();
+}
+//should be 200 but is 407
+LOG.debug("Answer: " + get.getStatusLine().toString());
+
+
+
+----------
+
+
+From what I see from HttpMethodDirector.executeWithRetry(final
+HttpMethod method), the cause is, that the connection is kept open, and
+thus the connect is never retried:
+
+
+if (!this.conn.isOpen()) {
+  // this connection must be opened before it can be used
+  // This has nothing to do with opening a secure tunnel
+  this.conn.open();
+  if (this.conn.isProxied() && this.conn.isSecure() 
+      && !(method instanceof ConnectMethod)) {
+    // we need to create a secure tunnel before we can execute the real method
+    if (!executeConnect()) {
+      // abort, the connect method failed
+      return;
+    }
+  }
+}
+
+
+If I add a conn.close() before returning on !executeConnect(), the
+above code will work, the CONNECT is reattempted.

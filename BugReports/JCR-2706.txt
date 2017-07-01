@@ -1,0 +1,6 @@
+Evaluate if membershipcache (JCR-2703) obsoletes the cache in DefaultPrincipalProvider
+
+
+
+Description:
+

@@ -1,0 +1,6 @@
+Saving concurrent sessions executing random operations causes a corrupt JCR
+
+
+
+Description:
+Run the attached unit test. Several concurrent sessions add, move, and remove nodes. Then the index is removed and the repository is again started. The repository is in an inconsistent state and the index cannot be rebuild. Also a lot of exceptions occur. See (see Output before patch.txt). Note that the unit test also suffers from the deadlock of issue http://issues.apache.org/jira/browse/JCR-2525 about half the time.

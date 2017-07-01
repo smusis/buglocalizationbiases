@@ -1,0 +1,34 @@
+ConcurrentModificationException in WebDAV UPDATE
+
+
+
+Description:
+After fixing JCR-2750, I started seeing the following exception in the jcr2dav integration tests:
+
+java.util.ConcurrentModificationException: null
+	at java.util.LinkedHashMap$LinkedHashIterator.nextEntry(LinkedHashMap.java:365) ~[na:1.5.0_22]
+	at java.util.LinkedHashMap$ValueIterator.next(LinkedHashMap.java:380) ~[na:1.5.0_22]
+	at java.util.AbstractCollection.toArray(AbstractCollection.java:176) ~[na:1.5.0_22]
+	at org.apache.jackrabbit.webdav.MultiStatus.getResponses(MultiStatus.java:122) ~[jackrabbit-webdav-2.2-SNAPSHOT.jar:2.2-SNAPSHOT]
+	at org.apache.jackrabbit.webdav.MultiStatus.toXml(MultiStatus.java:151) ~[jackrabbit-webdav-2.2-SNAPSHOT.jar:2.2-SNAPSHOT]
+	at org.apache.jackrabbit.webdav.WebdavResponseImpl.sendXmlResponse(WebdavResponseImpl.java:145) ~[jackrabbit-webdav-2.2-SNAPSHOT.jar:2.2-SNAPSHOT]
+	at org.apache.jackrabbit.webdav.WebdavResponseImpl.sendMultiStatus(WebdavResponseImpl.java:113) ~[jackrabbit-webdav-2.2-SNAPSHOT.jar:2.2-SNAPSHOT]
+	at org.apache.jackrabbit.webdav.server.AbstractWebdavServlet.doUpdate(AbstractWebdavServlet.java:1117) ~[jackrabbit-webdav-2.2-SNAPSHOT.jar:2.2-SNAPSHOT]
+	at org.apache.jackrabbit.webdav.server.AbstractWebdavServlet.execute(AbstractWebdavServlet.java:327) ~[jackrabbit-webdav-2.2-SNAPSHOT.jar:2.2-SNAPSHOT]
+	at org.apache.jackrabbit.webdav.server.AbstractWebdavServlet.service(AbstractWebdavServlet.java:201) ~[jackrabbit-webdav-2.2-SNAPSHOT.jar:2.2-SNAPSHOT]
+	at javax.servlet.http.HttpServlet.service(HttpServlet.java:820) ~[servlet-api-2.5-20081211.jar:na]
+	at org.mortbay.jetty.servlet.ServletHolder.handle(ServletHolder.java:511) ~[jetty-6.1.22.jar:6.1.22]
+	at org.mortbay.jetty.servlet.ServletHandler.handle(ServletHandler.java:390) ~[jetty-6.1.22.jar:6.1.22]
+	at org.mortbay.jetty.handler.ContextHandler.handle(ContextHandler.java:765) [jetty-6.1.22.jar:6.1.22]
+	at org.mortbay.jetty.handler.HandlerCollection.handle(HandlerCollection.java:114) [jetty-6.1.22.jar:6.1.22]
+	at org.mortbay.jetty.handler.HandlerWrapper.handle(HandlerWrapper.java:152) [jetty-6.1.22.jar:6.1.22]
+	at org.mortbay.jetty.Server.handle(Server.java:326) [jetty-6.1.22.jar:6.1.22]
+	at org.mortbay.jetty.HttpConnection.handleRequest(HttpConnection.java:542) [jetty-6.1.22.jar:6.1.22]
+	at org.mortbay.jetty.HttpConnection$RequestHandler.content(HttpConnection.java:938) [jetty-6.1.22.jar:6.1.22]
+	at org.mortbay.jetty.HttpParser.parseNext(HttpParser.java:755) [jetty-6.1.22.jar:6.1.22]
+	at org.mortbay.jetty.HttpParser.parseAvailable(HttpParser.java:218) [jetty-6.1.22.jar:6.1.22]
+	at org.mortbay.jetty.HttpConnection.handle(HttpConnection.java:404) [jetty-6.1.22.jar:6.1.22]
+	at org.mortbay.jetty.bio.SocketConnector$Connection.run(SocketConnector.java:228) [jetty-6.1.22.jar:6.1.22]
+	at org.mortbay.thread.QueuedThreadPool$PoolThread.run(QueuedThreadPool.java:582) [jetty-util-6.1.22.jar:6.1.22]
+
+Instead of something caused by JCR-2750, it looks like a deeper problem that the JCR_2750 fix just uncovered. As far as I can tell, the ConcurrentModificationException is coming from the AbstractResource.EListener class that may end up concurrently modifying the MultiStatus response while it's being serialized.

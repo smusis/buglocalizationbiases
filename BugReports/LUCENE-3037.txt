@@ -1,0 +1,14 @@
+TestFSTs.testRealTerms produces a corrupt index
+
+
+
+Description:
+seems to be prox/skip related: the test passes, but the checkindex upon closing fails.
+
+ant test-core -Dtestcase=TestFSTs -Dtests.seed=-4012305283315171209:0 -Dtests.multiplier=3 -Dtests.nightly=true -Dtests.linedocsfile=c:/data/enwiki.random.lines.txt.gz
+
+Note: to get the enwiki.random.lines.txt.gz you have to fetch it from hudson (warning 1 gigabyte file).
+you also have to run the test a few times to trigger it.
+
+ill upload the index this thing makes to this issue.
+

@@ -1,0 +1,11 @@
+Compressed entities are not being cached properly
+
+
+
+Description:
+org.apache.http.impl.client.cache.CacheValidityPolicy.contentLengthHeaderMatchesActualLength() returns false for entities decompressed by ContentEncodingHttpClient, because the length of decompressed entity stored in cache will be different from the length specified in the response header.
+Consequently, gzipped/deflated entities will never be satisfied from the cache.
+
+Proposed fix: introduce new field in HttpCacheEntry() - actualContentLength, and populate it with the actual content length rigth before the cache entry is stored in the cache. Change the org.apache.http.impl.client.cache.CacheValidityPolicy.contentLengthHeaderMatchesActualLength() method to compare
+entry.getResource().length() with entry.getActualContentLength()
+

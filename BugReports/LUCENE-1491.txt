@@ -1,0 +1,8 @@
+EdgeNGramTokenFilter stops on tokens smaller then minimum gram size.
+
+
+
+Description:
+If a token is encountered in the stream that is shorter in length than the min gram size, the filter will stop processing the token stream.
+
+Working up a unit test now, but may be a few days before I can provide it. Wanted to get it in the system.

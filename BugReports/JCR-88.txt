@@ -1,0 +1,6 @@
+jcr:path in QueryResult is only tested with SQL
+
+
+
+Description:
+The TCK should also include a test case for XPath query syntax.

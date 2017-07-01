@@ -1,0 +1,6 @@
+Use of Multi-Args URI Causes URI-Rewriting to improperly unescape characters
+
+
+
+Description:
+See: http://www.nabble.com/unable-to-encode-reserved-characters-using-java.net.URI-multi-arg-constructors-td14954679.html for information from the httpclient-dev thread.  The basic idea is that URI's multi-arg constructors break things.

@@ -1,0 +1,27 @@
+NPE in RepositoryServiceImpl.getPropertyInfo()
+
+
+
+Description:
+under unknown conditions, i get a NPE in get property info, such as the 'getValue()' of the getstring dav property is null:
+
+            } else if (props.contains(JCR_GET_STRING)) {
+                // single valued non-binary property
+                String str = props.get(JCR_GET_STRING).getValue().toString();
+                QValue qValue = ValueFormat.getQValue(str, propertyType, getNamePathResolver(sessionInfo), getQValueFactory(sessionInfo));
+                return new PropertyInfoImpl(propertyId, p, propertyType, qValue);
+            } else {
+
+the other properties in the propset are:
+ - getstring: null
+ - type: String
+ - length: 0
+
+the property in question is the last property of a node and it's an empty string. the error only occurs on certain usage patterns, but consistently. maybe depending on the fetch-depth or internal cache.
+
+extending the check to:
+            } else if (props.contains(JCR_GET_STRING) && props.get(JCR_GET_STRING).getValue() != null) {
+
+solves the problem.
+ 
+

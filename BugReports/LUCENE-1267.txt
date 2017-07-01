@@ -1,0 +1,14 @@
+add numDocs() and maxDoc() methods to IndexWriter; deprecate docCount()
+
+
+
+Description:
+Spinoff from here:
+
+  http://mail-archives.apache.org/mod_mbox/lucene-java-user/200804.mbox/%3c405706.11550.qm@web65411.mail.ac4.yahoo.com%3e
+
+I think we should add maxDoc() and numDocs() methods to IndexWriter,
+and deprecate docCount() in favor of maxDoc().  To do this I think we
+should cache the deletion count of each segment in the segments file.
+
+

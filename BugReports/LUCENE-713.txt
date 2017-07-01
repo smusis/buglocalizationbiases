@@ -1,0 +1,21 @@
+File Formats Documentation is not correct for Term Vectors
+
+
+
+Description:
+From Samir Abdou on the dev mailing list:
+
+Hi, 
+
+There is an inconsistency between the files format page (from Lucene
+website) and the source code. It concerns the positions and offsets of term
+vectors. It seems that documentation (website) is not up to date. According
+to the file format page, offsets and positions are not stored! Is that
+correct?
+
+Many thanks,
+
+Samir
+-----
+Indeed, in the file formats term vectors section it doesn't talk about the storing of position and offset info.
+

@@ -1,0 +1,6 @@
+FVH: slow performance on very large queries
+
+
+
+Description:
+The change from HashSet to ArrayList for flatQueries in LUCENE-3019 resulted in very significant slowdown in some of our e-discovery queries after upgrade from 3.4.0 to 3.5.0. Our queries sometime contain tens of thousands of terms. As a result, major portion of execution time for such queries is now spent in the flatQueries.contains( sourceQuery ) method calls.

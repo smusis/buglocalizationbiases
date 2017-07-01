@@ -1,0 +1,11 @@
+ MalformedCookieException: distinguish cookie syntax errors from cross-domain errors
+
+
+
+Description:
+MalformedCookieException is used for both cookies with syntax errors,
+and for cookies which are invalid for the particular context - e.g.
+cross-domain cookies.
+
+I think it would be helpful to be able to distinguish these without
+needing to examine the message text.

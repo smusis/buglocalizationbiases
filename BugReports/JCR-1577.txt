@@ -1,0 +1,6 @@
+Remove RepositoryService.getRootId()
+
+
+
+Description:
+For consistency reasons jcr2spi should use idFactory.createNodeId((String) null, pathFactory.getRootPath()) everywhere to build the NodeId of the root node. having two separate methods is confusing.

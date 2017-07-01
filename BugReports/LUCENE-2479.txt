@@ -1,0 +1,16 @@
+need the ability to also sort SpellCheck results by freq, instead of just by Edit Distance+freq
+
+
+
+Description:
+This issue was first noticed and reported in this Solr thread; http://lucene.472066.n3.nabble.com/spellcheck-issues-td489776.html#a489788
+
+Basically, there are situations where it would be useful to sort by freq first, instead of the current "sort by edit distance, and then subsort by freq if edit distance is equal"
+
+The author of the thread suggested "What I think would work even better than allowing a custom compareTo function would be to incorporate the frequency directly into the distance function.  This would allow for greater control over the trade-off between frequency and edit distance"
+
+However, custom compareTo functions are not always be possible (ie if a certain version of Lucene must be used, because it was release with Solr) and incorporating freq directly into the distance function may be overkill (ie depending on the implementation)
+
+it is suggested that we have a simple modification of the existing compareTo function in Lucene to allow users to specify if they want the existing sort method or if they want to sort by freq.
+
+

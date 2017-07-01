@@ -1,0 +1,6 @@
+Enable passing a config into PKIndexSplitter
+
+
+
+Description:
+I need to be able to pass the IndexWriterConfig into the IW used by PKIndexSplitter.

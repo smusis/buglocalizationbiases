@@ -1,0 +1,41 @@
+setProperty access control evaluation does not properly cope with XA transactions
+
+
+
+Description:
+This is another instance of the problems with ACL evaluation within transactions described in https://issues.apache.org/jira/browse/JCR-2999.
+In this case PropertyImpl#getParent() called from PropertyImpl#checkSetValue() is trying to check read permissions of the yet uncommited parent and thus fails with an ItemNotFound exception.
+
+The problem is reproducible with the following test:
+
+public void testTransaction() throws Exception {
+
+        // make sure testUser has all privileges
+        Privilege[] privileges = privilegesFromName(Privilege.JCR_ALL);
+        givePrivileges(path, privileges, getRestrictions(superuser, path));
+
+        // create new node and lock it
+        Session s = getTestSession();
+        UserTransaction utx = new UserTransactionImpl(s);
+        utx.begin();
+
+        // add node and save it
+        Node n = s.getNode(childNPath);
+        if (n.hasNode(nodeName1)) {
+            Node c = n.getNode(nodeName1);
+            c.remove();
+            s.save();
+        }
+
+        // create node and save
+        Node n2 = n.addNode(nodeName1);
+        s.save(); // -> node is NEW -> no failure
+
+        // set a property on a child node of an uncommited parent
+        n2.setProperty(propertyName1, "testSetProperty");
+        s.save();  // -> fail because PropertyImpl#getParent called from PropertyImpl#checkSetValue
+                       //    was checking read permission on the not yet commited parent
+
+        // commit
+        utx.commit();
+    }

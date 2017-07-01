@@ -1,0 +1,6 @@
+new QueryParser fails to set AUTO REWRITE for multi-term queries
+
+
+
+Description:
+The old QueryParser defaults to constant score rewrite for Prefix,Fuzzy,Wildcard,TermRangeQuery, but the new one seems not to.

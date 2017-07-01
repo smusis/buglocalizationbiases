@@ -1,0 +1,11 @@
+Don't commit an empty segments_N when IW is opened with create=true
+
+
+
+Description:
+If IW is opened with create=true, it forcefully commits an empty
+segments_N.  But really it should not: if autoCommit is false, nothing
+should be committed until commit or close is explicitly called.
+
+Spinoff from http://www.nabble.com/no-segments*-file-found:-files:-Error-on-opening-index-td23219520.html
+

@@ -1,0 +1,10 @@
+Make IndexReader really read-only in Lucene 4.0
+
+
+
+Description:
+As we change API completely in Lucene 4.0 we are also free to remove read-write access and commits from IndexReader. This code is so hairy and buggy (as investigated by Robert and Mike today) when you work on SegmentReader level but forget to flush in the DirectoryReader, so its better to really make IndexReaders readonly.
+
+Currently with IndexReader you can do things like:
+- delete/undelete Documents -> Can be done by with IndexWriter, too (using deleteByQuery)
+- change norms -> this is a bad idea in general, but when we remove norms at all and replace by DocValues this is obsolete already. Changing DocValues should also be done using IndexWriter in trunk (once it is ready)

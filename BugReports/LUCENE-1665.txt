@@ -1,0 +1,22 @@
+Remove SortField.AUTO
+
+
+
+Description:
+I'd like to remove SortField.AUTO... it's dangerous for Lucene to
+guess the type of your field, based on the first term it encounters.
+It can easily be wrong, and, whether it's wrong or right could
+suddenly change as you index different documents.
+
+It unexepctedly binds SortField to needing an IndexReader to do the
+guessing.
+
+It's caused various problems in the past (most recently, for me on
+LUCENE-1656) as we fix other issues/make improvements.
+
+I'd prefer that users of Lucene's field sort be explicit about the
+type that Lucene should cast the field to.  Someday, if we have
+optional strong[er] typing of Lucene's fields, such type information
+would already be known.  But in the meantime, I think users should be
+explicit.
+

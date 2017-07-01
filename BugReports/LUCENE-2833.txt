@@ -1,0 +1,10 @@
+upgrade contrib/ant's tidy.jar
+
+
+
+Description:
+contrib/ant uses a Tidy.jar that also includes classes in org.w3c.dom, org.xml.sax, etc.
+
+This is no problem if you are an ant user, but if you are an IDE user you need to carefully configure the order of your classpath or things will not compile, as these will override the ones in the Solr libs, for example.
+
+The solution is to upgrade the tidy.jar to the newest one that only includes org.w3c.tidy and doesn't cause these problems.

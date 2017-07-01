@@ -1,0 +1,14 @@
+Javadoc: does not mention Expires; clarify validate
+
+
+
+Description:
+The Expires attribute processing is not mentioned in any of the Javadoc, as far
+as I can tell. 
+
+Also, the public method parseAttribute() actually handles the attributes, but
+does not contain the details. It would be useful if there was at least a
+backlink to the parse() documentation.
+
+It's not clear from the Javadoc whether parse() automatically calls validate()
+or not. It doesn't.

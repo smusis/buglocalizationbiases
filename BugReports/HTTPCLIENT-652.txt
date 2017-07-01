@@ -1,0 +1,6 @@
+Add optional state attribute to managed client connections
+
+
+
+Description:
+Provide an optional state attribute to managed client connections. The connection state can represent a user identify in case of connection based authentication schemes such as NTLM or SSL, thus allowing for connection re-use on a per user identity basis.

@@ -1,0 +1,19 @@
+InstantiatedIndex - faster but memory consuming index
+
+
+
+Description:
+Represented as a coupled graph of class instances, this all-in-memory index store implementation delivers search results up to a 100 times faster than the file-centric RAMDirectory at the cost of greater RAM consumption.
+
+Performance seems to be a little bit better than log2n (binary search). No real data on that, just my eyes.
+
+Populated with a single document InstantiatedIndex is almost, but not quite, as fast as MemoryIndex.    
+
+At 20,000 document 10-50 characters long InstantiatedIndex outperforms RAMDirectory some 30x,
+15x at 100 documents of 2000 charachters length,
+and is linear to RAMDirectory at 10,000 documents of 2000 characters length.
+
+Mileage may vary depending on term saturation.
+
+
+

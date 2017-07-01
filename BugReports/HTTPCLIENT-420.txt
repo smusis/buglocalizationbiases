@@ -1,0 +1,9 @@
+Provide a non-pooling connection manager
+
+
+
+Description:
+The current implementations of the connection managers all have a connection
+pool. For applications requiring only single requests very rarely this is
+overkill. We should provide a very simple connection manager that uses a
+connection only one time and then closes it right away.

@@ -1,0 +1,6 @@
+Change log level for text extractor timeout
+
+
+
+Description:
+Currently an info message is written to the log when a text extractor job times out. Because this may happen quite frequently this should be changed to log level debug.

@@ -1,0 +1,10 @@
+Move jackrabbit/trunk/contrib to jackrabbit/sandbox
+
+
+
+Description:
+As discussed on the mailing list (see http://www.nabble.com/Moving-contrib-outside-trunk-and-rename-to-sandbox-tf4635301.html), we should do the following:
+
+    svn move https://svn.apache.org/repos/asf/jackrabbit/trunk/contrib https://svn.apache.org/repos/asf/jackrabbit/sandbox
+
+I will do this in a few days unless anyone objects.

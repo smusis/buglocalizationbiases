@@ -1,0 +1,8 @@
+Improvement to MultiValueCollectionConverterImpl to Map collections with element class Object.class
+
+
+
+Description:
+Currently MultiValueCollectionConverterImpl  does not support elements of type Object.class.  The type of the contained class has to be specified either through the mapping file or through the Bean annotation.  Even with that flexibility Object.class is specifically excluded (For good reasons.).  
+
+My view is that by definition MultiValueCollectionConverterImpl   should make a best effort to convert and that best effort should include using Undefined UndefinedTypeConverterImpl to convert an object when all the other conversion strategies run out.  To this resolve I have patched the OCM source.  I have test cases also.  I will upload the patch files right after.

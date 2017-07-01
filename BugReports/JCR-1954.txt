@@ -1,0 +1,28 @@
+DataStore: gc.stopScan() should be optional
+
+
+
+Description:
+Data Store garbage collection currently works like this:
+
+gc.scan();
+gc.stopScan();
+gc.deleteUnused();
+
+Currently, if stopScan() is not called, an exception is thrown. This is not user friendly. Instead, stopScan() should be optional, and should be allowed any time. It may be used to indicate garbage collection has finished:
+
+try {
+  gc.scan();
+  ...
+  gc.deleteUnused();
+} finally {
+  gc.stopScan();
+}
+
+Or when sharing the repository:
+
+gc1.scan();
+gc2.scan();
+gc1.deleteUnused();
+gc2.stopScan();
+

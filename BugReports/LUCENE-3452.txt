@@ -1,0 +1,16 @@
+The native FS lock used in test-framework's o.a.l.util.LuceneJUnitResultFormatter prohibits testing on a multi-user system
+
+
+
+Description:
+{{LuceneJUnitResultFormatter}} uses a lock to buffer test suites' output, so that when run in parallel, they don't interrupt each other when they are displayed on the console.
+
+The current implementation uses a fixed directory ({{lucene_junit_lock/}} in {{java.io.tmpdir}} (by default {{/tmp/}} on Unix/Linux systems) as the location of this lock.  This functionality was introduced on SOLR-1835.
+
+As Shawn Heisey reported on SOLR-2739, some tests fail when run as root, but succeed when run as a non-root user.  
+
+On #lucene IRC today, Shawn wrote:
+{quote}
+(2:06:07 PM) elyograg: Now that I know I can't run the tests as root, I have discovered /tmp/lucene_junit_lock.  Once you run the tests as user A, you cannot run them again as user B until that directory is deleted, and only root or the original user can do so.
+{quote}
+

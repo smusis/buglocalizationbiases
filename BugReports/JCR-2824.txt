@@ -1,0 +1,12 @@
+Add RepositoryException to JackrabbitAccessControlList#getRestrictionNames and #getRestrictionType
+
+
+
+Description:
+Throughout the JCR and Jackrabbit API methods that include name processing are define to throw RepositoryException in case of 
+an error related to name processing (due to lack of a more specific exception in the javax.jcr package space).
+
+Unfortunately, I forgot those in JackrabbitAccessControlList and JackrabbitAccessControlEntry. While the latter has already been addressed for the 2.2 release,
+I would like to fix the JackrabbitAccessControlList interface as well (and subsequently also fix the implementations that currently do not properly cope with 
+names).
+

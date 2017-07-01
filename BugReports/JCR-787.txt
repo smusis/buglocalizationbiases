@@ -1,0 +1,11 @@
+Missing equals and hashcode preventing the re-use of SharedFieldSortComparator
+
+
+
+Description:
+As briefly mentioned in the dev email list, improperly implemented (i.e., missing - using the default Object implementation) equals and hashcode in SearchIndex.java prevents the reuse of a SharedFieldSortComparator between different queries when nothing has changed in the repository.  In tests, this appears to have a fairly significant negative performance impact.
+
+Please see the following for the correct code:
+
+http://svn.apache.org/viewvc?view=rev&revision=506908
+

@@ -1,0 +1,8 @@
+Deprecated AbstractWebdavServlet should be empty and extend new AbstractWebdavServlet
+
+
+
+Description:
+The AbstractWebdavServlet has been copied from the jcr-server to the webdav project. The class at the old location has been marked deprecated. I suggest that in addition to marking it deprecated we should have this class extend the new AbstractWebdavServlet class from the webdav project but not contain any fields and methods. This way, users of the old class will always get the newest and best version but can still use the old class.
+
+Will provide a patch for this proposal

@@ -1,0 +1,6 @@
+Faster packaging of the standalone jar
+
+
+
+Description:
+Currently the standalone jar is created by first unpacking all the dependencies to target/classes and then packaging the resulting directory tree into the resulting jar file. This takes quite a while as all the writing and reading of uncompressed class files requires lots of disk IO. We could avoid these extra copies by using the bundle or assembly plugin to build the standalone jar.

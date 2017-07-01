@@ -1,0 +1,10 @@
+Swap URL+Email recognizing StandardTokenizer and UAX29Tokenizer
+
+
+
+Description:
+Currently, in addition to implementing the UAX#29 word boundary rules, StandardTokenizer recognizes email adresses and URLs, but doesn't provide a way to turn this behavior off and/or provide overlapping tokens with the components (username from email address, hostname from URL, etc.).
+
+UAX29Tokenizer should become StandardTokenizer, and current StandardTokenizer should be renamed to something like UAX29TokenizerPlusPlus (or something like that).
+
+For rationale, see [the discussion at the reopened LUCENE-2167|https://issues.apache.org/jira/browse/LUCENE-2167?focusedCommentId=12929325&page=com.atlassian.jira.plugin.system.issuetabpanels%3Acomment-tabpanel#action_12929325].

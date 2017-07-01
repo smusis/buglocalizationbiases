@@ -1,0 +1,9 @@
+Support all of unicode in StandardTokenizer
+
+
+
+Description:
+StandardTokenizer currently only supports the BMP.
+
+If it encounters characters outside of the BMP, it just discards them... 
+it should instead implement fully implement UAX#29 across all of unicode.

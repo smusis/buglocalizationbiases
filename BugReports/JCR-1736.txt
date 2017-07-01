@@ -1,0 +1,6 @@
+Expose BootstrapConfig in Servlets
+
+
+
+Description:
+the RepostitoryStartup and RepositroyAccess servlets use a bootstrap config object for initialization. in order to generate diagnostics reports it would be very useful to be able to access them.

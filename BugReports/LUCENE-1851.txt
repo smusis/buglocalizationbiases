@@ -1,0 +1,6 @@
+'ant javacc' in root project should also properly create contrib/surround Java files
+
+
+
+Description:
+For consistency after LUCENE-1829 which did the same for contrib/queryparser

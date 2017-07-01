@@ -1,0 +1,25 @@
+No way to get the requestBody out of a PostMethod or use if extending class
+
+
+
+Description:
+Attempting to extend the PostMethod class I discovered that I had no access to 
+the requestBody because the member is declared private and there is no get 
+method.
+
+I was trying to override the setRequestContentLength() when I discovered the 
+problem.
+
+So my enhancement request specifically is:
+1. add a get method to be able to get the requestBody (probably a get method to 
+the parameters as well)
+2. (optionally) make the requestBody and parameters members protected instead 
+of private so extending the class is easier.
+
+In case you were wondering, the reason for extending the class was to add the 
+ability to set a timeout value on the httpconnection and also the ability to 
+set the character encoding of the request body.  I don't know if these are 
+worthy of an enhancement request but I require them for what I'm doing.  Nice 
+work by the way.
+
+Thank you.

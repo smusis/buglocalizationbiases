@@ -1,0 +1,11 @@
+left nav of docs/index.html in dist artifacts links to hudson for javadocs
+
+
+
+Description:
+When building the zip or tgz release artifacts, the docs/index.html file contained in that release (the starter point for people to read documentation) links "API Docs" to 
+http://lucene.zones.apache.org:8080/hudson/job/Lucene-Nightly/javadoc/ instead of to ./api/index.html (the local copy of the javadocs)
+
+this relates to the initial migration to hudson for the nightly builds and a plan to copy the javadocs back to lucene.apache.org that wasn't considered urgent since it was just for transient nightly docs, but a side affect is that the release documentation also links to hudson.
+
+even if we don't modify the nightly build process before the 2.2 release, we should update the link in the left nav in the 2.2 release branch before building the final release.

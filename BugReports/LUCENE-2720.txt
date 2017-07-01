@@ -1,0 +1,12 @@
+IndexWriter should throw IndexFormatTooOldExc on open, not later during optimize/getReader/close
+
+
+
+Description:
+Spinoff of LUCENE-2618 and also related to the original issue LUCENE-2523...
+
+If you open IW on a too-old index, you don't find out until much later that the index is too old.
+
+This is because IW does not go and open segment readers on all segments.  It only does so when it's time to apply deletes, do merges, open an NRT reader, etc.
+
+This is a serious bug because you can in fact succeed in committing with the new major version of Lucene against your too-old index, which is catastrophic because suddenly the old Lucene version will no longer open the index, and so your index becomes unusable.

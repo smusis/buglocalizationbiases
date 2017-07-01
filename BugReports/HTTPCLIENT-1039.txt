@@ -1,0 +1,27 @@
+AbstractHttpClient.determineTarget does not recognize target host correctly
+
+
+
+Description:
+I am trying to execute an HttpGet with the following URI:
+"http://www.foo.foo/doSomething.html?url=http://www.bar.bar/doSomethingElse.html"
+
+This leads to UnknownHostException
+
+Going through the internal code, the problem seems to be in the AbstractHttpClient.determineTarget method:
+            String ssp = requestURI.getSchemeSpecificPart();
+            ssp = ssp.substring(2, ssp.length()); //remove "//" prefix
+            int end = ssp.indexOf(':') > 0 ? ssp.indexOf(':') :
+                    ssp.indexOf('/') > 0 ? ssp.indexOf('/') :
+                    ssp.indexOf('?') > 0 ? ssp.indexOf('?') : ssp.length();
+            String host = ssp.substring(0, end);
+
+This code sets the target host to "www.foo.foo/doSomething.html?url=http" instead of "www.foo.foo". This obviously breaks the execution not far down the line... DefaultClientConnectionOperator.resolveHostname throws an UnknownHostException.
+
+FWIW the AbstractHttpClient.determineTarget method actually has access to the request URI object, which correctly states that the host is "www.foo.foo".
+
+So why does it try to extract the host from the scheme specific part anyway?
+
+I hope this is useful... and if there is any workaround please let me know, as I'm stuck on this one.
+
+Marco

@@ -1,0 +1,12 @@
+cache module does not completely handle upstream Warning headers correctly
+
+
+
+Description:
+There are a couple of MUST requirements from the RFC for Warning headers that aren't correctly handled by the current implementation:
+
+http://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.46
+
+1. "However, if a cache successfully validates a cache entry, it SHOULD remove any Warning headers previously attached to that entry except as specified for specific Warning codes. It MUST then add any Warning headers received in the validating response."
+
+2. "If an implementation receives a message with a warning-value that includes a warn-date, and that warn-date is different from the Date value in the response, then that warning-value MUST be deleted from the message before storing, forwarding, or using it. (This prevents bad consequences of naive caching of Warning header fields.) If all of the warning-values are deleted for this reason, the Warning header MUST be deleted as well." 

@@ -1,0 +1,7 @@
+Make TopDocs constructor public
+
+
+
+Description:
+TopDocs constructor is package visible. This prevents instantiating it from outside this package. For example, I wrote a HitColletor that couldn't extend directly from TopDocCollector. I need to create a new TopDocs instance, however since the c'tor is package visible, I can't do that.
+For now, I completely duplicated the code, but I hope you'll fix it soon.

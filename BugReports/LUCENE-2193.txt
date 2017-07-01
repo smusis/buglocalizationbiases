@@ -1,0 +1,22 @@
+Get rid of backwards tags
+
+
+
+Description:
+This is a followup on: [http://www.lucidimagination.com/search/document/bb6c23b6e87c0b63/back_compat_folders_in_tags_when_i_svn_update#3000a2232c678031]
+
+Currently we use tags for specifying the revision number in the backwards branch that matches the current development branch revision (in common-build.xml). The idea is to just specify the corresponding revision no of the backwards branch in common-build.xml and the backwards-test target automatically handles up/down/co:
+
+- We just give the rev number in common-build in common-build.xml as a property backwards-rev="XXXX". This property is used also in building the command line which is also a property backwards-svn-args="-r $backwards-rev". By that you can use "ant -Dbackwards-svn-args=''" to force test-backwards to checkout/update to head of branch (recommened for developers).
+
+- we should rename target to "test-backwards" and keep a "test-tag" with dependency to that for compatibility
+
+- The checkout on backwards creates a directory "backwards/${backwards-branch}" and uses "svn co ${backwards-svn-args} 'http://svn.../${backwards-branch}' 'backwards/${backwards-branch}'". The cool thing, the dir is checked out if non existent, but if the checkout already exists, svn co implicitely does an svn up to the given revision (it will also downgrade and merge if newer). So the test-backwards target always updates the checkout to the correct revision. I had not tried with local changes, but this should simply merge as an svn up.
+
+The workflow for committing fixes to bw would be:
+
+- First use "svn up" to upgrade the backwards working copy to HEAD.
+- Commit the changes
+- Copy and paste the message "Committed revision XXXX" to common-build.xml
+- Commit the changes in trunk
+

@@ -1,0 +1,13 @@
+Windows specific implementation of the Digest auth scheme
+
+
+
+Description:
+Microsoft Windows 2003 implementation of digest auth scheme is essentially a
+superset of RFC 2617 with Windows specific aspects:
+http://www.microsoft.com/technet/prodtechnol/windowsserver2003/library/TechRef/717b450c-f4a0-4cc9-86f4-cc0633aae5f9.mspx
+
+Provide a super class of DigestScheme with Windows 2003 specific extensions,
+which can be plugged in instead of the standard Digest impl
+
+For details see PR #34909

@@ -1,0 +1,14 @@
+redirect not handled correctly if location header doesn't have a protocol
+
+
+
+Description:
+Http redirect is not handled correctly if the location header doesn't have a 
+protocol, e.g.:
+
+Location: web/tbghome.nsf/pages/index
+
+a java.net.MalformedURLException is throw in this case. The correct behavior is 
+to inherit the protocol from current URL.
+
+The relevant code is in HttpMethodBase.execute()

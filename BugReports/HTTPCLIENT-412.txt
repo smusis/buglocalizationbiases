@@ -1,0 +1,192 @@
+Document SINGLE_COOKIE_HEADER param in the cookie guide
+
+
+
+Description:
+Included is some sample code that shows the behaviour when loading pages from a phpBB powered 
+site. Here are the results as i see them on my machine:
+
+==== start results
+
+==================================
+Policy: rfc2109
+==================================
+
+
+        URL: http://www.sgboards.com/forums/viewtopic.php?t=12&view=next&mforum=str
+        Response status code: 200
+        Present cookies: 
+                ForumSetCookie=str
+                phpbb_str_data=a%3A0%3A%7B%7D
+                phpbb_str_sid=c8da590cc4b1683b9079da3d82f4efa6
+
+        URL: http://www.sgboards.com/forums/viewtopic.php?p=24&mforum=str
+        Response status code: 200
+        Present cookies: 
+                phpbb_str_data=a%3A0%3A%7B%7D
+                phpbb_str_sid=c8da590cc4b1683b9079da3d82f4efa6
+                ForumSetCookie=str
+
+        URL: http://www.sgboards.com/forums/posting.php?mode=quote&p=24&mforum=str
+        Response status code: 200
+        Present cookies: 
+                phpbb_str_data=a%3A0%3A%7B%7D
+                phpbb_str_sid=c8da590cc4b1683b9079da3d82f4efa6
+                ForumSetCookie=str
+
+        URL: http://www.sgboards.com/forums/viewtopic.php?p=25&mforum=str
+        Response status code: 200
+        Present cookies: 
+                phpbb_str_data=a%3A0%3A%7B%7D
+                phpbb_str_sid=c8da590cc4b1683b9079da3d82f4efa6
+                ForumSetCookie=str
+
+==================================
+Policy: netscape
+==================================
+
+
+        URL: http://www.sgboards.com/forums/viewtopic.php?t=12&view=next&mforum=str
+        Response status code: 200
+        Present cookies: 
+                phpbb_str_sid=e2604334a0022283333153f6879feb70
+
+        URL: http://www.sgboards.com/forums/viewtopic.php?p=24&mforum=str
+        Response status code: 200
+        Present cookies: 
+                phpbb_str_sid=e2604334a0022283333153f6879feb70
+
+        URL: http://www.sgboards.com/forums/posting.php?mode=quote&p=24&mforum=str
+        Response status code: 200
+        Present cookies: 
+                phpbb_str_sid=e2604334a0022283333153f6879feb70
+
+        URL: http://www.sgboards.com/forums/viewtopic.php?p=25&mforum=str
+        Response status code: 200
+        Present cookies: 
+                phpbb_str_sid=e2604334a0022283333153f6879feb70
+
+==================================
+Policy: compatibility
+==================================
+
+
+        URL: http://www.sgboards.com/forums/viewtopic.php?t=12&view=next&mforum=str
+        Response status code: 200
+        Present cookies: 
+                ForumSetCookie=str
+                phpbb_str_data=a%3A0%3A%7B%7D
+                phpbb_str_sid=d156f6dbfa605320b5a250129fa0b22e
+
+        URL: http://www.sgboards.com/forums/viewtopic.php?p=24&mforum=str
+        Response status code: 200
+        Present cookies: 
+                ForumSetCookie=str
+                phpbb_str_data=a%3A0%3A%7B%7D
+                phpbb_str_sid=d5d5a46fd27fd783cdb4e324992bc9d2
+
+        URL: http://www.sgboards.com/forums/posting.php?mode=quote&p=24&mforum=str
+        Response status code: 200
+        Present cookies: 
+                phpbb_str_data=a%3A0%3A%7B%7D
+                phpbb_str_sid=b4312fee4250f767cd1b34b11afadb3d
+                ForumSetCookie=str
+
+        URL: http://www.sgboards.com/forums/viewtopic.php?p=25&mforum=str
+        Response status code: 200
+        Present cookies: 
+                ForumSetCookie=str
+                phpbb_str_data=a%3A0%3A%7B%7D
+                phpbb_str_sid=daf72685d35d851c3eec68b6b3bc3705
+
+==== end results
+
+As you can see the only cookie policy that ISN'T successfully tracking sessions is the COMPATIBILITY 
+setting. There are a lot of these phpBB sites around, so that's where I've noticed the behaviour most. 
+Trying another random php powered site I see that all policies work as expected.
+
+It would be nice to know what's messing up the cookie handing on these phpBB sites. If you can't rely 
+on the compatibility setting to reliably maintain session variables (and hence truly imitate a browser) 
+then life get's a little complicated.
+
+Both 3.0beta1 and the CVS version show the same behaviour.
+
+Many thanks,
+
+Garry
+
+Example code below.
+
+====== begin code
+import org.apache.commons.httpclient.Cookie;
+import org.apache.commons.httpclient.HttpClient;
+import org.apache.commons.httpclient.HttpState;
+import org.apache.commons.httpclient.cookie.CookiePolicy;
+import org.apache.commons.httpclient.methods.GetMethod;
+
+
+public class CookieProbe {
+	static final String[] urls = {
+		"http://www.sgboards.com/forums/viewtopic.php?t=12&view=next&mforum=str",
+		"http://www.sgboards.com/forums/viewtopic.php?p=24&mforum=str",
+		"http://www.sgboards.com/forums/posting.php?mode=quote&p=24&mforum=str",
+		"http://www.sgboards.com/forums/viewtopic.php?p=25&mforum=str"
+	};
+	static final String[] urls2 = {
+		"http://www.virginmobilelouder.com/live/index.php",
+		"http://www.virginmobilelouder.com/live/index.php?page_id=214",
+		"http://www.virginmobilelouder.com/live/index.php?page_id=3",
+		"http://www.virginmobilelouder.com/live/index.php?page_id=116"
+	};
+	
+	static final String[] policies = {
+		CookiePolicy.RFC_2109, 
+		CookiePolicy.NETSCAPE, 
+		CookiePolicy.BROWSER_COMPATIBILITY, 
+	};
+	
+	
+	public static void main(String[] args) {
+		try {
+			for (int i = 0; i < policies.length; i++) {
+				System.out.println("\n==================================");
+				System.out.println("Policy: " + policies[i]);
+				System.out.println("==================================\n");
+				tryPolicy(policies[i]);
+			}
+		} catch (Exception e) {
+			e.printStackTrace(System.err);
+		}
+	}
+	
+	public static void tryPolicy(String policy) throws Exception {
+		HttpState initialState = new HttpState();
+		HttpClient httpclient = new HttpClient();
+		httpclient.getHttpConnectionManager().
+			getParams().setConnectionTimeout(30000);
+		httpclient.setState(initialState);
+		
+		httpclient.getParams().setCookiePolicy(policy);
+		for (int i = 0; i < urls.length; i++) {
+			System.out.println("\n\tURL: " + urls[i]);
+			tryURL(httpclient, urls[i]);
+			Thread.sleep(1000); // give server a break
+		}
+			
+	}
+
+	public static void tryURL(HttpClient httpclient, String strURL) throws Exception {
+		GetMethod httpget = new GetMethod(strURL);
+		int result = httpclient.executeMethod(httpget);
+		System.out.println("\tResponse status code: " + result);
+		// Get all the cookies
+		Cookie[] cookies = httpclient.getState().getCookies();
+		System.out.println("\tPresent cookies: ");
+		for (int i = 0; i < cookies.length; i++) {
+			System.out.println("\t\t" + cookies[i].toExternalForm());
+		}
+		// Release current connection to the connection pool once you are done
+		httpget.releaseConnection();
+	}
+}
+====== end code

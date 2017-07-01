@@ -1,0 +1,25 @@
+import must not ignore xml prefixed attributes
+
+
+
+Description:
+XML import currently ignores attributes that are in the xml namespace.
+e.g., DocViewImportHandler's startElement():
+
+                if (atts.getQName(i).startsWith("xml:")) {
+                    // skipping xml:space, xml:lang, etc.
+                    log.debug("skipping reserved/system attribute " + atts.getQName(i));
+                    continue;
+                }
+
+That is a significant loss of information, since xml:base, xml:lang, and xml:id attributes are critical to the content.  We should register the xml prefix as a reserved namespace (not needing an xmlns declaration) and then treat it like any other attribute.
+
+Here are some useful XML examples:
+
+http://xformsinstitute.com/essentials/browse/ch03s02.php
+http://www.zvon.org/HowTo/Output/
+http://www.w3.org/Math/testsuite/testsuite/TortureTests/Complexity/complex1.xml
+http://intertwingly.net/wiki/pie/EchoExample
+http://support.sas.com/onlinedoc/913/getDoc/en/engxml.hlp/a002973381.htm
+
+

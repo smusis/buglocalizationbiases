@@ -1,0 +1,13 @@
+ChangeLog serialization causes cache inconsistencies
+
+
+
+Description:
+The ordering of actions is taken into account when a ChangeLog is built through session manipulations (see, for instance,  ChangeLog.deleted(ItemState state)). When it is serialized in ClusterNode.write(Record record, ChangeLog changeLog, EventStateCollection esc), however, this implicit ordering might be changed. As a consequence,  the deserialization in ClusterNode.consume(Record record) might produce a different ChangeLog with the effect that the local caches get out-of-sync with the persistent state of the repository.
+
+The issue should be reproducable as follows:
+- Setup a clustered environment with two Jackrabbit instances, say A and B.
+- On instance A add a property "P" with value "x" to some node and save the session.
+- On instance B read property "P" -> it will have value "x".
+- On instance A delete property P and then add it again with value "y" and save the session.
+- On instance B read property "P" -> it will still have value "x" after the cluster sync...

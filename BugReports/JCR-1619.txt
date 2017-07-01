@@ -1,0 +1,10 @@
+Update copyright years in READMEs and NOTICEs
+
+
+
+Description:
+The README.txt files of Jackrabbit components contain copyright lines like this:
+
+    Collective work: Copyright 2007 The Apache Software Foundation.
+
+The year should be updated.

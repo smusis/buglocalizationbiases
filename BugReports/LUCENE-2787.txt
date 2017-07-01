@@ -1,0 +1,15 @@
+disable atime for DirectIOLinuxDirectory
+
+
+
+Description:
+In Linux's open():
+O_NOATIME
+    (Since Linux 2.6.8) Do not update the file last access time (st_atime in the inode) when the file is read(2). This flag is intended for use by indexing or backup programs, where its use can significantly reduce the amount of disk activity. This flag may not be effective on all filesystems. One example is NFS, where the server maintains the access time.
+
+So we should do this in our linux-specific DirectIOLinuxDirectory.
+
+Separately (offtopic), it would be better if this was a LinuxDirectory that only uses O_DIRECT when it should :)
+It would be nice to think about an optional modules/native for common platforms similar to what tomcat provides
+Its easier to test directories like this now (-Dtests.directory)...
+

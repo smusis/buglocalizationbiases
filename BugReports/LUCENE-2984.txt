@@ -1,0 +1,6 @@
+Move hasVectors() & hasProx() responsibility out of SegmentInfo to FieldInfos 
+
+
+
+Description:
+Spin-off from LUCENE-2881 which had this change already but due to some random failures related to this change I remove this part of the patch to make it more isolated and easier to test. 

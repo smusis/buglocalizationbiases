@@ -1,0 +1,6 @@
+jcr-server: NPE in SearchResourceImpl if PathValue path is null
+
+
+
+Description:
+line 368 in SearchResourceImpl doesn't deal with null path thus causing NPE in the valuefactory. 

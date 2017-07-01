@@ -1,0 +1,24 @@
+Proxy-Authorization header received on server side
+
+
+
+Description:
+
+ 
+ I'm following example
+ http://hc.apache.org/httpcomponents-client-ga/examples.html
+ Proxy authentication
+ 
+ but it seems that not only proxy is receiving credentials for proxy.
+ In log, which is generated at target.host I can see header
+ Proxy-Authorization: Basic ....
+
+--------- HEADER
+Host:target.host:443
+Connection:Keep-Alive
+User-Agent:Apache-HttpClient/4.1 (java 1.5)
+Proxy-Authorization:Basic Z
+--------- POST
+
+
+Dusan

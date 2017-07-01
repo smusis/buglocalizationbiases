@@ -1,0 +1,8 @@
+HttpMethodBase logger uses wrong class.
+
+
+
+Description:
+I just noticed a minor error in HttpMethodBase: it initializes its Log object
+with HttpMethod.class instead of HttpMethodBase.class.  No big deal, but it
+probably ought to be fixed at some point.  I'll attach the patch.

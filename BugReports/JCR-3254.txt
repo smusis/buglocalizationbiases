@@ -1,0 +1,6 @@
+make max size of CachingEntryCollector's cache configurable
+
+
+
+Description:
+To assist in analyzing the bottleneck it would be good if it was easy to change the max size, currently hard-wired to 5000. Suggest to be pragmatic and do that through a system property.

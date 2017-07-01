@@ -1,0 +1,9 @@
+optimizations for bufferedindexinput
+
+
+
+Description:
+along the same lines as LUCENE-2816:
+* the readVInt/readVLong/readShort/readInt/readLong are not optimal here since they defer to readByte. for example this means checking the buffer's bounds per-byte in readVint instead of per-vint.
+* its an easy win to speed this up, even for the vint case: its essentially always faster, the only slower case is 1024 single-byte vints in a row, in this case we would do a single extra bounds check (1025 instead of 1024)
+

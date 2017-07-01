@@ -1,0 +1,6 @@
+Extra </div> in populate.jsp
+
+
+
+Description:
+The populate.jsp page in jackrabbit-webapp has an extra </div> that causes minor breakage to the page layout.

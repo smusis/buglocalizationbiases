@@ -1,0 +1,246 @@
+TestIndexWriterDelete makes broken segments with payloads on
+
+
+
+Description:
+This could just be a SimpleText problem.... but just in case
+
+Grant added payloads to MockAnalyzer in LUCENE-2692
+
+I wondered what would happen if i turned on his payload filter by default for all tests.
+
+{noformat}
+    [junit] Testsuite: org.apache.lucene.index.TestIndexWriterDelete
+    [junit] Testcase: testDeletesOnDiskFull(org.apache.lucene.index.TestIndexWriterDelete):     Caused an ERROR
+    [junit] CheckIndex failed
+    [junit] java.lang.RuntimeException: CheckIndex failed
+    [junit]     at org.apache.lucene.util._TestUtil.checkIndex(_TestUtil.java:80)
+    [junit]     at org.apache.lucene.index.TestIndexWriterDelete.doTestOperationsOnDiskFull(TestIndexWriterDelete.java:5
+38)
+    [junit]     at org.apache.lucene.index.TestIndexWriterDelete.testDeletesOnDiskFull(TestIndexWriterDelete.java:401)
+    [junit]     at org.apache.lucene.util.LuceneTestCase$LuceneTestCaseRunner.runChild(LuceneTestCase.java:795)
+    [junit]     at org.apache.lucene.util.LuceneTestCase$LuceneTestCaseRunner.runChild(LuceneTestCase.java:768)
+    [junit]
+    [junit]
+    [junit] Testcase: testUpdatesOnDiskFull(org.apache.lucene.index.TestIndexWriterDelete):     Caused an ERROR
+    [junit] CheckIndex failed
+    [junit] java.lang.RuntimeException: CheckIndex failed
+    [junit]     at org.apache.lucene.util._TestUtil.checkIndex(_TestUtil.java:80)
+    [junit]     at org.apache.lucene.index.TestIndexWriterDelete.doTestOperationsOnDiskFull(TestIndexWriterDelete.java:5
+38)
+    [junit]     at org.apache.lucene.index.TestIndexWriterDelete.testUpdatesOnDiskFull(TestIndexWriterDelete.java:405)
+    [junit]     at org.apache.lucene.util.LuceneTestCase$LuceneTestCaseRunner.runChild(LuceneTestCase.java:795)
+    [junit]     at org.apache.lucene.util.LuceneTestCase$LuceneTestCaseRunner.runChild(LuceneTestCase.java:768)
+    [junit]
+    [junit]
+    [junit] Tests run: 14, Failures: 0, Errors: 2, Time elapsed: 0.322 sec
+    [junit]
+    [junit] ------------- Standard Output ---------------
+    [junit] CheckIndex failed
+    [junit] Segments file=segments_2 numSegments=1 version=FORMAT_4_0 [Lucene 4.0]
+    [junit]   1 of 1: name=_0 docCount=157
+    [junit]     codec=MockFixedIntBlock
+    [junit]     compound=true
+    [junit]     hasProx=true
+    [junit]     numFiles=2
+    [junit]     size (MB)=0,017
+    [junit]     diagnostics = {os.version=6.0, os=Windows Vista, lucene.version=4.0-SNAPSHOT, source=flush, os.arch=x86,
+ java.version=1.6.0_21, java.vendor=Sun Microsystems Inc.}
+    [junit]     has deletions [delFileName=_0_1.del]
+    [junit]     test: open reader.........OK [13 deleted docs]
+    [junit]     test: fields..............OK [2 fields]
+    [junit]     test: field norms.........OK [2 fields]
+    [junit]     test: terms, freq, prox...ERROR [read past EOF]
+    [junit] java.io.IOException: read past EOF
+    [junit]     at org.apache.lucene.store.BufferedIndexInput.refill(BufferedIndexInput.java:154)
+    [junit]     at org.apache.lucene.store.BufferedIndexInput.readBytes(BufferedIndexInput.java:119)
+    [junit]     at org.apache.lucene.store.BufferedIndexInput.readBytes(BufferedIndexInput.java:94)
+    [junit]     at org.apache.lucene.index.codecs.sep.SepPostingsReaderImpl$SepDocsAndPositionsEnum.getPayload(SepPostin
+gsReaderImpl.java:689)
+    [junit]     at org.apache.lucene.index.CheckIndex.testTermIndex(CheckIndex.java:693)
+    [junit]     at org.apache.lucene.index.CheckIndex.checkIndex(CheckIndex.java:489)
+    [junit]     at org.apache.lucene.index.CheckIndex.checkIndex(CheckIndex.java:290)
+    [junit]     at org.apache.lucene.index.CheckIndex.checkIndex(CheckIndex.java:286)
+    [junit]     at org.apache.lucene.util._TestUtil.checkIndex(_TestUtil.java:76)
+    [junit]     at org.apache.lucene.index.TestIndexWriterDelete.doTestOperationsOnDiskFull(TestIndexWriterDelete.java:5
+38)
+    [junit]     at org.apache.lucene.index.TestIndexWriterDelete.testDeletesOnDiskFull(TestIndexWriterDelete.java:401)
+    [junit]     at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+    [junit]     at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:39)
+    [junit]     at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:25)
+    [junit]     at java.lang.reflect.Method.invoke(Method.java:597)
+    [junit]     at org.junit.runners.model.FrameworkMethod$1.runReflectiveCall(FrameworkMethod.java:44)
+    [junit]     at org.junit.internal.runners.model.ReflectiveCallable.run(ReflectiveCallable.java:15)
+    [junit]     at org.junit.runners.model.FrameworkMethod.invokeExplosively(FrameworkMethod.java:41)
+    [junit]     at org.junit.internal.runners.statements.InvokeMethod.evaluate(InvokeMethod.java:20)
+    [junit]     at org.junit.rules.TestWatchman$1.evaluate(TestWatchman.java:48)
+    [junit]     at org.junit.internal.runners.statements.RunBefores.evaluate(RunBefores.java:28)
+    [junit]     at org.junit.internal.runners.statements.RunAfters.evaluate(RunAfters.java:31)
+    [junit]     at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:76)
+    [junit]     at org.apache.lucene.util.LuceneTestCase$LuceneTestCaseRunner.runChild(LuceneTestCase.java:795)
+    [junit]     at org.apache.lucene.util.LuceneTestCase$LuceneTestCaseRunner.runChild(LuceneTestCase.java:768)
+    [junit]     at org.junit.runners.ParentRunner$3.run(ParentRunner.java:193)
+    [junit]     at org.junit.runners.ParentRunner$1.schedule(ParentRunner.java:52)
+    [junit]     at org.junit.runners.ParentRunner.runChildren(ParentRunner.java:191)
+    [junit]     at org.junit.runners.ParentRunner.access$000(ParentRunner.java:42)
+    [junit]     at org.junit.runners.ParentRunner$2.evaluate(ParentRunner.java:184)
+    [junit]     at org.junit.internal.runners.statements.RunBefores.evaluate(RunBefores.java:28)
+    [junit]     at org.junit.internal.runners.statements.RunAfters.evaluate(RunAfters.java:31)
+    [junit]     at org.junit.runners.ParentRunner.run(ParentRunner.java:236)
+    [junit]     at junit.framework.JUnit4TestAdapter.run(JUnit4TestAdapter.java:39)
+    [junit]     at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.run(JUnitTestRunner.java:420)
+    [junit]     at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.launch(JUnitTestRunner.java:911)
+    [junit]     at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.main(JUnitTestRunner.java:743)
+    [junit]     test: stored fields.......OK [223 total field count; avg 1,549 fields per doc]
+    [junit]     test: term vectors........OK [242 total vector count; avg 1,681 term/freq vector fields per doc]
+    [junit] FAILED
+    [junit]     WARNING: fixIndex() would remove reference to this segment; full exception:
+    [junit] java.lang.RuntimeException: Term Index test failed
+    [junit]     at org.apache.lucene.index.CheckIndex.checkIndex(CheckIndex.java:502)
+    [junit]     at org.apache.lucene.index.CheckIndex.checkIndex(CheckIndex.java:290)
+    [junit]     at org.apache.lucene.index.CheckIndex.checkIndex(CheckIndex.java:286)
+    [junit]     at org.apache.lucene.util._TestUtil.checkIndex(_TestUtil.java:76)
+    [junit]     at org.apache.lucene.index.TestIndexWriterDelete.doTestOperationsOnDiskFull(TestIndexWriterDelete.java:5
+38)
+    [junit]     at org.apache.lucene.index.TestIndexWriterDelete.testDeletesOnDiskFull(TestIndexWriterDelete.java:401)
+    [junit]     at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+    [junit]     at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:39)
+    [junit]     at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:25)
+    [junit]     at java.lang.reflect.Method.invoke(Method.java:597)
+    [junit]     at org.junit.runners.model.FrameworkMethod$1.runReflectiveCall(FrameworkMethod.java:44)
+    [junit]     at org.junit.internal.runners.model.ReflectiveCallable.run(ReflectiveCallable.java:15)
+    [junit]     at org.junit.runners.model.FrameworkMethod.invokeExplosively(FrameworkMethod.java:41)
+    [junit]     at org.junit.internal.runners.statements.InvokeMethod.evaluate(InvokeMethod.java:20)
+    [junit]     at org.junit.rules.TestWatchman$1.evaluate(TestWatchman.java:48)
+    [junit]     at org.junit.internal.runners.statements.RunBefores.evaluate(RunBefores.java:28)
+    [junit]     at org.junit.internal.runners.statements.RunAfters.evaluate(RunAfters.java:31)
+    [junit]     at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:76)
+    [junit]     at org.apache.lucene.util.LuceneTestCase$LuceneTestCaseRunner.runChild(LuceneTestCase.java:795)
+    [junit]     at org.apache.lucene.util.LuceneTestCase$LuceneTestCaseRunner.runChild(LuceneTestCase.java:768)
+    [junit]     at org.junit.runners.ParentRunner$3.run(ParentRunner.java:193)
+    [junit]     at org.junit.runners.ParentRunner$1.schedule(ParentRunner.java:52)
+    [junit]     at org.junit.runners.ParentRunner.runChildren(ParentRunner.java:191)
+    [junit]     at org.junit.runners.ParentRunner.access$000(ParentRunner.java:42)
+    [junit]     at org.junit.runners.ParentRunner$2.evaluate(ParentRunner.java:184)
+    [junit]     at org.junit.internal.runners.statements.RunBefores.evaluate(RunBefores.java:28)
+    [junit]     at org.junit.internal.runners.statements.RunAfters.evaluate(RunAfters.java:31)
+    [junit]     at org.junit.runners.ParentRunner.run(ParentRunner.java:236)
+    [junit]     at junit.framework.JUnit4TestAdapter.run(JUnit4TestAdapter.java:39)
+    [junit]     at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.run(JUnitTestRunner.java:420)
+    [junit]     at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.launch(JUnitTestRunner.java:911)
+    [junit]     at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.main(JUnitTestRunner.java:743)
+    [junit]
+    [junit] WARNING: 1 broken segments (containing 144 documents) detected
+    [junit]
+    [junit] NOTE: reproduce with: ant test -Dtestcase=TestIndexWriterDelete -Dtestmethod=testDeletesOnDiskFull -Dtests.s
+eed=-8128829179004133416:-7192468460505114475
+    [junit] CheckIndex failed
+    [junit] Segments file=segments_1 numSegments=1 version=FORMAT_4_0 [Lucene 4.0]
+    [junit]   1 of 1: name=_0 docCount=157
+    [junit]     codec=MockFixedIntBlock
+    [junit]     compound=false
+    [junit]     hasProx=true
+    [junit]     numFiles=14
+    [junit]     size (MB)=0,017
+    [junit]     diagnostics = {os.version=6.0, os=Windows Vista, lucene.version=4.0-SNAPSHOT, source=flush, os.arch=x86,
+ java.version=1.6.0_21, java.vendor=Sun Microsystems Inc.}
+    [junit]     no deletions
+    [junit]     test: open reader.........OK
+    [junit]     test: fields..............OK [2 fields]
+    [junit]     test: field norms.........OK [2 fields]
+    [junit]     test: terms, freq, prox...ERROR [Read past EOF]
+    [junit] java.io.IOException: Read past EOF
+    [junit]     at org.apache.lucene.store.RAMInputStream.switchCurrentBuffer(RAMInputStream.java:89)
+    [junit]     at org.apache.lucene.store.RAMInputStream.readBytes(RAMInputStream.java:73)
+    [junit]     at org.apache.lucene.store.MockIndexInputWrapper.readBytes(MockIndexInputWrapper.java:109)
+    [junit]     at org.apache.lucene.index.codecs.sep.SepPostingsReaderImpl$SepDocsAndPositionsEnum.getPayload(SepPostin
+gsReaderImpl.java:689)
+    [junit]     at org.apache.lucene.index.CheckIndex.testTermIndex(CheckIndex.java:693)
+    [junit]     at org.apache.lucene.index.CheckIndex.checkIndex(CheckIndex.java:489)
+    [junit]     at org.apache.lucene.index.CheckIndex.checkIndex(CheckIndex.java:290)
+    [junit]     at org.apache.lucene.index.CheckIndex.checkIndex(CheckIndex.java:286)
+    [junit]     at org.apache.lucene.util._TestUtil.checkIndex(_TestUtil.java:76)
+    [junit]     at org.apache.lucene.index.TestIndexWriterDelete.doTestOperationsOnDiskFull(TestIndexWriterDelete.java:5
+38)
+    [junit]     at org.apache.lucene.index.TestIndexWriterDelete.testUpdatesOnDiskFull(TestIndexWriterDelete.java:405)
+    [junit]     at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+    [junit]     at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:39)
+    [junit]     at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:25)
+    [junit]     at java.lang.reflect.Method.invoke(Method.java:597)
+    [junit]     at org.junit.runners.model.FrameworkMethod$1.runReflectiveCall(FrameworkMethod.java:44)
+    [junit]     at org.junit.internal.runners.model.ReflectiveCallable.run(ReflectiveCallable.java:15)
+    [junit]     at org.junit.runners.model.FrameworkMethod.invokeExplosively(FrameworkMethod.java:41)
+    [junit]     at org.junit.internal.runners.statements.InvokeMethod.evaluate(InvokeMethod.java:20)
+    [junit]     at org.junit.rules.TestWatchman$1.evaluate(TestWatchman.java:48)
+    [junit]     at org.junit.internal.runners.statements.RunBefores.evaluate(RunBefores.java:28)
+    [junit]     at org.junit.internal.runners.statements.RunAfters.evaluate(RunAfters.java:31)
+    [junit]     at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:76)
+    [junit]     at org.apache.lucene.util.LuceneTestCase$LuceneTestCaseRunner.runChild(LuceneTestCase.java:795)
+    [junit]     at org.apache.lucene.util.LuceneTestCase$LuceneTestCaseRunner.runChild(LuceneTestCase.java:768)
+    [junit]     at org.junit.runners.ParentRunner$3.run(ParentRunner.java:193)
+    [junit]     at org.junit.runners.ParentRunner$1.schedule(ParentRunner.java:52)
+    [junit]     at org.junit.runners.ParentRunner.runChildren(ParentRunner.java:191)
+    [junit]     at org.junit.runners.ParentRunner.access$000(ParentRunner.java:42)
+    [junit]     at org.junit.runners.ParentRunner$2.evaluate(ParentRunner.java:184)
+    [junit]     at org.junit.internal.runners.statements.RunBefores.evaluate(RunBefores.java:28)
+    [junit]     at org.junit.internal.runners.statements.RunAfters.evaluate(RunAfters.java:31)
+    [junit]     at org.junit.runners.ParentRunner.run(ParentRunner.java:236)
+    [junit]     at junit.framework.JUnit4TestAdapter.run(JUnit4TestAdapter.java:39)
+    [junit]     at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.run(JUnitTestRunner.java:420)
+    [junit]     at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.launch(JUnitTestRunner.java:911)
+    [junit]     at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.main(JUnitTestRunner.java:743)
+    [junit]     test: stored fields.......OK [237 total field count; avg 1,51 fields per doc]
+    [junit]     test: term vectors........OK [254 total vector count; avg 1,618 term/freq vector fields per doc]
+    [junit] FAILED
+    [junit]     WARNING: fixIndex() would remove reference to this segment; full exception:
+    [junit] java.lang.RuntimeException: Term Index test failed
+    [junit]     at org.apache.lucene.index.CheckIndex.checkIndex(CheckIndex.java:502)
+    [junit]     at org.apache.lucene.index.CheckIndex.checkIndex(CheckIndex.java:290)
+    [junit]     at org.apache.lucene.index.CheckIndex.checkIndex(CheckIndex.java:286)
+    [junit]     at org.apache.lucene.util._TestUtil.checkIndex(_TestUtil.java:76)
+    [junit]     at org.apache.lucene.index.TestIndexWriterDelete.doTestOperationsOnDiskFull(TestIndexWriterDelete.java:5
+38)
+    [junit]     at org.apache.lucene.index.TestIndexWriterDelete.testUpdatesOnDiskFull(TestIndexWriterDelete.java:405)
+    [junit]     at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+    [junit]     at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:39)
+    [junit]     at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:25)
+    [junit]     at java.lang.reflect.Method.invoke(Method.java:597)
+    [junit]     at org.junit.runners.model.FrameworkMethod$1.runReflectiveCall(FrameworkMethod.java:44)
+    [junit]     at org.junit.internal.runners.model.ReflectiveCallable.run(ReflectiveCallable.java:15)
+    [junit]     at org.junit.runners.model.FrameworkMethod.invokeExplosively(FrameworkMethod.java:41)
+    [junit]     at org.junit.internal.runners.statements.InvokeMethod.evaluate(InvokeMethod.java:20)
+    [junit]     at org.junit.rules.TestWatchman$1.evaluate(TestWatchman.java:48)
+    [junit]     at org.junit.internal.runners.statements.RunBefores.evaluate(RunBefores.java:28)
+    [junit]     at org.junit.internal.runners.statements.RunAfters.evaluate(RunAfters.java:31)
+    [junit]     at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:76)
+    [junit]     at org.apache.lucene.util.LuceneTestCase$LuceneTestCaseRunner.runChild(LuceneTestCase.java:795)
+    [junit]     at org.apache.lucene.util.LuceneTestCase$LuceneTestCaseRunner.runChild(LuceneTestCase.java:768)
+    [junit]     at org.junit.runners.ParentRunner$3.run(ParentRunner.java:193)
+    [junit]     at org.junit.runners.ParentRunner$1.schedule(ParentRunner.java:52)
+    [junit]     at org.junit.runners.ParentRunner.runChildren(ParentRunner.java:191)
+    [junit]     at org.junit.runners.ParentRunner.access$000(ParentRunner.java:42)
+    [junit]     at org.junit.runners.ParentRunner$2.evaluate(ParentRunner.java:184)
+    [junit]     at org.junit.internal.runners.statements.RunBefores.evaluate(RunBefores.java:28)
+    [junit]     at org.junit.internal.runners.statements.RunAfters.evaluate(RunAfters.java:31)
+    [junit]     at org.junit.runners.ParentRunner.run(ParentRunner.java:236)
+    [junit]     at junit.framework.JUnit4TestAdapter.run(JUnit4TestAdapter.java:39)
+    [junit]     at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.run(JUnitTestRunner.java:420)
+    [junit]     at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.launch(JUnitTestRunner.java:911)
+    [junit]     at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.main(JUnitTestRunner.java:743)
+    [junit]
+    [junit] WARNING: 1 broken segments (containing 157 documents) detected
+    [junit]
+    [junit] NOTE: reproduce with: ant test -Dtestcase=TestIndexWriterDelete -Dtestmethod=testUpdatesOnDiskFull -Dtests.s
+eed=-8128829179004133416:-5617162412680232634
+    [junit] NOTE: test params are: codec=MockFixedIntBlock(blockSize=266), locale=tr_TR, timezone=Africa/Maseru
+    [junit] ------------- ---------------- ---------------
+    [junit] TEST org.apache.lucene.index.TestIndexWriterDelete FAILED
+    [junit] Testsuite: org.apache.lucene.index.TestLazyProxSkipping
+    [junit] Tests run: 2, Failures: 0, Errors: 0, Time elapsed: 0.034 sec
+    [junit]
+    [junit] ------------- Standard Output ---------------
+    [junit] NOTE: reproduce with: ant test -Dtestcase=TestLazyProxSkipping -Dtestmethod=testLazySkipping -Dtests.seed=-7
+119541877291237950:-8499388603775233752
+    [junit] NOTE: test params are: codec=SimpleText, locale=da_DK, timezone=Pacific/Guam
+    [junit] ------------- ---------------- ---------------
+{noformat}

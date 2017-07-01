@@ -1,0 +1,11 @@
+JMX Stats for the Session
+
+
+
+Description:
+I've named them Core stats. This will include:
+ - number of sessions currently opened
+ - session read / write operations per second
+
+The stats refresh once a minute.
+This is disabled by default, so it will not affect performance.

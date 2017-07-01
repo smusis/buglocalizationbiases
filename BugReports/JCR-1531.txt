@@ -1,0 +1,6 @@
+[PATCH] Add Column and line numbers to repository.xml parse exception messages
+
+
+
+Description:
+Code caught SAXExceptions when the an xml parsing exception occurred parsing the repository.xml. But catching SAXParseException (a subclass) allows access to column and line numbers of the problem. So also catch this exception and add this to the exception message to make it easier to fix errors.

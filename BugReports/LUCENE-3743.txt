@@ -1,0 +1,6 @@
+LuceneTestCase's uncaught exceptions handler should check for AssumptionViolatedExceptions and then not trigger test failure
+
+
+
+Description:
+As in single-threaded tests, {{LuceneTestCase}} should not trigger test failures for {{AssumptionViolatedException}}'s when they occur in multi-threaded tests.

@@ -1,0 +1,10 @@
+remove contrib/misc and contrib/wordnet's dependencies on analyzers module
+
+
+
+Description:
+These contribs don't actually analyze any text.
+
+After this patch, only the contrib/demo relies upon the analyzers module... we can separately try to figure that one out (I don't think any of these lucene contribs needs to reach back into modules/)
+
+

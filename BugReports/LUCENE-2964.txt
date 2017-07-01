@@ -1,0 +1,8 @@
+Allow benchmark tasks from alternative packages
+
+
+
+Description:
+Relax current limitation of all tasks in same package - that of PerfTask.
+Add a property "alt.tasks.packages" - its value are comma separated full package names.
+If the task class is not found in the default package, an attempt is made to load it from the alternate packages specified in that property.

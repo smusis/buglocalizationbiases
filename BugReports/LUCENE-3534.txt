@@ -1,0 +1,8 @@
+Backport FilteredQuery/IndexSearcher changes to 3.x: Remove filter logic from IndexSearcher and delegate to FilteredQuery
+
+
+
+Description:
+Spinoff from LUCENE-1536: We simplified the code in IndexSearcher to no longer do the filtering there, instead wrap all Query with FilteredQuery, if a non-null filter is given. The conjunction code would then only exist in FilteredQuery which makes it easier to maintain. Currently both implementations differ in 3.x, in trunk we used the more optimized IndexSearcher variant with addition of a simplified in-order conjunction code.
+
+This issue will backport those changes (without random access bits).

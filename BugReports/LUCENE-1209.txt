@@ -1,0 +1,14 @@
+If setConfig(Config config) is called in resetInputs(), you can turn term vectors off and on by round
+
+
+
+Description:
+I want to be able to run one benchmark that tests things using term vectors and not using term vectors.
+
+Currently this is not easy because you cannot specify term vectors per round.
+
+While you do have to create a new index per round, this automation is preferable to me in comparison to running two separate tests.
+
+If it doesn't affect anything else, it would be great to have setConfig(Config config) called in BasicDocMaker.resetInputs(). This would keep the term vector options up to date per round if you reset.
+
+- Mark

@@ -1,0 +1,8 @@
+Access cluster node id
+
+
+
+Description:
+I need to know the cluster node id in my application. I didn't find any other way than to cast to org.apache.jackrabbit.core.RepositoryImpl : ((RepositoryImpl) session.getRepository()).getConfig().getClusterConfig().getId()
+
+I would appreciate it if I could get to this using the system property ClusterNode.SYSTEM_PROPERTY_NODE_ID.

@@ -1,0 +1,6 @@
+Move Function grouping collectors from Solr to grouping module
+
+
+
+Description:
+Move the Function*Collectors from Solr (inside Grouping source file) to grouping module.

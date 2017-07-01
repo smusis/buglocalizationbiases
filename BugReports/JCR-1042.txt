@@ -1,0 +1,6 @@
+Disable norms for untokenized fields to reduce memory consumption
+
+
+
+Description:
+For repositories with many indexed fields, the norms cause memory problems both during indexing and querying (see LUCENE-448). Since the fields in question were never boosted they could as well be indexed without norms.

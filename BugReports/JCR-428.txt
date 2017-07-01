@@ -1,0 +1,56 @@
+BLOBFileValue() might be discarded to early
+
+
+
+Description:
+Situation:
+
+if the internal value of a property of type binary is created by the constructor BLOBFileValue(InputStream in) and the content is not stored in an temp-file, then calling the methods 
+
+a) #setProperty(InputStream in) on this node and then
+b) #refresh(false) on the node of this property 
+
+on the node of this property leads to an internal value of this property with an erased byte[].
+
+Solution:
+
+Only if the spoolFile is created the field 'temp' should be set to true.
+If the InputStream is stored in the byte[] the field 'temp' should be set to false.
+
+Patch:
+
+Index: BLOBFileValue.java
+===================================================================
+retrieving revision 1.1
+diff -u -r1.1 BLOBFileValue.java
+--- BLOBFileValue.java	8 May 2006 13:57:49 -0000	1.1
++++ BLOBFileValue.java	8 May 2006 15:19:54 -0000
+@@ -142,6 +142,7 @@
+                     len += read;
+                 }
+             }
++            in.close();
+         } finally {
+             if (out != null) {
+                 out.close();
+@@ -151,8 +152,15 @@
+         // init vars
+         file = spoolFile;
+         fsResource = null;
+-        // this instance is backed by a temporarily allocated resource/buffer
+-        temp = true;
++        if (file != null)
++        {
++            // this instance is backed by a temporarily allocated resource
++            temp = true;
++        }
++        else
++        {
++            temp = true;
++        }
+     }
+ 
+     /**
+
+
+

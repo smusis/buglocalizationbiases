@@ -1,0 +1,18 @@
+[PATCH] simplify conversion of strings to primitives by using parseXXX, not valueOf(xxx).xxxValue()
+
+
+
+Description:
+Code converts strings to primitives using a two step process, eg
+
+Boolean.valueOf(myString).booleanValue();
+
+can be simplified to 
+
+Boolean.parseBoolean(myString);
+
+true of Float, Double, Int etc. 
+
+In some cases, this avoids allocating temporary boxed objects
+
+patch fixes this.

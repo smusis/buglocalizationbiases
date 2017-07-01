@@ -1,0 +1,10 @@
+RMI published Repository using the jcr-rmi library gets lost over time
+
+
+
+Description:
+The jcr-server/webapp project contains a servlet - RepositoryStartupServlet - which may be used in a web app to start a repository and optionally register the repository with JNDI and RMI. To register the repository with JNDI, the jcr-rmi library is used to create a Remote repository instance, which is registered with the RMI registry. Inside the RMI implementation mechanisms based on stub classes created by the RMI compiler are created to make the remote repository available remotely. This includes creating a object table to map remote references to local objects. This table stores references to the local object as weak references to support distributed garbage collection.
+
+Over time, it may now be that this remote repository instance is actually collected and the object table cannot access it anymore thus preventing the repository from being accessed remotely. To prevent this from happening, the RepositoryStartupServlet must keep a strong reference to the remote repository and drop this reference when the servlet is destroyed and the repository unregistered.
+
+*NOTE:* This is an issue to all long running applications which publish repository instances over RMI using the jcr-rmi library.

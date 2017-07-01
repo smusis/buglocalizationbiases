@@ -1,0 +1,15 @@
+Promotion of SPI from Contrib
+
+
+
+Description:
+This has been suggested by Jukka on the dev-list [1] and i would like to start the promotion now. Apart from 
+the promotion itself the discussion regarding distribution of common classes [2] and the related issue JCR-996 somehow depends on the promotion and i consider the latter one to be important to follow.
+
+So far nobody objected the promotion. If this is still true, i will start working on that.
+
+
+
+
+[1] http://www.mail-archive.com/dev@jackrabbit.apache.org/msg06433.html
+[2] http://www.mail-archive.com/dev@jackrabbit.apache.org/msg06698.html

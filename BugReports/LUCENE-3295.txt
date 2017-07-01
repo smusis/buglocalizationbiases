@@ -1,0 +1,6 @@
+BitVector never skips fully populated bytes when writing ClearedDgaps
+
+
+
+Description:
+When writing cleared DGaps in BitVector we compare a byte against 0xFF (255) yet the byte is casted into an int (-1) and the comparison will never succeed. We should mask the byte with 0xFF before comparing or compare against -1

@@ -1,0 +1,30 @@
+Enhance test data
+
+
+
+Description:
+Running the test cases currently results in a number of test cases that cannot be run. Mostly because not enough test data is in the repository to execute the test.
+
+You can find out the affected test cases by setting the log level for 'org.apache.jackrabbit.test' to DEBUG and grep for 'executable' in the jcr.log file.
+
+This returns the following list:
+
+testGetDeclaringNodeType(org.apache.jackrabbit.test.api.nodetype.PropertyDefTest) not executable
+testIsMandatory(org.apache.jackrabbit.test.api.nodetype.NodeDefTest) not executable
+testValueConstraintNotSatisfied(org.apache.jackrabbit.test.api.nodetype.CanSetPropertyBinaryTest) not executable
+testValueConstraintNotSatisfied(org.apache.jackrabbit.test.api.nodetype.CanSetPropertyBooleanTest) not executable
+testValueConstraintNotSatisfied(org.apache.jackrabbit.test.api.nodetype.CanSetPropertyDoubleTest) not executable
+testGetSize(org.apache.jackrabbit.test.api.observation.EventIteratorTest) not executable
+testGetAttribute(org.apache.jackrabbit.test.api.SessionReadMethodsTest) not executable
+testReferenceableRootNode(org.apache.jackrabbit.test.api.ReferenceableRootNodesTest) not executable
+testBinaryProperty(org.apache.jackrabbit.test.api.SetValueConstraintViolationExceptionTest) not executable
+testBooleanProperty(org.apache.jackrabbit.test.api.SetValueConstraintViolationExceptionTest) not executable
+testDoubleProperty(org.apache.jackrabbit.test.api.SetValueConstraintViolationExceptionTest) not executable
+testReferenceProperty(org.apache.jackrabbit.test.api.SetValueConstraintViolationExceptionTest) not executable
+testMultipleReferenceProperty(org.apache.jackrabbit.test.api.SetValueConstraintViolationExceptionTest) not executable
+testBinaryProperty(org.apache.jackrabbit.test.api.SetPropertyConstraintViolationExceptionTest) not executable
+testBooleanProperty(org.apache.jackrabbit.test.api.SetPropertyConstraintViolationExceptionTest) not executable
+testDoubleProperty(org.apache.jackrabbit.test.api.SetPropertyConstraintViolationExceptionTest) not executable
+testReferenceProperty(org.apache.jackrabbit.test.api.SetPropertyConstraintViolationExceptionTest) not executable
+
+Test data in Jackrabbit should be enhanced in order to run those test cases successfully.

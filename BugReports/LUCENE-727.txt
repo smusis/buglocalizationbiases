@@ -1,0 +1,7 @@
+MMapDirectory can't create new index on Windows
+
+
+
+Description:
+When I set the system property to request the use of the mmap directory, and start building a large index, the process dies with an IOException trying to delete a file. Apparently, Lucene isn't closing down the memory map before deleting the file.
+

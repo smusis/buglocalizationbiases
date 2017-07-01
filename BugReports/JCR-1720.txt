@@ -1,0 +1,6 @@
+Jcr2Spi: configuration entry for size of ItemCache
+
+
+
+Description:
+in order to make the size of the ItemCache configurable (see TODO in jcr2spi SessionImpl) i'd like to extend the jcr2spi RepositoryConfig and have a default value being provided with AbstractRepositoryConfig in the tests section.

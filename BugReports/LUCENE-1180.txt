@@ -1,0 +1,21 @@
+Syns2Index fails
+
+
+
+Description:
+Running Syns2Index fails with a
+java.lang.IllegalArgumentException: maxBufferedDocs must at least be 2 when enabled exception.
+at org.apache.lucene.index.IndexWriter.setMaxBufferedDocs(IndexWriter.java:883)
+at org.apache.lucene.wordnet.Syns2Index.index(Syns2Index.java:249)
+at org.apache.lucene.wordnet.Syns2Index.main(Syns2Index.java:208)
+
+The code is here
+		// blindly up these parameters for speed
+		writer.setMergeFactor( writer.getMergeFactor() * 2);
+		writer.setMaxBufferedDocs( writer.getMaxBufferedDocs() * 2);
+
+It looks like getMaxBufferedDocs used to return 10, and now it returns -1, not sure when that started happening.
+
+My suggestion would be to just remove these three lines.  Since speed has already improved vastly, there isn't a need to speed things up.
+
+To run this, Syns2Index requires two args.  The first is the location of the wn_s.pl file, and the second is the directory to create the index in.

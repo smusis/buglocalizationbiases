@@ -1,0 +1,8 @@
+NodeTypeDef depends on supertype ordering
+
+
+
+Description:
+Currently the NodeTypeDef.setSupertypes() method simply sets the given QName array as the supertype QName array of the defined node type, thus preserving whatever ordering a node type parser or ultimately a node type definition file uses. This causes problems for example in the equals() method that uses the order-sensitive Arrays.equals() method to check for equality of the supertype QName arrays. The current implementation does therefore not consider the node type definitions "A > B, C" and "A > C, B" as equal even though they really should be so considered.
+
+The same problem affects also child node and property definitions. The proper fix for this issue would probably be to use Sets to store and handle this information.

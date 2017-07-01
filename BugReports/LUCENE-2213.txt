@@ -1,0 +1,20 @@
+Small improvements to ArrayUtil.getNextSize
+
+
+
+Description:
+Spinoff from java-dev thread "Dynamic array reallocation algorithms" started on Jan 12, 2010.
+
+Here's what I did:
+
+  * Keep the +3 for small sizes
+
+  * Added 2nd arg = number of bytes per element.
+
+  * Round up to 4 or 8 byte boundary (if it's 32 or 64 bit JRE respectively)
+
+  * Still grow by 1/8th
+
+  * If 0 is passed in, return 0 back
+
+I also had to remove some asserts in tests that were checking the actual values returned by this method -- I don't think we should test that (it's an impl. detail).

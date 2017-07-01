@@ -1,0 +1,11 @@
+Replace NodeReferencesId with NodeId
+
+
+
+Description:
+The NodeReferencesId class simply wraps a NodeId and forwards all essential method calls to it.
+
+The main (only?) benefit of having NodeReferencesId as a separate class is the ability to distinguish between the overloaded exists() and load() method signatures on PersistenceManager. The downside is the need to instantiate all the NodeReferencesId wrapper objects whenever accessing the references to a node.
+
+I propose to rename the overloaded methods to hasReferencesTo(NodeId) and getReferencesTo(NodeId) and to replace the NodeReferencesId with just the target NodeId wherever used.
+

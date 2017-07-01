@@ -1,0 +1,14 @@
+deprecate Directory.renameFile()
+
+
+
+Description:
+Copied from my mailing list post so this issue can be tracked (if necessary). I will commit a patch.
+
+I see that Directory.renameFile() isn't used anymore. I assume it has only 
+been public for technical reasons, not because we expect this to be used 
+from outside of Lucene? Should we deprecate this method? Its 
+implementation e.g. in FSDirectory looks a bit scary anyway (the comment 
+correctly says "This is not atomic" while the abstract class says "This 
+replacement should be atomic").
+

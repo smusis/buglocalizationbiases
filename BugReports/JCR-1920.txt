@@ -1,0 +1,160 @@
+Custom LoginModule configurations broken in 1.5.0
+
+
+
+Description:
+Upgrading Jackrabbit from 1.4.5 to 1.5 has created an LDAP exception.  The configuration file which has not changed (except for the adding the new SimpleSecurityManager as required) is the default with the following substituted for the LoginModule:
+
+        <LoginModule class="com.sun.security.auth.module.LdapLoginModule">
+            <param name="userProvider" value="ldap://localhost/ou=people,dc=example,dc=com" />
+            <param name="userFilter" value="(&amp;(uid={USERNAME})(objectClass=inetOrgPerson))" />
+            <param name="authzIdentity" value="{USERNAME}" />
+            <param name="debug" value="true" />
+        </LoginModule>
+
+This configuration worked correctly and I was able to authenticate properly with Jackrabbit 1.4.5
+The same configuration with 1.5 throws the following exception:
+
+javax.jcr.LoginException: com.sun.security.auth.module.LdapLoginModule does not support 'userProvider: com.sun.security.auth.module.LdapLoginModule does not support 'userProvider: com.sun.security.auth.module.LdapLoginModule does not support 'userProvider
+        at org.apache.jackrabbit.core.RepositoryImpl.login(RepositoryImpl.java:1414)
+        at org.apache.jackrabbit.jca.JCAManagedConnectionFactory.openSession(JCAManagedConnectionFactory.java:140)
+        at org.apache.jackrabbit.jca.JCAManagedConnectionFactory.createManagedConnection(JCAManagedConnectionFactory.java:176)
+        at org.apache.jackrabbit.jca.JCAManagedConnectionFactory.createManagedConnection(JCAManagedConnectionFactory.java:168)
+        at com.sun.enterprise.resource.ConnectorAllocator.createResource(ConnectorAllocator.java:136)
+        at com.sun.enterprise.resource.AbstractResourcePool.createSingleResource(AbstractResourcePool.java:891)
+        at com.sun.enterprise.resource.AbstractResourcePool.createResourceAndAddToPool(AbstractResourcePool.java:1752)
+        at com.sun.enterprise.resource.AbstractResourcePool.createResources(AbstractResourcePool.java:917)
+        at com.sun.enterprise.resource.AbstractResourcePool.initPool(AbstractResourcePool.java:225)
+        at com.sun.enterprise.resource.AbstractResourcePool.internalGetResource(AbstractResourcePool.java:516)
+        at com.sun.enterprise.resource.AbstractResourcePool.getResource(AbstractResourcePool.java:443)
+        at com.sun.enterprise.resource.PoolManagerImpl.getResourceFromPool(PoolManagerImpl.java:248)
+        at com.sun.enterprise.resource.PoolManagerImpl.getResource(PoolManagerImpl.java:176)
+        at com.sun.enterprise.connectors.ConnectionManagerImpl.internalGetConnection(ConnectionManagerImpl.java:337)
+        at com.sun.enterprise.connectors.ConnectionManagerImpl.allocateConnection(ConnectionManagerImpl.java:189)
+        at com.sun.enterprise.connectors.ConnectionManagerImpl.allocateConnection(ConnectionManagerImpl.java:165)
+        at com.sun.enterprise.connectors.ConnectionManagerImpl.allocateConnection(ConnectionManagerImpl.java:158)
+        at org.apache.jackrabbit.jca.JCARepositoryHandle.login(JCARepositoryHandle.java:98)
+        at org.apache.jackrabbit.jca.JCARepositoryHandle.login(JCARepositoryHandle.java:89)
+        at org.apache.jackrabbit.jca.JCARepositoryHandle.login(JCARepositoryHandle.java:73)
+        at com.threesl.Sapphire.CradleJCR.login(CradleJCR.java:44)   
+
+ try {
+            InitialContext ctx = new InitialContext();
+            repository = (Repository) ctx.lookup("jcr/repository");
+            session = repository.login(credentials);
+        } catch (Exception e) {
+
+        at com.threesl.Sapphire.CradleWS.doLogin(CradleWS.java:68)
+        at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+        at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:39)
+        at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:25)
+        at java.lang.reflect.Method.invoke(Method.java:597)
+        at com.sun.jersey.impl.model.method.dispatch.EntityParamDispatchProvider$TypeOutInvoker._dispatch(EntityParamDispatchProvider.java:136)
+        at com.sun.jersey.impl.model.method.dispatch.ResourceJavaMethodDispatcher.dispatch(ResourceJavaMethodDispatcher.java:85)
+        at com.sun.jersey.impl.uri.rules.HttpMethodRule.accept(HttpMethodRule.java:123)
+        at com.sun.jersey.impl.uri.rules.RightHandPathRule.accept(RightHandPathRule.java:111)
+        at com.sun.jersey.impl.uri.rules.ResourceClassRule.accept(ResourceClassRule.java:71)
+        at com.sun.jersey.impl.uri.rules.RightHandPathRule.accept(RightHandPathRule.java:111)
+        at com.sun.jersey.impl.uri.rules.RootResourceClassesRule.accept(RootResourceClassesRule.java:63)
+        at com.sun.jersey.impl.application.WebApplicationImpl.handleRequest(WebApplicationImpl.java:722)
+        at com.sun.jersey.impl.application.WebApplicationImpl.handleRequest(WebApplicationImpl.java:692)
+        at com.sun.jersey.spi.container.servlet.ServletContainer.service(ServletContainer.java:344)
+        at javax.servlet.http.HttpServlet.service(HttpServlet.java:831)
+        at org.apache.catalina.core.ApplicationFilterChain.servletService(ApplicationFilterChain.java:411)
+        at org.apache.catalina.core.StandardWrapperValve.invoke(StandardWrapperValve.java:290)
+        at org.apache.catalina.core.StandardContextValve.invokeInternal(StandardContextValve.java:271)
+        at org.apache.catalina.core.StandardContextValve.invoke(StandardContextValve.java:202)
+        at org.apache.catalina.core.StandardPipeline.doInvoke(StandardPipeline.java:632)
+        at org.apache.catalina.core.StandardPipeline.doInvoke(StandardPipeline.java:577)
+        at com.sun.enterprise.web.WebPipeline.invoke(WebPipeline.java:94)
+        at org.apache.catalina.core.StandardHostValve.invoke(StandardHostValve.java:206)
+        at org.apache.catalina.core.StandardPipeline.doInvoke(StandardPipeline.java:632)
+        at org.apache.catalina.core.StandardPipeline.doInvoke(StandardPipeline.java:577)
+        at org.apache.catalina.core.StandardPipeline.invoke(StandardPipeline.java:571)
+        at org.apache.catalina.core.ContainerBase.invoke(ContainerBase.java:1080)
+        at org.apache.catalina.core.StandardEngineValve.invoke(StandardEngineValve.java:150)
+        at org.apache.catalina.core.StandardPipeline.doInvoke(StandardPipeline.java:632)
+        at org.apache.catalina.core.StandardPipeline.doInvoke(StandardPipeline.java:577)
+        at org.apache.catalina.core.StandardPipeline.invoke(StandardPipeline.java:571)
+        at org.apache.catalina.core.ContainerBase.invoke(ContainerBase.java:1080)
+        at org.apache.coyote.tomcat5.CoyoteAdapter.service(CoyoteAdapter.java:272)
+        at com.sun.enterprise.web.connector.grizzly.DefaultProcessorTask.invokeAdapter(DefaultProcessorTask.java:637)
+        at com.sun.enterprise.web.connector.grizzly.DefaultProcessorTask.doProcess(DefaultProcessorTask.java:568)
+        at com.sun.enterprise.web.connector.grizzly.DefaultProcessorTask.process(DefaultProcessorTask.java:813)
+        at com.sun.enterprise.web.connector.grizzly.DefaultReadTask.executeProcessorTask(DefaultReadTask.java:341)
+        at com.sun.enterprise.web.connector.grizzly.DefaultReadTask.doTask(DefaultReadTask.java:263)
+        at com.sun.enterprise.web.connector.grizzly.DefaultReadTask.doTask(DefaultReadTask.java:214)
+        at com.sun.enterprise.web.connector.grizzly.TaskBase.run(TaskBase.java:265)
+        at com.sun.enterprise.web.connector.grizzly.ssl.SSLWorkerThread.run(SSLWorkerThread.java:106)
+Caused by: javax.security.auth.login.LoginException: com.sun.security.auth.module.LdapLoginModule does not support 'userProvider
+        at org.apache.jackrabbit.core.security.authentication.LocalAuthContext.login(LocalAuthContext.java:68)
+        at org.apache.jackrabbit.core.RepositoryImpl.login(RepositoryImpl.java:1407)
+        ... 62 more
+javax.security.auth.login.LoginException: com.sun.security.auth.module.LdapLoginModule does not support 'userProvider
+        at org.apache.jackrabbit.core.security.authentication.LocalAuthContext.login(LocalAuthContext.java:68)
+        at org.apache.jackrabbit.core.RepositoryImpl.login(RepositoryImpl.java:1407)
+        at org.apache.jackrabbit.jca.JCAManagedConnectionFactory.openSession(JCAManagedConnectionFactory.java:140)
+        at org.apache.jackrabbit.jca.JCAManagedConnectionFactory.createManagedConnection(JCAManagedConnectionFactory.java:176)
+        at org.apache.jackrabbit.jca.JCAManagedConnectionFactory.createManagedConnection(JCAManagedConnectionFactory.java:168)
+        at com.sun.enterprise.resource.ConnectorAllocator.createResource(ConnectorAllocator.java:136)
+        at com.sun.enterprise.resource.AbstractResourcePool.createSingleResource(AbstractResourcePool.java:891)
+        at com.sun.enterprise.resource.AbstractResourcePool.createResourceAndAddToPool(AbstractResourcePool.java:1752)
+        at com.sun.enterprise.resource.AbstractResourcePool.createResources(AbstractResourcePool.java:917)
+        at com.sun.enterprise.resource.AbstractResourcePool.initPool(AbstractResourcePool.java:225)
+        at com.sun.enterprise.resource.AbstractResourcePool.internalGetResource(AbstractResourcePool.java:516)
+        at com.sun.enterprise.resource.AbstractResourcePool.getResource(AbstractResourcePool.java:443)
+        at com.sun.enterprise.resource.PoolManagerImpl.getResourceFromPool(PoolManagerImpl.java:248)
+        at com.sun.enterprise.resource.PoolManagerImpl.getResource(PoolManagerImpl.java:176)
+        at com.sun.enterprise.connectors.ConnectionManagerImpl.internalGetConnection(ConnectionManagerImpl.java:337)
+        at com.sun.enterprise.connectors.ConnectionManagerImpl.allocateConnection(ConnectionManagerImpl.java:189)
+        at com.sun.enterprise.connectors.ConnectionManagerImpl.allocateConnection(ConnectionManagerImpl.java:165)
+        at com.sun.enterprise.connectors.ConnectionManagerImpl.allocateConnection(ConnectionManagerImpl.java:158)
+        at org.apache.jackrabbit.jca.JCARepositoryHandle.login(JCARepositoryHandle.java:98)
+        at org.apache.jackrabbit.jca.JCARepositoryHandle.login(JCARepositoryHandle.java:89)
+        at org.apache.jackrabbit.jca.JCARepositoryHandle.login(JCARepositoryHandle.java:73)
+        at com.threesl.Sapphire.CradleJCR.login(CradleJCR.java:44)
+        at com.threesl.Sapphire.CradleWS.doLogin(CradleWS.java:68)
+        at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+        at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:39)
+        at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:25)
+        at java.lang.reflect.Method.invoke(Method.java:597)
+        at com.sun.jersey.impl.model.method.dispatch.EntityParamDispatchProvider$TypeOutInvoker._dispatch(EntityParamDispatchProvider.java:136)
+        at com.sun.jersey.impl.model.method.dispatch.ResourceJavaMethodDispatcher.dispatch(ResourceJavaMethodDispatcher.java:85)
+        at com.sun.jersey.impl.uri.rules.HttpMethodRule.accept(HttpMethodRule.java:123)
+        at com.sun.jersey.impl.uri.rules.RightHandPathRule.accept(RightHandPathRule.java:111)
+        at com.sun.jersey.impl.uri.rules.ResourceClassRule.accept(ResourceClassRule.java:71)
+        at com.sun.jersey.impl.uri.rules.RightHandPathRule.accept(RightHandPathRule.java:111)
+        at com.sun.jersey.impl.uri.rules.RootResourceClassesRule.accept(RootResourceClassesRule.java:63)
+        at com.sun.jersey.impl.application.WebApplicationImpl.handleRequest(WebApplicationImpl.java:722)
+        at com.sun.jersey.impl.application.WebApplicationImpl.handleRequest(WebApplicationImpl.java:692)
+        at com.sun.jersey.spi.container.servlet.ServletContainer.service(ServletContainer.java:344)
+        at javax.servlet.http.HttpServlet.service(HttpServlet.java:831)
+        at org.apache.catalina.core.ApplicationFilterChain.servletService(ApplicationFilterChain.java:411)
+        at org.apache.catalina.core.StandardWrapperValve.invoke(StandardWrapperValve.java:290)
+        at org.apache.catalina.core.StandardContextValve.invokeInternal(StandardContextValve.java:271)
+        at org.apache.catalina.core.StandardContextValve.invoke(StandardContextValve.java:202)
+        at org.apache.catalina.core.StandardPipeline.doInvoke(StandardPipeline.java:632)
+        at org.apache.catalina.core.StandardPipeline.doInvoke(StandardPipeline.java:577)
+        at com.sun.enterprise.web.WebPipeline.invoke(WebPipeline.java:94)
+        at org.apache.catalina.core.StandardHostValve.invoke(StandardHostValve.java:206)
+        at org.apache.catalina.core.StandardPipeline.doInvoke(StandardPipeline.java:632)
+        at org.apache.catalina.core.StandardPipeline.doInvoke(StandardPipeline.java:577)
+        at org.apache.catalina.core.StandardPipeline.invoke(StandardPipeline.java:571)
+        at org.apache.catalina.core.ContainerBase.invoke(ContainerBase.java:1080)
+        at org.apache.catalina.core.StandardEngineValve.invoke(StandardEngineValve.java:150)
+        at org.apache.catalina.core.StandardPipeline.doInvoke(StandardPipeline.java:632)
+        at org.apache.catalina.core.StandardPipeline.doInvoke(StandardPipeline.java:577)
+        at org.apache.catalina.core.StandardPipeline.invoke(StandardPipeline.java:571)
+        at org.apache.catalina.core.ContainerBase.invoke(ContainerBase.java:1080)
+        at org.apache.coyote.tomcat5.CoyoteAdapter.service(CoyoteAdapter.java:272)
+        at com.sun.enterprise.web.connector.grizzly.DefaultProcessorTask.invokeAdapter(DefaultProcessorTask.java:637)
+        at com.sun.enterprise.web.connector.grizzly.DefaultProcessorTask.doProcess(DefaultProcessorTask.java:568)
+        at com.sun.enterprise.web.connector.grizzly.DefaultProcessorTask.process(DefaultProcessorTask.java:813)
+        at com.sun.enterprise.web.connector.grizzly.DefaultReadTask.executeProcessorTask(DefaultReadTask.java:341)
+        at com.sun.enterprise.web.connector.grizzly.DefaultReadTask.doTask(DefaultReadTask.java:263)
+        at com.sun.enterprise.web.connector.grizzly.DefaultReadTask.doTask(DefaultReadTask.java:214)
+        at com.sun.enterprise.web.connector.grizzly.TaskBase.run(TaskBase.java:265)
+        at com.sun.enterprise.web.connector.grizzly.ssl.SSLWorkerThread.run(SSLWorkerThread.java:106)
+RAR5117 : Failed to obtain/create connection from connection pool [ jackrabbit-connection-pool ]. Reason : Failed to create session: com.sun.security.auth.module.LdapLoginModule does not support 'userProvider: com.sun.security.auth.module.LdapLoginModule does not support 'userProvider
+
+

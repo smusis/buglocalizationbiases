@@ -1,0 +1,6 @@
+DavMethods.POST should be public, not private
+
+
+
+Description:
+DavMethods.POST is declared as a private constant, when it should be public. attached is a patch to fix this.

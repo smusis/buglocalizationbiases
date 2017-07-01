@@ -1,0 +1,17 @@
+Simplified Repository URI format for JNDI lookups
+
+
+
+Description:
+The JndiRepositoryFactory class (together with JcrUtils) currently supports the following repository URI formats:
+
+    JcrUtils.getRepository("jndi:name-of-repository");
+    JcrUtils.getRepository("jndi://ignored?org.apache.jackrabbit.repository.jndi.name=name-of-repository&other-parameters");
+
+The first uri formats allows no extra JNDI environment settings to be passed in, and the second one is pretty verbose and simply ignores the authority and path parts of the URI.
+
+I'd like to add support for the following simplified format that makes it easy to provide the repository name along with the initial context factory from which the name is to be looked up:
+
+    JcrUtils.getRepository("jndi://initial-context-factory/name-of-repository");
+
+Extra JNDI environment settings could still be included as additional query parameters. Backwards compatibility with the previous formats would be guaranteed based on the presence or absence of the org.apache.jackrabbit.repository.jndi.name parameter in hierarchical URIs.

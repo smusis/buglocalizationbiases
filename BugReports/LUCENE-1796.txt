@@ -1,0 +1,6 @@
+Speed up repeated TokenStream init
+
+
+
+Description:
+ by caching isMethodOverridden results

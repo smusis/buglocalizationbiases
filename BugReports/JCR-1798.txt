@@ -1,0 +1,10 @@
+JCR2SPI: Avoid individual Item reloading upon Session/Item.refresh(true)
+
+
+
+Description:
+with CacheBehaviour.INVALIDATE Item.refresh(true) and Session.refresh(true) results in individual reloading of the existing entries in the hierarchy circumventing all batch read optimization.
+
+Apart from general optimization of the refresh itself, refresh(true) should rather mark existing items and force a reload upon next access (similar to the behaviour implemented with refresh(false)).
+
+

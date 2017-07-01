@@ -1,0 +1,7 @@
+SPI: Testsuite for the SPI Interfaces
+
+
+
+Description:
+now that people start writing SPI implementations we should provide a test-suite that runs on the SPI directly in order to provide the developers a way to assert basic compliance of their implementation without having the JCR api in between.
+

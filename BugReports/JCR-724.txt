@@ -1,0 +1,7 @@
+PropertyReadMethodsTest.testIsSame leaks session
+
+
+
+Description:
+The test case obtains a second session but doesn't logout().
+

@@ -1,0 +1,8 @@
+Consistently refer to "Apache Jackrabbit" in docs and site
+
+
+
+Description:
+We need to consistently refer to our project (and product) as Apache Jackrabbit
+on our site and docs, except where the context is obvious.
+

@@ -1,0 +1,6 @@
+Use POIExtractor wherever possible
+
+
+
+Description:
+POI scratchpad comes with a couple of text extractor utilities, which makes it easier to extract text. We should rather use those utilities than writing our own extractor code. This helps avoid issues like JCR-1530.

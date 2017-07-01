@@ -1,0 +1,17 @@
+Item.remove fails if a child-item is not visible to the editing session
+
+
+
+Description:
+the following test setup fails:
+
+- a given session is allowed to remove a node
+- the node has a policy child node which is not visible to the editing session (missing ac-read permission)
+  OR the node has another invisible child item which could - based on the permissions above - be removed by that session.
+
+calling Node.remove however fails with accessdeniedexception because the internal remove
+mechanism accesses all child items to mark them removed. however, the access is executed
+using the regular itemmgr calls that are used to retrieve the items using the JCR API which
+results in accessdenied exception as those child items are not visible to the session.
+since the items can be removed i would argue that this is a bug in the internal remove process.
+

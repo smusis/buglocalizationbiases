@@ -1,0 +1,7 @@
+BundleDbPersistenceManager consistencyFix doesn't fix missing non system childnode  entries of the root node
+
+
+
+Description:
+The bundle check/fix mechanism completely skips the checks on the root node, but the root node can also have non system child node entries which can be broken/missing. The attached patch makes the check only check the non system child node entries of the root node. It would be nice if this patch (if/when accepted) could also be backported to the 1.5 and 1.6 branches.
+

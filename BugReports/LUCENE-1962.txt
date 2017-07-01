@@ -1,0 +1,13 @@
+Persian Arabic Analyzer cleanup
+
+
+
+Description:
+While browsing through the code I found some places for minor improvements in the new Arabic / Persian Analyzer code. 
+
+- prevent default stopwords from being loaded each time a default constructor is called
+- replace if blocks with a single switch
+- marking private members final where needed
+- changed protected visibility to final in final class.
+
+

@@ -1,0 +1,30 @@
+Add SearcherLifetimeManager, so you can retrieve the same searcher you previously used
+
+
+
+Description:
+The idea is similar to SOLR-2809 (adding searcher leases to Solr).
+
+This utility class sits above whatever your source is for "the
+current" searcher (eg NRTManager, SearcherManager, etc.), and records
+(holds a reference to) each searcher in recent history.
+
+The idea is to ensure that when a user does a follow-on action (clicks
+next page, drills down/up), or when two or more searcher invocations
+within a single user search need to happen against the same searcher
+(eg in distributed search), you can retrieve the same searcher you
+used "last time".
+
+I think with the new searchAfter API (LUCENE-2215), doing follow-on
+searches on the same searcher is more important, since the "bottom"
+(score/docID) held for that API can easily shift when a new searcher
+is opened.
+
+When you do a "new" search, you record the searcher you used with the
+manager, and it returns to you a long token (currently just the
+IR.getVersion()), which you can later use to retrieve the same
+searcher.
+
+Separately you must periodically call prune(), to prune the old
+searchers, ideally from the same thread / at the same time that
+you open a new searcher.

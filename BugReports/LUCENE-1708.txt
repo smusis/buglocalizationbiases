@@ -1,0 +1,11 @@
+Improve the use of isDeleted in the indexing code
+
+
+
+Description:
+A spin off from here: http://www.nabble.com/Some-thoughts-around-the-use-of-reader.isDeleted-and-hasDeletions-td23931216.html.
+Two changes:
+# Optimize SegmentMerger work when a reader has no deletions.
+# IndexReader.document() will no longer check if the document is deleted.
+
+Will post a patch shortly

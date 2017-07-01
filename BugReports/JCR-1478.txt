@@ -1,0 +1,6 @@
+Perform random operation tests
+
+
+
+Description:
+As discussed on the mailing list and in other jira issues it makes sense to execute tests that perform random operations on the repository. This helps us detect concurrency issues in jackrabbit and increase code coverage.

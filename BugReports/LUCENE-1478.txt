@@ -1,0 +1,18 @@
+Missing possibility to supply custom FieldParser when sorting search results
+
+
+
+Description:
+When implementing the new TrieRangeQuery for contrib (LUCENE-1470), I was confronted by the problem that the special trie-encoded values (which are longs in a special encoding) cannot be sorted by Searcher.search() and SortField. The problem is: If you use SortField.LONG, you get NumberFormatExceptions. The trie encoded values may be sorted using SortField.String (as the encoding is in such a way, that they are sortable as Strings), but this is very memory ineffective.
+
+ExtendedFieldCache gives the possibility to specify a custom LongParser when retrieving the cached values. But you cannot use this during searching, because there is no possibility to supply this custom LongParser to the SortField.
+
+I propose a change in the sort classes:
+Include a pointer to the parser instance to be used in SortField (if not given use the default). My idea is to create a SortField using a new constructor
+{code}SortField(String field, int type, Object parser, boolean reverse){code}
+
+The parser is "object" because all current parsers have no super-interface. The ideal solution would be to have:
+
+{code}SortField(String field, int type, FieldCache.Parser parser, boolean reverse){code}
+
+and FieldCache.Parser is a super-interface (just empty, more like a marker-interface) of all other parsers (like LongParser...). The sort implementation then must be changed to respect the given parser (if not NULL), else use the default FieldCache.getXXXX without parser.

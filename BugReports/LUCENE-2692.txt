@@ -1,0 +1,6 @@
+Position Checking Span Queries
+
+
+
+Description:
+I've created a bunch of new SpanQuery classes that allow one to do things like check to see if a SpanQuery falls between two positions (which is a more general form of SpanFirstQuery) and I've also added one that only includes a match if the payload located at the span match also matches a given payload.  With the latter, one can do queries for items w/ specific payloads.

@@ -1,0 +1,10 @@
+Deprecate/remove language-specific tokenizers in favor of StandardTokenizer
+
+
+
+Description:
+As of Lucene 3.1, StandardTokenizer implements UAX#29 word boundary rules to provide language-neutral tokenization.  Lucene contains several language-specific tokenizers that should be replaced by UAX#29-based StandardTokenizer (deprecated in 3.1 and removed in 4.0).  The language-specific *analyzers*, by contrast, should remain, because they contain language-specific post-tokenization filters.  The language-specific analyzers should switch to StandardTokenizer in 3.1.
+
+Some usages of language-specific tokenizers will need additional work beyond just replacing the tokenizer in the language-specific analyzer.  
+
+For example, PersianAnalyzer currently uses ArabicLetterTokenizer, and depends on the fact that this tokenizer breaks tokens on the ZWNJ character (zero-width non-joiner; U+200C), but in the UAX#29 word boundary rules, ZWNJ is not a word boundary.  Robert Muir has suggested using a char filter converting ZWNJ to spaces prior to StandardTokenizer in the converted PersianAnalyzer.

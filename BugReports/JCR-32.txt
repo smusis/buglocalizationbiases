@@ -1,0 +1,11 @@
+sysview export/import of multivalue properties seems not to work
+
+
+
+Description:
+the sysview export of multivalue properties does not differ from the export of singlevalue properties.
+
+if a mv-property contains only 1 value, how can the import find the correct property-def?
+
+currently, it throws: 
+  javax.jcr.nodetype.ConstraintViolationException: no matching property definition found for <propertyname>

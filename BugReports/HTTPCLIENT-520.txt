@@ -1,0 +1,11 @@
+MultipartEntity incorrectly computes unknown length
+
+
+
+Description:
+If any Part of a MultipartEntity reports an unknown length (-1), MultipartEntity
+reports an erroneous length value. It should report an unknown length (-1) if
+any of the parts is of unknown length, that would cause the POST to be chunked.
+
+See
+http://mail-archives.apache.org/mod_mbox/jakarta-httpclient-user/200510.mbox/ajax/%3ceb3d689c0510250851t2eb78462tbf701135bbf718c9@mail.gmail.com%3e

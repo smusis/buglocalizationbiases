@@ -1,0 +1,8 @@
+StopFilter should have option to incr positionIncrement after stop word
+
+
+
+Description:
+I've seen this come up on the mailing list a few times in the last month, so i'm filing a known bug/improvement arround it...
+
+StopFilter should have an option that if set, records how many stop words are "skipped" in a row, and then sets that value as the positionIncrement on the "next" token that StopFilter does return.

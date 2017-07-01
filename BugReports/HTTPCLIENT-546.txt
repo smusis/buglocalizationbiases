@@ -1,0 +1,19 @@
+MultiThreadedHttpConnectionManager setMaxTotalConnections() method doesn't work
+
+
+
+Description:
+The deprecated setMaxTotalConnections() method in the
+MultiThreadedHttpConnectionManager seems like it has no effect:
+
+Here is the source code in the current version:
+
+    public void setMaxTotalConnections(int maxTotalConnections) {
+        this.params.getMaxTotalConnections();
+    }
+
+Shouldn't it look more like this?
+
+    public void setMaxTotalConnections(int maxTotalConnections) {
+        this.params.setMaxTotalConnections(maxTotalConnections);
+    }

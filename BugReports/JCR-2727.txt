@@ -1,0 +1,6 @@
+Add user manager performance tests 
+
+
+
+Description:
+We should add some performance tests for validating JCR-2710 and related. That is we should measure performance for creating users and groups and adding/removing users to/from groups. This should be done for both repository configurations: one with the old content model (group membership in property) and one with the new content model introduced with JCR-2710 (group membership in b-tree like node structure). 

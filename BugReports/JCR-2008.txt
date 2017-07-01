@@ -1,0 +1,10 @@
+System search manager uses a SessionItemStateManager
+
+
+
+Description:
+As noted in JCR-2000, the system search manager (responsible for indexing the /jcr:system subtree) uses the SessionItemStateManager instance of the system session instead of the SharedItemStateManager of the underlying default workspace.
+
+This can cause a deadlock (see the thread dumps in JCR-2000) when one thread is accessing the LockManager (that also uses the system session) while another thread is persisting versioning changes.
+
+See the search-on-sism.patch attachment in JCR-2000 for a fix to this issue.

@@ -1,0 +1,41 @@
+Improve indexing performance by increasing internal buffer sizes
+
+
+
+Description:
+In working on LUCENE-843, I noticed that two buffer sizes have a
+substantial impact on overall indexing performance.
+
+First is BufferedIndexOutput.BUFFER_SIZE (also used by
+BufferedIndexInput).  Second is CompoundFileWriter's buffer used to
+actually build the compound file.  Both are now 1 KB (1024 bytes).
+
+I ran the same indexing test I'm using for LUCENE-843.  I'm indexing
+~5,500 byte plain text docs derived from the Europarl corpus
+(English).  I index 200,000 docs with compound file enabled and term
+vector positions & offsets stored plus stored fields.  I flush
+documents at 16 MB RAM usage, and I set maxBufferedDocs carefully to
+not hit LUCENE-845.  The resulting index is 1.7 GB.  The index is not
+optimized in the end and I left mergeFactor @ 10.
+
+I ran the tests on a quad-core OS X 10 machine with 4-drive RAID 0 IO
+system.
+
+At 1 KB (current Lucene trunk) it takes 622 sec to build the index; if
+I increase both buffers to 8 KB it takes 554 sec to build the index,
+which is an 11% overall gain!
+
+I will run more tests to see if there is a natural knee in the curve
+(buffer size above which we don't really gain much more performance).
+
+I'm guessing we should leave BufferedIndexInput's default BUFFER_SIZE
+at 1024, at least for now.  During searching there can be quite a few
+of this class instantiated, and likely a larger buffer size for the
+freq/prox streams could actually hurt search performance for those
+searches that use skipping.
+
+The CompoundFileWriter buffer is created only briefly, so I think we
+can use a fairly large (32 KB?) buffer there.  And there should not be
+too many BufferedIndexOutputs alive at once so I think a large-ish
+buffer (16 KB?) should be OK.
+

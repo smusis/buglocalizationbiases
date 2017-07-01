@@ -1,0 +1,6 @@
+Add join query to Lucene
+
+
+
+Description:
+Solr has (psuedo) join query for a while now. I think this should also be available in Lucene.  

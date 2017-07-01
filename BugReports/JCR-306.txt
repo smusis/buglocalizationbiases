@@ -1,0 +1,19 @@
+repositoryConfig should use setter for its internal components
+
+
+
+Description:
+From the mailing list (not archived at the moment):
+--- Jukka's reply ---
+I refactored the config classes last year but didn't change the way
+the config instances are being used by Jackrabbit. In general I think
+that a IoC approach (use setters to configure the Jackrabbit
+components) would be better than passing config objects around and
+letting the components to instantiate any subcomponents based on the
+configuration. This is why I didn't really want to make the config
+constructors public, otherwise we'd easily up with backwards
+compatibility issues if we were to change the way configuration is
+handled.
+---
+
+

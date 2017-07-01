@@ -1,0 +1,6 @@
+PayloadTermQuery's explain is broken when span score is not included
+
+
+
+Description:
+When setting includeSpanScore to false with PayloadTermQuery, the explain is broken.

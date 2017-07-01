@@ -1,0 +1,56 @@
+JCR-Server: IllegalArgumentException when retrieving DateHeader
+
+
+
+Description:
+issue reported by martin perez:
+
+Here is one exception. If I access to any repository through WebDAV using a
+web browser (http://localhost:8080/webapp/repository/default the first time
+goes well, but if I refresh the page then I get the following exception:
+
+GRAVE: Servlet.service() para servlet Webdav lanzó excepción
+java.lang.IllegalArgumentException: mar, 29 nov 2005 22:45:48 CET
+    at org.apache.catalina.connector.Request.getDateHeader(Request.java
+:1791)
+    at org.apache.catalina.connector.RequestFacade.getDateHeader(
+RequestFacade.java:630)
+    at org.apache.jackrabbit.webdav.WebdavRequestImpl.getDateHeader(
+WebdavRequestImpl.java:724)
+    at org.apache.jackrabbit.server.AbstractWebdavServlet.spoolResource(
+AbstractWebdavServlet.java:363)
+    at org.apache.jackrabbit.server.AbstractWebdavServlet.doGet(
+AbstractWebdavServlet.java:344)
+    at org.apache.jackrabbit.j2ee.SimpleWebdavServlet.execute(
+SimpleWebdavServlet.java:191)
+    at org.apache.jackrabbit.server.AbstractWebdavServlet.service(
+AbstractWebdavServlet.java:170)
+    at javax.servlet.http.HttpServlet.service(HttpServlet.java:802)
+    at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(
+ApplicationFilterChain.java:252)
+    at org.apache.catalina.core.ApplicationFilterChain.doFilter(
+ApplicationFilterChain.java:173)
+    at org.apache.catalina.core.StandardWrapperValve.invoke(
+StandardWrapperValve.java:213)
+    at org.apache.catalina.core.StandardContextValve.invoke(
+StandardContextValve.java:178)
+    at org.apache.catalina.core.StandardHostValve.invoke(
+StandardHostValve.java:126)
+    at org.apache.catalina.valves.ErrorReportValve.invoke(
+ErrorReportValve.java:105)
+    at org.apache.catalina.core.StandardEngineValve.invoke(
+StandardEngineValve.java:107)
+    at org.apache.catalina.connector.CoyoteAdapter.service(
+CoyoteAdapter.java:148)
+    at org.apache.coyote.http11.Http11Processor.process(Http11Processor.java
+:868)
+    at
+org.apache.coyote.http11.Http11BaseProtocol$Http11ConnectionHandler.processConnection
+(Http11BaseProtocol.java:663)
+    at org.apache.tomcat.util.net.PoolTcpEndpoint.processSocket(
+PoolTcpEndpoint.java:527)
+    at org.apache.tomcat.util.net.LeaderFollowerWorkerThread.runIt(
+LeaderFollowerWorkerThread.java:80)
+    at org.apache.tomcat.util.threads.ThreadPool$ControlRunnable.run(
+ThreadPool.java:684)
+    at java.lang.Thread.run(Thread.java:595)

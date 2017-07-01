@@ -1,0 +1,6 @@
+Jackrabbit concurrency review and invariants
+
+
+
+Description:
+I've been working on reviewing and verifying the internal concurrency model of Jackrabbit in an attempt to proactively prevent the kinds of deadlock issues we've seen before. Overall things seem pretty good nowadays. I'll be updating the web site with some resulting design and review docs that should help guide future work in this area. I also have created some global invariant checks that I'll be adding to the codebase.

@@ -1,0 +1,62 @@
+jackrabbit-jcr-rmi: Supplied javax.transaction.xa.Xid is assumed serializable, but is not on some environments.
+
+
+
+Description:
+Websphere provides a non-serializable javax.transaction.xa.Xid implementation, causing ClientXAResource to fail with NotSerializableException when passing Xid over RMI.
+I have worked around this by converting the supplied Xid to a local serializable Xid implementation that takes the supplied Xid parameters, and implements hashCode() and equals() correctly:
+
+    private static class SerializableXID implements javax.transaction.xa.Xid, Serializable {
+    	/**
+		 * Serial version ID
+		 */
+		private static final long serialVersionUID = -1390620315181450507L;
+		
+		private final byte[] branchQualifier;
+    	private final byte[] globalTransactionId;
+    	private final int formatId;
+    	private final int hashCode;
+   	
+    	public SerializableXID(Xid xid) {
+    		branchQualifier = xid.getBranchQualifier();
+    		globalTransactionId = xid.getGlobalTransactionId();
+    		formatId = xid.getFormatId();
+    		hashCode = xid.hashCode();
+    	}
+
+		public byte[] getBranchQualifier() {
+			return branchQualifier;
+		}
+
+		public int getFormatId() {
+			return formatId;
+		}
+
+		public byte[] getGlobalTransactionId() {
+			return globalTransactionId;
+		}
+
+        public final int hashCode() {
+        	return hashCode;
+        }
+        
+        public final boolean equals(Object obj) {
+	        if(obj == this) {
+	            return true;
+	        }
+	        
+        	if(!(obj instanceof Xid)) {
+        		return false;        		
+        	}
+        	
+        	Xid xidimpl = (Xid)obj;
+        	if(formatId != xidimpl.getFormatId()) {
+        		return false;
+        	}
+	        else {
+	            return Arrays.equals(branchQualifier, xidimpl.getBranchQualifier())
+	            	&& Arrays.equals(globalTransactionId, xidimpl.getGlobalTransactionId());
+	        }
+    	}
+    }
+

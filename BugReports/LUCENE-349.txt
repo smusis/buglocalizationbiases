@@ -1,0 +1,11 @@
+Documentation for tii and tis files seems to be out of sync with code
+
+
+
+Description:
+The documentation on the .tii file in fileformats.xml seems to be out of sync
+with the actual code in TermInfosReader.java.
+
+Specifically, the docs for the TermInfosIndex file seems to leave out several
+fields that are read from the file in the readIndex() method (well, specifically
+they're read in by the SegmentTermEnum constructor, but you get the idea).

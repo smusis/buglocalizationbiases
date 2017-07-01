@@ -1,0 +1,6 @@
+DerbyPersistenceManager only usable for embedded databases
+
+
+
+Description:
+DerbyPersistenceManager always shuts down the database on exit, which makes it unusable for standalone databases.

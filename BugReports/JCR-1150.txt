@@ -1,0 +1,15 @@
+JCR2SPI: several performance improvements pointed out by Findbugs
+
+
+
+Description:
+FindBug report:
+
+M P Bx: Method org.apache.jackrabbit.jcr2spi.nodetype.BitsetENTCacheImpl.getBitNumber(QName) invokes inefficient Integer(int) constructor; use Integer.valueOf(int) instead	src/main/java/org/apache/jackrabbit/jcr2spi/nodetype	BitsetENTCacheImpl.java	line 177	1190981544656	1666284
+M P Bx: Method org.apache.jackrabbit.jcr2spi.query.RowIteratorImpl$RowImpl.getValue(String) invokes inefficient Integer(int) constructor; use Integer.valueOf(int) instead	src/main/java/org/apache/jackrabbit/jcr2spi/query	RowIteratorImpl.java	line 247	1190981544671	1666292
+M P Bx: Method org.apache.jackrabbit.jcr2spi.WorkspaceManager.onEventReceived(EventBundle[], InternalEventListener[]) invokes inefficient Integer(int) constructor; use Integer.valueOf(int) instead	src/main/java/org/apache/jackrabbit/jcr2spi	WorkspaceManager.java	line 616	1190981544640	1666279
+M P WMI: Method org.apache.jackrabbit.jcr2spi.name.NamespaceCache.syncNamespaces(Map) makes inefficient use of keySet iterator instead of entrySet iterator	src/main/java/org/apache/jackrabbit/jcr2spi/name	NamespaceCache.java	line 193	1190981544656	1666283
+M P WMI: Method org.apache.jackrabbit.jcr2spi.nodetype.NodeTypeRegistryImpl.internalRegister(Map) makes inefficient use of keySet iterator instead of entrySet iterator	src/main/java/org/apache/jackrabbit/jcr2spi/nodetype	NodeTypeRegistryImpl.java	line 524	1190981544656	1666285
+M P WMI: Method org.apache.jackrabbit.jcr2spi.observation.ObservationManagerImpl.onEvent(EventBundle) makes inefficient use of keySet iterator instead of entrySet iterator	src/main/java/org/apache/jackrabbit/jcr2spi/observation	ObservationManagerImpl.java	line 189	1190981544656	1666286
+M P WMI: Method org.apache.jackrabbit.jcr2spi.state.NodeState.persisted(ChangeLog) makes inefficient use of keySet iterator instead of entrySet iterator	src/main/java/org/apache/jackrabbit/jcr2spi/state	NodeState.java	line 275	1190981544671	1666297
+

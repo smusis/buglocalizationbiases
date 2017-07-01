@@ -1,0 +1,99 @@
+Lucene Search has poor cpu utilization on a 4-CPU machine
+
+
+
+Description:
+I noticed that the class org.apache.lucene.index.FieldInfos uses private class
+members Vector byNumber and Hashtable byName, both of which are synchronized
+objects, thus resulting in unessesary locks. 
+
+By changing the Vector byNumber to ArrayList byNumber, and Hashtable byName to
+HashMap byName, both are not synchronized objects, I was able to get 110%
+improvement in performance (number of searches per second).
+
+
+Here is a sample of blocked thread
+"Thread-32" daemon prio=1 tid=0x082334c0 nid=0xa66 waiting for monitor entry
+[4f385000..4f38687c]
+        at java.util.Vector.elementAt(Vector.java:430)
+        - waiting to lock <0x452b93a8> (a java.util.Vector)
+        at org.apache.lucene.index.FieldInfos.fieldInfo(FieldInfos.java:155)
+        at org.apache.lucene.index.FieldInfos.fieldName(FieldInfos.java:151)
+        at
+org.apache.lucene.index.SegmentTermEnum.readTerm(SegmentTermEnum.java:149)
+        at org.apache.lucene.index.SegmentTermEnum.next(SegmentTermEnum.java:115)
+        at
+org.apache.lucene.index.TermInfosReader.scanEnum(TermInfosReader.java:143)
+        at org.apache.lucene.index.TermInfosReader.get(TermInfosReader.java:137)
+        at org.apache.lucene.index.SegmentTermDocs.seek(SegmentTermDocs.java:51)
+        at org.apache.lucene.index.IndexReader.termDocs(IndexReader.java:364)
+        at org.apache.lucene.search.TermQuery$TermWeight.scorer(TermQuery.java:59)
+        at
+org.apache.lucene.search.BooleanQuery$BooleanWeight.scorer(BooleanQuery.java:165)
+        at
+org.apache.lucene.search.BooleanQuery$BooleanWeight.scorer(BooleanQuery.java:165)
+        at org.apache.lucene.search.IndexSearcher.search(IndexSearcher.java:154)
+        at
+gov.gsa.search.SearcherByPageAndSortedField.search(SearcherByPageAndSortedField.java:317)
+        at
+gov.gsa.search.SearcherByPageAndSortedField.search(SearcherByPageAndSortedField.java:203)
+        at
+gov.gsa.search.grants.SearchGrants.searchByPageAndSortedField(SearchGrants.java:308)
+        at
+gov.gsa.search.grants.SearchServlet.searchByIndex(SearchServlet.java:1541)
+        at gov.gsa.search.grants.SearchServlet.getResults(SearchServlet.java:1325)
+        at gov.gsa.search.grants.SearchServlet.doGet(SearchServlet.java:500)
+        at javax.servlet.http.HttpServlet.service(HttpServlet.java:740)
+        at javax.servlet.http.HttpServlet.service(HttpServlet.java:853)
+        at
+org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:247)
+        at
+org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:193)
+        at
+org.apache.catalina.core.StandardWrapperValve.invoke(StandardWrapperValve.java:256)
+        at
+org.apache.catalina.core.StandardPipeline$StandardPipelineValveContext.invokeNext(StandardPipeline.java:643)
+        at
+org.apache.catalina.core.StandardPipeline.invoke(StandardPipeline.java:480)
+        at org.apache.catalina.core.ContainerBase.invoke(ContainerBase.java:995)
+        at
+org.apache.catalina.core.StandardContextValve.invoke(StandardContextValve.java:191)
+        at
+org.apache.catalina.core.StandardPipeline$StandardPipelineValveContext.invokeNext(StandardPipeline.java:643)
+        at
+org.apache.catalina.core.StandardPipeline.invoke(StandardPipeline.java:480)
+        at org.apache.catalina.core.ContainerBase.invoke(ContainerBase.java:995)
+        at
+org.apache.catalina.core.StandardContext.invoke(StandardContext.java:2415)
+        at
+org.apache.catalina.core.StandardHostValve.invoke(StandardHostValve.java:180)
+        at
+org.apache.catalina.core.StandardPipeline$StandardPipelineValveContext.invokeNext(StandardPipeline.java:643)
+        at
+org.apache.catalina.valves.ErrorDispatcherValve.invoke(ErrorDispatcherValve.java:171)
+        at
+org.apache.catalina.core.StandardPipeline$StandardPipelineValveContext.invokeNext(StandardPipeline.java:641)
+        at
+org.apache.catalina.valves.ErrorReportValve.invoke(ErrorReportValve.java:172)
+        at
+org.apache.catalina.core.StandardPipeline$StandardPipelineValveContext.invokeNext(StandardPipeline.java:641)
+        at
+org.apache.catalina.core.StandardPipeline.invoke(StandardPipeline.java:480)
+        at org.apache.catalina.core.ContainerBase.invoke(ContainerBase.java:995)
+        at
+org.apache.catalina.core.StandardEngineValve.invoke(StandardEngineValve.java:174)
+        at
+org.apache.catalina.core.StandardPipeline$StandardPipelineValveContext.invokeNext(StandardPipeline.java:643)
+        at
+org.apache.catalina.core.StandardPipeline.invoke(StandardPipeline.java:480)
+        at org.apache.catalina.core.ContainerBase.invoke(ContainerBase.java:995)
+        at org.apache.coyote.tomcat4.CoyoteAdapter.service(CoyoteAdapter.java:223)
+        at org.apache.jk.server.JkCoyoteHandler.invoke(JkCoyoteHandler.java:261)
+        at org.apache.jk.common.HandlerRequest.invoke(HandlerRequest.java:360)
+        at org.apache.jk.common.ChannelSocket.invoke(ChannelSocket.java:604)
+        at
+org.apache.jk.common.ChannelSocket.processConnection(ChannelSocket.java:562)
+        at org.apache.jk.common.SocketConnection.runIt(ChannelSocket.java:679)
+        at
+org.apache.tomcat.util.threads.ThreadPool$ControlRunnable.run(ThreadPool.java:619)
+        at java.lang.Thread.run(Thread.java:534)

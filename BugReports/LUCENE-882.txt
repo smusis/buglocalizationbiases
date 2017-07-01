@@ -1,0 +1,14 @@
+Spellchecker doesn't need to store ngrams
+
+
+
+Description:
+The spellchecker in contrib stores the ngrams although this doesn't seem to be necessary. This patch changes that, I will commit it unless someone objects. This improves indexing speed and index size. Some numbers on a small test I did:
+
+Input of the original index: 2200 text files, index size 5.3 MB, indexing took 17 seconds
+
+Spell index before patch: about 60.000 documents, index size 13 MB, indexing took 62 seconds
+Spell index after patch: about 60.000 documents, index size 6.3 MB, indexing took 52 seconds
+
+BTW, the test case fails even before this patch. I'll probaby submit another issue about how to fix that.
+

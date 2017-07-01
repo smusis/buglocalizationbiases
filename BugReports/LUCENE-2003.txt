@@ -1,0 +1,8 @@
+Highlighter has problems when you use StandardAnalyzer with LUCENE_29 or simplier StopFilter with stopWordsPosIncr mode switched on
+
+
+
+Description:
+This is a followup on LUCENE-1987:
+
+If you set in HighligterTest the constant static final Version TEST_VERSION = Version.LUCENE_24 to LUCENE_29 or LUCENE_CURRENT, the test testSimpleQueryScorerPhraseHighlighting fails. Please note, that currently (before LUCENE-2002 is fixed), you must also set the QueryParser to respect posIncr.

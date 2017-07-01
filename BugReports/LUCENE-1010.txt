@@ -1,0 +1,16 @@
+Document with no term vectors mixed with ones that have term vectors cause EOFException during merge
+
+
+
+Description:
+Another spinoff from here:
+
+  http://www.gossamer-threads.com/lists/lucene/java-dev/53306
+
+Thank you to Andi Vajda for capturing the issue in a compact test!
+
+This is the same logical error from LUCENE-1008, but in this case the
+bug is in TermVectorsWriter: we are failing to write the "0" field
+count to the tvd file when the document has no vectors.  I have a unit
+test showing the issue & simple fix.
+

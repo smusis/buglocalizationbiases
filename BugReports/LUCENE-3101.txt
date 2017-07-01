@@ -1,0 +1,36 @@
+TestMinimize.testAgainstBrzozowski reproducible seed OOM
+
+
+
+Description:
+{code}
+    [junit] Testsuite: org.apache.lucene.util.automaton.TestMinimize
+    [junit] Tests run: 1, Failures: 0, Errors: 1, Time elapsed: 3.792 sec
+    [junit] 
+    [junit] ------------- Standard Error -----------------
+    [junit] NOTE: reproduce with: ant test -Dtestcase=TestMinimize -Dtestmethod=testAgainstBrzozowski -Dtests.seed=-7429820995201119781:1013305000165135537
+    [junit] NOTE: test params are: codec=PreFlex, locale=ru, timezone=America/Pangnirtung
+    [junit] NOTE: all tests run in this JVM:
+    [junit] [TestMinimize]
+    [junit] NOTE: Linux 2.6.37-gentoo amd64/Sun Microsystems Inc. 1.6.0_25 (64-bit)/cpus=8,threads=1,free=294745976,total=310378496
+    [junit] ------------- ---------------- ---------------
+    [junit] Testcase: testAgainstBrzozowski(org.apache.lucene.util.automaton.TestMinimize):     Caused an ERROR
+    [junit] Java heap space
+    [junit] java.lang.OutOfMemoryError: Java heap space
+    [junit]     at java.util.BitSet.initWords(BitSet.java:144)
+    [junit]     at java.util.BitSet.<init>(BitSet.java:139)
+    [junit]     at org.apache.lucene.util.automaton.MinimizationOperations.minimizeHopcroft(MinimizationOperations.java:85)
+    [junit]     at org.apache.lucene.util.automaton.MinimizationOperations.minimize(MinimizationOperations.java:52)
+    [junit]     at org.apache.lucene.util.automaton.RegExp.toAutomaton(RegExp.java:502)
+    [junit]     at org.apache.lucene.util.automaton.RegExp.toAutomatonAllowMutate(RegExp.java:478)
+    [junit]     at org.apache.lucene.util.automaton.RegExp.toAutomaton(RegExp.java:428)
+    [junit]     at org.apache.lucene.util.automaton.AutomatonTestUtil.randomAutomaton(AutomatonTestUtil.java:256)
+    [junit]     at org.apache.lucene.util.automaton.TestMinimize.testAgainstBrzozowski(TestMinimize.java:43)
+    [junit]     at org.apache.lucene.util.LuceneTestCase$LuceneTestCaseRunner.runChild(LuceneTestCase.java:1282)
+    [junit]     at org.apache.lucene.util.LuceneTestCase$LuceneTestCaseRunner.runChild(LuceneTestCase.java:1211)
+    [junit] 
+    [junit] 
+    [junit] Test org.apache.lucene.util.automaton.TestMinimize FAILED
+
+
+{code}

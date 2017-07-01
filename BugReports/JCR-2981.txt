@@ -1,0 +1,10 @@
+Bundle of events may be dropped due to NP.
+
+
+
+Description:
+In [1], if the resolver fails to lookup a node entry, a NP is thrown. This exception will break the loop which forwards the events to the observer in [2].
+This will result in an observer not receiving events that he should have.
+
+[1] org.apache.jackrabbit.jcr2spi.hierarchy.HierarchyManagerImpl#lookup(ItemId workspaceItemId)
+[2] org.apache.jackrabbit.jcr2spi.WorkspaceManager#onEventReceived(EventBundle[] eventBundles,InternalEventListener[] lstnrs)

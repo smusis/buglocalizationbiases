@@ -1,0 +1,8 @@
+Make it possible to adjust MaxTotalConnections parameter dynamicaly
+
+
+
+Description:
+Make it possible to adjust MaxTotalConnections parameter at run time. Document behaviour of MaxTotalConnections and MaxConnectionsPerRoute behaviour (latter cannot be changed for allocated pools)
+
+Oleg

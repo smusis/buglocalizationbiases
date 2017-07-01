@@ -1,0 +1,7 @@
+Use a System.arraycopy more than a for
+
+
+
+Description:
+In org.apache.lucene.index.DocumentWriter. The patch will explain by itself. I didn't make any performance test, but I think it is obvious that it will be faster.
+All tests passed.

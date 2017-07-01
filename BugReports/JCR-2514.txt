@@ -1,0 +1,7 @@
+spi2dav: Drop Q*DefinitionImpl implementations and use spi-commons Q*DefinitionBuilder
+
+
+
+Description:
+spi2dav provides separate implementations of the Q*Definition interfaces that apart from the construction just duplicate the code
+present in spi-commons. Instead the Q*DefinitionBuilder helpers could be used to generate the definition instances.

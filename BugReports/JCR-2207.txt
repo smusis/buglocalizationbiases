@@ -1,0 +1,13 @@
+XATest error: commit from different thread but same XID must not block
+
+
+
+Description:
+I'm seeing the following test error quite often in the CI server at work:
+
+testDistributedThreadAccess(org.apache.jackrabbit.core.XATest)  Time elapsed: 0.213 sec  <<< ERROR!
+javax.transaction.SystemException: commit from different thread but same XID must not block
+	at org.apache.jackrabbit.core.UserTransactionImpl.commit(UserTransactionImpl.java:147)
+	at org.apache.jackrabbit.core.XATest.testDistributedThreadAccess(XATest.java:1637)
+
+It seems to be a system-specific issue, as I've never seen the same error locally or on Hudson.

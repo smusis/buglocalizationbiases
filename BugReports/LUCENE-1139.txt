@@ -1,0 +1,28 @@
+Various small improvements to contrib/benchmark
+
+
+
+Description:
+I've worked out a few small improvements to contrib/benchmark:
+
+  * Refactored the common code in Open/CreateIndexTask that sets the
+    configuration for the IndexWriter.  This also fixes a bug in
+    OpenIndexTasks that prevented you from disabling flushing by RAM.
+
+  * Added a new config property for LineDocMaker:
+
+      doc.reuse.fields=true|false
+
+    which turns on/off reusing of Field/Document by LineDocMaker.
+    This lets us measure performance impact of sharing Field/Document
+    vs not, and also turn it off when necessary (eg if you have your
+    own consumer that uses private threads).
+
+  * Added merge.scheduler & merge.policy config options.
+
+  * Added param for OptimizeTask, which expects an int and calls
+    optimize(maxNumSegments) with that param.
+
+  * Added param for CloseIndex(true|false) -- if you pass false that
+    means close the index, aborting any running merges
+

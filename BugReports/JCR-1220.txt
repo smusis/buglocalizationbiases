@@ -1,0 +1,12 @@
+WebApp: Ease first access for new users looking for a WebDAV server
+
+
+
+Description:
+suggestion posted by mike oliver in the user list:
+
+> I know that JackRabbit isn't the same as Jakarta Slide and not expecting it to be, but one thing we did right on 
+> that project was create a runnable war file that doesn't require any learning curve to get started.  Install the war file, 
+> create the network place and login as the root:root user and start creating content folders and documents. 
+> If JackRabbit did that, then I think more people would try it and use it and then spend the time to learn how to make 
+> it all it can be.

@@ -1,0 +1,12 @@
+IW.commit() writes but fails to fsync the N.fnx file
+
+
+
+Description:
+In making a unit test for NRTCachingDir (LUCENE-3092) I hit this surprising bug!
+
+Because the new N.fnx file is written at the "last minute" along with the segments file, it's not included in the sis.files() that IW uses to figure out which files to sync.
+
+This bug means one could call IW.commit(), successfully, return, and then the machine could crash and when it comes back up your index could be corrupted.
+
+We should hopefully first fix TestCrash so that it hits this bug (maybe it needs more/better randomization?), then fix the bug....

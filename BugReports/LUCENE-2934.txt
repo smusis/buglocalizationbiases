@@ -1,0 +1,6 @@
+Alternative depth-based DOT layout ordering in FST's Utils
+
+
+
+Description:
+Utils.toDot() dumps GraphViz's DOT file, but it can be quite difficult to read. This patch provides an alternative layout that is probably a little bit easier on the eyes (well, as far as larger FSTs can be ;)

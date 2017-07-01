@@ -1,0 +1,53 @@
+JCR unit tests use invalid queries
+
+
+
+Description:
+According to Section 8.5.2.11 of the JCR 1.0 specification:
+
+    It is optional to support properties in the SELECT, WHERE and ORDER BY clauses that are not explicitly
+    defined in the node types listed in the FROM clause but which are defined in subtypes of those node types.
+
+    It is optional to support the specifying of properties in the SELECT,WHERE and ORDERBY clauses that 
+    are not explicitly defined in the node types listed in the FROM clause but which are defined in mixin 
+    node types that may be assigned to node instances of the types that are mentioned in the SELECT clause.
+
+However, two of the test methods in the org.apache.jackrabbit.test.api.query.SQLJoinTest class are producing and executing queries that use in the WHERE clause different properties and node types than those listed in the FROM clause.  The testJoinNtBase() method is producing a query using the following code:
+
+        StringBuffer query = new StringBuffer("SELECT * FROM ");
+        query.append(ntBase).append(", ").append(testMixin);
+        query.append(" WHERE ");
+        query.append(testNodeType).append(".").append(jcrPath);
+        query.append(" = ");
+        query.append(mixReferenceable).append(".").append(jcrPath);
+        query.append(" AND ").append(jcrPath).append(" LIKE ");
+        query.append("'").append(testRoot).append("/%'");
+
+This code will produce a valid query only when "testNodeType" is set to "nt:base" and "testMixin" is set to "mix:referenceable":
+
+    SELECT * FROM nt:base, mix:referenceable 
+    WHERE nt:base.jcr:path = mix:referenceable.jcr:path AND ...
+
+However, when any other values for "testNodeType" and "testMixin" are used, this produces an invalid query in which the WHERE criteria references tuple sources that do not exist in the FROM clause.  For example, when "testNodeType" is "my:type" and "testMixin" is "my:mixin", the query becomes:
+
+    SELECT * FROM nt:base, my:mixin 
+    WHERE my:type.jcr:path = mix:referenceable.jcr:path AND ...
+
+This code can be corrected by simply using the "testNodeType" in the FROM clause.
+
+A similar bug is in the testJoinFilterPrimaryType() method, which uses this code:
+
+        StringBuffer query = new StringBuffer("SELECT * FROM ");
+        query.append(testNodeType).append(", ").append(ntBase);
+        query.append(" WHERE ");
+        query.append(testNodeType).append(".").append(jcrPath);
+        query.append(" = ");
+        query.append(mixReferenceable).append(".").append(jcrPath);
+        query.append(" AND ").append(jcrPath).append(" LIKE ");
+        query.append("'").append(testRoot).append("/%'");
+
+This code will really never produce a valid query, since the FROM clause uses the "testNodeType" and "nt:base" node types, whereas the WHERE clause will use the "testNodeType" and "mix:referenceable" types.  For example, if "testNodeType" has a value of "my:type", the query becomes:
+
+    SELECT * FROM my:type, nt:base 
+    WHERE my:type.jcr:path = mix:referenceable.jcr:path AND ...
+

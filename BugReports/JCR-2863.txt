@@ -1,0 +1,45 @@
+Session#importXML can't handle properly uuid collision if user has insufficient permission
+
+
+
+Description:
+When importing referenceable nodes, if there are nodes with the same uuid in the workspace but the session has no sufficient permission to read them then the import will fail no matter what ImportUUIDBehavior is chosen. 
+But the same xml will be imported successfully in another repository or if the user have read access.
+
+SessionImpl.java :
+ public NodeImpl getNodeById(NodeId id) ...{
+...
+ try {
+            return (NodeImpl) getItemManager().getItem(id);
+        } catch (AccessDeniedException ade) {
+            throw new ItemNotFoundException(id.toString());
+        }
+}
+
+SessionImporter.java :
+
+ public void startNode(NodeInfo nodeInfo, List propInfos)...{
+...
+  if (node == null) {
+            // create node
+            if (id == null) {
+            ...
+            } else {
+                // potential uuid conflict
+                NodeImpl conflicting;
+                try {
+                    conflicting = session.getNodeById(id);
+                } catch (ItemNotFoundException infe) {
+                    conflicting = null;
+                }
+                if (conflicting != null) {
+                    // resolve uuid conflict
+                 ...
+               }
+...
+}
+
+In the JCR 1.0 spec says "lack of read access to an item blocks access to both information about the content of that item and information about the existence of the item" but this should probably not be true, internally, when doing an import. 
+Otherwise it means that read access to an entire workspace must be granted to a user so that it could successfully use the IMPORT_UUID_CREATE_NEW behaviour.
+
+

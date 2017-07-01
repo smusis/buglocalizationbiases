@@ -1,0 +1,19 @@
+DisjunctionMaxScorer allocates 2 arrays per scored doc
+
+
+
+Description:
+It has this:
+{noformat}
+  @Override
+  public float score() throws IOException {
+    int doc = subScorers[0].docID();
+    float[] sum = { subScorers[0].score() }, max = { sum[0] };
+    int size = numScorers;
+    scoreAll(1, size, doc, sum, max);
+    scoreAll(2, size, doc, sum, max);
+    return max[0] + (sum[0] - max[0]) * tieBreakerMultiplier;
+  }
+{noformat}
+
+They are thread-private arrays so possibly/likely JVM can optimize this case (allocate only on the stack) but still I think instead it should have private instance vars for the score/max.

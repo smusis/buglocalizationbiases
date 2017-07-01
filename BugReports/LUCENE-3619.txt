@@ -1,0 +1,20 @@
+in trunk if you switch up omitNorms while indexing, you get a corrumpt norms file
+
+
+
+Description:
+document 1 has 
+  body: norms=true
+  title: norms=true
+document 2 has 
+  body: norms=false
+  title: norms=true
+
+when seeing 'body' for the first time, normswriterperfield gets 'initial fieldinfo' and 
+saves it away, which says norms=true
+
+however, at flush time we dont check, so we write the norms happily anyway.
+then SegmentReader reads the norms later: it skips "body" since it omits norms
+and if you ask for the norms of 'title' it instead returns the bogus "body" norms.
+
+asserting that SegmentReader "plans to" read the whole .nrm file exposes the bug.

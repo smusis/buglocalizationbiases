@@ -1,0 +1,8 @@
+Refactor the Mapper & DescriptotReader classes
+
+
+
+Description:
+I would like to refactor the mappers and the descriptor readers  in order to : 
+* Create an abstract mapper impl because both Mapper classes have a lot of code in common (AnnotedObjectMapper & DigesterMapperImpl). Only the readers are different. The Mappers can make exactly the same process. 
+* The Mapper classes should not have the responsibility to create the jcr node types. This can be done outside the mapper and it should be an optional operation. There are certainly some use cases where node type creation is not necessary. Right now, the annotated object mapper creates jcr node types. 

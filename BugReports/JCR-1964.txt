@@ -1,0 +1,14 @@
+VirtualNodeTypeStateProvider creates PropertyState with type != value(s).getType
+
+
+
+Description:
+VirtualNodeTypeStateProvider creates the item states for the in content representation of the node type definitions and in case of jcr:defaultValues hard codes the type of the property state (thus the jcr property) to PropertyType.STRING.
+
+the nt-definition of nt:propertyDefinition however states that jcr:defaultValues doesn't have a required type, thus the type should rather be determined based on the values themselves.
+
+the current behaviour leads situations where
+
+Property.getType != Property.getValues()[0].getType()
+
+which from my point of view is a bug.

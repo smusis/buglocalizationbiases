@@ -1,0 +1,6 @@
+Remove duplicate code in QValueFactoryImpl (spi2dav)
+
+
+
+Description:
+QValueFactoryImpl in spi2dav contains code duplicated from spi-commons QValueFactoryImpl. Once JCR-2245 has been applied the spi2dav variant can extend from the factory in spi-commons and we can simply the first.

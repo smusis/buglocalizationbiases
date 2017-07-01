@@ -1,0 +1,18 @@
+addIndexesNoOptimize should not enforce maxMergeDocs/maxMergeSize limit
+
+
+
+Description:
+If you pass an index that has a segment > maxMergeDocs or maxMergeSize
+to addIndexesNoOptimize, it throws an IllegalArgumentException.
+
+But this check isn't reasonable because segment merging can easily
+produce segments over these sizes since those limits apply to each
+segment being merged, not to the final size of the segment produced.
+
+So if you set maxMergeDocs to X, build up and index, then try to add
+that index to another index that also has maxMergeDocs X, you can
+easily hit the exception.
+
+I think it's being too pedantic; I plan to just remove the checks for
+sizes.

@@ -1,0 +1,7 @@
+Referenced derby library behaves buggy on FreeBSD
+
+
+
+Description:
+The derby library referenced on dependencies page (http://jackrabbit.apache.org/dependencies.html) behaves buggy on FreeBSD. This is the same issue like the one with Magnolia CMS: http://jira.magnolia.info/browse/MAGNOLIA-818. Version derby-10.1.3.1 works fine.
+

@@ -1,0 +1,10 @@
+Local AuthContext authenticates if LoginModule should be ignored
+
+
+
+Description:
+The LoginModule indicates that it doesn't handle thecurrent login-attemp by returning false:
+on login or commit invokation. It should thus be ignored.
+The LoginContext calculates the overall login success.
+In case of the local context, the login should faile if the only LoginModule is ignored.
+Currently this is a success, but the 

@@ -1,0 +1,32 @@
+Improve how IndexWriter flushes deletes against existing segments
+
+
+
+Description:
+IndexWriter buffers up all deletes (by Term and Query) and only
+applies them if 1) commit or NRT getReader() is called, or 2) a merge
+is about to kickoff.
+
+We do this because, for a large index, it's very costly to open a
+SegmentReader for every segment in the index.  So we defer as long as
+we can.  We do it just before merge so that the merge can eliminate
+the deleted docs.
+
+But, most merges are small, yet in a big index we apply deletes to all
+of the segments, which is really very wasteful.
+
+Instead, we should only apply the buffered deletes to the segments
+that are about to be merged, and keep the buffer around for the
+remaining segments.
+
+I think it's not so hard to do; we'd have to have generations of
+pending deletions, because the newly merged segment doesn't need the
+same buffered deletions applied again.  So every time a merge kicks
+off, we pinch off the current set of buffered deletions, open a new
+set (the next generation), and record which segment was created as of
+which generation.
+
+This should be a very sizable gain for large indices that mix
+deletes, though, less so in flex since opening the terms index is much
+faster.
+

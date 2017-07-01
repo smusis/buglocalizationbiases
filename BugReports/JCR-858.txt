@@ -1,0 +1,6 @@
+NotQuery does not implement extractTerms()
+
+
+
+Description:
+If the not() function is used in query together with the rep:excerpt() function an UnsupportedOperationException is thrown.

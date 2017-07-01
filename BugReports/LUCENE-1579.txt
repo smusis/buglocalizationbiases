@@ -1,0 +1,20 @@
+Cloned SegmentReaders fail to share FieldCache entries
+
+
+
+Description:
+I just hit this on LUCENE-1516, which returns a cloned readOnly
+readers from IndexWriter.
+
+The problem is, when cloning, we create a new [thin] cloned
+SegmentReader for each segment.  FieldCache keys directly off this
+object, so if you clone the reader and do a search that requires the
+FieldCache (eg, sorting) then that first search is always very slow
+because every single segment is reloading the FieldCache.
+
+This is of course a complete showstopper for LUCENE-1516.
+
+With LUCENE-831 we'll switch to a new FieldCache API; we should ensure
+this bug is not present there.  We should also fix the bug in the
+current FieldCache API since for 2.9, users may hit this.
+

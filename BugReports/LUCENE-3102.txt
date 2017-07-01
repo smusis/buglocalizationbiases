@@ -1,0 +1,27 @@
+Few issues with CachingCollector
+
+
+
+Description:
+CachingCollector (introduced in LUCENE-1421) has few issues:
+# Since the wrapped Collector may support out-of-order collection, the document IDs cached may be out-of-order (depends on the Query) and thus replay(Collector) will forward document IDs out-of-order to a Collector that may not support it.
+# It does not clear cachedScores + cachedSegs upon exceeding RAM limits
+# I think that instead of comparing curScores to null, in order to determine if scores are requested, we should have a specific boolean - for clarity
+# This check "if (base + nextLength > maxDocsToCache)" (line 168) can be relaxed? E.g., what if nextLength is, say, 512K, and I cannot satisfy the maxDocsToCache constraint, but if it was 10K I would? Wouldn't we still want to try and cache them?
+
+Also:
+* The TODO in line 64 (having Collector specify needsScores()) -- why do we need that if CachingCollector ctor already takes a boolean "cacheScores"? I think it's better defined explicitly than implicitly?
+
+* Let's introduce a factory method for creating a specialized version if scoring is requested / not (i.e., impl the TODO in line 189)
+
+* I think it's a useful collector, which stands on its own and not specific to grouping. Can we move it to core?
+
+* How about using OpenBitSet instead of int[] for doc IDs?
+** If the number of hits is big, we'd gain some RAM back, and be able to cache more entries
+** NOTE: OpenBitSet can only be used for in-order collection only. So we can use that if the wrapped Collector does not support out-of-order
+
+* Do you think we can modify this Collector to not necessarily wrap another Collector? We have such Collector which stores (in-memory) all matching doc IDs + scores (if required). Those are later fed into several processes that operate on them (e.g. fetch more info from the index etc.). I am thinking, we can make CachingCollector *optionally* wrap another Collector and then someone can reuse it by setting RAM limit to unlimited (we should have a constant for that) in order to simply collect all matching docs + scores.
+
+* I think a set of dedicated unit tests for this class alone would be good.
+
+That's it so far. Perhaps, if we do all of the above, more things will pop up.

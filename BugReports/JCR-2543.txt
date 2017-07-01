@@ -1,0 +1,7 @@
+spi2dav : Query offset not respected
+
+
+
+Description:
+the TCK query test SetOffsetTest fails in the setup jcr2spi - spi2dav(ex) - jcr-server.
+not sure whether it is due to missing implementation on client or server part of something completely different....

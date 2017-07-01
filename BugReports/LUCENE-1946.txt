@@ -1,0 +1,6 @@
+Remove deprecated TokenStream API
+
+
+
+Description:
+I looked into clover analysis: It seems to be no longer used since I removed the tests yesterday - I am happy!

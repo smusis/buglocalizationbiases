@@ -1,0 +1,29 @@
+random localization test failures
+
+
+
+Description:
+Some tests fail randomly (hard to reproduce). It appears to me that this is caused by uninitialized date fields. For example Uwe reported a failure today in this test of TestQueryParser:
+
+{code}
+ /** for testing legacy DateField support */
+  public void testLegacyDateRange() throws Exception {
+    String startDate = getLocalizedDate(2002, 1, 1, false);
+    String endDate = getLocalizedDate(2002, 1, 4, false);
+{code}
+
+if you look at the helper getLocalizedDate, you can see if the 4th argument is false, it does not initialize all date field functions.
+{code}
+  private String getLocalizedDate(int year, int month, int day, boolean extendLastDate) {
+ Calendar calendar = new GregorianCalendar();
+ calendar.set(year, month, day);
+ if (extendLastDate) {
+      calendar.set(Calendar.HOUR_OF_DAY, 23);
+      calendar.set(Calendar.MINUTE, 59);
+      calendar.set(Calendar.SECOND, 59);
+ ...
+}
+{code}
+
+I think the solution to this is that in all tests, whereever we create new GregorianCalendar(), it should be followed by a call to Calendar.clear().
+This will ensure that we always initialize unused calendar fields to zero, rather than being dependent on the local time.

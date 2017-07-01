@@ -1,0 +1,30 @@
+HttpMultiClient reuses closed connections
+
+
+
+Description:
+If a socket times out while sitting in the connection pool, 
+HttpConnectionManager still attempts to reuse it resulting in an IOException 
+being thrown when writing to the socket.  I believe this is a problem with both 
+server side and client side timeouts (ie: we try to reuse a connection that we 
+timed out) though am not certain of that.  At the very least server side 
+timeouts cause the issue.
+
+As yet I can't see how to fix this.  With the current code there doesn't even 
+appear to be a suitable workaround because when the exception is thrown, the 
+connection is added back into the pool to be reused (even though it is closed) 
+which causes the next attempt to fail as well.
+
+I can't see any reliable way to tell whether or not a connection is open, so 
+would suggest the following as a fix:
+
+1. In HttpMultiClient.executeMethod, close the connection if an exception is 
+thrown (optionally, only if an IOException is thrown instead of an 
+HttpException, but generally exceptions tend to leave things in an unknown 
+state).
+
+2. (optional) Add a retry loop to executeMethod to retry if an exception occurs 
+(possibly only if an IOException is thrown, depending on exactly when a 
+HttpException is thrown).
+
+I'll attach a patch which does both of this to help clarify.

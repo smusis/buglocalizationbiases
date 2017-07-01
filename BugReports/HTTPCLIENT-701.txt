@@ -1,0 +1,11 @@
+Cookie guide lists RFC 2965 as unsupported
+
+
+
+Description:
+HttpClient 3.1 added support for RFC 2965 (port-sensitive cookies), but the Cookie guide on the 3.x website still lists that as unsupported.
+http://jakarta.apache.org/httpcomponents/httpclient-3.x/cookies.html
+
+cheers,
+  Roland
+ 

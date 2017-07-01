@@ -1,0 +1,6 @@
+IndexWriter has incomplete Javadocs
+
+
+
+Description:
+A couple of getter methods in IndexWriter have no javadocs.

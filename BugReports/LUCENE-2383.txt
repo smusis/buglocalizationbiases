@@ -1,0 +1,19 @@
+Some small fixes after the flex merge...
+
+
+
+Description:
+Changes:
+
+  * Re-introduced specialization optimization to FieldCacheRangeQuery;
+    also fixed bug (was failing to check deletions in advance)
+
+  * Changes 2 checkIndex methods from protected -> public
+
+  * Add some missing null checks when calling MultiFields.getFields or
+    IndexReader.fields()
+
+  * Tweak'd CHANGES a bit
+
+  * Removed some small dead code
+

@@ -1,0 +1,6 @@
+RepositoryUtil moved outside of main source tree
+
+
+
+Description:
+It appears that the RepositoryUtil class was moved from src/main to src/test. This class is used by the ocm-spring project.

@@ -1,0 +1,6 @@
+Background text extraction not possible when supportHighlighting is set true
+
+
+
+Description:
+There is an IndexingQueue that holds nodes that are indexed with a background thread when text extraction takes more time than a configurable limit. When supportHighlighting is set to true the IndexingQueue is never used because the text extract is immediately requested in NodeIndexer. Instead the text extract should be retrieved only when the node is added to the index. 

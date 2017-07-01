@@ -1,0 +1,24 @@
+Connection.setAutoCommit(...) fails if connection is managed for JNDIDatabasePersistenceManager
+
+
+
+Description:
+Invoking setAutoCommit() on a db connection fails if the connection is managed.
+
+I propose as a workaround to check if the auto commit must be set previous to setting it (a trivial patch will be provided).
+
+This can happen eg. if you use JNDI (eg JNDIDatabasePersistenceManager) to fetch the connection on JBoss, and the persistent manager tries to reconnect (see stack trace below).
+
+05 Jul 09:54:24 ERROR sePersistenceManager| failed to re-establish connection
+java.sql.SQLException: You cannot set autocommit during a managed transaction!
+        at org.jboss.resource.adapter.jdbc.BaseWrapperManagedConnection.setJdbcAutoCommit(BaseWrapperManagedConnection.java:482)
+        at org.jboss.resource.adapter.jdbc.WrappedConnection.setAutoCommit(WrappedConnection.java:322)
+        at org.apache.jackrabbit.core.persistence.db.DatabasePersistenceManager.initConnection(DatabasePersistenceManager.java:731)
+        at org.apache.jackrabbit.core.persistence.db.DatabasePersistenceManager.reestablishConnection(DatabasePersistenceManager.java:806)
+        at org.apache.jackrabbit.core.persistence.db.DatabasePersistenceManager.executeStmt(DatabasePersistenceManager.java:852)
+        at org.apache.jackrabbit.core.persistence.db.DatabasePersistenceManager.exists(DatabasePersistenceManager.java:647)
+        at org.apache.jackrabbit.core.state.SharedItemStateManager.hasNonVirtualItemState(SharedItemStateManager.java:1102)
+        at org.apache.jackrabbit.core.state.SharedItemStateManager.hasItemState(SharedItemStateManager.java:289)
+        at org.apache.jackrabbit.core.state.LocalItemStateManager.hasItemState(LocalItemStateManager.java:180)
+        at org.apache.jackrabbit.core.state.XAItemStateManager.hasItemState(XAItemStateManager.java:252)
+        at org.apache.jackrabbit.core.state.SessionItemStateManager.getItemState(SessionItemStateManager.java:174)

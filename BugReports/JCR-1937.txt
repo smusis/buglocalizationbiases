@@ -1,0 +1,6 @@
+Automatic license header checking using the Apache Rat Plugin
+
+
+
+Description:
+To avoid problems with incorrect license headers, we should include some automated header check in the Maven build and have Hudson run the check whenever changes are committed.

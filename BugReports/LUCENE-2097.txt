@@ -1,0 +1,18 @@
+In NRT mode, and CFS enabled, IndexWriter incorrectly ties up disk space
+
+
+
+Description:
+Spinoff of java-user thread titled "searching while optimize"...
+
+If IndexWriter is in NRT mode (you've called getReader() at least
+once), and CFS is enabled, then internally the writer pools readers.
+However, after a merge completes, it opens the reader against het
+non-CFS segment files, and pools that.  It then builds the CFS file,
+as well, thus tying up the storage for that segment twice.
+
+Functionally the bug is harmless (it's only a disk space issue).
+Also, when the segment is merged, the disk space is released again
+(though the newly merged segment will also be double-tied-up).
+
+Simple workaround is to use non-CFS mode, or, don't use getReader.

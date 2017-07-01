@@ -1,0 +1,54 @@
+[PATCH] RussianAnalyzer's tokenizer skips numbers from input text,
+
+
+
+Description:
+RussianAnalyzer's tokenizer skips numbers from input text, so that resulting token stream miss numbers. Problem can be solved by adding numbers to RussianCharsets.UnicodeRussian. See test case below  for details.
+
+{code:title=TestRussianAnalyzer.java|borderStyle=solid}
+
+public class TestRussianAnalyzer extends TestCase {
+
+  Reader reader = new StringReader("text 1000");
+
+  // test FAILS
+  public void testStemmer() {
+    testAnalyzer(new RussianAnalyzer());
+  }
+
+  // test PASSES
+  public void testFixedRussianAnalyzer() {
+    testAnalyzer(new RussianAnalyzer(getRussianCharSet()));
+  }
+
+  private void testAnalyzer(RussianAnalyzer analyzer) {
+    try {
+      TokenStream stream = analyzer.tokenStream("text", reader);
+      assertEquals("text", stream.next().termText());
+      assertNotNull(stream.next());
+    } catch (IOException e) {
+      fail(e.getMessage());
+    }
+  }
+
+  private char[] getRussianCharSet() {
+    int length = RussianCharsets.UnicodeRussian.length;
+    final char[] russianChars = new char[length + 10];
+
+    System
+        .arraycopy(RussianCharsets.UnicodeRussian, 0, russianChars, 0, length);
+    russianChars[length++] = '0';
+    russianChars[length++] = '1';
+    russianChars[length++] = '2';
+    russianChars[length++] = '3';
+    russianChars[length++] = '4';
+    russianChars[length++] = '5';
+    russianChars[length++] = '6';
+    russianChars[length++] = '7';
+    russianChars[length++] = '8';
+    russianChars[length] = '9';
+    return russianChars;
+  }
+}
+
+{code} 

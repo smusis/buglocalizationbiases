@@ -1,0 +1,10 @@
+Term vectors missing after addIndexes + optimize
+
+
+
+Description:
+I encountered a problem with addIndexes where term vectors disappeared following optimize(). I wrote a simple test case which demonstrates the problem. The bug appears with both addIndexes() versions, but does not appear if addDocument is called twice, committing changes in between.
+
+I think I tracked the problem down to IndexWriter.mergeMiddle() -- it sets term vectors before merger.merge() was called. In the addDocs case, merger.fieldInfos is already populated, while in the addIndexes case it is empty, hence fieldInfos.hasVectors returns false.
+
+will post a patch shortly.

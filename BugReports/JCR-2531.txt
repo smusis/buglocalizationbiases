@@ -1,0 +1,6 @@
+JCR-RMI problem with large binary values
+
+
+
+Description:
+As reported on the mailing list, a JCR-RMI connection will hang when given a binary value that's larger than the default 64kB buffer size.

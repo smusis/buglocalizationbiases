@@ -1,0 +1,12 @@
+Rename IndexReader.reopen to make it clear that reopen may not happen
+
+
+
+Description:
+Spinoff from LUCENE-3454 where Shai noted this inconsistency.
+
+IR.reopen sounds like an unconditional operation, which has trapped users in the past into always closing the old reader instead of only closing it if the returned reader is new.
+
+I think this hidden maybe-ness is trappy and we should rename it (maybeReopen?  reopenIfNeeded?).
+
+In addition, instead of returning "this" when the reopen didn't happen, I think we should return null to enforce proper usage of the maybe-ness of this API.

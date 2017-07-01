@@ -1,0 +1,21 @@
+Create a Codec to work with streaming and append-only filesystems
+
+
+
+Description:
+Since early 2.x times Lucene used a skip/seek/write trick to patch the length of the terms dict into a place near the start of the output data file. This however made it impossible to use Lucene with append-only filesystems such as HDFS.
+
+In the post-flex trunk the following code in StandardTermsDictWriter initiates this:
+{code}
+    // Count indexed fields up front
+    CodecUtil.writeHeader(out, CODEC_NAME, VERSION_CURRENT); 
+
+    out.writeLong(0);                             // leave space for end index pointer
+{code}
+and completes this in close():
+{code}
+      out.seek(CodecUtil.headerLength(CODEC_NAME));
+      out.writeLong(dirStart);
+{code}
+
+I propose to change this layout so that this pointer is stored simply at the end of the file. It's always 8 bytes long, and we known the final length of the file from Directory, so it's a single additional seek(length - 8) to read it, which is not much considering the benefits.

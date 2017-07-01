@@ -1,0 +1,21 @@
+Error instantiating lucene search index in Turkish Regional Setting
+
+
+
+Description:
+There is an issue when changing regional setting to Turkish. 
+It fails when starting a repository, instantiating the lucene search index due to the following issue :
+
+org.apache.jackrabbit.core.config.ConfigurationException: Configured class org.apache.jackrabbit.core.query.lucene.SearchIndex does not contain a property named indexingConfiguration
+	at
+org.apache.jackrabbit.core.config.BeanConfig.newInstance(BeanConfig.java
+:205)
+	at
+org.apache.jackrabbit.core.config.RepositoryConfigurationParser$1.getQue
+ryHandler(RepositoryConfigurationParser.java:631)
+	at
+org.apache.jackrabbit.core.config.RepositoryConfig.getQueryHandler(Repos
+itoryConfig.java:1013)
+
+This issue is known in java world, due to lower case conversion of 'I' character (in Turkish locale). JackRabbit source code try to instantiate the indexing configuration during the repository starting and is accessing indexingConfiguration property. It instantiates a setter for this property with a bad 'i' character.
+

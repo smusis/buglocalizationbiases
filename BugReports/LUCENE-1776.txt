@@ -1,0 +1,8 @@
+NearSpansOrdered does not lazy load payloads as the PayloadSpans javadoc implies
+
+
+
+Description:
+Best would be to lazy load, but I don't see how with the current algorithm. Short that, we should add an option to ignore payloads - otherwise, if you are doing non payload searching, but the payloads are present, they will be needlessly loaded.
+
+Already added this to LUCENE-1748, but spinning from that issue to this - patch to follow when LUCENE-1748 is committed.

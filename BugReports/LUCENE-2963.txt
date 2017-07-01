@@ -1,0 +1,7 @@
+Easier way to run benchmark
+
+
+
+Description:
+Move Benchmark.main to a more easily accessible method exec() that can be easily invoked by external programs.
+

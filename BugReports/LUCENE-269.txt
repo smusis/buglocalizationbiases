@@ -1,0 +1,11 @@
+[PATCH] demo HTML parser corrupts foreign characters
+
+
+
+Description:
+We are using HTML parser for parsing English and other NL documents in 
+Eclipse.  Post Lucene 1.2 there has been a regression in the parser.  
+Characters coming from Reader (obtained from getReader() ) are corrupted.  
+Only the characters that can be encoded using the default machine encoding go 
+through correctly.  For example, parsing Chinese document on an English 
+machine results with all characters, except the few English words, corrupted.

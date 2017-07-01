@@ -1,0 +1,39 @@
+Multivalued property sorted by last/random value
+
+
+
+Description:
+Sorting on multivalued property may produce incorrect result because sorting is performed only by last value of multivalued property.
+Steps to reproduce:
+1. Create multivalued field in repository. Example from nodetypes file:
+<propertyDefinition name="MyProperty" requiredType="String" autoCreated="false" mandatory="false"
+   onParentVersion="COPY" protected="false" multiple="false">
+2. Create few records so that all records except one would contain single value for MyProperty and one record would contain 
+first value which is greater then of any other record and the second value is somewhere in the middle. Here is an example:
+1st record: "aaaa"
+2nd record: "cccc"
+3rd record: "dddd", "bbbb"
+3. Run some query which sorts Example of XPath query:
+//*[...here are some criteria...] order by @MyProperty ascending
+The query would return documents in such order:
+"aaaa"
+"dddd", "bbbb"
+"cccc"
+which is not expected order (expected same order as they were entered - as "aaaa" < "cccc", "cccc" < "dddd")
+
+After some digging I found out that it happens because method 
+org.apache.jackrabbit.core.query.lucene.SharedFieldCache.getValueIndex
+(called from org.apache.jackrabbit.core.query.lucene.SharedFieldSortComparator.SimpleScoreDocComparator constructor)
+returns only last Comparable of the document. Here is overwrites previous value:
+retArray[termDocs.doc()] = getValue(value, type);
+
+I tried to concatenate comparables (just to check if it would work for my case):
+	if(retArray[termDocs.doc()] == null) {
+		retArray[termDocs.doc()] = getValue(value, type);
+	} else {
+		retArray[termDocs.doc()] =
+				retArray[termDocs.doc()] + " " + getValue(value, type);
+	}
+But it didn't worked well either - TermEnum returns terms not in the same order as JackRabbit returns values of multivalued field
+(as an example ["qwer", "asdf"] may become ["asdf", "qwer"] ). So, simple concatenation doesn't help.
+

@@ -1,0 +1,6 @@
+IndexReader.FieldOption has incomplete Javadocs
+
+
+
+Description:
+IndexReader.FieldOption has no javadocs at all.

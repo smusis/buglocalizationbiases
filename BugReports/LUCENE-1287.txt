@@ -1,0 +1,6 @@
+Allow usage of HyphenationCompoundWordTokenFilter without dictionary
+
+
+
+Description:
+We should allow to use the HyphenationCompoundWordTokenFilter without a dictionary. This produces a lot of "nonword" tokens but might be useful sometimes.

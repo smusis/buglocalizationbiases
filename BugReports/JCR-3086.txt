@@ -1,0 +1,25 @@
+potential infinite loop around InternalVersionImpl.getSuccessors
+
+
+
+Description:
+There's an infinite loop waiting to happen when the underlying persisted version storage is defect:
+
+
+at
+org.apache.jackrabbit.core.version.InternalVersionImpl.getSuccessors(InternalVersionImpl.java:148)
+
+at
+org.apache.jackrabbit.core.version.InternalVersionHistoryImpl.init(InternalVersionHistoryImpl.java:165)
+
+at
+org.apache.jackrabbit.core.version.InternalVersionHistoryImpl.reload(InternalVersionHistoryImpl.java:180)
+
+at
+org.apache.jackrabbit.core.version.InternalVersionHistoryImpl.getVersion(InternalVersionHistoryImpl.java:299) 
+
+(line numbers from 2.2)
+
+What happens here is that when a version can not be instantiated, reload() is called, which in turn calls init(), which, as part of piece of code labeled "fix legacy" will call getSuccessors(), which in turn wants to instantiate versions.
+
+

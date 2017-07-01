@@ -1,0 +1,8 @@
+Improve org.apache.lucene.search.Filter Documentation and Tests to reflect per segment readers
+
+
+
+Description:
+Filter Javadoc does not mention that the Reader passed to getDocIDSet(Reader) could be on a per-segment basis.
+This caused confusion on the users-list -- see http://lucene.markmail.org/message/6knz2mkqbpxjz5po?q=date:200912+list:org.apache.lucene.java-user&page=1
+We should improve the javadoc and also add a testcase that reflects filtering on a per-segment basis.

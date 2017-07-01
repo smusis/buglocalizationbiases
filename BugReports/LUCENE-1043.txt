@@ -1,0 +1,16 @@
+Speedup merging of stored fields when field mapping "matches"
+
+
+
+Description:
+Robert Engels suggested the following idea, here:
+
+  http://www.gossamer-threads.com/lists/lucene/java-dev/54217
+
+When merging in the stored fields from a segment, if the field name ->
+number mapping is identical then we can simply bulk copy the entire
+entry for the document rather than re-interpreting and then re-writing
+the actual stored fields.
+
+I've pulled the code from the above thread and got it working on the
+current trunk.

@@ -1,0 +1,8 @@
+Fix typos in CHANGES.txt and contrib/CHANGES.txt prior to 2.9 release
+
+
+
+Description:
+I noticed a few typos in CHANGES.txt and contrib/CHANGES.txt.  (Once they make it past a release, they're set in stone...)
+
+Will attach a patch shortly.

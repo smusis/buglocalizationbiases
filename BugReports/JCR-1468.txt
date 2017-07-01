@@ -1,0 +1,18 @@
+LockTest.testLogout fails to refresh session before checking lock from other session
+
+
+
+Description:
+LockTest.testLogout() fails to refresh the session before checking the lock state of a node that was locked by another session.
+
+Proposal:
+
+Insert 
+
+  n1.refresh(false);
+
+before 
+
+  assertTrue("node must be locked", n1.isLocked());
+
+

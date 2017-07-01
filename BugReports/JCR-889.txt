@@ -1,0 +1,6 @@
+Add bundle support for PostgreSQL
+
+
+
+Description:
+The class DbNameIndex does not work with this RDBMS since the RETURN_GENERATED_KEYS JDBC feature is not implemented in current PostgreSQL drivers.

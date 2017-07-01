@@ -1,0 +1,8 @@
+New Jackrabbit site skin
+
+
+
+Description:
+Some time ago Michael Eppelheimer from Day created a new skin for the Jackrabbit web site, and I've now streamlined it a bit and integrated it with the Maven site build mechanism.
+
+The templates should be easy to adapt also for Confluence when we get around to that migration.

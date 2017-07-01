@@ -1,0 +1,6 @@
+getAllLinearVersions does not return the base version
+
+
+
+Description:
+It appears that for a given linear version history, getAllLinearVersions returns less versions than getAllVersions -- the root version seems to be missing.

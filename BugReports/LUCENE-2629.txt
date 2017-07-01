@@ -1,0 +1,9 @@
+In modules/analysys/icu, ant gennorm2 does not work
+
+
+
+Description:
+
+Command to run gennorm2 does not work at present.  Also, icupkg needs to be called to convert the binary file to big-endian.
+
+I will attach a patch.

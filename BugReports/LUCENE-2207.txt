@@ -1,0 +1,6 @@
+CJKTokenizer generates tokens with incorrect offsets
+
+
+
+Description:
+If I index a Japanese *multi-valued* document with CJKTokenizer and highlight a term with FastVectorHighlighter, the output snippets have incorrect highlighted string. I'll attach a program that reproduces the problem soon.

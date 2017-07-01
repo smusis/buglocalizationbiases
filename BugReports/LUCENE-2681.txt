@@ -1,0 +1,6 @@
+fix generics violations in contrib/modules
+
+
+
+Description:
+There are some generics violations... we should fix them.

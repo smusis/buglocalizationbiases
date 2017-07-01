@@ -1,0 +1,6 @@
+GQLTest fails occasionally
+
+
+
+Description:
+This is again the text extraction, which may hit a time out.

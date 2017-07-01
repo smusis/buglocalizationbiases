@@ -1,0 +1,8 @@
+IndexReader.setTermInfosIndexDivisor doesn't carry over to reopened readers
+
+
+
+Description:
+When you reopen a reader, some segments are shared (and thus properly inherit the index divisor) but others are newly opened and use the default index divisor.  You then have no way to change the index divisor of those newly opened ones.  The only workaround is to not use reopen (always open a new reader).
+
+I'd like to make termInfosDivisor an up-front param to IndexReader, anyway, for LUCENE-1609, so likely I'll fix both of these issues there.

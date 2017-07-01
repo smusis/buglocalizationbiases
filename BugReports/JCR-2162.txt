@@ -1,0 +1,8 @@
+Data Store: garbage collection continues when the session is closed
+
+
+
+Description:
+Currently, the data store garbage collection continues even if the session is closed.
+
+This can cause problems.

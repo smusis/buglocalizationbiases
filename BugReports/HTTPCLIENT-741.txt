@@ -1,0 +1,8 @@
+AbstractClientConnAdapter prone to concurrency issues
+
+
+
+Description:
+AbstractClientConnAdapter is currently prone to all sorts of concurrency issues. (1) Access to internal state is not properry synchronized making the class prone  to race conditions. Presently none of the instance variables is even declared volatile. (2) AbstractClientConnAdapter treats aborted connection as one in an illegal state, which is not quite right.
+
+Oleg

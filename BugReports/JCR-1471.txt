@@ -1,0 +1,21 @@
+Error when registering nodetype with same propdef as supertype
+
+
+
+Description:
+error in check:
+
+                                if (pd.getRequiredType() == epd.getRequiredType()
+                                        && pd.isMultiple() == epd.isMultiple()) {
+                                    // conflict
+                                    String msg = "The property definition for '"
+                                            + name + "' in node type '"
+                                            + def.getDeclaringNodeType()
+                                            + "' conflicts with node type '"
+                                            + existingDef.getDeclaringNodeType()
+                                            + "': ambiguous property definition";
+                                    log.debug(msg);
+                                    throw new NodeTypeConflictException(msg);
+                                }
+
+if needs to be inverted.

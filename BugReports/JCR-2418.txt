@@ -1,0 +1,12 @@
+Read permission on parent node required to access an item's definition
+
+
+
+Description:
+If a session is granted all permissions on a given item B but lacks permission to read it's parent node A an attempt to
+access the definition of B by means of Node.getDefinition or Property.getDefinition will fail with AccessDeniedException.
+
+Similarly, the same session will not be able to modify that item B - e.g. add a child node in case it was a node - since implementation e.g. checks of that
+item B isn't protected, which is determined by looking at the definition.
+
+My feeling is, that the item definition should be accessible even if the parent node cannot be read.

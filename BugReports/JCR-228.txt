@@ -1,0 +1,7 @@
+[jcr-rmi] workspace.copy doesn't work
+
+
+
+Description:
+swapped parameters in org/apache/jackrabbit/rmi/client/ClientWorkspace/ClientWorkspace. 
+

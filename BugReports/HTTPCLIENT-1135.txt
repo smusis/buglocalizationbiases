@@ -1,0 +1,8 @@
+RandomAccessFile mode "w" is not valid
+
+
+
+Description:
+According to the Java docs for RandomAccessFile, mode must be "r" "rw" "rws" or "rwd" - anything else results in an IllegalArgumentException. It seems that Sun/Oracle/OpenJDK's don't document it, but supports "w" mode that is equivalent to "rw" Android does as the Javadocs say, and throws an IllegalArgumentException when mode "w" is passed as HttpClientCache does IOUtils.copyFile() (line 70-71).
+
+This means that HttpClient Cache does not work on Android.

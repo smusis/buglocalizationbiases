@@ -1,0 +1,8 @@
+JNDI data sources with BundleDbPersistenceManager: UnsupportedOperationException
+
+
+
+Description:
+When using the org.apache.tomcat.dbcp.dbcp.BasicDataSourceFactory, the BundleDbPersistenceManager can not open a database connection via JNDI because the method DataSource.getConnection(user, password) is not supported. Instead, DataSource.getConnection() must be used for this to work.
+
+ConnectionFactory.getConnection should be changed to call this method if user name and password are empty.

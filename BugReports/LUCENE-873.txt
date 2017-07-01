@@ -1,0 +1,15 @@
+nightly builds depend on clover
+
+
+
+Description:
+as reported by Michael Pelz Sherman on java-dev@lucene and solr-user@lucene the nightly builds coming out of hudson current depend on clover...
+
+  [root@crm.test.bbhmedia.net tmp]# strings lucene-core-nightly.jar | grep -i clover|more
+org/apache/lucene/LucenePackage$__CLOVER_0_0.class
+org/apache/lucene/analysis/Analyzer$__CLOVER_1_0.class
+...
+
+the old nightly.sh dealt with this by running ant nightly twice, first without clover to get the jars and then with clover to get the report.  it loks like maybe this logic never made it into the hudson setup.
+
+someone with hudson admin access/knowledge will need to look into this.

@@ -1,0 +1,17 @@
+allow tests to use different Directory impls
+
+
+
+Description:
+Now that all tests use MockRAMDirectory instead of RAMDirectory, they are all picky like windows and force our tests to
+close readers etc before closing the directory.
+
+I think we should do the following:
+# change new MockRAMDIrectory() in tests to .newDirectory(random)
+# LuceneTestCase[J4] tracks if all dirs are closed at tearDown and also cleans up temp dirs like solr.
+# factor out the Mockish stuff from MockRAMDirectory into MockDirectoryWrapper
+# allow a -Dtests.directoryImpl or simpler to specify the default Directory to use for tests: default being "random"
+
+i think theres a chance we might find some bugs that havent yet surfaced because they are easier to trigger with FSDir
+Furthermore, this would be beneficial to Directory-implementors as they could run the entire testsuite against their Directory impl, just like codec-implementors can do now.
+

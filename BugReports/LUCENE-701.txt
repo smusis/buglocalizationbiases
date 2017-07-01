@@ -1,0 +1,165 @@
+Lock-less commits
+
+
+
+Description:
+This is a patch based on discussion a while back on lucene-dev:
+
+    http://mail-archives.apache.org/mod_mbox/lucene-java-dev/200608.mbox/%3c44E5B16D.4010805@mikemccandless.com%3e
+
+The approach is a small modification over the original discussion (see
+Retry Logic below).  It works correctly in all my cross-machine test
+case, but I want to open it up for feedback, testing by
+users/developers in more diverse environments, etc.
+
+This is a small change to how lucene stores its index that enables
+elimination of the commit lock entirely.  The write lock still
+remains.
+
+Of the two, the commit lock has been more troublesome for users since
+it typically serves an active role in production.  Whereas the write
+lock is usually more of a design check to make sure you only have one
+writer against the index at a time.
+
+The basic idea is that filenames are never reused ("write once"),
+meaning, a writer never writes to a file that a reader may be reading
+(there is one exception: the segments.gen file; see "RETRY LOGIC"
+below).  Instead it writes to generational files, ie, segments_1, then
+segments_2, etc.  Besides the segments file, the .del files and norm
+files (.sX suffix) are also now generational.  A generation is stored
+as an "_N" suffix before the file extension (eg, _p_4.s0 is the
+separate norms file for segment "p", generation 4).
+
+One important benefit of this is it avoids files contents caching
+entirely (the likely cause of errors when readers open an index
+mounted on NFS) since the file is always a new file.
+
+With this patch I can reliably instantiate readers over NFS when a
+writer is writing to the index.  However, with NFS, you are still forced to
+refresh your reader once a writer has committed because "point in
+time" searching doesn't work over NFS (see LUCENE-673 ).
+
+The changes are fully backwards compatible: you can open an old index
+for searching, or to add/delete docs, etc.  I've added a new unit test
+to test these cases.
+
+All units test pass, and I've added a number of additional unit tests,
+some of which fail on WIN32 in the current lucene but pass with this
+patch.  The "fileformats.xml" has been updated to describe the changes
+to the files (but XXX references need to be fixed before committing).
+
+There are some other important benefits:
+
+  * Readers are now entirely read-only.
+
+  * Readers no longer block one another (false contention) on
+    initialization.
+
+  * On hitting contention, we immediately retry instead of a fixed
+    (default 1.0 second now) pause.
+
+  * No file renaming is ever done.  File renaming has caused sneaky
+    access denied errors on WIN32 (see LUCENE-665 ).  (Yonik, I used
+    your approach here to not rename the segments_N file(try
+    segments_(N-1) on hitting IOException on segments_N): the separate
+    ".done" file did not work reliably under very high stress testing
+    when a directory listing was not "point in time").
+
+  * On WIN32, you can now call IndexReader.setNorm() even if other
+    readers have the index open (fixes a pre-existing minor bug in
+    Lucene).
+
+  * On WIN32, You can now create an IndexWriter with create=true even
+    if readers have the index open (eg see
+    www.gossamer-threads.com/lists/lucene/java-user/39265) .
+
+
+Here's an overview of the changes:
+
+  * Every commit writes to the next segments_(N+1).
+
+  * Loading the segments_N file (& opening the segments) now requires
+    retry logic.  I've captured this logic into a new static class:
+    SegmentInfos.FindSegmentsFile.  All places that need to do
+    something on the current segments file now use this class.
+
+  * No more deletable file.  Instead, the writer computes what's
+    deletable on instantiation and updates this in memory whenever
+    files can be deleted (ie, when it commits).  Created a common
+    class index.IndexFileDeleter shared by reader & writer, to manage
+    deletes.
+
+  * Storing more information into segments info file: whether it has
+    separate deletes (and which generation), whether it has separate
+    norms, per field (and which generation), whether it's compound or
+    not.  This is instead of relying on IO operations (file exists
+    calls).  Note that this fixes the current misleading
+    FileNotFoundException users now see when an _X.cfs file is missing
+    (eg http://www.nabble.com/FileNotFound-Exception-t6987.html).
+
+  * Fixed some small things about RAMDirectory that were not
+    filesystem-like (eg opening a non-existent IndexInput failed to
+    raise IOException; renames were not atomic).  I added a stress
+    test against a RAMDirectory (1 writer thread & 2 reader threads)
+    that uncovered these.
+
+  * Added option to not remove old files when create=true on creating
+    FSDirectory; this is so the writer can do its own [more
+    sophisticated because it retries on errors] removal.
+
+  * Removed all references to commit lock, COMMIT_LOCK_TIMEOUT, etc.
+    (This is an API change).
+
+  * Extended index/IndexFileNames.java and index/IndexFileNameFilter.java
+    with logic for computing generational file names.
+
+  * Changed index/IndexFileNameFilter.java to use a HashSet to check
+    file extentsions for better performance.
+
+  * Fixed the test case TestIndexReader.testLastModified: it was
+    incorrectly (I think?) comparing lastModified to version, of the
+    index.  I fixed that and then added a new test case for version.
+
+
+Retry Logic (in index/SegmentInfos.java)
+
+If a reader tries to load the segments just as a writer is committing,
+it may hit an IOException.  This is just normal contention.  In
+current Lucene contention causes a [default] 1.0 second pause then
+retry.  With lock-less the contention causes no added delay beyond the
+time to retry.
+
+When this happens, we first try segments_(N-1) if present, because it
+could be segments_N is still being written.  If that fails, we
+re-check to see if there is now a newer segments_M where M > N and
+advance if so.  Else we retry segments_N once more (since it could be
+it was in process previously but must now be complete since
+segments_(N-1) did not load).
+
+In order to find the current segments_N file, I list the directory and
+take the biggest segments_N that exists.
+
+However, under extreme stress testing (5 threads just opening &
+closing readers over and over), on one platform (OS X) I found that
+the directory listing can be incorrect (stale) by up to 1.0 seconds.
+This means the listing will show a segments_N file but that file does
+not exist (fileExists() returns false).
+
+In order to handle this (and other such platforms), I switched to a
+hybrid approach (originally proposed by Doron Cohen in the original
+thread): on committing, the writer writes to a file "segments.gen" the
+generation it just committed.  It writes 2 identical longs into this
+file.  The retry logic, on detecting that the directory listing is
+stale falls back to the contents of this file.  If that file is
+consistent (the two longs are identical), and, the generation is
+indeed newer than the dir listing, it will use that.
+
+Finally, if this approach is also stale, we fallback to stepping
+through sequential generations (up to a maximum # tries).  If all 3
+methods fail, we throw the original exception we hit.
+
+I added a static method SegmentInfos.setInfoStream() which will print
+details of retry attempts.  In the patch it's set to System.out right
+now (we should turn off before a real commit) so if there are problems
+we can see what retry logic had done.
+

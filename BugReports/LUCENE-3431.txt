@@ -1,0 +1,10 @@
+Make QueryAutoStopWordAnalyzer immutable and reusable
+
+
+
+Description:
+Currently QueryAutoStopWordAnalyzer allows its list of stop words to be changed after instantiation through its addStopWords() methods.  This stops the Analyzer from being reusable since it must instantiate its StopFilters every time.
+
+Having these methods means that although the Analyzer can be instantiated once and reused between IndexReaders, the actual analysis stack is not reusable (which is probably the more expensive part).
+
+So lets change the Analyzer so that its stop words are set at instantiation time, facilitating reuse.

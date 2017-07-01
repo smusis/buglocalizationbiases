@@ -1,0 +1,6 @@
+Create a grouping convenience class
+
+
+
+Description:
+Currently the grouping module has many collector classes with a lot of different options per class. I think it would be a good idea to have a GroupUtil (Or another name?) convenience class. I think this could be a builder, because of the many options (sort,sortWithinGroup,groupOffset,groupCount and more) and implementations (term/dv/function) grouping has.

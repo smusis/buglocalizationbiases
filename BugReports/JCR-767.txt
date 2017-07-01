@@ -1,0 +1,9 @@
+Use Maven dependency management
+
+
+
+Description:
+Many of the Jackrabbit components have dependencies to each other and to external libraries,
+whose versions should ideally be the same for all the Jackrabbit components. To guarantee
+the use of same depedency versions and to simplify overall depedency management we should
+start using the Maven depedencyManagement feature in the Jackrabbit parent pom.

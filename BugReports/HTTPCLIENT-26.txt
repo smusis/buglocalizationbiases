@@ -1,0 +1,15 @@
+need a way to set request body in PostMethod
+
+
+
+Description:
+Currently, there is no way for user to set the request body in PostMethod 
+directly. The only way to do that is by adding parameters to PostMethod. This 
+makes sense in most cases. However, there are situations that the user actually 
+knows the request body and want to set it directly. adding the following method 
+fixes this:
+
+    public void setRequestBody(String requestBody)
+    {
+        this.requestBody = requestBody;
+    }

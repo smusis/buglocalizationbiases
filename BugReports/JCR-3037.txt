@@ -1,0 +1,11 @@
+Add getPath method to Authorizable interface
+
+
+
+Description:
+currently the only way to retrieve the path of the item associated with an authorizable is to check if the
+principal obtained through Authorizable#getPrincipal() is an ItemBasedPrincipal.
+
+having a getPath method would provide a convenient shortcut and would in addition allow
+to determine of there is really an item associated with a authorizable that is accessible for the editing
+session (which is not necessarily the case for ItemBasedPrincipal#getPath

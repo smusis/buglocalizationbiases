@@ -1,0 +1,26 @@
+JCR2SPI: NPE when parentId returned by NodeInfo.getParentId does not show up in parent's child node list
+
+
+
+Description:
+In this custom SPI implementation, version history nodes appear as children of jcr:versionStorage, but jcr:versionStorage does not return them as children (which would be impractical for performance reasons - I expect similar approaches used by others...).
+
+getParentId of a NodeInfo of a VersionHistory return the NodeId for jcr:versionStorage. In this case, I get the NPE below:
+
+java.lang.NullPointerException
+	at org.apache.jackrabbit.jcr2spi.state.WorkspaceItemStateFactory.createNodeState(WorkspaceItemStateFactory.java:99)
+	at org.apache.jackrabbit.jcr2spi.state.CachingItemStateManager.resolve(CachingItemStateManager.java:168)
+	at org.apache.jackrabbit.jcr2spi.state.CachingItemStateManager.getItemState(CachingItemStateManager.java:94)
+	at org.apache.jackrabbit.jcr2spi.WorkspaceManager.getItemState(WorkspaceManager.java:328)
+	at org.apache.jackrabbit.jcr2spi.state.TransientISFactory.createNodeState(TransientISFactory.java:120)
+	at org.apache.jackrabbit.jcr2spi.state.CachingItemStateManager.resolve(CachingItemStateManager.java:168)
+	at org.apache.jackrabbit.jcr2spi.state.CachingItemStateManager.getItemState(CachingItemStateManager.java:94)
+	at org.apache.jackrabbit.jcr2spi.state.TransientItemStateManager.getItemState(TransientItemStateManager.java:209)
+	at org.apache.jackrabbit.jcr2spi.state.SessionItemStateManager.getItemState(SessionItemStateManager.java:155)
+	at org.apache.jackrabbit.jcr2spi.SessionImpl.getNodeById(SessionImpl.java:271)
+	at org.apache.jackrabbit.jcr2spi.SessionImpl.getNodeByUUID(SessionImpl.java:239)
+
+Returning null in this special case fixes the problem over here, but seems to create new problems elsewhere.
+
+Need to clarify the SPI itself, and potentially fix JCR2CPI.
+

@@ -1,0 +1,73 @@
+If there is more than 15 seconds between HttpClient.execute() calls using a MultipartEntity, a ProtocolException is thrown complaining about the Content-Length header already being present.
+
+
+
+Description:
+I am not sure if this time-related behaviour is intentional or not (I have only been using this library for a few weeks) , but even if a timeout is to be expected, the exception thrown ought to indicate that there is a time component involved. "org.apache.http.ProtocolException: Content-Length header already present" is incredibly misleading. 
+
+A simple-ish compileable program to reproduce the bug is as follows:
+
+import java.nio.charset.Charset;
+import org.apache.http.HttpResponse;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.client.params.ClientPNames;
+import org.apache.http.client.params.CookiePolicy;
+import org.apache.http.entity.mime.MultipartEntity;
+import org.apache.http.entity.mime.content.StringBody;
+import org.apache.http.impl.client.DefaultHttpClient;
+public class Simple {
+    static public void main(String [] args)
+    {
+        try
+        {
+            DefaultHttpClient client = new DefaultHttpClient();
+            client.getParams().setParameter(
+                        ClientPNames.COOKIE_POLICY, CookiePolicy.BROWSER_COMPATIBILITY);
+            MultipartEntity entity;
+            StringBody stringBody;
+            HttpPost post;
+            HttpResponse response;
+            entity = new MultipartEntity();
+            stringBody = new StringBody("field contents",Charset.forName("ISO-8859-1"));
+            entity.addPart("field", stringBody);  
+            post = new HttpPost("http://localhost/simple.php");
+            post.setEntity(entity); 
+            response = client.execute(post);
+            
+            //The exception does not occur if the content is not consumed
+            response.getEntity().consumeContent();
+            System.out.println("First post done");
+            
+            //The exception does not occur if the time interval between the requests is too short
+            Thread.sleep(15000);
+            
+            //The exception naturally doesn't occur if a new HttpClient is created
+            //client = new DefaultHttpClient();
+
+            entity = new MultipartEntity();
+            stringBody = new StringBody("field contents",Charset.forName("ISO-8859-1"));
+            entity.addPart("field", stringBody);  
+
+            post = new HttpPost("http://localhost/simple.php");
+            post.setEntity(entity); 
+            response = client.execute(post); //Will throw the following:
+            /*
+                org.apache.http.ProtocolException: Content-Length header already present
+                at org.apache.http.protocol.RequestContent.process(RequestContent.java:70)
+                at org.apache.http.protocol.BasicHttpProcessor.process(BasicHttpProcessor.java:290)
+                at org.apache.http.protocol.HttpRequestExecutor.preProcess(HttpRequestExecutor.java:160)
+                at org.apache.http.impl.client.DefaultClientRequestDirector.execute(DefaultClientRequestDirector.java:356)
+                at org.apache.http.impl.client.AbstractHttpClient.execute(AbstractHttpClient.java:501)
+                at org.apache.http.impl.client.AbstractHttpClient.execute(AbstractHttpClient.java:456)
+                at org.apache.http.impl.client.AbstractHttpClient.execute(AbstractHttpClient.java:422)
+                at test.Simple.main(Simple.java:57)
+             */ 
+            System.out.println("Second post done");
+        }
+        catch(Exception e)
+        {
+            System.out.println(e);
+            e.printStackTrace();
+        }
+    }    
+}

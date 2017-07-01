@@ -1,0 +1,22 @@
+Optimize TermsEnum.seek when caller doesn't need next term
+
+
+
+Description:
+Some codecs are able to save CPU if the caller is only interested in
+exact matches.  EG, Memory codec and SimpleText can do more efficient
+FSTEnum lookup if they know the caller doesn't need to know the term
+following the seek term.
+
+We have cases like this in Lucene, eg when IW deletes documents by
+Term, if the term is not found in a given segment then it doesn't need
+to know the ceiling term.  Likewise when TermQuery looks up the term
+in each segment.
+
+I had done this change as part of LUCENE-3030, which is a new terms
+index that's able to save seeking for exact-only lookups, but now that
+we have Memory codec that can also save CPU I think we should commit
+this today.
+
+The change adds a "boolean onlyExact" param to seek(BytesRef).
+

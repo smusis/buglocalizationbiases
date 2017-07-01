@@ -1,0 +1,14 @@
+Add toString() or getName() method to IndexReader
+
+
+
+Description:
+It would be very useful for debugging if IndexReader either had a getName() method, or a toString() implementation that would get a string identification for the reader.
+
+for SegmentReader, this would return the same as getSegmentName()
+for Directory readers, this would return the "generation id"?
+for MultiReader, this could return something like "multi(sub reader name, sub reader name, sub reader name, ...)
+
+right now, i have to check instanceof for SegmentReader, then call getSegmentName(), and for all other IndexReader types, i would have to do something like get the IndexCommit and get the generation off it (and this may throw UnsupportedOperationException, at which point i have would have to recursively walk sub readers and try again)
+
+I could work up a patch if others like this idea

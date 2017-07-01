@@ -1,0 +1,21 @@
+Split up IndexInput and IndexOutput into DataInput and DataOutput
+
+
+
+Description:
+I'd like to introduce the two new classes DataInput and DataOutput
+that contain all methods from IndexInput and IndexOutput that actually
+decode or encode data, such as readByte()/writeByte(),
+readVInt()/writeVInt().
+
+Methods like getFilePointer(), seek(), close(), etc., which are not
+related to data encoding, but to files as input/output source stay in
+IndexInput/IndexOutput.
+
+This patch also changes ByteSliceReader/ByteSliceWriter to extend
+DataInput/DataOutput. Previously ByteSliceReader implemented the
+methods that stay in IndexInput by throwing RuntimeExceptions.
+
+See also LUCENE-2125.
+
+All tests pass.

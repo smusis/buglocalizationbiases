@@ -1,0 +1,12 @@
+Setting SSLSocket parameters
+
+
+
+Description:
+In HttpClient 4.0.3, it was easy to subclass SSLSocketFactory, and set SSLSocket options (e.g. setEnabledCipherSuites() or setSSLParameterse()) before the SSL handshake happened. This way it was possible to e.g. restrict cipher suites on per-HttpClient basis (instead of JVM-wide system properties).
+
+In HttpClient 4.1.1, the design has changed quite a lot, and copy-pasting of several long methods is needed. 
+
+Ideally, SSLSocketFactory should support applying SSLParameters to the socket. However, SSLParameters is Java 1.6, so if we want to keep compatibility with 1.5, that's out.
+
+However, it'd be nice to at least have a method (e.g. "protected SSLSocket prepareSSLSocket(SSLSocket s)") that would get called immediately after a socket is retrieved from the socket factory. The default implementation could be just "return s;", but subclasses could do something like s.setEnabledCipherSuites() s.setSSLParameters().

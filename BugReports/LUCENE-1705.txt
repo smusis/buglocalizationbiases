@@ -1,0 +1,23 @@
+Add deleteAllDocuments() method to IndexWriter
+
+
+
+Description:
+Ideally, there would be a deleteAllDocuments() or clear() method on the IndexWriter
+
+This method should have the same performance and characteristics as:
+* currentWriter.close()
+* currentWriter = new IndexWriter(..., create=true,...)
+
+This would greatly optimize a delete all documents case. Using deleteDocuments(new MatchAllDocsQuery()) could be expensive given a large existing index.
+
+IndexWriter.deleteAllDocuments() should have the same semantics as a commit(), as far as index visibility goes (new IndexReader opening would get the empty index)
+
+I see this was previously asked for in LUCENE-932, however it would be nice to finally see this added such that the IndexWriter would not need to be closed to perform the "clear" as this seems to be the general recommendation for working with an IndexWriter now
+
+deleteAllDocuments() method should:
+* abort any background merges (they are pointless once a deleteAll has been received)
+* write new segments file referencing no segments
+
+This method would remove one of the final reasons i would ever need to close an IndexWriter and reopen a new one 
+

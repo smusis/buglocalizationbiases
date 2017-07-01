@@ -1,0 +1,15 @@
+Avoid premature publication of XAItemStateManager
+
+
+
+Description:
+The XAItemStateManager constructor calls the super constructor (LocalItemStateManager)  which registers the instance as a listener with the SharedItemStateManager. The construction of the instance has not yet been finished, but it is accessible from the SharedItemStateManager. This can result in strange exceptions like the following:
+
+java.lang.NullPointerException
+        at org.apache.jackrabbit.core.state.XAItemStateManager.stateModified(XAItemStateManager.java:580)
+        at org.apache.jackrabbit.core.state.StateChangeDispatcher.notifyStateModified(StateChangeDispatcher.java:111)
+        at org.apache.jackrabbit.core.state.SharedItemStateManager.stateModified(SharedItemStateManager.java:400)
+        at org.apache.jackrabbit.core.virtual.AbstractVISProvider.stateModified(AbstractVISProvider.java:445)
+        at org.apache.jackrabbit.core.state.ItemState.notifyStateUpdated(ItemState.java:244) 
+
+The NPE is caused by the commitLogs field being null (it has not yet been initialized to its final value).

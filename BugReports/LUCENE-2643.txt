@@ -1,0 +1,6 @@
+StringHelper#stringDifference is wrong about supplementary chars 
+
+
+
+Description:
+StringHelper#stringDifference does not take supplementary characters into account. Since this is not used internally at all we should think about removing it but I guess since it is not too complex we should just or fix it for bwcompat reasons. For released versions we should really fix it since folks might use it though. For trunk we could just drop it.

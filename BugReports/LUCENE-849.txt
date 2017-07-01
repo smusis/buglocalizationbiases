@@ -1,0 +1,15 @@
+contrib/benchmark:  configurable HTML Parser, external classes to path, exhaustive doc maker
+
+
+
+Description:
+"doc making" enhancements:
+
+1. Allow configurable html parser, with a new html.parser property.
+Currently TrecDocMaker is using the Demo html parser. With this new property this can be overridden.
+
+2. allow to add external class path, so the benchmark can be used with modified makers/parsers without having to add code to Lucene.
+Run benchmark with e.g. "ant run-task -Dbenchmark.ext.classpath=/myproj/myclasses"
+
+3. allow to crawl a doc maker until exhausting all its files/docs once, without having to know in advance how many docs it can make. 
+This can be useful for instance if the input data is in zip files.

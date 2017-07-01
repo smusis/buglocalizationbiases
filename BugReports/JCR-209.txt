@@ -1,0 +1,8 @@
+orm-persistence package doesn't compile against cvs head.
+
+
+
+Description:
+Corrected QName import (which I guess was moved). 
+This patch has no meaning besides making the src/java compile and to update the dependencies in the project.xml.
+

@@ -1,0 +1,8 @@
+cache module produces improperly formatted Warning header when revalidation fails
+
+
+
+Description:
+The warning header currently attached to a stale response by the caching module when validation with the origin server fails is not a properly-formatted Warning header.
+
+http://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.46

@@ -1,0 +1,16 @@
+add a tokenfilter for icu transforms
+
+
+
+Description:
+I pulled the ICUTransformFilter out of LUCENE-1488 and create an issue for it here.
+
+This is a tokenfilter that applies an ICU Transliterator, which is a context-sensitive way
+to transform text. 
+
+These are typically rule-based and you can use ones included with ICU (such as Traditional-Simplified)
+or you can make your own from your own set of rules.
+
+User's Guide: http://userguide.icu-project.org/transforms/general
+Rule Tutorial: http://userguide.icu-project.org/transforms/general/rules
+

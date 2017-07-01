@@ -1,0 +1,6 @@
+Add a filtered RangeIterator
+
+
+
+Description:
+It would be useful to have a FilteredRangeIterator utility class that can be used to apply arbitrary filters on other RangeIterators.

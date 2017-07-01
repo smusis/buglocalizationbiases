@@ -1,0 +1,13 @@
+Query index not in sync with workspace
+
+
+
+Description:
+After some time the search index is not in sync anymore with the data in the workspace and returns uuids which have no corresponding Node in the workspace. This results in a NodeIterator which throws an ItemNotFoundException on nextNode().
+
+Instructions how to reproduce this error are not yet available.
+
+Possible areas for further investigation are:
+- NodeType registry which maps the node types into the workspace with the use of virtual item states
+- versioning?
+- atomicity of indexing?

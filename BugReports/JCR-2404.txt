@@ -1,0 +1,6 @@
+Return null for optional configuration elements
+
+
+
+Description:
+Two recently introduced configuration elements are optional but the configuration parser still returns an instance when the elements are missing in the configuration. The parser should return null when an element is not there in order to distinguish it from the case where an empty element is present. 

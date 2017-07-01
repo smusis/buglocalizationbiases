@@ -1,0 +1,12 @@
+Use parallel arrays instead of PostingList objects
+
+
+
+Description:
+This is Mike's idea that was discussed in LUCENE-2293 and LUCENE-2324.
+
+In order to avoid having very many long-living PostingList objects in TermsHashPerField we want to switch to parallel arrays.  The termsHash will simply be a int[] which maps each term to dense termIDs.
+
+All data that the PostingList classes currently hold will then we placed in parallel arrays, where the termID is the index into the arrays.  This will avoid the need for object pooling, will remove the overhead of object initialization and garbage collection.  Especially garbage collection should benefit significantly when the JVM runs out of memory, because in such a situation the gc mark times can get very long if there is a big number of long-living objects in memory.
+
+Another benefit could be to build more efficient TermVectors.  We could avoid the need of having to store the term string per document in the TermVector.  Instead we could just store the segment-wide termIDs.  This would reduce the size and also make it easier to implement efficient algorithms that use TermVectors, because no term mapping across documents in a segment would be necessary.  Though this improvement we can make with a separate jira issue.

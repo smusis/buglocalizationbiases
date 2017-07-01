@@ -1,0 +1,27 @@
+Provide support for unconnected sockets
+
+
+
+Description:
+Overview description:
+If Proxy settings are incorrect or host does not reply, the
+HttpClient.executeMethod() hangs, and HttpMethod.abort() does not stop it. Thus,
+you cannot assert that the entire application will stop immediately on demand.
+
+Expected Results:
+During a HttpMethod.executeMethod(), HttpMethod.abort() should cancel
+immediately the executeMethod().
+
+Actual Results:
+If HttpMethod.executeMethod() freezes because of Proxy bad settings or not
+responding hostname (in fact impossible to open the socket), the abort() method
+does not do anything.
+
+Platform:
+I tested it on Windows XP and Linux Debian with HttpClient 3.0 RC2 (but if you
+look further I point the problem and the source code of the nightly build is
+identical).
+
+See comments for the dialogue about the problem, and 2 Test cases. The solution
+is described at the end, but it may implies a change in the API and works only
+since Java 1.4.

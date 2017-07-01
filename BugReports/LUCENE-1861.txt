@@ -1,0 +1,6 @@
+Add contrib libs to classpath for javadoc
+
+
+
+Description:
+I don't know Ant well enough to just do this easily, so I've labeled a wish - would be nice to get rid of all the errors/warnings that not finding these classes generates when building javadoc.

@@ -1,0 +1,13 @@
+MockDirectoryWrapper should wrap the lockfactory
+
+
+
+Description:
+After applying the patch from LUCENE-3147, I added a line to make the test fail if it cannot remove its temporary directory.
+
+I ran 'ant test' on linux 50 times, and it passed all 50 times.
+But on windows, it failed often because of write.lock... this is because of unclosed writers in the test.
+
+MockDirectoryWrapper is currently unaware of this write.lock, I think it should wrap the lockfactory so that .close() will fail if there are any outstanding locks.
+Then hopefully these tests would fail on linux too.
+

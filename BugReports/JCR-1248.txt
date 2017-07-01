@@ -1,0 +1,13 @@
+Helper Method to escape illegal XPath Search Term
+
+
+
+Description:
+If you try to perform a search like this
+
+//element(*, nt:base)[jcr:contains(., 'test!')]
+
+you get this exception
+
+javax.jcr.RepositoryException: Exception building query: org.apache.jackrabbit.core.query.lucene.fulltext.ParseException: Encountered "<EOF>" at line 1, column 6.
+

@@ -1,0 +1,6 @@
+IndexReader.document always return a doc with all the stored fields loaded. And this can be slow for the indexed document contain huge fields
+
+
+
+Description:
+when generating digest for some documents with huge fields, it should be unnecessary to load the field but just interesting part of the field with the offset information. but indexreader always return the whole field content. afterward, the customized storedfieldsreader will got a repeated loading

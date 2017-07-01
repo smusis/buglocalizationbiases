@@ -1,0 +1,9 @@
+TimeoutHandler visitor should be extracted into a dedicated class
+
+
+
+Description:
+This is a minor problem that I've stumbled upon when looking at a memory leak.
+It seems that the TimeoutHandler thread runs each second and it uses a custom ElementVisitor to do its business. By creating a new instance of ElementVisitor each second this creates some garbage that could be avoided by using a predefined class.
+
+Short story: during a unit test it creates 3x instances each second that have 16 bytes each. Having a dedicated visitor class creates just 3 instances for the lifespan of the repository.

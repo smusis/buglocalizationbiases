@@ -1,0 +1,13 @@
+Provide utility for handling large number of child nodes/properties
+
+
+
+Description:
+Jackrabbit does not cope well with 'flat' hierarchies. That is with hierarchies where a node has many child nodes and/or properties. The current recommendation for such situations is to manually add intermediate nodes. 
+
+It would be nice to have an utility which adds/removes intermediate nodes as needed and expose a 'flat' view to users. Such an utility should:
+
+- expose a large number of nodes/properties as sequence
+- parametrize the order of how nodes/properties appear in the sequence
+- provide methods to lookup/add/remove nodes/properties by key 
+- organize the node/properties in the underlying JCR hierarchy in a way which is both efficient for above operations and easily understandable to users looking at the hierarchy. 

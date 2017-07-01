@@ -1,0 +1,13 @@
+Maven build failure in textfilter contrib project
+
+
+
+Description:
+I've tried to build the textfilters contrib but get the following error:
+
+Attempting to download jackrabbit-0.16.4.1-dev.jar.
+WARNING: Failed to download jackrabbit-0.16.4.1-dev.jar.
+The build cannot continue because of the following unsatisfied dependency:
+jackrabbit-0.16.4.1-dev.jar
+
+I tried changing the project.xml to look for jackrabbit-1.0-dev.jar instead, but it didn't work, not sure what maven expects here, but should be an easy fix for somebody in the know.

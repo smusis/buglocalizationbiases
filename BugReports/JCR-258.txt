@@ -1,0 +1,8 @@
+Jcr-Server Contrib: Remove JDOM dependencies
+
+
+
+Description:
+JDOM has been replace throught the jackrabbit project except the jcr-server contrib.
+
+

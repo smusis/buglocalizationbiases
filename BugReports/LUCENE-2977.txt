@@ -1,0 +1,6 @@
+WriteLineDocTask should write gzip/bzip2/txt according to the extension of specified output file name
+
+
+
+Description:
+Since the readers behave this way it would be nice and handy if also this line writer would.

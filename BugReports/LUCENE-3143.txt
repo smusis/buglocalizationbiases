@@ -1,0 +1,10 @@
+SegmentMerger should assert .del and .s* files are not passed to createCompoundFile
+
+
+
+Description:
+Spinoff from LUCENE-3126. SegmentMerger.createCompoundFile does not document that it should not receive files that are not included in the .cfs, such as .del and .s* (separate norms). Today, that method is called from code which ensures that, but we should:
+# Add some documentation to clarify that.
+# Add some asserts so that if a test (or other code, running w/ -ea) does that, we catch it.
+
+Will post a patch soon

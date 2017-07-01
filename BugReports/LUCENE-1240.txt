@@ -1,0 +1,7 @@
+TermsFilter: reuse TermDocs
+
+
+
+Description:
+TermsFilter currently calls termDocs(Term) once per term in the TermsFilter.  If we sort the terms it's filtering on, this can be optimised to call termDocs() once and then skip(Term) once per term, which should significantly speed up this filter.
+

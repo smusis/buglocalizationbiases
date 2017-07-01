@@ -1,0 +1,46 @@
+Add ShingleFilter option to output unigrams if no shingles can be generated
+
+
+
+Description:
+Currently if ShingleFilter.outputUnigrams==false and the underlying token stream is only one token long, then ShingleFilter.next() won't return any tokens. This patch provides a new option, outputUnigramIfNoNgrams; if this option is set and the underlying stream is only one token long, then ShingleFilter will return that token, regardless of the setting of outputUnigrams.
+
+My use case here is speeding up phrase queries. The technique is as follows:
+
+First, doing index-time analysis using ShingleFilter (using outputUnigrams==true), thereby expanding things as follows:
+
+"please divide this sentence into shingles" ->
+ "please", "please divide"
+ "divide", "divide this"
+ "this", "this sentence"
+ "sentence", "sentence into"
+ "into", "into shingles"
+ "shingles"
+
+Second, do query-time analysis using ShingleFilter (using outputUnigrams==false and outputUnigramIfNoNgrams==true). If the user enters a phrase query, it will get tokenized in the following manner:
+
+"please divide this sentence into shingles" ->
+ "please divide"
+ "divide this"
+ "this sentence"
+ "sentence into"
+ "into shingles"
+
+By doing phrase queries with bigrams like this, I can gain a very considerable speedup. Without the outputUnigramIfNoNgrams option, then a single word query would tokenize like this:
+
+"please" ->
+   [no tokens]
+
+But thanks to outputUnigramIfNoNgrams, single words will now tokenize like this:
+
+"please" ->
+  "please"
+
+****
+
+The patch also adds a little to the pre-outputUnigramIfNoNgrams option tests.
+
+****
+
+I'm not sure if the patch in this state is useful to anyone else, but I thought I should throw it up here and try to find out.
+

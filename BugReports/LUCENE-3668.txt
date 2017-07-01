@@ -1,0 +1,9 @@
+offsets issues with multiword synonyms
+
+
+
+Description:
+as reported on the list, there are some strange offsets with FSTSynonyms, in the case of multiword synonyms.
+
+as a workaround it was suggested to use the older synonym impl, but it has bugs too (just in a different way).
+

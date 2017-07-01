@@ -1,0 +1,6 @@
+extract test content loading from JackrabbitRepositoryStub
+
+
+
+Description:
+discussed here: http://markmail.org/message/vl5ldnfbocccccxw

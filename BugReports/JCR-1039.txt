@@ -1,0 +1,92 @@
+Bundle Persistence Manager error - failing to read bundle the first time
+
+
+
+Description:
+Code:
+NodeIterator entiter = null;
+Node root = null, contNode = null, entsNode = null;
+
+try
+{
+    root = session.getRootNode();
+    contNode = root.getNode("sr:cont");
+    entsNode = contNode.getNode("sr:ents");
+    entiter = entsNode.getNodes();
+}
+catch (Exception e)
+{
+    logger.error("Getting ents nodes", e);
+}
+
+Output:
+12359 [http-8080-Processor24] ERROR org.apache.jackrabbit.core.persistence.bundle.BundleDbPersistenceManager - failed to read bundle: c3a09c19-cc6b-45bd-a42e-c4c925b67d02: java.io.IOException: ERROR 40XD0: Container has been closed
+12375 [http-8080-Processor24] ERROR com.taxila.editor.sm.RepoOperations - Getting ents nodes
+javax.jcr.PathNotFoundException: sr:ents
+    at org.apache.jackrabbit.core.NodeImpl.getNode(NodeImpl.java:2435)
+    at com.taxila.editor.sm.RepoOperations.getEntityNodes (RepoOperations.java:4583)
+    at com.taxila.editor.sm.RepoOperations.displayEntities(RepoOperations.java:4159)
+    at com.taxila.editor.sm.RepoOperations.displayEntities(RepoOperations.java:4114)
+    at com.taxila.editor.em.um.MainEntityForm.reset (MainEntityForm.java:215)
+    at org.apache.struts.taglib.html.FormTag.doStartTag(FormTag.java:640)
+    at org.apache.jsp.pages.jsp.entity.MainEntity_jsp._jspService(MainEntity_jsp.java:414)
+    at org.apache.jasper.runtime.HttpJspBase.service (HttpJspBase.java:97)
+    at javax.servlet.http.HttpServlet.service(HttpServlet.java:802)
+    at org.apache.jasper.servlet.JspServletWrapper.service(JspServletWrapper.java:332)
+    at org.apache.jasper.servlet.JspServlet.serviceJspFile (JspServlet.java:314)
+    at org.apache.jasper.servlet.JspServlet.service(JspServlet.java:264)
+    at javax.servlet.http.HttpServlet.service(HttpServlet.java:802)
+    at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter (ApplicationFilterChain.java:252)
+    at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:173)
+    at org.apache.catalina.core.ApplicationDispatcher.invoke(ApplicationDispatcher.java :672)
+    at org.apache.catalina.core.ApplicationDispatcher.processRequest(ApplicationDispatcher.java:463)
+    at org.apache.catalina.core.ApplicationDispatcher.doForward(ApplicationDispatcher.java:398)
+    at org.apache.catalina.core.ApplicationDispatcher.forward (ApplicationDispatcher.java:301)
+    at org.apache.struts.action.RequestProcessor.doForward(RequestProcessor.java:1014)
+    at org.apache.struts.action.RequestProcessor.processForwardConfig(RequestProcessor.java:417)
+    at org.apache.struts.action.RequestProcessor.processActionForward(RequestProcessor.java:390)
+    at org.apache.struts.action.RequestProcessor.process(RequestProcessor.java:271)
+    at org.apache.struts.action.ActionServlet.process (ActionServlet.java:1292)
+    at org.apache.struts.action.ActionServlet.doPost(ActionServlet.java:510)
+    at javax.servlet.http.HttpServlet.service(HttpServlet.java:709)
+    at javax.servlet.http.HttpServlet.service (HttpServlet.java:802)
+    at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:252)
+    at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java :173)
+    at org.apache.catalina.core.StandardWrapperValve.invoke(StandardWrapperValve.java:213)
+    at org.apache.catalina.core.StandardContextValve.invoke(StandardContextValve.java:178)
+    at org.apache.catalina.core.StandardHostValve.invoke (StandardHostValve.java:126)
+    at org.apache.catalina.valves.ErrorReportValve.invoke(ErrorReportValve.java:105)
+    at org.apache.catalina.core.StandardEngineValve.invoke(StandardEngineValve.java:107)
+    at org.apache.catalina.connector.CoyoteAdapter.service (CoyoteAdapter.java:148)
+    at org.apache.coyote.http11.Http11Processor.process(Http11Processor.java:869)
+    at org.apache.coyote.http11.Http11BaseProtocol$Http11ConnectionHandler.processConnection(Http11BaseProtocol.java :664)
+    at org.apache.tomcat.util.net.PoolTcpEndpoint.processSocket(PoolTcpEndpoint.java:527)
+    at org.apache.tomcat.util.net.LeaderFollowerWorkerThread.runIt(LeaderFollowerWorkerThread.java:80)
+    at org.apache.tomcat.util.threads.ThreadPool$ControlRunnable.run (ThreadPool.java:684)
+    at java.lang.Thread.run(Unknown Source)
+
+On the other hand if I do this:
+Code:
+try
+{
+    root = session.getRootNode ();
+    contNode = root.getNode("sr:cont");
+    entsNode = contNode.getNode("sr:ents");
+    entiter = entsNode.getNodes();
+}
+catch (Exception e)
+{
+    logger.error("Getting ents nodes", e);
+    try
+    {
+        entsNode = contNode.getNode("sr:ents");
+        entiter = entsNode.getNodes();
+    }
+    catch (Exception e1)
+    {
+        e1.printStackTrace();
+    }
+}
+
+Output:
+The first error as in the previous case comes, but the second execution of the entsNode = contNode.getNode("sr:ents"); statement returns the right node, and hence the iterator.

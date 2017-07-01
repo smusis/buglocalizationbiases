@@ -1,0 +1,14 @@
+ACL with glob restrictions does not work on '/'
+
+
+
+Description:
+i tried to define a ACL on '/' that would allow 'read' on '/' itself, but not for the nodes underneath. i tried "*", "/*", "./*" but none of them seem to do the desired effect.
+
+eg:
+everyone,allow,jcr:read, '/'
+everyone,deny,jcr:read, '/', glob="/*"
+
+the same works for a non-root node.
+
+

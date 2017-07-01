@@ -1,0 +1,7 @@
+Field tokenStream should be usable with stored fields.
+
+
+
+Description:
+Field.tokenStream should be usable for indexing even for stored values.  Useful for many types of pre-analyzed values (text/numbers, etc)
+http://search.lucidimagination.com/search/document/902bad4eae20bdb8/field_tokenstreamvalue

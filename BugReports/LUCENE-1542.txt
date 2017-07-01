@@ -1,0 +1,6 @@
+Lucene can incorrectly set the position of tokens that start a field with positonInc 0.
+
+
+
+Description:
+More info in LUCENE-1465

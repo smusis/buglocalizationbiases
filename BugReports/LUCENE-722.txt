@@ -1,0 +1,6 @@
+DEFAULT spelled DEFALT in MoreLikeThis.java
+
+
+
+Description:
+DEFAULT is spelled DEFALT in contrib/queries/src/java/org/apache/lucene/search/similar/MoreLikeThis.java

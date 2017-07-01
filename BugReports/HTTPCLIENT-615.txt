@@ -1,0 +1,8 @@
+Consider making HostConfiguration immutable
+
+
+
+Description:
+HostConfiguration class should be immutable. This should also allow methods of this class to be non-synchronized.
+
+Oleg

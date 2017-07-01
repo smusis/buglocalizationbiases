@@ -1,0 +1,12 @@
+Host request header does not contain port
+
+
+
+Description:
+The Host request header is always added with just the hostname used for the 
+connection.  If the port is different than 80 it needs to be included as well, 
+with a colon separating it from the hostname.  This problem is especially 
+apparent when you use the httpclient to connect to tomcat 4 and then use 
+HttpUtils to create a full URL representing the request.  HttpUtils pulls the 
+host and port from the Host header.  When commons-httpclient is used HttpUtils 
+never includes the port since it was never in the Host header.

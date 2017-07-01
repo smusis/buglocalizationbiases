@@ -1,0 +1,6 @@
+IndexReader.listCommits should return a List and not an abstract Collection
+
+
+
+Description:
+Spinoff from here: http://www.mail-archive.com/dev@lucene.apache.org/msg07509.html

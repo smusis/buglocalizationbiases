@@ -1,0 +1,7 @@
+spi2dav: avoid reusing the same document in repositoryserviceimpl
+
+
+
+Description:
+... instead each call should create it's own document (credits due to jukka :)
+that seems to avoid that odd npe in DomUtil.

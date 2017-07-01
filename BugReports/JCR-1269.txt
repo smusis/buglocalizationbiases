@@ -1,0 +1,6 @@
+Stop using BaseException
+
+
+
+Description:
+The o.a.j.BaseException class is deprecated (since JCR-1169) and not caught anywhere, so there's no need to keep using it.

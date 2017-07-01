@@ -1,0 +1,9 @@
+Tests not executable for already present mixins
+
+
+
+Description:
+org.apache.jackrabbit.test.api.NodeRemoveMixinTest.testCheckedIn() and 
+org.apache.jackrabbit.test.api.NodeAddMixinTest.testCheckedIn() 
+
+fail when the mixin being added is already present on the node. The tests should check for this and trow a NotExecutableException.

@@ -1,0 +1,21 @@
+QueryParser throws new exceptions even if custom parsing logic threw a better one
+
+
+
+Description:
+We have subclassed QueryParser and have various custom fields.  When these fields contain invalid values, we throw a subclass of ParseException which has a more useful message (and also a localised message.)
+
+Problem is, Lucene's QueryParser is doing this:
+
+{code}
+    catch (ParseException tme) {
+        // rethrow to include the original query:
+        throw new ParseException("Cannot parse '" +query+ "': " + tme.getMessage());
+    }
+{code}
+
+Thus, our nice and useful ParseException is thrown away, replaced by one with no information about what's actually wrong with the query (it does append getMessage() but that isn't localised.  And it also throws away the underlying cause for the exception.)
+
+I am about to patch our copy to simply remove these four lines; the caller knows what the query string was (they have to have a copy of it because they are passing it in!) so having it in the error message itself is not useful.  Furthermore, when the query string is very big, what the user wants to know is not that the whole query was bad, but which part of it was bad.
+
+

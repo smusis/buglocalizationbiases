@@ -1,0 +1,6 @@
+BundleDBPersistenceManager does not free blobStore resources
+
+
+
+Description:
+When removing binary property from node or removing node containing binary property, resources occupied by binary property are not freed (orphaned records remains in associated ${schemaObjectPrefix}BINVAL table).

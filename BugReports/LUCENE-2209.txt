@@ -1,0 +1,9 @@
+add @experimental javadocs tag
+
+
+
+Description:
+There are a lot of things marked experimental, api subject to change, etc. in lucene.
+
+this patch simply adds a @experimental tag to common-build.xml so that we can use it, for more consistency.
+

@@ -1,0 +1,6 @@
+Separate initial index creation from MultiIndex construction
+
+
+
+Description:
+If there is no index present the MultiIndex constructor will create an initial index by traversing the workspace item states. This makes it difficult for an outside class to detect the situation where no index is present.

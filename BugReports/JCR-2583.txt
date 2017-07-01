@@ -1,0 +1,15 @@
+Occasional testDataStoreGarbageCollection test failures
+
+
+
+Description:
+In the past few days our Hudson build started failing every now and then with the following jackrabbit-core test failure:
+
+javax.jcr.NoSuchWorkspaceException: security
+	at org.apache.jackrabbit.core.RepositoryImpl.getWorkspaceInfo(RepositoryImpl.java:786)
+	at org.apache.jackrabbit.core.RepositoryImpl.getSystemSession(RepositoryImpl.java:985)
+	at org.apache.jackrabbit.core.RepositoryImpl.getSecurityManager(RepositoryImpl.java:471)
+	at org.apache.jackrabbit.core.RepositoryImpl.login(RepositoryImpl.java:1496)
+	at org.apache.jackrabbit.core.TransientRepository.login(TransientRepository.java:380)
+	at org.apache.jackrabbit.commons.AbstractRepository.login(AbstractRepository.java:123)
+	at org.apache.jackrabbit.core.data.DataStoreAPITest.testDataStoreGarbageCollection(DataStoreAPITest.java:55)

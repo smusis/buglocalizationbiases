@@ -1,0 +1,6 @@
+Improved Kuromoji search mode segmentation/decompounding
+
+
+
+Description:
+Kuromoji has a segmentation mode for search that uses a heuristic to promote additional segmentation of long candidate tokens to get a decompounding effect.  This heuristic has been improved.  Patch is coming up.

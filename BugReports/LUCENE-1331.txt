@@ -1,0 +1,8 @@
+FSDirectory doesn't detect double-close nor usage after close
+
+
+
+Description:
+FSDirectory.close implements logic to ensure only a single instance of FSDirectory per canonical directory exists.  This means code that synchronizes on the FSDirectory instance is also synchronized against that canonical directory.  I think only IndexModifier (now deprecated) actually makes use of this, but I'm not certain. 
+
+But, the close() method doesn't detect double close, and doesn't catch usage after being closed, and so one can easily get two instances of FSDirectory for the same canonical directory.

@@ -1,0 +1,33 @@
+misleading lack of javadoc in StringRequestEntity
+
+
+
+Description:
+When using httpclient2, we were doing the following:
+
+	// Add the Content-type header.  This sets the charset to UTF-8.
+	method.setRequestHeader( "Content-type", "text/xml; charset=UTF-8" );
+	// The given string is converted internally by the post method into
+	// a UTF-8 encoded byte array.
+	method.setRequestBody( xmlstring );
+
+The comments show that this was the way we used to obtain a UTF-8 encoded XML
+document (if this was wrong, that may be the origin of the problem?).
+
+
+When upgrading to httpclient3 and killing deprecated code, this was converted to:
+
+	// Add the Content-type header.  This sets the charset to UTF-8.
+	method.setRequestHeader( "Content-type", "text/xml; charset=UTF-8" );
+	// The given string is converted internally by the post method into
+	// a UTF-8 encoded byte array.
+        method.setRequestEntity( new StringRequestEntity( xmlstring ) );
+
+which went without problem during the tests on my machine and on test production
+machine.. because platforms charset were UTF-8, which is not the case for
+production machines :(
+
+I think the javadoc of the used StringRequestEntity constructor should strongly
+state that it uses String#getBytes for the content, which uses the platform
+charset. Also, I didn't notice any "upgrade to 3.x" documentation which would
+have helped me :/

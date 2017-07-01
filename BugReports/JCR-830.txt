@@ -1,0 +1,8 @@
+SetValueBinaryTest: some repositories have constraints on where binary properties can be set
+
+
+
+Description:
+For repositories that do only support binary properties in the form of jcr:content/jcr:data, the current configurability is not sufficient. To avoid more config params, I'd suggest to check for propertyName1 == "jcr:data" && node.hasNode("jcr:content"), and in that case to automatically navigate down to the "jcr:content" child node.
+
+

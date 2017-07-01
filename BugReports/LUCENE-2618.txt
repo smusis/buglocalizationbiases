@@ -1,0 +1,18 @@
+Intermittent failure in TestThreadedOptimize
+
+
+
+Description:
+Failure looks like this:
+
+{noformat}
+    [junit] Testsuite: org.apache.lucene.index.TestThreadedOptimize
+    [junit] Testcase: testThreadedOptimize(org.apache.lucene.index.TestThreadedOptimize):	FAILED
+    [junit] null
+    [junit] junit.framework.AssertionFailedError: null
+    [junit] 	at org.apache.lucene.index.TestThreadedOptimize.runTest(TestThreadedOptimize.java:125)
+    [junit] 	at org.apache.lucene.index.TestThreadedOptimize.testThreadedOptimize(TestThreadedOptimize.java:149)
+    [junit] 	at org.apache.lucene.util.LuceneTestCase.runBare(LuceneTestCase.java:253)
+{noformat}
+
+I just committed some verbosity so next time it strikes we'll have more details.

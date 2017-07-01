@@ -1,0 +1,11 @@
+benchmark pkg: allow TrecContentSource not to change the docname
+
+
+
+Description:
+TrecContentSource currently appends 'iteration number' to the docname field.
+Example: if the original docname is DOC0001 then it will be indexed as DOC0001_0
+
+this presents a problem for relevance testing, because when judging results, the expected docname will never be present.
+This patch adds an option to disable this behavior, defaulting to the existing behavior (which is to append the iteration number).
+

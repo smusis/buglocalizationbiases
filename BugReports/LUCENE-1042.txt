@@ -1,0 +1,23 @@
+discrepancy in getTermFreqVector-methods 
+
+
+
+Description:
+getTermFreqVector(int, TermVectorMapper) never calls the mapper if there is no term vector, consitent with all the other getTermFreqVector methods that returns null. 
+
+getTermFreqVector(int, String, TermVectorMapper) throws an IOException when a field does not contain the term vector.
+
+My suggestion:
+
+{code}
+Index: src/java/org/apache/lucene/index/SegmentReader.java
+===================================================================
+--- src/java/org/apache/lucene/index/SegmentReader.java (revision 590149)
++++ src/java/org/apache/lucene/index/SegmentReader.java (working copy)
+@@ -648,7 +648,7 @@
+     ensureOpen();
+     FieldInfo fi = fieldInfos.fieldInfo(field);
+     if (fi == null || !fi.storeTermVector || termVectorsReaderOrig == null)
+-      throw new IOException("field does not contain term vectors");
++      return; 
+{code}

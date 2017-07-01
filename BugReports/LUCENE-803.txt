@@ -1,0 +1,13 @@
+add svn ignores for eclipse artifacts
+
+
+
+Description:
+Be nice to ignore the files eclipse puts into the project root as we do the .idea file for intellij.
+
+The two files are
+
+.project
+.classpath
+
+I'm gonna lie and say there's a patch available for this because an svn diff patch with propery changes can't be applied with patch anyway.

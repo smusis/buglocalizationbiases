@@ -1,0 +1,11 @@
+contrib/remote tests fail randomly
+
+
+
+Description:
+The contrib/remote tests will fail randomly.
+
+This is because they use this _TestUtil.getRandomSocketPort() which
+simply generates a random number, but if this is already in use, it will fail.
+
+Additionally there is duplicate RMI logic across all 3 test classes.

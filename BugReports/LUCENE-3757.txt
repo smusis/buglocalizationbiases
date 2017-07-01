@@ -1,0 +1,8 @@
+Change AtomicReaderContext.leaves() to return itsself as only leave to simplify code and remove an otherwise unneeded ReaderUtil method
+
+
+
+Description:
+The documentation of IndexReaderContext.leaves() states that it returns (for convenience) all leave nodes, if the context is top-level (directly got from IndexReader), otherwise returns null. This is not correct for AtomicReaderContext, where it returns null always.
+
+To make it consistent, the convenience method should simply return itsself as only leave for atomic contexts. This makes the utility method ReaderUtil.leaves() obsolete and simplifies code.

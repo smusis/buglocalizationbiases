@@ -1,0 +1,13 @@
+A few new benchmark tasks
+
+
+
+Description:
+Some tasks that would be helpful to see added. Might want some expansion, but here are some basic ones I have been using:
+
+CommitIndexTask
+ReopenReaderTask
+SearchWithSortTask
+
+I do the sort in a similar way that the highlighting was done, but another method may be better. Just would be great to have sorting.
+Also, since there is no great field for sorting (reuters date always appears to be the same) I changed the id field from doc+id to just id. Again maybe not the best solution, but here I am to get the ball rolling :)

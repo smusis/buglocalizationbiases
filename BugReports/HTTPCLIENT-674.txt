@@ -1,0 +1,9 @@
+use VersionInfo of core
+
+
+
+Description:
+With core alpha5, a version detection scheme was introduced.
+Replace the preliminary version detection of client alpha1 with that in core.
+That means new version.properties files, at least one per JAR, maybe one per potential JAR.
+

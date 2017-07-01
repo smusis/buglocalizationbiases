@@ -1,0 +1,30 @@
+FieldCache.getStringIndex should not throw exception if term count exceeds doc count
+
+
+
+Description:
+Spinoff of LUCENE-2133/LUCENE-831.
+
+Currently FieldCache cannot handle more than one value per field.
+We may someday want to fix that... but until that day:
+
+FieldCache.getStringIndex currently does a simplistic check to try to
+catch when you've accidentally allowed more than one term per field,
+by testing if the number of unique terms exceeds the number of
+documents.
+
+The problem is, this is not a perfect check, in that it allows false
+negatives (you could have more than one term per field for some docs
+and the check won't catch you).
+
+Further, the exception thrown is the unchecked RuntimeException.
+
+So this means... you could happily think all is good, until some day,
+well into production, once you've updated enough docs, suddenly the
+check will catch you and throw an unhandled exception, stopping all
+searches [that need to sort by this string field] in their tracks.
+It's not gracefully degrading.
+
+I think we should simply remove the test, ie, if you have more terms
+than docs then the terms simply overwrite one another.
+

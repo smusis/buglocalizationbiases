@@ -1,0 +1,27 @@
+Remove Scorer.getSimilarity()
+
+
+
+Description:
+Originally this was part of the patch for per-field Similarity (LUCENE-2236), but I pulled it 
+out here as its own issue as its really mostly unrelated. I also like it as a separate issue 
+to apply the deprecation to branch_3x to just make less surprises/migration hassles for 4.0 users.
+
+Currently Scorer takes a confusing number of ctors, either a Similarity, or a Weight + Similarity.
+Also, lots of scorers don't use the Similarity at all, and its not really needed in Scorer itself.
+Additionally, the Weight argument is often null. The Weight makes sense to be here in Scorer, 
+its the parent that created the scorer, and used by Scorer itself to support LUCENE-2590's features.
+But I dont think all queries work with this feature correctly right now, because they pass null.
+
+Finally the situation gets confusing if you start to consider delegators like ScoreCachingWrapperScorer,
+which arent really delegating correctly so I'm unsure features like LUCENE-2590 aren't working with this.
+
+So I think we should remove the getSimilarity, if your scorer uses a Similarity its already coming
+to you via your ctor from your Weight and you can manage this yourself.
+
+Also, all scorers should pass the Weight (parent) that created them, and this should be Scorer's only ctor.
+I fixed all core/contrib/solr Scorers (even the internal ones) to pass their parent Weight, just for consistency
+of this visitor interface. The only one that passes null is Solr's ValueSourceScorer.
+
+I set fix-for 3.1, not because i want to backport anything, only to mark the getSimilarity deprecated there.
+

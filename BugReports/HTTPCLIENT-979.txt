@@ -1,0 +1,9 @@
+cache entry resource management should be extracted from CachingHttpClient
+
+
+
+Description:
+As we have built in support for stream-based management of cached response bodies, the CachingHttpClient class has its fingers in too many pies and is involved in resource management but not storage of the actual HttpCacheEntries.
+
+I have a patch forthcoming. :)
+

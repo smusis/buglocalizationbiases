@@ -1,0 +1,20 @@
+NPE Exception Thrown By AbstractJournal During Commit Operation
+
+
+
+Description:
+This seems related to JCR-712 (which was apparently fixed in 1.2.2), but I see the following error now-and-then on JR 1.2.2 (I'm using the DB based journal implementation with Oracle 10g):
+
+java.lang.NullPointerException
+        at org.apache.jackrabbit.core.cluster.AbstractJournal.commit(AbstractJournal.java:525)
+        at org.apache.jackrabbit.core.cluster.ClusterNode.updateCommitted(ClusterNode.java:424)
+        at org.apache.jackrabbit.core.cluster.ClusterNode$WorkspaceUpdateChannel.updateCommitted(ClusterNode.java:565)
+        at org.apache.jackrabbit.core.state.SharedItemStateManager$Update.end(SharedItemStateManager.java:712)
+        at org.apache.jackrabbit.core.state.SharedItemStateManager.update(SharedItemStateManager.java:808)
+        at org.apache.jackrabbit.core.state.LocalItemStateManager.update(LocalItemStateManager.java:326)
+        at org.apache.jackrabbit.core.state.XAItemStateManager.update(XAItemStateManager.java:313)
+        at org.apache.jackrabbit.core.state.LocalItemStateManager.update(LocalItemStateManager.java:302)
+        at org.apache.jackrabbit.core.state.SessionItemStateManager.update(SessionItemStateManager.java:308)
+        at org.apache.jackrabbit.core.ItemImpl.save(ItemImpl.java:1204)
+        at org.apache.jackrabbit.core.SessionImpl.save(SessionImpl.java:823)
+

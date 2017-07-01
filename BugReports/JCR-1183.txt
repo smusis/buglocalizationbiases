@@ -1,0 +1,9 @@
+JCR2SPI: potential race condition in event listener registration
+
+
+
+Description:
+There's a potential race condition when the first event listener is registered (ObservationManager.addEventListener). The observation manager should only start listening for events after the new SPI event filter has been created.
+
+(Note there's a related problem when an *additional* event listener is getting registered, while a RepositoryService.getEvents call is already in progress).
+

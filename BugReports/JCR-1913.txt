@@ -1,0 +1,6 @@
+Use configured credentials in RepositoryFactoryImplTest 
+
+
+
+Description:
+The test currently uses hard coded credentials. It should rather use configured credentials like all other tests do.

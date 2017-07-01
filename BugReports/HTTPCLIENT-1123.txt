@@ -1,0 +1,8 @@
+Implement a way to override or resolve DNS entries defined in the OS
+
+
+
+Description:
+When working with HttpClient in restrictive environments, where the user doesn't have the permissisions to edit the local /etc/hosts file or the DNS configuration, can be eased with an DNS Overrider capability. 
+
+This can be useful with JMeter which can follow redirects automatically and resolve some of the redirected hosts against its configuration. Another example is a custom forward proxy, written in Java and based on httpclient, which can be deployed is such a restricted environment that would ease the development of various web solutions for some developers. 

@@ -1,0 +1,8 @@
+WebDAV/DaveX Servlets susceptible to CSRF Attacks
+
+
+
+Description:
+Both the WebDAV and the remoting (DaveX) servlets are susceptible to CSRF attacks.
+
+

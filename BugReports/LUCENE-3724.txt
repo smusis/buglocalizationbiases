@@ -1,0 +1,13 @@
+SimpleText sumTotalTermFreq is wrong if only positions are omitted
+
+
+
+Description:
+ant test -Dtestcase=TestOmitPositions -Dtestmethod=testBasic -Dtests.seed=-6c9bd4a6197b9463:-71d0d11bc2db9a15:697690b3dff2369 -Dargs="-Dfile.encoding=UTF-8"
+    [junit] java.lang.AssertionError: sumTotalTermFreq=0,sumDocFreq=400
+    [junit] 	at org.apache.lucene.search.CollectionStatistics.<init>(CollectionStatistics.java:38)
+
+This assert fails because #of positions for the field is < #of postings, which is impossible.
+
+From memory i think SimpleText calculates sumTotalTermFreq "one the fly" by reading the positions from its text file...
+In this case it should write the stat explicitly.

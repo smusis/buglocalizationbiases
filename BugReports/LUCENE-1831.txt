@@ -1,0 +1,8 @@
+TokenWrapperAttributeFactory, CachingWrapperFilterHelper implements equals and so should also implement hashCode
+
+
+
+Description:
+its part of the contract of Object 
+
+bq. If two objects are equal according to the equals(Object) method, then calling the hashCode method on each of the two objects must produce the same integer result.

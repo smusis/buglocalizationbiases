@@ -1,0 +1,17 @@
+Implement StandardTokenizer with the UAX#29 Standard
+
+
+
+Description:
+It would be really nice for StandardTokenizer to adhere straight to the standard as much as we can with jflex. Then its name would actually make sense.
+
+Such a transition would involve renaming the old StandardTokenizer to EuropeanTokenizer, as its javadoc claims:
+
+bq. This should be a good tokenizer for most European-language documents
+
+The new StandardTokenizer could then say
+
+bq. This should be a good tokenizer for most languages.
+
+All the english/euro-centric stuff like the acronym/company/apostrophe stuff can stay with that EuropeanTokenizer, and it could be used by the european analyzers.
+

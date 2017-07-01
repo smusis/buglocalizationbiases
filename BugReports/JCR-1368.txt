@@ -1,0 +1,9 @@
+improve documentation of SPI Batch addProperty
+
+
+
+Description:
+Clarify that Batch.addProperty should succeed even though the property already exists.
+
+
+(See mailing list thread starting with: http://mail-archives.apache.org/mod_mbox/jackrabbit-dev/200801.mbox/%3c47A1E1C1.2050107@gmx.de%3e)

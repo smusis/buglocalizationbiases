@@ -1,0 +1,16 @@
+IllegalStateException on session#save()
+
+
+
+Description:
+The following code throws an IllegalStateException:
+
+Node node = ...
+Session session = node.getSession();
+node.setProperty( "tags", "test1");
+node.setProperty( "tags", "test2");
+node.remove();
+session.save();
+
+
+

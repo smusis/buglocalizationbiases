@@ -1,0 +1,6 @@
+Parametrizing H1 and H2
+
+
+
+Description:
+The DFR normalizations {{H1}} and {{H2}} are parameter-free. This is in line with the [original article|http://citeseer.ist.psu.edu/viewdoc/summary?doi=10.1.1.101.742], but not with the [thesis|http://theses.gla.ac.uk/1570/], where H2 accepts a {{c}} parameter, nor with [information-based models|http://dl.acm.org/citation.cfm?id=1835490], where H1 also accepts a {{c}} parameter.

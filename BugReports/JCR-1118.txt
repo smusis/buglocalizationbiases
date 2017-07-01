@@ -1,0 +1,6 @@
+Upgrade contrib/bdb-persistence to work w/Jackrabbit 1.3
+
+
+
+Description:
+The bdb-persistence PM in contrib should be upgraded to work w/Jackrabbit 1.3.1

@@ -1,0 +1,8 @@
+Prevent excessive Path.Element instances
+
+
+
+Description:
+Even when a CachingHierarchyManager is used jackrabbit creates a lot of Path.Element instances. The internally used PathMap (spi-commons) creates new Path.Element instances whenever a path is constructed, even when the path is constructed from cached PathMap.Elements.
+
+Running a test with 10k nodes results in 250k Path.Element instances being created and held in memory (mostly for events).

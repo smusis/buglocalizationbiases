@@ -1,0 +1,14 @@
+More Fine grained Permission Flags
+
+
+
+Description:
+It would be fine to have one more Permission Flag on node add.
+At the moment there are 3 flags. We need to know if a node will be updated or created.
+This is not possible with the current implementation because on node add the permission flag 
+AccessManager.WRITE will be used. This is a Problem in a  WebDav Scenario with Microsoft-Word because if i open a Node and 
+try to save it i need write permissions on the parent node. this is ok. If a user trys to save the file with a other name
+he can because the same PermissionFlag will be used.
+Maybe there is a other solution for this problem ?
+BR,
+claus

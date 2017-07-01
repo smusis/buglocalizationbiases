@@ -1,0 +1,9 @@
+Provide a Method getCredentialsProvider to the SimpleWebdavServlet
+
+
+
+Description:
+It will be useful to provide a easy way to change the default CredentialsProvider (BasicCredentialsProvider) when the SessionProvider will be created.
+It makes sense to let the SessionProvider return a other CredentialsProvider so that no BasicAuthentication wil be prompt.
+thanks
+claus

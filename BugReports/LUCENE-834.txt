@@ -1,0 +1,6 @@
+Payload Queries
+
+
+
+Description:
+Now that payloads have been implemented, it will be good to make them searchable via one or more Query mechanisms.  See http://wiki.apache.org/lucene-java/Payload_Planning for some background information and https://issues.apache.org/jira/browse/LUCENE-755 for the issue that started it all.  

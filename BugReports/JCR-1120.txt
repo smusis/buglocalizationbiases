@@ -1,0 +1,10 @@
+RemoveVersionTest.testReferentialIntegrityException assumes availability of ref properties and same name sibilings
+
+
+
+Description:
+This test case:
+
+- assumes availability of Reference properties (should throw NotExecutable when not available), and
+
+- takes advantage if same name siblings (the child node identified by the nodename2 config variable has already been created by the test setup code)

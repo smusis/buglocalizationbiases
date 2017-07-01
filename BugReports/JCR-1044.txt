@@ -1,0 +1,6 @@
+NTCollectionConverterImpl throws a null pointer exception on update
+
+
+
+Description:
+When calling update on a node which has no child nodes stored (but which can have child nodes) the code can generate a null pointer exception. In the case where one goes to remove JCR nodes which are not present in the current objects collection of child objects the code is calling getCollectionNodes().iterator(). However, since is not checking for the case where getCollectionNodes() returns null if there are no child nodes present a null pointer exception will be generated. 

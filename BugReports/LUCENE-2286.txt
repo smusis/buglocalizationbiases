@@ -1,0 +1,11 @@
+enable DefaultSimilarity.setDiscountOverlaps by default
+
+
+
+Description:
+I think we should enable setDiscountOverlaps in DefaultSimilarity by default.
+
+If you are using synonyms or commongrams or a number of other 0-posInc-term-injecting methods, these currently screw up your length normalization.
+These terms have a position increment of zero, so they shouldnt count towards the length of the document.
+
+I've done relevance tests with persian showing the difference is significant, and i think its a big trap to anyone using synonyms, etc: your relevance can actually get worse if you don't flip this boolean flag.

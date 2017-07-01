@@ -1,0 +1,10 @@
+RMIC not working in subprojects when compiling parent using maven2
+
+
+
+Description:
+This is because there is a bug such that if you have a child build which uses the ant plugin it inherits the plugin dependencies of the first time the plugin is declared.
+
+The workaround is to put the antrun plugin in the toplevel, and add the java jar to its plugin dependencies.
+
+(reference: http://mail-archives.apache.org/mod_mbox/maven-users/200602.mbox/%3CC2CDEFBECFC9A14892BCCFB4C95F4868044F8230@EX-201.mail.navisite.com%3E)

@@ -1,0 +1,7 @@
+spi2davex: use srcWorkspaceName to build srcPath for clone and copy
+
+
+
+Description:
+spi2davex provides as simple workaround for the missing clone and cross-workspace-copy in spi2dav.
+however, the src workspace name isn't used to build the src path.

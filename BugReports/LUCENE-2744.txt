@@ -1,0 +1,6 @@
+CheckIndex overstates how many fields have norms enabled
+
+
+
+Description:
+It simply tells you how many unique fields there are... it should instead only say how many have norms.

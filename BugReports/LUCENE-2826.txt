@@ -1,0 +1,16 @@
+LineDocSource should assign stable IDs; docdate field should be NumericField
+
+
+
+Description:
+Some small enhancements when indexing docs from a line doc source:
+
+  * Assign docid by line number instead of by number-of-docs-indexed;
+    this makes the resulting ID stable when using multiple threads
+
+  * The docdate field is now indexed as a String (possible created
+    through DateTools).  I added two numeric fields: one that indexes
+    .getTime() (= long msec) and another that indexes seconds since
+    the day started.  This gives us two numeric fields to play
+    with...
+

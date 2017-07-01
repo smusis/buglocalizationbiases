@@ -1,0 +1,38 @@
+Store all metadata in human-readable segments file
+
+
+
+Description:
+Various index-reading components in Lucene need metadata in addition to data.
+This metadata is presently stored in arbitrary binary headers and spread out
+over several files.  We should move to concentrate it in a single file, and 
+this file should be encoded using a human-readable, extensible, standardized 
+data serialization language -- either XML or YAML.
+
+* Making metadata human-readable makes debugging easier.  Centralizing it
+  makes debugging easier still.  Developers benefit from being able to scan
+  and locate relevant information quickly and with less debug printing.  Users
+  get a new window through which to peer into the index structure.
+* Since metadata is written to a separate file, there would no longer be a 
+  need to seek back to the beginning of any data file to finish a header, 
+  solving issue LUCENE-532.
+* Special-case parsing code needed for extracting metadata supplied by 
+  different index formats can be pared down.  If a value is no longer 
+  necessary, it can just be ignored/discarded.
+* Removing headers from the data files simplifies them and makes the file
+  format easier to implement. 
+* With headers removed, all or nearly all data structures can take the
+  form of records stacked end to end, so that once a decoder has been
+  selected, an iterator can read the file from top to tail.  To an extent,
+  this allows us to separate our data-processing algorithms from our
+  serialization algorithms, decoupling Lucene's code base from its file
+  format.  For instance, instead of further subclassing TermDocs to deal with
+  "flexible indexing" formats, we might replace it with a PostingList which
+  returns a subclass of Posting.  The deserialization code would be wholly
+  contained within the Posting subclass rather than spread out over several
+  subclasses of TermDocs.
+* YAML and XML are equally well suited for the task of storing metadata, 
+  but in either case a complete parser would not be needed -- a small subset 
+  of the language will do.  KinoSearch 0.20's custom-coded YAML parser 
+  occupies about 600 lines of C -- not too bad, considering how miserable C's 
+  string handling capabilities are. 

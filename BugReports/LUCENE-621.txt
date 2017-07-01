@@ -1,0 +1,19 @@
+Default lock timeouts should have static setter/getters
+
+
+
+Description:
+
+We recently stopped using Java system properties to derive defaults for things like the write/commit lock timeout, and switched to getter/setter's across all classes.  See here:
+
+    http://www.gossamer-threads.com/lists/lucene/java-dev/27447
+
+But, in the case at least of the write lock timeout, because it's marked "public final static", a consumer of this API can no longer change this value before instantiating the IndexWriter.  This is because the getter/setter for this is not static, which generally makes sense so you can change the timeout for each instance of IndexWriter.  But because IndexWriter on construction uses the timeout value, some uses cases need to change the value before getting an instance of IndexWriter.
+
+This was actually a regression, in that Lucene users lost functionality they previously had, on upgrading.
+
+I would propose that that we add getter/setter for the default value of this timeout, which would be static.  I'll attach a patch file.
+
+See this thread for context that led to this issue:
+
+   http://www.gossamer-threads.com/lists/lucene/java-dev/37421

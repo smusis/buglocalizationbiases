@@ -1,0 +1,11 @@
+CVE-2009-0026: Cross site scripting issues in webapp
+
+
+
+Description:
+Some of the jackrabbit-webapp forms don't properly escape user input when displaying it in the resulting HTML page. This leads to potential cross site scripting issues. For example:
+
+    search.jsp?q=%25%22%3Cscript%3Ealert(1)%3C/script%3E
+    swr.jsp?q=%25"<script>alert(1)</script>&swrnum=1
+
+The CVE id for this issue is CVE-2009-0026. This issue was reported by the Red Hat Security Response Team.

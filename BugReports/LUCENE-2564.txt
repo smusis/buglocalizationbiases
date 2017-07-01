@@ -1,0 +1,15 @@
+wordlistloader is inefficient
+
+
+
+Description:
+WordListLoader is basically used for loading up stopwords lists, stem dictionaries, etc.
+Unfortunately the api returns Set<String> and sometimes even HashSet<String> or HashMap<String,String>
+
+I think we should break it and return CharArraySets and CharArrayMaps (but leave the return value as generic Set,Map).
+
+If someone objects to breaking it in 3.1, then we can do this only in 4.0, but i think it would be good to fix it both places.
+The reason is that if someone does new FooAnalyzer() a lot (probably not uncommon) i think its doing a bunch of useless copying.
+
+I think we should slap @lucene.internal on this API too, since thats mostly how its being used.
+

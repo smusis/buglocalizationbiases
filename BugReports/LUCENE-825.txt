@@ -1,0 +1,53 @@
+NullPointerException from SegmentInfos.FindSegmentsFile.run() if FSDirectory.list() returns NULL 
+
+
+
+Description:
+Found this bug while running unit tests to verify an upgrade of our system from 1.4.3 to 2.1.0.  This bug did *not* occur during 1.4.3, it is new to 2.x (I'm pretty sure it's 2.1-only)
+
+If the index directory gets deleted out from under Lucene after the FSDirectory has been created, then attempts to open an IndexWriter or IndexReader will result in an NPE.  Lucene should be throwing an IOException in this case.
+
+Repro:
+    1) Create an FSDirectory pointing somewhere in the filesystem (e.g. /foo/index/1)
+    2) rm -rf the parent dir (rm -rf /foo/index)
+    3) Try to open an IndexReader
+
+Result: NullPointerException on line "for(int i=0;i<files.length;i++) { " -- 'files' is NULL.
+ 
+Expect: IOException
+
+
+....  
+
+This is happening because of a missing NULL check in SegmentInfos$FindSegmentsFile.run():
+
+        if (0 == method) {
+          if (directory != null) {
+            files = directory.list();
+          } else {
+            files = fileDirectory.list();
+          }
+
+          gen = getCurrentSegmentGeneration(files);
+
+          if (gen == -1) {
+            String s = "";
+            for(int i=0;i<files.length;i++) { 
+              s += " " + files[i];
+            }
+            throw new FileNotFoundException("no segments* file found: files:" + s);
+          }
+        }
+
+
+The FSDirectory constructor will make sure the index dir exists, but if it is for some reason deleted out from underneath Lucene after the FSDirectory is instantiated, then java.io.File.list() will return NULL.  Probably better to fix FSDirectory.list() to just check for null and return a 0-length array:
+
+(in org/apache/lucene/store/FSDirectory.java)
+314c314,317
+<         return directory.list(IndexFileNameFilter.getFilter());
+---
+>     String[] toRet = directory.list(IndexFileNameFilter.getFilter());
+>     if (toRet == null)
+>         return new String[]{};
+>     return toRet;
+

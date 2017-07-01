@@ -1,0 +1,27 @@
+Clean up old JIRA issues in component "Analysis"
+
+
+
+Description:
+A list of all JIRA issues in component "Analysis" that haven't been updated in 2007:
+
+   *	 LUCENE-760  	 Spellchecker could/should use n-gram tokenizers instead of rolling its own n-gramming   
+   *	LUCENE-677 	Italian Analyzer 
+   *	LUCENE-571 	StandardTokenizer parses decimal number as <HOST> 
+   *	LUCENE-566 	Esperanto Analyzer 
+   *	LUCENE-559 	Turkish Analyzer for Lucene 
+   *	LUCENE-494 	Analyzer for preventing overload of search service by queries with common terms in large indexes 
+   *	LUCENE-424 	[PATCH] Submissiom form simple Romanian Analyzer 
+   *	LUCENE-417 	StandardTokenizer has problems with comma-separated values 
+   *	LUCENE-400 	NGramFilter -- construct n-grams from a TokenStream 
+   *	LUCENE-396 	[PATCH] Add position increment back into StopFilter 
+   *	LUCENE-387 	Contrib: Main memory based SynonymMap and SynonymTokenFilter 
+   *	LUCENE-321 	[PATCH] Submissiom of my Tswana Analyzer 
+   *	LUCENE-233 	[PATCH] analyzer refactoring based on CVS HEAD from 6/21/2004 
+   *	LUCENE-210 	[PATCH] Never write an Analyzer again 
+   *	LUCENE-205 	[PATCH] Patches for RussianAnalyzer 
+   *	LUCENE-185 	[PATCH] Thai Analysis Enhancement 
+   *	LUCENE-152 	[PATCH] KStem for Lucene 
+   *	LUCENE-82 	[PATCH] HTMLParser: IOException: Pipe closed 
+
+

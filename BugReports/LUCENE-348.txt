@@ -1,0 +1,8 @@
+fileformats.xml doesn't document compound file streams
+
+
+
+Description:
+Current versions of Lucene generate segments in compound file stream format
+files, but the fileformats documentation does not have any description of the
+format for those files.

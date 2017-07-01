@@ -1,0 +1,37 @@
+persistent locks persist even after removing the locked node
+
+
+
+Description:
+I read my post to the mailing list and I realized it wasn't clear at all :( . So I decided to upload the code to reproduce the error.
+
+        RepositoryConfig conf = RepositoryConfig.create("/temp/repository/repository.xml", "/temp/repository/repository");
+        Repository repo = RepositoryImpl.create(conf);
+        
+        // Session 1 creates a locked node
+        Session s1 = repo.login(new SimpleCredentials("user1", "pwd1".toCharArray()));
+        Node root1 = s1.getRootNode() ;
+        Node test1 = root1.addNode("test") ;
+        test1.addMixin("mix:lockable");
+        s1.save() ;
+        test1.lock(false, false);
+        s1.logout() ;
+        
+        // Session 2 deletes the node and create a new one
+        // with the same path
+        Session s2 = repo.login(new SimpleCredentials("user2", "pwd2".toCharArray()));
+        s2.getRootNode().getNode("test").remove();
+        Node test2 = s2.getRootNode().addNode("test");
+        s2.save() ;
+        // the next line returns true :(
+        System.out.println(test2.isLocked()) ;
+        // the next line will throw an exception 
+        test2.addMixin("mix:lockable") ;
+
+javax.jcr.lock.LockException: Node locked.
+	at org.apache.jackrabbit.core.lock.LockManagerImpl.checkLock(LockManagerImpl.java:449)
+	at org.apache.jackrabbit.core.lock.LockManagerImpl.checkLock(LockManagerImpl.java:435)
+	at org.apache.jackrabbit.core.NodeImpl.checkLock(NodeImpl.java:3847)
+	at org.apache.jackrabbit.core.NodeImpl.addMixin(NodeImpl.java:964)
+	at org.apache.jackrabbit.core.NodeImpl.addMixin(NodeImpl.java:2420)
+	at org.apache.jackrabbit.core.LockTest.main(LockTest.java:55)

@@ -1,0 +1,6 @@
+ObjectIterator may return null, which is not readily expected from an Iterator
+
+
+
+Description:
+The ObjectIterator class implements an Iterator of objects mapped from an underlying NodeIterator. This ObjectIterator may return null from next() if no mapping for a node in the iterator exists. Rather than returning null, the iterator should probably just ignore the unmappable node and return an object from the next node in the underlying iterator which is mappable.

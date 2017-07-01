@@ -1,0 +1,35 @@
+merge LuceneTestCase and LuceneTestCaseJ4
+
+
+
+Description:
+We added Junit4 support, but as a separate test class.
+
+So unfortunately, we have two separate base classes to maintain: LuceneTestCase and LuceneTestCaseJ4.
+This creates a mess and is difficult to manage.
+
+Instead, I propose a single base test class that works both junit3 and junit4 style.
+
+I modified our LuceneTestCaseJ4 in the following way:
+* the methods to run are not limited to the ones annotated with @Test, but also any void no-arg methods that start with "test", like junit3. this means you dont have to sprinkle @Test everywhere.
+* of course, @Ignore works as expected everywhere.
+* LuceneTestCaseJ4 extends TestCase so you dont have to import static Assert.* to get all the asserts.
+
+for most tests, no changes are required. but a few very minor things had to be changed:
+* setUp() and tearDown() must be public, not protected.
+* useless ctors must be removed, such as TestFoo(String name) { super(name); }
+* LocalizedTestCase is gone, instead of
+{code}
+public class TestQueryParser extends LocalizedTestCase {
+{code}
+it is now
+{code}
+@RunWith(LuceneTestCase.LocalizedTestCaseRunner.class)
+public class TestQueryParser extends LuceneTestCase {
+{code}
+* Same with MultiCodecTestCase: (LuceneTestCase.MultiCodecTestCaseRunner.class}
+
+I only did the core tests in the patch as a start, and i just made an empty LuceneTestCase extends LuceneTestCaseJ4.
+
+I'd like to do contrib and solr and rename this LuceneTestCaseJ4 to only a single class: LuceneTestCase.
+

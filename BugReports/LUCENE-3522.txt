@@ -1,0 +1,6 @@
+TermsFilter.getDocIdSet(context) NPE on missing field
+
+
+
+Description:
+If the context does not contain the field for a term when calling TermsFilter.getDocIdSet(AtomicReaderContext context) then a NullPointerException is thrown due to not checking for null Terms before getting iterator.

@@ -1,0 +1,9 @@
+Use Apache Codec 1.4
+
+
+
+Description:
+1.4 fixes many bugs and added some nice features: http://commons.apache.org/codec/changes-report.html
+
+It took me a whiel to find out, that this was the main reason my tests failed (MethodNotFoundException).
+

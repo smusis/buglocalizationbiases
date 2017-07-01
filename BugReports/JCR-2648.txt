@@ -1,0 +1,15 @@
+PropertyImpl.getNode() and NamePropertyTest use different exception than documented in the JCR API JavaDoc
+
+
+
+Description:
+The Property.getNode() method's JavaDoc [1] lists 3 types of exceptions: ValueFormatException, ItemNotFoundException, and RepositoryException, and that ItemNotFoundException is to be thrown when the target node could not be found.  However, the NamePropertyTest.testGetProperty() method is checking for a PathNotFoundException rather than the documented ItemNotFoundException (see [2], line 189).  Jackrabbit's implementation in PropertyImpl (see [3] line 539) delegates to Session.getNode(absolutePath) or Property.getParent().getNode(relativePath), and these methods are documented as throwing PathNotFoundException (see [4] and [5]).
+
+Therefore, the unit test and PropertyImpl.getNode() implementation appear to be in disagreement with the JCR 2.0 API JavaDoc.
+
+[1] http://www.day.com/maven/javax.jcr/javadocs/jcr-2.0/javax/jcr/Property.html#getNode()
+[2] http://svn.apache.org/viewvc/jackrabbit/trunk/jackrabbit-jcr-tests/src/main/java/org/apache/jackrabbit/test/api/NamePropertyTest.java?revision=772352&view=markup
+[3] http://svn.apache.org/viewvc/jackrabbit/trunk/jackrabbit-core/src/main/java/org/apache/jackrabbit/core/PropertyImpl.java?revision=948827&view=markup
+[4] http://www.day.com/maven/javax.jcr/javadocs/jcr-2.0/javax/jcr/Session.html#getNode(java.lang.String)
+[5] http://www.day.com/maven/javax.jcr/javadocs/jcr-2.0/javax/jcr/Node.html#getNode(java.lang.String)
+

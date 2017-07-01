@@ -1,0 +1,6 @@
+refactor consistency checks in BundleDBPersistenceManager into a standalone class that could be re-used for other PMs
+
+
+
+Description:
+see subject

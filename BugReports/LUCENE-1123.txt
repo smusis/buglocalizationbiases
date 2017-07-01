@@ -1,0 +1,13 @@
+Allow overriding the specification version in MANIFEST.MF
+
+
+
+Description:
+The specification version in MANIFEST.MF should only consist of
+digits. When we e. g. build a release candidate with a version like
+2.3-rc1 then we have to specify a different specification version.
+
+See related discussion:
+http://www.gossamer-threads.com/lists/lucene/java-dev/56611
+
+

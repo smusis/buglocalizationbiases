@@ -1,0 +1,6 @@
+Better error message for non-trivial nodetype changes
+
+
+
+Description:
+Currently Jackrabbit only throws a RepositoryException with the message "Not yet implemented". This says almost nothing to newcomers and is very time consuming to debug even if you know what is means. It would be better to use the information already availble through NodeTypeDefDiff to provide a more descriptive error message.

@@ -1,0 +1,6 @@
+Like expression does not match line terminator in String
+
+
+
+Description:
+If a string property contains a line terminator a like pattern with a % or _ does not match the line terminator. This is because the implementation uses the java.util.regexp.Pattern class without the DOTALL option.

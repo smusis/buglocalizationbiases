@@ -1,0 +1,8 @@
+BundleFsPersistenceManager: remove deprecated settings
+
+
+
+Description:
+Some settings of the BundleFsPersistenceManager are not used internally and should be removed:
+
+blobFSInitialCache, blobFSMaximumCache, itemFSBlockSize, itemFSInitialCache, itemFSMaximumCache

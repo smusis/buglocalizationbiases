@@ -1,0 +1,6 @@
+Collapse Common module into Lucene core util
+
+
+
+Description:
+It was suggested by Robert in [http://markmail.org/message/wbfuzfamtn2qdvii] that we should try to limit the dependency graph between modules and where there is something 'common' it should probably go into lucene core.  Given that I haven't added anything to this module except the MutableValue classes, I'm going to collapse them into the util package, remove the module, and correct the dependencies.

@@ -1,0 +1,12 @@
+Separate NOTICEs and LICENSEs for binary and source packages
+
+
+
+Description:
+Based on recent discussions on sling-dev@ (see [1]) and on legal-discuss@  (see [2]), I'd like to rearrange our NOTICE and LICENSE files so that the root level files refer only to bits included in source releases and that the (in some cases different) files to be included in the binary artifacts would be placed in src/main/resources/META-INF.
+
+See also JCR-1630 for related work.
+
+[1] http://markmail.org/message/2enw6ktxhc4ixmrk
+[2] http://markmail.org/message/bttmkavpicxxg7gl
+

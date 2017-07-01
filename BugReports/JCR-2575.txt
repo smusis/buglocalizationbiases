@@ -1,0 +1,6 @@
+Incorrect excerpt for index aggregates
+
+
+
+Description:
+Incorrect excerpts may be created when the relevant node has an index aggregate configured and the nodes have properties configured for the node scope index with some of them excluded for use in excerpts.

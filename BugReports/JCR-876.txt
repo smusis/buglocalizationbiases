@@ -1,0 +1,19 @@
+ManageableCollectionUtil should not throw "unsupported" JcrMapping exception
+
+
+
+Description:
+Many times, the object model'd code cannot be altered for ocm.
+
+To avoid the "unsupported" exception in almost all such cases, use a delegating wrapper class to encapsulate a Collection.    The wrapper class implements MaangeableCollection.
+
+Since delegation is a performance hit, make the test below the last resort for *object*  conversion in the method:
+public static ManageableCollection getManageableCollection(Object object) 
+
+Proposed "catchall" test and program action:
+
+            if (object instanceof Collection) {
+                return new ManageableCollectionImpl((Collection)object);
+            }
+
+

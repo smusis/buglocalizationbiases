@@ -1,0 +1,7 @@
+remove support for event bundle IDs
+
+
+
+Description:
+Event bundle IDs currently are not used. We can re-add them later in case we need them.
+

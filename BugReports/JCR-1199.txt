@@ -1,0 +1,7 @@
+Remove dependency to log4j
+
+
+
+Description:
+Currently two classes in the test cases contain unused references to log4j.
+The attached patch removes the unused logger and makes the package independent from lo4j

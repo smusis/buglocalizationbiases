@@ -1,0 +1,6 @@
+Add myqsql ddl for clustering (DatabaseJournal)
+
+
+
+Description:
+the default ddl for clustering does't work with mysql, so it would be nice to include a mysql specific ddl also for clustering.

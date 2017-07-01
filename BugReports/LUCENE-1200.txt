@@ -1,0 +1,25 @@
+IndexWriter.addIndexes* can deadlock in rare cases
+
+
+
+Description:
+In somewhat rare cases it's possible for addIndexes to deadlock
+because it is a synchronized method.
+
+Normally the merges that are necessary for addIndexes are done
+serially (with the primary thread) because they involve segments from
+an external directory.  However, if mergeFactor of these merges
+complete then a merge becomes necessary for the merged segments, which
+are not external, and so it can run in the background.  If too many BG
+threads need to run (currently > 4) then the "pause primary thread"
+approach adopted in LUCENE-1164 will deadlock, because the addIndexes
+method is holding a lock on IndexWriter.
+
+This was appearing as a intermittant deadlock in the
+TestIndexWriterMerging test case.
+
+This issue is not present in 2.3 (it was caused by LUCENE-1164).
+
+The solution is to shrink the scope of synchronization: don't
+synchronize on the whole method & wrap synchronized(this) in the right
+places inside the methods.

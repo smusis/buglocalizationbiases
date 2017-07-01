@@ -1,0 +1,6 @@
+ExtendableQueryParser should allow extensions to access the toplevel parser settings/ properties
+
+
+
+Description:
+Based on the latest discussions in LUCENE-2039 this issue will expose the toplevel parser via the ExtensionQuery so that ExtensionParsers can access properties like getAllowLeadingWildcards() from the top level parser.

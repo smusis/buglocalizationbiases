@@ -1,0 +1,19 @@
+HttpMethodBase does not compile on JDK prior to 1.3
+
+
+
+Description:
+reason is the use of URL.getPath() and URL.getQuery() within method
+processRedirectResponse.
+
+should use URIUtil.getPath and URIUtil.getQuery instead.
+
+so, HttpMethodBase around line 952:
+
+//update the current location with the redirect location
+setPath(URIUtil.getPath(redirectUrl.toString()));
+setQueryString(URIUtil.getQuery(redirectUrl.toString()));
+
+thanks,
+
+marius

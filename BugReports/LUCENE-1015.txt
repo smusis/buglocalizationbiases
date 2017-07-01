@@ -1,0 +1,6 @@
+FieldCache should support longs and doubles
+
+
+
+Description:
+Would be nice if FieldCache supported longs and doubles

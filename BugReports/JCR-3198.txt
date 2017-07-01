@@ -1,0 +1,6 @@
+Broken handling of outer join results over davex
+
+
+
+Description:
+The davex join support added in JCR-3089 only works correctly when the join returns at least one row and none of the returned rows contain null values for any of the selectors. This should be reasonably straightforward to fix.

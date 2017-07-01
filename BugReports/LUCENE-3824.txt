@@ -1,0 +1,18 @@
+TermOrdVal/DocValuesComparator does too much work in compareBottom
+
+
+
+Description:
+We now have logic to fall back to by-value comparison, when the bottom
+slot is not from the current reader.
+
+But this is silly, because if the bottom slot is from a different
+reader, it means the tie-break case is not possible (since the current
+reader didn't have the bottom value), so when the incoming ord equals
+the bottom ord we should always return x > 0.
+
+I added a new random string sort test case to TestSort...
+
+I also renamed DocValues.SortedSource.getByValue -> getOrdByValue and
+cleaned up some whitespace.
+

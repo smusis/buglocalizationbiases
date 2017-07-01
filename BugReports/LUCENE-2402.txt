@@ -1,0 +1,26 @@
+Add an explicit method to invoke IndexDeletionPolicy
+
+
+
+Description:
+Today, if one uses an IDP which holds onto segments, such as SnapshotDeletionPolicy, or any other IDP in the tests, those segments are left in the index even if the IDP no longer references them, until IW.commit() is called (and actually does something). I'd like to add a specific method to IW which will invoke the IDP's logic and get rid of the unused segments w/o forcing the user to call IW.commit(). There are a couple of reasons for that:
+
+* Segments take up sometimes valuable HD space, and the application may wish to reclaim that space immediately. In some scenarios, the index is updated once in several hours (or even days), and waiting until then may not be acceptable.
+* I think it's a cleaner solution than waiting for the next commit() to happen. One can still wait for it if one wants, but otherwise it will give you the ability to immediately get rid of those segments.
+* TestSnapshotDeletionPolicy includes this code, which only strengthens (IMO) the need for such method:
+{code}
+// Add one more document to force writer to commit a
+// final segment, so deletion policy has a chance to
+// delete again:
+Document doc = new Document();
+doc.add(new Field("content", "aaa", Field.Store.YES, Field.Index.ANALYZED, Field.TermVector.WITH_POSITIONS_OFFSETS));
+writer.addDocument(doc);
+{code}
+
+If IW had an explicit method, that code would not need to exist there at all ...
+
+Here comes the fun part - naming the baby:
+* invokeDeletionPolicy -- describes exactly what is going to happen. However, if the user did not set IDP at all (relying on default, which I think many do), users won't understand what is it.
+* deleteUnusedSegments - more user-friendly, assuming users understand what 'segments' are.
+
+BTW, IW already has deleteUnusedFiles() which only tries to delete unreferenced files that failed to delete before (such as on Windows, due to e.g. open readers). Perhaps instead of inventing a new name, we can change IW.deleteUnusedFiles to call IndexFileDeleter.checkpoint (instead of deletePendingFiles) which deletes those files + calls IDP.onCommit().

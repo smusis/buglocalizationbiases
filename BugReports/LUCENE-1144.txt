@@ -1,0 +1,22 @@
+NPE crash in case of out of memory
+
+
+
+Description:
+The attached class makes Lucene crash with an NPE when starting it with -Xmx10M, although there's probably an OutOfMemory problem. The stacktrace:
+
+Exception in thread "main" java.lang.NullPointerException
+	at java.util.Arrays.fill(Unknown Source)
+	at org.apache.lucene.index.DocumentsWriter$ByteBlockPool.reset(DocumentsWriter.java:2873)
+	at org.apache.lucene.index.DocumentsWriter$ThreadState.resetPostings(DocumentsWriter.java:637)
+	at org.apache.lucene.index.DocumentsWriter.resetPostingsData(DocumentsWriter.java:458)
+	at org.apache.lucene.index.DocumentsWriter.abort(DocumentsWriter.java:423)
+	at org.apache.lucene.index.DocumentsWriter.updateDocument(DocumentsWriter.java:2433)
+	at org.apache.lucene.index.DocumentsWriter.addDocument(DocumentsWriter.java:2397)
+	at org.apache.lucene.index.IndexWriter.addDocument(IndexWriter.java:1445)
+	at org.apache.lucene.index.IndexWriter.addDocument(IndexWriter.java:1424)
+	at LuceneCrash.myrun(LuceneCrash.java:32)
+	at LuceneCrash.main(LuceneCrash.java:19)
+
+The documents are quite big (some hundred KB each), I cannot attach them but I can send them via private mail if needed. The crash happens the first time reset() is called, after indexing 10 documents. I assume the bug is just that the error is misleading, there maybe should be an OOM error.
+

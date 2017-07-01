@@ -1,0 +1,26 @@
+Version.isSame(Object) not working
+
+
+
+Description:
+Version interface is implemented (on the frontend) by the VersionImpl class (extending NodeWrapper), which delegates to an internal NodeImpl class, which in turn extends ItemImpl.
+
+Say you have :
+      Node node = // at Version 1.0
+      Version version = // retrieved as 1.0 for the node
+      Version baseVersion = node.getBaseVersion()
+
+You now expect
+      baseVersion.isSame(version)
+even if
+      baseVersion != version
+
+This fails, because VersionImpl delegates the isSame call to its delegatee, thus above call becomes
+      ((VersionImpl) baseVersion).delegatee.isSame(version)
+where this method is implemented by the ItemImpl class from which the delegatee NodeImpl extends.
+
+That latter implementation ItemImpl.isSame() only returns true if the other is an ItemImpl, too. But this is not the case because VersionImpl is a Version, NodeWrapper, Node but not an ItemImpl.
+
+Probably the best solution would be for NodeImpl.isSame() to check whether the otherItem is a NodeWrapper und use ((NodeWrapper) otherItem).delegatee as the otherItem for the delegatee call.
+
+On another track: ItemImpl.isSame() should probably do a fast check whether the otherItem is actually the same instance to prevent type checks...

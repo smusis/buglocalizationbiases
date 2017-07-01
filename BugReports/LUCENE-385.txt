@@ -1,0 +1,11 @@
+[PATCH] don't delete all files in index directory on index creation
+
+
+
+Description:
+Many people use Lucene to index a part of their file system. The chance that  
+you some day mix up index directory and document directory isn't that bad.  
+Currently Lucene will delete *all* files in the index directory when the  
+create paramater passed to IndexWriter is true, thus deleting your documents 
+if you mixed up the parameters. I'll attach a patch that fixes  
+this. Any objections?

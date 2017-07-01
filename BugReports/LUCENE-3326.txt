@@ -1,0 +1,54 @@
+MoreLikeThis reuses a reader after it has already closed it
+
+
+
+Description:
+MoreLikeThis has a fatal bug whereby it tries to reuse a reader for multiple fields:
+
+{code}
+    Map<String,Int> words = new HashMap<String,Int>();
+    for (int i = 0; i < fieldNames.length; i++) {
+        String fieldName = fieldNames[i];
+        addTermFrequencies(r, words, fieldName);
+    }
+{code}
+
+However, addTermFrequencies() is creating a TokenStream for this reader:
+
+{code}
+    TokenStream ts = analyzer.reusableTokenStream(fieldName, r);
+    int tokenCount=0;
+    // for every token
+    CharTermAttribute termAtt = ts.addAttribute(CharTermAttribute.class);
+    ts.reset();
+    while (ts.incrementToken()) {
+        /* body omitted */
+    }
+    ts.end();
+    ts.close();
+{code}
+
+When it closes this analyser, it closes the underlying reader.  Then the second time around the loop, you get:
+
+{noformat}
+Caused by: java.io.IOException: Stream closed
+	at sun.nio.cs.StreamDecoder.ensureOpen(StreamDecoder.java:27)
+	at sun.nio.cs.StreamDecoder.read(StreamDecoder.java:128)
+	at java.io.InputStreamReader.read(InputStreamReader.java:167)
+	at com.acme.util.CompositeReader.read(CompositeReader.java:101)
+	at org.apache.lucene.analysis.standard.StandardTokenizerImpl.zzRefill(StandardTokenizerImpl.java:803)
+	at org.apache.lucene.analysis.standard.StandardTokenizerImpl.getNextToken(StandardTokenizerImpl.java:1010)
+	at org.apache.lucene.analysis.standard.StandardTokenizer.incrementToken(StandardTokenizer.java:178)
+	at org.apache.lucene.analysis.standard.StandardFilter.incrementTokenClassic(StandardFilter.java:61)
+	at org.apache.lucene.analysis.standard.StandardFilter.incrementToken(StandardFilter.java:57)
+	at com.acme.storage.index.analyser.NormaliseFilter.incrementToken(NormaliseFilter.java:51)
+	at org.apache.lucene.analysis.LowerCaseFilter.incrementToken(LowerCaseFilter.java:60)
+	at org.apache.lucene.search.similar.MoreLikeThis.addTermFrequencies(MoreLikeThis.java:931)
+	at org.apache.lucene.search.similar.MoreLikeThis.retrieveTerms(MoreLikeThis.java:1003)
+	at org.apache.lucene.search.similar.MoreLikeThis.retrieveInterestingTerms(MoreLikeThis.java:1036)
+{noformat}
+
+My first thought was that it seems like a "ReaderFactory" of sorts should be passed in so that a new Reader can be created for the second field (maybe the factory could be passed the field name, so that if someone wanted to pass a different reader to each, they could.)
+
+Interestingly, the methods taking File and URL exhibit the same issue.  I'm not sure what to do about those (and we're not using them.)  The method taking File could open the file twice, but the method taking a URL probably shouldn't fetch the same URL twice.
+

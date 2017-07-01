@@ -1,0 +1,17 @@
+SegmentMerger doesn't set payload bit in new optimized code
+
+
+
+Description:
+In the new optimized code in SegmentMerger the payload bit is not set correctly
+in the merged segment. This means that we loose all payloads during a merge!
+
+The Payloads unit test doesn't catch this. Now that we have the new
+DocumentsWriter we buffer much more docs by default then before. This means
+that the test cases can't assume anymore that the DocsWriter flushes after 10
+docs by default. TestPayloads however falsely assumed this, which means that no
+merges happen anymore in TestPayloads. We should check whether there are
+other testcases that rely on this.
+
+The fixes for TestPayloads and SegmentMerger are very simple, I'll attach a patch
+soon.

@@ -1,0 +1,18 @@
+New method to add an array of parameters to PostMethod
+
+
+
+Description:
+When posting a form a web page may have many parameters to post to the 
+webserver.  Currently in PostMethod, if you wanted to add multiple parameters, 
+you would have to call addParameter(name, value) for each one.
+
+A new convinence method should be added to allow for simpler client code by 
+taking an array of NameValuePair objects and adding all parameters in a single 
+function call.
+
+void addParameters(NameValuePair[] parameters) 
+
+Also, the comments for PostMethod functions that deal with parameters 
+state "Override method of HttpMethodBase ..." which is incorrect.  More 
+informative comments should be added to this public API.

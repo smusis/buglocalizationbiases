@@ -1,0 +1,7 @@
+full text search tests use incorrect character for escaping phrases
+
+
+
+Description:
+The query test cases use single quotes to escape phrases. The grammar in 6.6.5.2 however requires double quotes.
+

@@ -1,0 +1,49 @@
+WebDav MKCOL on a directory that already exists generates a IllegalStateException
+
+
+
+Description:
+when performing a MKCOL on a resource that already exists, following is thrown.
+
+31.03.2010 16:14:10.760 *ERROR* [127.0.0.1 [1270012450463] MKCOL /org.apache.sling.launchpad.testing-6-SNAPSHOT/apps HTTP/1.1] org.apache.sling.engine.impl.SlingMainServlet service: Uncaught Throwable java.lang.IllegalStateException: Response has already been committed
+       at org.apache.sling.engine.impl.SlingHttpServletResponseImpl.checkCommitted(SlingHttpServletResponseImpl.java:398)
+       at org.apache.sling.engine.impl.SlingHttpServletResponseImpl.setStatus(SlingHttpServletResponseImpl.java:265)
+       at org.apache.jackrabbit.webdav.WebdavResponseImpl.setStatus(WebdavResponseImpl.java:276)
+       at org.apache.jackrabbit.webdav.server.AbstractWebdavServlet.doMkCol(AbstractWebdavServlet.java:548)
+       at org.apache.jackrabbit.webdav.server.AbstractWebdavServlet.execute(AbstractWebdavServlet.java:256)
+       at org.apache.jackrabbit.webdav.server.AbstractWebdavServlet.service(AbstractWebdavServlet.java:196)
+       at javax.servlet.http.HttpServlet.service(HttpServlet.java:820)
+       at org.apache.sling.engine.impl.request.RequestData.service(RequestData.java:523)
+....
+
+
+I think a return after the sendError is required ?
+in AbstractWebdavServlet.doMkCol(...) 
+
+
+   protected void doMkCol(WebdavRequest request, WebdavResponse response,
+                          DavResource resource) throws IOException, DavException {
+
+       DavResource parentResource = resource.getCollection();
+       if (parentResource == null || !parentResource.exists() || !parentResource.isCollection()) {
+           // parent does not exist or is not a collection
+           response.sendError(DavServletResponse.SC_CONFLICT);
+           return;
+       }
+       // shortcut: mkcol is only allowed on deleted/non-existing resources
+       if (resource.exists()) {
+           response.sendError(DavServletResponse.SC_METHOD_NOT_ALLOWED);
++          return;
+       }
+
+       if (request.getContentLength() > 0 || request.getHeader("Transfer-Encoding") != null) {
+           parentResource.addMember(resource, getInputContext(request, request.getInputStream()));
+       } else {
+           parentResource.addMember(resource, getInputContext(request, null));
+       }
+       response.setStatus(DavServletResponse.SC_CREATED);
+   }
+
+
+
+

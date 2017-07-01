@@ -1,0 +1,6 @@
+Set jcr and servlet-api dependency scope to provided
+
+
+
+Description:
+The jcr and servlet API libraries should typically be provided by the deployment environment and not included as compile/runtime dependencies of Jackrabbit artifacts. The scope of those dependencies should thus be set to provided in the <dependencyManagement/> section of the Jackrabbit parent POM.

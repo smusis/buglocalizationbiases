@@ -1,0 +1,22 @@
+Query parser builds invalid parse tree
+
+
+
+Description:
+Calling org.apache.jackrabbit.spi.commons.query.QueryParser.parse on 
+
+SELECT prop1 FROM nt:unstructured WHERE prop1 IS NOT NULL ORDER BY prop1 ASC 
+
+results in the following parse tree
+
++ Select properties: {}prop1
+ + PathQueryNode
+   + LocationStepQueryNode:  NodeTest=* Descendants=true Index=NONE
+     + RelationQueryNode: Op: NOT NULL Prop=@{}prop1 Type=STRING Value=%
+     + NodeTypeQueryNode:  Prop={http://www.jcp.org/jcr/1.0}primaryType Value={http://www.jcp.org/jcr/nt/1.0}unstructured
+ + OrderQueryNode
+   {}prop1 asc=true
+
+The RelationQueryNode should not have a second operand since the NOT NULL operator is unary.
+
+

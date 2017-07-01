@@ -1,0 +1,6 @@
+BytesRef copy short missed the length setting
+
+
+
+Description:
+when storing a short type integer to BytesRef, BytesRef missed the length setting. then it will cause the storage size is ZERO if no continuous options on this BytesRef

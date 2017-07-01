@@ -1,0 +1,16 @@
+Code cleanups for Java 1.5 and more.
+
+
+
+Description:
+I can't resist giving code a good cleansing when I start hacking.  Here's some simple things:
+- Use character constants instead of string contstants
+- Use java 1.5 style for loops
+- Use StringBuilder where appropriate
+- Fix javadocs
+- switch somestring.equals("") to .length() == 0
+-  simplify some boolean expressions
+- eliminate redundant initializers
+- fix some html nits
+- remove final keyword from static methods
+

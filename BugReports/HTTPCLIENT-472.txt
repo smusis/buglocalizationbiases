@@ -1,0 +1,9 @@
+No equals operation for Credentials implementations
+
+
+
+Description:
+I tripped across a scenario where I wanted to compare credentials, so I could
+know to discard connection state (and thus any associated cookies).
+
+Patch to follow shortly.

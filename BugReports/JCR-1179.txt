@@ -1,0 +1,15 @@
+Event filtering by path not working as specified
+
+
+
+Description:
+When filtering node events by path, the event filter doesn't compare using the "associated parent path", see JSR-170, 8.3.3:
+
+"The set of events can be filtered by specifying restrictions based on characteristics of the associated parent node of the event. The associated parent node of an event is the parent node of the item at (or formerly at) the path returned by Event.getPath. The following restrictions are available:
+
+• absPath, isDeep: Only events whose associated parent node is at absPath (or within its subtree, if isDeep is true) will be received. It is permissible to register a listener for a path where no node currently exists."
+
+(for property events, filtering is correct)
+
+To fix this, the special handling of node events in EventFilter.blocks() simply needs to be removed.
+

@@ -1,0 +1,10 @@
+Upgrade benchmark from commons-compress-1.0 to commons-compress-1.1 for 15 times faster gzip decompression
+
+
+
+Description:
+In LUCENE-1540 TrecContentSource moved from Java's GZipInputStream to common-compress 1.0. 
+This slowed down gzip decompression by a factor of 15. 
+Upgrading to 1.1 solves this problem.
+I verified that the problem is only in GZIP, not in BZIP.
+On the way, as 1.1 introduced constants for the compression methods, the code can be made a bit nicer.

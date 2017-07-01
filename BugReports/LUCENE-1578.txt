@@ -1,0 +1,6 @@
+InstantiatedIndex supports non-optimized IndexReaders
+
+
+
+Description:
+InstantiatedIndex does not currently support non-optimized IndexReaders.  

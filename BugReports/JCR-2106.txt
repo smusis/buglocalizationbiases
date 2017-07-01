@@ -1,0 +1,31 @@
+SystemSessions created for GarbageCollector are not logged out of
+
+
+
+Description:
+I have a simple garbage collection task that runs periodically. After upgrading to 1.5.5 it started logging a warning shortly after each run:
+
+2009-05-09 03:44:45,480 WARN [org.apache.jackrabbit.core.SessionImpl] - <Unclosed session detected. The session was opened here: >
+java.lang.Exception: Stack Trace
+	at org.apache.jackrabbit.core.SessionImpl.<init>(SessionImpl.java:239)
+	at org.apache.jackrabbit.core.SystemSession.<init>(SystemSession.java:76)
+	at org.apache.jackrabbit.core.SystemSession.create(SystemSession.java:64)
+	at org.apache.jackrabbit.core.SessionImpl.createDataStoreGarbageCollector(SessionImpl.java:649)
+
+So it's not my session, but an internally created SystemSession.
+
+
+Code I'm using:
+            getTemplate().execute(new JcrCallback()
+            {
+                public Object doInJcr(Session session)
+                    throws IOException, RepositoryException {
+                    SessionImpl sessionImpl = (SessionImpl)session;
+                    GarbageCollector gc = sessionImpl.createDataStoreGarbageCollector();
+                    gc.scan();
+                    gc.stopScan();
+                    gc.deleteUnused();
+                    return null;
+                }
+            }, true);
+

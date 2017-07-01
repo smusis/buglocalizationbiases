@@ -1,0 +1,6 @@
+HttpClient OSGi Export-Package doesn't specify version
+
+
+
+Description:
+The "Export-Package" manifest entry doesn't specify the version of the package being exported.  This means that packages importing it can't specify a version to import.

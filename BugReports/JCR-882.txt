@@ -1,0 +1,7 @@
+Add more unit on collection fields
+
+
+
+Description:
+collection fields based on List are  supported not yet tested correctly.
+Check if other kind collection are well tested

@@ -1,0 +1,73 @@
+XPathQueryBuilder may not handle multiple jcr:deref correctly
+
+
+
+Description:
+If you have the following tree (inspired from DerefTest) :
++ people
+   + carl (worksfor -> company/microsoft)
+   + frank (worksfor -> company/microsoft)
++ company
+    + microsoft (eotm -> carl)
+
+The following queries will be translated to :
+
+testroot/people/frank/jcr:deref(@worksfor, '*')/jcr:deref(@eotm, '*')
++ Root node
++ Select properties: *
+  + PathQueryNode
+    + LocationStepQueryNode:  NodeTest={}testroot Descendants=false Index=NONE
+    + LocationStepQueryNode:  NodeTest={}people Descendants=false Index=NONE
+    + LocationStepQueryNode:  NodeTest={}frank Descendants=false Index=NONE
+    + DerefQueryNode:  NodeTest=* Descendants=false Index=NONE
+    + DerefQueryNode:  NodeTest=* Descendants=false Index=NONE
+=> Matching carl node
+
+testroot/people/frank/jcr:deref(@worksfor, '*')/jcr:deref(@eotm, '*')[@jcr:uuid]
++ Root node
++ Select properties: *
+  + PathQueryNode
+    + LocationStepQueryNode:  NodeTest={}testroot Descendants=false Index=NONE
+    + LocationStepQueryNode:  NodeTest={}people Descendants=false Index=NONE
+    + LocationStepQueryNode:  NodeTest={}frank Descendants=false Index=NONE
+    + LocationStepQueryNode:  NodeTest=* Descendants=false Index=NONE
+    + DerefQueryNode:  NodeTest=* Descendants=false Index=NONE
+      + RelationQueryNode: Op: NOT NULL Prop=@{http://www.jcp.org/jcr/1.0}uuid
+=> Not matching carl node
+
+testroot/people/frank/jcr:deref(@worksfor, '*')[@jcr:uuid]/jcr:deref(@eotm, '*')[@jcr:uuid]
++ Root node
++ Select properties: *
+  + PathQueryNode
+    + LocationStepQueryNode:  NodeTest={}testroot Descendants=false Index=NONE
+    + LocationStepQueryNode:  NodeTest={}people Descendants=false Index=NONE
+    + LocationStepQueryNode:  NodeTest={}frank Descendants=false Index=NONE
+    + DerefQueryNode:  NodeTest=* Descendants=false Index=NONE
+      + RelationQueryNode: Op: NOT NULL Prop=@{http://www.jcp.org/jcr/1.0}uuid
+    + DerefQueryNode:  NodeTest=* Descendants=false Index=NONE
+      + RelationQueryNode: Op: NOT NULL Prop=@{http://www.jcp.org/jcr/1.0}uuid
+=> Matching carl node
+
+testroot/people/frank/jcr:deref(@worksfor, '*')[@jcr:uuid]/jcr:deref(@eotm, '*')
++ Root node
++ Select properties: *
+  + PathQueryNode
+    + LocationStepQueryNode:  NodeTest={}testroot Descendants=false Index=NONE
+    + LocationStepQueryNode:  NodeTest={}people Descendants=false Index=NONE
+    + LocationStepQueryNode:  NodeTest={}frank Descendants=false Index=NONE
+    + DerefQueryNode:  NodeTest=* Descendants=false Index=NONE
+      + RelationQueryNode: Op: NOT NULL Prop=@{http://www.jcp.org/jcr/1.0}uuid
+    + DerefQueryNode:  NodeTest=* Descendants=false Index=NONE
+=> Matching carl node
+
+This is because XPathQueryBuilder calls NAryQueryNode#removeOperand(QueryNode)
+in order to replace current LocationStepQueryNode with a DerefQueryNode.
+
+NAryQueryNode#removeOperand(QueryNode) uses internally a List and thus
+relies on Object#equals(Object) for retrieving the object to remove.
+
+But the equals method is redefined for every QueryNode with a different semantic.
+
+Then, the call to NAryQueryNode#removeOperand(QueryNode) will not remove the
+wanted operand but the first operand returning true after calling equals in
+ArrayList#remove(Object).

@@ -1,0 +1,11 @@
+Version.getReferences() does not work correctly
+
+
+
+Description:
+since the /jcr:system/jcr:versionStorage is shared among all workspaces, referes of versions and version histories need to be workspace sensitive. for example can a workspace W1 contain a versionable node N1. Its respective version history VH is visible in the jcr:versionStorage. calling VH.getReferences() should return the jcr:versionHistory property of that node N1. If accessing the repository using another workspace, W2, which does not have the node N2 (that corresponds to N1), calling VH.getReferences() should return an empty set. The same is true for version nodes referenced by jcr:baseVersion and jcr:predecessors properties.
+
+
+see also spec chapter 8.2.2.1 (jcr:versionStorage):
+The full set of version histories in the version storage, though stored in a single location in the repository, must be reflected in each workspace as a subtree below the node /jcr:system/jcr:versionStorage. 
+[...]

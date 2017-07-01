@@ -1,0 +1,10 @@
+Add "direct" PackedInts.Reader impl, that reads directly from disk on each get
+
+
+
+Description:
+Spinoff from LUCENE-3518.
+
+If we had a direct PackedInts.Reader impl we could use that instead of
+the RandomAccessReaderIterator.
+

@@ -1,0 +1,14 @@
+Confusing code line
+
+
+
+Description:
+Line 81 of TermScorer:
+
+      if (!(target > docs[pointer])) {
+
+Could be replaced with the more readable:
+
+      if (docs[pointer] >= target) {
+
+Sorry for nit picking!

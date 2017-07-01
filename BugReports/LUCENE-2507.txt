@@ -1,0 +1,11 @@
+automaton spellchecker
+
+
+
+Description:
+The current spellchecker makes an n-gram index of your terms, and queries this for spellchecking.
+The terms that come back from the n-gram query are then re-ranked by an algorithm such as Levenshtein.
+
+Alternatively, we could just do a levenshtein query directly against the index, then we wouldn't need
+a separate index to rebuild.
+

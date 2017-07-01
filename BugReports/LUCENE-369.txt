@@ -1,0 +1,32 @@
+Cannot use Lucene in an unsigned applet due to Java security restrictions
+
+
+
+Description:
+A few of the Lucene source files call System.getProperty and perform a couple of
+other operations within static initializers that assume full Java 2 permissions.
+This prevents Lucene from being used from an unsigned applet embedded in a
+browser page, since the default security permissions for an applet will prohibit
+reading of most properties.
+
+I would suggest wrapping the initialization of the properties in try/catch
+blocks. This does mean that a couple properties would need to be made non-final,
+and in some cases, getter and setter methods might be desirable to allow the
+applet programmer to change the property values at runtime (some variables are
+public static and could be changed directly without accessors).
+
+This problem occurs with the shipping 1.4.3 version as well as the latest (as of
+ 07-apr-2005) source code fetched from CVS.
+
+Currently, the files that are affected are org.apache.lucene.index.IndexWriter,
+org.apache.lucene.index.SegmentReader, org.apache.lucene.search.BooleanQuery,
+and org.apache.lucene.store.FSDirectory.
+
+I have modified versions of these files with some suggested changes, plus a
+simple test applet and associated files that demonstrate the situation. The
+sample applet can be launched in a browser either by double-clicking the file
+locally or by putting it on a web server and launching it from an http URL. As
+soon as I can figure out how to attach to a bug report, I'll do that.
+
+P.S. This topic came up in August, 2004 in lucene dev mailing list but as far as
+I can tell, has not yet been resolved.

@@ -1,0 +1,8 @@
+Web client/WebDAV fails to unescape workspace names
+
+
+
+Description:
+It seems that when you try to access to a workspace through the web client/webdav, and the workspace has special characteres like spaces on its name like ("my workspace"), then the web cliente/webdav is not able to load it.
+
+Probablly the only thing to do is to unscape the workspace name.

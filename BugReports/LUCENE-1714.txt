@@ -1,0 +1,10 @@
+WriteLineDocTask incorrectly normalizes fields
+
+
+
+Description:
+WriteLineDocTask normalizes the body, title and date fields by replacing any "\t" with a space. However, if any one of them contains newlines, LineDocMaker will fail, since the first line read will include some of the text, however the second line, which it now expects to be a new document, will include other parts of the text.
+
+I don't know how we didn't hit it so far. Maybe the wikipedia text doesn't have such lines, however when I ran over the TREC collection I hit a lot of those.
+
+I will attach a patch shortly.

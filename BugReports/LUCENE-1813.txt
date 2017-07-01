@@ -1,0 +1,6 @@
+Add option to ReverseStringFilter to mark reversed tokens
+
+
+
+Description:
+This patch implements additional functionality in the filter to "mark" reversed tokens with a special marker character (Unicode 0001). This is useful when indexing both straight and reversed tokens (e.g. to implement efficient leading wildcards search).

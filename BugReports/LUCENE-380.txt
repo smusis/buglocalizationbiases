@@ -1,0 +1,18 @@
+A new Greek Analyzer for Lucene
+
+
+
+Description:
+I would like to contribute a greek analyzer for lucene. It is based on the
+existing Russian analyzer and features:
+
+- most common greek character sets, such as Unicode, ISO-8859-7 and Windows-1253
+- a collection of common greek stop words
+- conversion of characters with diacritics (accent, diaeresis) in the lower case
+filter, as well as handling of special characters, such as small final sigma
+
+For the character sets I used RFC 1947 (Greek Character Encoding for Electronic
+Mail Messages) as a reference. I have incorporated this analyzer in Luke as well
+as used it successfully in a recent project of my company (EBS Ltd.).
+
+I hope you will find it a useful addition to the project.

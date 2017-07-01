@@ -1,0 +1,54 @@
+iterative removal of same-name sibling nodes might under certain circumstances throw unexpected exceptions
+
+
+
+Description:
+code fragment to reproduce the issue:
+
+            // setup test
+            if (root.hasNode("tmp")) {
+                root.getNode("tmp").remove();
+                session.save();
+            }
+            Node tmp = root.addNode("tmp");
+            for (int i = 0; i < 4; i++) {
+                Node a = tmp.addNode("a");
+                System.out.println("added " + a.getPath());
+            }
+            session.save();
+
+            // iterative removal of same name sibling child nodes
+            NodeIterator ni = tmp.getNodes();
+            while (ni.hasNext()) {
+                Node n = ni.nextNode();
+                System.out.println("removing " + n.getPath());
+                n.remove();
+                tmp.save();
+            }
+
+console output:
+
+added /tmp/a
+added /tmp/a[2]
+added /tmp/a[3]
+added /tmp/a[4]
+removing /tmp/a
+removing /tmp/a
+removing /
+javax.jcr.RepositoryException: /: cannot remove root node
+	at org.apache.jackrabbit.core.ItemImpl.internalRemove(ItemImpl.java:766)
+	at org.apache.jackrabbit.core.ItemImpl.remove(ItemImpl.java:997)
+	at org.apache.jackrabbit.core.Test.main(Test.java:141)
+
+
+note that the msg of the exception is misleading: the above code did never try to remove
+the root node. 
+
+the exception is caused by a bug in CachingHierarchyManager which fails to update
+the cache correctly.
+
+btw: if you comment the first logging stmt, i.e. 
+
+                //System.out.println("added " + a.getPath());
+
+the problem doesn't occur anymore.

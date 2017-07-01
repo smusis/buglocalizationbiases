@@ -1,0 +1,10 @@
+Allow to plug in a Cache Eviction Listener to IndexReader to eagerly clean custom caches that use the IndexReader (getFieldCacheKey)
+
+
+
+Description:
+Allow to plug in a Cache Eviction Listener to IndexReader to eagerly clean custom caches that use the IndexReader (getFieldCacheKey).
+
+A spin of: https://issues.apache.org/jira/browse/LUCENE-2468. Basically, its make a lot of sense to cache things based on IndexReader#getFieldCacheKey, even Lucene itself uses it, for example, with the CachingWrapperFilter. FieldCache enjoys being called explicitly to purge its cache when possible (which is tricky to know from the "outside", especially when using NRT - reader attack of the clones).
+
+The provided patch allows to plug a CacheEvictionListener which will be called when the cache should be purged for an IndexReader.

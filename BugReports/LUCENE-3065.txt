@@ -1,0 +1,12 @@
+NumericField should be stored in binary format in index (matching Solr's format)
+
+
+
+Description:
+(Spinoff of LUCENE-3001)
+
+Today when writing stored fields we don't record that the field was a NumericField, and so at IndexReader time you get back an "ordinary" Field and your number has turned into a string.  See https://issues.apache.org/jira/browse/LUCENE-1701?focusedCommentId=12721972&page=com.atlassian.jira.plugin.system.issuetabpanels:comment-tabpanel#comment-12721972
+
+We have spare bits already in stored fields, so, we should use one to record that the field is numeric, and then encode the numeric field in Solr's more-compact binary format.
+
+A nice side-effect is we fix the long standing issue that you don't get a NumericField back when loading your document.

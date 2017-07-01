@@ -1,0 +1,6 @@
+Lucene queries are not properly rewritten
+
+
+
+Description:
+Some of the jackrabbit internal lucene queries are not properly rewritten and may lead to UnsupportedOperationException when terms are extracted from the lucene query.

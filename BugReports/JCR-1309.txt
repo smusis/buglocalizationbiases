@@ -1,0 +1,8 @@
+Refactor DBMS support for JNDI datasources
+
+
+
+Description:
+Our shop currently uses Oracle for most projects, most commonly in an application server (Tomcat, WebSphere, etc.), and use configured J2EE datasources. Unfortunately, many of the classes that fix quirks on specific DBMS force you to configure a JDBC connection (look at org.apache.jackrabbit.core.fs.db.OracleFileSystem for instance), which is a "bad idea" on an application server -- the application server should be managing resources like DB connections, etc.  If you want to use an DbFileSystem based on an Oracle database, you can't use a datasource from a JNDI lookup.  This in effect makes Jackrabbit unusable in clustered enterprise environments.
+
+It would be much better to refactor the current database support to separate the method that an implementation obtains its connection from its functionality.

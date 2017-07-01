@@ -1,0 +1,6 @@
+InternalValue refactoring
+
+
+
+Description:
+Now that we have use the value factory from spi-commons, the InternalValue code should be simplified.

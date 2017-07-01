@@ -1,0 +1,26 @@
+UUID field not populated when saving a new node
+
+
+
+Description:
+In the following 'Article' class, there is are fields set to true for 'path' and 'uuid' jcr properties. 
+The mixins for referencing (hence, support for UUID) are declared at the @Node level of the class. 
+
+After saving the node with the ObjectContentManager, the uuid field is not populated as it could be expected
+
+@Node(jcrMixinTypes="mix:referenceable,mix:lockable,mix:versionable")
+public class Article {
+
+        @Field(uuid=true)
+        private String id = null;
+       
+        @Field(path=true)
+        private String path = null;
+       
+        @Field
+        private String content = null;
+
+        ... constructor, getters and setters
+} 
+
+The full discussion is here : http://www.nabble.com/OCM-issues-with-path-and-id-fields-%28annotations%29-tt15460625.html#a15460625 

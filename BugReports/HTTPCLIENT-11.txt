@@ -1,0 +1,7 @@
+null domains break Cookie.java
+
+
+
+Description:
+the domain is assumed to be non-null in a few places in Cookie.java, see matches
+method, for example

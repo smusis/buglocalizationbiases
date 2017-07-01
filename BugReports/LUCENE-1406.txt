@@ -1,0 +1,26 @@
+new Arabic Analyzer (Apache license)
+
+
+
+Description:
+I've noticed there is no Arabic analyzer for Lucene, most likely because Tim Buckwalter's morphological dictionary is GPL.
+
+However, it is not necessary  to have full morphological analysis engine for a quality arabic search. 
+This implementation implements the light-8s algorithm present in the following paper: http://ciir.cs.umass.edu/pubfiles/ir-249.pdf
+
+As you can see from the paper, improvement via this method over searching surface forms (as lucene currently does) is significant, with almost 100% improvement in average precision.
+
+While I personally don't think all the choices were the best, and some easily improvements are still possible, the major motivation for implementing it exactly the way it is presented in the paper is that the algorithm is TREC-tested, so the precision/recall improvements to lucene are already documented.
+
+For a stopword list, I used a list present at http://members.unine.ch/jacques.savoy/clef/index.html simply because the creator of this list documents the data as BSD-licensed.
+
+This implementation (Analyzer) consists of above mentioned stopword list plus two filters:
+ ArabicNormalizationFilter: performs orthographic normalization (such as hamza seated on alif, alif maksura, teh marbuta, removal of harakat, tatweel, etc)
+ ArabicStemFilter: performs arabic light stemming
+
+Both filters operate directly on termbuffer for maximum performance. There is no object creation in this Analyzer.
+
+There are no external dependencies. I've indexed about half a billion words of arabic text and tested against that.
+
+If there are any issues with this implementation I am willing to fix them. I use lucene on a daily basis and would like to give something back. Thanks.
+

@@ -1,0 +1,17 @@
+Unable to create repository using jackrabbit-webapp because a directory called "jackrabbit" already exists
+
+
+
+Description:
+I mount the jackrabbit-webapp.war in a Jetty installation
+* at startup i have the following exception:
+ERROR RepositoryStartupServlet: Either create thejackrabbit/bootstrap.properties file or
+ERROR RepositoryStartupServlet: use the '/config/index.jsp' for easy configuration.
+ERROR RepositoryStartupServlet: RepositoryStartupServlet initializing failed: javax.servlet.ServletException: Repository startup configuration is not valid.
+* then when i access http://localhost:8080/ i am forwarded to the page:
+ http://localhost:8080/bootstrap/missing.jsp
+* creating the repository by clicking on "Create Content Repository" button fails complaining that the jackrabbit directory already exists
+
+Indeed, i find a jackrabbit directory in my JETTY_HOME (from where is started Jetty).
+
+A workaround is to delete this "jackrabbit" directory and then i can create the repository by clicking on the previous button and therefore access the newly created repository.

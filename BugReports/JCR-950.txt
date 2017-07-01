@@ -1,0 +1,6 @@
+The move method doesn't remove the source node
+
+
+
+Description:
+Here is a small unit test that demonstrate that the method move doesn't remove the source node. 

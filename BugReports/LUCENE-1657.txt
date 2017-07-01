@@ -1,0 +1,17 @@
+Make "boolean readOnly" a required arg to IndexReader.open
+
+
+
+Description:
+Most apps don't need read/write IndexReader, and, a readOnly
+IndexReader has better concurrent performance.
+
+I'd love to simply default readOnly to true, and you'd have to specify
+"false" if you want a read/write reader (I think that's the natural
+default), but I think that'd break too many back-compat cases.
+
+So the workaround is to make the parameter explicit, in 2.9.
+
+I think even for IndexSearcher's methods that open an IndexReader
+under the hood, we should also make the parameter explicit.
+

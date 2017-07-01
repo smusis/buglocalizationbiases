@@ -1,0 +1,9 @@
+JcrParser: use of bitwise instead of logical AND operator
+
+
+
+Description:
+JcrParser, line 134:
+
+            if ((!insideSingleQuote & !insideDoubleQuote & Character
+

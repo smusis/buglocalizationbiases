@@ -1,0 +1,20 @@
+SQL-2 query returns more than the requested column
+
+
+
+Description:
+If I do :
+
+SELECT alias.[jcr:title] FROM [jnt:mainContent] as alias
+
+and then iterate through the returned columns of the rows, I get the same result as for :
+
+SELECT * FROM [jnt:mainContent] 
+
+which is ALL the properties defined for jnt:mainContent.
+
+Only if I use
+
+SELECT alias.[jcr:title] as title FROM [jnt:mainContent] as alias
+
+the result is limited to the title column.

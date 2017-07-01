@@ -1,0 +1,6 @@
+failing Node.lock() might leave inconsistent transient state
+
+
+
+Description:
+When I try to node.lock(true, false) a node and the lock fails due to lak of user privilegies, the lock stay in the user transient session. If a perform a node.refresh(false) the node still is locked in the transient session.

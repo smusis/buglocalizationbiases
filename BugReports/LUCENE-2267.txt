@@ -1,0 +1,8 @@
+Add solr's artifact signing scripts into lucene's build.xml/common-build.xml
+
+
+
+Description:
+Solr has nice artifact signing scripts in its common-build.xml and build.xml.
+
+For me as release manager of 3.0 it would have be good to have them also when building lucene artifacts. I will investigate how to add them to src artifacts and maven artifacts

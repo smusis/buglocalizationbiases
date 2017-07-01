@@ -1,0 +1,9 @@
+Multipart post is broken
+
+
+
+Description:
+I tried to do HttpPost request with MultipartEntity, this request was encoded to wire with 3 line separators after header and not processed correctly by http server.
+MultipartEntry add 1 extra line separator before write itself to wire. I'm not sure about standards, but it is at least not "browser compatible".
+
+

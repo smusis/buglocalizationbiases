@@ -1,0 +1,23 @@
+jcr:deref and parent axis in xpath predicates
+
+
+
+Description:
+Currently, the jcr:deref() function is not allowed in a xpath query predicate. Example :
+book holds a reference property on its author(s)
+authors have a name
+
+We want all books from a specific author :
+
+/jcr:root/element(*, bookType)[jcr:deref(@author, 'authorType')/@name = 'King']
+
+This fails with an InvalidQueryException currently (not supported).
+
+The error is raised in the XPathQueryBuilder class, in function : private QueryNode createFunction(SimpleNode node, QueryNode queryNode), in the block :
+else if (NameFormat.format(JCR_DEREF, resolver).equals(fName))
+
+Problem is that with this query, when evaluating the jcr:deref() function, then in this method at this point, queryNode.getType() is 0 and tests raise the exception if queryNode.getType() is neither QueryNode.TYPE_LOCATION nor QueryNode.TYPE_PATH.
+
+I think this is a useful place to put a deref function in a query, as I don't know how we could test the referenced node properties another way.
+
+Frederic Esnault

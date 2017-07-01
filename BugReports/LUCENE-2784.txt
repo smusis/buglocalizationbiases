@@ -1,0 +1,20 @@
+Change all FilteredTermsEnum impls into TermsEnum decorators
+
+
+
+Description:
+Currently, FilteredTermsEnum has two ctors:
+* FilteredTermsEnum(IndexReader reader, String field)
+* FilteredTermsEnum(TermsEnum tenum)
+
+But most of our concrete implementations (e.g. TermsRangeEnum) use the IndexReader+field ctor
+
+In my opinion we should remove this ctor, and switch over all FilteredTermsEnum implementations to just take a TermsEnum.
+
+Advantages:
+* This simplifies FilteredTermsEnum and its subclasses, where they are more decorator-like (perhaps in the future we could compose them)
+* Removes silly checks such as if (tenum == null) in every next()
+* Allows for consumers to pass in enumerators however they want: e.g. its their responsibility if they want to use MultiFields or not, it shouldnt be buried in FilteredTermsEnum.
+
+I created a quick patch (all core+contrib+solr tests pass), but i think this opens up more possibilities for refactoring improvements that haven't yet been done in the patch: we should explore these too.
+

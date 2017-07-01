@@ -1,0 +1,6 @@
+Core Tests should call Version based ctors instead of deprecated default ctors
+
+
+
+Description:
+LUCENE-2183 introduced new ctors for all CharTokenizer subclasses. Core - tests should use those ctors with Version.LUCENE_CURRENT instead of the the deprecated ctors. Yet, LUCENE-2240 introduces more Version ctors For WhitespaceAnalyzer and SimpleAnalyzer. Test should also use their Version ctors instead the default ones.

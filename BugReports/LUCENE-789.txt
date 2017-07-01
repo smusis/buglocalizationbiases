@@ -1,0 +1,17 @@
+Custom similarity is ignored when using MultiSearcher
+
+
+
+Description:
+Symptoms:
+I am using Searcher.setSimilarity() to provide a custom similarity that turns off tf() factor. However, somewhere along the way the custom similarity is ignored and the DefaultSimilarity is used. I am using MultiSearcher and BooleanQuery.
+
+Problem analysis:
+The problem seems to be in MultiSearcher.createWeight(Query) method. It creates an instance of CachedDfSource but does not set the similarity. As the result CachedDfSource provides DefaultSimilarity to queries that use it.
+
+Potential solution:
+Adding the following line:
+    cacheSim.setSimilarity(getSimilarity());
+after creating an instance of CacheDfSource (line 312) seems to fix the problem. However, I don't understand enough of the inner workings of this class to be absolutely sure that this is the right thing to do.
+
+

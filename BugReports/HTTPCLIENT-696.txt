@@ -1,0 +1,87 @@
+java.util.logging configuration examples does not work as intended
+
+
+
+Description:
+java.util.logging configuration examples do not work as intended. Those can be found here: http://jakarta.apache.org/httpcomponents/httpclient-3.x/logging.html
+
+Steps to reproduce:
+1. Create a simple project using HttpClient (see listing below) and JDK 1.6 (I suppose it is JDK 1.4 or higher, but I did not test anything other than 1.6). Without log4j in the classpath and without any commons-logging system properties set, java.util.logging is automatically selected by commons-logging.
+2. Create logging.properties file as shown in any of the java.util.logging examples
+3. Run a program, passing -Djava.util.logging.config.file=logging.properties argument to the JVM
+
+Expected results:
+Quite a few log messages should be sent to System.err
+
+Actual results:
+Unless there is an I/O error encountered, no log messages are sent to System.err
+
+The problem, as far as I can see, is caused by the default logging level of java.util.logging.ConsoleHandler, which is set to INFO. In order for any log messages to go through, the log hadler log level needs to be lower than logged messages log level. Adding the following line to all java.util.logging examples should fix the problem:
+
+java.util.logging.ConsoleHandler.level = ALL
+
+--- Get.java -----------------------------------------
+
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.Reader;
+
+import org.apache.commons.httpclient.HostConfiguration;
+import org.apache.commons.httpclient.HttpClient;
+import org.apache.commons.httpclient.HttpException;
+import org.apache.commons.httpclient.HttpMethodBase;
+import org.apache.commons.httpclient.methods.GetMethod;
+
+
+public class Get {
+
+	/**
+	 * @param args
+	 */
+	public static void main(String[] args) {
+		
+ 		HttpClient client = new HttpClient();
+		HttpMethodBase get = new GetMethod("http://www.apache.org");
+		
+		try {
+			int code = client.executeMethod(get);
+			System.out.println("Status code: " + code);
+			
+			String csn = get.getResponseCharSet();
+			System.out.println("Charset is: " + csn);
+			
+			long len = get.getResponseContentLength();
+			System.out.println("Length is: " + len);
+			len = len < 0 ? 200 : len;
+			
+			StringBuilder buf = new StringBuilder((int)len);
+			Reader r = new InputStreamReader(get.getResponseBodyAsStream(), csn);
+			for (int c = r.read(); c >= 0; c = r.read()) {
+				buf.append((char)c);
+			}
+			
+			System.out.println("Body:");
+			System.out.println(buf.toString());			
+			
+		} catch (HttpException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		} finally {
+			get.releaseConnection();
+		}				
+	}
+}
+
+--- logging.properties ----- From examples ----------------------
+
+.level=INFO
+
+handlers=java.util.logging.ConsoleHandler
+java.util.logging.ConsoleHandler.formatter = java.util.logging.SimpleFormatter
+
+httpclient.wire.header.level=FINEST
+org.apache.commons.httpclient.level=FINEST
+
+--------------------------------------------------------------------------------
+

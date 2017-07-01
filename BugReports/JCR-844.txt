@@ -1,0 +1,17 @@
+ArrayStoreException while reregistering existing node types
+
+
+
+Description:
+
+class: NodeTypeManagerImpl
+method: public NodeType[] registerNodeTypes(InputStream in, String contentType, boolean reregisterExisting)
+
+                ...
+                return (NodeType[]) nodeTypes.toArray(new NodeTypeDef[nodeTypes.size()]);
+                ...
+
+=> should be (I suppose !)
+
+                return (NodeType[]) nodeTypes.toArray(new NodeType[nodeTypes.size()]);
+

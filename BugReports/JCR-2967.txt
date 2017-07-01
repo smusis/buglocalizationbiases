@@ -1,0 +1,35 @@
+SessionItemStateManager.getIdOfRootTransientNodeState() may cause NPE
+
+
+
+Description:
+regression of JCR-2425
+
+in certain scenarios, calling SessionItemStateManager.getIdOfRootTransientNodeState() may cause a NPE.
+
+Test case: 
+
+        Repository repository = new TransientRepository(); 
+        Session session = repository.login( 
+                new SimpleCredentials("admin", "admin".toCharArray())); 
+        Session session2 = repository.login( 
+                new SimpleCredentials("admin", "admin".toCharArray())); 
+
+        try { 
+            while (session.getRootNode().hasNode("test")) { 
+                session.getRootNode().getNode("test").remove(); 
+            } 
+            Node test = session.getRootNode().addNode("test"); 
+            session.save(); 
+            Node x = test.addNode("x"); 
+            session.save(); 
+
+            Node x2 = session2.getRootNode().getNode("test").getNode("x"); 
+            x2.remove(); 
+            x.addNode("b"); 
+            session2.save(); 
+            session.save(); // throws NPE 
+        } finally { 
+            session.logout(); 
+            session2.logout(); 
+        }

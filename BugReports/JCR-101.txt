@@ -1,0 +1,7 @@
+misleading contrib/tck-webapp/...RepositoryServlet javadoc
+
+
+
+Description:
+In org.apache.jackrabbit.tck.j2ee.RepositoryServlet it says "...puts the reference into the application context" but according to the behavior it should say "...puts the reference into a class variable". In a j2ee environment the application context refers to the ServletConext instance bounded to the web application.
+

@@ -1,0 +1,6 @@
+document field lengths count analyzer synonym overlays
+
+
+
+Description:
+Using a synonym expansion analyzer to add tokens with zero offset from the substituted token should not extend the length of the field in the document (for scoring purposes)

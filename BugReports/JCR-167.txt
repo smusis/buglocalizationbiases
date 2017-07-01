@@ -1,0 +1,8 @@
+Add maven-eclipse-plugin properties to project.xml for easier configuration in IDE
+
+
+
+Description:
+- add the maven.eclipse.resources.addtoclasspath=true property to project.properties (make the eclipse plugin create source dirs also for resources). 
+
+- add the <eclipse.dependency>true</eclipse.dependency> property to all the jackrabbit internal dependencies in all the POMs (all the dependencies with "jackrabbit" groupId) so internal dependencies becomes project dependencies in eclipse.

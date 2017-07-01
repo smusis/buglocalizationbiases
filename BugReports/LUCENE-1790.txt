@@ -1,0 +1,8 @@
+Add Boosting Function Term Query and Some Payload Query refactorings
+
+
+
+Description:
+Similar to the BoostingTermQuery, the BoostingFunctionTermQuery is a SpanTermQuery, but the difference is the payload score for a doc is not the average of all the payloads, but applies a function to them instead.  BoostingTermQuery becomes a BoostingFunctionTermQuery with an AveragePayloadFunction applied to it.
+
+Also add marker interface to indicate PayloadQuery types.  Refactor Similarity.scorePayload to also take in the doc id.

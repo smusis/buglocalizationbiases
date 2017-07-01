@@ -1,0 +1,6 @@
+Add path encoding to ISO9075
+
+
+
+Description:
+The utility class ISO9075 only allows you to encode and decode names. It should also have methods that allow you to pass a path. This is useful when a XPath query is created with a path constraint based on e.g. a Node.getPath().

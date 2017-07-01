@@ -1,0 +1,7 @@
+NPE in NearSpansUnordered from PayloadNearQuery
+
+
+
+Description:
+The following query causes a NPE in NearSpansUnordered, and is reproducible with the the attached unit test. The failure occurs on the last document scored.
+

@@ -1,0 +1,17 @@
+removing properties through SPI: two ways to do it
+
+
+
+Description:
+Batch currently provides two ways to delete a property, similarly to JCR:
+
+- Batch.remove()
+- Batch.setValue(..., null)
+
+JCR2SPI currently uses (AFAIK) Batch.remove().
+
+Proposal:
+
+- clarify that the QValue argument in setValue must be non-null (same for setValues)
+
+

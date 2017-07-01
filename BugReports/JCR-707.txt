@@ -1,0 +1,6 @@
+Range queries fail on large repositories
+
+
+
+Description:
+As discussed on the user mailing list, queries on large repositories with date constraints like "field > constant" treat the constraint as always true, returning results that should not be returned.

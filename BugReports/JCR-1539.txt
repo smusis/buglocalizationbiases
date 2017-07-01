@@ -1,0 +1,12 @@
+SPI: Get rid of unused method ItemInfo.getParentId()
+
+
+
+Description:
+Looking at the various SPI impls in the trunk and in the sandbox reveals that ItemInfo.getParentId is not used at all.
+I'd like to suggest to get rid of that method.
+
+Any objections/concerns?
+angela
+
+

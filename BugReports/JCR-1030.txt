@@ -1,0 +1,6 @@
+Introduce QNodeTypeDefinition cache per userId
+
+
+
+Description:
+Once read from the server a QNodeTypeDefinition can be cached and shared across SessionImpl with the same userId.

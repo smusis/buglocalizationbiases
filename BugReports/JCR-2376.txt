@@ -1,0 +1,6 @@
+Add basic I/O counters to query handler
+
+
+
+Description:
+There should be a couple of simple counters that track the number of I/O operations that are performed during a query execution. This will help debug query performance issues.

@@ -1,0 +1,16 @@
+Path returned by FileSystemBLOBStore.createId() is not absolute
+
+
+
+Description:
+Hi,
+
+I have developed my own FileSystem in which I call FileSystemPathUtil.checkFormat(path) for every operation on the file system.
+When the file system is called to store a BLOB value, the path I get is always relative, resulting in a "not an absolute path" FileSystemException.
+
+The problem has been traced back to org.apache.jackrabbit.core.state.util.FileSystemBLOBStore.creatId().
+I think there should be a:
+   sb.append(FileSystem.SEPARATOR_CHAR);
+before the for loop.
+
+Thanks.

@@ -1,0 +1,11 @@
+FST.BYTE2 should save as fixed 2 byte not as vInt
+
+
+
+Description:
+We currently write BYTE1 as a single byte, but BYTE2/4 as vInt, but I think that's confusing.  Also, for the FST for the new Kuromoji analyzer (LUCENE-3305), writing as 2 bytes instead shrank the FST and ran faster, presumably because more values were >= 16384 than were < 128.
+
+Separately the whole INPUT_TYPE is very confusing... really all it's doing is "declaring" the allowed range of the characters of the input alphabet, and then the only thing that uses that is the write/readLabel methods (well and some confusing sugar methods in Builder!).  Not sure how to fix that yet...
+
+It's a simple change but it changes the FST binary format so any users w/ FSTs out there will have to rebuild (FST is marked experimental...).
+

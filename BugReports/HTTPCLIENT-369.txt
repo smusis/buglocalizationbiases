@@ -1,0 +1,19 @@
+Missing skip()-Method in ContentLengthInputStream
+
+
+
+Description:
+ContentLengthInputStream is missing the skip()-Method.
+
+This causes the internal pos variable to get out of sync with the content 
+length. 
+We oberseved that closing the stream caused a wait time of about 15 sec in 
+routines which use the skip()-method of InputStream.
+
+Here's a possible implementation which should solve the problem:
+
+    public long skip(long len) throws IOException {
+        long count = super.skip(len);
+        pos += count;
+        return count;
+    }

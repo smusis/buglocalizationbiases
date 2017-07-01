@@ -1,0 +1,9 @@
+Node.orderBefore and JackrabbitNode.rename should check for ability to modify children-collection on parent node
+
+
+
+Description:
+currently the implementation of Node.orderBefore and JackrabbitNode.rename perform the same validation that is executed
+for a move operation which includes removal of the original node. however, the methods mentioned above only include
+a manipulation on the child-node-collection of the parent (subset of the current check). therefore the permission check should be 
+adjusted accordingly.

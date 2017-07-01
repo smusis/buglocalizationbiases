@@ -1,0 +1,8 @@
+Make MMapDirectory.MAX_BBUF user configureable to support chunking the index files in smaller parts
+
+
+
+Description:
+This is a followup for java-user thred: http://www.lucidimagination.com/search/document/9ba9137bb5d8cb78/oom_with_2_9#9bf3b5b8f3b1fb9b
+
+It is easy to implement, just add a setter method for this parameter to MMapDir.

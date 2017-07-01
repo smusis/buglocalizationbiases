@@ -1,0 +1,10 @@
+Allow concurrent index updates and queries
+
+
+
+Description:
+Currently the query handler either allows one modification or multiple queries at a time. That is, write operations are separated from read operations. With this synchronization scheme multiple queries may run concurrently, but only in the absence of a write operation.
+
+There is one major drawback with this synchronization: a single long running query is able to block the whole workspace from committing changes. Because the query handler is coupled to the Workspace via a synchronous event listener, further processing is blocked until the query handler has finished its event processing (reflecting the changes in the index).
+
+Instead, each index modification should be non-blocking, in the sense that an index modification should not have to wait for any queries to complete.

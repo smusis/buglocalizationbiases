@@ -1,0 +1,6 @@
+Remove DocumentWriter
+
+
+
+Description:
+DocumentWriter has been replaced by DocumentsWriter (from LUCENE-843) so we need to remove it & fix the unit tests that directly use it...

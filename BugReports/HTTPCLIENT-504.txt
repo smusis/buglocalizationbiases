@@ -1,0 +1,10 @@
+max connections per host setting does not work
+
+
+
+Description:
+When using the MultiThreadedHttpConnectionManager the default maximal
+connections per host/port cannot be exceeded (allowed maximum is 2 by default).
+Attempts to exceed this by manually setting the max connections using
+HttpConnectionManagerParams#setMaxConnectionsPerHost fail. This is caused by a
+bug in the MultiThreadedHttpConnectionManager.

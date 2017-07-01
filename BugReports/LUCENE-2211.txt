@@ -1,0 +1,8 @@
+Improve BaseTokenStreamTestCase to uses a fake attribute to check if clearAttributes() was called correctly - found bugs in contrib/analyzers
+
+
+
+Description:
+Robert had the idea to use a fake attribute inside BaseTokenStreamTestCase that records if its clear() method was called. If this is not the case after incrementToken(), asserTokenStreamContents fails. It also uses the attribute in TeeSinkTokenFilter, because there a lot of copying, captureState and restoreState() is used. By the attribute, you can track wonderful, if save/restore and clearAttributes is correctly implemented. It also verifies that *before* a captureState() it was also cleared (as the state will also contain the clear call). Because if you consume tokens in a filter, capture the consumed tokens and insert them, the capturedStates must also be cleared before.
+
+In contrib analyzers are some test that fail to pass this additional assertion. They are not fixed in the attached patch.

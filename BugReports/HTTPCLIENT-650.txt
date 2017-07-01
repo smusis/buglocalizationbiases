@@ -1,0 +1,12 @@
+Wire log is incomplete if HttpParser detects an error
+
+
+
+Description:
+If HttpParser detects an error in any of the headers, it throws a ProtocolException
+
+Although the failing header is included in the Exception detail, the headers leading up to the failure are not logged, which makes it hard to debug (and is quite confusing, as the PE does not appear to be related to the data that has been received).
+
+This is because the wire-logging is done in the caller (HttpMethodDirector) which only logs the header if the parse succeeds.
+
+Perhaps the Wire logging should be done at the point where the HttpParser reads the line.

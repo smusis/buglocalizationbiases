@@ -1,0 +1,15 @@
+Add OSGi bundle metadata to manifest
+
+
+
+Description:
+See this discussion on the Felix mailing list:
+http://www.mail-archive.com/felix-dev@incubator.apache.org/msg04041.html
+
+If there is an easy way to generate the information required for an OSGi bundle into the manifest of our distributable JAR, we should do it.
+The runtime and API are not affected, it is only a modification of the build process.
+I'll follow up on this when I have information about the required tooling.
+
+cheers,
+  Roland
+

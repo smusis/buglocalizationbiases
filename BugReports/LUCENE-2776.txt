@@ -1,0 +1,7 @@
+indexwriter creates unwanted termvector info
+
+
+
+Description:
+I noticed today that when I build a big index in Solr, I get some unwanted termvector info, even though I didn't request any.
+This does not happen on 3x - not sure when it started happening on trunk.

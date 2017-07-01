@@ -1,0 +1,12 @@
+Replacement for TermAttribute+Impl with extended capabilities (byte[] support, CharSequence, Appendable)
+
+
+
+Description:
+For flexible indexing terms can be simple byte[] arrays, while the current TermAttribute only supports char[]. This is fine for plain text, but e.g NumericTokenStream should directly work on the byte[] array.
+Also TermAttribute lacks of some interfaces that would make it simplier for users to work with them: Appendable and CharSequence
+
+I propose to create a new interface "CharTermAttribute" with a clean new API that concentrates on CharSequence and Appendable.
+The implementation class will simply support the old and new interface working on the same term buffer. DEFAULT_ATTRIBUTE_FACTORY will take care of this. So if somebody adds a TermAttribute, he will get an implementation class that can be also used as CharTermAttribute. As both attributes create the same impl instance both calls to addAttribute are equal. So a TokenFilter that adds CharTermAttribute to the source will work with the same instance as the Tokenizer that requested the (deprecated) TermAttribute.
+
+To also support byte[] only terms like Collation or NumericField needs, a separate getter-only interface will be added, that returns a reusable BytesRef, e.g. BytesRefGetterAttribute. The default implementation class will also support this interface. For backwards compatibility with old self-made-TermAttribute implementations, the indexer will check with hasAttribute(), if the BytesRef getter interface is there and if not will wrap a old-style TermAttribute (a deprecated wrapper class will be provided): new BytesRefGetterAttributeWrapper(TermAttribute), that is used by the indexer then.

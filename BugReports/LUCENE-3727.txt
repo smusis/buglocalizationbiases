@@ -1,0 +1,13 @@
+fix assertions/checks that use File.length() to use getFilePointer()
+
+
+
+Description:
+This came up on this thread "Getting RuntimeException: after flush: fdx size mismatch while Indexing" 
+(http://www.lucidimagination.com/search/document/a8db01a220f0a126)
+
+In trunk, a side effect of the codec refactoring is that these assertions were pushed into codecs as finish() before close().
+they check getFilePointer() instead in this computation, which checks that lucene did its part (instead of falsely tripping if directory metadata is stale).
+
+I think we should fix these checks/asserts on 3.x too
+

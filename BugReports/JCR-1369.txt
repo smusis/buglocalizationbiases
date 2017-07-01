@@ -1,0 +1,19 @@
+indexing-rules should allow wildcards for (global) property names
+
+
+
+Description:
+eg:
+
+<indexing-rule nodeType="*">
+  <property>text</property>
+  <property>*Text</property>
+</indexing-rule>
+
+defines that all properties named 'text' and all that end with 'Text' should be fulltext indexed.
+if the property name includes namespace prefixes, wildcards are only allowed for 'any' namespace. eg:
+
+*:title
+
+but not: j*:title
+

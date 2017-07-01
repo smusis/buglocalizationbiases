@@ -1,0 +1,27 @@
+Jcr2Spi: UpdateTest#testUpdateRemovesExtraProperty and #testUpdateAddsMissingSubtree fail occasionally
+
+
+
+Description:
+issue reported by jukka:
+
+Every now and then I see the following jcr2spi test failures on a
+clean checkout:
+
+    Tests in error:
+      testUpdateRemovesExtraProperty(org.apache.jackrabbit.jcr2spi.UpdateTest)
+      testUpdateAddsMissingSubtree(org.apache.jackrabbit.jcr2spi.UpdateTest)
+
+The problem seems to be caused by the test cases automatically
+choosing the "security" workspace for the update test. The reason why
+the tests only fail occasionally is that currently the ordering of the
+string array returned by getAccessibleWorkspaceNames() is not
+deterministic.
+
+I can work around the issue by making
+RepositoryImpl.getWorkspaceNames() explicitly sort the returned array
+of names, but a more proper fix would probably be to ensure that the
+workspace selected by UpdateTest is useful for the test.
+
+
+

@@ -1,0 +1,8 @@
+Unit tests for HttpConn
+
+
+
+Description:
+HttpConn needs more test coverage.
+Starting at 0%.
+

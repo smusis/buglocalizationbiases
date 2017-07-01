@@ -1,0 +1,10 @@
+httpMethod.abort needed
+
+
+
+Description:
+This is the problem : I use the httpclient to fire many requests. At some point 
+of time, the server has queued up requests. So certain requests are waiting for 
+response. Now when I call httpMethod.releaseConnection, the request should stop 
+waiting for the response and the connection should be closed. However, this 
+does not happen. The request is only given up after it has timed out.

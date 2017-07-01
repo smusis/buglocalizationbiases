@@ -1,0 +1,30 @@
+Improve handling of concurrent node modifications
+
+
+
+Description:
+consider the following scenario:
+- session1 modifies node /a by adding a child node b
+- session2 modifies node /a by adding a child node c
+- session2 saves its changes 
+- session1 tries to save its changes which results in a InvalidItemStateException
+
+this behavior is in accordance with the spec. the spec however doesn't prevent a 
+more lenient handling of this scenario.
+
+if the concurrent modifications are non-conflicting and trivial the changes could
+be silently merged in session1's transient state of node /a.
+
+examples for trivial non-conflicting changes:
+- s1 adds child node a, s2 removes child node b
+- s1 adds child node a, s2 adds child node b
+- s1 adds child node a, s2 adds mixin type
+
+examples for non-trivial and/or conflicting changes:
+- s1 removes child node a, s2 removes child node a
+- s1 adds child node a, s2 adds child node a
+- s1 adds sns child node a (-> a[3]), s2 adds sns child node a (-> a[3])
+- s1 adds sns child node a (-> a[3]), s2 removes sns child node a[1]
+- s1 removes sns child node a[2], s2 reorders child nodes affecting sns nodes a
+
+

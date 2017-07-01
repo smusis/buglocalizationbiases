@@ -1,0 +1,52 @@
+masking field of span for cross searching across multiple fields (many-to-one style)
+
+
+
+Description:
+This issue is to cover the changes required to do a search across multiple fields with the same name in a fashion similar to a many-to-one database. Below is my post on java-dev on the topic, which details the changes we need:
+
+---
+
+We have an interesting situation where we are effectively indexing two 'entities' in our system, which share a one-to-many relationship (imagine 'User' and 'Delivery Address' for demonstration purposes). At the moment, we index one Lucene Document per 'many' end, duplicating the 'one' end data, like so:
+
+    userid: 1
+    userfirstname: fred
+    addresscountry: au
+    addressphone: 1234
+
+    userid: 1
+    userfirstname: fred
+    addresscountry: nz
+    addressphone: 5678
+
+    userid: 2
+    userfirstname: mary
+    addresscountry: au
+    addressphone: 5678
+
+(note: 2 Documents indexed for user 1). This is somewhat annoying for us, because when we search in Lucene the results we want back (conceptually) are at the 'user' level, so we have to collapse the results by distinct user id, etc. etc (let alone that it blows out the size of our index enormously). So why do we do it? It would make more sense to use multiple fields:
+    userid: 1
+    userfirstname: fred
+    addresscountry: au
+    addressphone: 1234
+    addresscountry: nz
+    addressphone: 5678
+
+    userid: 2
+    userfirstname: mary
+    addresscountry: au
+    addressphone: 5678
+
+But imagine the search "+addresscountry:au +addressphone:5678". We'd like this to match ONLY Mary, but of course it matches Fred also because he matches both those terms (just for different addresses).
+
+There are two aspects to the approach we've (more or less) got working but I'd like to run them past the group and see if they're worth trying to get them into Lucene proper (if so, I'll create a JIRA issue for them)
+
+1) Use a modified SpanNearQuery. If we assume that country + phone will always be one token, we can rely on the fact that the positions of 'au' and '5678' in Fred's document will be different.
+
+   SpanQuery q1 = new SpanTermQuery(new Term("addresscountry", "au"));
+   SpanQuery q2 = new SpanTermQuery(new Term("addressphone", "5678"));
+   SpanQuery snq = new SpanNearQuery(new SpanQuery[]{q1, q2}, 0, false);
+
+the slop of 0 means that we'll only return those where the two terms are in the same position in their respective fields. This works brilliantly, BUT requires a change to SpanNearQuery's constructor (which checks that all the clauses are against the same field). Are people amenable to perhaps adding another constructor to SNQ which doesn't do the check, or subclassing it to do the same (give it a protected non-checking constructor for the subclass to call)?
+
+2) (snipped ... see LUCENE-1626 for second idea)

@@ -1,0 +1,11 @@
+IndexWriter.commit()  does not update the index version
+
+
+
+Description:
+IndexWriter.commit() can update the index *version* and *generation* but the update of *version* is lost.
+As result added documents are not seen by IndexReader.reopen().
+(There might be other side effects that I am not aware of).
+The fix is 1 line - update also the version in SegmentsInfo.updateGeneration().
+(Finding this line involved more lines though... :-) )
+

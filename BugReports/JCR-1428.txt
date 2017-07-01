@@ -1,0 +1,12 @@
+Add API for selective bundle consistency check (Jackrabbit-specific)
+
+
+
+Description:
+Add a jackrabbit-specific API for doing a selective consistencyCheck, ie. on single nodes. The current entire-workspace check can be very slow if there workspace is large enough. Also it should be easy to write a tool to invoke that feature programmatically rather than by configuration + restart (see below).
+
+Existing Implementation:
+The current bundle consistencyCheck feature is enabled by setting a bundle PM parameter and restarting Jackrabbit, it will then run upon startup (see JCR-972 for the only issue regarding bundle consistency check). This check looks for broken parent-child relationships, ie. it will remove any child node entries that reference non-existing parent nodes. For non-existing parent UUIDs and other problems in bundles it will log those.
+
+Outlook:
+An advanced consistencyCheck could also check for non-existing version nodes and vice-versa (see JCR-630), but this is not the focus of this issue and could be a later addition to the API.

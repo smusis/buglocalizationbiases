@@ -1,0 +1,11 @@
+cache should invalidate obsoleted entries mentioned in Content-Location
+
+
+
+Description:
+From http://www.w3.org/Protocols/rfc2616/rfc2616-sec13.html#sec13.6:
+
+If a cache receives a successful response whose Content-Location field matches that of an existing cache entry for the same Request-URI, whose entity-tag differs from that of the existing entry, and whose Date is more recent than that of the existing entry, the existing entry SHOULD NOT be returned in response to future requests and SHOULD be deleted from the cache.
+
+Current caching module doesn't do this (yet). As this is a recommendation (SHOULD) and not a requirement (MUST) I am marking this as an improvement rather than a bug.
+

@@ -1,0 +1,19 @@
+Remove lib directory from SVN trunk
+
+
+
+Description:
+build.xml expects to find junit.jar in the lib directory for building and running tests.
+
+The jar is not included in SVN, but nor is the jar ignored, so when it is downloaded it shows up as an unversioned file.
+
+The file should be included in or excluded from SVN.
+
+==
+
+Note: In JMeter we use a lib/opt directory.
+This is present in SVN - but all contents are ignored.
+
+This can be used for extra jars that cannot be or are not included in SVN.
+
+Could use the same approach for junit.jar...

@@ -1,0 +1,20 @@
+cache module does not recognize equivalent URIs
+
+
+
+Description:
+http://www.w3.org/Protocols/rfc2616/rfc2616-sec3.html#sec3.2.3
+
+"When comparing two URIs to decide if they match or not, a client SHOULD use a case-sensitive octet-by-octet comparison of the entire URIs, with these exceptions:
+  * A port that is empty or not given is equivalent to the default port for that URI-reference;
+  * Comparisons of host names MUST be case-insensitive;
+  * Comparisons of scheme names MUST be case-insensitive;
+  * An empty abs_path is equivalent to an abs_path of "/".
+Characters other than those in the "reserved" and "unsafe" sets (see RFC 2396 [42]) are equivalent to their ""%" HEX HEX" encoding.
+
+For example, the following three URIs are equivalent:
+      http://abc.com:80/~smith/home.html
+      http://ABC.com/%7Esmith/home.html
+      http://ABC.com:/%7esmith/home.html"
+
+The current implementation does not canonicalize the URIs it uses for cache keys, and so is missing potential cache hits. More importantly, though, required invalidations due to PUT/POST/DELETE to a URI (as well as those mentioned in Location or Content-Location headers) may not occur properly due to this bug.

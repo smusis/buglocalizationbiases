@@ -1,0 +1,6 @@
+PostgreSQL support in clustering module
+
+
+
+Description:
+There is no ddl file for PostgreSQL in clustering module, so I'm attaching here the one we are using in our project. Hope it helps.

@@ -1,0 +1,17 @@
+NodeReferencesId.equals() is not symetric
+
+
+
+Description:
+NodeReferencesId.equals() is not symetric when equality is tested against a NodeId.
+
+Code example:
+UUID uuid = UUID.randomUUID();
+NodeId id = new NodeId(uuid);
+NodeReferencesId refId = new NodeReferencesId(uuid);
+id.equals(refId); // will return true
+refId.equals(id); // will return false
+
+NodeReferencesId should be decouled from the ItemId hierarchy. The class NodeReferences already does not extend from NodeState which makes perfectly sense. So, the same should apply to the identifier of NodeReferences.
+
+The attached patch to NodeReferencesId also requires minor changes to some of the persistence managers.

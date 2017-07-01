@@ -1,0 +1,9 @@
+Document Package level javadocs need improving
+
+
+
+Description:
+The document package package level javadocs could use some improving, such as:
+1. Info on what a Document is, as well as Field and Fieldable
+2. Examples of FieldSelectors and how to implement
+3. Samples of using DateTools and NumberTools

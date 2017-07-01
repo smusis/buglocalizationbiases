@@ -1,0 +1,6 @@
+Set_property permission not checked when saving a new node
+
+
+
+Description:
+When a new node is saved, the add_node permission is checked, but not the set_property permission on it's properties in ItemImpl.validateTransientItems(). This is already fixed in trunk where the implementation is slightly different.

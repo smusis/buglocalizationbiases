@@ -1,0 +1,18 @@
+Under heavy load, database journal may contain empty update records.
+
+
+
+Description:
+In a clustering scenario with a database journal, empty records may be produced. A passive node will then throw the following exception during its synchronization: 
+
+28.02.2007 08:34:11 *ERROR* ClusterNode: Unexpected error while syncing of journal: null (ClusterNode.java, line 260)
+java.lang.NullPointerException
+	at java.io.FilterInputStream.close(Unknown Source)
+	at org.apache.jackrabbit.core.journal.ReadRecord.close(ReadRecord.java:197)
+	at org.apache.jackrabbit.core.journal.DatabaseRecordIterator.close(DatabaseRecordIterator.java:148)
+	at org.apache.jackrabbit.core.journal.DatabaseRecordIterator.close(DatabaseRecordIterator.java:114)
+	at org.apache.jackrabbit.core.journal.AbstractJournal.doSync(AbstractJournal.java:196)
+	at org.apache.jackrabbit.core.journal.AbstractJournal.sync(AbstractJournal.java:165)
+	at org.apache.jackrabbit.core.journal.ClusterNode.sync(ClusterNode.java:283)
+	at org.apache.jackrabbit.core.journal.ClusterNode.run(ClusterNode.java:254)
+	at java.lang.Thread.run(Unknown Source)

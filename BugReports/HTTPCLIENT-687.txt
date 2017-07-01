@@ -1,0 +1,15 @@
+DefaultRedirectHandler does not access correct HttpParams
+
+
+
+Description:
+In the getLocationURI(HttpResponse, HttpContext) method, the HttpParams for determining REJECT_RELATIVE_REDIRECT and ALLOW_CIRCULAR_REDIRECTS are retrieved with:
+
+HttpParams params = response.getParams();
+
+The response HttpParams do not contain these values, however the request HttpParams do. The correct implementation is:
+
+HttpRequest request = (HttpRequest) context.getAttribute(HttpExecutionContext.HTTP_REQUEST);
+HttpParams params = request.getParams();
+
+

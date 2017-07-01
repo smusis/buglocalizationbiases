@@ -1,0 +1,7 @@
+ContentBody doesn't currently have a setMimeType method.
+
+
+
+Description:
+ContentBody and therefore FileBody, StringBody and InputStreamBody do not have a setMimeType method so you can't set the Mime Type, it always defaults. 
+Current workaround is to subclass and override getMimeType.

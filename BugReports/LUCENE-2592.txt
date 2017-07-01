@@ -1,0 +1,14 @@
+Add static readSnapshotsInfo to PersistentSnapshotDeletionPolicy
+
+
+
+Description:
+PSDP persists the snapshots information in a Directory. When you open PSDP, it obtains a write lock on the snapshots dir (by keeping an open IndexWriter), and updates the directory when snapshots are created/released.
+
+This causes problem in the following scenario -- you have two processes, one updates the 'content' index and keeps PSDP open (because it also takes snapshots). Another process wants to read the existing snapshots information and open a read-only IndexReader on the 'content' index. The other process cannot read the existing snapshots information, because p1 keeps a write lock on the snapshots directory.
+
+There are two possible solutions:
+# Have PSDP open the IndexWriter over the directory for each snapshot/release. A bit expensive, and unnecessary.
+# Introduce a static readSnapshotsInfo on PSDP which accepts a Directory and returns the snapshots information. IMO it's cleaner, and won't have the performance overhead of opening/closing the IW as before.
+
+I'll post a patch (implementing the 2nd approach) shortly. I'd appreciate any comments.

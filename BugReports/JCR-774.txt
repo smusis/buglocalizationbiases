@@ -1,0 +1,16 @@
+TCK: Test that expect that modifications made by Session1 are automatically visible to Session2
+
+
+
+Description:
+While changes made by session1 are automatically visible to any other session2 with the RI, this is not required by the
+specification. Therefore i would suggest to modify the following test cases:
+
+- NodeUUIDTest.testSaveMovedRefNode()
+- SessionUUIDTest.testSaveMovedRefNode()
+
+-> no patch. sorry.
+
+- NodeTest.testRemoveInvalidItemStateException()
+
+-> see patch.

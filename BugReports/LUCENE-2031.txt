@@ -1,0 +1,7 @@
+Move PatternAnalyzer out of contrib/memory to contrib/analyzers
+
+
+
+Description:
+in the memory index contrib there is a PatternAnalyzer.
+i think this analyzer belongs in contrib/analyzers instead, it has no relation to memory index.

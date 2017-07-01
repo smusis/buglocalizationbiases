@@ -1,0 +1,7 @@
+LazyField use of IndexInput not thread safe
+
+
+
+Description:
+Hypothetical problem: IndexInput.clone() of an active IndexInput could result in a corrupt copy.
+LazyField clones the FieldsReader.fieldsStream, which could be in use via IndexReader.document()

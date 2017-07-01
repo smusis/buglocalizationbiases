@@ -1,0 +1,7 @@
+HTTP Client doesn't support multipart/related content-type
+
+
+
+Description:
+It is not possible to sent data easely as a multipart/related content-type (as 
+discribed in rfc 2387) using Http Client.

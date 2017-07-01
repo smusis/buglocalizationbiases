@@ -1,0 +1,10 @@
+configurable MultiTermQuery TopTermsScoringBooleanRewrite pq size
+
+
+
+Description:
+MultiTermQuery has a TopTermsScoringBooleanRewrite, that uses a priority queue to expand the query to the top-N terms.
+
+currently N is hardcoded at BooleanQuery.getMaxClauseCount(), but it would be nice to be able to set this for top-N MultiTermQueries: e.g. expand a fuzzy query to at most only the 50 closest terms.
+
+at a glance it seems one way would be to expose TopTermsScoringBooleanRewrite (it is private right now) and add a ctor to it, so a MultiTermQuery can instantiate one with its own limit.

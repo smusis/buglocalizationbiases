@@ -1,0 +1,31 @@
+webdav: nullpointer exception while getting the tikka detector 
+
+
+
+Description:
+seems to be introduced by https://issues.apache.org/jira/browse/JCR-2334
+
+05.11.2009 14:28:27 *MARK * servletengine: Servlet threw exception: 
+java.lang.NullPointerException
+	at org.apache.jackrabbit.server.io.DefaultHandler.detect(DefaultHandler.java:668)
+	at org.apache.jackrabbit.server.io.XmlHandler.canExport(XmlHandler.java:152)
+	at org.apache.jackrabbit.server.io.DefaultHandler.canExport(DefaultHandler.java:557)
+	at org.apache.jackrabbit.server.io.PropertyManagerImpl.exportProperties(PropertyManagerImpl.java:58)
+	at org.apache.jackrabbit.webdav.simple.DavResourceImpl.initProperties(DavResourceImpl.java:320)
+	at org.apache.jackrabbit.webdav.simple.DeltaVResourceImpl.initProperties(DeltaVResourceImpl.java:248)
+	at org.apache.jackrabbit.webdav.simple.VersionControlledResourceImpl.initProperties(VersionControlledResourceImpl.java:320)
+	at org.apache.jackrabbit.webdav.simple.DavResourceImpl.getProperties(DavResourceImpl.java:300)
+	at org.apache.jackrabbit.webdav.MultiStatusResponse.<init>(MultiStatusResponse.java:181)
+	at org.apache.jackrabbit.webdav.MultiStatus.addResourceProperties(MultiStatus.java:62)
+	at org.apache.jackrabbit.webdav.server.AbstractWebdavServlet.doPropFind(AbstractWebdavServlet.java:447)
+	at org.apache.jackrabbit.webdav.server.AbstractWebdavServlet.execute(AbstractWebdavServlet.java:235)
+	at com.day.crx.j2ee.CRXDavServlet.service(CRXDavServlet.java:76)
+	at com.day.crx.j2ee.ResourceServlet.service(ResourceServlet.java:97)
+	at javax.servlet.http.HttpServlet.service(HttpServlet.java:802)
+	at com.day.j2ee.servletengine.ServletRuntimeEnvironment.service(ServletRuntimeEnvironment.java:228)
+	at com.day.j2ee.servletengine.RequestDispatcherImpl.doFilter(RequestDispatcherImpl.java:315)
+	at com.day.j2ee.servletengine.RequestDispatcherImpl.service(RequestDispatcherImpl.java:334)
+	at com.day.j2ee.servletengine.RequestDispatcherImpl.service(RequestDispatcherImpl.java:378)
+	at com.day.j2ee.servletengine.ServletHandlerImpl.execute(ServletHandlerImpl.java:313)
+	at com.day.j2ee.servletengine.DefaultThreadPool$DequeueThread.run(DefaultThreadPool.java:134)
+	at java.lang.Thread.run(Thread.java:613)

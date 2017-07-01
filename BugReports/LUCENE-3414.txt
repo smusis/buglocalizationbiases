@@ -1,0 +1,8 @@
+Bring Hunspell for Lucene into analysis module
+
+
+
+Description:
+Some time ago I along with Robert and Uwe, wrote an Stemmer which uses the Hunspell algorithm.  It has the benefit of supporting dictionaries for a wide array of languages.   
+
+It seems to still be being used but has fallen out of date.  I think it would benefit from being inside the analysis module where additional features such as decompounding support, could be added.

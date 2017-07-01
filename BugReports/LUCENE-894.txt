@@ -1,0 +1,12 @@
+Custom build.xml for binary distributions
+
+
+
+Description:
+The binary files of a distribution come with the demo sources
+and a build.xml file. However, the build.xml doesn't work for
+the binary distribution, so it can't be used to build the 
+demos.
+
+This problem was notices the first time when release 2.1 was
+made. Before we ship 2.2 we should fix this.

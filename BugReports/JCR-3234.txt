@@ -1,0 +1,12 @@
+QueryStat getPopularQueries doesn't set the proper position
+
+
+
+Description:
+Embarrassing copy/paste error. I was updating the wrong array and the position info was never returned. 
+
+This made any jmx client to fail with: 
+at javax.management.openmbean.TabularDataSupport.checkValueAndIndex(TabularDataSupport.java:871) 
+at javax.management.openmbean.TabularDataSupport.internalPut(TabularDataSupport.java:331) 
+at javax.management.openmbean.TabularDataSupport.put(TabularDataSupport.java:323) 
+at org.apache.jackrabbit.core.jmx.QueryStatManager.asTabularData(QueryStatManager.java:103)

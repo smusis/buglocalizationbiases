@@ -1,0 +1,15 @@
+o.a.jackrabbit.spi.commons.conversion.NameParser should not assume that namespace URI's are registered
+
+
+
+Description:
+according to JCR 2.0, "3.4.3.4 Parsing Lexical Paths":
+
+<quote>
+An otherwise valid path containing an expanded name with an unregistered 
+namespace URI will always resolve into a valid internal representation of a path 
+</quote>
+
+the current implementation assumes that namespace URIs encountered in 
+expanded form names are registered, otherwise the name is treated as
+qualified name. 

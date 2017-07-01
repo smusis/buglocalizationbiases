@@ -1,0 +1,10 @@
+"reproduce with" on test failure isn't right if you manually overrided anything
+
+
+
+Description:
+If you run a test with eg -Dtests.codec=SimpleText...
+
+If it fails, the "reproduce with" fails to include that manual override (-Dtests.codec=SimpleText), ie it only includes the seed / test class / test method.  So it won't actually reproduce the fail, in general.
+
+We just need to fix the "reproduce with" to add any manual overrides....

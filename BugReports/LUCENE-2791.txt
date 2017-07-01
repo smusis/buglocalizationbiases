@@ -1,0 +1,7 @@
+WindowsDirectory
+
+
+
+Description:
+We can use Windows' overlapped IO to do pread() and avoid the performance problems of SimpleFS/NIOFSDir.
+

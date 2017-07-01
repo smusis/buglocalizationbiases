@@ -1,0 +1,6 @@
+Create jackrabbit-parent
+
+
+
+Description:
+Currently the Jackrabbit components use the top-level multi-module POM as their parent POM for sharing many of the common build settings. However, with the planned mixed component release model for 1.5.x we need to be able to increase the version number of the top-level POM without affecting individual components. Thus it is better if we move the shared settings to an explicit jackrabbit-parent component and keep the top-level POM simply as the multi-module container.

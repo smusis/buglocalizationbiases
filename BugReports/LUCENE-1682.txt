@@ -1,0 +1,10 @@
+unit tests should use private directories
+
+
+
+Description:
+This only affects our unit tests...
+
+I run "ant test" and "ant test-tag" concurrently, but some tests have false failures (eg TestPayloads) because they use a fixed test directory in the filesystem for testing.
+
+I've added a simple method to _TestUtil to get a temp dir, and switched over those tests that I've hit false failures on.

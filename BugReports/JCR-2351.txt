@@ -1,0 +1,6 @@
+Make Authorizable.setProperty more noisy in case of failures
+
+
+
+Description:
+setProperty fails with an unspecific warning, when there's an exception, but it doesn' print any useful information from this exception.

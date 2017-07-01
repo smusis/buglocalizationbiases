@@ -1,0 +1,6 @@
+Node Type Management subproject : Default namespace should be emtpy
+
+
+
+Description:
+When creating node types matching to the class descriptors,  the default namespace should be empty instead of  'ocm'.

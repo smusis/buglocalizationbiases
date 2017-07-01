@@ -1,0 +1,13 @@
+Node.getPath() will corrupt the session
+
+
+
+Description:
+When calling Node.getPath() anytime, no mather if its before or after save, and when deleting nodes, the internal reference points to the wrong nodes. 
+The attached test will always fail with a javax.jcr.RepositoryException: /: cannot remove root node. 
+We have seen other configurations where a node suddenly behaves as the another node that has references and throw a reference exception, and yet other configurations where the node we though we deleted still exists, and another node has now disappeared.
+
+I do not know what causes the bug,a good bet is perhaps the CachingHierarchyManager?. It was not present in Jackrabbit 1.0.1, but was introduced in 1.1.
+
+Have also tested the latest release: 1.2.2, and the bug is still present there.
+

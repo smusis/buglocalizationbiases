@@ -1,0 +1,8 @@
+make collection element names configurable
+
+
+
+Description:
+- add jcrElementName to CollectionDescriptor and Collection annotation
+- make COLLECTION_ELEMENT_NAME protected instead of private
+

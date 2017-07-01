@@ -1,0 +1,14 @@
+LuceneTestCase's check for uncaught exceptions in threads causes collateral damage?
+
+
+
+Description:
+Eg see these failures:
+
+    https://hudson.apache.org/hudson/job/Lucene-3.x/214/
+
+Multiple test methods failed in TestIndexWriterOnDiskFull, but, I think only 1 test had a real failure but somehow our "thread hit exc" tracking incorrectly blames the other 3 cases?
+
+I'm not sure about this but it seems like something like that is going on...
+
+So, one problem is that LuceneTestCase.tearDown fails on any thread excs, but if CMS had also hit a failure, then fails to clear CMS's thread failures.  I think we should just remove CMS's thread failure tracking?  (It's static so it can definitely bleed across tests).  Ie, just rely on LuceneTestCase's tracking.

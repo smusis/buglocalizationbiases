@@ -1,0 +1,28 @@
+PROPFIND response to a request for a property that does not exist reports an empty DAV:prop element  
+
+
+
+Description:
+A PROPFIND response to a request for a property that does not exist reports an empty DAV:prop element:
+
+Request:
+
+<propfind xmlns="DAV:"><prop><doesnotexist/></prop></propfind>
+
+Response:
+
+<D:multistatus xmlns:xml='http://www.w3.org/XML/1998/namespace' xmlns:D='DAV:'>
+  <D:response>
+    <D:href>...</D:href>
+    <D:propstat>
+      <D:prop/>
+      <D:status>HTTP/1.1 200 OK</D:status>
+    </D:propstat>
+    <D:propstat>
+      <D:prop><D:doesnotexist/></D:prop>
+      <D:status>HTTP/1.1 404 Not Found</D:status>
+    </D:propstat>
+  </D:response>
+</D:multistatus>
+
+  

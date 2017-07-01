@@ -1,0 +1,6 @@
+Several final classes have non-overriding protected members
+
+
+
+Description:
+Protected member access in final classes, except where a protected method overrides a superclass's protected method, makes little sense.  The attached patch converts final classes' protected access on fields to private, removes two final classes' unused protected constructors, and converts one final class's protected final method to private.

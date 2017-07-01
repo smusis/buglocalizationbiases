@@ -1,0 +1,41 @@
+ConnectionTimeoutException doesn't releaseConnection()
+
+
+
+Description:
+When a ConnectionTimeoutException is thrown, HttpConnection doesn't seem to
+release the connection. Instead, the connection is properly released if an
+InterruptedIOException is thrown.
+
+This is the pattern I use:
+
+Try {
+     method.execute(...);
+     method.getResponseBodyAsString();
+ } catch (ConnectionTimeoutException cte) {
+     ...
+ } catch (InterruptedIOException ioe) {
+     ...
+ } finally {
+     method.releaseConnection();
+     LOG.info("RELEASED");   
+ }
+
+The following log shows that no actual release is performed, while the message
+"RELEASED" is logged.
+
+10544  DEBUG [MainCheck2] httpclient.HttpConnection - enter
+HttpConnection.isResponseAvailable(int)
+10930  WARN  [MainCheck1] httpclient.HttpConnection - The host
+www.pccomputing.com:80 (or proxy null:-1) did not accept the connection within
+timeout of 3000 milliseconds
+10931  WARN  [MainCheck1] CheckPerformer - Connection Timeout occurred..
+org.apache.commons.httpclient.HttpConnection$ConnectionTimeoutException
+at org.apache.commons.httpclient.HttpConnection.open(HttpConnection.java:659) 
+...
+at PersistenceCheck$MainCheck.run(PersistenceCheck.java:306)
+10932  INFO  [MainCheck1] CheckPerformer - RELEASED
+
+->Here no call to HttpConnection.releaseConnection() is performed. 
+
+Thanks

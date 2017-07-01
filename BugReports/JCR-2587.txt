@@ -1,0 +1,6 @@
+Coarser granularity of node type unregistration notifications
+
+
+
+Description:
+When unregistering multiple node types at a time, the internal notification methods are called separately for each type. This causes some problems as the first notifications triggers the regeneration of the full virtual node type tree, and later notification calls will fail (logging an error) in VirtualNodeTypeStateManager because the removed type is no longer there. A better approach would be to send the names of all the unregistered node types as a collection.

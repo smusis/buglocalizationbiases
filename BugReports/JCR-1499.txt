@@ -1,0 +1,10 @@
+Error logged when repository is shut down
+
+
+
+Description:
+This only happens with the bundle DerbyPersistenceManager.
+
+In DerbyPersistenceManager.close() the embedded derby database is shut down and then super.close() is called. There the ConnectionRecoveryManager is closed, which tries to operate on a connection to the already shut down derby database. The log contains entries like:
+
+25.03.2008 13:49:29 *ERROR* [Thread-5] ConnectionRecoveryManager: failed to close connection, reason: No current connection., state/code: 08003/40000 (ConnectionRecoveryManager.java, line 453)

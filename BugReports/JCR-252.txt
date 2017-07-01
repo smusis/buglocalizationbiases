@@ -1,0 +1,6 @@
+new CachingNamespaceResolver introduces dependency from commons-jackrabbit to commons-collections
+
+
+
+Description:
+new CachingNamespaceResolver introduces dependency from commons-jackrabbit to commons-collections which is undesried

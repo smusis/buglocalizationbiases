@@ -1,0 +1,14 @@
+Support easy pre-authenticated login
+
+
+
+Description:
+Some applications authenticate users themselves and just need to access the repository on behalf of these pre-authenticated users.
+
+Examples of such pre-authentications include SSO solutions or web applications using a web-based authentication protocol not easily implementable in a JAAS LoginModule, for example OpenID or similar.
+
+In such situations a password may not be provided in SimpleCredentials and thus regular login with user name and password is not possible.
+
+Therefore I propose the enhancement of the AbstractLoginModule to allow for setting a specific attribute in the SimpleCredentials attribute map. If this attribute is set, authentication and login succeeds and a session for the user named in the SimpleCredentials is created.
+
+As a starter we might just check for the presence of the attribute.

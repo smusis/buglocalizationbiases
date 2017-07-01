@@ -1,0 +1,22 @@
+IndexOutOfBoundsException at ShingleMatrixFilter's Iterator#hasNext method
+
+
+
+Description:
+I tried to use the ShingleMatrixFilter within Solr. To test the functionality etc., I first used the built-in field analysis view.The filter was configured to be used only at query time analysis with "_" as spacer character and a min. and max. shingle size of 2. The generation of the shingles for query strings with this filter seems to work at this view, but by turn on the highlighting of indexed terms that will match the query terms, the exception was thrown. Also, each time I tried to query the index the exception was immediately thrown.
+
+Stacktrace:
+{code}
+java.lang.IndexOutOfBoundsException: Index: 1, Size: 1
+	at java.util.ArrayList.RangeCheck(Unknown Source)
+	at java.util.ArrayList.get(Unknown Source)
+	at org.apache.lucene.analysis.shingle.ShingleMatrixFilter$Matrix$1.hasNext(ShingleMatrixFilter.java:729)
+	at org.apache.lucene.analysis.shingle.ShingleMatrixFilter.next(ShingleMatrixFilter.java:380)
+	at org.apache.lucene.analysis.StopFilter.next(StopFilter.java:120)
+	at org.apache.lucene.analysis.TokenStream.next(TokenStream.java:47)
+	...
+{code}
+
+Within the hasNext method, there is the {{s-1}}-th Column from the ArrayList {{columns}} requested, but there isn't this entry within columns.
+
+I created a patch that checks, if {{columns}} contains enough entries.

@@ -1,0 +1,37 @@
+Resource Leakage when loading keystore in AuthSSLProtocolSocketFactory
+
+
+
+Description:
+Opened stream not closed after keystore is loaded, resulting in resource leakage:
+
+private static KeyStore createKeyStore(final URL url, final String password) 
+        throws KeyStoreException, NoSuchAlgorithmException, CertificateException, IOException
+    {
+        if (url == null) {
+            throw new IllegalArgumentException("Keystore url may not be null");
+        }
+        LOG.debug("Initializing key store");
+        KeyStore keystore  = KeyStore.getInstance("jks");
+        keystore.load(url.openStream(), password != null ? password.toCharArray(): null);
+        return keystore;
+    }
+
+Should be changed to something like:
+
+private static KeyStore createKeyStore(final URL url, final String password) 
+        throws KeyStoreException, NoSuchAlgorithmException, CertificateException, IOException
+    {
+        if (url == null) {
+            throw new IllegalArgumentException("Keystore url may not be null");
+        }
+        LOG.debug("Initializing key store");
+        KeyStore keystore  = KeyStore.getInstance("jks");
+        InputStream is = ulr.openStream();
+        try {
+          keystore.load(is, password != null ? password.toCharArray(): null);
+        } finally {
+           is.close();
+        }
+        return keystore;
+    }

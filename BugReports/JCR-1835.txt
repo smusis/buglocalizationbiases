@@ -1,0 +1,6 @@
+Database Data Store: support database type 'mssql'
+
+
+
+Description:
+MS SQL Server is referred to with the schema name 'mssql' in the persistence managers and the cluster journal. For the DbDataStore it is called 'sqlserver'. This is not consistent.

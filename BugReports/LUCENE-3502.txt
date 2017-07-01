@@ -1,0 +1,10 @@
+Packed ints: move .getArray into Reader API
+
+
+
+Description:
+This is a simple code cleanup... it's messy that a consumer of
+PackedInts.Reader must check whether the impl is Direct8/16/32/64 in
+order to get an array; it's better to move up the .getArray into the
+Reader interface and then make the DirectN impls package private.
+

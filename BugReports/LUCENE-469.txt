@@ -1,0 +1,28 @@
+(Parallel-)MultiSearcher: using Sort object changes the scores
+
+
+
+Description:
+Example: 
+Hits hits=multiSearcher.search(query);
+returns different scores for some documents than
+Hits hits=multiSearcher.search(query, Sort.RELEVANCE);
+(both for MultiSearcher and ParallelMultiSearcher)
+
+The documents returned will be the same and in the same order, but the scores in the second case will seem out of order.
+
+Inspecting the Explanation objects shows that the scores themselves are ok, but there's a bug in the normalization of the scores.
+
+The document with the highest score should have score 1.0, so all document scores are divided by the highest score.  (Assuming the highest score was>1.0)
+
+However, for MultiSearcher and ParallelMultiSearcher, this normalization factor is applied *per index*, before merging the results together (the merge itself is ok though).
+
+An example: if you use
+Hits hits=multiSearcher.search(query, Sort.RELEVANCE);
+for a MultiSearcher with two subsearchers, the first document will have score 1.0.
+The next documents from the same subsearcher will have decreasing scores.
+The first document from the other subsearcher will however have score 1.0 again !
+
+The same applies for other Sort objects, but it is less visible.
+
+I will post a TestCase demonstrating the problem and suggested patches to solve it in a moment...

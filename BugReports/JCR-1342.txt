@@ -1,0 +1,6 @@
+Create OSGi Bundle Manifest Headers
+
+
+
+Description:
+To be able to easily uses libraries from Jackrabbit inside an OSGi framework, for example in Apache Sling, it would be very helpfull if some of the Jackrabbit libraries include OSGi Bundle Manifest headers. It will of course not be possible to define such manifest header definition for all libraries, but jackrabbit-api, jackrabbit-jcr-commons and jackrabbit-jcr-rmi are certainly good candidates.

@@ -1,0 +1,25 @@
+TransientRepository: application doesn't exit quickly
+
+
+
+Description:
+When using the TransientRepository, the repository should be closed when the last session logs out. This works, but in some cases there is a very long (60 seconds) delay between closing the last session and closing the repository.
+
+Test case:
+
+    public static void main(String[] args) throws Exception {
+        Repository repository = new TransientRepository();
+        Session session = repository.login(new SimpleCredentials("", new char[0]));
+        session.getRootNode().setProperty("a", "0");
+        session.save(); // very quick logout without this line
+        session.logout();
+        System.out.println("Logout...");
+        final long time = System.currentTimeMillis();
+        Runtime.getRuntime().addShutdownHook(new Thread() {
+            public void run() {
+                System.out.println("End after: " + (System.currentTimeMillis() - time));
+            }
+        });
+    }
+
+

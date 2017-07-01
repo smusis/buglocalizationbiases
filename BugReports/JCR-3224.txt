@@ -1,0 +1,21 @@
+SystemSession#createSession should return SessionImpl again
+
+
+
+Description:
+a long with the fix of  JCR-2890 (revision 1089436) the behavior of SystemSession#createSession has changed to
+return a SystemSession instead of SessionImpl as it used to be.
+
+while i basically consider this move to be correct and the better way of dealing with that session-cloning
+mechanism as it prevents the user of this method to convert a SystemSession into a regular session
+for extra writing operations (such as e.g. access control editing that is not supported with the
+system session to prevent chicken-egg-problems on repo startup).
+
+therefore i would like to revert that change for the 2.4 release in order to prevent regressions.
+
+for the time after 2.4 i would however suggest that we finally take the time to clearly define the
+usages, abilities and responsibilities of the system session and also review how and where we
+expose them to the individual 'modules' of jackrabbit core..  i started working on this but decided
+that this is definitely too risky for 2.4 whereas reverting the change mentioned above should
+imo impose very limited risk as all usages of those sessions i am aware of use them as "Session"
+or "SesssionImpl", most of them not even having access to the SystemSession class.

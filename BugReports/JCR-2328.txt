@@ -1,0 +1,28 @@
+PropertyValue constraint fails with implicit selectorName using JCR-SQL2
+
+
+
+Description:
+Compiling a JCR-SQL2 query involving a PropertyValue constraint using a qualified property name fails if selectorName is not explicitly defined.
+
+The following query works:
+
+SELECT * FROM [my:thing] AS thing WHERE thing.[my:property] = 'abc'
+
+the following doesn't:
+
+SELECT * FROM [my:thing] AS thing WHERE [my:property] = 'abc'
+
+(the "AS thing" is unecessary here, I can leave it out with the same result).
+
+The second query results in an:
+javax.jcr.query.InvalidQueryException: Query:
+SELECT * FROM [my:thing] AS thing WHERE [(*)my:property] = 'abc';
+expected: NOT, (
+
+The spec final draft however states:
+
+PropertyValue ::= [selectorName'.'] propertyName
+   /* If only one selector exists in this query,
+      explicit specification of the selectorName is
+      optional */

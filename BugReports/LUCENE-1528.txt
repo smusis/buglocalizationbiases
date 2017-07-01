@@ -1,0 +1,16 @@
+Add support for Ideographic Space to the queryparser - also know as fullwith space and wide-space
+
+
+
+Description:
+The Ideographic Space is a space character that is as wide as a normal CJK character cell.
+It is also known as wide-space or fullwith space.This type of space is used in CJK languages.
+
+This patch adds support for the wide space, making the queryparser component more friendly
+to queries that contain CJK text.
+
+Reference:
+'http://en.wikipedia.org/wiki/Space_(punctuation)' - see Table of spaces, char U+3000.
+
+I also added a new testcase that fails before the patch.
+After the patch is applied all junits pass.

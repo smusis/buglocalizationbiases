@@ -1,0 +1,22 @@
+Provide a clean mechanism to attatch user define attributes to connections
+
+
+
+Description:
+It would be nice to have a way to attach user defined attributes to a connection.
+Ideally it'd be nice if such support could be added to HttpClientConnection, but understandably this may not be possible due to back-compatibility issues.
+So, we could have something like HttpConnectionContext perhaps (or similar) with:
+
+HttpConnectionContext#setAttribute(String name, Object value)
+Object HttpConnectionContext#getAttribute(String name)
+
+This would be made available in the HttpContext of a request (like the connection is today):
+
+HttpConnectionContext connectionContext = (HttpConnectionContext) httpContext.getAttribute(ExecutionContext.HTTP_CONNECTION_CONTEXT);
+
+This would make a few things much cleaner to implement than they are today: The most obvious being my current use case of wanting connection isolated cookies.
+
+Currently to achieve this goal we need to provide custom client connection + connection operator + connection manager implementations. Then there is no clean way to currently obtain the actual connection instance created by a custom operator in the HttpContext: As it's wrapped by the connection pool and #getWrappedConnection is protected - so we need to resort to reflection in interceptors.
+
+Providing a clean mechanism for attaching user defined attributes to a connection instance as described above would make such implementations far far simpler.
+

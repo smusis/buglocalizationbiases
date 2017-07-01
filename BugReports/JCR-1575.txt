@@ -1,0 +1,6 @@
+[PATCH] cleanup unwanted stream closing that isn't used
+
+
+
+Description:
+Due to refactoring, a stream is being closed that is never used. Isn't harmful, just is cruft.

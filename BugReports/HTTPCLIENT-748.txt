@@ -1,0 +1,12 @@
+make SchemeRegistry friendlier for DI frameworks
+
+
+
+Description:
+Scheme's in SchemeRegistry are registered via 'register' method, but there is no way to pass it a set of schemes so those can be registered in one step. This way it can be externally configured and 'spring/guice friendly'... something like this is sufficient...
+
+public void setSchemes (final Set <Scheme> schemes) {
+    for (final Scheme scheme : schemes) 
+        register(scheme);    
+}
+

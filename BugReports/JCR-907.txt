@@ -1,0 +1,6 @@
+Create HTML excerpt provider
+
+
+
+Description:
+Jackrabbit should have a built in HTML excerpt because web applications usually prefer HTML rather than XML.

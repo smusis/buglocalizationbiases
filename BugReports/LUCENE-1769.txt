@@ -1,0 +1,20 @@
+Fix wrong clover analysis because of backwards-tests, upgrade clover to 2.6.3 or better
+
+
+
+Description:
+This is a followup for [http://www.lucidimagination.com/search/document/6248d6eafbe10ef4/build_failed_in_hudson_lucene_trunk_902]
+
+The problem with clover running on hudson is, that it does not instrument all tests ran. The autodetection of clover 1.x is not able to find out which files are the correct tests and only instruments the backwards test. Because of this, the current coverage report is only from the backwards tests running against the current Lucene JAR.
+
+You can see this, if you install clover and start the tests. During test-core no clover data is added to the db, only when backwards-tests begin, new files are created in the clover db folder.
+
+Clover 2.x supports a new ant task, <testsources> that can be used to specify the files, that are the tests. It works here locally with clover 2.4.3 and produces a really nice coverage report, also linking with test files work, it tells which tests failed and so on.
+
+I will attach a patch, that changes common-build.xml to the new clover version (other initialization resource) and tells clover where to find the tests (using the test folder include/exclude properties).
+
+One problem with the current patch: It does *not* instrument the backwards branch, so you see only coverage of the core/contrib tests. Getting the coverage also from the backwards tests is not easy possible because of two things:
+- the tag test dir is not easy to find out and add to <testsources> element (there may be only one of them)
+- the test names in BW branch are identical to the trunk tests. This completely corrupts the linkage between tests and code in the coverage report.
+
+In principle the best would be to generate a second coverage report for the backwards branch with a separate clover DB. The attached patch does not instrument the bw branch, it only does trunk tests.

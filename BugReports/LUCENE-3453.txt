@@ -1,0 +1,8 @@
+remove IndexDocValuesField
+
+
+
+Description:
+Its confusing how we present CSF functionality to the user, its actually not a "field" but an "attribute" of a field like  STORED or INDEXED.
+
+Otherwise, its really hard to think about CSF because there is a mismatch between the APIs and the index format.

@@ -1,0 +1,30 @@
+PathNotFoundException but item exists
+
+
+
+Description:
+The following test case (for jcr2spi) throws a PathNotFoundException for an item which exists. It does not throw if the marked line below is commented out. 
+
+public void testBug24687() throws RepositoryException {
+    String parentPath = testNode.getPath();
+    String folderName = "folder_" + System.currentTimeMillis();
+    Session session = getHelper().getReadWriteSession();
+
+    Session session2 = getHelper().getReadOnlySession();
+    session2.getItem(parentPath);  // removing this line makes the failure go away
+
+    Node parent = (Node) session.getItem(parentPath);
+    Node toDelete = parent.addNode(folderName, "nt:folder");
+    parent.save();
+
+    try {
+        Item item2 = session2.getItem(parentPath + "/" + folderName);  // wrongly throws PathNotFoundException
+        assertEquals(parentPath + "/" + folderName, item2.getPath());
+    }
+    finally {
+        toDelete.remove();
+        parent.save();
+        assertFalse(parent.hasNode(folderName));
+    }
+}
+

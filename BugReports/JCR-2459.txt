@@ -1,0 +1,6 @@
+Improved error reporting from JcrUtils.getRepository
+
+
+
+Description:
+The service provider mechanism and the null return value used by the RepositoryFactory API makes it a bit difficult to troubleshoot cases where a repository can not be accessed. It would be helpful if the JcrUtils.getRepository methods reported as accurate failure information as possible in case the requested repository is not found.

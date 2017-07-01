@@ -1,0 +1,92 @@
+HttpMethodBase: Port mismatch in URL for redirect to absolute location
+
+
+
+Description:
+The CVS version of latka was failing a test ( $ ant test, not maven ), when
+using the CVS version of httpclient. The message was
+
+ [java] WARN  [main] org.apache.commons.httpclient.HttpMethod
+      - Redirect from port 80 to -1 is not supported: 21 Sep 2002 00:54:32,098
+
+The request preceding this was:
+
+ [java] DEBUG [main] httpclient.wire - >> "GET /commons HTTP/1.1
+     [java] " [\r\n]: 21 Sep 2002 00:54:31,262
+     [java] DEBUG [main] org.apache.commons.httpclient.HttpMethod - enter
+[java] DEBUG [main] httpclient.wire - >> "Host: jakarta.apache.org
+     [java] " [\r\n]: 21 Sep 2002 00:54:31,441
+     [java] DEBUG [main] httpclient.wire - >> "User-Agent: Jakarta
+Commons-HttpClient/2.0M1
+ [java] " [\r\n]: 21 Sep 2002 00:54:31,442
+
+And the response was:
+
+ [java] DEBUG [main] org.apache.commons.httpclient.HttpMethod - enter
+HttpMethodBase.readStatusLine(HttpState, HttpConnection): 21 Sep 2002 00:54:31,444
+     [java] DEBUG [main] org.apache.commons.httpclient.HttpConnection - enter
+HttpConnection.readLine(): 21 Sep 2002 00:54:31,444
+[java] DEBUG [main] httpclient.wire - << "HTTP/1.1 301 Moved Permanently"
+[\r\n]: 21 Sep 2002 00:54:32,080
+     [java] DEBUG [main] org.apache.commons.httpclient.HttpMethod - enter
+HttpMethodBase.readResponseHeaders(HttpState,HttpConnection): 21 Sep 2002
+00:54:32,086
+     [java] DEBUG [main] org.apache.commons.httpclient.HttpConnection - enter
+HttpConnection.readLine(): 21 Sep 2002 00:54:32,087
+[java] DEBUG [main] httpclient.wire - << "Date: Fri, 20 Sep 2002 23:54:30 GMT"
+[\r\n]: 21 Sep 2002 00:54:32,088
+     [java] DEBUG [main] org.apache.commons.httpclient.HttpConnection - enter
+HttpConnection.readLine(): 21 Sep 2002 00:54:32,089
+[java] DEBUG [main] httpclient.wire - << "Server: Apache/2.0.42 (Unix)" [\r\n]:
+21 Sep 2002 00:54:32,090
+     [java] DEBUG [main] org.apache.commons.httpclient.HttpConnection - enter
+HttpConnection.readLine(): 21 Sep 2002 00:54:32,090
+[java] DEBUG [main] httpclient.wire - << "Location:
+http://jakarta.apache.org/commons/" [\r\n]: 21 Sep 2002 00:54:32,091
+     [java] DEBUG [main] org.apache.commons.httpclient.HttpConnection - enter
+HttpConnection.readLine(): 21 Sep 2002 00:54:32,091
+[java] DEBUG [main] httpclient.wire - << "Content-Length: 319" [\r\n]: 21 Sep
+2002 00:54:32,091
+     [java] DEBUG [main] org.apache.commons.httpclient.HttpConnection - enter
+HttpConnection.readLine(): 21 Sep 2002 00:54:32,092
+[java] DEBUG [main] httpclient.wire - << "Content-Type: text/html;
+charset=iso-8859-1" [\r\n]: 21 Sep 2002 00:54:32,092
+     [java] DEBUG [main] org.apache.commons.httpclient.HttpConnection - enter
+HttpConnection.readLine(): 21 Sep 2002 00:54:32,092
+[java] DEBUG [main] org.apache.commons.httpclient.HttpMethod - enter
+HttpMethodBase.processResponseHeaders(HttpState, HttpConnection): 21 Sep 2002
+00:54:32,093
+     [java] DEBUG [main] org.apache.commons.httpclient.methods.GetMethod - enter
+GetMethod.readResponseBody(HttpState, HttpConnection): 21 Sep 2002 00:54:32,093
+     [java] DEBUG [main] org.apache.commons.httpclient.HttpMethod - enter
+HttpMethodBase.readResponseBody(HttpState, HttpConnection): 21 Sep 2002 00:54:32,093
+     [java] DEBUG [main] org.apache.commons.httpclient.HttpMethod - enter
+HttpMethodBase.readResponseBody(HttpState, HttpConnection): 21 Sep 2002 00:54:32,094
+     [java] DEBUG [main] org.apache.commons.httpclient.HttpConnection - enter
+HttpConnection.getRequestOutputStream(HttpMethod): 21 Sep 2002 00:54:32,094
+     [java] DEBUG [main] org.apache.commons.httpclient.HttpMethod - enter
+writeRemainingRequestBody(HttpState, HttpConnection): 21 Sep 2002 00:54:32,096
+     [java] DEBUG [main] org.apache.commons.httpclient.HttpMethod - Redirect
+required: 21 Sep 2002 00:54:32,097
+     [java] DEBUG [main] org.apache.commons.httpclient.HttpMethod - Redirect
+requested to location 'http://jakarta.apache.org/commons/': 21 Sep 2002 00:54:32,097
+     [java] WARN  [main] org.apache.commons.httpclient.HttpMethod - Redirect
+from port 80 to -1 is not supported: 21 Sep 2002 00:54:32,098
+
+
+The problem appears to be in this section of code from HttpMethodBase
+
+if (url == null) {
+    //try to construct the new url based on the current url
+    try {
+        URL currentUrl = new URL(conn.getProtocol(),
+                                 conn.getHost(),
+                                 conn.getPort(), getPath());
+        url = new URL(currentUrl, location);   <--- is this inheriting the port?
+    } catch (Exception ex) {
+        log.error("Redirected location '"
+                  + locationHeader.getValue()
+                  + "' is malformed");
+        return statusCode;
+    }
+}

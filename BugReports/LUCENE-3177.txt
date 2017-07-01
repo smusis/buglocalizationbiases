@@ -1,0 +1,28 @@
+Decouple indexer from Document/Field impls
+
+
+
+Description:
+I think we should define minimal iterator interfaces,
+IndexableDocument/Field, that indexer requires to index documents.
+
+Indexer would consume only these bare minimum interfaces, not the
+concrete Document/Field/FieldType classes from oal.document package.
+
+Then, the Document/Field/FieldType hierarchy is one concrete impl of
+these interfaces. Apps are free to make their own impls as well.
+Maybe eventually we make another impl that enforces a global schema,
+eg factored out of Solr's impl.
+
+I think this frees design pressure on our Document/Field/FieldType
+hierarchy, ie, these classes are free to become concrete
+fully-featured "user-space" classes with all sorts of friendly sugar
+APIs for adding/removing fields, getting/setting values, types, etc.,
+but they don't need substantial extensibility/hierarchy. Ie, the
+extensibility point shifts to IndexableDocument/Field interface.
+
+I think this means we can collapse the three classes we now have for a
+Field (Fieldable/AbstracField/Field) down to a single concrete class
+(well, except for LUCENE-2308 where we want to break out dedicated
+classes for different field types...).
+

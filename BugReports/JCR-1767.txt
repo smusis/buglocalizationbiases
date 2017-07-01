@@ -1,0 +1,26 @@
+XML serialization in JDK 1.4 broken (mostly for WebDAV)
+
+
+
+Description:
+WebDAV uses XmlRequestEntity for serializing XML, which in turn uses org.apache.jackrabbit.commons.xml.SerializingContentHandler to work around the JDK 1.4 problem (serializing in absence of explicit namespace declarations).
+
+The following test fails under JDK 1.4, but passed with newer JDKs:
+
+    public void testXmlSerialization() throws ParserConfigurationException, IOException, SAXException {
+        
+        DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+        dbf.setNamespaceAware(true);
+        DocumentBuilder db = dbf.newDocumentBuilder();
+        
+        Document doc = db.newDocument();
+        doc.appendChild(doc.createElementNS("DAV:", "propfind"));
+        
+        XmlRequestEntity xmlent = new XmlRequestEntity(doc);
+        ByteArrayOutputStream bos = new ByteArrayOutputStream();
+        xmlent.writeRequest(bos);
+        
+        Document doc2 = db.parse(new ByteArrayInputStream(bos.toByteArray()));
+        Element docelem = doc2.getDocumentElement();
+        assertEquals("DAV:", docelem.getNamespaceURI());
+    }

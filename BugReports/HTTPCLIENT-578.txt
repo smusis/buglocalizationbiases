@@ -1,0 +1,42 @@
+literal plus (+) character in path components of HttpURL is not preserved.
+
+
+
+Description:
+When a literal plus character is included in the path component of an URL, it is
+not encoded, but get decoded during getPath() to a space.
+
+Reproducible with the following:
+
+HttpURL httpURL = new HttpURL("http://localhost/test+test");
+System.out.println(httpURL.getPath());
+
+Output:
+"test test"
+
+The following path fixes the issue (This patch does not appear to break anything
+ else):
+
+Patch against SVN Repo:
+URL: http://svn.apache.org/repos/asf/jakarta/commons/proper/httpclient/trunk
+Repository UUID: 13f79535-47bb-0310-9956-ffa450edef68
+Revision: 405803
+
+Index: src/java/org/apache/commons/httpclient/URI.java
+===================================================================
+--- src/java/org/apache/commons/httpclient/URI.java (revision 405803)
++++ src/java/org/apache/commons/httpclient/URI.java (working copy)
+@@ -1552,6 +1552,7 @@
+         allowed_abs_path.or(abs_path);
+         // allowed_abs_path.set('/');  // aleady included
+         allowed_abs_path.andNot(percent);
++        allowed_abs_path.clear('+');
+     }
+
+
+@@ -1563,6 +1564,7 @@
+     static {
+         allowed_rel_path.or(rel_path);
+         allowed_rel_path.clear('%');
++        allowed_rel_path.clear('+');
+     }

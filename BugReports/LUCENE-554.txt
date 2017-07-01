@@ -1,0 +1,16 @@
+Possible index corruption if crashing while replacing segments file
+
+
+
+Description:
+Lucene's indexing is expected to be reasonably tolerant to computer crashes or the indexing process being killed. By reasonably tolerant, I mean that it is ok to lose a few documents (those currently buffered in memory), or have to repeat some work (e.g., a long merge that was in progress) - but it is not ok for the entire index, or large chunks of it, to become irreversebly corrupt.
+
+The fact that Lucene works by repeated merging of several small segments into a new larger segments, solves most of the crash problems, because until the new segment is fully created, the old segments are still there and fully functional. However, one possibility for corruption remains in the segment replacement code:
+
+After a new segment is created, a new segments file is written as a new file "segments.new", and then this file is renamed to "segments". The problem is that this renaming is done using Directory.renameFile(), and FSDirectory.renameFile is *NOT* atomic: it first deletes the old file, and then renames the new file. A crash between these stages (or perhaps during Java's rename which also isn't guaranteed to be atomic) will potentially leave us without a working "segments" file.
+
+I will post here a patch for this bug shortly.
+
+The patch will also include a change to Directory.renameFile()'s Javadoc. It currently claims "This replacement should be atomic.", which is false in FSDirectory. Instead it should make a weaker claim, for example
+   "This replacement does not have to be atomic, but must at least obey a weaker guarantee: at any time during the replacement, either the "from" file is still available, or the "to" file is available with either the new or old content."
+(or, we can just drop the guaranteee altogether, like Java's File.renameTo() provides no atomic-ness guarantees).

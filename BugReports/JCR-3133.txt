@@ -1,0 +1,6 @@
+Query Stats should use the TimeSeries mechanism
+
+
+
+Description:
+Refactor the Query Stats to use TimeSeries for the average query duration.

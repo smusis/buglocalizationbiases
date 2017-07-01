@@ -1,0 +1,25 @@
+MultiIndexDocValues pretends it can merge sorted sources
+
+
+
+Description:
+Nightly build hit this failure:
+
+{noformat}
+ant test-core -Dtestcase=TestSort -Dtestmethod=testReverseSort -Dtests.seed=791b126576b0cfab:-48895c7243ecc5d0:743c683d1c9f7768 -Dtests.multiplier=3 -Dargs="-Dfile.encoding=ISO8859-1"
+
+    [junit] Testcase: testReverseSort(org.apache.lucene.search.TestSort):	Caused an ERROR
+    [junit] expected:<[CEGIA]> but was:<[ACEGI]>
+    [junit] 	at org.apache.lucene.search.TestSort.assertMatches(TestSort.java:1248)
+    [junit] 	at org.apache.lucene.search.TestSort.assertMatches(TestSort.java:1216)
+    [junit] 	at org.apache.lucene.search.TestSort.testReverseSort(TestSort.java:759)
+    [junit] 	at org.apache.lucene.util.LuceneTestCase$3$1.evaluate(LuceneTestCase.java:523)
+    [junit] 	at org.apache.lucene.util.LuceneTestCaseRunner.runChild(LuceneTestCaseRunner.java:149)
+    [junit] 	at org.apache.lucene.util.LuceneTestCaseRunner.runChild(LuceneTestCaseRunner.java:51)
+{noformat}
+
+It's happening in the test for reverse-sort of a string field with DocValues, when the test had gotten SlowMultiReaderWrapper.
+
+I committed a fix to the test to avoid testing this case, but we need a better fix to the underlying bug.
+
+MultiIndexDocValues cannot merge sorted sources (I think?), yet somehow it's pretending it can (in the above test, the three subs had BYTES_FIXED_SORTED type, and the TypePromoter happily claims to merge these to BYTES_FIXED_SORTED; I think MultiIndexDocValues should return null for the sorted source in this case?

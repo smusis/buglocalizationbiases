@@ -1,0 +1,31 @@
+customize handling of 302 redirects
+
+
+
+Description:
+I tried this with both the beta2 2.0 release, and the nightly build.  The
+following code snippet describes what I am trying to do:
+
+httpClient.getHostConfiguration().setHost(sHost, 80, "http");
+HttpMethod method=null;
+if (sMethod.indexOf("POST")!=-1) {
+     method=new PostMethod(sURLInfo);
+} else {
+     method=new GetMethod(sURLInfo);
+}
+method.setFollowRedirects(true);
+httpClient.executeMethod(method);
+
+After this code executes, the "getFollowRedirects" method still returns false,
+and any redirects which are sent by the webserver are not followed.  As a
+temporary workaround, since I want all redirects followed, I commented out the
+following code in the HttpMethodBase class in the "processRedirectResponse" method:
+
+/*if (!getFollowRedirects()) {
+     LOG.info("Redirect requested but followRedirects is "
+     + "disabled");
+     return false;
+}*/
+
+If this bug has already been reported, I apologize...I searched for and found
+nothing related to this issue.

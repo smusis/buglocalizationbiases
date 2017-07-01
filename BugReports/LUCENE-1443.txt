@@ -1,0 +1,6 @@
+Performance improvement in OpenBitSetDISI.inPlaceAnd()
+
+
+
+Description:
+

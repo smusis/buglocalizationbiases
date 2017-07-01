@@ -1,0 +1,6 @@
+Remove Lucene core's FunctionQuery impls
+
+
+
+Description:
+As part of the consolidation of FunctionQuerys, we want to remove Lucene core's impls.  Included in this work, we will make sure that all the functionality provided by the core impls is also provided by the new module.  Any tests will be ported across too, to increase the test coverage.

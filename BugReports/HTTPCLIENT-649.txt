@@ -1,0 +1,11 @@
+Support multiple proxies
+
+
+
+Description:
+HttpClient supports one proxy currently.
+Our requirement is to suppport more than one proxy. We may need to connect more than one proxies before connects to target resource. 
+I found that HttpMethodDirector creates tunnelled socket and there is no easy way to plugin our custom HttpMethodDirector class with HttpClient other than extending HttpClient to override "public int executeMethod(HostConfiguration hostconfig, final HttpMethod method, final HttpState state" method.
+
+
+

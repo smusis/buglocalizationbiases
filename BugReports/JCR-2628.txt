@@ -1,0 +1,6 @@
+registerNodeType is not implemented in the CLI
+
+
+
+Description:
+registernodetype is listed in the standalone client but not implemented. 

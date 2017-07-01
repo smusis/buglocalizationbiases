@@ -1,0 +1,6 @@
+deprecated method used in fieldsReader / setOmitTf()
+
+
+
+Description:
+setOmitTf(boolean) is deprecated and should not be used by core classes. One place where it appears is FieldsReader , this patch fixes it. It was necessary to change Fieldable to AbstractField at two places, only local variables.   

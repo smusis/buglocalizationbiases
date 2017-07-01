@@ -1,0 +1,13 @@
+Add MergePolicy to IndexWriterConfig
+
+
+
+Description:
+Now that IndexWriterConfig is in place, I'd like to move MergePolicy to it as well. The change is not straightforward and so I've kept it for a separate issue. MergePolicy requires in its ctor an IndexWriter, however none can be passed to it before an IndexWriter actually exists. And today IW may create an MP just for it to be overridden by the application one line afterwards. I don't want to make iw member of MP non-final, or settable by extending classes, however it needs to remain protected so they can access it directly. So the proposed changes are:
+
+* Add a SetOnce object (to o.a.l.util), or Immutable, which can only be set once (hence its name). It'll have the signature SetOnce<T> w/ *synchronized set<T>* and *T get()*. T will be declared volatile, so that get() won't be synchronized.
+* MP will define a *protected final SetOnce<IndexWriter> writer* instead of the current writer. *NOTE: this is a bw break*. any suggestions are welcomed.
+* MP will offer a public default ctor, together with a set(IndexWriter).
+* IndexWriter will set itself on MP using set(this). Note that if set will be called more than once, it will throw an exception (AlreadySetException - or does someone have a better suggestion, preferably an already existing Java exception?).
+
+That's the core idea. I'd like to post a patch soon, so I'd appreciate your review and proposals.

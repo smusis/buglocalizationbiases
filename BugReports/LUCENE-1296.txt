@@ -1,0 +1,6 @@
+Allow use of compact DocIdSet in CachingWrapperFilter
+
+
+
+Description:
+Extends CachingWrapperFilter with a protected method to determine the DocIdSet to be cached.

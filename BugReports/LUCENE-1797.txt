@@ -1,0 +1,6 @@
+new QueryParser over-increment position for MultiPhraseQuery
+
+
+
+Description:
+If the new QP is parsing a phrase, and when the analyzer runs on the text within the phrase it produces some tokens with posIncr=0, a MultiPhraseQuery is produced.  But, the positions of the added terms are over-incremented, and don't match what the current QueryParser does.

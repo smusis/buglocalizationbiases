@@ -1,0 +1,6 @@
+Improve LuceneTestCase javadocs
+
+
+
+Description:
+Now that the Lucene test-framework javadocs will be published, they should get some attention.

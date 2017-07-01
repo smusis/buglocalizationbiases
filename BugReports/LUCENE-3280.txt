@@ -1,0 +1,16 @@
+Add new bit set impl for caching filters
+
+
+
+Description:
+I think OpenBitSet is trying to satisfy too many audiences, and it's
+confusing/error-proned as a result.  It has int/long variants of many
+methods.  Some methods require in-bound access, others don't; of those
+others, some methods auto-grow the bits, some don't.  OpenBitSet
+doesn't always know its numBits.
+
+I'd like to factor out a more "focused" bit set impl whose primary
+target usage is a cached Lucene Filter, ie a bit set indexed by docID
+(int, not long) whose size is known and fixed up front (backed by
+final long[]) and is always accessed in-bounds.
+

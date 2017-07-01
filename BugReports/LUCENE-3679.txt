@@ -1,0 +1,6 @@
+Replace IndexReader.getFieldNames with IndexReader.getFieldInfos
+
+
+
+Description:
+

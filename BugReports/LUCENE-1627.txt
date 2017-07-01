@@ -1,0 +1,11 @@
+SpellChecker has no "close" method
+
+
+
+Description:
+SpellChecker has no close method ... which means there is no way to force it to close the IndexSearcher it maintains when you are done using the SpellChecker.  (a quick skim of IndexSearcher doesn't even suggest there is a finalizer self closing in the event of GC)
+
+http://www.nabble.com/SpellChecker-locks-folder-to23171980.html#a23171980
+
+A hackish work around for people who want to force SpellChecker to close an IndexSearcher opened against a directory they care about doing something with... 
+{code}yourSpellChecker.setSpellIndex(new RamDirecotry()){code}

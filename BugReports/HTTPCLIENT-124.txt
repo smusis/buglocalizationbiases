@@ -1,0 +1,20 @@
+MultipartPost closes input stream
+
+
+
+Description:
+This is something of a collection of issues that are all interrelated.
+
+1. MultipartPost calls close on the outputstream it retrieved from 
+HttpConnection which causes an exception to be thrown later on.  This call 
+should be replaced with a call to flush().
+
+2. The MultipartPost classes do not have any logging in them.  We should add 
+trace statements at a minimum.
+
+3. new FilePart(String, File) throws a null pointer exception.
+
+4. The tests in TestPartsNoHost are broken.
+
+I'll attach patches for these fixes in a moment, broken down as much as 
+possible.

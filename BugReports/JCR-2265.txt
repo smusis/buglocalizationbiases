@@ -1,0 +1,6 @@
+AbstractReadableRepositoryService should pass credentials to createSessionInfo
+
+
+
+Description:
+Currently AbstractReadableRepositoryService.obtain() calls checkCredentials() followed by createSessionInfo() where it only passes the userId rather than the credentials. In many cases an implementation will need the credentials to create the SessionInfo. 

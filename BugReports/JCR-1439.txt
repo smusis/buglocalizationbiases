@@ -1,0 +1,72 @@
+MOVE method returns error 412 Precondition Failed
+
+
+
+Description:
+Hi, I was trying MacOS X 10.5 Finder's WebDAV client to do testing on Jackrabbit 1.4 which is hosted on Tomcat 5.5.25 on a Windows XP SP2 computer on a LAN. I encounter an error while doing remote editing, I was able to open the text document, but the problem is I couldn't save it.
+
+I tried to find some log on Tomcat but sadly Jackrabbit didn't produces any log files regarding of my problem. So I used Ethereal 0.99.0 to check the packets from the Windows XP computer. The below trace is a summary from the exported text file of the packet analyzer where the problem occur:-
+
+line 11818:-
+No.     Time        Source                Destination           Protocol Info
+4352 27.629257   10.60.1.90            10.60.1.187           HTTP     MOVE /jackrabbit-webapp-1.4/repository/default/.TemporaryItems/folders.501/TemporaryItems/(A%20Document%20Being%20Saved%20By%20TextEdit)/Copy%20of%20Request_for_GAMS_User_Account.rtf HTTP/1.1
+
+Frame 4352 (592 bytes on wire, 592 bytes captured)
+Ethernet II, Src: AppleCom_72:c3:5e (00:0d:93:72:c3:5e), Dst: 00:19:d1:a0:34:f7 (00:19:d1:a0:34:f7)
+Internet Protocol, Src: 10.60.1.90 (10.60.1.90), Dst: 10.60.1.187 (10.60.1.187)
+Transmission Control Protocol, Src Port: 64970 (64970), Dst Port: 8080 (8080), Seq: 69060, Ack: 90475, Len: 526
+    Source port: 64970 (64970)
+    Destination port: 8080 (8080)
+    Sequence number: 69060    (relative sequence number)
+    Next sequence number: 69586    (relative sequence number)
+    Acknowledgement number: 90475    (relative ack number)
+    Header length: 32 bytes
+    Flags: 0x0018 (PSH, ACK)
+    Window size: 524280 (scaled)
+    Checksum: 0xd4f9 [correct]
+    Options: (12 bytes)
+Hypertext Transfer Protocol
+    MOVE /jackrabbit-webapp-1.4/repository/default/.TemporaryItems/folders.501/TemporaryItems/(A%20Document%20Being%20Saved%20By%20TextEdit)/Copy%20of%20Request_for_GAMS_User_Account.rtf HTTP/1.1\r\n
+        Request Method: MOVE
+        Request URI: /jackrabbit-webapp-1.4/repository/default/.TemporaryItems/folders.501/TemporaryItems/(A%20Document%20Being%20Saved%20By%20TextEdit)/Copy%20of%20Request_for_GAMS_User_Account.rtf
+        Request Version: HTTP/1.1
+    User-Agent: WebDAVFS/1.5 (01508000) Darwin/9.1.0 (Power Macintosh)\r\n
+    Accept: */*\r\n
+    Destination: http://10.60.1.187:8080/jackrabbit-webapp-1.4/repository/default/au/gov/arc/www/rtf/Copy%20of%20Request_for_GAMS_User_Account.rtf\r\n
+    Authorization: Basic YWRtaW46YWRtaW4=\r\n
+        Credentials: admin:admin
+    Content-Length: 0\r\n
+    Connection: keep-alive\r\n
+    Host: 10.60.1.187:8080\r\n
+    \r\n
+
+line 11850 -
+No.     Time        Source                Destination           Protocol Info
+4353 27.630345   10.60.1.187           10.60.1.90            HTTP     HTTP/1.1 412 Precondition Failed (text/html)
+
+Frame 4353 (1191 bytes on wire, 1191 bytes captured)
+Ethernet II, Src: 00:19:d1:a0:34:f7 (00:19:d1:a0:34:f7), Dst: AppleCom_72:c3:5e (00:0d:93:72:c3:5e)
+Internet Protocol, Src: 10.60.1.187 (10.60.1.187), Dst: 10.60.1.90 (10.60.1.90)
+Transmission Control Protocol, Src Port: 8080 (8080), Dst Port: 64970 (64970), Seq: 90475, Ack: 69586, Len: 1125
+    Source port: 8080 (8080)
+    Destination port: 64970 (64970)
+    Sequence number: 90475    (relative sequence number)
+    Next sequence number: 91600    (relative sequence number)
+    Acknowledgement number: 69586    (relative ack number)
+    Header length: 32 bytes
+    Flags: 0x0018 (PSH, ACK)
+    Window size: 65535
+    Checksum: 0x1c18 [incorrect, should be 0xa2f0]
+    Options: (12 bytes)
+Hypertext Transfer Protocol
+    HTTP/1.1 412 Precondition Failed\r\n
+        Request Version: HTTP/1.1
+        Response Code: 412
+    Server: Apache-Coyote/1.1\r\n
+    Content-Type: text/html;charset=utf-8\r\n
+    Content-Length: 965\r\n
+    Date: Fri, 29 Feb 2008 02:31:01 GMT\r\n
+    \r\n
+Line-based text data: text/html
+    <html><head><title>Apache Tomcat/5.5.25 - Error report</title><style><!--H1 {font-family:Tahoma,Arial,sans-serif;color:white;background-color:#525D76;font-size:22px;} H2 {font-family:Tahoma,Arial,sans-serif;color:white;background-color:#52
+

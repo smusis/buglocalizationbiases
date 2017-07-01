@@ -1,0 +1,8 @@
+Method to create default RepositoryConfig from just the repository directory
+
+
+
+Description:
+It would be useful to have a static method like RepositoryConfig.create(File) that would take the repository directory and expect to find the repository configuration in a "repository.xml" file inside that directory.
+
+If the directory does not exist, it would be created. And if the repository configuration file does not exist, then it would be created from the default configuration included in Jackrabbit.

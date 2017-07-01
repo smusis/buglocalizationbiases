@@ -1,0 +1,12 @@
+Add next() and skipTo() variants to DocIdSetIterator that return the current doc, instead of boolean
+
+
+
+Description:
+See http://www.nabble.com/Another-possible-optimization---now-in-DocIdSetIterator-p23223319.html for the full discussion. The basic idea is to add variants to those two methods that return the current doc they are at, to save successive calls to doc(). If there are no more docs, return -1. A summary of what was discussed so far:
+# Deprecate those two methods.
+# Add nextDoc() and skipToDoc(int) that return doc, with default impl in DISI (calls next() and skipTo() respectively, and will be changed to abstract in 3.0).
+#* I actually would like to propose an alternative to the names: advance() and advance(int) - the first advances by one, the second advances to target.
+# Wherever these are used, do something like '(doc = advance()) >= 0' instead of comparing to -1 for improved performance.
+
+I will post a patch shortly

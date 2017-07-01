@@ -1,0 +1,9 @@
+Sort and SortField does not have equals() and hashCode()
+
+
+
+Description:
+During developing for my project panFMP I had the following issue:
+I have a cache for queries (like Solr has, too)  for query results. This cache also uses the Sort/SortField as key into the cache. The problem is, because Sort/SortField does not implement equals() and hashCode(), you cannot store them as cache keys. To workaround, currently I use Sort.toString() as cache key, but this is not so nice.
+
+In corelation with issue LUCENE-1478, I could fix this there in one patch together with the other improvements.

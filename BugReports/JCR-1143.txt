@@ -1,0 +1,22 @@
+NullPointerException in ClassDescriptor
+
+
+
+Description:
+Index: /Users/cziegeler/Developer/workspaces/default/jackrabbit/contrib/jackrabbit-jcr-mapping/jcr-mapping/src/main/java/org/apache/jackrabbit/ocm/mapper/model/ClassDescriptor.java
+===================================================================
+--- /Users/cziegeler/Developer/workspaces/default/jackrabbit/contrib/jackrabbit-jcr-mapping/jcr-mapping/src/main/java/org/apache/jackrabbit/ocm/mapper/model/ClassDescriptor.java	(revision 579109)
+If a class descriptor (for whatever reason) does not have a jcr type, a npe is thrown in ClassDescriptor.
+The following patch solves this issue:
+
++++ contrib/jackrabbit-jcr-mapping/jcr-mapping/src/main/java/org/apache/jackrabbit/ocm/mapper/model/ClassDescriptor.java	(working copy)
+@@ -468,7 +468,7 @@
+         while (iterator.hasNext()) {
+             ClassDescriptor descendantClassDescriptor = (ClassDescriptor) iterator.next();
+   
+-            if (descendantClassDescriptor.getJcrType().equals(nodeType)) {
++            if (nodeType.equals(descendantClassDescriptor.getJcrType())) {
+                 return descendantClassDescriptor;
+             }
+   
+

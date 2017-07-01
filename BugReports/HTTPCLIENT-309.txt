@@ -1,0 +1,44 @@
+[RFE] Allow streaming of POST methods via chunked transfer encoding.
+
+
+
+Description:
+This is an RFE with a possible implementation attached. The implementation does
+not modify any existing code.
+
+We're using HTTP POST to send a large amount of data with an unknown size. We
+don't want to buffer the entire request, so we implemented a streaming POST
+method. The implementation has 3 classes: StreamedPostMethod,
+BufferedChunkedOutputStream and OutputStreamWriter. The bulk of the code is in
+the BufferedChunkedOutputStream, which may be a good target for replacing
+ChunkedOutputStream from the main distribution.
+
+BufferedChunkedOutputStream has the following charactersitics:
+1) It has an internal 2K buffer. Without the buffer, chunk sizes would be too
+small in many cases (e.g. ObjectOutputStream likes to call write(byte[]) with 4
+byte long arguments). 2K was chosen to minimize the chunk overhead to less than 1%.
+2) If the entire entity body fits within the 2K buffer, it does not use
+chunking. This implies that the headers are only sent out when the first chunk
+(or the entire body) has to be written, but no sooner.
+3) The chunk size is not limited to 2K: if write(byte[]) is called with a large
+argument, the internal buffer and the new request are sent out as a single chunk.
+4) Because of (2) it's tightly coupled to StreamedPostMethod.reallyWriteHeaders.
+5) StreamedPostMethod calls BufferedChunkedOutputStream.finish() to write the
+last buffer and ending chunk.
+
+Because of 4 and 5, we didn't want to touch ChunkedOutputStream. Interestingly,
+EntityEnclosingMethod is already tightly coupled to ChunkedOutputStream because
+it has to call writeClosingChunk. There is probably some room for refactoring here.
+
+The package is just a suggestion; feel free to move the files as appropirate.
+This code was written against 2.0rc2. We're hoping it will get included in time
+for the 2.1 release.
+
+To use the code, you must implement OutputStreamWriter and pass it to
+StreamedPostMethod's constructor. Execute the method as usual.
+
+Caveats: StreamedPostMethod does not implement Expect/continue logic. We had no
+way to test this. It is also strictly for POST. In general, the same methodology
+is applicable to PUT, etc. It should be fairly simple to generalize.
+
+Legal: Goldman, Sachs & Co. is making this code available under the Apache License.

@@ -1,0 +1,21 @@
+VersionManager lock not released in some circumstances
+
+
+
+Description:
+In some circumstances it is possible that lock is not released in VersionManager.checkin method.
+
+There is following block of code in checkin nethod :
+
+        aquireReadLock();
+        try {
+              .....
+        } catch (IllegalStateException e) {
+            releaseReadLock();
+            throw new RepositoryException("Unable to start edit operation.");
+        }
+
+Lock release should be in finally block to make sure that lock is released when unexpected exception is thrown.
+In our environment we are getting NPE in mentioned block of code, it results in persisten lock. 
+No versioning operation is possible and our application server is running ot of threads (all threads are locked).
+

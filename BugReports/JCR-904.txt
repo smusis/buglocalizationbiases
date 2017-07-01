@@ -1,0 +1,7 @@
+non mantatory revision property in the Journal configuration
+
+
+
+Description:
+An exception is thrown if property 'revision' is not set. I think it would be great to save the revision file in the repository home dir 
+when the property is not set.

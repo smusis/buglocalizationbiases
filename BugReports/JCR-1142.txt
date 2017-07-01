@@ -1,0 +1,8 @@
+ocm fails with NPE when a ClassDescriptor isn't found
+
+
+
+Description:
+ObjectConverterImpl#getObject(Session session, Class clazz, String path) should validate whether there's a suitable mapping in order to throw a more descriptive exception as ObjectConverterImpl#getObject(Session session, String path) does.
+
+

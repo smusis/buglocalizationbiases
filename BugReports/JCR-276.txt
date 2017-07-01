@@ -1,0 +1,6 @@
+SimpleWebdavServlet: avoid 404 for the root collection
+
+
+
+Description:
+in order to avoid strange 404 error when accessing the root collection in simple webdav servlet (thus missing workspace name), that request should either be redirected or handled by a create fake root that has no correspondance in the jsr170 repository.

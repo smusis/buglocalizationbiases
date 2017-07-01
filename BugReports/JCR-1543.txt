@@ -1,0 +1,14 @@
+Improve reliability of canAddMixin
+
+
+
+Description:
+The current implementation of canAddMixin in JCR2SPI lacks flexibility. It only consults the (SPI) node type registry, checking for (1) whether the mixin exists, and (2) whether it is already present and (3) whether it's consistent with the node's type.
+
+This is fine for stores where any legal mixin can be added anywhere. It doesn't work well for stores that are limited in what they can do; for instance when nt:file nodes can be made mix:versionable, but nt:folder nodes can't.
+
+Proposal: enhance QNodeTypeDefinition with
+
+  public Name[] getSupportedMixins();
+
+where the return value is either null (no constraints or no constraints known), or a list of mixin types that are supported for this node type.

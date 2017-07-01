@@ -1,0 +1,6 @@
+Deprecate BLOBStore (use the DataStore instead)
+
+
+
+Description:
+I believe the blob store should be deprecated in favor of the data store (in the source code, and in the documentation). The blob store should still be supported in version 2.x of course.

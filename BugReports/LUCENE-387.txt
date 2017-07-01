@@ -1,0 +1,7 @@
+Contrib: Main memory based SynonymMap and SynonymTokenFilter
+
+
+
+Description:
+- Contrib: Main memory based SynonymMap and SynonymTokenFilter
+- applies to SVN trunk as well as 1.4.3

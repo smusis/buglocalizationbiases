@@ -1,0 +1,6 @@
+HttpClient javadocs need improving
+
+
+
+Description:
+.. patch coming.

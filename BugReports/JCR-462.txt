@@ -1,0 +1,8 @@
+Improve lifecycle management of JCA connector
+
+
+
+Description:
+the shutdown mechanism doesn't work correctly. It shutdowns the repository when the RA (resource adapter) is garbage collected. It causes redeployment to fail because sometimes the new RA is redeployed before the old one is garbage collected.
+
+Implementing the JCA 1.5 interface to manage the lifecycle would be useful.

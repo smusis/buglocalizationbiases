@@ -1,0 +1,8 @@
+Trim whitespace from parameter names in configuration files
+
+
+
+Description:
+We've had a couple of issues with extra whitespace in parameter names causing those configuration options being lost. Now with the more strict validation of configuration settings such mistakes can even prevent the repository from starting. On one hand that's a good thing, as the user would then explicitly need to fix such broken configurations, but it would be nice if no user intervention was needed.
+
+Since leading and trailing whitespace is never allowed in parameter names, we can just as well trim it automatically.

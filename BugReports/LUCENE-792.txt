@@ -1,0 +1,9 @@
+PrecedenceQueryParser misinterprets queries starting with NOT
+
+
+
+Description:
+"NOT foo AND baz" is parsed as "-(+foo +baz)" instead of "-foo +bar".
+
+(I'm setting parser.setDefaultOperator(PrecedenceQueryParser.AND_OPERATOR) but the issue applies otherwise too.)
+

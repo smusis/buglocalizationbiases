@@ -1,0 +1,8 @@
+Allow PackedInts.ReaderIterator to advance more than one value
+
+
+
+Description:
+The iterator-like API in LUCENE-2186 makes effective use of PackedInts.ReaderIterator but frequently skips multiple values. ReaderIterator currently requires to loop over ReaderInterator#next() to advance to a certain value. We should allow ReaderIterator to expose a #advance(ord) method to make use-cases like that more efficient. 
+
+This issue is somewhat part of my efforts to make LUCENE-2186 smaller while breaking it up in little issues for parts which can be generally useful.

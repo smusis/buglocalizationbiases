@@ -1,0 +1,11 @@
+Tests need to clean up after themselves
+
+
+
+Description:
+I havent run 'ant clean' for a while.
+
+The randomly generated temporarily file names just piled up from running the tests many times... so ant clean is still running after quite a long time.
+
+We should take the logic in the base solr test cases, and push it into LuceneTestCase, so a test cleans up all its temporary stuff.
+

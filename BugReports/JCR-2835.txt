@@ -1,0 +1,51 @@
+Poor performance of ISDESCENDANTNODE on SQL 2 queries
+
+
+
+Description:
+Using the latest source code, I have noticed very bad performance on SQL-2 queries that use the ISDESCENDANTNODE constraint on a large sub-tree. For example, the query : 
+
+select * from [jnt:news] as news where ISDESCENDANTNODE(news,'/root/site') order by news.[date] desc 
+
+executes in 600ms 
+
+select * from [jnt:news] as news order by news.[date] desc
+
+executes in 4ms
+
+From looking at the problem in the Yourkit profiler, it seems that the culprit is the constraint building, that uses recursive Lucene searches to build the list of descendant node IDs : 
+
+    private Query getDescendantNodeQuery(
+            DescendantNode dn, JackrabbitIndexSearcher searcher)
+            throws RepositoryException, IOException {
+        BooleanQuery query = new BooleanQuery();
+
+        try {
+            LinkedList<NodeId> ids = new LinkedList<NodeId>();
+            NodeImpl ancestor = (NodeImpl) session.getNode(dn.getAncestorPath());
+            ids.add(ancestor.getNodeId());
+            while (!ids.isEmpty()) {
+                String id = ids.removeFirst().toString();
+                Query q = new JackrabbitTermQuery(new Term(FieldNames.PARENT, id));
+                QueryHits hits = searcher.evaluate(q);
+                ScoreNode sn = hits.nextScoreNode();
+                if (sn != null) {
+                    query.add(q, SHOULD);
+                    do {
+                        ids.add(sn.getNodeId());
+                        sn = hits.nextScoreNode();
+                    } while (sn != null);
+                }
+            }
+        } catch (PathNotFoundException e) {
+            query.add(new JackrabbitTermQuery(new Term(
+                    FieldNames.UUID, "invalid-node-id")), // never matches
+                    SHOULD);
+        }
+
+        return query;
+    }
+
+In the above example this generates over 2800 Lucene queries, which is the culprit. I wonder if it wouldn't be faster to retrieve the IDs by using the JCR to retrieve the list of child IDs ?
+
+This was probably also missed because I didn't seem to find any performance tests on this constraint.

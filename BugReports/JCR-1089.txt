@@ -1,0 +1,14 @@
+Xpath query parser accepts "/a | /b" and treats it as "/a/b"
+
+
+
+Description:
+The XPath query parser accepts the query
+
+  /a | /b
+
+and parses it into a query tree corresponging the Xpath query
+
+  /a/b
+
+It should be rejected instead.

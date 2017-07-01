@@ -1,0 +1,6 @@
+Stop text extraction when the maxFieldLength limit is reached
+
+
+
+Description:
+When indexing large documents the text extraction often takes quite a while and uses lots of memory even if only the first maxFieldLength (by default 10000) tokens are used. I'd like to add a maxExtractLength parameter that can be used to set the maximum number of characters to extract from a binary. The default value of this parameter could be something like ten times the maxFieldLength setting.

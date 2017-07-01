@@ -1,0 +1,8 @@
+Use Java 5 enums
+
+
+
+Description:
+Replace the use of o.a.l.util.Parameter with Java 5 enums, deprecating Parameter.
+
+Replace other custom enum patterns with Java 5 enums.

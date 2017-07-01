@@ -1,0 +1,23 @@
+exceptions from other threads in beforeclass/etc do not fail the test
+
+
+
+Description:
+Lots of tests create indexes in beforeClass methods, but if an exception is thrown from another thread
+it won't fail the test... e.g. this test passes:
+{code}
+public class TestExc extends LuceneTestCase {
+  @BeforeClass
+  public static void beforeClass() {
+    new Thread() {
+      public void run() {
+        throw new RuntimeException("boo!");
+      }  
+    }.start();
+  }
+  
+  public void test() { }
+}
+{code}
+
+this is because the uncaught exception handler is in setup/teardown

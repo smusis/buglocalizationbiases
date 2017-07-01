@@ -1,0 +1,23 @@
+HTTPClient per default relentlessly spams to stderr
+
+
+
+Description:
+HTTPClient relentlessly spams to stderr when including it into a project via maven. This is not a decent default behaviour for a libary. Libaries should, per default, communicate their internal state solely and adequatly via their API and let it be up to the application to react to that state (logging it is one such reaction). From some replies to tickets in the same vain I can see that this is perhaps a sensitive topic as some see logging to be a core concern of HTTPClient. I do agree it's helpful as a debugging tool but as such it needs to be opt-in. As a standard error output, the logging of HTTPClient is absolutely useless because it does not and can not describe what the application is trying to do.
+
+Why this improvement when there is a way to disable HTTClient logging (in fact, there seem to be many ways ... always a bad sign ..)?
+
+Do a google search for: httpclient "console spam"
+204 hit for this harsh phrasing alone. Search this phrase for any other libary you like to use and compare the number of hits. Ask youself, how often have you seen the java standard libary write to stdout or stderr?
+
+Personally, I tried to disable it via JDK14 getLogger("org.apache").setLevel(Level.OFF)  which wouldn't work and now am using a solution I found on Stackoverflow which is:
+
+System.setProperty("org.apache.commons.logging.Log", "org.apache.commons.logging.impl.NoOpLog"); }
+
+The problem I have is that I include this lib and suddently my console is useless because httpclient is all over it (writing a system monitor ...). I have to search google to find a solution (http://hc.apache.org/httpcomponents-client-ga/logging.html does not tell you how to turn logging off ...) and the logical one "turn of the JDK logger" does not work right away.
+
+It's really a matter of following the principal of least suprise (a libary is not expected to write to the console which is the observable default behaviour of HTTPClient) and the principal of separation of concerns (logging is a concern for applications and not for libaries).
+
+Following at least one of these would substantially increase the joy of working with the HTTPClient libary.
+
+

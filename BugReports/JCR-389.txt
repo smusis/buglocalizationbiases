@@ -1,0 +1,8 @@
+WebDAV server should treat non-wellformed XML in request bodies as error
+
+
+
+Description:
+The WebDAV server should treat non-wellformed XML request bodies as errors (instead of treating the request as if the request body was missing).
+
+(causes Litmus test suite failure in test case propfind_invalid)

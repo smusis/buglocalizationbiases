@@ -1,0 +1,16 @@
+Chunked transfer encoding not isolated from application.
+
+
+
+Description:
+Chunked transfer encoding is not being supported transparently by the
+HttpMethodBase object, causing chunk data to be embedded in response body data
+and forcing the application to handle the HTTP/1.1 implementation of chunked
+transfer encoding.
+
+The included patch now properly parses chunk data as per RFC 2068 and provides
+body content consistently, regardless of whether chunked transfer encoding was
+used by the server or not. This relieves the application from the requirement of
+implementing RFC 2068.
+
+Patch sent to mailing list as per guidelines to address this deficiency.

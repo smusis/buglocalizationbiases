@@ -1,0 +1,6 @@
+Reduce Fieldable, AbstractField and Field complexity
+
+
+
+Description:
+In order to move field type like functionality into its own class, we really need to try to tackle the hierarchy of Fieldable, AbstractField and Field.  Currently AbstractField depends on Field, and does not provide much more functionality that storing fields, most of which are being moved over to FieldType.  Therefore it seems ideal to try to deprecate AbstractField (and possible Fieldable), moving much of the functionality into Field and FieldType.

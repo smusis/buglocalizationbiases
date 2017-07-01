@@ -1,0 +1,25 @@
+SamplingWrapperTest failure with certain test seed
+
+
+
+Description:
+Build: https://builds.apache.org/job/Lucene-Solr-tests-only-trunk/12231/
+
+1 tests failed.
+REGRESSION:  org.apache.lucene.facet.search.SamplingWrapperTest.testCountUsingSamping
+
+Error Message:
+Results are not the same!
+
+Stack Trace:
+org.apache.lucene.facet.FacetTestBase$NotSameResultError: Results are not the same!
+       at org.apache.lucene.facet.FacetTestBase.assertSameResults(FacetTestBase.java:333)
+       at org.apache.lucene.facet.search.sampling.BaseSampleTestTopK.assertSampling(BaseSampleTestTopK.java:104)
+       at org.apache.lucene.facet.search.sampling.BaseSampleTestTopK.testCountUsingSamping(BaseSampleTestTopK.java:82)
+       at org.apache.lucene.util.LuceneTestCase$3$1.evaluate(LuceneTestCase.java:529)
+       at org.apache.lucene.util.LuceneTestCaseRunner.runChild(LuceneTestCaseRunner.java:165)
+       at org.apache.lucene.util.LuceneTestCaseRunner.runChild(LuceneTestCaseRunner.java:57)
+
+NOTE: reproduce with: ant test -Dtestcase=SamplingWrapperTest -Dtestmethod=testCountUsingSamping -Dtests.seed=4a5994491f79fc80:-18509d134c89c159:-34f6ecbb32e930f7 -Dtests.multiplier=3 -Dargs="-Dfile.encoding=UTF-8"
+NOTE: test params are: codec=Lucene40: {$facets=PostingsFormat(name=MockRandom), $full_path$=PostingsFormat(name=MockSep), content=Pulsing40(freqCutoff=19 minBlockSize=65 maxBlockSize=209), $payloads$=PostingsFormat(name=Lucene40WithOrds)}, sim=RandomSimilarityProvider(queryNorm=true,coord=true): {$facets=LM Jelinek-Mercer(0.700000), content=DFR I(n)B3(800.0)}, locale=bg, timezone=Asia/Manila
+

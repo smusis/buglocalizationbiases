@@ -1,0 +1,77 @@
+TestDocValuesIndexing.testAddIndexes failures on docvalues branch
+
+
+
+Description:
+doc values branch r1124825, reproducible 
+{code}
+    [junit] Testsuite: org.apache.lucene.index.values.TestDocValuesIndexing
+    [junit] Tests run: 1, Failures: 0, Errors: 1, Time elapsed: 0.716 sec
+    [junit] 
+    [junit] ------------- Standard Error -----------------
+    [junit] NOTE: reproduce with: ant test -Dtestcase=TestDocValuesIndexing -Dtestmethod=testAddIndexes -Dtests.seed=5939035003978436534:-6429764582682717131
+    [junit] NOTE: test params are: codec=RandomCodecProvider: {id=MockRandom, BYTES_VAR_DEREF=MockRandom, INTS=Pulsing(freqCutoff=13)}, locale=da_DK, timezone=Asia/Macao
+    [junit] NOTE: all tests run in this JVM:
+    [junit] [TestDocValuesIndexing]
+    [junit] NOTE: Linux 2.6.37-gentoo amd64/Sun Microsystems Inc. 1.6.0_25 (64-bit)/cpus=8,threads=1,free=88582432,total=125632512
+    [junit] ------------- ---------------- ---------------
+    [junit] Testcase: testAddIndexes(org.apache.lucene.index.values.TestDocValuesIndexing):     Caused an ERROR
+    [junit] null
+    [junit] java.nio.channels.ClosedChannelException
+    [junit]     at sun.nio.ch.FileChannelImpl.ensureOpen(FileChannelImpl.java:88)
+    [junit]     at sun.nio.ch.FileChannelImpl.read(FileChannelImpl.java:603)
+    [junit]     at org.apache.lucene.store.NIOFSDirectory$NIOFSIndexInput.readInternal(NIOFSDirectory.java:161)
+    [junit]     at org.apache.lucene.store.BufferedIndexInput.refill(BufferedIndexInput.java:222)
+    [junit]     at org.apache.lucene.store.BufferedIndexInput.readByte(BufferedIndexInput.java:39)
+    [junit]     at org.apache.lucene.store.DataInput.readInt(DataInput.java:73)
+    [junit]     at org.apache.lucene.store.BufferedIndexInput.readInt(BufferedIndexInput.java:162)
+    [junit]     at org.apache.lucene.store.DataInput.readLong(DataInput.java:115)
+    [junit]     at org.apache.lucene.store.BufferedIndexInput.readLong(BufferedIndexInput.java:175)
+    [junit]     at org.apache.lucene.store.MockIndexInputWrapper.readLong(MockIndexInputWrapper.java:136)
+    [junit]     at org.apache.lucene.index.values.PackedIntsImpl$IntsEnumImpl.<init>(PackedIntsImpl.java:263)
+    [junit]     at org.apache.lucene.index.values.PackedIntsImpl$IntsEnumImpl.<init>(PackedIntsImpl.java:249)
+    [junit]     at org.apache.lucene.index.values.PackedIntsImpl$IntsReader.getEnum(PackedIntsImpl.java:239)
+    [junit]     at org.apache.lucene.index.values.DocValues.getEnum(DocValues.java:54)
+    [junit]     at org.apache.lucene.index.values.TestDocValuesIndexing.getValuesEnum(TestDocValuesIndexing.java:484)
+    [junit]     at org.apache.lucene.index.values.TestDocValuesIndexing.testAddIndexes(TestDocValuesIndexing.java:202)
+    [junit]     at org.apache.lucene.util.LuceneTestCase$LuceneTestCaseRunner.runChild(LuceneTestCase.java:1304)
+    [junit]     at org.apache.lucene.util.LuceneTestCase$LuceneTestCaseRunner.runChild(LuceneTestCase.java:1233)
+    [junit] 
+    [junit] 
+    [junit] Test org.apache.lucene.index.values.TestDocValuesIndexing FAILED
+{code}
+
+and
+
+{code}
+
+    [junit] Testsuite: org.apache.lucene.index.values.TestDocValuesIndexing
+    [junit] Tests run: 1, Failures: 0, Errors: 1, Time elapsed: 0.94 sec
+    [junit] 
+    [junit] ------------- Standard Error -----------------
+    [junit] NOTE: reproduce with: ant test -Dtestcase=TestDocValuesIndexing -Dtestmethod=testAddIndexes -Dtests.seed=-3677966427932339626:-4746638811786223564
+    [junit] NOTE: test params are: codec=RandomCodecProvider: {id=Standard, BYTES_FIXED_DEREF=MockSep, FLOAT_64=SimpleText}, locale=ca, timezone=Asia/Novosibirsk
+    [junit] NOTE: all tests run in this JVM:
+    [junit] [TestDocValuesIndexing]
+    [junit] NOTE: Linux 2.6.37-gentoo amd64/Sun Microsystems Inc. 1.6.0_25 (64-bit)/cpus=8,threads=1,free=88596152,total=125632512
+    [junit] ------------- ---------------- ---------------
+    [junit] Testcase: testAddIndexes(org.apache.lucene.index.values.TestDocValuesIndexing):     Caused an ERROR
+    [junit] Bad file descriptor
+    [junit] java.io.IOException: Bad file descriptor
+    [junit]     at java.io.RandomAccessFile.seek(Native Method)
+    [junit]     at org.apache.lucene.store.SimpleFSDirectory$SimpleFSIndexInput.readInternal(SimpleFSDirectory.java:101)
+    [junit]     at org.apache.lucene.store.BufferedIndexInput.refill(BufferedIndexInput.java:222)
+    [junit]     at org.apache.lucene.store.BufferedIndexInput.readByte(BufferedIndexInput.java:39)
+    [junit]     at org.apache.lucene.store.MockIndexInputWrapper.readByte(MockIndexInputWrapper.java:105)
+    [junit]     at org.apache.lucene.index.values.Floats$FloatsReader.load(Floats.java:281)
+    [junit]     at org.apache.lucene.index.values.SourceCache$DirectSourceCache.load(SourceCache.java:101)
+    [junit]     at org.apache.lucene.index.values.DocValues.getSource(DocValues.java:101)
+    [junit]     at org.apache.lucene.index.values.TestDocValuesIndexing.getSource(TestDocValuesIndexing.java:472)
+    [junit]     at org.apache.lucene.index.values.TestDocValuesIndexing.getValuesEnum(TestDocValuesIndexing.java:482)
+    [junit]     at org.apache.lucene.index.values.TestDocValuesIndexing.testAddIndexes(TestDocValuesIndexing.java:203)
+    [junit]     at org.apache.lucene.util.LuceneTestCase$LuceneTestCaseRunner.runChild(LuceneTestCase.java:1304)
+    [junit]     at org.apache.lucene.util.LuceneTestCase$LuceneTestCaseRunner.runChild(LuceneTestCase.java:1233)
+    [junit] 
+    [junit] 
+    [junit] Test org.apache.lucene.index.values.TestDocValuesIndexing FAILED
+{code}

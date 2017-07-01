@@ -1,0 +1,22 @@
+a dead lock in DefaultISMLocking
+
+
+
+Description:
+The jackrabbit 2.2 's org.apache.jackrabbit.core.state.DefaultISMLocking has a defect which will cause a dead lock in concurrent use cases.
+The use case is as follows:
+1.	Thread A apply a read lock, now there is an active reader hold the read lock.
+
+2.	Thread B apply a write lock, and then thread B will wait for thread A's reading end. You could see below code snippet from the Jackrabbit source. readerCount is the current active reader.
+writersWaiting++;
+while (writerId != null? !isSameThreadId(writerId, currentId) : readerCount > 0) {
+                                wait();
+}
+
+3.	Thread A apply another read lock, then it will wait too, since there is a writer is waiting.  Then a dead lock happens.
+while (writerId != null? (writerCount > 0 && !isSameThreadId(writerId, currentId)): writersWaiting > 0) {
+                                wait();
+}
+
+Since the lock in DefaultISMLocking is global lock, so I think if a thread has already hold a reader lock, it could get the reader lock again. I create a fix with this idea.
+

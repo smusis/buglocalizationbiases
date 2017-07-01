@@ -1,0 +1,6 @@
+Support only-if-cached directive
+
+
+
+Description:
+Add support for only-if-cached Cache-Control directive- If the request is not servable from the cache, return a 504 Gateway Timeout.  See http://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.9.4

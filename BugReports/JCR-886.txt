@@ -1,0 +1,15 @@
+Index recovery may fail with IllegalArgumentException
+
+
+
+Description:
+When repeatedly killed and started up again, jackrabbit may throw an IllegalArgumentException on index recovery:
+
+Caused by: java.lang.IllegalArgumentException: already contains: _c
+   at org.apache.jackrabbit.core.query.lucene.IndexInfos.addName(IndexInfos.java:170)
+   at org.apache.jackrabbit.core.query.lucene.MultiIndex.deleteIndex(MultiIndex.java:716)
+   at org.apache.jackrabbit.core.query.lucene.MultiIndex$DeleteIndex.execute(MultiIndex.java:1553)
+   at org.apache.jackrabbit.core.query.lucene.MultiIndex.executeAndLog(MultiIndex.java:809)
+   at org.apache.jackrabbit.core.query.lucene.MultiIndex.flush(MultiIndex.java:740)
+   at org.apache.jackrabbit.core.query.lucene.Recovery.run(Recovery.java:160)
+

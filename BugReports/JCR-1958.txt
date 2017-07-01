@@ -1,0 +1,6 @@
+Enhanced JCR remoting (extending webdav SPI impl, basic remoting servlet)
+
+
+
+Description:
+

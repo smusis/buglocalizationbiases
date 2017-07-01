@@ -1,0 +1,6 @@
+http client cache: SizeLimitedResponseReader is not setting content type for InputStreamEntity in constructResponse()
+
+
+
+Description:
+the newly created InputStreamEntity should be populated with content-encoding and content-type.

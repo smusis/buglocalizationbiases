@@ -1,0 +1,15 @@
+[PATCH] public static members in class TermVectorsWriter
+
+
+
+Description:
+hi all,
+
+looking at the implementation of TermVectorsWriter, you'll find a bunch of
+public static final members where the visibility could be reduced to be
+protected. I don't see a reason for having them public if the class itself is
+protected and all members are final values. May be somebody could check and
+either commit or enlighten me ;-)
+
+thx
+Bernhard

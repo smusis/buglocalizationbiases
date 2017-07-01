@@ -1,0 +1,7 @@
+Base64 bug - last buffer not flushed
+
+
+
+Description:
+I found an issue when using the org.apache.jackrabbit.util.Base64.encode(InputStream in, OutputStream out) method. It appears that the issue is that the last buffer is not flushed on the Writer that it creates before returning from the method. I was able to work around this issue by creating a Writer my own program, and call another encode method, and then call the flush() method before using the data. The source in trunk appears the same.
+

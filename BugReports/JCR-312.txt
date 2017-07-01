@@ -1,0 +1,34 @@
+CompactNodeTypeDefReader adds nt:base as declared supertype even if already extending
+
+
+
+Description:
+(reported to the list by michael singer)
+
+I wrote a simple program which uses the nt-ns-util contribution to
+register custom node types written in CND language.
+
+I defined the following (very simple) custom node types:
+
+<test = 'http://foo.bar/test'>
+[test:firstnodetype]
++ test:secondnodetype mandatory
+
+<test = 'http://foo.bar/test'>
+[test:secondnodetype] > test:firstnodetype
++ test:thirdnodetype
+
+<test = 'http://foo.bar/test'>
+[test:thirdnodetype] > test:secondnodetype
+- test:catalog (string)  < 'URI', 'URN', 'DOI', 'ISBN', 'ISSN'
+- test:entry (string) m
+
+
+In the resulting custom_nodetypes.xml each of the custom nodes has a
+supertype of "nt:base" but I didn't explicitely define a supertype of
+"nt:base" for [test:secondnodetype] and [test:thirdnodetype].
+
+I think this behavior is wrong since the method getDeclaredSupertypes()
+of class NodeType always returns "nt:base" plus the explicitely declared
+Supertype (which it e.g. does not for "nt:folder").
+

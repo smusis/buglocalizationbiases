@@ -1,0 +1,8 @@
+textfilters module patch: Support for text extraction for HTML,XML and RTF files
+
+
+
+Description:
+This patch adds text extraction support form XML, RTF and HTML files.
+
+The unique dependency is htmlparser library for handling HTML text extraction.

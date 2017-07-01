@@ -1,0 +1,6 @@
+Add new top-level projects to the building documentation
+
+
+
+Description:
+The current building.xml file only mentions jackrabbit and contrib as being top level Jackrabbit projects. With the push towards 1.0, there are now several additional projects at the same level as jackrabbit and contrib. The building.xml page should be updated to mention and link to them. It should also provide a link into the subversion repository that is labeled as something like "Current Jackrabbit project list"; even though the link location is the same as the link to the repository, the label will help readers know that's where to look for the most up-to-date list of Jackrabbit projects.

@@ -1,0 +1,11 @@
+Deprecated Serializer does not properly delegate method calls.
+
+
+
+Description:
+The deprecated org.apache.jackrabbit.core.state.util.Serializer class does not actually forward method calls to its replacement. Instead it calls itself repeatedly, leading to infinite recursion. The attached test demonstrates this and yields the following trace:
+
+<<
+java.lang.StackOverflowError
+	at org.apache.jackrabbit.core.state.util.Serializer.serialize(Serializer.java:39)
+>>

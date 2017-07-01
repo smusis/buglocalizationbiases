@@ -1,0 +1,6 @@
+Include to jackrabbit-jcr-rmi and jackrabbit-jcr-servlet in main trunk
+
+
+
+Description:
+Jackrabbit 2.0 should include the 2.0 version of the RMI component and the related jcr-servlet updates.

@@ -1,0 +1,13 @@
+IndexWriter.numDocs doesn't take into account applied but not flushed deletes
+
+
+
+Description:
+The javadoc states that buffered deletes are not taken into account and so you must call commit first.
+
+But, if you do that, and you're using CMS, and you're unlucky enough to have a background merge commit just after you call commit but before you call .numDocs, you can still get a wrong count back.
+
+The fix is trivial -- numDocs should also consult any pooled readers for their current del count.
+
+This is causing an intermittent failure in the new TestNRTThreads.
+

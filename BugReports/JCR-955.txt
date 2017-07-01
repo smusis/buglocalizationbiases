@@ -1,0 +1,12 @@
+[PATCH] jackrabbit-webapp pom.xml patch to create an additional jar artifact
+
+
+
+Description:
+Modifies the jackrabbit-webapp pom.xml to create a jar artifact in addition to the existing war artifact, to allow the jackrabbit-webapp utility servlets to be reused in other modules.
+
+The right way would be to create a separate jar module for the servlets (or move them to jackrabbit-jcr-commons?), and reuse that jar as a dependency in the jackrabbit-webapp. So I'm not sure if this patch deserves to be applied to the trunk, but it can be useful as a workaround before a cleaner solution is implemented.
+
+See also http://mail-archives.apache.org/mod_mbox/jackrabbit-dev/200705.mbox/%3C510143ac0705151453t7a0eb4cam859a40fb106e81f5@mail.gmail.com%3E which discusses possible improvements to these jackrabbit-webapp utility servlets.
+
+

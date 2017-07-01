@@ -1,0 +1,60 @@
+NPE in NearSpansUnordered.isPayloadAvailable() 
+
+
+
+Description:
+Using RC1 of lucene 2.4 resulted in null pointer exception with some constructed SpanNearQueries
+
+Implementation of isPayloadAvailable() (results in exception)
+{code}
+ public boolean isPayloadAvailable() {
+   SpansCell pointer = min();
+   do {
+     if(pointer.isPayloadAvailable()) {
+       return true;
+     }
+     pointer = pointer.next;
+   } while(pointer.next != null);
+
+   return false;
+  }
+{code}
+
+"Fixed" isPayloadAvailable()
+{code}
+ public boolean isPayloadAvailable() {
+   SpansCell pointer = min();
+   while (pointer != null) {
+     if(pointer.isPayloadAvailable()) {
+       return true;
+     }
+     pointer = pointer.next;
+   }
+
+   return false;
+  }
+{code}
+
+Exception produced:
+{code}
+  [junit] java.lang.NullPointerException
+    [junit]     at org.apache.lucene.search.spans.NearSpansUnordered$SpansCell.access$300(NearSpansUnordered.java:65)
+    [junit]     at org.apache.lucene.search.spans.NearSpansUnordered.isPayloadAvailable(NearSpansUnordered.java:235)
+    [junit]     at org.apache.lucene.search.spans.NearSpansOrdered.shrinkToAfterShortestMatch(NearSpansOrdered.java:246)
+    [junit]     at org.apache.lucene.search.spans.NearSpansOrdered.advanceAfterOrdered(NearSpansOrdered.java:154)
+    [junit]     at org.apache.lucene.search.spans.NearSpansOrdered.next(NearSpansOrdered.java:122)
+    [junit]     at org.apache.lucene.search.spans.SpanScorer.next(SpanScorer.java:54)
+    [junit]     at org.apache.lucene.search.Scorer.score(Scorer.java:57)
+    [junit]     at org.apache.lucene.search.IndexSearcher.search(IndexSearcher.java:137)
+    [junit]     at org.apache.lucene.search.IndexSearcher.search(IndexSearcher.java:113)
+    [junit]     at org.apache.lucene.search.Hits.getMoreDocs(Hits.java:113)
+    [junit]     at org.apache.lucene.search.Hits.<init>(Hits.java:80)
+    [junit]     at org.apache.lucene.search.Searcher.search(Searcher.java:50)
+    [junit]     at org.apache.lucene.search.Searcher.search(Searcher.java:40)
+    [junit]     at com.attivio.lucene.SpanQueryTest.search(SpanQueryTest.java:79)
+    [junit]     at com.attivio.lucene.SpanQueryTest.assertHitCount(SpanQueryTest.java:75)
+    [junit]     at com.attivio.lucene.SpanQueryTest.test(SpanQueryTest.java:67)
+{code}
+
+will attach unit test that causes exception (and passes with updated isPayloadAvailable())
+

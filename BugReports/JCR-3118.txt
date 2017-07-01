@@ -1,0 +1,9 @@
+Configurable actions upon authorizable creation and removal
+
+
+
+Description:
+i would like to add the possibility to configure custom actions that are executed upon user (and group) creation before 
+the operation is persisted. this would allow applications to run custom code without the need of subclassing the
+usermanager implementation. e.g.: creating additional mandatory properties, setting up permissions, calculating default 
+group membership. the same applies for user/group removal.

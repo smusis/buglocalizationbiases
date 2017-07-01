@@ -1,0 +1,8 @@
+relax the per-segment max unique term limit
+
+
+
+Description:
+Lucene can't handle more than 2.1B (limit of signed 32 bit int) unique terms in a single segment.
+
+But I think we can improve this to termIndexInterval (default 128) * 2.1B.  There is one place (internal API only) where Lucene uses an int but should use a long.

@@ -1,0 +1,12 @@
+Rollback doesn't preserve integrity of original index
+
+
+
+Description:
+After several "updateDocuments" calls a rollback call does not return the index to the prior state.
+This seems to occur if the number of updates exceeds the RAM buffer size i.e. when some flushing of updates occurs.
+
+Test fails in Lucene 2.4, 2.9, 3.0.1 and 3.0.2
+
+JUnit to follow.
+

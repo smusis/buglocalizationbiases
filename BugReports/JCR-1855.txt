@@ -1,0 +1,8 @@
+Update to Lucene 2.4.1
+
+
+
+Description:
+Lucene 2.4 contains a couple of performance improvements.
+
+See: http://lucene.apache.org/java/2_4_0/changes/Changes.html

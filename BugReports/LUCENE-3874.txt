@@ -1,0 +1,12 @@
+bogus positions create a corrumpt index
+
+
+
+Description:
+Its pretty common that positionIncrement can overflow, this happens really easily 
+if people write analyzers that don't clearAttributes().
+
+It used to be the case that if this happened (and perhaps still is in 3.x, i didnt check),
+that IW would throw an exception.
+
+But i couldnt find the code checking this, I wrote a test and it makes a corrumpt index...

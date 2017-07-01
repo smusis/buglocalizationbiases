@@ -1,0 +1,8 @@
+Path parser does not allow trailing slashes
+
+
+
+Description:
+The current implementation of the Path class violates the spec in that the trailing slashes are not allowed while the path syntax clearly allows trailing slashes.
+
+(Of course the Path class violates the spec in another way, too, in that it allows for the root path "/" to be valid while the path syntax in the spec does not allow that, which is clearly an error of the spec of course).

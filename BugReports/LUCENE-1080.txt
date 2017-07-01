@@ -1,0 +1,8 @@
+Make Token.DEFAULT_TYPE public
+
+
+
+Description:
+Make Token.DEFAULT_TYPE public so that TokenFilters using the reusable Token model have a way of setting the type back to the default.
+
+No patch necessary.  I will commit soon.

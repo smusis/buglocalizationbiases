@@ -1,0 +1,16 @@
+Redesign NodeInfo.getReferences()
+
+
+
+Description:
+The method returns an array of PropertyIds. When there are lots of references this may become an problem. As with any other return value that potentially is large we should return an iterator.
+
+I suggest to redesign the handling of references in line with recent discussions how child infos are handled.
+
+- A NodeInfo implementation must either return the complete list of PropertyIds or null if it does not want to return the PropertyIds at that time.
+- Introduce a new method: Iterator<PropertyId> RepositoryService.getReferences(SessionInfo, NodeId)
+
+This has the following advantages:
+
+- loading of references can be delayed until it is really needed
+- large collections of references can be streamed through the SPI

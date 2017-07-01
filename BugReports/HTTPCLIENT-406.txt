@@ -1,0 +1,32 @@
+Releasing a connection is unconfirmed
+
+
+
+Description:
+When a connection is attempted to be released using
+HttpConnection.releaseConnection(), it is unclear whether this is actually done.
+The implementation for the method is as follows in 3.0-beta1:
+
+    /**
+     * Release the connection.
+     */
+    public void releaseConnection() {
+        LOG.trace("enter HttpConnection.releaseConnection()");
+        if (locked) {
+            LOG.debug("Connection is locked.  Call to releaseConnection() ignore
+        } else if (httpConnectionManager != null) {
+            LOG.debug("Releasing connection back to connection manager.");
+            httpConnectionManager.releaseConnection(this);
+        } else {
+            LOG.warn("HttpConnectionManager is null.  Connection cannot be relea
+        }
+    }
+
+Silently ignoring a request (to release the connection, in this case) is hardly
+ever the right thing to do, in my opinion. Instead, I suggest the method
+indicates whether the connection was actually closed or not.
+
+I see at least 2 alternatives:
+
+1) throw an exception to indicate the connection could not be released;
+2) return a flag indicating whether the connection could actually be released.

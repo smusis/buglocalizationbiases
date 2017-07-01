@@ -1,0 +1,11 @@
+Could we get a way to know if the response has been served from the cache or not ?
+
+
+
+Description:
+Is there a way to know if the response has been served from the cache or not ?
+That's an information which might be useful for monitoring the activity of the cache.
+
+If there's no current way, maybe a flag could be added in the request context whenever the response comes from the cache ... ?
+
+

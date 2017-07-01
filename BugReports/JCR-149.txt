@@ -1,0 +1,6 @@
+TextFilter implementations in a new project under contrib
+
+
+
+Description:
+ AFAIK the TextFilters sent by Ján Hala?a were not added yet. If that's the case, I think we can create a project under contrib with all the implementations in order to avoid adding new dependencies to the core distribution.

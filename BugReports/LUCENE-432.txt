@@ -1,0 +1,8 @@
+Make FieldSortedHitQueue public
+
+
+
+Description:
+Currently, those who utilize the "advanced" search API cannot sort results using
+the handy FieldSortedHitQueue. I suggest making this class public to facilitate
+this use, as I can't think of a reason not to.

@@ -1,0 +1,56 @@
+Restoring a node fails (partially) if done within a XA transaction
+
+
+
+Description:
+A problem occurs with the following sequence of steps: 
+
+1) Create a versionable node that has a child and a grandchild.
+2) Perform a check-in of the versionable node and give a version-label.
+3) Perform a restore by using the version-label.
+4) Access the grandchild.
+
+Step 4 fails, if step 3 is executed within a transaction. If no transaction is used, then step 4 succeeds. 
+The test-case attached below can be executed within XATest.java (http://svn.apache.org/repos/asf/jackrabbit/trunk/jackrabbit-core/src/test/java/org/apache/jackrabbit/core/XATest.java).
+
+
+public void testRestore() throws Exception {
+        Session session = null;
+        try {
+            session = getHelper().getSuperuserSession();
+
+            // make sure that 'testNode' does not exist at the beginning of the test
+            for (NodeIterator ni = session.getRootNode().getNodes(); ni.hasNext();) {
+                Node aNode = ni.nextNode();
+                if (aNode.getName().equals("testNode")) {
+                    aNode.remove();
+                }
+            }
+
+            // 1) create 'testNode' that has a child and a grandchild
+            session.getRootNode().addNode("testNode").addMixin(NodeType.MIX_VERSIONABLE);
+            session.getRootNode().getNode("testNode").addNode("child").addNode("grandchild");
+            session.save();
+
+            // 2) check in 'testNode' and give a version-label
+            Version version = session.getWorkspace().getVersionManager().checkin(
+                    session.getRootNode().getNode("testNode").getPath());
+            session.getWorkspace().getVersionManager().getVersionHistory(
+                    session.getRootNode().getNode("testNode").getPath()).addVersionLabel(version.getName(),
+                    "testLabel", false);
+
+            // 3) do restore by label
+            UserTransaction utx = new UserTransactionImpl(session);
+            utx.begin();
+            session.getWorkspace().getVersionManager().restoreByLabel(
+                    session.getRootNode().getNode("testNode").getPath(), "testLabel", true);
+            utx.commit();
+
+            // 4) try to get the grandchild (fails if the restoring has been done within a transaction)
+            session.getRootNode().getNode("testNode").getNode("child").getNode("grandchild");
+        } finally {
+            if (session != null) {
+                session.logout();
+            }
+        }
+    } 

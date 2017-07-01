@@ -1,0 +1,15 @@
+NamespaceRegistryTest.testRegisterNamespace test assumptions
+
+
+
+Description:
+NamespaceRegistryTest.testRegisterNamespace() makes the assumption that it is possible to create arbitrarily nodes inside the root folder.
+
+This is not required to be the case.
+
+Proposal: 
+
+- get the name of the test node from the config, and
+
+- use a property rather than a child node for the test (as far as I can tell, many repositories will not allow node names in namespaces other than the empty one).
+

@@ -1,0 +1,12 @@
+Cached filter for a single term field
+
+
+
+Description:
+These classes implement inexpensive range filtering over a field containing a single term. They do this by building an integer array of term numbers (storing the term->number mapping in a TreeMap) and then implementing a fast integer comparison based DocSetIdIterator.
+
+This code is currently being used to do age range filtering, but could also be used to do other date filtering or in any application where there need to be multiple filters based on the same single term field. I have an untested implementation of single term filtering and have considered but not yet implemented term set filtering (useful for location based searches) as well. 
+
+The code here is fairly rough; it works but lacks javadocs and toString() and hashCode() methods etc. I'm posting it here to discover if there is other interest in this feature; I don't mind fixing it up but would hate to go to the effort if it's not going to make it into Lucene.
+
+

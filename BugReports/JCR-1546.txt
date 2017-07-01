@@ -1,0 +1,9 @@
+H2PersistenceManager: no need to call shutdown; javadoc bugs
+
+
+
+Description:
+The H2PersistenceManager implementation calls "shutdown" to force closing the database when using file based databases. There is no need to do that when using the H2 database engine: the database is closed automatically when the last connection is closed.
+
+Also, the javadocs of the H2PersistenceManager need to be fixed.
+

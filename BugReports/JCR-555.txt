@@ -1,0 +1,6 @@
+ConsistencyCheck uses too much memory
+
+
+
+Description:
+A consistency check loads all lucene documents into memory. On a large repository this may lead to an OutOfMemoryError. The consistency check should rather read the lucene documents on demand and discard them afterwards.

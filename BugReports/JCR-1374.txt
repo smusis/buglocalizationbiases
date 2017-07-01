@@ -1,0 +1,6 @@
+[PATCH] DbDataStore: Make sure streams are closed
+
+
+
+Description:
+Stream isn't closed on end of use. this patch fixes it.

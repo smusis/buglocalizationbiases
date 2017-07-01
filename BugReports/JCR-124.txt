@@ -1,0 +1,34 @@
+Session.import() failes to resolve propert property definition in some cases
+
+
+
+Description:
+Some Properties get assigned the wrong definiton when imported via SysView XML.
+
+The selecteion of the definition failes under the following condition:
+The nodetype contains a multi-valued property and a single-valued
+residual property.
+If the data to be imported than contains only one value for the multivalued property, it will be created with the residual definition.
+A later access to this propertie's values will fail with an ValueFormatException.
+
+Example:
+Node-Type
+ - Property
+  - name: myapp:name
+  - mulitple: true
+ - Property
+  - name: *
+  - multible: false
+
+Sysview:
+<sv:node sv:name="somenode">
+  <sv:property sv:name="jcr:primaryType" sv:type="Name">
+   <sv:value>myapp:sampleNt</sv:value> 
+  </sv:property>
+ 
+  <sv:property sv:name="myapp:name" sv:type="String">
+   <sv:value>At least I could have multi values</sv:value> 
+  </sv:property>
+</sv:node>
+
+=> The "mayapp:name" will be imported into the residule property.

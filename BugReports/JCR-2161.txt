@@ -1,0 +1,16 @@
+Deprecate org.apache.jackrabbit.api.JackrabbitNodeTypeManager in 2.0 and 1.6
+
+
+
+Description:
+The JackrabbitNodeTypeManager defines 3 methods that can be removed for version 2.0 since they are no longer needed:
+
+    NodeType[] registerNodeTypes(InputSource in)  throws SAXException, RepositoryException;
+    NodeType[] registerNodeTypes(InputStream in, String contentType)  throws IOException, RepositoryException;
+
+those deal with directly register nodetypes from a XML or CND source. since we don't want to support XML serialization any longer, and the CND import can be easily done using the spi-commons CompactNodeTypeDefReader with the new JCR2.0 node type registration. if the XML is to be supported, i suggest to detach the reader similar to the CND one.
+
+    boolean hasNodeType(String name) throws RepositoryException;
+
+this is now in the JCR2.0 api
+

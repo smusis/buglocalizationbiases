@@ -1,0 +1,8 @@
+Cache also failed principal lookups
+
+
+
+Description:
+The principal cache in Jackrabbit normally does a good job in ensuring good performance in critical areas like ACL evaulation. However, the cache only includes successful principal lookups, so an ACE that references a missing (or mistyped) principal can cause notable performance issues as a new principal lookup is needed whenever the node covered by such an ACL is accessed.
+
+To solve that problem I propose that we extend the principal cache to also cover negative principal lookups.

@@ -1,0 +1,8 @@
+Reusable Repository access and bind servlets
+
+
+
+Description:
+As discussed in http://mail-archives.apache.org/mod_mbox/jackrabbit-dev/200705.mbox/%3C510143ac0705151453t7a0eb4cam859a40fb106e81f5@mail.gmail.com%3E and JCR-955, it would be useful to have a reusable set of servlet components for accessing and exposing repositories in various configurable ways.
+
+My plan is to refactor the current RepositoryAccessServlet from jackrabbit-webapp and place the resulting servlet components in jackrabbit-jcr-commons, with servlet-api as a new optional (or provided) dependency.

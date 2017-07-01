@@ -1,0 +1,21 @@
+Highlighter throws StringIndexOutOfBoundsException
+
+
+
+Description:
+Using the canonical Solr example (ant run-example) I added this document (using exampledocs/post.sh):
+
+<add><doc>
+  <field name="id">Test for Highlighting StringIndexOutOfBoundsExcdption</field>
+  <field name="name">Some Name</field>
+  <field name="manu">Acme, Inc.</field>
+  <field name="features">Description of the features, mentioning various things</field>
+  <field name="features">Features also is multivalued</field>
+  <field name="popularity">6</field>
+  <field name="inStock">true</field>
+</doc></add>
+
+and then the URL http://localhost:8983/solr/select/?q=features&hl=true&hl.fl=features caused the exception.
+
+I have a patch.  I don't know if it is completely correct, but it avoids this exception.
+

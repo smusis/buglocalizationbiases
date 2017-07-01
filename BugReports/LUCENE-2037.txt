@@ -1,0 +1,11 @@
+Allow Junit4 tests in our environment.
+
+
+
+Description:
+Now that we're dropping Java 1.4 compatibility for 3.0, we can incorporate Junit4 in testing. Junit3 and junit4 tests can coexist, so no tests should have to be rewritten. We should start this for the 3.1 release so we can get a clean 3.0 out smoothly.
+
+It's probably worthwhile to convert a small set of tests as an exemplar.
+
+
+

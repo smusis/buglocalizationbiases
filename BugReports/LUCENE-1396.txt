@@ -1,0 +1,6 @@
+Improve PhraseQuery.toString()
+
+
+
+Description:
+PhraseQuery.toString() is overly simplistic, in that it doesn't correctly show phrases with gaps or overlapping terms. This may be misleading when presenting phrase queries built using complex analyzers and filters.

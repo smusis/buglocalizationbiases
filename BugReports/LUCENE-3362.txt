@@ -1,0 +1,39 @@
+Initialization error of Junit tests with solr-test-framework with IDEs and Maven
+
+
+
+Description:
+I'm currently developping a new component for Solr. And in my Netbeans project, I have created two Test classes for this component: one class for simple unit tests (derived from  SolrTestCaseJ4 class) and a second one for tests with sharding (derived from  BaseDistributedSearchTestCase).
+When I launch a test with these two classes, I have an error in the initialization of the second class of tests (no matter the class is, this is always the second executed class which fails). The error comes from an "assert" which failed in the begining of the function "initRandom()" of LuceneTestCase class :
+
+assert !random.initialized;
+
+But, if I launch each test class separatly, all the tests succeed!
+
+After a discussion with Mr. Muir, the problems seems to be related to the incompatibility of the class LuceneTestCase with the functioning of Maven projects in IDEs.
+
+According to mister Muir:
+
+"
+The problem is that via ant, tests work like this (e.g. for 3 test classes):
+computeTestMethods
+beforeClass
+afterClass
+computeTestMethods
+beforeClass
+AfterClass
+computeTestMethods
+beforeClass
+afterClass
+
+but via an IDE, if you run it from a folder like you did, then it does this:
+computeTestMethods
+computeTestMethods
+computeTestMethods
+beforeClass
+afterClass
+beforeClass
+afterClass
+beforeClass
+afterClass 
+"

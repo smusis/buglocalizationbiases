@@ -1,0 +1,19 @@
+Some tests assume that an implementation of javax.jcr.Item overrides equals()
+
+
+
+Description:
+The following 3 tests (followed by the line number containing the bad assertion):
+
+org.apache.jackrabbit.test.api.ReferencesTest.testReferenceTarget:135
+org.apache.jackrabbit.test.api.ReferencesTest.testAlterReference:169
+org.apache.jackrabbit.test.api.version.VersionHistoryTest:152
+
+assume that an implementation of javax.jcr.Item overrides equals(), such that 
+
+Assert.assertEquals(n1, n2) or 
+java.util.Set.contains(n1) 
+
+works for two "equal" nodes n1,n2 or for some node n1 that has been previously put into a set. However, there is no section in the specification that would mandate this. The tests above should therefore replace assertEquals() with one of the other mechanism that officially supported, such as javax.jcr.Node.isSame().
+
+

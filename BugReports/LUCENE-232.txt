@@ -1,0 +1,13 @@
+Version 1.3 reports IOException when re-creating an index
+
+
+
+Description:
+Version: Lucene 1.3 final 
+Error reported when I am (re-)doing an initialization on the index created 
+previously:
+java.io.IOException: couldn't delete _26a.f1
+
+The problem disappearred after a re-start of the jvm, some files may be locked 
+after the index writer action !
+Problem does not appear in Version 1.2.

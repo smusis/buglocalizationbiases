@@ -1,0 +1,6 @@
+FieldsReader does not regard offset and position flags
+
+
+
+Description:
+When creating a Field the FieldsReader looks at the storeTermVector flag of the FieldInfo. If true Field.TermVector.YES is used as parameter. But it should be checked if storeOffsetWithTermVector and storePositionWithTermVector are set and Field.TermVector.WITH_OFFSETS, ...WITH_POSITIONS, or ...WITH_POSITIONS_OFFSETS should be used as appropriate.

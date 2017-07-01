@@ -1,0 +1,46 @@
+Reducing buffer sizes for TermDocs.
+
+
+
+Description:
+From java-dev: 
+ 
+On Friday 09 September 2005 00:34, Doug Cutting wrote: 
+> Paul Elschot wrote: 
+> > I suppose one of these cases are when many terms are used in a query.  
+> > Would it be easily possible to make the buffer size for a term iterator 
+> > depend on the numbers of documents to be iterated? 
+> > Many terms only occur in a few documents, so this could be a  
+> > nice win on total buffer size for the many terms case. 
+>  
+> This would not be too difficult. 
+>  
+> Look in SegmentTermDocs.java.  The buffer may be allocated when the  
+> parent's stream is first cloned, but clone() won't allocate a buffer if  
+> the source hasn't had a buffer allocated yet, and nothing should perform  
+> i/o directly on the parent's freqStream, so in practice a buffer should  
+> not be allocated until the first read is performed on the clone. 
+ 
+I tried delaying the buffer allocation in BufferedIndexInput by 
+using this clone() method: 
+ 
+  public Object clone() { 
+    BufferedIndexInput clone = (BufferedIndexInput)super.clone(); 
+    clone.buffer = null; 
+    clone.bufferLength = 0; 
+    clone.bufferPosition = 0; 
+    clone.bufferStart = getFilePointer();  
+    return clone; 
+  } 
+ 
+With this all term document iterators seem to be empty, no 
+query in the test cases gives any results, for example TestDemo 
+and TestBoolean2. 
+As far as I can see, this delaying should work, but it doesn't and 
+I have no idea why. 
+ 
+End of quote from java-dev. 
+ 
+Doug replied that at a glance this clone method looks good. 
+Without this delayed buffer allocation, a reduced buffer size 
+for TermDocs cannot be implemented easily.

@@ -1,0 +1,28 @@
+SPI: RepositoryService.obtain should allow to pass null workspaceName indicating the default workspace
+
+
+
+Description:
+improvement suggested by tobi
+
+the contract of
+
+public SessionInfo obtain(Credentials credentials, String workspaceName)
+public SessionInfo obtain(Credentials credentials, String workspaceName)
+
+should be changed to allow for null workspaceName.
+
+* @param workspaceName the name of the workspace the <code>SessionInfo</code>
+* should be built for. <code>null</code> indicates that the info should be created for the
+* default workspace.
+
+consequently we could either deprecate 
+
+RepositoryConfig.getDefaultWorkspaceName()
+
+or allow it to return null as well or remove it altogether.
+
+
+
+
+

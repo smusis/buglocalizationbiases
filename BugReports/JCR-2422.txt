@@ -1,0 +1,6 @@
+Add the new DataSource element to the repository DTD
+
+
+
+Description:
+The connection pooling feature from JCR-1456 introduced a new DataSource configuration element to Jackrabbit. It should be added to the repository config DTD.

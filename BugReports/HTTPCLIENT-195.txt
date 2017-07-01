@@ -1,0 +1,29 @@
+NTLM authentication failed due to closing of connection
+
+
+
+Description:
+Description:
+
+When dealing with a NTLM proxy server that sends response back with lines:
+
+14:51:27:750 << HTTP/1.0 407 Proxy Authentication Required
+14:51:27:796 << Date: Mon, 14 Apr 2003 19:52:43GMT[\r][\n]
+14:51:27:796 << Content-Length: 257[\r][\n]
+14:51:27:796 << Content-Type: text/html[\r][\n]
+14:51:27:796 << Server: NetCache appliance (NetApp/5.3.1R1)[\r][\n]
+14:51:27:796 << Connection: keep-alive[\r][\n]
+14:51:27:796 << Proxy-Authenticate: NTLM 
+TlRMTVNTUAACAAAABgAGACgAAAAGggEAtOoNy4M0g0EAAAAAAAAAAEdMT0JBTA==[\r][\n]
+
+The httpClient code is using the "HTTP/1.0" as clue for closing the connection 
+and ignored the "Connection: keep-alive".  That caused the NTLM authentication 
+to fail as the NTLM requires the response to the challenge to be sent back on 
+the same connection.
+
+Proposed Fix:
+
+Our fix is to add a flag inProxyAuthenticationRetry (in HttpMethodBase) to 
+indicate that the method is doing proxy authentication retry.  When the flag is 
+true, in "HttpMethodBase.shouldCloseConnection", check the "Connection: keep-
+alive" before determining to close the connection.

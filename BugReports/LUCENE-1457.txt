@@ -1,0 +1,15 @@
+There are a few binary search implmentations in lucene that suffer from a now well known overflow bug
+
+
+
+Description:
+http://googleresearch.blogspot.com/2006/06/extra-extra-read-all-about-it-nearly.html
+
+The places I see it are:
+
+MultiSearcher.subSearcher(int)
+TermInfosReader.getIndexOffset(Term)
+MultiSegmentReader.readerIndex(int, int[], int)
+MergeDocIDRemapper.remap(int)
+
+I havn't taken much time to consider how likely any of these are to overflow. The values being averaged would have to be very large. That would rule out possible problems for at least a couple of these, but how about something like the MergeDocIDRemapper? Is there a document number that could be reached that has a chance of triggering this bug? If not we can close this and have a record of looking into it.

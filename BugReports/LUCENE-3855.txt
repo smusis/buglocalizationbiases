@@ -1,0 +1,48 @@
+TestStressNRT failures (reproducible)
+
+
+
+Description:
+Build server logs. Reproduces on at least two machines.
+
+{noformat}
+    [junit] ------------- Standard Error -----------------
+    [junit] NOTE: reproduce with: ant test -Dtestcase=TestStressNRT -Dtestmethod=test -Dtests.seed=69468941c1bbf693:19e66d58475da929:69e9d2f81769b6d0 -Dargs="-Dfile.encoding=UTF-8"
+    [junit] NOTE: test params are: codec=Lucene3x, sim=RandomSimilarityProvider(queryNorm=true,coord=false): {}, locale=ro, timezone=Etc/GMT+1
+    [junit] NOTE: all tests run in this JVM:
+    [junit] [TestStressNRT]
+    [junit] NOTE: Linux 3.0.0-16-generic amd64/Sun Microsystems Inc. 1.6.0_27 (64-bit)/cpus=2,threads=1,free=74960064,total=135987200
+    [junit] ------------- ---------------- ---------------
+    [junit] Testcase: test(org.apache.lucene.index.TestStressNRT):	Caused an ERROR
+    [junit] MockDirectoryWrapper: cannot close: there are still open files: {_ng.cfs=8}
+    [junit] java.lang.RuntimeException: MockDirectoryWrapper: cannot close: there are still open files: {_ng.cfs=8}
+    [junit] 	at org.apache.lucene.store.MockDirectoryWrapper.close(MockDirectoryWrapper.java:555)
+    [junit] 	at org.apache.lucene.index.TestStressNRT.test(TestStressNRT.java:385)
+    [junit] 	at org.apache.lucene.util.LuceneTestCase$SubclassSetupTeardownRule$1.evaluate(LuceneTestCase.java:743)
+    [junit] 	at org.apache.lucene.util.LuceneTestCase$InternalSetupTeardownRule$1.evaluate(LuceneTestCase.java:639)
+    [junit] 	at org.apache.lucene.util.SystemPropertiesInvariantRule$1.evaluate(SystemPropertiesInvariantRule.java:22)
+    [junit] 	at org.apache.lucene.util.LuceneTestCase$TestResultInterceptorRule$1.evaluate(LuceneTestCase.java:538)
+    [junit] 	at org.apache.lucene.util.LuceneTestCase$RememberThreadRule$1.evaluate(LuceneTestCase.java:600)
+    [junit] 	at org.apache.lucene.util.LuceneTestCaseRunner.runChild(LuceneTestCaseRunner.java:164)
+    [junit] 	at org.apache.lucene.util.LuceneTestCaseRunner.runChild(LuceneTestCaseRunner.java:57)
+    [junit] 	at org.apache.lucene.util.StoreClassNameRule$1.evaluate(StoreClassNameRule.java:21)
+    [junit] 	at org.apache.lucene.util.SystemPropertiesInvariantRule$1.evaluate(SystemPropertiesInvariantRule.java:22)
+    [junit] Caused by: java.lang.RuntimeException: unclosed IndexInput: _ng.cfs
+    [junit] 	at org.apache.lucene.store.MockDirectoryWrapper.addFileHandle(MockDirectoryWrapper.java:479)
+    [junit] 	at org.apache.lucene.store.MockDirectoryWrapper$1.openSlice(MockDirectoryWrapper.java:777)
+    [junit] 	at org.apache.lucene.store.CompoundFileDirectory.openInput(CompoundFileDirectory.java:221)
+    [junit] 	at org.apache.lucene.codecs.lucene3x.TermInfosReader.<init>(TermInfosReader.java:112)
+    [junit] 	at org.apache.lucene.codecs.lucene3x.Lucene3xFields.<init>(Lucene3xFields.java:84)
+    [junit] 	at org.apache.lucene.codecs.lucene3x.PreFlexRWPostingsFormat$1.<init>(PreFlexRWPostingsFormat.java:51)
+    [junit] 	at org.apache.lucene.codecs.lucene3x.PreFlexRWPostingsFormat.fieldsProducer(PreFlexRWPostingsFormat.java:51)
+    [junit] 	at org.apache.lucene.index.SegmentCoreReaders.<init>(SegmentCoreReaders.java:108)
+    [junit] 	at org.apache.lucene.index.SegmentReader.<init>(SegmentReader.java:51)
+    [junit] 	at org.apache.lucene.index.IndexWriter$ReadersAndLiveDocs.getMergeReader(IndexWriter.java:521)
+    [junit] 	at org.apache.lucene.index.IndexWriter.mergeMiddle(IndexWriter.java:3587)
+    [junit] 	at org.apache.lucene.index.IndexWriter.merge(IndexWriter.java:3257)
+    [junit] 	at org.apache.lucene.index.ConcurrentMergeScheduler.doMerge(ConcurrentMergeScheduler.java:382)
+    [junit] 	at org.apache.lucene.index.ConcurrentMergeScheduler$MergeThread.run(ConcurrentMergeScheduler.java:451)
+    [junit] 
+    [junit] 
+    [junit] Test org.apache.lucene.index.TestStressNRT FAILED
+{noformat}

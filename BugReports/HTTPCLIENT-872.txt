@@ -1,0 +1,6 @@
+Add preemptive authentication
+
+
+
+Description:
+Wishlist request for preemptive authentication to be included in the API, like HttpClient 3.x had.  There is an example ClientPreemptiveBasicAuthentication.java that uses HttpRequestInterceptor which I had adapted to my application and it works fine.

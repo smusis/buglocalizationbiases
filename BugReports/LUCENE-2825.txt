@@ -1,0 +1,6 @@
+FSDirectory.open should return MMap on 64-bit Solaris
+
+
+
+Description:
+MMap is ~ 30% faster than NIOFS on this platform.

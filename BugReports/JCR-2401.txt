@@ -1,0 +1,12 @@
+OSGi bundle symbolic names changed due to changes in maven-bundle-plugin
+
+
+
+Description:
+See FELIX-1886 - I have noticed this with jackrabbit-jcr-commons 2.0-beta3 but I assume all modules which use maven-bundle-plugin are affected.
+
+Having bundle symbolic name changes is problematic as OSGi frameworks then consider the old a new bundles to be different components, instead of different versions of the same component.
+
+The simplest way to go back to the previous symbolic names is probably to use the maven-bundle-plugin config workaround described in FELIX-1886, in the jackrabbit parent pom (or whever that plugin is configured).
+
+I'll try that and supply a patch.

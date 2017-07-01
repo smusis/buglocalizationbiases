@@ -1,0 +1,39 @@
+jcr2spi: NPE with SessionImporter#checkIncludesMixReferenceable if NodeInfo doesn't contain mixin names
+
+
+
+Description:
+issue reported by tobi:
+
+java.lang.NullPointerException
+	at java.util.Arrays$ArrayList.<init>(Arrays.java:2355)
+	at java.util.Arrays.asList(Arrays.java:2341)
+	at org.apache.jackrabbit.jcr2spi.xml.SessionImporter.checkIncludesMixReferenceable(SessionImporter.java:637)
+	at org.apache.jackrabbit.jcr2spi.xml.SessionImporter.startNode(SessionImporter.java:209)
+
+including test case:
+
+    public void testEmptyMixins() throws Exception {
+        String xml = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" +
+                "<sv:node xmlns:nt=\"http://www.jcp.org/jcr/nt/1.0\"\n" +
+                "         xmlns:sv=\"http://www.jcp.org/jcr/sv/1.0\"\n" +
+                "         xmlns:mix=\"http://www.jcp.org/jcr/mix/1.0\"\n" +
+                "         xmlns:jcr=\"http://www.jcp.org/jcr/1.0\"\n" +
+                "         sv:name=\"testnode1\">\n" +
+                "    <sv:property sv:name=\"jcr:primaryType\"
+sv:type=\"Name\">\n" +
+                "        <sv:value>nt:unstructured</sv:value>\n" +
+                "    </sv:property>\n" +
+                "    <sv:property sv:name=\"jcr:title\" sv:type=\"String\">\n" +
+                "        <sv:value>Test Node</sv:value>\n" +
+                "    </sv:property>\n" +
+                "    <sv:property sv:name=\"jcr:uuid\" sv:type=\"String\">\n" +
+                "        <sv:value>1234</sv:value>\n" +
+                "    </sv:property>\n" +
+                "</sv:node>";
+
+        InputStream in = new ByteArrayInputStream(xml.getBytes());
+        session.importXML("/", in,
+ImportUUIDBehavior.IMPORT_UUID_COLLISION_THROW);
+        session.save();
+    }

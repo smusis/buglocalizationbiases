@@ -1,0 +1,12 @@
+Wrapup flexible indexing
+
+
+
+Description:
+Spinoff from LUCENE-1458.
+
+The flex branch is in fairly good shape -- all tests pass, initial search performance testing looks good, it survived several visits from the Unicode policeman ;)
+
+But it still has a number of nocommits, could use some more scrutiny especially on the "emulate old API on flex index" and vice/versa code paths, and still needs some more performance testing.  I'll do these under this issue, and we should open separate issues for other self contained fixes.
+
+The end is in sight!

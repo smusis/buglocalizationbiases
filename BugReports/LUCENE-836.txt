@@ -1,0 +1,14 @@
+Benchmarks Enhancements (precision/recall, TREC, Wikipedia)
+
+
+
+Description:
+Would be great if the benchmark contrib had a way of providing precision/recall benchmark information ala TREC.  I don't know what the copyright issues are for the TREC queries/data (I think the queries are available, but not sure about the data), so not sure if the is even feasible, but I could imagine we could at least incorporate support for it for those who have access to the data.  It has been a long time since I have participated in TREC, so perhaps someone more familiar w/ the latest can fill in the blanks here.
+
+Another option is to ask for volunteers to create queries and make judgments for the Reuters data, but that is a bit more complex and probably not necessary.  Even so, an Apache licensed set of benchmarks may be useful for the community as a whole.  Hmmm.... 
+
+Wikipedia might be another option instead of Reuters to setup as a download for benchmarking, as it is quite large and I believe the licensing terms are quite amenable.  Having a larger collection would be good for stressing Lucene more and would give many users a demonstration of how Lucene handles large collections.
+
+At any rate, this kind of information could be useful for people looking at different indexing schemes, formats, payloads and different query strategies.
+
+

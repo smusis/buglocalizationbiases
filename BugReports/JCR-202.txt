@@ -1,0 +1,15 @@
+Add configuration options for search manager
+
+
+
+Description:
+Right now, if the search manager is active, everything is indexed, even the system branch of a workspace with the versions.
+
+take parameters / conditions into account whether a node should be indexed:
+- path
+- node type
+- property type
+- property name
+
+
+see also http://thread.gmane.org/gmane.comp.apache.jackrabbit.devel/3343

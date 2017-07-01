@@ -1,0 +1,29 @@
+More clarification, improvements and correct behaviour of backwards tests
+
+
+
+Description:
+Backwards tests are used since 2.9 to assert, that the new Lucene version supports drop-in-replacement over the previous version. For this all tests from the previous version are compiled against the old version but then run against the new JAR file.
+
+At the beginning the test suite was checking out another branch and doing this, but this was replaced in 3.1 by directly embedding the previous source tree and the previous tests into the backwards/ subdirectory of the SVN source. The whole idea has several problems:
+
+- Tests not only check *public* APIs, they also check internals and sometimes even fields or package-private methods. This is allowed to change in later versions, so we must be able to change the tests, to support this behaviour. This can be done by modifying the backwards tests to pass, but still use the public API unchanged. Sometimes we simply comment out tests, that test internals and not public APIs. For those tests, I would like to propose a Java Annotation for trunk tests like @LuceneInternalTest - so we can tell the tests runner for backwards (when this test is moved as backwards layer, e.g in 4.1, that it runs all tests *but* not this marked one. This can be done easily with Junit3/4 in LuceneTestCase(J4). This is not part of this issue, but a good idea.
+- Sometimes we break backwards compatibility. Currently we do our best to change the tests to reflect this, but this is unneeded and stupi, as it brings two problems. The backwards tests should be compiled against the old version of Lucene. If we change this old Version in the backwards folder, its suddenly becomes nonsense. At least the JAR artifacts of the previous version should stay *unchanged* in all cases! If we break backwards, the correct way to do this, is to simply disable coresponding tests! There is no need to make them work again, as we broke backwards, wy test plugin? The trunk tests already check the functionality, backwards tests only check API. If we fix the break in backwards, we do the contra of what they are for.
+
+So I propose the following and have implemented in a patch for 3.x branch:
+
+- Only include the *tests* and nothing else into the backwards branch, no source files of previous Lucene Core.
+- Add the latest released JAR artifact of lucene-core.jar into backwards/lib, optimally with checksum (md5/sh1). This enforces that it is not changed and exactly do what they are for: To compile the previous tests against. This is the only reason for this JAR file.
+- If we break backwards, simply *disable* the tests by commenting out, ideally with a short note and the JIRA issue that shows the break.
+- If we change inner behaviour of classes, that are not public, dont fix, disable tests. Its simple: backwards tests are only for API compatibility testsing of public APIs. If a test uses internals it should not be run. For that we should use a new annotation in trunk (see above).
+
+This has several good things:
+
+- we can package backwards tests in src ZIP. Its not a full distrib, only the core tests and the JAR file. This enables people that doenloaded the src ZIP files to also run backwrads tests
+- Your SVN checkout is not so big and backwards tests run faster!
+
+There are some problems, with one example in the attached patch:
+
+- If we have mock classes in the tests (e.g. MockRAMDirectory) that extend Lucene classes and have access to their internal APIs, a change in these APIs will make them fail to work unchanged. The above example (MockRAMDir) is used in lots of tests and uses a internal RAMDir field that changed type in 3.1. But we cannot disable all tests using this dir (no tests will survive). As we cannot change the previous versions JAR to reflect this, you have to use some trick in this interbal test class. In this case I removed static linking of this field and replaced by reflection. This enables compilation against old JAR, but supports running in new version. This is really a special case, but works good here.
+
+Any comments?

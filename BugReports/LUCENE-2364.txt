@@ -1,0 +1,8 @@
+Add support for terms in BytesRef format to Term, TermQuery, TermRangeQuery & Co.
+
+
+
+Description:
+It would be good to directly allow BytesRefs in TermQuery and TermRangeQuery (as both queries convert the strings to BytesRef internally). For NumericRange support in Solr it will be needed to support numerics as ByteRef in single-term queries.
+
+When this will be added, don't forget to change TestNumericRangeQueryXX to use the BytesRef ctor of TRQ.

@@ -1,0 +1,33 @@
+Node.restore() throws java.lang.ClassCastException
+
+
+
+Description:
+I'm trying to upgrade to 1.5 using existing 1.3.x repository. Restore of versionable node throws ClassCastException.
+
+Caused by: java.lang.ClassCastException: org.apache.jackrabbit.uuid.UUID
+	at org.apache.jackrabbit.core.value.InternalValue.getString(InternalValue.java:436)
+	at org.apache.jackrabbit.core.version.InternalFrozenNodeImpl.<init>(InternalFrozenNodeImpl.java:113)
+	at org.apache.jackrabbit.core.version.AbstractVersionManager.createInternalVersionItem(AbstractVersionManager.java:576)
+	at org.apache.jackrabbit.core.version.VersionManagerImpl.getItem(VersionManagerImpl.java:258)
+	at org.apache.jackrabbit.core.version.InternalVersionImpl.getFrozenNode(InternalVersionImpl.java:111)
+	at org.apache.jackrabbit.core.version.VersionImpl.getFrozenNode(VersionImpl.java:120)
+	at org.apache.jackrabbit.core.NodeImpl.internalRestore(NodeImpl.java:4180)
+	at org.apache.jackrabbit.core.NodeImpl.internalRestore(NodeImpl.java:4141)
+	at org.apache.jackrabbit.core.NodeImpl.restore(NodeImpl.java:3429)
+
+It seems that bug has been introduced already in 1.4 as part of JCR-926 (InternalValue cleanup).
+
+Index: C:/data/jackrabbit/jackrabbit-core/src/main/java/org/apache/jackrabbit/core/version/InternalFrozenNodeImpl.java
+===================================================================
+--- C:/data/jackrabbit/jackrabbit-core/src/main/java/org/apache/jackrabbit/core/version/InternalFrozenNodeImpl.java	(revision 549117)
++++ C:/data/jackrabbit/jackrabbit-core/src/main/java/org/apache/jackrabbit/core/version/InternalFrozenNodeImpl.java	(working copy)
+@@ -109,10 +109,10 @@
+             PropertyState prop = props[i];
+             if (prop.getName().equals(QName.JCR_FROZENUUID)) {
+                 // special property
+-                frozenUUID = UUID.fromString(node.getPropertyValue(QName.JCR_FROZENUUID).internalValue().toString());
++                frozenUUID = UUID.fromString(node.getPropertyValue(QName.JCR_FROZENUUID).getString());
+
+Probably one of the assumptions made was wrong :
+- The type of QName.JCR_FROZENUUID is STRING (Object.toString() was used before).

@@ -1,0 +1,8 @@
+New PostSOAP example (for src/examples)
+
+
+
+Description:
+I have a slightly modified version of PostXML which invokes SOAP requests. The
+only difference to PostXML is that PostSOAP takes the SOAPAction as an extra
+commndline arg and adds that as a header into the request.

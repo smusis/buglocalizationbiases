@@ -1,0 +1,12 @@
+IfHeader: Incorrect test for parsing keyword "not" in parseIfList
+
+
+
+Description:
+The test for the "not" keyword tests the last character as
+
+     (not !='t' || not != 'T')
+
+which always yields true (not cannot be t and T at the same time). The correct test would be
+
+     (not !='t' && not != 'T')

@@ -1,0 +1,10 @@
+Spellchecker's dictionary iterator misbehaves
+
+
+
+Description:
+In LuceneDictionary, the LuceneIterator.hasNext() method has two issues that makes it misbehave:
+
+1) If hasNext is called more than once, items are skipped
+2) Much more seriously, when comparing fieldnames it is done with != rather than .equals() with the potential result that nothing is indexed
+

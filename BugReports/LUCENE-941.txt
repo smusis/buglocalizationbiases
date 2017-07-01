@@ -1,0 +1,11 @@
+Benchmark alg line -  {[AddDoc(4000)]: 4} : * - causes an infinite loop
+
+
+
+Description:
+Background in http://www.mail-archive.com/java-dev@lucene.apache.org/msg10831.html 
+The line  
+   {[AddDoc(4000)]: 4} : * 
+causes an infinite loop because the parallel sequence would mask the exhaustion from the outer sequential sequence.
+
+To fix this the DocMaker exhaustion check should be modified to rely  on the doc maker instance only, and to be reset when the inputs are being reset. 

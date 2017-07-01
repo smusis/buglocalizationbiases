@@ -1,0 +1,6 @@
+FST serialization and deserialization from plain DataInput/DataOutput streams.
+
+
+
+Description:
+Currently the automaton can be saved only to a Directory instance (IndexInput/ IndexOutput).

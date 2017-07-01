@@ -1,0 +1,19 @@
+typo in RFC reference in web site
+
+
+
+Description:
+Quoting from <http://hc.apache.org/httpcomponents-client/index.html>:
+
+"Standards Compliance
+
+HttpClient strives to conform to the following specifications endorsed by the Internet Engineering Task Force (IETF) and the internet at large:
+
+    * RFC 1945 - Hypertext Transfer Protocol -- HTTP/1.0
+    * RFC 2116 - Hypertext Transfer Protocol -- HTTP/1.1
+    * RFC2617 HTTP Authentication: Basic and Digest Access Authentication
+    * RFC2109 HTTP State Management Mechanism (Cookies)
+    * RFC2965 HTTP State Management Mechanism (Cookies v2)"
+
+Note the typo in the reference to HTTP/1.1.
+

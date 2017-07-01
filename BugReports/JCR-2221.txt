@@ -1,0 +1,16 @@
+Rename "Version Managers"
+
+
+
+Description:
+currently there is a VersionManager interface and VersionManagerImpl class that operate on the version storage.
+new for JSR283, the is a javax.jcr.version.VersionManager and its implementation JcrVersionManager.
+
+in order to avoid confusion, i would like to rename the following classes:
+
+o.a.j.core.version.VersionManager - > o.a.j.core.version.InternalVersionManager
+o.a.j.core.version.VersionManagerImpl -> o.a.j.core.version.InternalVersionManagerImpl
+o.a.j.core.version.AbstractVersionManager -> o.a.j.core.version.AbstractInternalVersionManager
+o.a.j.core.version.XAVersionManager -> o.a.j.core.version.XAInternalVersionManager
+
+o.a.j.core.version.JcrVersionManagerImpl -> o.a.j.core.version.VersionManagerImpl

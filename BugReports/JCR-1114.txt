@@ -1,0 +1,6 @@
+Remove QueryResultImpl and rename LazyQueryResultImpl to QueryResultImpl
+
+
+
+Description:
+QueryResultImpl isn't used in Jackrabbit anymore. Instead LazyQueryResultImpl is now used. See the discussion in JCR-1073.

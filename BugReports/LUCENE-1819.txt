@@ -1,0 +1,12 @@
+MatchAllDocsQuery.toString(String field) does not honor the javadoc contract
+
+
+
+Description:
+Should be 
+
+public String toString(String field){
+  return "*:*";
+}
+
+QueryParser needs to be able to parse the String form of this query.

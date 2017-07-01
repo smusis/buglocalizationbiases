@@ -1,0 +1,6 @@
+Don't throw TooManyClauses exception
+
+
+
+Description:
+I wonder if it would make sense to fall back to a ConstantScoreQuery instead of throwing a TooManyClauses exception?

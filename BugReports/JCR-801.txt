@@ -1,0 +1,10 @@
+Support for single-workspace repositories
+
+
+
+Description:
+There should be a way to configure the test cases in a way such that NodeTest.java can pass although the repository implementation does not support multiple workspaces.
+
+The cleanest approach probably would be to allow javax.jcr.tck.workspacename to stay undefined, and to skip the tests in that case. Alternatives would be a special name indicating lack of support for other workspaces, or an additional config variable.
+
+

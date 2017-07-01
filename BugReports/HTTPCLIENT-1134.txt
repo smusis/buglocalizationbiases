@@ -1,0 +1,6 @@
+BasicResponseHandler Javadoc Needs Clarification
+
+
+
+Description:
+The class-level javadoc for BasicResponseHandler indicates that it reads the response body before throwing an Exception for responses with status code >= 300, which is not the case.

@@ -1,0 +1,6 @@
+JSR 283: Built-In Node Types
+
+
+
+Description:
+sync definitions of built-in node types with spec

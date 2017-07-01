@@ -1,0 +1,13 @@
+Improve and promote spi-logger
+
+
+
+Description:
+The spi-logger is very useful for debugging an SPI implementation. However it only supports the RepositoryService interface. Other SPI interfaces are not supported. Also writing log information as string seems a bit restrictive to me. Finally it is not included in the jackrabbit-spi package which introduces an additional dependency for debugging. 
+
+I therefore suggest:
+- Add support for the other major SPI interfaces 
+- Replace the current way of logging a String to a Writer instance by a more versatile mechanism (i.e. clients have to provide an interface which consumes more structured log data). 
+- Provide some default implementation for the above mechanism (i.e. writing to a file, writing to a slf4j based logger, writing to the console...)
+- Promote this project to jackrabbit-spi
+

@@ -1,0 +1,20 @@
+When trying to reuse version label in transaction, exception is thrown
+
+
+
+Description:
+Following sequence causes failure:
+1. first transaction:
+  1.1 create versionable node
+  1.2 create version 1 of this node
+2. second transaction:
+  2.1 create version 2 of this node
+  2.2 assign a label to version 2
+3. third transaction:
+  3.1 restore a node to version 1
+  3.2 remove version 2
+  3.3 make version 3 of  same node
+  3.4 assign same label (which was assigned to version 2) to version 3 -> fails
+
+Same sequence which does not use transactions at all works fine.
+Going to attach a test case.

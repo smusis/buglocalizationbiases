@@ -1,0 +1,13 @@
+LockOperation - In a clustered environment, a lock created on one server is not sent to the other servers.
+
+
+
+Description:
+The cluster operation for a lock (LockOperation) always has the isLock variable set to false.
+The operation to represent a lock should set the isLock variable to true.
+
+    /**
+     * Flag indicating whether this is a lock. 
+     */
+    private boolean isLock;
+

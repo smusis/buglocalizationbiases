@@ -1,0 +1,7 @@
+Crash when adding node to cluster with big journal on PSQL DB
+
+
+
+Description:
+When adding a new node to a cluster with big journal on PSQL database application runs out of memory on the new node and crashes (no exception, application exits with code 137).
+It's because with PSQL, when no fetchSize is specified, all the results of query are loaded into memory before being passed to application. Furthermore, specification of fetchSize only works in transactional mode and have no effect if autoCommit is true. (these are configured in ConnectionHelper)

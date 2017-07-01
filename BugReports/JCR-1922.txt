@@ -1,0 +1,8 @@
+Validate the SearchIndex configuration
+
+
+
+Description:
+The validation of the configuration (repository.xml / workspace.xml) was enabled in JCR-1462, unfortunately a problem with the LoginModule and SearchIndex was found (see JCR-1920), so it was later disabled for those two modules.
+
+Validation for SearchIndex is possible but needs some more changes. To avoid problems, those changes should be done in a major version and not in a minor version.

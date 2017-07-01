@@ -1,0 +1,28 @@
+[PATCH] to store binary fields with compression
+
+
+
+Description:
+hi all,
+
+as promised here is the enhancement for the binary field patch with optional
+compression. The attachment includes all necessary diffs based on the latest
+version from CVS. There is also a small junit test case to test the core
+functionality for binary field compression. The base implementation for binary
+fields where this patch relies on, can be found in patch #29370. The existing
+unit tests pass fine.
+
+For testing binary fields and compression, I'm creating an index from 2700 plain
+text files (avg. 6kb per file) and store all file content within that index
+without using compression. The test was created using the IndexFiles class from
+the demo distribution. Setting up the index and storing all content without
+compression took about 60 secs and the final index size was 21 MB. Running the
+same test, switching compression on, the time to index increase to 75 secs, but
+the final index size shrinks to 13 MB. This is less than the plain text files
+them self need in the file system (15 MB)
+
+Hopefully this patch helps people dealing with huge index and want to store more
+than just 300 bytes per document to display a well formed summary.
+
+regards
+Bernhard

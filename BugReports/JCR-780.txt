@@ -1,0 +1,10 @@
+Simultaneous updates by multiple sessions might not appear in the journal
+
+
+
+Description:
+In a clustering environment, simultaneous updates by multiple sessions in the same cluster node might not appear in the journal, because only record at a time can be handled by the cluster's workspace-specific callback method. When such a situtation arises, the following warnings can be found in the log:
+
+*WARN * ClusterNode: No record created.
+*WARN * ClusterNode: No record prepared.
+

@@ -1,0 +1,6 @@
+Various inner classes maintain references to owning class for no reason
+
+
+
+Description:
+Various inner classes maintain references to their owning classes for no reason, as they are independent classes. This issue will change these classes to be static inner classes, so that their footprint decreases, they ease gc work, and potentially reduce the lifetime of the owning classes if they outlive their owner.

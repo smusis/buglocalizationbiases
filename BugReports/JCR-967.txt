@@ -1,0 +1,11 @@
+Only search the index for the "jcr:system" tree if needed
+
+
+
+Description:
+Right now every time a query is executed the index of the current workspace as well as the index of the "jcr:system" tree is searched. A lot of queries are not searching in the "jcr:system" tree at all therefore it should be checked if the query contains paths that include "jcr:system". There are two relevant nodes in the query tree to find that out:
+
+- what's the first location step and does it include the jcr:system tree? I think that's an easy one.
+- does the query contain a jcr:deref node? If there is an intermediate result of a query may dereference into the jcr:system tree. 
+
+This should notably speed up query execution if you are working extensively with versioning.

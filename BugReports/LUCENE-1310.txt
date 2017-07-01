@@ -1,0 +1,11 @@
+Phrase query with term repeated 3 times requires more slop than expected
+
+
+
+Description:
+Consider a document with the text "A A A".
+The phrase query "A A A" (exact match) succeeds.
+The query "A A A"~1 (same document and query, just increasing the slop value by one) fails.
+"A A A"~2 succeeds again.
+
+If the exact match succeeds, I wouldn't expect the same query but with more slop to fail.  The fault seems to require some term to be repeated at least three times in the query, but the three occurrences do not need to be adjacent.  I will attach a file that contains a set of JUnit tests that demonstrate what I mean.

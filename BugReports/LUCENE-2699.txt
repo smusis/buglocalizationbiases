@@ -1,0 +1,8 @@
+Update StandardTokenizer and UAX29Tokenizer to Unicode 6.0.0
+
+
+
+Description:
+Newly released Unicode 6.0.0 contains some character property changes from the previous release (5.2.0) that affect word segmentation (UAX#29), and JFlex 1.5.0-SNAPSHOT now supports Unicode 6.0.0, so Lucene's UAX#29-based tokenizers should be updated accordingly.
+
+Note that the UAX#29 word break rules themselves did not change between Unicode versions 5.2.0 and 6.0.0.

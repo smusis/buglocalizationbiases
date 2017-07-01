@@ -1,0 +1,11 @@
+Allow to disable referential integrity checking for workspace
+
+
+
+Description:
+Some operations like clone, remove operating on huge subtree of nodes requires a lot of memory. To copy, clone, remove subtree all nodes are loaded into transient spaces. It allows such operations to be transactional, from other side it requires a lot of heap size and this memory size is directly dependent on the size of subtree (number of nodes). In result of this in some cases it is impossible to make such operations in one step. In our environment sometimes 1 GB of java heap is not enough to succesfully clone subtree  from one workspace to another.
+
+You can always clone (copy, remove) tree in chunks, but if you have references between subtrees such approach fails. Possibilty of temporary disabling referential integrity checking for experienced JCR user could be very usefull then.
+
+Another use case is to allow to clone selected subtrees of the whole structure between worskpaces. In our application we need to clone only some selected subtrees from one workspace to another. But we can not do that because of existing references. We need to clone the whol estructure first, then remove all unwanted nodes, which is really time expensive and memory consuming.
+

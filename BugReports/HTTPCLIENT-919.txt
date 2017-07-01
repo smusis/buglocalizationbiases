@@ -1,0 +1,11 @@
+NTLM implementation lacks support for NTLMv1, NTLMv2, and NTLM2 Session forms of NTLM
+
+
+
+Description:
+The current HttpClient implementation lacks support for all enhancements to NTLM after Windows 95.  That includes NTLMv1, NTLMv2, and NTLM2 Session Response varieties of the protocol.
+
+This seriously impacts the usability of HttpClient in enterprise situations, which has required the Lucene Connector Framework team to extend HttpClient to address the issue.
+
+I've attached a patch which contains the implementation used by LCF.
+

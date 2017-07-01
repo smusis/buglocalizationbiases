@@ -1,0 +1,6 @@
+XMLPersistanceManager doesn't preserve a property's 'multiValued' attribute
+
+
+
+Description:
+when a multi-valued property is persisted and later read using the XMLPersistenceManager the 'multiValued' attribute is lost, i.e. PropertyState.isMultiValued() returns always false.

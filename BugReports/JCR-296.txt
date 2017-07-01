@@ -1,0 +1,21 @@
+More details for beginners
+
+
+
+Description:
+Hi everyone,
+
+I'm one of these beginners trying to make their way in Jackrabbit and content repositories universe.
+
+Besides the fact that there exist but very few examples on Jackrabbit use, all of them, including the official web site of Jackrabbit miss few details, simple though essential, for beginners.
+
+My first point is the following: once Jackrabbit source is checked out and built, time to test it using simple examples. But, where to put the example directory from the beginning. How to run it (maven java:compile....) ?
+
+A second point is the fact that there is no help forum on the Jackrabbit web site.
+
+ A third point, taking my case as an example, the example would just not create a new workspace configuration.
+And many other troubleshoots - I repeat - basic but essential, that could avoid dozens of wasted hours and discouragment, if just mentioned on the website.
+
+Here it is my wish :-) for the best of Jackrabbit ;-) I hope!
+Regards,
+Celina

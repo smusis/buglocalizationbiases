@@ -1,0 +1,39 @@
+Large distances in Spatial go beyond Prime MEridian
+
+
+
+Description:
+http://amidev.kaango.com/solr/core0/select?fl=*&json.nl=map&wt=json&radius=5000&rows=20&lat=39.5500507&q=honda&qt=geo&long=-105.7820674
+
+Get an error when using Solr when distance is calculated for the boundary box past 90 degrees.
+
+
+Aug 4, 2009 1:54:00 PM org.apache.solr.common.SolrException log
+SEVERE: java.lang.IllegalArgumentException: Illegal lattitude value 93.1558669413734
+        at org.apache.lucene.spatial.geometry.FloatLatLng.<init>(FloatLatLng.java:26)
+        at org.apache.lucene.spatial.geometry.shape.LLRect.createBox(LLRect.java:93)
+        at org.apache.lucene.spatial.tier.DistanceUtils.getBoundary(DistanceUtils.java:50)
+        at org.apache.lucene.spatial.tier.CartesianPolyFilterBuilder.getBoxShape(CartesianPolyFilterBuilder.java:47)
+        at org.apache.lucene.spatial.tier.CartesianPolyFilterBuilder.getBoundingArea(CartesianPolyFilterBuilder.java:109)
+        at org.apache.lucene.spatial.tier.DistanceQueryBuilder.<init>(DistanceQueryBuilder.java:61)
+        at com.pjaol.search.solr.component.LocalSolrQueryComponent.prepare(LocalSolrQueryComponent.java:151)
+        at org.apache.solr.handler.component.SearchHandler.handleRequestBody(SearchHandler.java:174)
+        at org.apache.solr.handler.RequestHandlerBase.handleRequest(RequestHandlerBase.java:131)
+        at org.apache.solr.core.SolrCore.execute(SolrCore.java:1328)
+        at org.apache.solr.servlet.SolrDispatchFilter.execute(SolrDispatchFilter.java:341)
+        at org.apache.solr.servlet.SolrDispatchFilter.doFilter(SolrDispatchFilter.java:244)
+        at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:235)
+        at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:206)
+        at org.apache.catalina.core.StandardWrapperValve.invoke(StandardWrapperValve.java:233)
+        at org.apache.catalina.core.StandardContextValve.invoke(StandardContextValve.java:191)
+        at org.apache.catalina.core.StandardHostValve.invoke(StandardHostValve.java:128)
+        at org.apache.catalina.valves.ErrorReportValve.invoke(ErrorReportValve.java:102)
+        at org.apache.catalina.core.StandardEngineValve.invoke(StandardEngineValve.java:109)
+        at org.apache.catalina.connector.CoyoteAdapter.service(CoyoteAdapter.java:286)
+        at org.apache.coyote.http11.Http11AprProcessor.process(Http11AprProcessor.java:857)
+        at org.apache.coyote.http11.Http11AprProtocol$Http11ConnectionHandler.process(Http11AprProtocol.java:565)
+        at org.apache.tomcat.util.net.AprEndpoint$Worker.run(AprEndpoint.java:1509)
+        at java.lang.Thread.run(Thread.java:619)
+
+
+

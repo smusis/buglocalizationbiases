@@ -1,0 +1,8 @@
+NodeTypeRegistry.unregisterNodeTypes(Collection) missing
+
+
+
+Description:
+when having nodetypes depending on each other, or even have cyclic dependencies, they must be unregistered in the correct sequence. 
+
+i suggest a NodeTypeRegistry.unregisterNodeTypes(Collection) for that case.

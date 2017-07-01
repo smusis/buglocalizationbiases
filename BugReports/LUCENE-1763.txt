@@ -1,0 +1,17 @@
+MergePolicy should require an IndexWriter upon construction
+
+
+
+Description:
+MergePolicy does not require an IW upon construction, but requires one to be passed as method arg to various methods. This gives the impression as if a single MP instance can be shared across various IW instances, which is not true for all MPs (if at all). In addition, LogMergePolicy uses the IW instance passed to these methods incosistently, and is currently exposed to potential NPEs.
+
+This issue will change MP to require an IW instance, however for back-compat reasons the following changes will be made:
+# A new MP ctor w/ IW as arg will be introduced. Additionally, for back-compat a default ctor will also be declared which will assign null to the member IW.
+# Methods that require IW will be deprecated, and new ones will be declared.
+#* For back-compat, the new ones will not be made abstract, but will throw UOE, with a comment that they will become abstract in 3.0.
+# All current MP impls will move to use the member instance.
+# The code which calls MP methods will continue to use the deprecated methods, passing an IW even that it won't be necessary --> this is strictly for back-compat.
+
+In 3.0, we'll remove the deprecated default ctor and methods, and change the code to not call the IW method variants anymore.
+
+I hope that I didn't leave anything out. I'm sure I'll find out when I work on the patch :).

@@ -1,0 +1,9 @@
+Webdav: creating resource in case of RepositoryException
+
+
+
+Description:
+if accessing item fails for any other reason than PathNotFoundException, creating
+the resource should rather fail (throwing 403).
+
+(reported by brian)

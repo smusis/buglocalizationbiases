@@ -1,0 +1,10 @@
+XML import should not access external entities
+
+
+
+Description:
+With current Jackrabbit the following XML document can not be imported:
+
+    <!DOCTYPE foo SYSTEM "http://invalid.address/"><foo/>
+
+Even if the DTD address (or some other external resource referenced in the XML document) is correct, I don't think importXML() should even try resolving those references.

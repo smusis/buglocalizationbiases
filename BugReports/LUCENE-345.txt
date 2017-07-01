@@ -1,0 +1,18 @@
+Weird BooleanQuery behavior
+
+
+
+Description:
+Here's a simple OR-connected query.
+
+T:files T:deleting C:thanks C:exists
+
+The query above hits 1 document. But following *same* query only
+with parenthesis results nothing.
+
+(T:files T:deleting) (C:thanks C:exists)
+
+Another combinations of MUST and SHOULD.
+
+"T:files T:deleting +C:production +C:optimize" hits 1 document.
+"(T:files T:deleting) (+C:production +C:optimize)" hits 1 document.

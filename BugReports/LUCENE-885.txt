@@ -1,0 +1,11 @@
+clean up build files so contrib tests are run more easily
+
+
+
+Description:
+Per mailing list discussion...
+
+http://www.nabble.com/Tests%2C-Contribs%2C-and-Releases-tf3768924.html#a10655448
+
+Tests for contribs should be run when "ant test" is used,  existing "test" target renamed to "test-core"
+

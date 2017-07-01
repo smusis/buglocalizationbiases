@@ -1,0 +1,44 @@
+another highlighter
+
+
+
+Description:
+I've written this highlighter for my project to support bi-gram token stream (general token stream (e.g. WhitespaceTokenizer) also supported. see test code in patch). The idea was inherited from my previous project with my colleague and LUCENE-644. This approach needs highlight fields to be TermVector.WITH_POSITIONS_OFFSETS, but is fast and can support N-grams. This depends on LUCENE-1448 to get refined term offsets.
+
+usage:
+{code:java}
+TopDocs docs = searcher.search( query, 10 );
+Highlighter h = new Highlighter();
+FieldQuery fq = h.getFieldQuery( query );
+for( ScoreDoc scoreDoc : docs.scoreDocs ){
+  // fieldName="content", fragCharSize=100, numFragments=3
+  String[] fragments = h.getBestFragments( fq, reader, scoreDoc.doc, "content", 100, 3 );
+  if( fragments != null ){
+    for( String fragment : fragments )
+      System.out.println( fragment );
+  }
+}
+{code}
+
+features:
+- fast for large docs
+- supports not only whitespace-based token stream, but also "fixed size" N-gram (e.g. (2,2), not (1,3)) (can solve LUCENE-1489)
+- supports PhraseQuery, phrase-unit highlighting with slops
+{noformat}
+q="w1 w2"
+<b>w1 w2</b>
+---------------
+q="w1 w2"~1
+<b>w1</b> w3 <b>w2</b> w3 <b>w1 w2</b>
+{noformat}
+- highlight fields need to be TermVector.WITH_POSITIONS_OFFSETS
+- easy to apply patch due to independent package (contrib/highlighter2)
+- uses Java 1.5
+- looks query boost to score fragments (currently doesn't see idf, but it should be possible)
+- pluggable FragListBuilder
+- pluggable FragmentsBuilder
+
+to do:
+- term positions can be unnecessary when phraseHighlight==false
+- collects performance numbers
+

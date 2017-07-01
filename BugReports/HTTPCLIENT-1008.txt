@@ -1,0 +1,14 @@
+Send all variants' ETags on "variant miss"
+
+
+
+Description:
+From section 13.6 of RFC 2616:
+
+If an entity tag was assigned to a cached representation, the forwarded request SHOULD be conditional and include the entity tags in an If-None-Match header field from all its cache entries for the resource. This conveys to the server the set of entities currently held by the cache, so that if any one of these entities matches the requested entity, the server can use the ETag header field in its 304 (Not Modified) response to tell the cache which entry is appropriate. If the entity-tag of the new response matches that of an existing entry, the new response SHOULD be used to update the header fields of the existing entry, and the result MUST be returned to the client.
+
+Presently, we simply forward the request to the request without the conditionals.  This improvement would consist of adding the conditionals to the request, and properly handling the response.  An example of such would be the following:
+
+ - request resource with "Accept-Encoding: gzip", response has "Etag: etag1", "Vary: Accept-Encoding"
+ - request resource with "Accept-Encoding: deflate", request is forwarded with "If-None-Match: etag1" added, response is 200, with "ETag: etag2"
+ - request resource with "Accept-Encoding: gzip, deflate", request is forwarded with "If-None-Match: etag1, etag2" added, response is 304, with "ETag: etag1" indicating we should use the first response for this request

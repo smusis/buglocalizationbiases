@@ -1,0 +1,7 @@
+Support for MaxDB / SapSB Databases
+
+
+
+Description:
+I admit that MaxDB / SapSB are a bit exotic but support is easy to achieve when providing the correct ddls. 
+

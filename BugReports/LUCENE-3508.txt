@@ -1,0 +1,6 @@
+Decompounders based on CompoundWordTokenFilterBase cannot be used with custom attributes
+
+
+
+Description:
+The CompoundWordTokenFilterBase.setToken method will call clearAttributes() and then will reset only the default Token attributes (term, position, flags, etc) resulting in any custom attributes losing their value. Commenting out clearAttributes() seems to do the trick, but will fail the TestCompoundWordTokenFilter tests..

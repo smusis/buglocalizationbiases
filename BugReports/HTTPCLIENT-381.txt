@@ -1,0 +1,10 @@
+HttpState#PREEMPTIVE_PROPERTY removed.
+
+
+
+Description:
+Our code no longer compiles as HttpState#PREEMPTIVE_PROPERTY has been removed.
+Our code compiles with 2.0.1.
+
+See: 
+http://jakarta.apache.org/commons/httpclient/apidocs/org/apache/commons/httpclient/HttpState.html#PREEMPTIVE_PROPERTY

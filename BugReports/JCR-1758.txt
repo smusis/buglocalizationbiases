@@ -1,0 +1,7 @@
+Improvement to UndefinedTypeConverterImpl to map super types effectively
+
+
+
+Description:
+Improvement to org.apache.jackrabbit.ocm.manager.atomictypeconverter.impl.UndefinedTypeConverterImpl's implementation of 
+public Value getValue(ValueFactory valueFactory, Object propValue) , used equality check of class names to decide whether Object propValue is worthy of any attempt to map to an apropriate property.  Since the purpose of the class is to provide a 'best effort' attempt to map an Object of type java.lang.Object it will be better to use 'instanceof'.  This approach will convert the specific class as well as any inherited objects.  For example using instanceof will let us map a BufferedInputStream, and any other sub classes of InputStream to a Binary Property.

@@ -1,0 +1,31 @@
+HttpMethodDirector.executeWithRetry method fails to close the underlying connection if a RuntimeException is thrown
+
+
+
+Description:
+The following code snippet is from the end of the HttpMethodDirector.executeWithRetry method:
+
+        } catch (IOException e) {
+            if (this.conn.isOpen()) {
+                LOG.debug("Closing the connection.");
+                this.conn.close();
+            }
+            releaseConnection = true;
+            throw e;
+        } catch (RuntimeException e) {
+            if (this.conn.isOpen) {                                             <<<===========================   BAD!  :-)
+                LOG.debug("Closing the connection.");
+                this.conn.close();
+            }
+            releaseConnection = true;
+            throw e;
+        }
+
+When an IOException is caught, you can see that the "open" status of the connection is accurately checked by calling the "isOpen()" method.
+
+When a RuntimeException is caught, however, the code mistakenly checks only the "isOpen" member field.  In the case where "conn" is, for example, a MultiThreadedHttpConnectionManager, the "isOpen()" method is overridden to check for a wrapped connection and returns the "isOpen" status of that connection.  In cases like that checking the "isOpen" member field is obviously wrong and we end up not calling "close()" and the connection is not cleaned up.  This causes issues with later calls.
+
+A very difficult bug to diagnose and <steps up on soapbox> one that could have been easily avoided by making member variables private! <steps down>  thank you.  :-)
+
+
+

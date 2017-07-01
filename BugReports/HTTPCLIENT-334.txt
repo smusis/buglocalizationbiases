@@ -1,0 +1,7 @@
+Per socket SOCKS proxies
+
+
+
+Description:
+HttpClient requires a way of allowing a SOCKS proxy to be used on some
+connections without requiring that all created Sockets go through the proxy.

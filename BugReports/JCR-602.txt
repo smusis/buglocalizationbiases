@@ -1,0 +1,17 @@
+importXML still depends on Xerces
+
+
+
+Description:
+Przemo Pakulski commented on JCR-367:
+> Jackrabbit-core is still dependent on Xerces directly during runtime, SessionImpl.importWorkspace,
+> Workspacempl.importWorkspace methods contains folliwng lines :
+>
+>             XMLReader parser =
+>                     XMLReaderFactory.createXMLReader("org.apache.xerces.parsers.SAXParser");
+>
+> It works in maven1 probably because maven1 itself needs xerces to run test goal.
+>
+> I suggest reopening the issue.
+
+Creating a new issue since JCR-367 is already closed after the 1.1 release.

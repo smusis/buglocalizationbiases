@@ -1,0 +1,18 @@
+TokenSources.getTokenStream() does not assign positionIncrement
+
+
+
+Description:
+TokenSources.StoredTokenStream does not assign positionIncrement information. This means that all tokens in the stream are considered adjacent. This has implications for the phrase highlighting in QueryScorer when using non-contiguous tokens.
+
+For example:
+Consider  a token stream that creates tokens for both the stemmed and unstemmed version of each word - the fox (jump|jumped)
+When retrieved from the index using TokenSources.getTokenStream(tpv,false), the token stream will be - the fox jump jumped
+
+Now try a search and highlight for the phrase query "fox jumped". The search will correctly find the document; the highlighter will fail to highlight the phrase because it thinks that there is an additional word between "fox" and "jumped". If we use the original (from the analyzer) token stream then the highlighter works.
+
+Also, consider the converse - the fox did not jump
+"not" is a stop word and there is an option to increment the position to account for stop words - (the,0) (fox,1) (did,2) (jump,4)
+When retrieved from the index using TokenSources.getTokenStream(tpv,false), the token stream will be - (the,0) (fox,1) (did,2) (jump,3).
+
+So the phrase query "did jump" will cause the "did" and "jump" terms in the text "did not jump" to be highlighted. If we use the original (from the analyzer) token stream then the highlighter works correctly.

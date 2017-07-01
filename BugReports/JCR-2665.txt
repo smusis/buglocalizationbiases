@@ -1,0 +1,12 @@
+JCR Test for Adding Node Type Tests That Abstract Nodes Can Be Added as Children, contrary to JCR 2.0 specification
+
+
+
+Description:
+When the TCK test method testLegalAndResidualType in the CanAddChildNodeCallWithNodeTypeTest class picks a node with a residual type, it does not filter out abstract nodes.  For example, in my local test, nt:hierarchyNode is selected for the local variable 'type'.
+
+Since abstract node types "cannot be directly assigned to a node,"[1] canAddChildNode(anyPropertyName, "nt:hierarchyNode") must return false.  However, since the test assumes that a non-abstract node type was chosen, it expects canAddChildNode(String, String) to return true.
+
+This could be fixed if NodeTypeUtil.locateChildNodeDef(...) were extended to add an extra argument allowing or disallowing abstract types and that extra argument was used to filter the type used in testLegalAndResidualType (or if locateChildNodeDef(...) automatically excluded abstract types in the same manner that it automatically excludes protected types).
+
+[1] - Section 3.7.1.3 of the JCR2 specification

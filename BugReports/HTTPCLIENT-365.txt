@@ -1,0 +1,19 @@
+StatusLine IndexOutOfBounds
+
+
+
+Description:
+Reported by Sam Berlin on the developers mailing list:
+
+I'm not sure if this problem is still on CVS HEAD, but we're seeing it  
+against 2.0rc2.  In StatusLine (line 139 in my version), when it walks  
+through the spaces, it is possible that the entire line was spaces (and  
+thus a malformed response).  The code will throw an  
+StringIndexOutOfBoundsException now instead of the correct  
+HttpException.  See the following bug:
+
+http://bugs.limewire.com/bugs/ 
+searching.jsp?disp1=l&disp2=c&disp3=o&disp4=j&l=151&c=204&m=416_205
+
+Thanks,
+  Sam

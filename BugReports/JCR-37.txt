@@ -1,0 +1,19 @@
+select query fails on 'like xxx322' statement
+
+
+
+Description:
+In class org.apache.jackrabbit.core.search.lucene.WildcardTermEnum, there's a condition around line 77 like
+
+...
+if (Character.isLetter(likePattern.charAt(i))) {
+...
+
+which fails on query like
+SELECT * FROM my:type LOCATION /news// WHERE my:text LIKE "asd2"
+
+it should be changed to 
+
+if (Character.isLetter(likePattern.charAt(i)) || Character.isDigit(likePattern.charAt(i))) {
+
+

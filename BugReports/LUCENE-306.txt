@@ -1,0 +1,29 @@
+[PATCH]multiple wildcards ? at the end of search pattern return incorrect hits
+
+
+
+Description:
+The problem is if you search on "ca??", the hit includes 'cat', 'CA', 
+etc, while the user only wants 4 letter words start with CA, such as 
+'card', 'cash', to be returned. This happens only when multiple '?' at 
+the end of search pattern. The solution is to check if the word that is 
+matching against search pattern ends while there is still '?' left. If 
+this is the case, match should return false.
+
+Attached is the patch code I generated use 'diff'
+********************************************************************
+
+--- WildcardTermEnum.org	2004-05-11 11:42:10.000000000 -0400
++++ WildcardTermEnum.java	2004-11-08 14:35:14.823610500 -0500
+@@ -132,6 +132,10 @@
+             }
+             else
+             {
++	      //to prevent "cat" matches "ca??"
++	      if(wildchar == WILDCARD_CHAR){
++		return false;
++	      }	      
+               // Look at the next character
+               wildcardSearchPos++;
+             }
+**********************************************************************

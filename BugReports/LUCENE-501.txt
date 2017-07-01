@@ -1,0 +1,12 @@
+need DOAP file for Lucene
+
+
+
+Description:
+Can someone please draft a DOAP file for Lucene, so that we're listed at http://projects.apache.org/?
+
+A DOAP generator is at:
+
+http://projects.apache.org/create.html
+
+Please attach it to this bug report.  Thanks.

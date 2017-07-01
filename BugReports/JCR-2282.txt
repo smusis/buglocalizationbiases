@@ -1,0 +1,11 @@
+SQL2 parser may infer type for UncastLiteral from static analysis
+
+
+
+Description:
+The spec says:
+
+"An UncastLiteral is always interpreted as a Value of property type STRING. A CastLiteral, on the other hand, is interpreted as the string form of a Value of the PropertyType indicated."
+
+There are also two test cases in NodeNameTest that need to be fixed accordingly: testLongLiteral and testBooleanLiteral
+

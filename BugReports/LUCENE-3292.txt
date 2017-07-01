@@ -1,0 +1,6 @@
+IOContext should be part of the SegmentReader cache key 
+
+
+
+Description:
+Once IOContext (LUCENE-2793) is landed the IOContext should be part of the key used to cache that reader in the pool

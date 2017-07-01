@@ -1,0 +1,6 @@
+spellchecker cleanup
+
+
+
+Description:
+Some cleanup, attached here so it can be tracked if necessary: javadoc improvements; don't print exceptions to stderr but re-throw them; new constructor for a new test case. I will commit this soon.

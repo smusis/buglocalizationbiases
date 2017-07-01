@@ -1,0 +1,6 @@
+Buffered I/O in IndexInfos
+
+
+
+Description:
+IndexInfos currently uses plain Input/OutputStreams without buffering.

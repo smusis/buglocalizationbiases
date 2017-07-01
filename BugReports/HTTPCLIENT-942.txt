@@ -1,0 +1,12 @@
+ClientConnectionRelease example is incorrect
+
+
+
+Description:
+http://svn.apache.org/repos/asf/httpcomponents/httpclient/tags/4.0.1/httpclient/src/examples/org/apache/http/examples/client/ClientConnectionRelease.java
+
+is incorrect: 
+
+1. if error happens in BufferedReader constructor (OutOfMemoryError, StackOverflowError), reader.close() is not called and connection is not released
+
+2. if error happens in reader.readLine(), reader.close() is called, but httpget.abort() is not.

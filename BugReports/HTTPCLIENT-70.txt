@@ -1,0 +1,11 @@
+Provide more Example Code
+
+
+
+Description:
+- better project samples showing how to use HttpClient in a variety of ways. 
+There is already a src/examples directory which is excellent.  Its in the right
+place and should be build with a full compile, if only to know how any API
+changes may effect example code, and that we will be required to keep them
+current.
+- make sure it uses the 2.0 API and no depricated methods!

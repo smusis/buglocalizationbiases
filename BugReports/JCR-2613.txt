@@ -1,0 +1,8 @@
+NoSuchItemStateException on checkin after removeVersion in XA Environment
+
+
+
+Description:
+After removing a version, a checkin on the same node in a different transaction (with a different session) fails.
+The NoSuchItemStateException refer to the uuid of the previously removed version. 
+I'll attach a test demonstrating the problem. 

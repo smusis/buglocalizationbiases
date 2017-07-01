@@ -1,0 +1,23 @@
+Make lazy loading proxy callback Serializable
+
+
+
+Description:
+Hello (probably Christophe :) ),
+
+It would be nice to have the CGLib callbacks Serializable, because if they're not, the proxies are not either, even if the target is.
+
+I've seen that you've made BeanLazyLoader Serializable. Wouldn't be better to have AbstractLazyLoader Serializable, so CollectionLazyLoader is too?
+
+What I've done is :
+*) declaring AbstractLazyLoader as Serializable
+*) declaring non-Serializable resources such as Session as volatile
+*) throwing an IllegalStateException in BeanLazyLoader.fetch and CollectionLazyLoader.fetch if the Session is null. This case can only happen if the proxy has been serialized without the volatile Session, and it doesn't make sense to lazy load the target then.
+
+BTW, I realized I didn't clean up the beanClassDescriptor in BeanLazyLoader.cleanUp, so I corrected this.
+
+I'll attach the modified classes.
+
+Sincerely,
+
+Stéphane Landelle

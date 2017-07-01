@@ -1,0 +1,6 @@
+WorkspaceManager.dispose() should wait until change feed thread is stopped
+
+
+
+Description:
+The WorkspaceManager currently only interrupts the change feed thread, but does not wait until it stops.

@@ -1,0 +1,10 @@
+remove IndexInput.copyBuf
+
+
+
+Description:
+this looks really broken/dangerous as an instance variable.
+
+what happens on clone() ?! copyBytes can instead make its own array inside the method.
+
+its protected, so ill list in the 3.x backwards breaks section since its technically a backwards break.

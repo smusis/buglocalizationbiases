@@ -1,0 +1,16 @@
+Jackrabbit web page scroll is slow with Firefox
+
+
+
+Description:
+When I visit http://jackrabbit.apache.org/ from my Firefox in Ubuntu  the browser scroll is very slow and make CPU go to 100%. 
+
+The problem seems to be the "fixed" attribute in the css background definition, so it should be removed.
+
+body {
+  background:white url(bg.png) repeat-x fixed center bottom;
+  font-family:Verdana,Helvetica,Arial,sans-serif;
+  font-size:small;
+  margin:0pt;
+  padding:0pt;
+}

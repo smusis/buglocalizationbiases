@@ -1,0 +1,6 @@
+Some small javadocs/extra import fixes
+
+
+
+Description:
+Two things that Uwe Schindler caught, plus fixes for javadoc warnings in core.  I plan to commit to trunk & 2.4.

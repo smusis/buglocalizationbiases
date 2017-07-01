@@ -1,0 +1,6 @@
+PrivilegeHandlerTest fails on Windows
+
+
+
+Description:
+The test fails on Windows because there are differences in line breaks between expected and actual results.

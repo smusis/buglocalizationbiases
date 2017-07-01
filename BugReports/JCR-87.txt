@@ -1,0 +1,6 @@
+Move to a newer vesion of Commons Collections
+
+
+
+Description:
+It would be useful if the developer wants to use jackrabbit in an application that uses a newer version of this library.

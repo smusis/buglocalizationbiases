@@ -1,0 +1,6 @@
+add/remove dispatchers from DelegatingObservationDispatcher is not synchronized
+
+
+
+Description:
+the 'dispatchers' hashset in DelegatingObservationDispatcher is not synchronized and can lead to errors, when a workspace goes offline or is creating during event dispatching.

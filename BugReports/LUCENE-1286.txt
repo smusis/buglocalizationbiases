@@ -1,0 +1,14 @@
+LargeDocHighlighter - another span highlighter optimized for large documents
+
+
+
+Description:
+The existing Highlighter API is rich and well designed, but the approach taken is not very efficient for large documents.
+
+I believe that this is because the current Highlighter rebuilds the document by running through and scoring every every token in the tokenstream.
+
+With a break in the current API, an alternate approach can be taken: rebuild the document by running through the query terms by using their offsets. The benefit is clear - a large doc will have a large tokenstream, but a query will likely be very small in comparison.
+
+I expect this approach to be quite a bit faster for very large documents, while still supporting Phrase and Span queries.
+
+First rough patch to follow shortly.

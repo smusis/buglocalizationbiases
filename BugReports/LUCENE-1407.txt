@@ -1,0 +1,10 @@
+Refactor Searchable to not have RMI Remote dependency
+
+
+
+Description:
+Per http://lucene.markmail.org/message/fu34tuomnqejchfj?q=RemoteSearchable
+
+We should refactor Searchable slightly so that it doesn't extend the java.rmi.Remote marker interface.  I believe the same could be achieved by just marking the RemoteSearchable and refactoring the RMI implementation out of core and into a contrib.
+
+If we do this, we should deprecate/denote it for 2.9 and then move it for 3.0

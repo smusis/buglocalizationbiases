@@ -1,0 +1,10 @@
+DocViewSaxEventGenerator may generate non-NS-wellformed XML
+
+
+
+Description:
+The XML serialization code relies on the fact that all required prefix-to-uri mappings are known beforehand (actually, when serializing the root node). So there's an assumption that the permanent namespace registry will never change during serialization, which may be incorrect when another client adds namespace registrations while the XML export is in progress.
+
+To fix this, "addNamespacePrefixes" should ensure that namespace declarations have been written for all prefixes used on the current node (node name + properties), potentially going back to the namespace resolver when needed.
+
+(Should there be consensus for that change I'm happy to give it a try)

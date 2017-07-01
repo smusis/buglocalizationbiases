@@ -1,0 +1,7 @@
+Avoid element arrays in PathImpl
+
+
+
+Description:
+The path handling code in spi-commons shows quite often in thread dumps and profiling results, as the current implementation does quite a bit of repetitive allocating and copying of path element arrays. We should be able to streamline and simplify the path handling code by only tracking the latest path element and a reference to the parent path. To do this efficiently we may need to adjust some of the Path and PathFactory method declarations (that currently assume element array -based paths) also in the SPI.
+

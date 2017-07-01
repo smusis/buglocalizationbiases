@@ -1,0 +1,8 @@
+contrib/Highlighter javadoc example needs to be updated
+
+
+
+Description:
+The Javadoc package.html example code is outdated, as it still uses QueryParser.parse.  
+
+http://lucene.zones.apache.org:8080/hudson/job/Lucene-Nightly/javadoc/contrib-highlighter/index.html

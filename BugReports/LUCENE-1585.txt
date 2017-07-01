@@ -1,0 +1,26 @@
+Allow to control how payloads are merged
+
+
+
+Description:
+Lucene handles backwards-compatibility of its data structures by
+converting them from the old into the new formats during segment
+merging. 
+
+Payloads are simply byte arrays in which users can store arbitrary
+data. Applications that use payloads might want to convert the format
+of their payloads in a similar fashion. Otherwise it's not easily
+possible to ever change the encoding of a payload without reindexing.
+
+So I propose to introduce a PayloadMerger class that the SegmentMerger
+invokes to merge the payloads from multiple segments. Users can then
+implement their own PayloadMerger to convert payloads from an old into
+a new format.
+
+In the future we need this kind of flexibility also for column-stride
+fields (LUCENE-1231) and flexible indexing codecs.
+
+In addition to that it would be nice if users could store version
+information in the segments file. E.g. they could store "in segment _2
+the term a:b uses payloads of format x.y".
+

@@ -1,0 +1,7 @@
+Move multipart request to a new RequestEntity type
+
+
+
+Description:
+Multipart posts are currently handled via a separate post method, the MultipartPostMethod.  This 
+separate method is unnecessary given the new RequestEntity mechanism.

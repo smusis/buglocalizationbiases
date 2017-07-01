@@ -1,0 +1,6 @@
+Provide access to cluster records
+
+
+
+Description:
+Cluster records are read/written inside o.a.j.core.cluster.ClusterNode in private methods. In order to support tools such as a journal walker that would display human readable descriptions of cluster records, these inner workings should be made public. 

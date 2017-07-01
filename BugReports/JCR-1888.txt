@@ -1,0 +1,6 @@
+Add customizable filtering to GQL
+
+
+
+Description:
+Currently GQL is not very flexible because it does not have any hooks that  allows you to modify the query that gets generated from the GQL syntax. As a first step I'd like to introduce a filtering mechanism that can be used to post process the result set and exclude certain rows. This is useful when you cannot express an application constraint in GQL.

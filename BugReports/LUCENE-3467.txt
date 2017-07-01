@@ -1,0 +1,6 @@
+Cut over numeric docvalues to fixed straight bytes
+
+
+
+Description:
+Currently numeric docvalues types are encoded and stored individually which creates massive duplication of writing / indexing code. Yet, almost all of them (except packed ints) are essentially a fixed straight bytes variant. 

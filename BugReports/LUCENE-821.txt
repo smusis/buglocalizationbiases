@@ -1,0 +1,7 @@
+single norm file still uses up descriptors
+
+
+
+Description:
+The new index file format with a single .nrm file for all norms does not decrease file descriptor usage.
+The .nrm file is opened once for each field with norms in the index segment.

@@ -1,0 +1,6 @@
+NPE if RepositoryService#getItemInfos throws ItemNotFoundException
+
+
+
+Description:
+When RepositoryService#getItemInfos throws an ItemNotFoundException, HierarchyEntryImpl#internalRemove in some cases throws an NPE. This is caused by a missing null check of the parent node.

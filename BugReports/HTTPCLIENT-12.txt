@@ -1,0 +1,12 @@
+double encoding of URLs
+
+
+
+Description:
+In HttpMethodBase.generateRequestLine(HttpConnection connection, String name, 
+String reqPath, String qString, String protocol)
+
+the path is always encoded using URIUtil.encode(reqPath,URIUtil.pathSafe()). 
+However, if the path already contains an encoding space, i.e. %20, the % will 
+be encoded again, so we get %2520. This behavior is not correct. We shouldn't 
+encode any % signs.

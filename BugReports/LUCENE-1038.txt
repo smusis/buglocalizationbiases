@@ -1,0 +1,8 @@
+TermVectorMapper.setDocumentNumber()
+
+
+
+Description:
+Passes down the index of the document whose term vector is currently beeing mapped, once for each top level call to a term vector reader.  
+
+See http://www.nabble.com/Allowing-IOExceptions-in-TermVectorMapper--tf4687704.html#a13397341

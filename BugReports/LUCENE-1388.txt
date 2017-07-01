@@ -1,0 +1,6 @@
+Add init method to CloseableThreadLocal
+
+
+
+Description:
+Java ThreadLocal has an init method that allows subclasses to easily instantiate an initial value.  

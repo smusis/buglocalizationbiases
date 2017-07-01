@@ -1,0 +1,6 @@
+JCR2SPI: incomplete changelog when combining move with removal of new destination parent
+
+
+
+Description:
+

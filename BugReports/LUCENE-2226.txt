@@ -1,0 +1,7 @@
+move contrib/snowball to contrib/analyzers
+
+
+
+Description:
+to fix bugs in some duplicate, handcoded impls of these stemmers (nl, fr, ru, etc) we should simply merge snowball and analyzers, and replace the buggy impls with the proper snowball stemfilters.
+

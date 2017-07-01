@@ -1,0 +1,10 @@
+Session.getUserID returns first principal in the set obtained from Subject.getPrincipals()
+
+
+
+Description:
+this may lead to a wrong value for the UserID (e.g. the name of a Group principal).
+
+jsr 170 defines the getUserID() to return " the user ID associated with this Session." and implies (javadoc) that the method has a relation to the login.
+
+This issues has already been partially addressed while working on jsr 283 access control (trunk).

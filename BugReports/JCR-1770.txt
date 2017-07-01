@@ -1,0 +1,6 @@
+RFC4918 feature: absolute paths in "Destination" and "If" headers
+
+
+
+Description:
+RFC4918 allows absolute paths (instead of absolute URIs) in the "Destination" and "If" headers (<http://greenbytes.de/tech/webdav/rfc4918.html#rfc.section.14.8>). This makes it simpler to deal with situations where reverse proxies are involved (because those usually are not aware of WebDAV request headers and do not rewrite them).

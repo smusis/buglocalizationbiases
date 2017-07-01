@@ -1,0 +1,78 @@
+[PATCH] IndexWriter.maybeMergeSegments() takes lots of CPU resources
+
+
+
+Description:
+Note: I believe this to be the same situation with 1.4.3 as with SVN HEAD.
+
+Analysis using hprof utility shows that during index creation with many
+documents highlights that the CPU spends a large portion of it's time in
+IndexWriter.maybeMergeSegments(), which seems to be a 'waste' compared with
+other valuable CPU intensive operations such as tokenization etc.
+
+Using the following test snippet to retrieve some rows from the db and create an
+index:
+
+        Analyzer a = new StandardAnalyzer();
+        writer = new IndexWriter(indexDir, a, true);
+        writer.setMergeFactor(1000);
+        writer.setMaxBufferedDocs(10000);
+        writer.setUseCompoundFile(false);
+        connection = DriverManager.getConnection(
+                "jdbc:inetdae7:tower.aconex.com?database=<somedb>", "secret",
+                "squirrel");
+        String sql = "select userid, userfirstname, userlastname, email from userx";
+        LOG.info("sql=" + sql);
+        Statement statement = connection.createStatement();
+        statement.setFetchSize(5000);
+        LOG.info("Executing sql");
+        ResultSet rs = statement.executeQuery(sql);
+        LOG.info("ResultSet retrieved");
+        int row = 0;
+
+        LOG.info("Indexing users");
+        long begin = System.currentTimeMillis();
+        while (rs.next()) {
+            int userid = rs.getInt(1);
+            String firstname = rs.getString(2);
+            String lastname = rs.getString(3);
+            String email = rs.getString(4);
+            String fullName = firstname + " " + lastname;
+            Document doc = new Document();
+            doc.add(Field.Keyword("userid", userid+""));
+            doc.add(Field.Keyword("firstname", firstname.toLowerCase()));
+            doc.add(Field.Keyword("lastname", lastname.toLowerCase()));
+            doc.add(Field.Text("name", fullName.toLowerCase()));
+            doc.add(Field.Keyword("email", email.toLowerCase()));
+            writer.addDocument(doc);
+            row++;
+            if((row % 100)==0){
+                LOG.info(row + " indexed");
+            }
+        }
+        double end = System.currentTimeMillis();
+        double diff = (end-begin)/1000;
+        double rate = row/diff;
+        LOG.info("rate:" +rate);
+
+On my 1.5GHz PowerBook with 1.5Gb RAM and a 5400 RPM drive, my CPU is maxed out,
+and I end up getting a rate of indexing between 490-515 documents/second run
+over 10 times in succession.  
+
+By applying a simple patch to IndexWriter (see attached shortly), which defers
+the calling of maybeMergeSegments() so that it is only called every 2000
+times(an arbitrary figure), I appear to get a new rate of between 945-970
+documents/second.  Using Luke to look inside each index created between these 2
+there does not appear to be any difference.  Same number of Documents, same
+number of Terms.
+
+I'm not suggesting one should apply this patch, I'm just highlighting the
+difference in performance that this sort of change gives you.  
+
+We are about to use Lucene to index 4 million construction document records, and
+so speeding up the indexing process is in our best interest! :)  If one
+considers the amount of CPU time spent in maybeMergeSegments over the initial
+index creation of 4 million documents, I think one could see how it would be
+ideal to try to speed this area up (at least move the bottleneck to IO). 
+
+I woul appreciate anyone taking a moment to comment on this.

@@ -1,0 +1,10 @@
+advertise support for RFC4918 (WebDAV) compliance class 3
+
+
+
+Description:
+With the recent changes for PROPFIND/allprop/include (JCR-1769) and the parsing of Destination/If headers (JCR-1770), we can advertise RFC 4918 L3 support (http://greenbytes.de/tech/webdav/rfc4918.html#rfc.section.18.3).
+
+Note we still have test failures for tagged If headers, but this has nothing to do with compliance class 3.
+
+

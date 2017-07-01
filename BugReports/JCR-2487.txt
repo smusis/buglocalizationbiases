@@ -1,0 +1,7 @@
+WorkspaceItemStateFactory#createItemStates throws ClassCastException
+
+
+
+Description:
+When the first item in the ItemInfo iterator returned by the RepositoryService is a PropertyInfo instead a NodeInfo, a ClassCastException is thrown. This should rather be a ItemNotFoundException.
+

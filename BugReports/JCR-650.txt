@@ -1,0 +1,9 @@
+SimpleJbossAccessManager
+
+
+
+Description:
+http://wiki.apache.org/jackrabbit/SimpleJbossAccessManager
+
+Code contribution
+

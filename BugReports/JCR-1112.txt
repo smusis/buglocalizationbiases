@@ -1,0 +1,8 @@
+CacheManager interval between recalculation of cache sizes should be configurable
+
+
+
+Description:
+Currently interval between recaluclation of cahce size is hard coded to 1000 ms. Resizing/recalculation of cache size is quite expensive method (especially getMemoryUsed on MLRUItemStateCache is time consuming)
+
+Depending on the configuration, we realized that under some load up to 10-15% percent of CPU time (profiler metrics) could be spend doing such recalculations. It does not seem to be needed to resize cache every second. Best this interval should be configurable in external config. file with other cache settings (like memory sizes).

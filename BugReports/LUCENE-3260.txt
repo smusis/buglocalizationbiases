@@ -1,0 +1,10 @@
+need a test that uses termsenum.seekExact() (which returns true), then calls next()
+
+
+
+Description:
+i tried to do some seekExact (where the result must exist) then next()ing in the faceting module,
+and it seems like there could be a bug here.
+
+I think we should add a test that mixes seekExact/seekCeil/next like this, to ensure that
+if seekExact returns true, that the enum is properly positioned.

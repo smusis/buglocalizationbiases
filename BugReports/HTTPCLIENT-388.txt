@@ -1,0 +1,29 @@
+http.connection-manager.timeout is a LONG not an INTEGER
+
+
+
+Description:
+Documentation is wrong.
+
+Table in Preference Architecture page states http.connection-manager.timeout 
+is an Integer.
+
+Doing:
+
+setParameter("http.connection-manager.timeout", new Integer(n));
+
+Causes:
+
+java.lang.ClassCastException
+	at 
+org.apache.commons.httpclient.params.DefaultHttpParams.getLongParameter
+(DefaultHttpParams.java:171)
+	at 
+org.apache.commons.httpclient.params.HttpClientParams.getConnectionManagerTimeo
+ut(HttpClientParams.java:143)
+	at org.apache.commons.httpclient.HttpMethodDirector.executeMethod
+(HttpMethodDirector.java:161)
+	at org.apache.commons.httpclient.HttpClient.executeMethod
+(HttpClient.java:437)
+	at org.apache.commons.httpclient.HttpClient.executeMethod
+(HttpClient.java:324)

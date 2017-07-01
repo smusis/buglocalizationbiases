@@ -1,0 +1,6 @@
+MSSql and MySQL bunlde PM schemas missing definition for name index
+
+
+
+Description:
+the mssql and mysql ddl files of the respective bundle persistence managers are missing the definitions for the name index.

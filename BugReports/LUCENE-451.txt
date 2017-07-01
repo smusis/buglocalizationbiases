@@ -1,0 +1,11 @@
+BooleanQuery explain with boost==0
+
+
+
+Description:
+BooleanWeight.explain() uses the returned score of subweights to determine if a clause matched.
+If any required clause has boost==0, the returned score will be zero and the explain for the entire BooleanWeight will be simply  Explanation(0.0f, "match required").
+
+I'm not sure what the correct fix is here.  I don't think it can be done based on score alone, since that isn't how scorers work.   Perhaps we need a new method "boolean Explain.matched()" that returns true on a match, regardless of what the score may be? 
+
+Related to the problem above, even if no boosts are zero, it it sometimes nice to know *why* a particular query failed to match.  It would mean a longer explanation, but maybe we should include non matching explains too?

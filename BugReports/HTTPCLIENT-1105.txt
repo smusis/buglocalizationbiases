@@ -1,0 +1,18 @@
+Built-in way to do auto-retry for certain status codes
+
+
+
+Description:
+The HttpRequestRetryHandler mechanism is great.  It allows API users to plug in their own logic to control whether or not a retry should automatically be done, how many times it should be retried, etc.  That works perfectly in scenarios where an exception is caught while issuing the request.  It falls short, however, in this scenario...
+
+If I'm hitting a service that returns a 503, I want to be able to retry that request automatically as well.  As of right now, I need to write my own logic to accomplish that, and it's clunky trying to integrate it with the httpClient.execute() call, since it's my ResponseHandler impl that ends up getting the 503.  I can see use cases for auto-retrying upon getting other HTTP statuses as well, not just 503.
+
+My request here is...I would love to be able to configure, either on the HttpClient itself or on a wrapping class or something, that a request should automatically be retried if the HTTP status code is among of a set of statuses that I configure.  It would be nice if you could set the max # of retries, an optional sleep time in between retries (perhaps optional incremental backoff if you want to get fancy).  I'm not sure if this is possible, but it would be nice if -- when this type of status-based retry is enabled -- my ResponseHandler wouldn't even get invoked until retry was successful.
+
+Here's an alternative suggestion, possibly simpler to build, but definitely not as elegant:
+
+In my ResponseHandler, you could throw a RetryRequestException or something like that, and the calling code would catch that and do as expected.  That might simplify the mechanism so to speak.
+
+Anyway, I would love not to have to roll my own retry code, since I suspect this is something that hundreds (thousands?) of HttpClient users have had to code.  Seems like providing a standardized, well-written way to do it would go a long way to helping many coders out there.
+
+Thanks!

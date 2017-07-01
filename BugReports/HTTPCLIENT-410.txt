@@ -1,0 +1,13 @@
+Typos in MultiThreadedHttpConnectionManager
+
+
+
+Description:
+I've done a review of the MultiThreadedHttpConnectionManager class in 3.0-beta1,
+especially focussing on the documentation. In general, it could use a lot of
+improvement, IMHO.
+
+This bug report only deals with some typos I found in the class, and some
+minimal style improvements that are compatible with the other classes.
+
+I will attach a proposed patch.

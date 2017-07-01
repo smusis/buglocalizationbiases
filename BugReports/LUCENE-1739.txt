@@ -1,0 +1,27 @@
+2.4.x index cannot be opened with 2.9-dev
+
+
+
+Description:
+Sorry for the lack of proper testcase.
+
+In 2.4.1, if you created an index with the (stupid) options below, then it will not create a .prx file. 2.9 expects this file and will not open the index.
+The reason i used these stupid options is because i changed the field from indexed=yes to indexed=no, but forgot to remove the .setOmitTf()
+
+{code}
+public class Testcase {
+	public static void main(String args[]) throws Exception {
+		/* run this part with lucene 2.4.1 */
+		IndexWriter iw = new IndexWriter("test", new WhitespaceAnalyzer(), IndexWriter.MaxFieldLength.LIMITED);
+		iw.setUseCompoundFile(false);
+		Document doc = new Document();
+		Field field1 = new Field("field1", "foo", Field.Store.YES, Field.Index.NO);
+		field1.setOmitTf(true); // 2.9 will create a 0-byte .prx file, but 2.4.x will NOT. This is the problem. 2.9 expects this file!
+		doc.add(field1);
+		iw.addDocument(doc);
+		iw.close(); 
+		/* run this with lucene 2.9 */
+		IndexReader ir = IndexReader.open(FSDirectory.getDirectory("test"), true); 
+	}
+}
+{code}

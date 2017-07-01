@@ -1,0 +1,17 @@
+304 response status handling
+
+
+
+Description:
+I have an IBM WebSphere server that returns 304 responses with a Content-
+Length header set to something other than 0 and the server is not closing the 
+connection.  According to the HTTP RFC 
+(http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html#sec10.3.5):
+
+"The 304 response MUST NOT contain a message-body, and thus is always 
+terminated by the first empty line after the header fields."
+
+Obviously, the web server is returning a bad response but the HTTPClient 
+blocks waiting on data in the response even though there shouldn't be any.  
+Other HTTP clients (browsers) do not have this issue and seem to ignore the 
+fact that the server set an invalid Content-Length in the response.

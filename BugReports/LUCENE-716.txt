@@ -1,0 +1,8 @@
+Support unicode escapes in QueryParser
+
+
+
+Description:
+As suggested by Yonik in http://issues.apache.org/jira/browse/LUCENE-573 the QueryParser should be able to handle unicode escapes, i. e. \uXXXX.
+
+I have already working and tested code. It is based on the patch i submitted for LUCENE-573, so once this is (hopefully ;-)) committed, I will submit another patch here.

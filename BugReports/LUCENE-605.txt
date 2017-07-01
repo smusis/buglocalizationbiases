@@ -1,0 +1,10 @@
+Make Explanation include information about match/non-match
+
+
+
+Description:
+As discussed, I'm looking into the possibility of improving the Explanation class to include some basic info about the "match" status of the Explanation -- independent of the value...
+
+http://www.nabble.com/BooleanWeight.normalize%28float%29-doesn%27t-normalize-prohibited-clauses--t1596471.html#a4347644
+
+This is neccesary to deal with things like LUCENE-451

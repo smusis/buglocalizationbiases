@@ -1,0 +1,6 @@
+Remove deprecated Field.Store.COMPRESS
+
+
+
+Description:
+Also remove FieldForMerge and related code.

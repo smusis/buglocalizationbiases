@@ -1,0 +1,8 @@
+Jcr-Server: Improve implementation of DavResource#getProperty(DavPropertyName)
+
+
+
+Description:
+this issue has already been described in JCR-397
+
+problem: even if only a subset of properties has been requested by the client dav resource initializes the complete set of properties.

@@ -1,0 +1,10 @@
+[jcr-rmi] xpath queries don't work when the underlying QueryResult doesn't return the rows/nodes size
+
+
+
+Description:
+o.a.j.rmi.server.ServerQueryResult assumes the underlying NodeIterator always return the number of elements, but it migth return -1 in some cases [1], AFAIK depending on the jcr impl. When -1 is returned jcr-rmi fails to return the QueryResult. 
+
+e.g. it fails with the following xpath query //*
+
+[1] http://www.day.com/maven/jsr170/javadocs/jcr-1.0/javax/jcr/RangeIterator.html#getSize()

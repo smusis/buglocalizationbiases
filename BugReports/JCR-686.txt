@@ -1,0 +1,6 @@
+change some access-level modifiers to allow for better subclassing
+
+
+
+Description:
+Some of the methods in the core parts of jackrabbit are package protected and do not allow easy subclassing. suggest to make some of the methods 'protected'.

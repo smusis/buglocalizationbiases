@@ -1,0 +1,6 @@
+FreqProxTermsWriter leaks file handles if exceptions are thrown during flush()
+
+
+
+Description:
+FreqProxTermsWriter leaks open file handles if exceptions are thrown during flush. Code needs to be protected by try-finally clauses.

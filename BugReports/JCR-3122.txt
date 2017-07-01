@@ -1,0 +1,14 @@
+QueryObjectModelImpl should execute queries as SessionOperation(s)
+
+
+
+Description:
+QueryObjectModelImpl doesn't leverage the SessionOperation closure approach (like the QueryImpl does). 
+
+Switching to this style of running a query yields some gains in speed (I ran 50 queries per test):
+ - #1. old style   (no code change)       avg was 14.26 ms
+ - #2. new style (as session operation) avg was 12.14 ms
+ - #3. new style (as session operation) avg was   6.44 ms
+ - #4. new style (as session operation) avg was   6.68 ms
+ - #5. old style  (no code change)        avg was 11.62 ms
+ - #6. old style  (no code change)        avg was 11.66 ms

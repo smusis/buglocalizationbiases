@@ -1,0 +1,6 @@
+Child axis support for XPath predicates
+
+
+
+Description:
+It seems that Jackrabbit currently only supports the attribute axis in XPath predicates. Support for the child axis would be a nice addition.

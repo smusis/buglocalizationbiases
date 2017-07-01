@@ -1,0 +1,20 @@
+remove relative paths assumptions from benchmark code
+
+
+
+Description:
+Also see Eric comments in:
+   http://www.nabble.com/forum/ViewPost.jtp?post=14347924&framed=y
+
+Benchmark's config.xml relies on relative paths, more or less like this;
+- base-dir
+   -- conf-dir
+   -- work-dir
+       --- docs-dir
+       --- indexes-dir
+
+These assumptions are also in the Java code, and so it is inconvenient for
+using absolute paths, e.g. for specifying a docs dir that is not under work-dir.
+
+Relax this by modifying in build.xml to replace "value" and "line" props by 
+"location" and "file" and by requiring absolute paths in the Java code.

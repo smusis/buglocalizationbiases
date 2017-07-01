@@ -1,0 +1,6 @@
+Hop 0 sample app doesn't exit because of on-daemon thread pool-1-thread-1
+
+
+
+Description:
+When starting the sample app Hop 0 (or any other Hop sample app) if there is no "repository" directory, then the application doesn't exit because there is a non-daemon thread named "pool-1-thread-1".

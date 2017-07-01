@@ -1,0 +1,6 @@
+Several DocsEnum / DocsAndPositionsEnum return wrong docID when next() / advance(int) return NO_MORE_DOCS
+
+
+
+Description:
+During work on LUCENE-2878 I found some minor problems in PreFlex and Pulsing Codec - they are not returning NO_MORE_DOCS but the last docID instead from DocsEnum#docID() when next() or advance(int) returned NO_MORE_DOCS. The JavaDoc clearly says that it should return NO_MORE_DOCS.

@@ -1,0 +1,8 @@
+Redundant calls to RepositoryService.getChildInfos
+
+
+
+Description:
+In some cases jcr2spi issues calls to RepositoryService.getChildInfos for items which haven been returned by the last call to RepositoryService.getItemInfos. 
+
+This happens because WorkspaceItemStateFactory.createDeepPropertyState is asked to create the node states for all items returned by RepositoryService.getChildInfos in the order they are returned by the Iterator. When trying to create an item state for an item which is deeper down the hierarchy than another item which comes later in the iterator, a call to RepositoryService.getChildInfos is issued for the latter. 

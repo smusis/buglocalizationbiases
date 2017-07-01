@@ -1,0 +1,6 @@
+Jcr2Spi: Unneeded call to getPropertyInfo upon creating a new NodeState
+
+
+
+Description:
+creating a new NodeState may result in additional (but unneeded) calls to getPropertyInfo if a jcr:uuid or jcr:mixinTypes property is present. This can be avoided since the corresponding property values are already present.

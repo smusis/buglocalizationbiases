@@ -1,0 +1,15 @@
+Query Builder and jcr:deref problem. Can't add predicate after jcr:deref
+
+
+
+Description:
+Cannot add a predicate (like [@property = 'value'] after a jcr:deref function.
+The query builder throws an "InvalidQueryException: Unsupported location for jcr:deref()".
+
+So for example, the query :
+
+//element(*,nt:category)[@member]/jcr:deref(@member, '*')[@property='value'] 
+
+is invalid and it should be valid.
+
+

@@ -1,0 +1,8 @@
+Several Codecs use the same files - PerFieldCodecWrapper can not hold two codec using the same files
+
+
+
+Description:
+Currently we have a rather simple file naming scheme which prevents us from using more than one codec in a segment that relies on the same file.  For instance pulsing and standard codec can not be used together since they both need the .frq .tii .tis etc. To make this work we either need to write distinct per codec files or set a per field / codec file ID. While the first solution seems to be quiet verbose the second one seems to be more flexible too.
+
+One possibility to do that would be to assign a unique id to each SegmentsWriteState when opening the FieldsConsumer and write the IDs into the segments file to eventually load it once the segment is opened. Otherwise our PerFieldCodec feature will not be really flexible nor useful though.  

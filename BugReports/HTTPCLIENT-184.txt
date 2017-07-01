@@ -1,0 +1,41 @@
+org.apache.commons.httpclient.HeaderElement fail to parse cookie header
+
+
+
+Description:
+if Set-Cookie header has value such "expires=Mon, ..".
+org.apache.commons.httpclient.HeaderElement will fail to parse this header.
+
+Cause:
+In the source cord:
+-------------
+            try {
+                /*
+                 * Following to RFC 2109 and 2965, in order not to conflict
+                 * with the next header element, make it sure to parse tokens.
+                 * the expires date format is "Wdy, DD-Mon-YY HH:MM:SS GMT".
+                 * Notice that there is always comma(',') sign.
+                 * For the general cases, rfc1123-date, rfc850-date.
+                 */
+                if (tokenizer.hasMoreTokens()) {
+                    String s = nextToken.toLowerCase();
+                    if (nextToken.endsWith("mon") 
+                        || s.endsWith("tue")
+                        || s.endsWith("wed") 
+                        || s.endsWith("thu")
+                        || s.endsWith("fri")
+                        || s.endsWith("sat")
+                        || s.endsWith("sun")
+                        || s.endsWith("monday") 
+                        || s.endsWith("tuesday") 
+---- snip ---
+ 
+"if (nextToken.endsWith("mon") " is wrong.
+this must be "if (s.endsWith("mon") ".
+
+Source cord version:
+ * $Header:
+/home/cvspublic/jakarta-commons/httpclient/src/java/org/apache/commons/httpclient/HeaderElement.java,v
+1.17 2003/03/08 21:30:02 olegk Exp $
+ * $Revision: 1.17 $
+ * $Date: 2003/03/08 21:30:02 $

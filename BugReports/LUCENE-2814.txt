@@ -1,0 +1,16 @@
+stop writing shared doc stores across segments
+
+
+
+Description:
+Shared doc stores enables the files for stored fields and term vectors to be shared across multiple segments.  We've had this optimization since 2.1 I think.
+
+It works best against a new index, where you open an IW, add lots of docs, and then close it.  In that case all of the written segments will reference slices a single shared doc store segment.
+
+This was a good optimization because it means we never need to merge these files.  But, when you open another IW on that index, it writes a new set of doc stores, and then whenever merges take place across doc stores, they must now be merged.
+
+However, since we switched to shared doc stores, there have been two optimizations for merging the stores.  First, we now bulk-copy the bytes in these files if the field name/number assignment is "congruent".  Second, we now force congruent field name/number mapping in IndexWriter.  This means this optimization is much less potent than it used to be.
+
+Furthermore, the optimization adds *a lot* of hair to IndexWriter/DocumentsWriter; this has been the source of sneaky bugs over time, and causes odd behavior like a merge possibly forcing a flush when it starts.  Finally, with DWPT (LUCENE-2324), which gets us truly concurrent flushing, we can no longer share doc stores.
+
+So, I think we should turn off the write-side of shared doc stores to pave the path for DWPT to land on trunk and simplify IW/DW.  We still must support reading them (until 5.0), but the read side is far less hairy.

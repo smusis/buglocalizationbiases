@@ -1,0 +1,6 @@
+Exclude JavaCC-generated code from static analysis
+
+
+
+Description:
+The JavaCC-generated code we have in spi-commons should be excluded from static analysis done by tools like Sonar.

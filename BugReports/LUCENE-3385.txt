@@ -1,0 +1,6 @@
+EasySimilarity to interpret document length as float
+
+
+
+Description:
+

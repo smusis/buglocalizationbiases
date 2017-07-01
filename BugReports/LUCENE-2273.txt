@@ -1,0 +1,6 @@
+FieldCacheImpl's getCacheEntries() is buggy as it uses WeakHashMap incorrectly and leads to ConcurrentModExceptions
+
+
+
+Description:
+The way how WeakHashMap works internally leads to the fact that it is not allowed to iterate over a WHM.keySet() and then get() the value. As each get() operation inspects the ReferenceQueue of the weak keys, they may suddenly disappear. If you use the entrySet() iterator you get key and value and no need to call get(), contains(),... that inspects the ReferenceQueue.

@@ -1,0 +1,8 @@
+Unnecessary hasItemState() call in SessionItemStateManager
+
+
+
+Description:
+At the end of  SessionItemStateManager.getItemState(ItemId) the underlying item state manager is first asked whether it contains the item and then it is retrieved. In case the item state manager does not know the item a NoSuchItemStateException is thrown.
+
+The initial check is unnecessary because getItemState() on the underlying manager will also throw the exception if the item does not exist.

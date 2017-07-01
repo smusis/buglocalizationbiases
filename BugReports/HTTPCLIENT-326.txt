@@ -1,0 +1,11 @@
+MultiThreadedConnectionManager should provide a shutdown
+
+
+
+Description:
+MultiThreadedConnectionManager should provide a shutdown() method to release 
+all its resources, it is currently using daemon threads that cannot be stopped 
+and HTTP connections that cannot be released.
+This is annoying when the pool of connection is created within a web 
+application that is undeployed and re-deployed (i.e. the JVM is not restarted) 
+consuming resources on local and remote servers.

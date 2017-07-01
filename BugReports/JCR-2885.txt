@@ -1,0 +1,10 @@
+Move tika-parsers dependency to deployment packages
+
+
+
+Description:
+As discussed on the mailing list, it would be better if the tika-parsers dependency (and all the parser libraries it pulls in transitively) was included in our deployment packages but not directly in jackrabbit-core. This would make it easier for people to set up custom lightweight deployments with no or only partial full text extraction functionality.
+
+To do this we'll first need to wait for Tika 0.9, as we currently have a custom PDFParser class in jackrabbit-core as a workaround to a problem in Tika 0.8.
+
+At the same time we should do a more thorough review of the transitive parser dependencies we include. At least the rome and bouncycastle libraries were flagged as potentially unnecessary.

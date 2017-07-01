@@ -1,0 +1,22 @@
+Search with sort fails when a document has a missing value
+
+
+
+Description:
+Testing on version: lucene-1.4-rc2
+
+Call in question: IndexSearcher.search(Query query, Filter filter, int nDocs, 
+Sort sort) 
+
+Description: I'm making a call to search with a sort field - in my case I'm 
+sorting by date. If any document in the results set (Hits) has a missing value 
+in the sort field, the entire call throws an [uncaught] exception during the 
+sorting process with no results returned. 
+
+This is an undesireable result, and the prospects for patching this problem 
+outside the search classes are ugly, e.g. trying to patch the index itself.
+
+This is actually a critical function in my application. Thank you for 
+addressing it.
+
+-Dan

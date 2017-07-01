@@ -1,0 +1,17 @@
+TransientRepository with LocalFileSystem eventually causes Repository data to be stored at path '/'
+
+
+
+Description:
+I'm using a TransitoryRepository for my unit testing, with the repository's file system specified as:
+
+    <FileSystem class="org.apache.jackrabbit.core.fs.local.LocalFileSystem">
+        <param name="path" value="${rep.home}/repository"/>
+    </FileSystem>
+
+I noticed today that when I run my unit tests Jackrabbit is creating four directories at the root of my hard drive: "meta", "namespaces", "nodetypes", and "data". I tracked the problem the fact that when a LocalFileSystem is closed, it sets the "root" to null - an invalid state. But when using a TransitoryRepository, the invalid state is never discovered because the LocalFileSystem object itself is not released, or re-initialized. It is simply used to create BasedFileSystem objects in RepositoryImpl. Calls to BasedFileSystem defer to the LocalFileSystem object that now has a null root. Inside the LocalFileSystem, all the calls to Java's io.File constructor have a "null" parent parameter, causing File to fall back to its single argument constructor which sees the path "/meta" and happily creates files at the root of the disk.
+
+I'm not sure what the best solution is, but some thoughts I've had are:
+- don't set the "root" property to null when closing a LocalFileSystem
+- make RepositoryConfig re-init the FileSystem variable when it is accessed.
+- don't cache the RepositoryConfig in TransitoryRepository (this might also require a new constructor that takes a class-path resource for the repository configuration file)

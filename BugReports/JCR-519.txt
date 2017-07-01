@@ -1,0 +1,7 @@
+Missing support for some "general" relations in QueryTreeDump and xpath.QueryFormat
+
+
+
+Description:
+The two classes lack support for some of the "general" relations in XPath.
+

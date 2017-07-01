@@ -1,0 +1,8 @@
+RFC 2965 Support (Port sensitive cookies)
+
+
+
+Description:
+RFC 2109 doesn't consider port numbers when matching and filtering cookies. RFC
+2965 does. Modify the Cookie class so that it (optionally?) supports RFC 2965,
+while maintaining support for RFC 2109-style (portless) cookies.

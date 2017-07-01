@@ -1,0 +1,20 @@
+Restructure the Jackrabbit source tree
+
+
+
+Description:
+Reintroduce some of the changes in JCR-157 as a more general restructuring to simplify the Jackrabbit project structure. See http://thread.gmane.org/gmane.comp.apache.jackrabbit.devel/9170/ for the rationale and discussion. The main parts of this restructuring would be:
+
+1. Create a Jackrabbit "super-project" (artifactId: jackrabbit) in trunk/
+
+2. Use the super-project POM as the parent of all Jackrabbit component POMs
+
+3. Move the contents of trunk/jackrabbit/src/site directly to trunk/src/site, and use the super-project to generate the web site
+
+4. Create independent subprojects for the the jackrabbit-api and jackrabbit-commons components, moving the the corresponding parts of the source tree
+
+5. Move the jcr-server subprojects on level up
+
+6. Rename the subproject directories to match their artifactIds
+
+Note that this restructuring depends on JCR-611 and JCR-332, since the best way to implement this by utilizing a snapshot repository for the component dependencies.

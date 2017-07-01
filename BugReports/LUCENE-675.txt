@@ -1,0 +1,8 @@
+Lucene benchmark: objective performance test for Lucene
+
+
+
+Description:
+We need an objective way to measure the performance of Lucene, both indexing and querying, on a known corpus. This issue is intended to collect comments and patches implementing a suite of such benchmarking tests.
+
+Regarding the corpus: one of the widely used and freely available corpora is the original Reuters collection, available from http://www-2.cs.cmu.edu/afs/cs.cmu.edu/project/theo-20/www/data/news20.tar.gz or http://people.csail.mit.edu/u/j/jrennie/public_html/20Newsgroups/20news-18828.tar.gz. I propose to use this corpus as a base for benchmarks. The benchmarking suite could automatically retrieve it from known locations, and cache it locally.

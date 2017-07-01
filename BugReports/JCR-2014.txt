@@ -1,0 +1,11 @@
+Jcr2Spi: Warning upon reloading property values
+
+
+
+Description:
+tobi reported the following log-warning being written upon reloading property values:
+
+[WARN ] Property data has been discarded
+
+It seems to me that this has been introduced with JCR-1963. Taking a closer look at it, i get the impression that
+the 'discarded' flag should only be set if any values are notified accordingly. In addition it seems to me that the MergeResult should have a dispose() method (or something similar) in order to have the replaced (old) property values properly released...

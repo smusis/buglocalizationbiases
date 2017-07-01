@@ -1,0 +1,6 @@
+Cleanup DR.getCurrentVersion/DR.getUserData/DR.getIndexCommit().getUserData()
+
+
+
+Description:
+Spinoff from Ryan's dev thread "DR.getCommitUserData() vs DR.getIndexCommit().getUserData()"... these methods are confusing/dups right now.

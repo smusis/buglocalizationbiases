@@ -1,0 +1,8 @@
+FieldCacheTermsFilter
+
+
+
+Description:
+This is a companion to FieldCacheRangeFilter except it operates on a set of terms rather than a range. It works best when the set is comparatively large or the terms are comparatively common.
+
+

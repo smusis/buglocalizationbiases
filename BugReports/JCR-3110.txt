@@ -1,0 +1,8 @@
+QNodeTypeDefinitionImpl.getSerializablePropertyDefs() might return non serializable property definitions 
+
+
+
+Description:
+QNodeTypeDefinitionImpl.getSerializablePropertyDefs() returns a set-version of the passed in parameter, irrespective of whether the property defs are serializable or not.
+
+See http://markmail.org/thread/65ngqvyxnu4nn3su

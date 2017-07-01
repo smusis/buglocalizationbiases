@@ -1,0 +1,20 @@
+Retry on ConnectionException does not work
+
+
+
+Description:
+I noticed that the Retry handler mechanism does not work when the client cannot
+initiate a connection (which throws java.net.ConnectionException). This happens
+for me for instance when there is proxy and a tunneling in the picture and
+sometimes there are connectivity problems.
+
+I had my own RetryHandler, however, the Connection Timeout exception never falls
+in it. I took a look at the source code and noticed that the open() method and
+any thrown exception at this level occurs outside the control of the Retry
+Handler (which seems to be involved only after open() succeeds).
+
+In fact, if the open() throws ConnectionException (as is my case), since the
+try/catch wrapping the open() is not inside the while() but on top of it, it
+stops the loop and the retry handler does not get a chance to be invoked .
+
+riad

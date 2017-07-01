@@ -1,0 +1,29 @@
+Evil up MockDirectoryWrapper.checkIndexOnClose
+
+
+
+Description:
+MockDirectoryWrapper checks any indexes tests create on close(), if they exist.
+
+The problem is the logic it uses to determine if an index exists could mask real bugs (e.g. segments file corrumption):
+{code}
+if (DirectoryReader.indexExists(this) {
+  ...
+  // evil stuff like crash()
+  ...
+  _TestUtil.checkIndex(this)
+}
+{code}
+
+and for reference DirectoryReader.indexExists is:
+{code}
+try {
+  new SegmentInfos().read(directory);
+  return true;
+} catch (IOException ioe) {
+  return false;
+}
+{code}
+
+So if there are segments file problems, we just silently do no checkIndex.
+

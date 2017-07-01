@@ -1,0 +1,9 @@
+jcr-server: DefaultItemCollection#unlock does not call DavSession#removeReference
+
+
+
+Description:
+DefaultItemCollection#unlock does not remove the token-reference from the DavSession that has been added
+before upon creating the lock. This causes pending lock-references thus the cache entries in JCRWebdavServer
+will not be cleared filling up the cache although the locks have been properly released. 
+

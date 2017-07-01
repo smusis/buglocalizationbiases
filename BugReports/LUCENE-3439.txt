@@ -1,0 +1,12 @@
+add checks/asserts if you search across a closed reader
+
+
+
+Description:
+if you try to search across a closed reader (and/or searcher too),
+there are no checks, not even assertions statements.
+
+this results in crazy scary stacktraces deep inside places like FSTs/various term dictionary implementations etc.
+
+In some situations, depending on codec, you wont even get an error (i'm sure its fun when you try to retrieve the stored fields!)
+

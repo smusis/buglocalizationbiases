@@ -1,0 +1,10 @@
+Data store garbage collection: ScanEventListener not working
+
+
+
+Description:
+The ScanEventListener is currently only called when using the 'scan all nodes recursively' strategy. It is not called when all persistence managers implement IterablePersistenceManager (GarbageCollector.scanPersistenceManagers). The ScanEventListener should be called in every case, otherwise it is not possible to see the progress of the garbage collection.
+
+However there is a problem: IterablePersistenceManager.getAllNodeIds() doesn't return Node objects, and it would make little sense to create real node objects (the performance advantage of scanPersistenceManagers would be lost).
+
+Therefore, I propose a workaround: the ScanEventListener is called using a 'PseudoNode'. This is a class that implements Node but only has meaningful getUUID() and toString() methods. This allows to create a meaningful progress bar (as the UUIDs are returned in order).

@@ -1,0 +1,7 @@
+Similarity can only be set per index, but I may want to adjust scoring behaviour at a field level
+
+
+
+Description:
+Similarity can only be set per index, but I may want to adjust scoring behaviour at a field level, to faciliate this could we pass make field name available to all score methods.
+Currently it is only passed to some such as lengthNorm() but not others such as tf()

@@ -1,0 +1,6 @@
+Open IndexWriter API to allow custom MergeScheduler implementation
+
+
+
+Description:
+IndexWriter's getNextMerge() and merge(OneMerge) are package-private, which makes it impossible for someone to implement his own MergeScheduler. We should open up these API, as well as any other that can be useful for custom MS implementations.

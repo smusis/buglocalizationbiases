@@ -1,0 +1,10 @@
+Add @Override annotations
+
+
+
+Description:
+During removal of deprecated APIs, mostly the problem was, to not only remove the method in the (abstract) base class (e.g. Scorer.explain()), but also remove it in sub classes that override it. You can easily forget that (especially, if the method was not marked deprecated in the subclass). By adding @Override annotations everywhere in Lucene, such removals are simple, because the compiler throws out an error message in all subclasses which then no longer override the method.
+
+Also it helps preventing the well-known traps like overriding hashcode() instead of hashCode().
+
+The patch was generated automatically, and is rather large. Should I apply it, or would it break too many patches (but I think, trunk has changed so much, that this is only a minimum of additional work to merge)?

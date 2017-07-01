@@ -1,0 +1,8 @@
+Change AttributeSource API to use generics
+
+
+
+Description:
+The AttributeSource API will be easier to use with JDK 1.5 generics.
+
+Uwe, if you started working on a patch for this already feel free to assign this to you.

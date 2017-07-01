@@ -1,0 +1,20 @@
+SSLSocketFactory.connectSocket(...) possible NPE
+
+
+
+Description:
+    public Socket connectSocket(
+            final Socket sock,
+            final InetSocketAddress remoteAddress,
+            final InetSocketAddress localAddress,
+            final HttpParams params) throws IOException, UnknownHostException, ConnectTimeoutException {
+...
+
+        SSLSocket sslsock = (SSLSocket) (sock != null ? sock : createSocket()); // ==> sock may be null
+        if (localAddress != null) {
+            sock.setReuseAddress(HttpConnectionParams.getSoReuseaddr(params)); // ==> NPE if sock is null
+            sslsock.bind(localAddress);
+        }
+
+Should sock.setReuseAddress be sslsock.setReuseAddress?
+

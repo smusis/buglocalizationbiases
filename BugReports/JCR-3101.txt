@@ -1,0 +1,10 @@
+recovery tool does not recover when version history can be instantiated, but root version can not
+
+
+
+Description:
+JCR-2551 introduced a recovery mode which tries to instantiate the version history, and if this fails, disconnects the VH (version history) and makes the node unversioned.
+
+However, it appears it can happen that the persistence is damaged such as getting the VH does indeed work, but subsequent operations fail due to other problems. One problem that has been seen is a missing frozenNode property of the root version (or a missing frozenNode itself).
+
+As a quick fix, we may want to change the checker so that it actually also tries to get the rootVersion and it's frozenNode. Long term, depending on how frequent this problem is, we may have to think about a less drastic recovery than disconnecting the VH.

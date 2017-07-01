@@ -1,0 +1,12 @@
+Adding norms, properties indexing and writer.infoStream support to benchmark
+
+
+
+Description:
+I would like to add the following support in benchmark:
+# Ability to specify whether norms should be stored in the index.
+# Ability to specify whether norms should be stored for the body field (assuming norms are usually stored for that field in real life applications, make it explicit)
+# Ability to specify an infoStream for IndexWriter
+# Ability to specify whether to index the properties returned on DocData (for content sources like TREC, these may include arbitrary <meta> tags, which we may not want to index).
+
+Patch to come shortly.

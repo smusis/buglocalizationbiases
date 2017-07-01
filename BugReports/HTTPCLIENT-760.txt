@@ -1,0 +1,6 @@
+Abort Before Execute & Various Other Times Fails
+
+
+
+Description:
+With svn commit #639506, a few more scenarios become testable & can be fixed.  These are: aborting before HttpClient.execute is called, aborting between setting the connection request for aborting and setting the connection release trigger, and aborting after a redirected route uses a new connection request.  As of r639506, those three scenarios fail to abort correctly.

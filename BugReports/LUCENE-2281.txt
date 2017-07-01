@@ -1,0 +1,12 @@
+Add doBeforeFlush to IndexWriter
+
+
+
+Description:
+IndexWriter has doAfterFlush which can be overridden by extensions in order to perform operations after flush has been called. Since flush is final, one can only override doAfterFlush. This issue will handle two things:
+# Make doAfterFlush protected, instead of package-private, to allow for easier extendability of IW.
+# Add doBeforeFlush which will be called by flush before it starts, to allow extensions to perform any operations before flush begings.
+
+Will post a patch shortly.
+
+BTW, any chance to get it out in 3.0.1?

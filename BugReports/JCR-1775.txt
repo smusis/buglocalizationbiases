@@ -1,0 +1,6 @@
+Transaction-safe versioning
+
+
+
+Description:
+I've been working on a partial fix to JCR-630. Instead of implementing fully transactional versioning (i.e. a checkin will disappear when a transactin is rolled back), I'm ensuring that all versioning operations within a transaction will leave the version store in a consistent state even if the transaction otherwise fails at any point.

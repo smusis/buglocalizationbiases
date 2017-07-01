@@ -1,0 +1,6 @@
+Persistence data of versioning not cleaned up correctly
+
+
+
+Description:
+when deleting a version or removing its label, the respective persistence data is not always properly removed.

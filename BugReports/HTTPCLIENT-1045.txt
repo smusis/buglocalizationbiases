@@ -1,0 +1,42 @@
+HttpGet request not being created when parameter "url" is present
+
+
+
+Description:
+
+/*
+* @formatter:off
+* 
+* The following redirect Location results in a Bad Request (404) being made.
+* 
+* http://www.qpassport.co.uk/passport/register.php?do=signup&who=adult&url=http%3A%2F%2Fwww.qpassport.co.uk%2Fpassport%2F&month=2&year=1947&day=26
+* 
+* The GET request is made with these headers (Notice the "Host" value):
+* 
+* DEBUG org.apache.http.wire  - >> "GET http://www.qpassport.co.uk/passport/register.php?do=signup&who=adult&url=http%3A%2F%2Fwww.qpassport.co.uk%2Fpassport%2F&month=2&year=1947&day=26 HTTP/1.1[\r][\n]"
+* DEBUG org.apache.http.wire  - >> "Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*//*;q=0.8[\r][\n]"
+* DEBUG org.apache.http.wire  - >> "Accept-Language: en-us,en;q=0.5[\r][\n]"
+* DEBUG org.apache.http.wire  - >> "Accept-Charset: ISO-8859-1,utf-8;q=0.7,*;q=0.7[\r][\n]"
+* DEBUG org.apache.http.wire  - >> "Proxy-Connection: Keep-Alive[\r][\n]"
+* DEBUG org.apache.http.wire  - >> "Referer: http://www.qpassport.co.uk/passport/register.php?s=b9761dfa820bb55722e3feb6438fa11f&[\r][\n]"
+* DEBUG org.apache.http.wire  - >> "Host: www.qpassport.co.uk/passport/register.php?do=signup&who=adult&url=http[\r][\n]"
+* DEBUG org.apache.http.wire  - >> "User-Agent: Mozilla/4.0 (compatible; MSIE 7.0; Windows NT 5.1)[\r][\n]"
+*  
+* They should be: (Notice the "Host" value)
+* DEBUG org.apache.http.wire  - >> "GET http://www.qpassport.co.uk/passport/register.php?do=signup&who=adult&month=2&year=1947&day=26 HTTP/1.1[\r][\n]"
+* DEBUG org.apache.http.headers  - >> Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*//*;q=0.8
+* DEBUG org.apache.http.headers  - >> Accept-Language: en-us,en;q=0.5
+* DEBUG org.apache.http.headers  - >> Accept-Charset: ISO-8859-1,utf-8;q=0.7,*;q=0.7
+* DEBUG org.apache.http.headers  - >> Proxy-Connection: Keep-Alive
+* DEBUG org.apache.http.headers  - >> Referer: http://www.qpassport.co.uk/passport/register.php?s=005ef80064a0fb2f5aa6f4677a194928&
+* DEBUG org.apache.http.headers  - >> Content-Length: 134
+* DEBUG org.apache.http.headers  - >> Content-Type: application/x-www-form-urlencoded; charset=UTF-8
+* DEBUG org.apache.http.headers  - >> Host: www.qpassport.co.uk
+* DEBUG org.apache.http.headers  - >> User-Agent: Opera/9.20 (Windows NT 6.0; U; en)
+* 
+* The problem appears to be related to the URL parameter in the request
+* when it is removed, the request succeeds.
+* 
+* @formatter:on
+*/
+

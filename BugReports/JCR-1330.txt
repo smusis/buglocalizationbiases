@@ -1,0 +1,10 @@
+repository.xml DTD doesn't allow <DataStore> element
+
+
+
+Description:
+The repository.xml DTD at http://jackrabbit.apache.org/dtd/repository-1.4.dtd conflicts with the instructions in the wiki page at http://wiki.apache.org/jackrabbit/DataStore
+
+Adding the <DataStore> element as specified in the wiki page violates the DTD.
+
+

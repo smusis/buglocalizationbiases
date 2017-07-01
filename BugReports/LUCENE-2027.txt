@@ -1,0 +1,6 @@
+Deprecate Directory.touchFile
+
+
+
+Description:
+Lucene doesn't use this method, and, FindBugs reports that FSDirectory's impl shouldn't swallow the returned result from File.setLastModified.

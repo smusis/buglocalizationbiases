@@ -1,0 +1,6 @@
+Node deleted while query is executed should not affect result size
+
+
+
+Description:
+Currently the QueryResultImpl counts result nodes as invalid when the access check throws a ItemNotFoundException (line 311). This leads to inconsistent total size. IMO it is sufficient to count them as invalid when the client iterates over the nodes (line 555).

@@ -1,0 +1,13 @@
+Item retrieval inefficient after refresh
+
+
+
+Description:
+When RepositoryService#getItemInfos() returns a sufficiently large batch for a path, then the second invocation of getItem() below is significantly slower than the first. 
+
+String path = ...
+Item i = session.getItem(path);
+i.refresh(false); // same for refresh(true)
+session.getItem(path);
+
+In my test setup RepositoryService#getItemInfos() returns 3946 elements. The first invocation takes approx. 800ms, the second 3000ms.

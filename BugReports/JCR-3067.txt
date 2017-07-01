@@ -1,0 +1,6 @@
+Remove timeout handling from TransactionContext
+
+
+
+Description:
+As discussed in JCR-2861, the transaction timeout handling in the TransactionContext class should not be needed since that's the task of the transaction manager, not the context. We should simply remove the timeout handling.

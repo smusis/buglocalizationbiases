@@ -1,0 +1,7 @@
+application-defined routes
+
+
+
+Description:
+Allow applications to specifiy a route as request parameter (or in the context).
+This functionality is a replacement for RoutedRequest, which is removed by HTTPCLIENT-715.

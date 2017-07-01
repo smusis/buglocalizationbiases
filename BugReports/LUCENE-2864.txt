@@ -1,0 +1,24 @@
+add maxtf to fieldinvertstate
+
+
+
+Description:
+the maximum within-document TF is a very useful scoring value, 
+we should expose it so that people can use it in scoring
+
+consider the following sim:
+{code}
+@Override
+public float idf(int docFreq, int numDocs) {
+  return 1.0F; /* not used */
+}
+
+@Override
+public float computeNorm(String field, FieldInvertState state) {
+  return state.getBoost() / (float) Math.sqrt(state.getMaxTF());
+}
+{code}
+
+which is surprisingly effective, but more interesting for practical reasons.
+
+

@@ -1,0 +1,8 @@
+Support updateDocument() with DWPTs
+
+
+
+Description:
+With separate DocumentsWriterPerThreads (DWPT) it can currently happen that the delete part of an updateDocument() is flushed and committed separately from the corresponding new document.
+
+We need to make sure that updateDocument() is always an atomic operation from a IW.commit() and IW.getReader() perspective.  See LUCENE-2324 for more details.

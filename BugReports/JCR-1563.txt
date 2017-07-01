@@ -1,0 +1,9 @@
+Data Store: UTFDataFormatException when using large minRecordLength
+
+
+
+Description:
+If using a value larger than 33000 for minRecordLength, and then trying to store a value with 33000 bytes, the following exception is thrown: UTFDataFormatException. The reason is that values are serialized using DataOutputStream.writeUTF. There is size limitation of 65 K when using this method. Small entries are hex encoded, and there is a prefix, so the limitation for minRecordLength should be 32000.
+
+This is a problem for both FileDataStore and DbDataStore.
+

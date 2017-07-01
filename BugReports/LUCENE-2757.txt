@@ -1,0 +1,6 @@
+Refactor RewriteMethods out of MultiTermQuery
+
+
+
+Description:
+Policeman work :-) - as usual

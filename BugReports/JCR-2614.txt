@@ -1,0 +1,6 @@
+Include the WebDAV litmus tests in the Jackrabbit integration tests
+
+
+
+Description:
+It would be great to integrate the litmus tests (http://www.webdav.org/neon/litmus/) to our integration test suite.

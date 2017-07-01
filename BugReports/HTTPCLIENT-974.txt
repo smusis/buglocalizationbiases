@@ -1,0 +1,16 @@
+RequestWrapper does not use the headers of the request it wraps.
+
+
+
+Description:
+The RequestWrapper does not use the headers of the request it wraps. Therefore the wrapper appears as having no header, while the wrapped request may have some.
+
+To work-around that behavior, I have to call resetHeaders() on the wrapper just after having created it.
+This method does the following:
+    public void resetHeaders()
+    {
+        headergroup.clear();
+        setHeaders(original.getAllHeaders());
+    }
+
+I suggest calling setHeaders directly in the constructor. Or at least highlight in the Javadoc that we should call resetHeaders().

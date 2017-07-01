@@ -1,0 +1,7 @@
+StandardTokenizer loses Korean characters
+
+
+
+Description:
+While using StandardAnalyzer, exp. StandardTokenizer with Korean text stream, StandardTokenizer ignores the Korean characters. This is because the definition of CJK token in StandardTokenizer.jj JavaCC file doesn't have enough range covering Korean syllables described in Unicode character map.
+This patch adds one line of 0xAC00~0xD7AF, the Korean syllables range to the StandardTokenizer.jj code.

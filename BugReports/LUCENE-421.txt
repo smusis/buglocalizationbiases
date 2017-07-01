@@ -1,0 +1,10 @@
+Numeric range searching with large value sets
+
+
+
+Description:
+I have a set of enhancements that build on the numeric sorting cache introduced
+by Tim Jones and that provide integer and floating point range searches over
+numeric ranges that are far too large to be implemented via the current term
+range rewrite mechanism.  I'm new to Apache and trying to find out how to attach
+the source files for the changes for your consideration.

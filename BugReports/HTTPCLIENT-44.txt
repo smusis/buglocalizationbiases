@@ -1,0 +1,9 @@
+Non-standards configuration and tracking
+
+
+
+Description:
+A simple strict or setLenient is likely inadequate.  Each particular
+non-standard behaviour should be tagged, and settable from the client.  A mask
+for particular behavioural features could be provided, with STRICT meaning none
+and LENIENT meaning all.

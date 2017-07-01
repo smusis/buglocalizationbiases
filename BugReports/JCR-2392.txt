@@ -1,0 +1,15 @@
+[patch] QValueFactoryImpl.equals doesn't do compare correctly
+
+
+
+Description:
+equals compares it's uri to it's own uri, as poosed to the other one.
+
+                 // for both the value has not been loaded yet
+                 if (!initialized) {
+                     if (other.uri != null) {
+-                        return uri.equals(uri);
++                        return other.uri.equals(uri);
+                     } else {
+                         // need to load the binary value in order to be able
+                         // to compare the 2 values.

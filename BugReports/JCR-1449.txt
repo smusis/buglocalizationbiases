@@ -1,0 +1,34 @@
+Registering nodetypes with empty namespace prefix causes a namespace exception in sync node
+
+
+
+Description:
+Registering a nodetype with empty namespace prefix causes a namespace exception in sync node. Stacktrace looks as follows:
+
+03.03.2008 15:33:50 *ERROR* ClusterNode: Unable to read revision '10618'. (ClusterNode.java, line 1051)
+o.a.j.core.journal.JournalException: Parse error while reading node type definition.
+        at o.a.j.core.journal.AbstractRecord.readNodeTypeDef(AbstractRecord.java:256)
+        at o.a.j.core.cluster.ClusterNode.consume(ClusterNode.java:1026)
+        at o.a.j.core.journal.AbstractJournal.doSync(AbstractJournal.java:198)
+        at o.a.j.core.journal.AbstractJournal.sync(AbstractJournal.java:173)
+        at o.a.j.core.cluster.ClusterNode.sync(ClusterNode.java:303)
+        at o.a.j.core.cluster.ClusterNode.run(ClusterNode.java:274)
+        at java.lang.Thread.run(Thread.java:595)
+Caused by: o.a.j.core.nodetype.compact.ParseException: Error while parsing 'bla' ((internal), line 3)
+        at o.a.j.core.nodetype.compact.Lexer.fail(Lexer.java:152)
+        at o.a.j.core.nodetype.compact.CompactNodeTypeDefReader.toQName(CompactNodeTypeDefReader.java:653)
+        at o.a.j.core.nodetype.compact.CompactNodeTypeDefReader.doNodeTypeName(CompactNodeTypeDefReader.java:265)
+        at o.a.j.core.nodetype.compact.CompactNodeTypeDefReader.parse(CompactNodeTypeDefReader.java:215)
+        at o.a.j.core.nodetype.compact.CompactNodeTypeDefReader.<init>(CompactNodeTypeDefReader.java:178)
+        at o.a.j.core.nodetype.compact.CompactNodeTypeDefReader.<init>(CompactNodeTypeDefReader.java:162)
+        at o.a.j.core.journal.AbstractRecord.readNodeTypeDef(AbstractRecord.java:248)
+        ... 6 more
+Caused by: javax.jcr.NamespaceException: No URI for pefix '' declared.
+        at o.a.j.spi.commons.namespace.NamespaceMapping.getURI(NamespaceMapping.java:74)
+        at o.a.j.spi.commons.conversion.NameParser.parse(NameParser.java:116)
+        at o.a.j.spi.commons.conversion.ParsingNameResolver.getQName(ParsingNameResolver.java:62)
+        at o.a.j.spi.commons.conversion.DefaultNamePathResolver.getQName(DefaultNamePathResolver.java:61)
+        at o.a.j.core.nodetype.compact.CompactNodeTypeDefReader.toQName(CompactNodeTypeDefReader.java:646)
+        ... 11 more
+
+

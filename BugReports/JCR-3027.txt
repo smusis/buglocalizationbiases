@@ -1,0 +1,10 @@
+JCR Server has concurrency issues on JcrWebdavServer.SessionCache internal HashMap caches
+
+
+
+Description:
+After doing the davex remoting performance work outlined in JCR-3026, the increased concurrency on my jcr server exposed a lot of errors related to getting and putting from the JcrWebdavServer.SessionCache's internal HashMap's.  This problem with HashMap's is a well known concurrency error and was easily fixed by upgrading these maps to ConcurrentHashMaps.  Performance seems dramatically better.  
+
+The fix includes exposure of a tuning parameter that allows the user to set the expected concurrency level.  This is the number of concurrent requests you expect the server to be handling.  In the typical davex remoting scenario, this means you should tune this server side value to match the total max connections of all clients pointed at the server.  See JCR-3026. 
+
+USAGE:  Set the 'concurrency-level' init param for the JcrRemotingServlet, via the web.xml of the jackabbit-webapp component.  Default value is 50.  Or you can intervene in a lower level api if appropriate.

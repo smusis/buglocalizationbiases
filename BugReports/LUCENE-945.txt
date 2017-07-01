@@ -1,0 +1,7 @@
+contrib/benchmark tests fail find data dirs
+
+
+
+Description:
+This was exposed by LUCENE-940 - a test was added that uses the Reuters collection. Then tests succeed when ran from contrib/benchmark (e.g. by IDE) but fail when running as part of "ant test-contrib" because the test expects to find the Reuters data under trunk/work. 
+

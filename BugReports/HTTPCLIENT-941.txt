@@ -1,0 +1,6 @@
+Standardize on a common mocking framework (either EasyMock or Mockito)
+
+
+
+Description:
+We are currently using EasyMock in the caching module and Mockito in the main module. While Mockito appears to have a somewhat nicer API, the sheer number of test cases based on EasyMock in the caching module makes it much simpler to replace Mockito with EasyMock than the other way around.

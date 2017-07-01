@@ -1,0 +1,144 @@
+Can't build lucene 06/13/2004 CVS under jdk 1.5.0
+
+
+
+Description:
+[root@shilo jakarta-lucene]# /usr/local/ant/bin/ant build
+Buildfile: build.xml
+
+BUILD FAILED
+Target `build' does not exist in this project. 
+
+Total time: 1 second
+[root@shilo jakarta-lucene]# /usr/local/ant/bin/ant 
+Buildfile: build.xml
+
+init:
+    [mkdir] Created dir: /usr/src/jakarta-lucene/build
+    [mkdir] Created dir: /usr/src/jakarta-lucene/dist
+
+compile-core:
+    [mkdir] Created dir: /usr/src/jakarta-lucene/build/classes/java
+    [javac] Compiling 160 source files to /usr/src/jakarta-
+lucene/build/classes/java
+    [javac] /usr/src/jakarta-
+lucene/src/java/org/apache/lucene/index/FilterIndexReader.java:42: as of 
+release 1.5, 'enum' is a keyword, and may not be used as an identifier
+    [javac] (try -source 1.4 or lower to use 'enum' as an identifier)
+    [javac]     public void seek(TermEnum enum) throws IOException { in.seek
+(enum); }
+    [javac]                               ^
+    [javac] /usr/src/jakarta-
+lucene/src/java/org/apache/lucene/index/FilterIndexReader.java:42: as of 
+release 1.5, 'enum' is a keyword, and may not be used as an identifier
+    [javac] (try -source 1.4 or lower to use 'enum' as an identifier)
+    [javac]     public void seek(TermEnum enum) throws IOException { in.seek
+(enum); }
+    [javac]                                                                  ^
+    [javac] /usr/src/jakarta-
+lucene/src/java/org/apache/lucene/index/SegmentTermDocs.java:55: as of release 
+1.5, 'enum' is a keyword, and may not be used as an identifier
+    [javac] (try -source 1.4 or lower to use 'enum' as an identifier)
+    [javac]   public void seek(TermEnum enum) throws IOException {
+    [javac]                             ^
+    [javac] /usr/src/jakarta-
+lucene/src/java/org/apache/lucene/index/SegmentTermDocs.java:59: as of release 
+1.5, 'enum' is a keyword, and may not be used as an identifier
+    [javac] (try -source 1.4 or lower to use 'enum' as an identifier)
+    [javac]     if (enum instanceof SegmentTermEnum && ((SegmentTermEnum) 
+enum).fieldInfos == parent.fieldInfos)          // optimized case
+    [javac]         ^
+    [javac] /usr/src/jakarta-
+lucene/src/java/org/apache/lucene/index/SegmentTermDocs.java:59: as of release 
+1.5, 'enum' is a keyword, and may not be used as an identifier
+    [javac] (try -source 1.4 or lower to use 'enum' as an identifier)
+    [javac]     if (enum instanceof SegmentTermEnum && ((SegmentTermEnum) 
+enum).fieldInfos == parent.fieldInfos)          // optimized case
+    [javac]                                                               ^
+    [javac] /usr/src/jakarta-
+lucene/src/java/org/apache/lucene/index/SegmentTermDocs.java:60: as of release 
+1.5, 'enum' is a keyword, and may not be used as an identifier
+    [javac] (try -source 1.4 or lower to use 'enum' as an identifier)
+    [javac]       ti = ((SegmentTermEnum) enum).termInfo();
+    [javac]                               ^
+    [javac] /usr/src/jakarta-
+lucene/src/java/org/apache/lucene/index/SegmentTermDocs.java:62: as of release 
+1.5, 'enum' is a keyword, and may not be used as an identifier
+    [javac] (try -source 1.4 or lower to use 'enum' as an identifier)
+    [javac]       ti = parent.tis.get(enum.term());
+    [javac]                           ^
+    [javac] /usr/src/jakarta-
+lucene/src/java/org/apache/lucene/index/TermInfosReader.java:63: as of release 
+1.5, 'enum' is a keyword, and may not be used as an identifier
+    [javac] (try -source 1.4 or lower to use 'enum' as an identifier)
+    [javac]     SegmentTermEnum enum = (SegmentTermEnum)enumerators.get();
+    [javac]                     ^
+    [javac] /usr/src/jakarta-
+lucene/src/java/org/apache/lucene/index/TermInfosReader.java:64: as of release 
+1.5, 'enum' is a keyword, and may not be used as an identifier
+    [javac] (try -source 1.4 or lower to use 'enum' as an identifier)
+    [javac]     if (enum == null) {
+    [javac]         ^
+    [javac] /usr/src/jakarta-
+lucene/src/java/org/apache/lucene/index/TermInfosReader.java:65: enum types 
+must not be local
+    [javac]       enum = terms();
+    [javac]       ^
+    [javac] /usr/src/jakarta-
+lucene/src/java/org/apache/lucene/index/TermInfosReader.java:65: <identifier> 
+expected
+    [javac]       enum = terms();
+    [javac]            ^
+    [javac] /usr/src/jakarta-
+lucene/src/java/org/apache/lucene/index/TermInfosReader.java:65: '{' expected
+    [javac]       enum = terms();
+    [javac]                     ^
+    [javac] /usr/src/jakarta-
+lucene/src/java/org/apache/lucene/index/TermInfosReader.java:66: <identifier> 
+expected
+    [javac]       enumerators.set(enum);
+    [javac]                      ^
+    [javac] /usr/src/jakarta-
+lucene/src/java/org/apache/lucene/index/TermInfosReader.java:66: ';' expected
+    [javac]       enumerators.set(enum);
+    [javac]                       ^
+    [javac] /usr/src/jakarta-
+lucene/src/java/org/apache/lucene/index/TermInfosReader.java:66: <identifier> 
+expected
+    [javac]       enumerators.set(enum);
+    [javac]                           ^
+    [javac] /usr/src/jakarta-
+lucene/src/java/org/apache/lucene/index/TermInfosReader.java:66: '{' expected
+    [javac]       enumerators.set(enum);
+    [javac]                            ^
+    [javac] /usr/src/jakarta-
+lucene/src/java/org/apache/lucene/index/TermInfosReader.java:68: illegal start 
+of type
+    [javac]     return enum;
+    [javac]     ^
+    [javac] /usr/src/jakarta-
+lucene/src/java/org/apache/lucene/index/TermInfosReader.java:68: as of release 
+1.5, 'enum' is a keyword, and may not be used as an identifier
+    [javac] (try -source 1.4 or lower to use 'enum' as an identifier)
+    [javac]     return enum;
+    [javac]            ^
+    [javac] /usr/src/jakarta-
+lucene/src/java/org/apache/lucene/index/TermInfosReader.java:75: illegal start 
+of expression
+    [javac]   private final void readIndex() throws IOException {
+    [javac]   ^
+    [javac] /usr/src/jakarta-
+lucene/src/java/org/apache/lucene/index/TermInfosReader.java:199: ';' expected
+    [javac] }
+    [javac] ^
+    [javac] /usr/src/jakarta-
+lucene/src/java/org/apache/lucene/index/TermInfosReader.java:200: '}' expected
+    [javac] ^
+    [javac] 21 errors
+
+BUILD FAILED
+/usr/src/jakarta-lucene/build.xml:140: Compile failed; see the compiler error 
+output for details.
+
+Total time: 4 seconds
+[root@shilo jakarta-lucene]#

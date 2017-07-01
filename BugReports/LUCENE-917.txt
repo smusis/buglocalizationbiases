@@ -1,0 +1,6 @@
+Javadoc improvements for Payload class
+
+
+
+Description:
+Some methods in org.apache.lucene.index.Payload don't have javadocs

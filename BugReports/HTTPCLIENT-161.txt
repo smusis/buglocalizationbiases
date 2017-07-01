@@ -1,0 +1,46 @@
+MultipartPostMethod Holding File Stream Open?
+
+
+
+Description:
+From: "Daniel Walsh" <daniel.walsh13@verizon.net>
+Date: Tue Feb 25, 2003  8:05:49 PM US/Eastern
+To: "Commons HttpClient Project" <commons-httpclient-dev@jakarta.apache.org>
+Subject: MultipartPostMethod Holding File Stream Open?
+Reply-To: "Commons HttpClient Project" <commons-httpclient-dev@jakarta.apache.org>
+
+I'm using a MultipartPostMethod to upload a file to a servlet:
+
+File file = new File(strUrl);
+
+HttpClient client = new HttpClient();
+HostConfiguration hostConfig = new HostConfiguration();
+MultipartPostMethod mpPost = new MultipartPostMethod();
+
+ hostConfig.setHost(someURL.getHost(), someURL.getPort(), someURL.getProtocol());
+client.setConnectionTimeout(30000);
+client.setHostConfiguration(hostConfig);
+
+mpPost.addParameter("someName", "someValue");
+mpPost.addParameter(file.getName(), file);
+
+mpPost.setPath(strPath);
+client.executeMethod(mpPost);
+
+String confirmUpload = tpPost.getResponseBodyAsString();
+mpPost.releaseConnection();
+
+file.delete();  // this is being blocked.
+
+After the upload, I would like to delete the file off of my disk.  Using other
+methods of uploading the file (in particular a PutMethod), I was able to then
+delete the file after the upload.  Now that I am using the MultipartPostMethod
+obj for the upload, I am unable to delete the file (the return value is false,
+and there is no SecurityException being thrown - no SecurityManager even set as
+of this point either).
+
+So, I guess my question is whether there is a call to the MultipartPostMethod
+obj that I'm overlooking that would release it's connection (I'm sure that it is
+opening an InputStream of some sort to read the file contents, in order to form
+the HTTP message) to the file - so that I can then have unimpeded access to it
+for other operations?

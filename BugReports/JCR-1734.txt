@@ -1,0 +1,6 @@
+Generated cluster node id should be persisted
+
+
+
+Description:
+If no cluster node id is specified in the configuration, a cluster node id is automatically generated. This id is never persisted, so after another startup a new, probably different cluster node id is used. Instead, an automatically generated cluster id should be persisted inside the repository home.

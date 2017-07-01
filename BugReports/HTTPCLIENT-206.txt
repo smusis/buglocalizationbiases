@@ -1,0 +1,12 @@
+URI class constructors need revision, optimization
+
+
+
+Description:
+1. Currently there's not way to pass an escaped string as a parameter to URI
+class. As a result the url parameter in HttpMethodBase#HttpMethodBase(String)
+constructor gets converted into an array of char just to be converted back to
+string in URI contructor called in that method. 
+
+2. The overall design of URI class contructors does not appear very coherent (at
+least to me)

@@ -1,0 +1,10 @@
+Memory codec
+
+
+
+Description:
+This codec stores all terms/postings in RAM.  It uses an
+FST<BytesRef>.  This is useful on a primary key field to ensure
+lookups don't need to hit disk, to keep NRT reopen time fast even
+under IO contention.
+

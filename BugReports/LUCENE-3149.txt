@@ -1,0 +1,8 @@
+upgrade icu to 4.8
+
+
+
+Description:
+we should upgrade from 4.6 to 4.8.
+
+some internal methods became public, also a package-private reflection hack can be removed.

@@ -1,0 +1,10 @@
+Make MultiThreadedHttpConnectionManager defaults public statics.
+
+
+
+Description:
+Could the defaults for MultiThreadedHttpConnectionManager be made public
+constants? I would do it my self since I have karma as a contributer to [lang]
+and [codec] but I do not want to step on anyones toes. ;-)
+
+Patch attached.

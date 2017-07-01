@@ -1,0 +1,83 @@
+New flexible query parser
+
+
+
+Description:
+From "New flexible query parser" thread by Micheal Busch
+
+in my team at IBM we have used a different query parser than Lucene's in
+our products for quite a while. Recently we spent a significant amount
+of time in refactoring the code and designing a very generic
+architecture, so that this query parser can be easily used for different
+products with varying query syntaxes.
+
+This work was originally driven by Andreas Neumann (who, however, left
+our team); most of the code was written by Luis Alves, who has been a
+bit active in Lucene in the past, and Adriano Campos, who joined our
+team at IBM half a year ago. Adriano is Apache committer and PMC member
+on the Tuscany project and getting familiar with Lucene now too.
+
+We think this code is much more flexible and extensible than the current
+Lucene query parser, and would therefore like to contribute it to
+Lucene. I'd like to give a very brief architecture overview here,
+Adriano and Luis can then answer more detailed questions as they're much
+more familiar with the code than I am.
+The goal was it to separate syntax and semantics of a query. E.g. 'a AND
+b', '+a +b', 'AND(a,b)' could be different syntaxes for the same query.
+We distinguish the semantics of the different query components, e.g.
+whether and how to tokenize/lemmatize/normalize the different terms or
+which Query objects to create for the terms. We wanted to be able to
+write a parser with a new syntax, while reusing the underlying
+semantics, as quickly as possible.
+In fact, Adriano is currently working on a 100% Lucene-syntax compatible
+implementation to make it easy for people who are using Lucene's query
+parser to switch.
+
+The query parser has three layers and its core is what we call the
+QueryNodeTree. It is a tree that initially represents the syntax of the
+original query, e.g. for 'a AND b':
+  AND
+ /   \
+A     B
+
+The three layers are:
+1. QueryParser
+2. QueryNodeProcessor
+3. QueryBuilder
+
+1. The upper layer is the parsing layer which simply transforms the
+query text string into a QueryNodeTree. Currently our implementations of
+this layer use javacc.
+2. The query node processors do most of the work. It is in fact a
+configurable chain of processors. Each processors can walk the tree and
+modify nodes or even the tree's structure. That makes it possible to
+e.g. do query optimization before the query is executed or to tokenize
+terms.
+3. The third layer is also a configurable chain of builders, which
+transform the QueryNodeTree into Lucene Query objects.
+
+Furthermore the query parser uses flexible configuration objects, which
+are based on AttributeSource/Attribute. It also uses message classes that
+allow to attach resource bundles. This makes it possible to translate
+messages, which is an important feature of a query parser.
+
+This design allows us to develop different query syntaxes very quickly.
+Adriano wrote the Lucene-compatible syntax in a matter of hours, and the
+underlying processors and builders in a few days. We now have a 100%
+compatible Lucene query parser, which means the syntax is identical and
+all query parser test cases pass on the new one too using a wrapper.
+
+
+Recent posts show that there is demand for query syntax improvements,
+e.g improved range query syntax or operator precedence. There are
+already different QP implementations in Lucene+contrib, however I think
+we did not keep them all up to date and in sync. This is not too
+surprising, because usually when fixes and changes are made to the main
+query parser, people don't make the corresponding changes in the contrib
+parsers. (I'm guilty here too)
+With this new architecture it will be much easier to maintain different
+query syntaxes, as the actual code for the first layer is not very much.
+All syntaxes would benefit from patches and improvements we make to the
+underlying layers, which will make supporting different syntaxes much
+more manageable.
+

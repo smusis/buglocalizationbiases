@@ -1,0 +1,32 @@
+javax.jcr.RepositoryException when a JOIN SQL2 query is send via Davex and has results
+
+
+
+Description:
+see the following thread for details:
+http://www.mail-archive.com/users@jackrabbit.apache.org/msg17975.html
+
+assuming a data structure as follows:
+/foo [nt:unstructured]
+/foo/bar [nt:unstructured]
+/foo/bar@lala = huii (lala is string property of bar)
+/ding [nt:unstructured]
+/ding@dong = ##barUUID### (dong is a property of type "Reference")
+
+then the following code will throw an exception:
+
+DavexClient Client = new DavexClient(url);
+Repository repo = Client.getRepository();
+Credentials sc = new SimpleCredentials("admin","admin".toCharArray());
+Session s = repo.login(sc,workspace);
+
+QueryManager qm = s.getWorkspace().getQueryManager();
+
+String sql = "SELECT data.* FROM [nt:unstructured] AS data WHERE data.lala= 'huii'";
+sql = "SELECT * FROM [nt:unstructured] AS data INNER JOIN [nt:unstructured] AS referring ON referring.[dong] = data.[jcr:uuid] WHERE data.lala = 'huii'";
+sql = "SELECT * FROM [nt:unstructured] AS data INNER JOIN [nt:unstructured] AS referring ON ISDESCENDANTNODE(data, referring) WHERE data.lala = 'huii'";
+Query query = qm.createQuery(sql, Query.JCR_SQL2);
+QueryResult qr = query.execute();
+
+The first query works just fine and I can iterate over the result. Neither the second nor the third query works.
+In both cases I end up with a javax.jcr.RepositoryException. Note the exception only happens if the query returns results. Aka a join will work just fine if it matches no rows.

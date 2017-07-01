@@ -1,0 +1,39 @@
+NPE when calling isCurrent() on a ParallellReader
+
+
+
+Description:
+As demonstrated by the test case below, if you call isCurrent() on a ParallelReader it causes an NPE. Fix appears to be to add an isCurrent() to ParallelReader which calls it on the underlying indexes but I'm not sure what other problems may be lurking here. Do methods such as getVersion(), lastModified(), isOptimized() also have to be rewritten or is this a use case where ParallelReader will never mimic IndexReader perfectly? At the very least this behavior should be documented so others know what to expect.
+
+
+    [junit] Testcase: testIsCurrent(org.apache.lucene.index.TestParallelReader):        Caused an ERROR
+    [junit] null
+    [junit] java.lang.NullPointerException
+    [junit]     at org.apache.lucene.index.SegmentInfos$FindSegmentsFile.run(SegmentInfos.java:502)
+    [junit]     at org.apache.lucene.index.SegmentInfos.readCurrentVersion(SegmentInfos.java:336)
+    [junit]     at org.apache.lucene.index.IndexReader.isCurrent(IndexReader.java:316)
+    [junit]     at org.apache.lucene.index.TestParallelReader.testIsCurrent(TestParallelReader.java:146)
+
+
+
+Index: src/test/org/apache/lucene/index/TestParallelReader.java
+===================================================================
+--- src/test/org/apache/lucene/index/TestParallelReader.java    (revision 518122)
++++ src/test/org/apache/lucene/index/TestParallelReader.java    (working copy)
+@@ -135,6 +135,15 @@
+       assertEquals(docParallel.get("f4"), docSingle.get("f4"));
+     }
+   }
++  
++  public void testIsCurrent() throws IOException {
++    Directory dir1 = getDir1();
++    Directory dir2 = getDir2();
++    ParallelReader pr = new ParallelReader();
++    pr.add(IndexReader.open(dir1));
++    pr.add(IndexReader.open(dir2));
++    assertTrue(pr.isCurrent());
++  }
+ 
+   // Fiels 1-4 indexed together:
+   private Searcher single() throws IOException {
+

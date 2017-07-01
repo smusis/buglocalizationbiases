@@ -1,0 +1,22 @@
+Unnecessary null check in EffectiveNodeType.getApplicableChildNodeDef()
+
+
+
+Description:
+This is just a trivial thing I noticed this while inspecting the code. getApplicableChildNodeDef() says:
+
+        // try named node definitions first
+        ItemDef[] defs = getNamedItemDefs(name);
+        if (defs != null) {
+
+but getNamedItemDefs() is currently defined to not return null:
+
+    public ItemDef[] getNamedItemDefs(Name name) {
+        List defs = (List) namedItemDefs.get(name);
+        if (defs == null || defs.size() == 0) {
+            return ItemDef.EMPTY_ARRAY;
+        }
+        return (ItemDef[]) defs.toArray(new ItemDef[defs.size()]);
+    }
+
+I didn't check to see if there were any other unnecessary null checks.

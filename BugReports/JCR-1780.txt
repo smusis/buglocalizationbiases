@@ -1,0 +1,6 @@
+Wiki reference a missing CND resource
+
+
+
+Description:
+Wiki page "http://wiki.apache.org/jackrabbit/nt%3aexample" references a missing resource:  "http://jackrabbit.apache.org/doc/nodetype/cnd.html"

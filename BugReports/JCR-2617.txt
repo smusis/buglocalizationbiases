@@ -1,0 +1,25 @@
+ItemStateMap warnings during node type changes
+
+
+
+Description:
+As reported already in JCR-1105, the ItemStateMap logs warnings when a cached item state is being overwritten. This shouldn't normally happen, but it turns out that virtual item state providers do this when the root of the virtual tree is modified. Probably the most common such situation is when node types are being modified. This case is luckily not troublesome for the virtual tree functionality, but the logged warnings are annoying.
+
+Here's a relevant part of a stack trace where this problem occurs:
+
+        at org.apache.jackrabbit.core.state.ItemStateMap.put(ItemStateMap.java:72)
+        at org.apache.jackrabbit.core.virtual.AbstractVISProvider.cache(AbstractVISProvider.java:324)
+        at org.apache.jackrabbit.core.virtual.AbstractVISProvider.createNodeState(AbstractVISProvider.java:284)
+        at org.apache.jackrabbit.core.nodetype.virtual.VirtualNodeTypeStateProvider.createNodeTypeState(VirtualNodeTypeStateProvider.java:157)
+        at org.apache.jackrabbit.core.nodetype.virtual.VirtualNodeTypeStateProvider.createRootNodeState(VirtualNodeTypeStateProvider.java:80)
+        at org.apache.jackrabbit.core.virtual.AbstractVISProvider.stateDiscarded(AbstractVISProvider.java:470)
+        at org.apache.jackrabbit.core.state.ItemState.notifyStateDiscarded(ItemState.java:226)
+        at org.apache.jackrabbit.core.state.ItemState.discard(ItemState.java:370)
+        at org.apache.jackrabbit.core.nodetype.virtual.VirtualNodeTypeStateProvider.onNodeTypesRemoved(VirtualNodeTypeStateProvider.java:139)
+        at org.apache.jackrabbit.core.nodetype.virtual.VirtualNodeTypeStateManager.nodeTypesUnregistered(VirtualNodeTypeStateManager.java:199)
+        at org.apache.jackrabbit.core.nodetype.virtual.VirtualNodeTypeStateManager.nodeTypeReRegistered(VirtualNodeTypeStateManager.java:174)
+        at org.apache.jackrabbit.core.nodetype.NodeTypeRegistry.notifyReRegistered(NodeTypeRegistry.java:1821)
+        at org.apache.jackrabbit.core.nodetype.NodeTypeRegistry.reregisterNodeType(NodeTypeRegistry.java:433)
+        at org.apache.jackrabbit.core.nodetype.NodeTypeRegistry.reregisterNodeType(NodeTypeRegistry.java:364)
+        at org.apache.jackrabbit.core.nodetype.NodeTypeManagerImpl.registerNodeTypes(NodeTypeManagerImpl.java:591)
+        at org.apache.jackrabbit.commons.cnd.CndImporter.registerNodeTypes(CndImporter.java:118)

@@ -1,0 +1,20 @@
+contrib/benchmark config does not play nice with doubles with the flush.by.ram value
+
+
+
+Description:
+In the o.a.l.benchmark.byTask.utils.Config.java file, the nextRound and various other methods do not handle doubles in the "round" property configuration syntax.
+
+To replicate this, copy the micro-standard.alg and replace 
+merge.factor=mrg:10:100:10:100
+max.buffered=buf:10:10:100:100
+
+with
+
+ram.flush.mb=ram:32:40:48:56
+
+and you will get various ClassCastExceptions in Config (one in newRound() and, when that is fixed, in getColsValuesForValsByRound.
+
+The fix seems to be to just to mirror the handling of int[].
+
+The fix seems relatively minor.  Patch shortly and will plan to commit tomorrow evening.

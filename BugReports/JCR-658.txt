@@ -1,0 +1,6 @@
+CanAddChildNodeCallWithNodeTypeTest.testDefinedAndLegalType() may fail if protected child node definition is picked
+
+
+
+Description:
+If the utility NodeTypeUtil.locateChildNodeDef() picks a protected child node definition the test case will fail because it is not allowed add a protected child node.

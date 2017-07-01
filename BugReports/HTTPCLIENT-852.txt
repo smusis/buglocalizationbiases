@@ -1,0 +1,39 @@
+CircularRedirectException encountered when using a proxy, but not when reaching the target directly
+
+
+
+Description:
+A CircularRedirectException is encountered when using a proxy (tinyproxy on a remote machine), whereas everything is fine when using no proxy. The target is a URL such as http://www.seoconsultants.com/w3c/status-codes/301.asp which has a 301 redirection.
+
+The issue can be fixed by using ALLOW_CIRCULAR_REDIRECTS set to true (client params), but I can't consider this a "real" fix.
+
+Here is a snippet of code that exemplifies the problem (use your own proxy):
+
+---
+String proxyHost = "xyz.webfactional.com";
+int proxyPort = 7295;
+
+DefaultHttpClient httpclient = new DefaultHttpClient();
+// without a proxy it's OK!
+httpclient.getParams().setParameter(ConnRoutePNames.DEFAULT_PROXY,
+        new HttpHost(proxyHost, proxyPort, "http"));
+
+HttpParams params = httpclient.getParams();
+HttpClientParams.setRedirecting(params, true);
+HttpProtocolParams.setUserAgent(params,
+        "Mozilla/5.0 (Macintosh; U; Intel Mac OS X 10.5; en-US; rv:1.9.0.10) Gecko/2009042315 Firefox/3.0.10");
+
+// OK, this fixes the problem, but at what cost / other problems ?
+//httpclient.getParams().setParameter(ClientPNames.ALLOW_CIRCULAR_REDIRECTS, true);
+
+String url = "http://www.seoconsultants.com/w3c/status-codes/301.asp";
+
+HttpUriRequest request;
+HttpResponse response;
+
+request = new HttpGet(url);
+System.out.println("request = " + request.getRequestLine());
+response = httpclient.execute(request);
+System.out.println("status = " + response.getStatusLine());
+System.out.println("headers = " + Arrays.asList(response.getAllHeaders()));
+---

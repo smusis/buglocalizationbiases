@@ -1,0 +1,6 @@
+Improve performance of simple path queries
+
+
+
+Description:
+Queries with simple path constraints can be quite slow because of the way they are implemented. The current implementation basically does a hierarchical join with the context nodes and the set of nodes with the name of the next location step. When the specified path is quite selective the implementation should   rather resolve the path expression using the item state manager (similar to how regular paths are resolved in the JCR API).

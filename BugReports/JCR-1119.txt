@@ -1,0 +1,15 @@
+SimpleFieldsHelper emits a lot warnings
+
+
+
+Description:
+The SimpleFieldsHelper.retrieveSimpleField method is used to load JCR properties into simple Java object fields according to the mapping descriptor. If the node does not have the named property, a WARN message is emited.
+
+If the missing property is defined as optional in the node type definition, it is quite normal, that it may be missing. Therefore emitting a WARN message does not seem appropriate. It would be better, to do the following (in order):
+
+   If the missing property is declared to be required in the descriptor, throw an exception
+   else if the descriptor has a default value for the missing property, use that value
+   else if the property is defined with a default value in the node type definition, use that value
+   else emit a DEBUG message and leave the field undefined
+
+Not sure, whether it makes absolute sense to define a property as mandatory in the descriptor but not in the node type definition. Are there any opinions on that ?

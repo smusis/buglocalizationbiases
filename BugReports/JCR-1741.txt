@@ -1,0 +1,8 @@
+Flush volatile index when size limit is reached
+
+
+
+Description:
+Currently the volatile index is committed when minMergeDocs is reached. This is inconvenient because it does not take the size of nodes into account account. When lots of small nodes are added the volatile index should be committed less frequently. Similarly when nodes with lots of properties are indexed the volatile index should be committed more frequently.
+
+Instead the size of the volatile index in bytes should trigger a disk write.

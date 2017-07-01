@@ -1,0 +1,10 @@
+JNDI data sources with various PersistenceManager: wrong default values
+
+
+
+Description:
+With JCR-1305 Jackrabbit supports creating a connection throug a JNDI Datasource and without configuring user and password. This works for some but not all provided PersistenceManagers. Some of them - like the Oracle-specific BundleDBPersistenceManager - sets default values for user and password if none are provided in the jackrabbit config. This way its impossible to use such PersistenceManagers with the plain JNDI DS.
+
+This concerns the following BundleDbPersistenceManagers: OraclePersistenceManager, DerbyPersistenceManager, H2PersistenceManager.
+
+There also might be other PMs (perhaps some special SimpleDbPersistenceManagers) with similar behaviour.

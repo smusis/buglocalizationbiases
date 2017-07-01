@@ -1,0 +1,12 @@
+RowIterator view of result for query '//*' only returns jcr:path column
+
+
+
+Description:
+The RowIterator view of a query result for '//*' only returns the jcr:path column. The spec states that this query is equivalent to:
+select * from nt:base. Furthermore a query that selects * properties must return all non-residual properties that are declared for this node type and are not multi-valued. The pseudo properties jcr:path and jcr:score must always be available.
+
+For nt:base this is:
+- jcr:primaryType
+- jcr:path
+- jcr:score

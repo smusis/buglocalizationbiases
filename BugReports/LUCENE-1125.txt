@@ -1,0 +1,15 @@
+Excessive Arrays.fill(0) in DocumentsWriter drastically slows down small docs (3.9X slowdown!)
+
+
+
+Description:
+I've been doing some "final" performance testing of 2.3RC1 and
+uncovered a fairly serious bug that adds a large fixed CPU cost when
+documents have any term vector enabled fields.
+
+The bug does not affect correctness, just performance.
+
+Basically, for every document, we were calling Arrays.fill(0) on a
+large (32 KB) byte array when in fact we only needed to zero a small
+part of it.  This only happens if term vectors are turned on, and is
+especially devastating for small documents.

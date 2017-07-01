@@ -1,0 +1,7 @@
+[API Doc] Document exceptions thrown on execute methods
+
+
+
+Description:
+There should be more detailed documentation on HttpClient::executeMethod and
+HttpMethod::execute about exceptions thrown in which cases.

@@ -1,0 +1,6 @@
+MockDirectoryWrapper should track open file handles of IndexOutput too
+
+
+
+Description:
+MockDirectoryWrapper currently tracks open file handles of IndexInput only. Therefore IO files that are not closed do not fail our tests, which can then lead to test directories fail to delete on Windows. We should make sure all open files are tracked and if they are left open, fail the test. I'll attach a patch shortly.

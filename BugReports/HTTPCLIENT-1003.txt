@@ -1,0 +1,6 @@
+Handle conditional requests in cache
+
+
+
+Description:
+Return 304 if incoming request has "If-None-Match" or "If-Modified-Since" headers and can be served from cache.  Currently we return a 200 which is correct but not optimal.

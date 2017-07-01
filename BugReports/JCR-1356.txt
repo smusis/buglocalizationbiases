@@ -1,0 +1,8 @@
+Document inheritance of node type attributes such as orderable
+
+
+
+Description:
+Documentation task.
+
+see http://mail-archives.apache.org/mod_mbox/jackrabbit-users/200801.mbox/browser

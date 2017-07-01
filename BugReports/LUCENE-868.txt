@@ -1,0 +1,21 @@
+Making Term Vectors more accessible
+
+
+
+Description:
+One of the big issues with term vector usage is that the information is loaded into parallel arrays as it is loaded, which are then often times manipulated again to use in the application (for instance, they are sorted by frequency).
+
+Adding a callback mechanism that allows the vector loading to be handled by the application would make this a lot more efficient.
+
+I propose to add to IndexReader:
+abstract public void getTermFreqVector(int docNumber, String field, TermVectorMapper mapper) throws IOException;
+and a similar one for the all fields version
+
+Where TermVectorMapper is an interface with a single method:
+void map(String term, int frequency, int offset, int position);
+
+The TermVectorReader will be modified to just call the TermVectorMapper.  The existing getTermFreqVectors will be reimplemented to use an implementation of TermVectorMapper that creates the parallel arrays.  Additionally, some simple implementations that automatically sort vectors will also be created.
+
+This is my first draft of this API and is subject to change.  I hope to have a patch soon.
+
+See http://www.gossamer-threads.com/lists/lucene/java-user/48003?search_string=get%20the%20total%20term%20frequency;#48003 for related information.

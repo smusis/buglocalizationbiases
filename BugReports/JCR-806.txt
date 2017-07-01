@@ -1,0 +1,6 @@
+Scorer.skipTo() does not initialize hits
+
+
+
+Description:
+Some of the custom Scorer implementations in Jackrabbit do not initialize the internal hits BitSet if skipTo() is called before next().

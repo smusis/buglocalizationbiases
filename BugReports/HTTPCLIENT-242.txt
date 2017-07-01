@@ -1,0 +1,9 @@
+Add InputStream buffering.
+
+
+
+Description:
+Currently HttpClient does not buffer the InputStream received from the socket. 
+Perhaps doing so would improve performance.
+
+Reported by Tony Bigbee.

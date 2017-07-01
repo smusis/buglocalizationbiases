@@ -1,0 +1,13 @@
+Support underscore in domain name, or provide better exception
+
+
+
+Description:
+
+When calling on HttpClient.execute with a url that contain underscore ('_'), you get NullPointerException.
+Tracing it down show that java.net.Uri complains that it is illegal name. Which is true according to the RFC.
+But it seems that most browser allow it, and some companies support it.
+
+I think HttpClient should either support underscores, or atleast provide a better exception.
+
+

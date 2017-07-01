@@ -1,0 +1,8 @@
+NativeFSLockFactory.makeLock(...).isLocked() does not work
+
+
+
+Description:
+IndexWriter.isLocked() or IndexReader.isLocked() do not work with NativeFSLockFactory.
+
+The problem is, that the method NativeFSLock.isLocked() just checks if the same lock instance was locked before (lock != null). If the LockFactory created a new lock instance, this always returns false, even if its locked.

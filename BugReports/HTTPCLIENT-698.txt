@@ -1,0 +1,33 @@
+DefaultRedirectHandler not resolving relative location URI wrt the request URI
+
+
+
+Description:
+The adjustment of a relative URI in the Location header value does not take the request URI into account. So you may want to replace ...
+------------------------------
+try {
+    uri = new URI(
+            target.getSchemeName(),
+            null,
+            target.getHostName(),
+            target.getPort(),
+            uri.getPath(),
+            uri.getQuery(),
+            uri.getFragment());
+------------------------------
+... with ...
+------------------------------
+HttpRequest request = (HttpRequest) context.getAttribute(ExecutionContext.HTTP_REQUEST);
+try {
+    URI requestURI = new URI(request.getRequestLine().getUri());
+    URI absoluteRequestURI = new URI(
+            target.getSchemeName(),
+            null,
+            target.getHostName(),
+            target.getPort(),
+            requestURI.getPath(),
+            requestURI.getQuery(),
+            requestURI.getFragment());
+    uri = absoluteRequestURI.resolve(uri);
+------------------------------
+... or get the request URI from somewhere else.

@@ -1,0 +1,31 @@
+Unable to save session after saving a renamed node
+
+
+
+Description:
+		TransientRepository repo = new TransientRepository(
+				"applications/test/repository.xml", "applications/test");
+		Session s = repo.login(new SimpleCredentials("test", "".toCharArray()));
+
+		if (s.getRootNode().hasNode("parent")) {
+			s.getRootNode().getNode("parent").remove();
+			s.save();
+		}
+
+		// create parent node
+		Node parent = s.getRootNode().addNode("parent");
+		
+		// create node to rename
+		parent.addNode("newnode");
+		s.save();
+
+		// rename node
+		s.move("/parent/newnode", "/parent/renamedNewNode");
+
+		// save renamed node
+		s.getRootNode().getNode("parent/renamedNewNode").save();
+
+		// try to save session --> FAILS
+		s.save();
+
+		s.logout();

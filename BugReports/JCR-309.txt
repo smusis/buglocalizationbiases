@@ -1,0 +1,19 @@
+Extract the public API interfaces from o.a.j.core to o.a.j.api
+
+
+
+Description:
+To better document and track the public JCR extensions and component API provided by Jackrabbit and to allow more room for refactoring within the Jackrabbit core, we shoud move (or create) the supported API interfaces to a new org.apache.jackrabbit.api package.
+
+At least the following interfaces should be moved along with any supporting implementation-independent classes:
+
+    * PersistenceManager
+    * FileSystem
+    * AccessManager
+    * QueryHandler
+    * TextFilter
+
+Possible dependencies to implementation-specific classes should preferably be abstracted using extra interfaces.
+
+Also the workspace and node type administration methods should be published as Jackrabbit-specific extensions to the JCR API interfaces.
+

@@ -1,0 +1,6 @@
+Add plugable mechanism for import/export of webdav-server
+
+
+
+Description:
+add plugable mechanism to improve flexible configuration of the jcr-server

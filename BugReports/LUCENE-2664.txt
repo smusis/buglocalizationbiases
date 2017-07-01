@@ -1,0 +1,42 @@
+Add SimpleText codec
+
+
+
+Description:
+Inspired by Sahin Buyrukbilen's question here:
+
+  http://www.lucidimagination.com/search/document/b68846e383824653/how_to_export_lucene_index_to_a_simple_text_file#b68846e383824653
+
+I made a simple read/write codec that stores all postings data into a
+single text file (_X.pst), looking like this:
+
+{noformat}
+field contents
+  term file
+    doc 0
+      pos 5
+  term is
+    doc 0
+      pos 1
+  term second
+    doc 0
+      pos 3
+  term test
+    doc 0
+      pos 4
+  term the
+    doc 0
+      pos 2
+  term this
+    doc 0
+      pos 0
+END
+{noformat}
+
+The codec is fully funtional -- all Lucene & Solr tests pass with
+-Dtests.codec=SimpleText -- but, its performance is obviously poor.
+
+However, it should be useful for debugging, transparency,
+understanding just what Lucene stores in its index, etc.  And it's a
+quick way to gain some understanding on how a codec works...
+

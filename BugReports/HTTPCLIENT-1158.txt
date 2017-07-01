@@ -1,0 +1,6 @@
+Change the error message in the exception at URIUtils#rewriteURI 
+
+
+
+Description:
+The message in URIUtils#rewriteURI is misspelled - "URI may nor be null" should be "URI should not be null"

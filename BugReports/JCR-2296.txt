@@ -1,0 +1,6 @@
+Consolidate ItemDef/QItemDefinition
+
+
+
+Description:
+There is a great deal of duplicate code in ItemDef (jackrabbit-core) and QItemDefinition (jackrabbit-spi) and their implementing classes.

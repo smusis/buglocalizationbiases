@@ -1,0 +1,6 @@
+GC resources in TermInfosReader when exception occurs in its constructor
+
+
+
+Description:
+I replaced IndexModifier with IndexWriter in test case TestStressIndexing and noticed the test failed from time to time because some .tis file is still open when MockRAMDirectory.close() is called. It turns out it is because .tis file is not closed if an exception occurs in TermInfosReader's constructor.

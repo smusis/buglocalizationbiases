@@ -1,0 +1,14 @@
+Unusual Http status line
+
+
+
+Description:
+The web server at http://alces.med.umn.edu/Candida.html returns the following
+status line:
+
+HTTP 200 Document follows
+
+This page loads in the 3 browsers I tried (though Safari actually rendered the
+headers).  The current version of HttpClient reads through the whole page
+looking for a line that starts with HTTP/.  I don't know how big of a problem
+this is, but it's a fairly easy fix.  Patch to follow.

@@ -1,0 +1,6 @@
+Generify PriorityQueue
+
+
+
+Description:
+Priority Queue should use generics like all other Java 5 Collection API classes. This very simple, but makes code more readable.

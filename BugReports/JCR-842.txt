@@ -1,0 +1,9 @@
+support stores where binary properties are mandatory (such as in nt:resource)
+
+
+
+Description:
+SetValueBinaryTest tries to remove binary properties by setting them to null. However, some stores only support binary properties in the case of jcr:content/jcr:data, in which case the property can not be removed directly.
+
+Suggestion: check for mandatory/protected, and throw NotExecutableException in that case.
+

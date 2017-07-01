@@ -1,0 +1,24 @@
+QueryParser can produce empty sub BooleanQueries when Analyzer proudces no tokens for input
+
+
+
+Description:
+as triggered by SOLR-261, if you have a query like this...
+
+   +foo:BBB  +(yak:AAA  baz:CCC)
+
+...where the analyzer produces no tokens for the "yak:AAA" or "baz:CCC" portions of the query (posisbly because they are stop words) the resulting query produced by the QueryParser will be...
+
+  +foo:BBB +()
+
+...that is a BooleanQuery with two required clauses, one of which is an empty BooleanQuery with no clauses.
+
+this does not appear to be "good" behavior.
+
+In general, QueryParser should be smarter about what it does when parsing encountering parens whose contents result in an empty BooleanQuery -- but what exactly it should do in the following situations...
+
+ a)  +foo:BBB +()
+ b)  +foo:BBB ()
+ c)  +foo:BBB -()
+
+...is up for interpretation.  I would think situation (b) clearly lends itself to dropping the sub-BooleanQuery completely.  situation (c) may also lend itself to that solution, since semanticly it means "don't allow a match on any queries in the empty set of queries".  .... I have no idea what the "right" thing to do for situation (a) is.

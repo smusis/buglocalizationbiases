@@ -1,0 +1,16 @@
+Invalid node type definitions with test_nodetypes.xml
+
+
+
+Description:
+an attempt to register the node types defined with 
+core/src/test/resources/org/apache/jackrabbit/core/nodetype/xml/test_nodetypes.xml
+will fail:
+
+- invalid reference constraint
+- autocreated prop-def without default values
+- invalid required type with autocreated prop-def (undefined is not allowed)
+- invalid required primary type (non existing)
+- invalid default primary type (non existing)
+
+

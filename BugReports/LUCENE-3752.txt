@@ -1,0 +1,9 @@
+move preflexrw to lucene3x package
+
+
+
+Description:
+Currently there are a lot of things made public in lucene3x codec, but all marked internal/experimental/deprecated.
+
+A lot of this is just so our test codec (preflexrw) can subclass it. I think we should just move it to the same
+package, then it call all be package-private.

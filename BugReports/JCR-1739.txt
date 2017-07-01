@@ -1,0 +1,8 @@
+Do not use deletable anymore
+
+
+
+Description:
+The query handler implementation currently uses a deletable file to keep track of index segments that are not needed anymore and can be deleted. In general index segments are deleted right away when they are not needed anymore, but it may happen that index readers are still open (because of a time consuming query) and the index segment cannot be deleted at the moment. In this case the index segment name is written to the deletable file and the index periodically tries to delete the segment later.
+
+The implementation should rather infer from the indexes file on startup, which segments are still needed and in use.

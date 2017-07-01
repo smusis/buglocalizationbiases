@@ -1,0 +1,8 @@
+New tool for  reseting the (length)norm of fields after changing Similarity
+
+
+
+Description:
+I've written a little tool that seems like it can/will be very handy as I tweak my custom similarity.  I think it would make a good addition to contrib/miscellaneous.
+
+Class and Tests to be attached shortly...

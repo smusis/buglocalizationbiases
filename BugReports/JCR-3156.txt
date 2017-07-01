@@ -1,0 +1,24 @@
+Group#getMembers may list inherited members multiple times
+
+
+
+Description:
+i just happen to detect the following regression that seems to be introduces quite a while ago:
+
+Group#getMembers is defined to return all group members including those inherited by another group being member of that group.
+
+Example:
+User t
+Group a : t is declared member
+Group b : t is declared member
+Group c : a, b are declared members
+
+The expected result of Group.getMembers was: a, b and t.
+
+What is currently happening is that t is included twice in the returned iterator.
+Quickly testing on jackrabbit 2.0 revealed that this used to work before...
+
+I didn't carefully check when that bug has been introduced but the the refactoring of the membership
+collections seems to be a possible culprit.
+
+

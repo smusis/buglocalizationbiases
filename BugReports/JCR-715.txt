@@ -1,0 +1,10 @@
+Missing jackrabbit-rmi-service.xml from jackrabbit-jcr-rmi-1.2.1.jar
+
+
+
+Description:
+The file jackrabbit-rmi-service.xml is missing from the jackrabbit-jcr-rmi-1.2.1.jar.
+
+The cause of the issue appears that the directory structure of the jackrabbit-jcr-rmi sub-project doesn't match the Maven 2 standard.  
+
+To fix: src/resources should be moved to src/main/resources.

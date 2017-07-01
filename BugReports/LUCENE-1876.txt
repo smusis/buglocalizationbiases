@@ -1,0 +1,8 @@
+Some contrib packages are missing a package.html
+
+
+
+Description:
+Dunno if we will get to this one this release, but a few contribs don't have a package.html (or a good overview that would work as a replacement) - I don't think this is hugely important, but I think it is important - you should be able to easily and quickly read a quick overview for each contrib I think.
+
+So far I have identified collation and spatial.

@@ -1,0 +1,6 @@
+Adding FilteredDocIdSet and FilteredDocIdSetIterator
+
+
+
+Description:
+Adding 2 convenience classes: FilteredDocIdSet and FilteredDocIDSetIterator.

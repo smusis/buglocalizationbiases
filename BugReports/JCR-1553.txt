@@ -1,0 +1,70 @@
+ClusterNode not properly shutdown when repository has shutdown
+
+
+
+Description:
+Sometimes when the repository is shutdown the ClusterNode is not shutdown and it therefore tries to update records or access a closed Journal file.  The setup that generated the exception is I have 3 VMs each with a Repository that are all connected to the same database.  In the below stack trace one of the repositories is being shutdown however the ClusterNode thread is also trying to update the repository journal at the same time.  Below is a copy of the stack trace.
+
+[4/23/08 9:58:52:496 CDT] 00000061 SystemOut     O 89811653 [WebContainer : 2] INFO  org.apache.jackrabbit.core.RepositoryImpl  - Shutting down repository...
+[4/23/08 9:58:52:511 CDT] 0000054c SystemOut     O 89811621 [ClusterNode-b06e4fe7-a602-4a93-b106-e0834046ae0f] INFO  org.apache.jackrabbit.core.cluster.ClusterNode  - Processing revision: 7174
+[4/23/08 9:58:52:527 CDT] 00000061 SystemOut     O 89811684 [WebContainer : 2] INFO  org.apache.jackrabbit.core.RepositoryImpl  - shutting down workspace 'default'...
+[4/23/08 9:58:52:574 CDT] 00000061 SystemOut     O 89811715 [WebContainer : 2] INFO  org.apache.jackrabbit.core.observation.ObservationDispatcher  - Notification of EventListeners stopped.
+[4/23/08 9:58:53:058 CDT] 00000061 SystemOut     O 89812215 [WebContainer : 2] INFO  org.apache.jackrabbit.core.RepositoryImpl  - workspace 'default' has been shutdown
+[4/23/08 9:58:53:308 CDT] 00000308 SystemOut     O 91641048 [ClusterNode-e609e8a6-320e-44ea-be0f-ab8c5cb89662] INFO  org.apache.jackrabbit.core.cluster.ClusterNode  - Processing revision: 7165
+[4/23/08 9:58:53:324 CDT] 00000308 SystemOut     O 91641064 [ClusterNode-e609e8a6-320e-44ea-be0f-ab8c5cb89662] INFO  org.apache.jackrabbit.core.cluster.ClusterNode  - Processing revision: 7166
+[4/23/08 9:58:53:324 CDT] 00000308 SystemOut     O 91641064 [ClusterNode-e609e8a6-320e-44ea-be0f-ab8c5cb89662] INFO  org.apache.jackrabbit.core.cluster.ClusterNode  - Processing revision: 7167
+[4/23/08 9:58:53:339 CDT] 00000308 SystemOut     O 91641079 [ClusterNode-e609e8a6-320e-44ea-be0f-ab8c5cb89662] INFO  org.apache.jackrabbit.core.cluster.ClusterNode  - Processing revision: 7168
+[4/23/08 9:58:53:339 CDT] 00000308 SystemOut     O 91641079 [ClusterNode-e609e8a6-320e-44ea-be0f-ab8c5cb89662] INFO  org.apache.jackrabbit.core.cluster.ClusterNode  - Processing revision: 7169
+[4/23/08 9:58:53:355 CDT] 00000308 SystemOut     O 91641095 [ClusterNode-e609e8a6-320e-44ea-be0f-ab8c5cb89662] INFO  org.apache.jackrabbit.core.cluster.ClusterNode  - Processing revision: 7170
+[4/23/08 9:58:53:371 CDT] 00000308 SystemOut     O 91641111 [ClusterNode-e609e8a6-320e-44ea-be0f-ab8c5cb89662] INFO  org.apache.jackrabbit.core.cluster.ClusterNode  - Processing revision: 7171
+[4/23/08 9:58:53:386 CDT] 00000308 SystemOut     O 91641126 [ClusterNode-e609e8a6-320e-44ea-be0f-ab8c5cb89662] INFO  org.apache.jackrabbit.core.cluster.ClusterNode  - Processing revision: 7172
+[4/23/08 9:58:53:417 CDT] 00000308 SystemOut     O 91641157 [ClusterNode-e609e8a6-320e-44ea-be0f-ab8c5cb89662] INFO  org.apache.jackrabbit.core.cluster.ClusterNode  - Processing revision: 7173
+[4/23/08 9:58:53:433 CDT] 00000308 SystemOut     O 91641173 [ClusterNode-e609e8a6-320e-44ea-be0f-ab8c5cb89662] INFO  org.apache.jackrabbit.core.cluster.ClusterNode  - Processing revision: 7174
+[4/23/08 9:58:53:433 CDT] 00000308 SystemOut     O 91641173 [ClusterNode-e609e8a6-320e-44ea-be0f-ab8c5cb89662] INFO  org.apache.jackrabbit.core.cluster.ClusterNode  - Processing revision: 7175
+[4/23/08 9:58:53:496 CDT] 00000308 SystemOut     O 91641236 [ClusterNode-e609e8a6-320e-44ea-be0f-ab8c5cb89662] INFO  org.apache.jackrabbit.core.journal.AbstractJournal  - Synchronized to revision: 7175
+[4/23/08 9:58:54:292 CDT] 00000131 SystemOut     O 89171473 [ClusterNode-4930503b-ab33-4444-999e-c87fb3681bf7] INFO  org.apache.jackrabbit.core.cluster.ClusterNode  - Processing revision: 7173
+[4/23/08 9:58:54:308 CDT] 00000131 SystemOut     O 89171504 [ClusterNode-4930503b-ab33-4444-999e-c87fb3681bf7] INFO  org.apache.jackrabbit.core.cluster.ClusterNode  - Processing revision: 7174
+[4/23/08 9:58:54:308 CDT] 00000131 SystemOut     O 89171504 [ClusterNode-4930503b-ab33-4444-999e-c87fb3681bf7] INFO  org.apache.jackrabbit.core.cluster.ClusterNode  - Processing revision: 7175
+[4/23/08 9:58:54:386 CDT] 00000131 SystemOut     O 89171582 [ClusterNode-4930503b-ab33-4444-999e-c87fb3681bf7] INFO  org.apache.jackrabbit.core.journal.AbstractJournal  - Synchronized to revision: 7175
+[4/23/08 9:58:55:417 CDT] 00000061 SystemOut     O 89814574 [WebContainer : 2] INFO  org.apache.jackrabbit.core.RepositoryImpl  - Repository has been shutdown
+[4/23/08 9:58:56:089 CDT] 0000054c SystemOut     O 89815199 [ClusterNode-b06e4fe7-a602-4a93-b106-e0834046ae0f] ERROR org.apache.jackrabbit.core.cluster.ClusterNode  - Unable to read revision '7174'.
+org.apache.jackrabbit.core.journal.JournalException: I/O error while reading string.
+	at org.apache.jackrabbit.core.journal.ReadRecord.readString(ReadRecord.java:169)
+	at org.apache.jackrabbit.core.cluster.ClusterNode.consume(ClusterNode.java:979)
+	at org.apache.jackrabbit.core.journal.AbstractJournal.doSync(AbstractJournal.java:198)
+	at org.apache.jackrabbit.core.journal.AbstractJournal.sync(AbstractJournal.java:173)
+	at org.apache.jackrabbit.core.cluster.ClusterNode.sync(ClusterNode.java:303)
+	at org.apache.jackrabbit.core.cluster.ClusterNode.run(ClusterNode.java:274)
+	at java.lang.Thread.run(Thread.java:797)
+Caused by: 
+java.io.IOException: Closed Connection
+	at oracle.jdbc.driver.DatabaseError.SQLToIOException(DatabaseError.java:517)
+	at oracle.jdbc.driver.OracleBlobInputStream.needBytes(OracleBlobInputStream.java:187)
+	at oracle.jdbc.driver.OracleBufferedStream.readInternal(OracleBufferedStream.java:130)
+	at oracle.jdbc.driver.OracleBufferedStream.read(OracleBufferedStream.java:108)
+	at java.io.DataInputStream.readBoolean(DataInputStream.java:246)
+	at org.apache.jackrabbit.core.journal.ReadRecord.readString(ReadRecord.java:161)
+	... 6 more
+[4/23/08 9:58:56:261 CDT] 0000054c SystemOut     O 89815355 [ClusterNode-b06e4fe7-a602-4a93-b106-e0834046ae0f] ERROR org.apache.jackrabbit.core.journal.DatabaseJournal  - Error while moving to next record.
+java.sql.SQLException: Closed Connection: next
+	at oracle.jdbc.driver.DatabaseError.throwSqlException(DatabaseError.java:112)
+	at oracle.jdbc.driver.DatabaseError.throwSqlException(DatabaseError.java:146)
+	at oracle.jdbc.driver.OracleResultSetImpl.next(OracleResultSetImpl.java:181)
+	at org.apache.jackrabbit.core.journal.DatabaseRecordIterator.fetchRecord(DatabaseRecordIterator.java:136)
+	at org.apache.jackrabbit.core.journal.DatabaseRecordIterator.hasNext(DatabaseRecordIterator.java:85)
+	at org.apache.jackrabbit.core.journal.AbstractJournal.doSync(AbstractJournal.java:190)
+	at org.apache.jackrabbit.core.journal.AbstractJournal.sync(AbstractJournal.java:173)
+	at org.apache.jackrabbit.core.cluster.ClusterNode.sync(ClusterNode.java:303)
+	at org.apache.jackrabbit.core.cluster.ClusterNode.run(ClusterNode.java:274)
+	at java.lang.Thread.run(Thread.java:797)
+[4/23/08 9:58:56:402 CDT] 0000054c SystemOut     O 89815418 [ClusterNode-b06e4fe7-a602-4a93-b106-e0834046ae0f] WARN  org.apache.jackrabbit.core.cluster.ClusterNode  - Unable to set current revision to 7174.
+org.apache.jackrabbit.core.journal.JournalException: Revision file closed.
+	at org.apache.jackrabbit.core.journal.FileRevision.set(FileRevision.java:100)
+	at org.apache.jackrabbit.core.cluster.ClusterNode.setRevision(ClusterNode.java:1073)
+	at org.apache.jackrabbit.core.journal.AbstractJournal.doSync(AbstractJournal.java:211)
+	at org.apache.jackrabbit.core.journal.AbstractJournal.sync(AbstractJournal.java:173)
+	at org.apache.jackrabbit.core.cluster.ClusterNode.sync(ClusterNode.java:303)
+	at org.apache.jackrabbit.core.cluster.ClusterNode.run(ClusterNode.java:274)
+	at java.lang.Thread.run(Thread.java:797)
+
+

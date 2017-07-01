@@ -1,0 +1,6 @@
+deprecate IndexWriter.addIndexes(Directory[])
+
+
+
+Description:
+Since addIndexesNoOptimize accomplishes the same thing, more efficiently, and you can always then call optimize() if you really wanted to, I think we should deprecate the older addIndexes(Directory[]).

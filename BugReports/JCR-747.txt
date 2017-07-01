@@ -1,0 +1,22 @@
+TCK: observation tests are too restrictive
+
+
+
+Description:
+The basic sequence in all observation tests is:
+
+1) add listener
+2) modify workspace
+3) remove listener
+4) wait for events on listener
+
+This sequence forces an implementation to maintain a logical order for listener registrations and content changes. In the light of the asynchronous nature of observation events this seems too restrictive for certain implementations.
+
+The sequence should be changed to:
+
+1) add listener
+2) modify workspace
+3) wait for events on listener
+4) remove listener
+
+Which is also more intuitive from a user perspective.

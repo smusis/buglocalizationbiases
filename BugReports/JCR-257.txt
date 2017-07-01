@@ -1,0 +1,13 @@
+Use separate index for jcr:system tree
+
+
+
+Description:
+Currently each workspace index also includes index data of repository wide data (e.g. version nodes under jcr:system). There are several drawbacks with this approach:
+
+- indexing is duplicated and does not scale when using a lot of workspaces
+- workspaces cannot be 'put to sleep' when they are not actively used.
+
+The repository should have an additional index for system data, which includes: versioning and nodetype representation in content. Basically data under /jcr:system.
+
+Queries issued on a workspace will then use two index to execute the query: the workspace index and the system index.

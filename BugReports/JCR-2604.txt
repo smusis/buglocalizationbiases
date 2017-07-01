@@ -1,0 +1,6 @@
+Improve javadoc of User#getCredentials
+
+
+
+Description:
+User#getCredentials is not meant to return the credentials used for a repository login but the javadoc in the interface doesn't make this clear.

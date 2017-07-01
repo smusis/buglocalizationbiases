@@ -1,0 +1,6 @@
+Formatable changes log  (CHANGES.txt is easy to edit but not so friendly to read by Lucene users)
+
+
+
+Description:
+Background in http://www.nabble.com/formatable-changes-log-tt15078749.html

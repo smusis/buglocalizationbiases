@@ -1,0 +1,8 @@
+MultiFields.getUniqueFieldCount is broken
+
+
+
+Description:
+this returns terms.size(), but terms is lazy-initted. So it wrongly returns 0.
+
+Simplest fix would be to return -1.

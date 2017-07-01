@@ -1,0 +1,36 @@
+RepositoryImpl.acquireRepositoryLock() fails to detect that the file lock is already held by the current process
+
+
+
+Description:
+with java 1.4 and 1.5 on a *nix-based platform it is possible to (concurrently) instantiate 
+more than one repository instance in the same jvm based on same/identical configurations.
+
+this is a critical issue since it might lead to data corruption.
+
+the issue only exists with java versions prior to 1.6 and *nix-based platforms (only verified
+on mac os-x 10.4).
+
+note that the issue does not exist when the file lock is held by another jvm.
+
+ code snippet to reproduce the issue:
+
+            Repository rep1 = new TransientRepository();
+            Session s1 = rep1.login(new SimpleCredentials("johndoe", "".toCharArray()));
+            Repository rep2 = new TransientRepository();
+            Session s2 = rep2.login(new SimpleCredentials("johndoe", "".toCharArray()));
+
+
+the root problem is the incorrect behavior of java.nio.channels.FileChannel#tryLock()
+which is demonstrated by the following code snippet:
+
+            try {
+                FileLock fl1 = new FileOutputStream("foo").getChannel().tryLock();
+                System.out.println("1st lock: " + fl1);
+                FileLock fl2 = new FileOutputStream("foo").getChannel().tryLock();
+                System.out.println("2nd lock: " + fl2);
+            } catch (Throwable t) {
+                t.printStackTrace();
+            }
+
+

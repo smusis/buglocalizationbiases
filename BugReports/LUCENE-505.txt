@@ -1,0 +1,25 @@
+MultiReader.norm() takes up too much memory: norms byte[] should be made into an Object
+
+
+
+Description:
+MultiReader.norms() is very inefficient: it has to construct a byte array that's as long as all the documents in every segment.  This doubles the memory requirement for scoring MultiReaders vs. Segment Readers.  Although this is cached, it's still a baseline of memory that is unnecessary.
+
+The problem is that the Normalization Factors are passed around as a byte[].  If it were instead replaced with an Object, you could perform a whole host of optimizations
+a.  When reading, you wouldn't have to construct a "fakeNorms" array of all 1.0fs.  You could instead return a singleton object that would just return 1.0f.
+b.  MultiReader could use an object that could delegate to NormFactors of the subreaders
+c.  You could write an implementation that could use mmap to access the norm factors.  Or if the index isn't long lived, you could use an implementation that reads directly from the disk.
+
+The patch provided here replaces the use of byte[] with a new abstract class called NormFactors.  
+NormFactors has two methods on it
+    public abstract byte getByte(int doc) throws IOException;  // Returns the byte[doc]
+    public float getFactor(int doc) throws IOException;            // Calls Similarity.decodeNorm(getByte(doc))
+
+There are four implementations of this abstract class
+1.  NormFactors.EmptyNormFactors - This replaces the fakeNorms with a singleton that only returns 1.0
+2.  NormFactors.ByteNormFactors - Converts a byte[] to a NormFactors for backwards compatibility in constructors.
+3.  MultiNormFactors - Multiplexes the NormFactors in MultiReader to prevent the need to construct the gigantic norms array.
+4.  SegmentReader.Norm - Same class, but now extends NormFactors to provide the same access.
+
+In addition, Many of the Query and Scorer classes were changes to pass around NormFactors instead of byte[], and to call getFactor() instead of using the byte[].  I have kept around IndexReader.norms(String) for backwards compatibiltiy, but marked it as deprecated.  I believe that the use of ByteNormFactors in IndexReader.getNormFactors() will keep backward compatibility with other IndexReader implementations, but I don't know how to test that.
+

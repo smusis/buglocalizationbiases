@@ -1,0 +1,17 @@
+Problem getting the HTTPClient to use HTTP 1.0 with a proxy server
+
+
+
+Description:
+I am using HTTPClient 3.0-rc1.
+I am connecting to an HTTPS site through a proxy.
+
+I used HTTPLook to see the HTTP messages between the Proxy and the HTTPClient.
+I noticed that it always used HTTP/1.1 and setVersion() on either the 
+httpclient and the method do not help. I could not find how to get 
+the HTTPClient to use HTTP/1.0 with the proxy.
+
+Looking at the ConnectMethod class, the HTTP1.1 was indeed hardcoded.
+
+Thanks
+riad

@@ -1,0 +1,14 @@
+[PATCH] npe if java.io.tmpdir does not exist
+
+
+
+Description:
+In org.apache.lucene.store.FSDirectory from Lucene-1.3-final, on line 170-171:
+
+File tmpdir = new File(System.getProperty("java.io.tmpdir"));
+files = tmpdir.list();
+
+if the directory specified by the property "java.io.tmpdir" does not exist, a
+null pointer exception is thrown.  Perhaps a check to see if the directory
+exists is in order, and if it doesn't, use a directory you know exists (e.g. a
+/temp directory in the directory created earlier in the create() method).

@@ -1,0 +1,20 @@
+move core module to a subdirectory
+
+
+
+Description:
+Actually the jackrabbit svn holds the code for the main module in the top level dir
+http://svn.apache.org/repos/asf/incubator/jackrabbit/trunk/
+and all the subprojects in subdirectories
+http://svn.apache.org/repos/asf/incubator/jackrabbit/trunk/contrib/
+
+given this layout is not possible to checkout from svn only the main module (if you get trunk, you get all), and you can't work to different modules using any IDE which doesn't support nested projects (namely Eclipse).
+
+I would like to request moving the main module (that means moving all the files and directories in trunk except "contrib") from 
+http://svn.apache.org/repos/asf/incubator/jackrabbit/trunk/
+to 
+http://svn.apache.org/repos/asf/incubator/jackrabbit/trunk/jackrabbit
+following the usual organization of maven-based projects and solving these problems...
+
+
+

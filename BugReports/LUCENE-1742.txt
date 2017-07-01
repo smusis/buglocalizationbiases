@@ -1,0 +1,6 @@
+Wrap SegmentInfos in public class 
+
+
+
+Description:
+Wrap SegmentInfos in a public class so that subclasses of MergePolicy do not need to be in the org.apache.lucene.index package.  

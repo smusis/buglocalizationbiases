@@ -1,0 +1,14 @@
+improve performance of contrib/TestCompoundWordTokenFilter
+
+
+
+Description:
+contrib/analyzers/compound has some tests that use a hyphenation grammar file.
+
+The tests are currently for german, and they actually are nice, they show how the combination of the hyphenation rules and dictionary work in tandem.
+The issue is that the german grammar file is not apache licensed: http://offo.sourceforge.net/hyphenation/licenses.html
+So the test must download the entire offo zip file from sourceforge to execute.
+
+I happen to think the test is a great example of how this thing works (with a language where it matters), but we could consider using a different grammar file, for a language that is apache licensed.
+This way it could be included in the source with the test and would be more practical.
+

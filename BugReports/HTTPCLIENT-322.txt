@@ -1,0 +1,27 @@
+Deprecate and replace SimpleHttpConnection with the SimpleHttpServer based testing framework
+
+
+
+Description:
+Thanks to Christian Kohlschuetter and Odi we now have a very flexible testing
+framework, which enables us to emulate pretty much all the aspects of a HTTP
+server functionality including non-compliant behavior and various vendor
+specific implementation quirks. 
+
+Many, many thanks go to Christian Kohlschuetter for having contributed the
+original code. 
+
+I propose SimpleHttpConnection be deprecated and eventually be phased out. I
+took the first steps toward this goal by migrating Basic authentication test
+cases. I urge all committers and contributors to use SimpleHttpServer for all
+the new cases from now on. Ideally in the future we should even be able to get
+rid of Tomcat as a dependency for testing.
+
+I also took liberty of tweaking the SimpleHttpServer API a little. I factored
+SimpleRequest and SimpleResponse classes out and provided a new interface called
+HttpService, which can be used instead of HttpRequestHandler to implement test
+cases in a way very similar to writing servlets. 
+
+I'll commit the patch shortly as it does not really touch any _productive_ code. 
+
+Oleg

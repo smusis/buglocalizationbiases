@@ -1,0 +1,15 @@
+Exclude tests instead skipping them
+
+
+
+Description:
+jcr2spi tests run with the spi2jcr module by default so they are configured to be skipped when jcr2spi is built. Manually running a jcr2spi test like this
+
+mvn -Dtest=MyTest -Dmaven.test.skip=false test
+
+does not work however. The pom configuration seems to take precedence here. 
+
+To fix this I propose to exclude all test instead of skipping them making it possible to manually execute tests like this
+
+mvn -Dtest=MyTest test
+

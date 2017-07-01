@@ -1,0 +1,12 @@
+Unique ID for org.apache.jackrabbit.value.BinaryValue
+
+
+
+Description:
+BinaryValue should have a method get the unique identifier (if one is available). That way an application may not have to read the stream if that value is already processed.
+
+When the DataStore is used, a unique identifier is available, so probably this feature is quite simple to implement.
+
+See also http://www.nabble.com/Workspace.copy()-Question-...-td20435164.html (but please don't reply to this thread from now on - instead add comments to this issue).
+
+Another feature is getFileName() to get the file name if it is stored in the file system. This method may need a security mechanism, for example getFileName(Session s) so that the system can check it. In any case the file should not be modified, but maybe knowing the file name is already too dangerous in some cases.

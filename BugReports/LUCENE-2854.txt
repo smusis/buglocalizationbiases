@@ -1,0 +1,10 @@
+Deprecate SimilarityDelegator and Similarity.lengthNorm
+
+
+
+Description:
+SimilarityDelegator is a back compat trap (see LUCENE-2828).
+
+Apps should just [statically] subclass Sim or DefaultSim; if they really need "runtime subclassing" then they can make their own app-level delegator.
+
+Also, Sim.computeNorm subsumes lengthNorm, so we should deprecate lengthNorm in favor of computeNorm.

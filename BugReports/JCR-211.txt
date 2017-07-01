@@ -1,0 +1,6 @@
+jcr ext doesn't compile with jdk 1.4
+
+
+
+Description:
+IllegalStateException(String str, Exception e) isn't supported.

@@ -1,0 +1,7 @@
+Paths not correct after reordering children
+
+
+
+Description:
+Reordered, unsaved children of a node do not have the correct path. In the test case attached, the following operation is attempted with three SNS children named b[1], b[2], b[3]: the last element is ordered before the first three times, which should result in the initial children order.
+

@@ -1,0 +1,6 @@
+Fix IndexCommit hashCode() and equals() to be consistent
+
+
+
+Description:
+IndexCommit's impl of hashCode() and equals() is inconsistent. One uses Dir + version and the other uses Dir + equals. According to hashCode()'s javadoc, if o1.equals(o2), then o1.hashCode() == o2.hashCode(). Simple fix, and I'll add a test case.

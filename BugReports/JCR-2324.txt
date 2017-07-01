@@ -1,0 +1,7 @@
+Remove dependency on  EDU.oswego.cs.dl.util.concurrent
+
+
+
+Description:
+EDU.oswego.cs.dl.util.concurrent is in maintenance mode, and http://g.oswego.edu/dl/classes/EDU/oswego/cs/dl/util/concurrent/package-summary.html advises to migrate to the JDK5 java.util.concurrent package.
+

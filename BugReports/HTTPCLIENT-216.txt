@@ -1,0 +1,25 @@
+Cookies with null path attribute are rejected in the compatibility mode
+
+
+
+Description:
+Weblogic sends cookies with path empty, httpclient emits a warning
+and doesn't send back the cookie to server.
+
+Maybe httpclient works in the RFC's ways but this doesn't reproduce
+common web browsers behaviours. Our application works well with IE,
+Opera and Netscape, httpunit also sends back the cookie to the server.
+
+When receving the response, httpclient emits the followin warning :
+
+[WARN] HttpMethod - -Invalid cookie header: "JTD=O%
+2FdF13CDb1W7H2GNfUTS2YQ3Zt6bCW6ZKZRvVJ9FwaadQLxXVI7rgii%2FwbxeCsqym7dcWKDxSj%
+2Bg1ubJRSVRhYGb7wRLjp5c0v2R3QrCIXVhMKDjuwuXDXnjbH3LHSWG7bfzJSmS7nXk9R%
+2FqMIRHb5najLQkU7WkuPGgXUnUln%2BF51TajkVmXkrLMYN7MHDT48BEHvFQFNXBlmSRejWqrd%
+2Fiiao0flObOrT3HcaWI09B1vekpAcPmgvMD2oZzXQWJwjDZIX6QoVVD6U8CXPSvVQjITyaxf6AqaS%
+2BAFJgRsqbZBc0%2BV5G%2FnzE87ggOVIozfPFn99ny0kxiPGBEisJIy%3D%3D; Version=1; 
+Path=; Max-Age=604800". Missing value for path attribute
+
+That's right, maybe the http header is not correct, but I think httpclient
+should handle this case without error in order to have the same behaviour
+as common browsers. We have no way to give a better value to this path.

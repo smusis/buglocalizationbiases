@@ -1,0 +1,10 @@
+SimpleHttpConnectionManager is used incorrectly by tutorial code
+
+
+
+Description:
+Using pretty well standard (from the tutorial) code causes the 
+SimpleHttpConnectionManager to print its "being used incorrectly" warning if 
+the connection times out (or other I/O exception occurs).
+
+I will attach a simple test I made to demonstrate this.

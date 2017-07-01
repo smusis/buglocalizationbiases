@@ -1,0 +1,15 @@
+BindVariable not registered in JCR-SQL2 CONTAINS
+
+
+
+Description:
+The following fails with a "java.lang.IllegalArgumentException: not a valid variable in this query:"
+
+Query query = qm.createQuery("SELECT * FROM [my:document] AS document WHERE CONTAINS(document.original, $x)", Query.JCR_SQL2);
+query.bindVariable("x", vf.createValue("moo"));
+
+And query.getBindVariableNames() returns an empty array.
+
+The FullTextSearchExpression _is_ however correctly parsed as a BindVariableValueImpl:
+((FullTextSearch) ((QueryObjectModelImpl) query).getConstraint()).getFullTextSearchExpression() instanceof BindVariableValue
+

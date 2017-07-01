@@ -1,0 +1,35 @@
+NPE w/ AbstractPoolEntry.open
+
+
+
+Description:
+java.lang.NullPointerException
+    at org.apache.http.impl.conn.AbstractPoolEntry.open(AbstractPoolEntry.java:171)
+    at org.apache.http.impl.conn.AbstractPooledConnAdapter.open(AbstractPooledConnAdapter.java:119)
+    at org.apache.http.impl.client.DefaultClientRequestDirector.execute(DefaultClientRequestDirector.java:309)
+    at org.apache.http.impl.client.AbstractHttpClient.execute(AbstractHttpClient.java:501)
+    at org.apache.http.impl.client.AbstractHttpClient.execute(AbstractHttpClient.java:456)
+    at org.apache.http.impl.client.AbstractHttpClient.execute(AbstractHttpClient.java:422)
+    at com.limegroup.gnutella.http.DefaultHttpExecutor.performRequest(DefaultHttpExecutor.java:97)
+    at com.limegroup.gnutella.http.DefaultHttpExecutor.access$000(DefaultHttpExecutor.java:26)
+    at com.limegroup.gnutella.http.DefaultHttpExecutor$MultiRequestor.run(DefaultHttpExecutor.java:135)
+    at org.limewire.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1006)
+    at org.limewire.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:549)
+    at java.lang.Thread.run(Unknown Source)
+
+Seeing a lot of these against Alpha4.  Also seeing still the occassional IllegalStateException of:
+
+java.lang.IllegalStateException: Connection already open.
+    at org.apache.http.impl.conn.AbstractPoolEntry.open(AbstractPoolEntry.java:150)
+    at org.apache.http.impl.conn.AbstractPooledConnAdapter.open(AbstractPooledConnAdapter.java:119)
+    at org.apache.http.impl.client.DefaultClientRequestDirector.execute(DefaultClientRequestDirector.java:309)
+    at org.apache.http.impl.client.AbstractHttpClient.execute(AbstractHttpClient.java:501)
+    at org.apache.http.impl.client.AbstractHttpClient.execute(AbstractHttpClient.java:456)
+    at org.apache.http.impl.client.AbstractHttpClient.execute(AbstractHttpClient.java:422)
+    at com.limegroup.gnutella.http.DefaultHttpExecutor.performRequest(DefaultHttpExecutor.java:97)
+    at com.limegroup.gnutella.http.DefaultHttpExecutor.access$000(DefaultHttpExecutor.java:26)
+    at com.limegroup.gnutella.http.DefaultHttpExecutor$MultiRequestor.run(DefaultHttpExecutor.java:135)
+    at org.limewire.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1006)
+    at org.limewire.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:549)
+    at java.lang.Thread.run(Unknown Source)
+

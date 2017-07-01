@@ -1,0 +1,13 @@
+KeywordTokenizer/Analyzer cannot be re-used
+
+
+
+Description:
+
+The new reusableTokenStream API in KeywordAnalyzer fails to reset the tokenizer when it re-uses it.
+
+This issue came from this thread:
+
+    http://www.gossamer-threads.com/lists/lucene/java-dev/55929
+
+Thanks to Hideaki Takahashi for finding this!

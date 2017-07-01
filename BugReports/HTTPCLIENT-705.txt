@@ -1,0 +1,6 @@
+Handle URIs with path component null
+
+
+
+Description:
+HttpClient does not handle URIs with path component null (e.g. http://google.com) the same as path component '/'. This results e.g. in a ProtocolException "The server failed to respond with a valid HTTP response".

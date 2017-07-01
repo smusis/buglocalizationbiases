@@ -1,0 +1,6 @@
+Remove MultiTermQuery.getTerm()
+
+
+
+Description:
+Removes the field and methods in MTQ that return the pattern term.

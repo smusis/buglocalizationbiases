@@ -1,0 +1,8 @@
+Move to commons-logging
+
+
+
+Description:
+Commons-logging was derived from httpclient.log, still using the old logging
+which should be removed.  Some complaints on mailing list about setting up
+commons-logging: should be simple and well documented.

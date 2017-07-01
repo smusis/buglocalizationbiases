@@ -1,0 +1,16 @@
+IndexWriter.mergeSegments should not hold the commit lock while cleaning up.
+
+
+
+Description:
+Same happens in IndexWriter.addIndexes(IndexReader[] readers).
+
+The commit lock should be obtained whenever the Index structure/version is read or written.  It should be kept for as short a period as possible.
+
+The write lock is needed to make sure only one IndexWriter or IndexReader instance can update the index (multiple IndexReaders can of course use the index for searching).
+
+The list of files that can be deleted is stored in the file "deletable".  It is only read or written by the IndexWriter instance that holds the write lock, so there's no need to have the commit lock to to update it.
+
+On my production system deleting the obsolete segment files after a mergeSegments() happens can occasionally take several seconds(!) and the commit lock blocks the searcher machines from updating their IndexReader instance.
+Even on a standalone machine, the time to update the segments file is about 3ms, the time to delete the obsolete segments about 30ms.
+

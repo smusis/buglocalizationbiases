@@ -1,0 +1,8 @@
+CMS should default its maxThreadCount to 1 (not 3)
+
+
+
+Description:
+From rough experience, I think the current default of 3 is too large.  I think we get the most bang for the buck going from 0 to 1.
+
+I think this will especially impact optimize on an index with many segments -- in this case the MergePolicy happily exposes concurrency (multiple pending merges), and CMS will happily launch 3 threads to carry that out.

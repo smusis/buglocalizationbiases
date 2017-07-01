@@ -1,0 +1,13 @@
+MMapDirectory chunking is buggy
+
+
+
+Description:
+MMapDirectory uses chunking with MultiMMapIndexInput.
+ 
+Because Java's ByteBuffer uses an int to address the
+values, it's necessary to access a file >
+Integer.MAX_VALUE in size using multiple byte buffers.
+
+But i noticed from the clover report the entire MultiMMapIndexInput class is completely untested: no surprise since all tests make tiny indexes.
+

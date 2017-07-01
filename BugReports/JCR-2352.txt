@@ -1,0 +1,6 @@
+Search results not ordered
+
+
+
+Description:
+The query statements in search.jsp do not have an order by.

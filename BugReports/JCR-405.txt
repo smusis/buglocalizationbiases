@@ -1,0 +1,11 @@
+PROPPATCH doesn't respect document order
+
+
+
+Description:
+PROPPATCH is currently implemented in terms of DavResource.alterProperties(...), which takes a set of properties to be set and a set of properties to be removed. This is not sufficient to model WebDAV's method semantics, as the order in which set/remove instructions appear is supposed to be relevant.
+
+I have submitted a patch to the Litmus mailing list checking this (see <http://mailman.webdav.org/pipermail/litmus/2006-April/000196.html>).
+
+In jcr-server, alterProperties probably should be changed to take an (ordered) list of set/remove instructions instead. The simplest approach for that would probably be to use a List containing either DavProperty (set) or DavPropertyName (remove) objects.
+

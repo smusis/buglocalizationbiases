@@ -1,0 +1,10 @@
+[PATCH] remove unused variables
+
+
+
+Description:
+Seems I'm the only person who has the "unused variable" warning turned on in 
+Eclipse :-) This patch removes those unused variables and imports (for now 
+only in the "search" package). This doesn't introduce changes in 
+functionality, but it should be reviewed anyway: there might be cases where 
+the variables *should* be used, but they are not because of a bug.

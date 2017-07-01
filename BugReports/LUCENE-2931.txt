@@ -1,0 +1,6 @@
+Improved javadocs for PriorityQueue#lessThan
+
+
+
+Description:
+It kills me that I have to inspect the code every time I implement a PriorityQueue. :)

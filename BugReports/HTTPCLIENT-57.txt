@@ -1,0 +1,9 @@
+Define and implement Logging policy
+
+
+
+Description:
+When to use info vs debug vs warning?  
+When to log exceptions?
+enter() and exit() messages on a per method basis?
+Always log debug when swallowing an exception?

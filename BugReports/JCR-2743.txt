@@ -1,0 +1,15 @@
+ClassCastException in GroupImpl.isCyclicMembership
+
+
+
+Description:
+Given three groups and one user with the following membership relation
+
+group1 > group2 > group3
+group2 > user
+
+where x > y means x contains y.
+
+group3.addMember(group1) throws a ClassCastException.
+
+The reason is that the search type (i.e. UserManager.SEARCH_TYPE_GROUP) is not honored correctly when constructing the transitive membership relation. 

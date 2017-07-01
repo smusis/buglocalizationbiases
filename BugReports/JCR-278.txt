@@ -1,0 +1,14 @@
+DBFileSystem MySQL DDL not compatible with pre-5.0 versions
+
+
+
+Description:
+The packaged ddl for mysql index sizes is too large for 4.x versions of MySQL. As the sum-total of the index sizes may only reach 500.
+
+So, 
+
+create unique index ${schemaObjectPrefix}FSENTRY_IDX on ${schemaObjectPrefix}FSENTRY (FSENTRY_PATH(745), FSENTRY_NAME)
+
+will not work. I would suggest shortening the FSENTRY_PATH index value to 245, as FSENTRY_NAME is already set to 255.
+
+create unique index ${schemaObjectPrefix}FSENTRY_IDX on ${schemaObjectPrefix}FSENTRY (FSENTRY_PATH(245), FSENTRY_NAME)

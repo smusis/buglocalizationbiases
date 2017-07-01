@@ -1,0 +1,11 @@
+Public Suffix List
+
+
+
+Description:
+Hi,
+
+I just found this useful list: http://publicsuffix.org/
+and thought it would be nice to validate cookie domains against it, basically serving as a black list of domain for which never to set any cookies. What do you think about the attached patch? The download/parsing of the list is of course not part of the implementation.
+
+Ortwin

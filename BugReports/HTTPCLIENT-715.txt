@@ -1,0 +1,8 @@
+remove RoutedRequest from API
+
+
+
+Description:
+Remove RoutedRequest from the Client API. It can be moved to impl, or dropped altogether.
+HttpClient could accept separate request and target arguments instead of RoutedRequest.
+No routes should be passed in the API. 

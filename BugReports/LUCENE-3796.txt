@@ -1,0 +1,10 @@
+Disallow setBoost() on StringField, throw exception if boosts are set if norms are omitted
+
+
+
+Description:
+Occasionally users are confused why index-time boosts are not applied to their norms-omitted fields.
+
+This is because we silently discard the boost: there is no reason for this!
+
+The most absurd part: in 4.0 you can make a StringField and call setBoost and nothing complains... (more reasons to remove StringField totally in my opinion)

@@ -1,0 +1,23 @@
+score and explain don't match
+
+
+
+Description:
+I've faced this problem recently. I'll attach a program to reproduce the problem soon. The program outputs the following:
+
+{noformat}
+** score = 0.10003257
+** explain
+0.050016284 = (MATCH) product of:
+  0.15004885 = (MATCH) sum of:
+    0.15004885 = weight(f1:"note book" in 0), product of:
+      0.3911943 = queryWeight(f1:"note book"), product of:
+        0.61370564 = idf(f1: note=1 book=1)
+        0.6374299 = queryNorm
+      0.38356602 = fieldWeight(f1:"note book" in 0), product of:
+        1.0 = tf(phraseFreq=1.0)
+        0.61370564 = idf(f1: note=1 book=1)
+        0.625 = fieldNorm(field=f1, doc=0)
+  0.33333334 = coord(1/3)
+{noformat}
+

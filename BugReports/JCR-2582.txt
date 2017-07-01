@@ -1,0 +1,7 @@
+spi2dav: temp files are not clean up after batch submit
+
+
+
+Description:
+when a batch includes larger binary properties, their backing temp files are not clean up after submit.
+suggest to dispose those in any case.

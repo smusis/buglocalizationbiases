@@ -1,0 +1,10 @@
+FilterIndexReader in trunk does not implement getSequentialSubReaders() correctly
+
+
+
+Description:
+Since LUCENE-2459, getSequentialSubReaders() in FilterIndexReader returns null, so it returns an atomic reader. But If you call then any of the enum methods, it throws Exception because the underlying reader is not atomic.
+
+We should move the null-returning method to SlowMultiReaderWrapper and fix FilterIndexReader's default to return in.getSequentialSubReaders(). Ideally an implementation must of course also wrap the sub-readers.
+
+If we change this we have to look into other Impls like the MultiPassIndexSplitter if we need to add atomicity.

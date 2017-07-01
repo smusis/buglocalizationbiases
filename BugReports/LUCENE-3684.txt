@@ -1,0 +1,13 @@
+Add offsets to postings (D&PEnum)
+
+
+
+Description:
+I think should explore making start/end offsets a first-class attr in the
+postings APIs, and fixing the indexer to index them into postings.
+
+This will make term vector access cleaner (we now have to jump through
+hoops w/ non-first-class offset attr).  It can also enable efficient
+highlighting without term vectors / reanalyzing, if the app indexes
+offsets into the postings.
+

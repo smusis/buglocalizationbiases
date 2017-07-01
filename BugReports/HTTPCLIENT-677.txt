@@ -1,0 +1,11 @@
+Connection pool uses Thread.interrupt()
+
+
+
+Description:
+The connection pool for TSCCM uses Thread.interrupt() to wake up waiting threads.
+This interferes with application interrupts.
+
+- expose InterruptedException in interface
+- change pool implementation to use wait/notify
+

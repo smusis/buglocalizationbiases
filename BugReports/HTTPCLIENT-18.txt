@@ -1,0 +1,16 @@
+Can't use proxy server with https
+
+
+
+Description:
+There doesn't seem to be a way to configure HttpClient to use both HTTPS and a
+proxy server at the same time.  It's not clear if this was just an oversight or
+if there was a deliberate decision to not support this combination for some reason.
+
+Assuming that it was an oversight, the fix seems to just require one more
+variation of startSession() in HttpClient.java which would be the following:
+
+   public void startSession(String host, int port,
+                            String proxyhost, int proxyport, boolean https) {
+       connection = new HttpConnection(proxyhost,proxyport,host,port,https);
+   }

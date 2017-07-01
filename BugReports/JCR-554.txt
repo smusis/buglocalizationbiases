@@ -1,0 +1,8 @@
+Index creates many folders when re-indexing
+
+
+
+Description:
+When the repository is re-indexed the search index creates a lot of directories, which are finally cleaned up. If the repository contains a lot of content the number of directories that are created can be quite high (thousands of directories).
+
+The re-indexing process should clean up unused index folders right away and not wait until the changes are committed.

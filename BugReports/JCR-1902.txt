@@ -1,0 +1,16 @@
+Warning while building DAV:parent-set for root-node resource
+
+
+
+Description:
+the following warning is generated when calculating DAV:parent-set for the resource representing the root-node:
+
+05.12.2008 11:49:50 *WARN * DavResourceImpl: unable to calculate parent set (DavResourceImpl.java, line 955)
+javax.jcr.ItemNotFoundException: root node doesn't have a parent
+        at org.apache.jackrabbit.core.NodeImpl.getParent(NodeImpl.java:2078)
+        at org.apache.jackrabbit.webdav.simple.DavResourceImpl.getParentElements(DavResourceImpl.java:949)
+        at org.apache.jackrabbit.webdav.simple.DavResourceImpl.initProperties(DavResourceImpl.java:393)
+
+this could simply be avoided by slightly modifying the method getParentElements (starting at line 937) and adding a test asserting that node.getParent() is not called for the root node.
+
+

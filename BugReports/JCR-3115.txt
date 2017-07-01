@@ -1,0 +1,10 @@
+Versioning fixup leaves persistence in a state where the node can't be made versionable again
+
+
+
+Description:
+Jackrabbit's version recovery mode (org.apache.jackrabbit.version.recovery system property) disconnects all version histories that expose problems that manifest in unexpected exceptions being thrown. "disconnects" means removing the properties defined for mix:versionable and removing the mixin type. The actual versioning related nodes remain in place.
+
+The problem: when re-adding mix:versionable, ItemSaveOperation.initVersionHistories tries to create the new version history in the same location (the path being derived from the versionable node's identifier), and consequently fails because of the broken underlying storage.
+
+(attaching a work-in-progress test case that illustrates the problem)

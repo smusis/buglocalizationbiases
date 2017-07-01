@@ -1,0 +1,22 @@
+Integrate IndexReader with IndexWriter 
+
+
+
+Description:
+The current problem is an IndexReader and IndexWriter cannot be open
+at the same time and perform updates as they both require a write
+lock to the index. While methods such as IW.deleteDocuments enables
+deleting from IW, methods such as IR.deleteDocument(int doc) and
+norms updating are not available from IW. This limits the
+capabilities of performing updates to the index dynamically or in
+realtime without closing the IW and opening an IR, deleting or
+updating norms, flushing, then opening the IW again, a process which
+can be detrimental to realtime updates. 
+
+This patch will expose an IndexWriter.getReader method that returns
+the currently flushed state of the index as a class that implements
+IndexReader. The new IR implementation will differ from existing IR
+implementations such as MultiSegmentReader in that flushing will
+synchronize updates with IW in part by sharing the write lock. All
+methods of IR will be usable including reopen and clone. 
+

@@ -1,0 +1,9 @@
+Problem importing node with binary property in a repository configured with datastore
+
+
+
+Description:
+Using the importXML method of workspace to import some node containing binary properties the nodes are imported correctly and the value of the binary data property is imported
+However the binary data goes to the db (persistenceManager) an not to the datastore.
+
+Creating a new node of the same type using the api, the binary data go to the datastore.

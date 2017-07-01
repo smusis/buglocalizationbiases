@@ -1,0 +1,8 @@
+GData-server storage fix activation depth
+
+
+
+Description:
+Fixed nullpointer exception while rendering feeds with big amount of extensions. DB4O context.
+
+

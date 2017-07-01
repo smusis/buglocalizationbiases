@@ -1,0 +1,6 @@
+CartesianTierPlotter fieldPrefix should be configurable
+
+
+
+Description:
+CartesianTierPlotter field prefix is currrently hardcoded to "_localTier" -- this should be configurable

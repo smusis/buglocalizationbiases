@@ -1,0 +1,14 @@
+Expose FilteredTermsEnum from MTQ 
+
+
+
+Description:
+MTQ#getEnum() is protected and in order to access it you need to be in the o.a.l.search package. 
+
+here is a relevant snipped from the mailing list discussion
+
+{noformat}
+getEnum() is protected so it is intended to be called *only* by subclasses (that's the idea behind protected methods). They are also accessible by other classes from the same package, but that's more a Java bug than a feature. The problem with MTQ is that RewriteMethod is a separate *class* and *not a subclass* of MTQ, so the method cannot be called (it can because of the "java bug" called from same package). So theoretically it has to be public otherwise you cannot call getEnum().
+
+Another cleaner fix would be to add a protected final method to RewriteMethod that calls this method from MTQ. So anything subclassing RewriteMethod can get the enum from inside the RewriteMethod class which is the "correct" way to handle it. Delegating to MTQ is then "internal".
+{noformat}

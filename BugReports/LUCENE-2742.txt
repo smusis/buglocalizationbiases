@@ -1,0 +1,29 @@
+Enable native per-field codec support 
+
+
+
+Description:
+Currently the codec name is stored for every segment and PerFieldCodecWrapper is used to enable codecs per fields which has recently brought up some issues (LUCENE-2740 and LUCENE-2741). When a codec name is stored lucene does not respect the actual codec used to encode a fields postings but rather the "top-level" Codec in such a case the name of the top-level codec is  "PerField" instead of "Pulsing" or "Standard" etc. The way this composite pattern works make the indexing part of codecs simpler but also limits its capabilities. By recoding the top-level codec in the segments file we rely on the user to "configure" the PerFieldCodecWrapper correctly to open a SegmentReader. If a fields codec has changed in the meanwhile we won't be able to open the segment.
+
+The issues LUCENE-2741 and LUCENE-2740 are actually closely related to the way PFCW is implemented right now. PFCW blindly creates codecs per field on request and at the same time doesn't have any control over the file naming nor if a two codec instances are created for two distinct fields even if the codec instance is the same. If so FieldsConsumer will throw an exception since the files it relies on are already created.
+
+Having PerFieldCodecWrapper AND a CodecProvider overcomplicates things IMO. In order to use per field codec a user should on the one hand register its custom codecs AND needs to build a PFCW which needs to be maintained in the "user-land" an must not change incompatible once a new IW of IR is created. What I would expect from Lucene is to enable me to register a codec in a provider and then tell the Field which codec it should use for indexing. For reading lucene should determ the codec automatically once a segment is opened. if the codec is not available in the provider that is a different story. Once we instantiate the composite codec in SegmentsReader we only have the codecs which are really used in this segment for free which in turn solves LUCENE-2740. 
+
+Yet, instead of relying on the user to configure PFCW I suggest to move composite codec functionality inside the core an record the distinct codecs per segment in the segments info. We only really need the distinct codecs used in that segment since the codec instance should be reused to prevent additional files to be created. Lets say we have the follwing codec mapping :
+{noformat}
+field_a:Pulsing
+field_b:Standard
+field_c:Pulsing
+{noformat}
+
+then we create the following mapping:
+{noformat}
+SegmentInfo:
+[Pulsing, Standard]
+
+PerField:
+[field_a:0, field_b:1, field_c:0]
+{noformat}
+
+that way we can easily determ which codec is used for which field an build the composite - codec internally on opening SegmentsReader. This ordering has another advantage, if like in that case pulsing and standard use really the same type of files we need a way to distinguish the used files per codec within a segment. We can in turn pass the codec's ord (implicit in the SegmentInfo) to the FieldConsumer on creation to create files with segmentname_ord.ext (or something similar). This solvel LUCENE-2741). 
+

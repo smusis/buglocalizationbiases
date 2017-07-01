@@ -1,0 +1,21 @@
+allow case insensitive searches
+
+
+
+Description:
+would be nice to be able to search specific properties like a fulltext search, e.g. with an ignore-case flag, so you could find a subset of the results of
+
+  select * from nt:base where contains('bla')
+
+using something like
+
+  select * from nt:base where jcr:bla like '%bla%'
+
+(currently, the value must contain 'bla' exactly as it is to be found by the second query)
+
+i suggest to extend the contains function with an additional argument for the property to search in, e.g.
+
+  select * from nt:base where contains('bla',jcr:bla)
+
+this could then also easily be used in XPath.
+

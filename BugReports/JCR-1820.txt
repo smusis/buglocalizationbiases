@@ -1,0 +1,24 @@
+Ensure queries are not blocked during large updates
+
+
+
+Description:
+The index currently guarantees that long running queries do not block updates. In addition a query *may* run during an update, but there is not guarantee because it depends on the availability of an index reader being available when the update starts. The index reader is invalidated at the end of the update, which will force the creation of a new index reader when the next query is executed.
+
+Consider the following scenario:
+
+1) update index -> transaction id T1
+2) potential index reader is invalidated
+3) execute query -> creates index reader R1, which includes changes up to T1
+4) update index -> transaction id T2
+5) index reader R1 is invalidated
+6) update index (large transaction) -> transaction id T3
+7) while previous update is running execute query -> thread is blocked because no reader is available
+
+
+The improvement should detect the large transaction and prepare an index reader for potential queries during the update. That is, 6) should be split into:
+
+6a) detect large transaction and prepare index reader R2, which includes changes up to T2
+6b) update index -> transaction id T3
+
+While the update is running a query will use index reader R2.

@@ -1,0 +1,13 @@
+Move TrieRange to core
+
+
+
+Description:
+TrieRange was iterated many times and seems stable now (LUCENE-1470, LUCENE-1582, LUCENE-1602). There is lots of user interest, Solr added it to its default FieldTypes (SOLR-940) and if possible I want to move it to core before release of 2.9.
+Before this can be done, there are some things to think about:
+# There are now classes called LongTrieRangeQuery, IntTrieRangeQuery, how should they be called in core? I would suggest to leave it as it is. On the other hand, if this keeps our only numeric query implementation, we could call it LongRangeQuery, IntRangeQuery or NumericRangeQuery (see below, here are problems). Same for the TokenStreams and Filters.
+# Maybe the pairs of classes for indexing and searching should be moved into one class: NumericTokenStream, NumericRangeQuery, NumericRangeFilter. The problem here: ctors must be able to pass int, long, double, float as range parameters. For the end user, mixing these 4 types in one class is hard to handle. If somebody forgets to add a L to a long, it suddenly instantiates a int version of range query, hitting no results and so on. Same with other types. Maybe accept java.lang.Number as parameter (because nullable for half-open bounds) and one enum for the type.
+# TrieUtils move into o.a.l.util? or document or?
+# Move TokenStreams into o.a.l.analysis, ShiftAttribute into o.a.l.analysis.tokenattributes? Somewhere else?
+# If we rename the classes, should Solr stay with Trie (because there are different impls)?
+# Maybe add a subclass of AbstractField, that automatically creates these TokenStreams and omits norms/tf per default for easier addition to Document instances?

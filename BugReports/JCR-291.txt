@@ -1,0 +1,19 @@
+jcr-server-webapp: RMI Registration unstable
+
+
+
+Description:
+Registration of the repository to a RMI registry in RepositoryStartupServlet.registerRMI uses web application parameters inconsistently and may not always succeed registering the repository.
+
+Today, the registerRMI uses these parameters for registration to RMI:
+
+    rmi-host : The name of the host on which the registry is running
+    rmi-port : The port on which the registry is running
+    rmi-uri : An RMI URI to use for registration
+    repository-name : The name to bind the repository to
+
+The problem is, that rmi-port is used to try to create the registry to make sure a registry is running on the local host. The rmi-uri is used to register the repository using the static Naming.bind method. If the rmi-uri is not configured, the URI is created from rmi-host, rmi-port and repository-name.
+
+This may now create a bunch of problems: If the rmi-port and rmi-uri configurations do not match, registration fails, if rmi-host does not resolve to an IP address to which the registry is bound, registration fails.
+
+I encounter this issue, when trying to register the repository to an RMI registry using default rmi-port configuration (rmi-host and rmi-uri not configured) when running the web app in Jetty.

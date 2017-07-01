@@ -1,0 +1,8 @@
+Provide rename method for nodes
+
+
+
+Description:
+Currently renaming a node is a nuisance if the node's parent has orderable child nodes: The parents child nodes must be searched for the successor of the node to be moved, the node must be moved to its new name and then ordered before the successor. Furthermore the case where the to be moved node is the last node must be special cased. 
+
+I thus propose to provide functionality for directly renaming nodes.  

@@ -1,0 +1,6 @@
+Add parser callback to GQL
+
+
+
+Description:
+The parsing of GQL is currently hidden in the implementation. It would be nice to have a mechanism that allows client code to get callbacks whenever a field/value pair is parsed.

@@ -1,0 +1,6 @@
+Change all multi-term querys so that they extend MultiTermQuery and allow for a constant score mode
+
+
+
+Description:
+Cleans up a bunch of code duplication, closer to how things should be - design wise, gives us constant score for all the multi term queries, and allows us at least the option of highlighting the constant score queries without much further work.

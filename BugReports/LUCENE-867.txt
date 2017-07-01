@@ -1,0 +1,15 @@
+Incomplete lucene-core-1.9.1 in Maven2 repository
+
+
+
+Description:
+I'm new to Lucene and am setting up a project using v1.9.1 to use Maven2 instead of ANT.
+The project would not build with Maven2 due to lacking lucene classes.
+I tracked the problem down to that the lucene-core-1.9.1 jar file that Maven2 downloaded from the repository was smaller (2.3KB) than the one I got from the local ANT repository (408KB).
+Can you please update the v1.9.1 file on the Maven2 [1], [2] repositories so other developers don't get frustrated by the incomplete jar?
+
+
+[1] http://repo1.maven.org/maven2/org/apache/lucene/lucene-core/1.9.1/
+[2] http://mirrors.ibiblio.org/pub/mirrors/maven2/org/apache/lucene/lucene-core/1.9.1/
+
+This issue is a copy of a mail sent to the java-dev@lucene.apache.org list april 4. 2007.

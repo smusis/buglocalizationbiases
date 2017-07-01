@@ -1,0 +1,21 @@
+return value of PostMethod#removeParameter
+
+
+
+Description:
+<HttpClient2.0-rc1>
+
+About 
+public boolean removeParameter(String paramName)
+                 throws IllegalArgumentException
+method.
+
+-------------------------------------------------
+PostMethod method = new PostMethod(uri);
+method.addParameter("name", "Matsui Hideki");
+boolean b;
+b = method.removeParameter("name"); // returns "true".
+b = method.removeParameter("XXXX"); // returns "true". why??? 
+---------------------------------------------------
+
+sorry for my poor english.

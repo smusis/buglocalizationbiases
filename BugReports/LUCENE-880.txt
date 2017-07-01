@@ -1,0 +1,11 @@
+DocumentWriter closes TokenStreams too early
+
+
+
+Description:
+The DocumentWriter closes a TokenStream as soon as it has consumed its tokens. The javadoc of TokenStream.close() says that it releases resources associated with the stream. However, the DocumentWriter keeps references of the resources (i. e. payload byte arrays, term strings) until it writes the postings to the new segment, which means that DocumentWriter should call TokenStream.close() after it has written the postings.
+
+This problem occurs in multithreaded applications where e. g. pooling is used for the resources. My patch adds a new test to TestPayloads which shows this problem. Multiple threads add documents with payloads to an index and use a pool of byte arrays for the payloads. TokenStream.close() puts the byte arrays back into the pool. The test fails with the old version but runs successfully with the patched version. 
+
+All other units tests pass as well.
+

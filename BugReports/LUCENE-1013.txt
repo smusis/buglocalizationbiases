@@ -1,0 +1,14 @@
+IndexWriter.setMaxMergeDocs gives non-backwards-compatible exception "out of the box"
+
+
+
+Description:
+Yonik hit this (see details in LUCENE-994): because we have switched
+to LogByteSizeMergePolicy by default in IndexWriter, which uses MB to
+limit max size of merges (setMaxMergeMB), when an existing app calls
+setMaxMergeDocs (or getMaxMergeDocs) it will hit an
+IllegalArgumentException on dropping in the new JAR.
+
+I think the simplest solution is to fix LogByteSizeMergePolicy to
+allow setting of the max by either MB or by doc count, just like how
+in LUCENE-1007 allows flushing by either MB or docCount or both.

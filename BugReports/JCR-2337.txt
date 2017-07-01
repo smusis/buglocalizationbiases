@@ -1,0 +1,16 @@
+TCK: NodeMixinUtil should exclude for mix:shareable
+
+
+
+Description:
+The mixin test NodeRemoveMixinTest#testRemoveSuccessfully tries to remove a mixin:
+
+what it does: retrieve an addable mixin (NodeTypeUtil#getAddableMixinName), adds it and tries to remove it later on.
+the addable mixins are retrieve from the complete set of mixin, testing node.canAddMixin.
+
+However: with jackrabbit-core "mix:shareable" can be added but not removed.
+if the test by chance gets exactly that mixin the test fails with exception (there is an explicit check the core for exactly that case).
+
+the tck should exclude that special case, shouldn't it?
+
+((michael found the issue)) 

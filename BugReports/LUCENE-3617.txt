@@ -1,0 +1,10 @@
+Graduate appendingcodec from contrib/misc
+
+
+
+Description:
+* All tests pass with this codec (at least once, maybe we don't test that two-phase commit stuff very well!)
+* It doesn't require special client side configuration anymore to work (just set it on indexwriter and go)
+* it now works with the compound file format.
+
+I don't think it needs to live in contrib anymore.

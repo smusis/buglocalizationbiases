@@ -1,0 +1,8 @@
+HTTPS Post Does Not Work
+
+
+
+Description:
+Using Java 1.4.1_01 on Windows 2000. An HTTPS Post results in HTTP/100-Continue 
+messages. The same code posting to a non HTTPS URL works. The code populates 
+the request body using a NameValuePair array.

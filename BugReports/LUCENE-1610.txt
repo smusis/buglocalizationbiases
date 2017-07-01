@@ -1,0 +1,12 @@
+Preserve whitespace in <code> sections in the Changes.html generated from CHANGES.txt by changes2html.pl
+
+
+
+Description:
+The Trunk section of CHANGES.txt sports use of a new feature: <code> sections, for the two mentions of LUCENE-1575.
+
+This looks fine in the text rendering, but looks crappy in the HTML version, since changes2html.pl escapes HTML metacharacters to appear as-is in the HTML rendering, but the newlines in the code are converted to a single space. 
+
+I think this should be fixed by modifying changes2html.pl to convert <code> and </code> into (unescaped) <code><pre> and </pre></code>, respectively, since just passing through <code> and </code>, without </?pre>, while changing the font to monospaced (nice), still collapses whitespace (not nice). 
+
+See the java-dev thread that spawned this issue here: http://www.nabble.com/CHANGES.txt-td23102627.html

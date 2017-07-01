@@ -1,0 +1,6 @@
+When fetching node ids in checks for the checker all queries should use the same ordering
+
+
+
+Description:
+The "bundleSelectAllIdsSQL" query and the "bundleSelectAllIdsFromSQL" should use the same ordering.

@@ -1,0 +1,16 @@
+SearchWithSortTask ignores sorting by Doc
+
+
+
+Description:
+During my work in LUCENE-3912, I found the following code:
+
+{code}
+if (field.equals("doc")) {
+    sortField0 = SortField.FIELD_DOC;
+} if (field.equals("score")) {
+    sortField0 = SortField.FIELD_SCORE;
+} ...
+{code}
+
+This means the setting of SortField.FIELD_DOC is ignored.  While I don't know much about this code, this seems like a valid setting and obviously just a bug.

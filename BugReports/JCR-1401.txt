@@ -1,0 +1,11 @@
+Removing-nodes with unexpected nodetype
+
+
+
+Description:
+tobias adds a logic with JCR-973 that the DefaultHandler checks the nodetype of the jcr:content node
+and if it does not match it will be deleted and created with the new one.
+i think its dangerous to automacially change a node type.
+if the node was added programatically and then saved through webdav it could happen that the nodetype will be changed
+from nt:resource to the nt:unstructured.
+if some logic depends on the nodetype the failure search will be hard ;-)

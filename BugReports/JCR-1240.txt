@@ -1,0 +1,8 @@
+Index segments are only committed on close
+
+
+
+Description:
+There is a check in AbstractIndex.commit(), which prevents that deleted documents are committed to the index. Up to lucene version 2.0 the index was locked when there were pending changes. Beginning with lucene 2.1 this is not true anymore. See LUCENE-701.
+
+This is a regression of JCR-788, hence it does not occur in a release but only in trunk.

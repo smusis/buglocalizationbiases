@@ -1,0 +1,17 @@
+Sloppy Phrase Scorer matches the doc "A B C D E" for query = "B C B"~2
+
+
+
+Description:
+This is an extension of https://issues.apache.org/jira/browse/LUCENE-697
+
+In addition to abnormalities Yonik pointed out in 697, there seem to be other issues with slopy phrase search and scoring.
+
+1) A phrase with a repeated word would be detected in a document although it is not there.
+I.e. document = A B D C E , query = "B C B" would not find this document (as expected), but query "B C B"~2 would find it. 
+I think that no matter how large the slop is, this document should not be a match.
+
+2) A document containing both orders of a query, symmetrically, would score differently for the queru and for its reveresed form.
+I.e. document = A B C B A would score differently for queries "B C"~2 and "C B"~2, although it is symmetric to both.
+
+I will attach test cases that show both these problems and the one reported by Yonik in 697. 

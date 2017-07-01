@@ -1,0 +1,18 @@
+Static index pruning by in-document term frequency (Carmel pruning)
+
+
+
+Description:
+This module provides tools to produce a subset of input indexes by removing postings data for those terms where their in-document frequency is below a specified threshold. The net effect of this processing is a much smaller index that for common types of queries returns nearly identical top-N results as compared with the original index, but with increased performance. 
+
+Optionally, stored values and term vectors can also be removed. This functionality is largely independent, so it can be used without term pruning (when term freq. threshold is set to 1).
+
+As the threshold value increases, the total size of the index decreases, search performance increases, and recall decreases (i.e. search quality deteriorates). NOTE: especially phrase recall deteriorates significantly at higher threshold values. 
+
+Primary purpose of this class is to produce small first-tier indexes that fit completely in RAM, and store these indexes using IndexWriter.addIndexes(IndexReader[]). Usually the performance of this class will not be sufficient to use the resulting index view for on-the-fly pruning and searching. 
+
+NOTE: If the input index is optimized (i.e. doesn't contain deletions) then the index produced via IndexWriter.addIndexes(IndexReader[]) will preserve internal document id-s so that they are in sync with the original index. This means that all other auxiliary information not necessary for first-tier processing, such as some stored fields, can also be removed, to be quickly retrieved on-demand from the original index using the same internal document id. 
+
+Threshold values can be specified globally (for terms in all fields) using defaultThreshold parameter, and can be overriden using per-field or per-term values supplied in a thresholds map. Keys in this map are either field names, or terms in field:text format. The precedence of these values is the following: first a per-term threshold is used if present, then per-field threshold if present, and finally the default threshold.
+
+A command-line tool (PruningTool) is provided for convenience. At this moment it doesn't support all functionality available through API.

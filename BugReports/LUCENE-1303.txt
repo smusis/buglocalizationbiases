@@ -1,0 +1,8 @@
+BoostingTermQuery's explanation should be marked as Match even if the payload part negated or zero'ed it
+
+
+
+Description:
+Since BTQ multiplies the payload on the score it might return a negative score.
+The explanation should be marked as "Match" otherwise it is not added to container explanations,
+See also in LUCENE-1302.

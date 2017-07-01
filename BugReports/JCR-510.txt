@@ -1,0 +1,8 @@
+TCK: AddNodeTest requires implementation to support one-parameter addNode method on test node
+
+
+
+Description:
+This test requires a repository to support addNode(String) [one argument] on the test node.  However, JSR-170 does not require an implementation to have at least one child node definition with a default primary type.  For such repositories, this test will fail, regardless of configuration.
+
+Proposal: introduce a configuration property which, if set, causes calls to addNode(String) to be replaced with addNode(String, String).

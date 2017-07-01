@@ -1,0 +1,27 @@
+save() might create new transient properties
+
+
+
+Description:
+It seems that when a new node is saved through the parent node, new properties might get created, which are not saved. To persist those properties the new node must be saved again.
+
+Example:
+
+(Consider a mixin type "extVer" extending the standard type mix:versionable.)
+
+      Node node = parent.addNode("newNode", "nt:base");
+      node.addMixin("extVer");
+      // "mix:versionable" properties do not exist here
+      
+      // save the new node
+      parent.save();
+
+      // now "mix:versionable" properties like "jcr:isCheckedOut"
+      // exist in the "node" but:
+      //    node.getProperty("jcr:isCheckedOut").isNew() == true
+      // fix:
+      node.save();
+
+If the last node.save() opertation would not be done, a RepositoryException would result if a node.checkIn() would be done immediately after parent.save().
+
+This seems counterintuitive and seems like an error. I wonder whether the properties should not be added upon "node.addMixin" ? At least "parent.save()" should (or might I say must ?) not only add the properties but also save them.

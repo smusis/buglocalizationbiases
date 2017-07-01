@@ -1,0 +1,12 @@
+VersionManagerImplRestore internalRestoreFrozen method has identity versus equals bug
+
+
+
+Description:
+In method protected void internalRestoreFrozen(NodeStateEx state,
+                                         InternalFrozenNode freeze,
+                                         VersionSelector vsel,
+                                         Set<InternalVersion> restored,
+                                         boolean removeExisting,
+                                         boolean copy)
+in the VersionManagerImplRestore class line 557 the code performs an == instead of calling the NodeId.equals() method.  We ran into problems with the code that executes below this (trying to restore a folder node throws an ItemExistsException since same sibling not allowed on folder nodes)

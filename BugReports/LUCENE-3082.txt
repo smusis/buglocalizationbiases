@@ -1,0 +1,12 @@
+Add tool to upgrade all segments of an index to last recent supported index format without optimizing
+
+
+
+Description:
+Currently if you want to upgrade an old index to the format of your current Lucene version, you have to optimize your index or use addIndexes(IndexReader...) [see LUCENE-2893] to copy to a new directory. The optimize() approach fails if your index is already optimized.
+
+I propose to add a custom MergePolicy to upgrade all segments to the last format. This MergePolicy could simply also ignore all segments already up-to-date. All segments in prior formats would be merged to a new segment using another MergePolicy's optimize strategy.
+
+This issue is different from LUCENE-2893, as it would only support upgrading indexes from previous Lucene versions in-place using the official path. Its a tool for the end user, not a developer tool.
+
+This addition should also go to Lucene 3.x, as we need to make users with pre-3.0 indexes go the step through 3.x, else they would not be able to open their index with 4.0. With this tool in 3.x the users could safely upgrade their index without relying on optimize to work on already-optimized indexes.

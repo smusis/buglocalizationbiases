@@ -1,0 +1,33 @@
+same named child nodes disappear on restore
+
+
+
+Description:
+When restoring a versionable node which has several (non-versionable) child nodes with the same name, some child nodes disappear. 
+
+            Node node = session.getRootNode().addNode("myNode");
+            node.addMixin("mix:versionable");
+            for (int i = 1; i < 6; i++) {
+                Node child = node.addNode("child");
+                child.setProperty("name", "child_"+i);
+            }
+            session.save();
+            VersionManager versionManager = session.getWorkspace().getVersionManager();
+            versionManager.checkin(node.getPath());
+            System.out.println("number of child nodes: " + node.getNodes().getSize());
+
+            versionManager.checkout(node.getPath());
+            node.getNode("child").setProperty("name", "modified");
+            session.save();
+            Version baseVersion = versionManager.getBaseVersion(node.getPath());
+            versionManager.restore(baseVersion, true);
+            System.out.println("number of child nodes in restored node: "+node.getNodes().getSize());
+
+
+produces the following output:
+
+number of child nodes: 5
+number of child nodes in restored node: 3
+
+Giving unique names or adding the mixin versionable to the child nodes solves the problem.
+

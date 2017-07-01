@@ -1,0 +1,6 @@
+IndexReader.open should take Codecs
+
+
+
+Description:
+Need to make this public... it's private now.

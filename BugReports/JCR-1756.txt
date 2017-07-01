@@ -1,0 +1,8 @@
+Include OCM in the main Jackrabbit build when using Java 5
+
+
+
+Description:
+Currently the OCM component are separate from the rest of Jackrabbit build due to the fact that they need Java 5 to compile. I'd like to add a java5 profile to the main Jackrabbit build that contains the OCM components and is automatically activated when building with Java 5 or higher.
+
+This would simplify build instructions and allow us to remove the extra Jackrabbit-ocm Hudson build that we currently use to build the OCM component.

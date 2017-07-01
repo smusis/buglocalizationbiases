@@ -1,0 +1,6 @@
+FastVectorHighlighter: small fragCharSize can cause StringIndexOutOfBoundsException 
+
+
+
+Description:
+If fragCharSize is smaller than Query string, StringIndexOutOfBoundsException is thrown.

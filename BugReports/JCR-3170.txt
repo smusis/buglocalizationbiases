@@ -1,0 +1,8 @@
+Precompile JavaCC parsers in jackrabbit-spi-commons
+
+
+
+Description:
+The JavaCC-generated Java source files in jackrabbit-spi-commons require special configuration when importing Jackrabbit sources to an IDE like Eclipse. To make IDE integration smoother it would be nice if precompiled copies of the Java files existed the src/main/java folder.
+
+Precompiling the sources would also allow us to avoid the JavaCC processing step during each Jackrabbit build. Instead we could have a separate profile for explicitly recompiling the JavaCC sources when they have been modified. In the past three years that has happened only once (JCR-952), so I think a bit of extra complexity there is justified by the simplification we can achieve in normal builds and IDE integration.

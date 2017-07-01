@@ -1,0 +1,21 @@
+ConcurrentModificationException in QueryStatImpl
+
+
+
+Description:
+Running with qurystats enabled the Query#execute can throw ConcurrentModificationException
+
+caused by the iterator which backing collection is changed from another thread
+
+see logQuery method
+        Iterator<QueryStatDtoImpl> iterator = popularQueries.iterator();
+        while (iterator.hasNext()) {
+-->            QueryStatDtoImpl qsdi = iterator.next();
+            if (qsdi.equals(qs)) {
+                qs.setOccurrenceCount(qsdi.getOccurrenceCount() + 1);
+                iterator.remove();
+                break;
+            }
+        }
+        popularQueries.offer(qs);
+

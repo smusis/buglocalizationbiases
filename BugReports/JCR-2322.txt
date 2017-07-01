@@ -1,0 +1,6 @@
+Fix NOTICE files to match consensus from legal team
+
+
+
+Description:
+As discussed in LEGAL-62 and the related legal-discuss@ threads, the Jackrabbit NOTICE files currently contain information that doesn't really need to be there. A simple "Copyright (c) ..." statement is not a required attribution notice.

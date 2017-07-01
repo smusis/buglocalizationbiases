@@ -1,0 +1,46 @@
+Invalid cookie causing IllegalArgumentException
+
+
+
+Description:
+The bug reported by Oliver KÃ¶ll <listen at quimby.de> on HttpClient mailing list
+
+<quote>
+I'm dealing with a site that serves invalid Cookies in various kind of  
+ways. In some cases the Cookie values contain "," characters, which  
+really confuses the Header/Cookie parsers and eventually leads to  
+IllegalArgumentExceptions thrown by the Cookie constructor:
+
+java.lang.IllegalArgumentException: Cookie name may not be blank
+   at org.apache.commons.httpclient.Cookie.<init>(Cookie.java:142)
+   at  
+org.apache.commons.httpclient.cookie.CookieSpecBase.parse(CookieSpecBase 
+.java:192)
+   at  
+org.apache.commons.httpclient.cookie.CookieSpecBase.parse(CookieSpecBase 
+.java:256)
+   at  
+org.apache.commons.httpclient.HttpMethodBase.processResponseHeaders(Http 
+MethodBase.java:1826)
+   at  
+org.apache.commons.httpclient.HttpMethodBase.readResponse(HttpMethodBase 
+.java:1939)
+   at  
+org.apache.commons.httpclient.HttpMethodBase.processRequest(HttpMethodBa 
+se.java:2631)
+   at  
+org.apache.commons.httpclient.HttpMethodBase.execute(HttpMethodBase.java 
+:1085)
+   at  
+org.apache.commons.httpclient.HttpClient.executeMethod(HttpClient.java:6 
+74)
+   at  
+org.apache.commons.httpclient.HttpClient.executeMethod(HttpClient.java:5 
+29)
+   at my.code.Test.getHttp(Test.java:114)
+
+What bothers me, is that these IllegalArgumentExceptions are never  
+caught in the HttpClient code, making it effectivily impossible to  
+handle these responses.
+
+</quote>

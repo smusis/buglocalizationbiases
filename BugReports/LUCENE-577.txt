@@ -1,0 +1,12 @@
+SweetSpotSimiliarity
+
+
+
+Description:
+This is a new Similarity implimention for the contrib/miscellaneous/ package, it provides a Similiarty designed for people who know the "sweetspot" of their data.  three major pieces of functionality are included:
+
+1) a lengthNorm which creates a "platuea" of values.
+2) a baseline tf that provides a fixed value for tf's up to a minimum, at which point it becomes a sqrt curve (this is used by the tf(int) function.
+3) a hyperbolic tf function which is best explained by graphing the equation.  this isn't used by default, but is available for subclasses to call from their own tf functions.
+
+All constants used in all functions are configurable.  In the case of lengthNorm, the constants are configurable per field, as well as allowing for defaults for unspecified fields.

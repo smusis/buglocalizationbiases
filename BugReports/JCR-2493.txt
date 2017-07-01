@@ -1,0 +1,6 @@
+Unit tests for persistence managers
+
+
+
+Description:
+Currently we only test our persistence managers indirectly via JCR-level test cases. The downside of this approach is that we can only test one persistence manager implementation at a time, and need separate build profiles to switch from one implementation to another. To ensure better coverage and consistent behaviour across all our persistence managers I implemented a simple unit test that works directly against the PersistenceManager interface.

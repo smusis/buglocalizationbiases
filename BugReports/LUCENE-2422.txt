@@ -1,0 +1,12 @@
+don't reuse byte[] in IndexInput/Output for read/writeString
+
+
+
+Description:
+IndexInput now holds a private "byte[] bytes", which it re-uses for reading strings.  Likewise, IndexOutput holds a UTF8Result (which holds "byte[] bytes"), re-used for writing strings.
+
+These are both dangerous, since on reading or writing immense strings, we never free this storage.
+
+We don't use read/writeString in very perf sensitive parts of the code, so, I think we should not reuse the byte[] at all.
+
+I think this is likely the cause of the recent "IndexWriter and memory usage" thread, started by Ross Woolf on java-user@.

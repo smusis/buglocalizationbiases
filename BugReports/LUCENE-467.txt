@@ -1,0 +1,16 @@
+Use Float.floatToRawIntBits over Float.floatToIntBits
+
+
+
+Description:
+Copied From my Email:
+  Float.floatToRawIntBits (in Java1.4) gives the raw float bits without
+normalization (like *(int*)&floatvar would in C).  Since it doesn't do
+normalization of NaN values, it's faster (and hopefully optimized to a
+simple inline machine instruction by the JVM).
+
+On my Pentium4, using floatToRawIntBits is over 5 times as fast as
+floatToIntBits.
+That can really add up in something like Similarity.floatToByte() for
+encoding norms, especially if used as a way to compress an array of
+float during query time as suggested by Doug.

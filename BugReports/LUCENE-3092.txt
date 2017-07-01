@@ -1,0 +1,19 @@
+NRTCachingDirectory, to buffer small segments in a RAMDir
+
+
+
+Description:
+I created this simply Directory impl, whose goal is reduce IO
+contention in a frequent reopen NRT use case.
+
+The idea is, when reopening quickly, but not indexing that much
+content, you wind up with many small files created with time, that can
+possibly stress the IO system eg if merges, searching are also
+fighting for IO.
+
+So, NRTCachingDirectory puts these newly created files into a RAMDir,
+and only when they are merged into a too-large segment, does it then
+write-through to the real (delegate) directory.
+
+This lets you spend some RAM to reduce I0.
+

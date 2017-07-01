@@ -1,0 +1,10 @@
+Introduce a temprary cache for intermediate query results
+
+
+
+Description:
+Sometimes queries execute the same sub query multiple times.
+
+e.g. //element(*, nt:resource)[@jcr:mimeType != 'text/plain' and @jcr:mimeType != 'text/html']
+
+will result in two internal MatchAllQuery on jcr:mimeType. The query should re-use the previously calculated results when possible.

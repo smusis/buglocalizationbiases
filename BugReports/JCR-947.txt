@@ -1,0 +1,8 @@
+XMLReader logs fatal error to system out
+
+
+
+Description:
+Some test cases check if an appropriate exception is thrown when invalid XML is supplied, in that case the build in XMLReader in Java 1.5 logs a fatal error to system out.
+
+This seems to be caused by a missing error handler on the XMLReader.

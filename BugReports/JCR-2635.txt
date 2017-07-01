@@ -1,0 +1,6 @@
+Disable Users
+
+
+
+Description:
+add "disable user" functionality to prevent an existing user from login into the repository.

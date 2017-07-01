@@ -1,0 +1,6 @@
+Utility to output total term frequency and df from a lucene index
+
+
+
+Description:
+This is a pair of command line utilities that provide information on the total number of occurrences of a term in a Lucene index.  The first  takes a field name, term, and index directory and outputs the document frequency for the term and the total number of occurrences of the term in the index (i.e. the sum of the tf of the term for each document).   The second reads the index to determine the top N most frequent terms (by document frequency) and then outputs a list of those terms along with  the document frequency and the total number of occurrences of the term. Both utilities are useful for estimating the size of the term's entry in the *prx files and consequent Disk I/O demands. 

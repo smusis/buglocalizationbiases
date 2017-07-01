@@ -1,0 +1,25 @@
+All Tokenizer implementations should have constructors that take AttributeSource and AttributeFactory
+
+
+
+Description:
+I have a TokenStream implementation that joins together multiple sub TokenStreams (i then do additional filtering on top of this, so i can't just have the indexer do the merging)
+
+in 2.4, this worked fine.
+once one sub stream was exhausted, i just started using the next stream 
+
+however, in 2.9, this is very difficult, and requires copying Term buffers for every token being aggregated
+
+however, if all the sub TokenStreams share the same AttributeSource, and my "concat" TokenStream shares the same AttributeSource, this goes back to being very simple (and very efficient)
+
+
+So for example, i would like to see the following constructor added to StandardTokenizer:
+{code}
+  public StandardTokenizer(AttributeSource source, Reader input, boolean replaceInvalidAcronym) {
+    super(source);
+    ...
+  }
+{code}
+
+would likewise want similar constructors added to all Tokenizer sub classes provided by lucene
+

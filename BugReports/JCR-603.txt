@@ -1,0 +1,13 @@
+OracleFileSystem can't handle empty files
+
+
+
+Description:
+the following exception is thrown when trying to access a 0-length file
+in an OracleFileSystem:
+java.sql.SQLException: ORA-22275: invalid LOB locator specified
+
+issue reported on the users list, 
+see http://www.nabble.com/problems-with-Oracle-tf2483987.html#a6926522
+
+

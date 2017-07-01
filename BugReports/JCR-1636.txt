@@ -1,0 +1,7 @@
+Make shutdown hooks in TransientFileFactory removable
+
+
+
+Description:
+TransientFileFactory class always registers shutdown hook. So, if jackrabbit classes were loaded by web-app classloader, they will not be released when web-app is undeployed (if jackrabbit-jcr-commons JAR is inside WAR). This causes classloader leak.
+It seems to be useful to have ability to cancel TransientFileFactory's shutdown hook when application is going to be unloaded to avoid classloader leak.

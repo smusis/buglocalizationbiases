@@ -1,0 +1,9 @@
+concurrent read-only access to a session
+
+
+
+Description:
+Even though the JCR specification does not make a statement about Sessions shared across a number of threads I think it would be great for many applications if we could state that sharing a read-only session is supported by Jackrabbit.
+On many occasions in the mailing lists we stated that there should not be an issue with sharing a read-only session, however I think it has never been thoroughly tested or even specified as a "design goal".
+
+If we can come to an agreement that this is desirable I think it would be great to start including testcases to validate that behaviour and update the documentation respectively.

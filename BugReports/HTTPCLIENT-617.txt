@@ -1,0 +1,13 @@
+Hostname verification:  turn off wildcards when CN is an IP address
+
+
+
+Description:
+Hostname verification:   turn off wildcards when CN is an IP address.  This is a further improvement on HTTPCLIENT-613 and HTTPCLIENT-614.
+
+Example - don't allow:
+CN=*.114.102.2
+
+I'm thinking of grabbing the substring following the final dot, and running it through "Integer.parseInt()".  If the NumberFormatException isn't thrown (so Integer.parseInt() actually worked!), then I'll turn off wildcard matching.  Notice that this won't be a problem with IP6 addresses, since they don't use dots.  It's only a problem with IP4, where the meaning of the dots clashes with dots in domain names.
+
+Note:  when I turn off wildcard matching, I still attempt an exact match with the hostname.  If through some weird mechanism the client is actually able to use a hostname such as "https://*.114.102.2/", then they will be okay if that's what the certificate on the server contains.

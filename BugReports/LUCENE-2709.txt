@@ -1,0 +1,33 @@
+If test has methods with @Ignore, we should print out a notice
+
+
+
+Description:
+Currently these silently pass, but there is usually a reason they are @Ignore 
+(sometimes good, sometimes really a TODO we should fix)
+
+In my opinion we should add reasons for all these current @Ignores like Mike did with Test2BTerms.
+
+Example output:
+{noformat}
+[junit] Testsuite: org.apache.lucene.index.Test2BTerms
+[junit] Tests run: 0, Failures: 0, Errors: 0, Time elapsed: 0.184 sec
+[junit]
+[junit] ------------- Standard Error -----------------
+[junit] NOTE: Ignoring test method 'test2BTerms' Takes ~4 hours to run on a fast machine!!  And requires that you don't use PreFlex codec.
+[junit] ------------- ---------------- ---------------
+
+...
+
+[junit] Testsuite: org.apache.solr.handler.dataimport.TestMailEntityProcessor
+[junit] Tests run: 0, Failures: 0, Errors: 0, Time elapsed: 0.043 sec
+[junit]
+[junit] ------------- Standard Error -----------------
+[junit] NOTE: Ignoring test method 'testConnection'
+[junit] NOTE: Ignoring test method 'testRecursion'
+[junit] NOTE: Ignoring test method 'testExclude'
+[junit] NOTE: Ignoring test method 'testInclude'
+[junit] NOTE: Ignoring test method 'testIncludeAndExclude'
+[junit] NOTE: Ignoring test method 'testFetchTimeSince'
+[junit] ------------- ---------------- ---------------
+{noformat}

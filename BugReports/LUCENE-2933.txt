@@ -1,0 +1,11 @@
+Two-stage state expansion for the FST: distance-from-root and child-count criteria.
+
+
+
+Description:
+In the current implementation FST states are expanded into a binary search on labels (from a vector of transitions) when the child count of a state exceeds a given predefined threshold (NUM_ARCS_FIXED_ARRAY). This threshold affects automaton size and traversal speed (as it turns out when benchmarked). For some degenerate (?) data sets, close-to-the-root nodes could have a small number of children (below the threshold) and yet be traversed on every single seek.
+
+A fix of this is to introduce two control thresholds: 
+  EXPAND state if (distance-from-root <= MIN_DISTANCE || children-count >= NUM_ARCS_FIXED_ARRAY)
+
+My plan is to create a data set that will prove this first and then to implement the workaround above.

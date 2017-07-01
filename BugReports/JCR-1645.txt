@@ -1,0 +1,12 @@
+Add support for Map of referenced beans
+
+
+
+Description:
+OCM should support the mapping of maps of referenced beans.
+
+@Collection(collectionConverter= BeanReferenceCollectionConverterImpl.class)
+private java.util.Map<String, ReferencedBean> aMap;
+
+BeanReferenceCollectionConverterImpl (mainly the method doGetCollection) needs to be updated to support the interface ManageableMap interface.
+

@@ -1,0 +1,8 @@
+Remove all interning of field names from flex API
+
+
+
+Description:
+In previous versions of Lucene, interning of fields was important to minimize string comparison cost when iterating TermEnums, to detect changes in field name. As we separated field names from terms in flex, no query compares field names anymore, so the whole performance problematic interning can be removed. I will start with doing this, but we need to carefully review some places e.g. in preflex codec.
+
+Maybe before this issue we should remove the Term class completely. :-) Robert?

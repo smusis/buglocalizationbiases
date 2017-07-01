@@ -1,0 +1,76 @@
+Port 80 is needed to run tests
+
+
+
+Description:
+I'm trying to upgrade to Cactus 1.4.1 and StrutsTest 1.9.  My tests where 
+working about fine a month ago with nightly builds of both.  Now I get the 
+following error:
+
+    [junit] Testcase: testCreate took 0.2 sec
+    [junit]     Caused an ERROR
+    [junit] port out of range:-1
+    [junit] java.lang.IllegalArgumentException: port out of range:-1
+    [junit]     at java.net.InetSocketAddress.<init>
+(InetSocketAddress.java:103)
+    [junit]     at java.net.Socket.<init>(Socket.java:119)
+    [junit]     at org.apache.commons.httpclient.HttpConnection.open
+(HttpConnection.java:260)
+    [junit]     at org.apache.commons.httpclient.HttpClient.executeMethod
+(HttpClient.java:255)
+    [junit]     at 
+org.apache.cactus.client.HttpClientConnectionHelper.dispatch24_connect
+(HttpClientConnectionHelper.jav
+a;org/apache/cactus/util/log/LogAspect.aj(1k):164)
+    [junit]     at 
+org.apache.cactus.client.HttpClientConnectionHelper.around24_connect
+(HttpClientConnectionHelper.java;
+org/apache/cactus/util/log/LogAspect.aj(1k):1236)
+    [junit]     at org.apache.cactus.client.HttpClientConnectionHelper.connect
+(HttpClientConnectionHelper.java;org/apach
+e/cactus/util/log/LogAspect.aj(1k):106)
+    [junit]     at org.apache.cactus.client.AbstractHttpClient.callRunTest
+(AbstractHttpClient.java;org/apache/cactus/uti
+l/log/LogAspect.aj(1k):186)
+    [junit]     at org.apache.cactus.client.AbstractHttpClient.dispatch2_doTest
+(AbstractHttpClient.java;org/apache/cactu
+s/util/log/LogAspect.aj(1k):109)
+    [junit]     at org.apache.cactus.client.AbstractHttpClient.around2_doTest
+(AbstractHttpClient.java;org/apache/cactus/
+util/log/LogAspect.aj(1k):1236)
+    [junit]     at org.apache.cactus.client.AbstractHttpClient.doTest
+(AbstractHttpClient.java;org/apache/cactus/util/log
+/LogAspect.aj(1k):104)
+    [junit]     at org.apache.cactus.AbstractWebTestCase.runGenericTest
+(AbstractWebTestCase.java:260)
+    [junit]     at org.apache.cactus.ServletTestCase.runTest
+(ServletTestCase.java:133)
+    [junit]     at org.apache.cactus.AbstractTestCase.runBare
+(AbstractTestCase.java:195)
+
+I found that I had to add port 80 (:80) get it to work with the new stuff:
+
+cactus.properties from: cactus.contextURL = http://localhost/myApp
+
+To: cactus.contextURL = http://localhost:80/myApp
+
+build.xml from:
+
+    <target name="tomcat.navigationAction" depends="deploy" if="tomcat.home">
+        <!-- We suppose our webapp is named "onpoint" -->
+        <runservertests testURL="http://localhost/${webapp.name}" 
+            startTarget="start.tomcat" 
+            stopTarget="stop.tomcat" 
+            testTarget="test.navigationAction"/>
+    </target>
+
+To:
+
+    <target name="tomcat.navigationAction" depends="deploy" if="tomcat.home">
+        <!-- We suppose our webapp is named "onpoint" -->
+        <runservertests testURL="http://localhost:80/
+${webapp.name}/ServletRedirector?Cactus_Service=RUN_TEST" 
+            startTarget="start.tomcat" 
+            stopTarget="stop.tomcat" 
+            testTarget="test.navigationAction"/>
+    </target>

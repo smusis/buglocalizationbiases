@@ -1,0 +1,6 @@
+Add new JSR283 features to CND reader/writer
+
+
+
+Description:
+the current CND parser(s) and writers do not support the new options specified by JSR283

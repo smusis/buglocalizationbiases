@@ -1,0 +1,12 @@
+Enable setting the terms index divisor used by IndexWriter whenever it opens internal readers
+
+
+
+Description:
+Opening a place holder issue... if all the refactoring being discussed don't make this possible, then we should add a setting to IWC to do so.
+
+Apps with very large numbers of unique terms must set the terms index divisor to control RAM usage.
+
+(NOTE: flex's RAM terms dict index RAM usage is more efficient, so this will help such apps).
+
+But, when IW resolves deletes internally it always uses default 1 terms index divisor, and the app cannot change that.  Though one workaround is to call getReader(termInfosIndexDivisor) which will pool the reader with the right divisor.

@@ -1,0 +1,10 @@
+CharArraySet cannot be made generic, because it violates the Set<char[]> interface
+
+
+
+Description:
+I tried to make CharArraySet using generics (extends AbstractSet<char[]>) but this is not possible, as it e.g. returns sometimes String instances in the Iterator instead of []. Also its addAll method accepts both String and char[]. I think this class is a complete mis-design and violates almost everything (sorry).
+
+What to do? Make it Set<?> or just place a big @SuppressWarnings("unchecked"> in front of it?
+
+Because of this problem also a lot of Set declarations inside StopAnalyzer cannot be made generic as you never know whats inside.

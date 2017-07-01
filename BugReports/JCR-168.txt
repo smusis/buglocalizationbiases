@@ -1,0 +1,18 @@
+Observation events are not triggered for intermediate nodes in version storage
+
+
+
+Description:
+When a new version history is created no observation events are triggered for the intermediate nodes.
+
+E.g. for the VersionHistory d94d4b41-f68e-4586-9e88-96e6790981d8 the following events are triggered (with a node filter applied, property events are not visible):
+
+Node added: /jcr:system/jcr:versionStorage/d9/4d/4b/d94d4b41-f68e-4586-9e88-96e6790981d8
+Node added: /jcr:system/jcr:versionStorage/d9/4d/4b/d94d4b41-f68e-4586-9e88-96e6790981d8/jcr:versionLabels
+Node added: /jcr:system/jcr:versionStorage/d9/4d/4b/d94d4b41-f68e-4586-9e88-96e6790981d8/jcr:rootVersion
+Node added: /jcr:system/jcr:versionStorage/d9/4d/4b/d94d4b41-f68e-4586-9e88-96e6790981d8/jcr:rootVersion/jcr:frozenNode
+
+Observation should also trigger node added events for:
+/jcr:system/jcr:versionStorage/d9
+/jcr:system/jcr:versionStorage/d9/4d
+/jcr:system/jcr:versionStorage/d9/4d/4b

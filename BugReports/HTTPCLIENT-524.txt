@@ -1,0 +1,148 @@
+Provide feedback mechanism to CredentialsProvider
+
+
+
+Description:
+If the remote server is using BASIC or NT authentication and you pass in 
+invalid credentials you get stuck in an infinite for loop, repeatedly sending 
+the same authentication request again and again to the server.  The for loop is 
+in the executeMethod method of the HttpMethodDirector class.
+
+Sample code:
+=================================================================
+
+
+import org.apache.commons.httpclient.Credentials;
+import org.apache.commons.httpclient.NTCredentials;
+import org.apache.commons.httpclient.UsernamePasswordCredentials;
+import org.apache.commons.httpclient.HttpClient;
+import org.apache.commons.httpclient.methods.GetMethod;
+import org.apache.commons.httpclient.auth.*;
+
+import java.io.IOException;
+import java.io.BufferedInputStream;
+import java.io.ByteArrayOutputStream;
+
+/**
+ * Created by IntelliJ IDEA.
+ * User: dmartineau
+ * Date: Nov 8, 2005
+ * Time: 1:43:21 PM
+ */
+public class ShowProblem
+{
+
+    private String location;
+    private String user;
+    private String pass;
+    private String domain;
+
+    public ShowProblem(String location, String user, String pass, String domain)
+    {
+        this.location = location;
+        this.user=user;
+        this.pass=pass;
+        this.domain=domain;
+
+    }
+
+    public int getFile()
+    {
+        int status = 500;
+        HttpClient client = new HttpClient();
+        client.getParams().setParameter(
+            CredentialsProvider.PROVIDER, new CProvider(user,pass,domain));
+        GetMethod httpget = new GetMethod(location);
+        httpget.setDoAuthentication(true);
+
+        try
+        {
+            // execute the GET
+            status = client.executeMethod(httpget);
+            if (status==200)
+            {
+                BufferedInputStream bin = new BufferedInputStream
+(httpget.getResponseBodyAsStream());
+
+                ByteArrayOutputStream bos = new ByteArrayOutputStream();
+                int bytesRead = 0;
+                byte[] buff = new byte[16384];
+
+                while ( (bytesRead = bin.read(buff)) != -1) {
+                    bos.write(buff, 0, bytesRead);
+                }
+
+                // display the results.
+                System.out.println(new String(bos.toByteArray()));
+            }
+        }
+        catch (Throwable t)
+        {
+            t.printStackTrace();
+        }
+        finally
+        {
+            // release any connection resources used by the method
+            httpget.releaseConnection();
+        }
+        return status;
+
+    }
+
+    public static void main(String[] args)
+    {
+        ShowProblem showProblem = new ShowProblem(args[0],args[1],args[2],args
+[3]);
+        int response = showProblem.getFile();
+        
+    }
+
+
+
+    class CProvider implements CredentialsProvider
+    {
+        private String user;
+        private String password;
+        private String domain;
+
+        public CProvider(String user, String password, String domain)
+        {
+            super();
+            this.user = user;
+            this.password = password;
+            this.domain = domain;
+        }
+
+        public Credentials getCredentials(final AuthScheme authscheme,final 
+String host,int port,boolean proxy)
+        throws CredentialsNotAvailableException
+        {
+            if (authscheme == null)
+            {
+                return null;
+            }
+            try
+            {
+                if (authscheme instanceof NTLMScheme)
+                {
+                    return new NTCredentials(user, password, host, domain);
+                }
+                else if (authscheme instanceof RFC2617Scheme)
+                {
+                    return new UsernamePasswordCredentials(user, password);
+                }
+                else
+                {
+                    throw new CredentialsNotAvailableException("Unsupported 
+authentication scheme: " +
+                        authscheme.getSchemeName());
+                }
+            }
+            catch (IOException e)
+            {
+                throw new CredentialsNotAvailableException(e.getMessage(), e);
+            }
+        }
+
+    }
+}

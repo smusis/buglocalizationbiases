@@ -1,0 +1,18 @@
+Per thread DocumentsWriters that write their own private segments
+
+
+
+Description:
+See LUCENE-2293 for motivation and more details.
+
+I'm copying here Mike's summary he posted on 2293:
+
+Change the approach for how we buffer in RAM to a more isolated
+approach, whereby IW has N fully independent RAM segments
+in-process and when a doc needs to be indexed it's added to one of
+them. Each segment would also write its own doc stores and
+"normal" segment merging (not the inefficient merge we now do on
+flush) would merge them. This should be a good simplification in
+the chain (eg maybe we can remove the *PerThread classes). The
+segments can flush independently, letting us make much better
+concurrent use of IO & CPU.

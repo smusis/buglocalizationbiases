@@ -1,0 +1,124 @@
+Error downloading text file with gzip content encoding
+
+
+
+Description:
+Hello I am getting an exception when I try to download certain files.
+
+I don't have control over the host server, only the client.  Here's my client code:
+
+		HttpParams params = new BasicHttpParams();
+		params.setParameter(CoreConnectionPNames.CONNECTION_TIMEOUT, 300000L);
+		params.setParameter(ClientPNames.HANDLE_REDIRECTS, true);
+
+		// This client indicates to servers that it will support 'gzip'
+		// and 'deflate' compressed responses.
+		ContentEncodingHttpClient.setDefaultHttpParams(params);
+		ContentEncodingHttpClient client = new ContentEncodingHttpClient();
+
+		if (user != null && password != null) {
+			String hostname = url.getHost();
+			HttpHost hostHttp = new HttpHost(hostname, 80, "http");
+			HttpHost hostHttps = new HttpHost(hostname, 443, "https");
+			client.getCredentialsProvider().setCredentials(
+			        new AuthScope(hostname, 80), 
+			        new UsernamePasswordCredentials(user, password));
+	
+			client.getCredentialsProvider().setCredentials(
+			        new AuthScope(hostname, 443), 
+			        new UsernamePasswordCredentials(user, password));
+	
+			// Create AuthCache instance
+			AuthCache authCache = new BasicAuthCache();
+			// Generate BASIC scheme object and add it to the local auth cache
+			BasicScheme basicAuth = new BasicScheme();
+			authCache.put(hostHttp, basicAuth);
+			authCache.put(hostHttps, basicAuth);
+	
+			// Add AuthCache to the execution context
+			BasicHttpContext localcontext = new BasicHttpContext();
+			localcontext.setAttribute(ClientContext.AUTH_CACHE, authCache);
+		}
+		HttpGet httpget = new HttpGet(url.toString());
+		httpget.setHeader("If-Modified-Since", lastModified);
+
+
+		HttpResponse response = client.execute(httpget);
+		responseCode = response.getStatusLine().getStatusCode();
+		HttpEntity entity = response.getEntity();
+		if (responseCode == HttpStatus.SC_NOT_MODIFIED) {
+			
+		} else if (responseCode == HttpStatus.SC_OK && entity != null) {
+			outStream = new BufferedOutputStream(new FileOutputStream(outFilename));
+			entity.writeTo(outStream);
+		}
+
+Here's the log output:
+
+DEBUG [2011-08-02 01:23:01,031] [org.apache.http.impl.conn.SingleClientConnManager:212] Get connection for route HttpRoute[{}->http://<host>]
+DEBUG [2011-08-02 01:23:01,036] [org.apache.http.impl.conn.DefaultClientConnectionOperator:145] Connecting to <host>/<IP>:80
+DEBUG [2011-08-02 01:23:01,057] [org.apache.http.client.protocol.RequestAddCookies:132] CookieSpec selected: best-match
+DEBUG [2011-08-02 01:23:01,057] [org.apache.http.client.protocol.RequestAuthCache:75]   Auth cache not set in the context
+DEBUG [2011-08-02 01:23:01,058] [org.apache.http.impl.client.DefaultRequestDirector:631]        Attempt 1 to execute request
+DEBUG [2011-08-02 01:23:01,058] [org.apache.http.impl.conn.DefaultClientConnection:264] Sending request: GET <file> HTTP/1.1
+DEBUG [2011-08-02 01:23:01,058] [org.apache.http.impl.conn.Wire:63]     >> "GET <file> HTTP/1.1[\r][\n]"
+DEBUG [2011-08-02 01:23:01,058] [org.apache.http.impl.conn.Wire:63]     >> "If-Modified-Since: Mon, 01 Aug 2011 18:26:09 CEST[\r][\n]"
+DEBUG [2011-08-02 01:23:01,059] [org.apache.http.impl.conn.Wire:63]     >> "Host: <host>[\r][\n]"
+DEBUG [2011-08-02 01:23:01,059] [org.apache.http.impl.conn.Wire:63]     >> "Connection: Keep-Alive[\r][\n]"
+DEBUG [2011-08-02 01:23:01,059] [org.apache.http.impl.conn.Wire:63]     >> "User-Agent: Apache-HttpClient/4.1.1 (java 1.5)[\r][\n]"
+DEBUG [2011-08-02 01:23:01,059] [org.apache.http.impl.conn.Wire:63]     >> "Accept-Encoding: gzip,deflate[\r][\n]"
+DEBUG [2011-08-02 01:23:01,060] [org.apache.http.impl.conn.Wire:63]     >> "[\r][\n]"
+DEBUG [2011-08-02 01:23:01,060] [org.apache.http.impl.conn.DefaultClientConnection:268] >> GET <file> HTTP/1.1
+DEBUG [2011-08-02 01:23:01,060] [org.apache.http.impl.conn.DefaultClientConnection:271] >> If-Modified-Since: Mon, 01 Aug 2011 18:26:09 CEST
+DEBUG [2011-08-02 01:23:01,060] [org.apache.http.impl.conn.DefaultClientConnection:271] >> Host: <host>
+DEBUG [2011-08-02 01:23:01,061] [org.apache.http.impl.conn.DefaultClientConnection:271] >> Connection: Keep-Alive
+DEBUG [2011-08-02 01:23:01,061] [org.apache.http.impl.conn.DefaultClientConnection:271] >> User-Agent: Apache-HttpClient/4.1.1 (java 1.5)
+DEBUG [2011-08-02 01:23:01,061] [org.apache.http.impl.conn.DefaultClientConnection:271] >> Accept-Encoding: gzip,deflate
+DEBUG [2011-08-02 01:23:01,085] [org.apache.http.impl.conn.Wire:63]     << "HTTP/1.1 200 OK[\r][\n]"
+DEBUG [2011-08-02 01:23:01,086] [org.apache.http.impl.conn.Wire:63]     << "Server: nginx/0.8.54[\r][\n]"
+DEBUG [2011-08-02 01:23:01,086] [org.apache.http.impl.conn.Wire:63]     << "Date: Mon, 01 Aug 2011 23:23:01 GMT[\r][\n]"
+DEBUG [2011-08-02 01:23:01,086] [org.apache.http.impl.conn.Wire:63]     << "Content-Type: text/plain[\r][\n]"
+DEBUG [2011-08-02 01:23:01,086] [org.apache.http.impl.conn.Wire:63]     << "Last-Modified: Wed, 20 Jul 2011 14:39:57 GMT[\r][\n]"
+DEBUG [2011-08-02 01:23:01,087] [org.apache.http.impl.conn.Wire:63]     << "Transfer-Encoding: chunked[\r][\n]"
+DEBUG [2011-08-02 01:23:01,087] [org.apache.http.impl.conn.Wire:63]     << "Connection: keep-alive[\r][\n]"
+DEBUG [2011-08-02 01:23:01,087] [org.apache.http.impl.conn.Wire:63]     << "Vary: Accept-Encoding[\r][\n]"
+DEBUG [2011-08-02 01:23:01,087] [org.apache.http.impl.conn.Wire:63]     << "Expires: Wed, 31 Aug 2011 23:23:01 GMT[\r][\n]"
+DEBUG [2011-08-02 01:23:01,088] [org.apache.http.impl.conn.Wire:63]     << "Cache-Control: max-age=2592000[\r][\n]"
+DEBUG [2011-08-02 01:23:01,088] [org.apache.http.impl.conn.Wire:63]     << "Content-Encoding: gzip[\r][\n]"
+DEBUG [2011-08-02 01:23:01,088] [org.apache.http.impl.conn.Wire:63]     << "[\r][\n]"
+DEBUG [2011-08-02 01:23:01,088] [org.apache.http.impl.conn.DefaultClientConnection:249] Receiving response: HTTP/1.1 200 OK
+DEBUG [2011-08-02 01:23:01,089] [org.apache.http.impl.conn.DefaultClientConnection:252] << HTTP/1.1 200 OK
+DEBUG [2011-08-02 01:23:01,089] [org.apache.http.impl.conn.DefaultClientConnection:255] << Server: nginx/0.8.54
+DEBUG [2011-08-02 01:23:01,089] [org.apache.http.impl.conn.DefaultClientConnection:255] << Date: Mon, 01 Aug 2011 23:23:01 GMT
+DEBUG [2011-08-02 01:23:01,089] [org.apache.http.impl.conn.DefaultClientConnection:255] << Content-Type: text/plain
+DEBUG [2011-08-02 01:23:01,089] [org.apache.http.impl.conn.DefaultClientConnection:255] << Last-Modified: Wed, 20 Jul 2011 14:39:57 GMT
+DEBUG [2011-08-02 01:23:01,090] [org.apache.http.impl.conn.DefaultClientConnection:255] << Transfer-Encoding: chunked
+DEBUG [2011-08-02 01:23:01,090] [org.apache.http.impl.conn.DefaultClientConnection:255] << Connection: keep-alive
+DEBUG [2011-08-02 01:23:01,090] [org.apache.http.impl.conn.DefaultClientConnection:255] << Vary: Accept-Encoding
+DEBUG [2011-08-02 01:23:01,090] [org.apache.http.impl.conn.DefaultClientConnection:255] << Expires: Wed, 31 Aug 2011 23:23:01 GMT
+DEBUG [2011-08-02 01:23:01,090] [org.apache.http.impl.conn.DefaultClientConnection:255] << Cache-Control: max-age=2592000
+DEBUG [2011-08-02 01:23:01,091] [org.apache.http.impl.conn.DefaultClientConnection:255] << Content-Encoding: gzip
+DEBUG [2011-08-02 01:23:01,091] [org.apache.http.impl.client.DefaultRequestDirector:477]        Connection can be kept alive indefinitely
+DEBUG [2011-08-02 01:23:01,131] [org.apache.http.impl.conn.Wire:63]     << "600a[\r][\n]"
+DEBUG [2011-08-02 01:23:01,132] [org.apache.http.impl.conn.Wire:77]     << "[0x1f]"
+DEBUG [2011-08-02 01:23:03,838] [org.apache.http.impl.conn.Wire:63]     << "[\r][\n]"
+
+.... (Content)
+
+DEBUG [2011-08-02 01:23:03,839] [org.apache.http.impl.conn.SingleClientConnManager:267] Releasing connection org.apache.http.impl.conn.SingleClientConnManager$ConnAdapter@2aa3873
+DEBUG [2011-08-02 01:23:03,839] [org.apache.http.impl.conn.SingleClientConnManager:285] Released connection open but not reusable.
+DEBUG [2011-08-02 01:23:03,839] [org.apache.http.impl.conn.DefaultClientConnection:152] Connection shut down
+ERROR [2011-08-02 01:23:03,840] [app]        Exception downloading file
+java.io.EOFException
+        at java.util.zip.GZIPInputStream.readUByte(GZIPInputStream.java:224)
+        at java.util.zip.GZIPInputStream.readUShort(GZIPInputStream.java:214)
+        at java.util.zip.GZIPInputStream.readHeader(GZIPInputStream.java:153)
+        at java.util.zip.GZIPInputStream.<init>(GZIPInputStream.java:75)
+        at java.util.zip.GZIPInputStream.<init>(GZIPInputStream.java:85)
+        at org.apache.http.client.entity.GzipDecompressingEntity.getContent(GzipDecompressingEntity.java:63)
+        at org.apache.http.util.EntityUtils.consume(EntityUtils.java:65)
+        at org.apache.http.conn.BasicManagedEntity.ensureConsumed(BasicManagedEntity.java:98)
+        at org.apache.http.conn.BasicManagedEntity.writeTo(BasicManagedEntity.java:115)
+        at util.FileDownload.download(FileDownload.java:188) <--- my app
+
+Does this happen because the server doesn't specify the content length?

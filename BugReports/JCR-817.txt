@@ -1,0 +1,18 @@
+TCK vs available property types
+
+
+
+Description:
+The TCK tests allow configuration of node type / property names to tests specific property types, but they do not take into account that a given repository may not support a specific property type (this is similar to issue JCR-801 about multiple workspace support).
+
+JSR-170 is a bit fuzzy here: it requires all types, but does not require that every type actually exists on a settable node type. In practice, a repository may support reference properties on the builtin nodetypes for version storage, but nowhere else.
+
+Thus, there should be a way to configure the tests so that specific property type tests are left out. Again, there are a few possibilities to do that:
+
+1) reserve a special property name for the case where the test should be skipped ("PROPERTY_TYPE_NOT_SUPPORT"), or
+
+2) add new config flags.
+
+The latter arguably is the cleaner approach, the former avoids introducing new configuration parameters. Thus, I'm leaning to 2). Feedback appreciated.
+
+

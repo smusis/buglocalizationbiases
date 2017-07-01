@@ -1,0 +1,12 @@
+FST should differentiate between final vs non-final stop nodes
+
+
+
+Description:
+I'm breaking out this one improvement from LUCENE-2948...
+
+Currently, if a node has no outgoing edges (a "stop node") the FST
+forcefully marks this as a final node, but it need not do this.  Ie,
+whether that node is final or not should be orthogonal to whether it
+has arcs leaving or not.
+

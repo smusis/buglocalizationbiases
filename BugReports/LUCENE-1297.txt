@@ -1,0 +1,13 @@
+Allow other string distance measures in spellchecker
+
+
+
+Description:
+Updated spelling code to allow for other string distance measures to be used.
+
+Created StringDistance interface.
+Modified existing Levenshtein distance measure to implement interface (and renamed class).
+Verified that change to Levenshtein distance didn't impact runtime performance.
+Implemented Jaro/Winkler distance metric
+Modified SpellChecker to take distacne measure as in constructor or in set method and to use interface when calling.
+

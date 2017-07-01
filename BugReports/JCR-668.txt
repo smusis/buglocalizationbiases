@@ -1,0 +1,6 @@
+Allow pseudo properties in query relation
+
+
+
+Description:
+The XPath query parser does not allow using a function name as part of a relation in a query.

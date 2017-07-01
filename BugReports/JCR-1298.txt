@@ -1,0 +1,15 @@
+Wrong schemaObjectPrefix parameter in default repository.xml
+
+
+
+Description:
+The object schema prefix is hard-coded in the default configuration file (I think this taken from the jackrabbit-core.jar):
+
+        <PersistenceManager class="org.apache.jackrabbit.core.persistence.bundle.DerbyPersistenceManager">
+          <param name="url" value="jdbc:derby:${wsp.home}/db;create=true"/>
+          <param name="schemaObjectPrefix" value="Jackrabbit Core_"/>
+        </PersistenceManager>
+
+This is probably caused by JCR-945, though I've no idea why ${wsp.name} is replaced with the name of the module...
+
+I have marked this issue as minor because it still works with the DerbyPersistenceManager. There are separate database instances for each workspace, but it will become a problem if a data base persistence manager on a dedicated server is used.

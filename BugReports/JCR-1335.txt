@@ -1,0 +1,11 @@
+bad assumptions on QueryResult.getIterator() semantics in QueryResultNodeIteratorTest.testSkip()
+
+
+
+Description:
+testSkip() assumes that calling getIterator() a second time will return a new iterator of the same size. JSR-170 is silent on this. Forcing a server to implement this essantially means that the query result must be cached until there's no reference to QueryResult anymore.
+
+As this is a test of skip(), not getIterator(), the test should really refetch a new QueryResult in order to obtain a new iterator.
+
+(Note: The issue of the semantics of QueryResult.getIterator should be discussed by the JCR EG.)
+

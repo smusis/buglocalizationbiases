@@ -1,0 +1,6 @@
+Make term offsets work in MemoryIndex
+
+
+
+Description:
+Fix the logic for retrieving term offsets from DocsAndPositionsEnum on a MemoryIndex, and allow subclasses to access them.

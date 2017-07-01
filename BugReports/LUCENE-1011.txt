@@ -1,0 +1,22 @@
+Two or more writers over NFS can cause index corruption
+
+
+
+Description:
+When an index is used over NFS, and, more than one machine can be a
+writer such that they swap roles quickly, it's possible for the index
+to become corrupt if the NFS client directory cache is stale.
+
+Not all NFS clients will show this.  Very recent versions of Linux's
+NFS client do not seem to show the issue, yet, slightly older ones do,
+and the latest Mac OS X one does as well.
+
+I've been working with Patrick Kimber, who provided a standalone test
+showing the problem (thank you Patrick!).  This came out of this
+thread:
+
+  http://www.gossamer-threads.com/lists/engine?do=post_view_flat;post=50680;page=1;sb=post_latest_reply;so=ASC;mh=25;list=lucene
+
+Note that the first issue in that discussion has been resolved
+(LUCENE-948).  This is a new issue.
+

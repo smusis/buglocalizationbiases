@@ -1,0 +1,6 @@
+Null paths break the compare method
+
+
+
+Description:
+The compare method cannot handle the path being null

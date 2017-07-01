@@ -1,0 +1,7 @@
+Remove ImportContextImpl#getDetector
+
+
+
+Description:
+the method ImportContextImpl#getDetector refers an interface method on ImportContext that does not exist.
+according to jukka that is a leftover. since the method is not used at all i would therefore suggest to remove it altogether, remove the instance field and deprecate the constructor taking the detector param.

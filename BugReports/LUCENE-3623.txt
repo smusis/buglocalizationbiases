@@ -1,0 +1,15 @@
+SegmentReader.getFieldNames ignores FieldOption.DOC_VALUES
+
+
+
+Description:
+we use this getFieldNames api in segmentmerger if we merge something that isn't a SegmentReader (e.g. FilterIndexReader)
+
+it looks to me that if you use a FilterIndexReader, call addIndexes(Reader...) the docvalues will be simply dropped.
+
+I dont think its enough to just note that the field has docvalues either right? We need to also set the type 
+correctly in the merged field infos? This would imply that instead of FieldOption.DOCVALUES, we need to have a 
+FieldOption for each ValueType so that we correctly update the type.
+
+But looking at FI.update/setDocValues, it doesn't look like we 'type-promote' here anyway?
+

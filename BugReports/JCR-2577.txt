@@ -1,0 +1,8 @@
+SISM.checkAddedChildNodes() prevents merging of concurrent changes
+
+
+
+Description:
+This is a regression caused by JCR-2456. The check method reports false positives and prevents merges of concurrently removed child nodes.
+
+The check is done before the local item states are connected to their shared states, which means getAddedChildNodes() will always return the complete list of local child nodes. In addition the merge attempt is also done after the check, which means it is impossible to handle concurrently removed child nodes.

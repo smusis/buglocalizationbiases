@@ -1,0 +1,18 @@
+Improve how ConcurrentMergeScheduler handles too-many-merges case
+
+
+
+Description:
+CMS now lets you set "maxMergeThreads" to control max # simultaneous
+merges.
+
+However, when CMS hits that max, it still allows further merges to
+run, by running them in the foreground thread.  So if you set this max
+to 1, and use 1 thread to add docs, you can get 2 merges running at
+once (which I think is broken).
+
+I think, instead, CMS should pause the foreground thread, waiting
+until the number of merge threads drops below the limit.  Then, kick
+off the backlog merge in a thread and return control back to primary
+thread.
+

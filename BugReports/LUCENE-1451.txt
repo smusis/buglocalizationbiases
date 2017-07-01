@@ -1,0 +1,6 @@
+Can't create NIOFSDirectory w/o setting a system property
+
+
+
+Description:
+NIOFSDirectory.getDirectory() returns a FSDirectory object

@@ -1,0 +1,6 @@
+maven2 repository
+
+
+
+Description:
+Could somebody care to upload jackrabbit to maven2 repo's at ibiblio? (ideally libraries, javadocs, source, pom's - but at least the lib's)

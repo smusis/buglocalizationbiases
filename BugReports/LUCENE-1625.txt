@@ -1,0 +1,18 @@
+openReaderPassed not populated in CheckIndex.Status.SegmentInfoStatus
+
+
+
+Description:
+When using CheckIndex programatically, the openReaderPassed flag on the SegmentInfoStatus is never populated (so it always comes back false)
+
+looking at the code, its clear that openReaderPassed is defined, but never used
+
+furthermore, it appears that not all information that is propagated to the "InfoStream" is available via SegmentIinfoStatus
+
+All of the following information should be able to be gather from public properties on the SegmentInfoStatus:
+test: open reader.........OK
+test: fields, norms.......OK [2 fields]
+test: terms, freq, prox...OK [101 terms; 133 terms/docs pairs; 133 tokens]
+test: stored fields.......OK [100 total field count; avg 1 fields per doc]
+test: term vectors........OK [0 total vector count; avg 0 term/freq vector fields per doc]
+

@@ -1,0 +1,6 @@
+spi2davex NodeInfoImpl should use HashSet instead of ArrayList for childInfos
+
+
+
+Description:
+The subsequent contains call is prohibitively expensive since it returns in an equals call for all existing child infos. 

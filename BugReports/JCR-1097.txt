@@ -1,0 +1,6 @@
+Move the XASession interface to jackrabbit-api
+
+
+
+Description:
+As discussed in JCR-953, it would probably make sense to move the org.apache.jackrabbit.core.XASession from jackrabbit-core to jackrabbit-api as org.apache.jackrabbit.api.XASession.

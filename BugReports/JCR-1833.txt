@@ -1,0 +1,6 @@
+Test case for RTFTextExtractor
+
+
+
+Description:
+There should be a test case for the RTFTextExtractor.

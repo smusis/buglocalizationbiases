@@ -1,0 +1,9 @@
+SQL2 parser: identifiers should be case sensitive
+
+
+
+Description:
+Currently the SQL2 parser converts the query to uppercase before parsing. However the identifiers should be kept case sensitive.
+
+Instead of converting the query to uppercase, String.equalsIgnoreCase should be used to compare against keywords.
+

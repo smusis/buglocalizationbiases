@@ -1,0 +1,88 @@
+Inconsistent behaviour sorting against field with no related documents
+
+
+
+Description:
+In StringSortedHitQueue - generateSortIndex seems to mistake 
+the TermEnum having values as indicating that the sort field 
+has entries in the index.
+
+In the case where the search has matching results an ArrayIndexOutOfBounds
+exception is thrown in sortValue (line 177 StringSortedHitQueue)
+as generateSortIndex creates a terms array of zero length and fieldOrder
+contains 0 for all documents.
+
+It would seem more helpful if:
+a) generateSortIndex catches the lack of any documents with the sort field.
+
+or
+
+b) reserve terms[0] as a special value for documents that do not have
+matching sort field values. ie Change the current implementation to add 1
+to the index and change terms[0] to ensure it sorts "untagged" documents to
+first or last.
+
+For my application Id much prefer solution (b) as it allows much smaller 
+indexes and make searching using sort values less brittle.
+
+Thats the best my communication skills can muster just now. Could change
+current code to something like:
+
+private final int[] generateSortIndex()
+throws IOException {
+
+	final int[] retArray = new int[reader.maxDoc()];
+	final String[] mterms = new String[reader.maxDoc() + 1];  // guess length
+	if (retArray.length > 0) {
+		TermDocs termDocs = reader.termDocs();
+		// change this value to control if documents without sort field come first or last
+		mterms[0] = "";  // XXXXXXXXX change
+		int t = 1;  // current term number  XXXXXXXXXXXXX change
+		try {
+	
+
+			do {
+				Term term = enumerator.term();
+				if (term.field() != field) break;
+
+				// store term text
+				// we expect that there is at most one term per document
+				if (t >= mterms.length) throw new RuntimeException ("there are more terms
+than documents in field \""+field+"\"");
+				mterms[t] = term.text();
+
+				// store which documents use this term
+				termDocs.seek (enumerator);
+				while (termDocs.next()) {
+					retArray[termDocs.doc()] = t;
+				}
+
+				t++;
+			} while (enumerator.next());
+		} finally {
+			termDocs.close();
+		}
+
+		// if there are less terms than documents,
+		// trim off the dead array space
+		if (t < mterms.length) {
+			terms = new String[t];
+			System.arraycopy (mterms, 0, terms, 0, t);
+		} else {
+			terms = mterms;
+		}
+	}
+	return retArray;
+}
+
+Having very quick look at IntegerSortedHitQueue would seem possible
+to do same thing. Maybe creating Integer wrapper objects once.
+
+Hope that made some sort of sense. Im not very familiar with the code
+or Lucene terminology.
+If the above seems like a useful approach Id be glad to generate patches
+for a cleaned up version.
+
+Thanks
+
+Sam

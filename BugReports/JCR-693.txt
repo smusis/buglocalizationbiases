@@ -1,0 +1,6 @@
+jackrabbit-jca rar archive misses required classes
+
+
+
+Description:
+Since the Maven 2 upgrade, the jackrabbit-jca rar archive doesn't contain the rar-specific classes in a jackrabbit-jca jar file that was previously also included in the archive.

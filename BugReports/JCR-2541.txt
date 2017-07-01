@@ -1,0 +1,8 @@
+spi2dav : EventJournal not  implemented
+
+
+
+Description:
+i didn't look at the details just realized that all EventJournalTest of the TCK fail in the setup
+jcr2spi - spi2dav(ex) - jcr-server.
+i assume that this is due to missing implementation (the corresponding SPI method throws UnsupportedRepositoryOperationException).

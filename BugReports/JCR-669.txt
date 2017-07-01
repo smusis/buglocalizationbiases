@@ -1,0 +1,12 @@
+Move NamespaceMappings/Index from lucene to namespace registry.
+
+
+
+Description:
+The NamespaceMappings class in the indexer is used for generating small prefixes for namespace uris that are stored in the index. This mechanism of stable prefixes could be used in other places as well, for example in the persistence managers.
+
+Suggest to introduce general methods in the namespace registry:
+
+int getURIIndex(String uri)
+String getURI(int index)
+

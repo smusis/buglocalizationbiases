@@ -1,0 +1,25 @@
+Add TrieRangeFilter to contrib
+
+
+
+Description:
+According to the thread in java-dev (http://www.gossamer-threads.com/lists/lucene/java-dev/67807 and http://www.gossamer-threads.com/lists/lucene/java-dev/67839), I want to include my fast numerical range query implementation into lucene contrib-queries.
+
+I implemented (based on RangeFilter) another approach for faster
+RangeQueries, based on longs stored in index in a special format.
+
+The idea behind this is to store the longs in different precision in index
+and partition the query range in such a way, that the outer boundaries are
+search using terms from the highest precision, but the center of the search
+Range with lower precision. The implementation stores the longs in 8
+different precisions (using a class called TrieUtils). It also has support
+for Doubles, using the IEEE 754 floating-point "double format" bit layout
+with some bit mappings to make them binary sortable. The approach is used in
+rather big indexes, query times are even on low performance desktop
+computers <<100 ms (!) for very big ranges on indexes with 500000 docs.
+
+I called this RangeQuery variant and format "TrieRangeRange" query because
+the idea looks like the well-known Trie structures (but it is not identical
+to real tries, but algorithms are related to it).
+
+

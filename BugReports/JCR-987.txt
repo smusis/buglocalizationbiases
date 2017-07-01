@@ -1,0 +1,12 @@
+Deploy JCA JAR file to maven repository
+
+
+
+Description:
+Please deploy the JCA JAR file to the maven repository (ibiblio) whenever deploying the RAR artifact.
+
+The JAR is need for non managed usage of the Jackrabbit JCA, eg. for embedding the resource adapter in your application with Spring JCA in order to use XA for Jackrabbit.
+
+It would be nice if this could be done starting at the current 1.3 version (and for future versions, too).
+
+Thanks!

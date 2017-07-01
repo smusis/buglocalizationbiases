@@ -1,0 +1,6 @@
+Stats for Queries
+
+
+
+Description:
+Re-enable the stats for queries, as they were disabled during the refactoring phase.

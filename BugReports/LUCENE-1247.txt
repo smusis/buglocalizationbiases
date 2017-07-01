@@ -1,0 +1,24 @@
+Unnecessary assert in org.apache.lucene.index.DocumentsWriterThreadState.trimFields()
+
+
+
+Description:
+In org.apache.lucene.index.DocumentsWriterThreadState.trimFields() is the following code:
+
+      if (fp.lastGen == -1) {
+        // This field was not seen since the previous
+        // flush, so, free up its resources now
+
+        // Unhash
+        final int hashPos = fp.fieldInfo.name.hashCode() & fieldDataHashMask;
+        DocumentsWriterFieldData last = null;
+        DocumentsWriterFieldData fp0 = fieldDataHash[hashPos];
+        while(fp0 != fp) {
+          last = fp0;
+          fp0 = fp0.next;
+        }
+        assert fp0 != null;
+
+The assert at the end is not necessary as fp0 cannot be null.  The first line in the above code guarantees that fp is not null by the time the while loop is hit.  The while loop is exited when fp0 and fp are equal.  Since fp is not null then fp0 cannot be null when the while loop is exited, thus the assert is guaranteed to never occur.
+
+This was detected by FindBugs.

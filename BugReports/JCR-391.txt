@@ -1,0 +1,7 @@
+WebDAV method invocation trying to create a new resource should fail with 409 (Conflict) if parent resource does not exist
+
+
+
+Description:
+This is Litmus test case copy_nodestcoll. An attempt is made to COPY an existing resource to a new location, where the parent collection of the resource-to-be-created does not exist. RFC2518 asks for status code 409 (Conflict) instead of 403 (Forbidden) in this case.
+

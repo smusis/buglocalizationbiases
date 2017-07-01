@@ -1,0 +1,9 @@
+BundlePersistenceManager.externalBLOBs can not be configured
+
+
+
+Description:
+If you try to configure the property externalBLOBs through the workspace.xml it does not work.
+The BundlePersistenceManager has not Method setExternalBLOBs(boolean externalBLOBs) so it can not be configured
+because its not bean conform. See the DatabasePersistenceManager which has such a Method
+

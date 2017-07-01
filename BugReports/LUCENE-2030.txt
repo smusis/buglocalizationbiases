@@ -1,0 +1,8 @@
+CachingSpanFilter synchronizing on a none final protected object
+
+
+
+Description:
+CachingSpanFilter and CachingWrapperFilter expose their internal cache via a protected member which is lazily instantiated in the getDocSetId method. The current code yields the chance to double instantiate the cache and internally synchronizes on a protected none final member. My first guess is that this member was exposed for testing purposes so it should rather be changed to package private. 
+
+This patch breaks backwards compat while I guess the cleanup is kind of worth breaking it.

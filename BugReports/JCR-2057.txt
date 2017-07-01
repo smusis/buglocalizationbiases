@@ -1,0 +1,26 @@
+When creating multiple repository instances pointing to the same home, opening a second session will remove the .lock file
+
+
+
+Description:
+The following test case can be used to reproduce the bug:
+Repository repo1 = new TransientRepository(repoConfig);
+Session session1_1 = repo1.login(...);
+Session session2_2 = repo1.login(...);
+Repository repo2 = new TransientRepository(repoConfig); // Will not fail (expected)
+Session session2_1 = repo2.login(...); // Will fail with javax.jcr.RepositoryException: The repository home /tmp/_repository appears to be already locked by the current process (expected)
+Session session2_2 = repo2.login(...); // Will work!
+Repository repo3 = new TransientRepository(repoConfig); // Will not fail either (expected)
+Session session3_1 = repo3.login(...); // Will fail with javax.jcr.RepositoryException: The repository home /tmp/_repository appears to be already locked by the current process (expected)
+Session session3_2 = repo3.login(...); // Will fail with javax.jcr.RepositoryException: Directory was previously created with a different LockFactory instance
+
+Open the first session in repo2 will fails but will also remove the .lock file, thus the second
+session will succeed and may corrupt the repository because there are multiple session
+opened from multiple repository.
+The same behaviour occurs for repo3, the .lock file is removed but it is a slightly different case
+as a new exception will be thrown while creating the Lucene index.
+
+This is a clearly a twisted case as repositories pointing to the same home must not be created
+simultaneously but i think that it must be more robust to prevent data corruption.
+
+I reproduce the bug on JR 1.4.7 and 1.5.3 but i think it affects at least all versions of JR < 1.5.3.

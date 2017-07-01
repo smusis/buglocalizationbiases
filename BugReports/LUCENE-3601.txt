@@ -1,0 +1,8 @@
+testIWondiskfull unreferenced files failure
+
+
+
+Description:
+NOTE: reproduce with: ant test -Dtestcase=TestIndexWriterOnDiskFull -Dtestmethod=testAddDocumentOnDiskFull -Dtests.seed=aff9b14dd518cfb:4d2f112726e2947f:-2b03094a43a947ee -Dtests.multiplier=3 -Dargs="-Dfile.encoding=ISO8859-1"
+
+Reproduces some of the time...

@@ -1,0 +1,19 @@
+Weird locking behaviour in CachingHierarchyManager
+
+
+
+Description:
+in some of our itegration tests the repository sometime locks-up with a stacktrace like this:
+
+"Thread-38" daemon prio=5 tid=0x08cb3908 nid=0xdd8 runnable [9fef000..9fefd90]
+        at org.apache.jackrabbit.core.CachingHierarchyManager.removeLRU(CachingHierarchyManager.java:540)
+        - waiting to lock <0x16a9b0e0> (a java.lang.Object)
+        at org.apache.jackrabbit.core.CachingHierarchyManager.cache(CachingHierarchyManager.java:510)
+        - locked <0x16a9b0e0> (a java.lang.Object)
+        at org.apache.jackrabbit.core.CachingHierarchyManager.buildPath(CachingHierarchyManager.java:163)
+        at org.apache.jackrabbit.HierarchyManagerImpl.buildPath(HierarchyManagerImpl.java:296)
+[...]
+
+although i think that this sacktrace is valid (a thread holding a monitor waiting to lock it again) this scenario shows up a lot during stress-testing. i assume it's the JIT that messesup synchornization. 
+
+the fix is to remove the double monitor entry in this case.

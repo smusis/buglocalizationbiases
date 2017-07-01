@@ -1,0 +1,35 @@
+NPE in ItemManager when calling Session.save() with nothing to save
+
+
+
+Description:
+I'm getting an NPE on the id.denoteNodes() call below, in ItemManager:
+
+    private ItemData retrieveItem(ItemId id) {
+        synchronized (itemCache) {
+            ItemData data = itemCache.get(id);
+            if (data == null && id.denotesNode()) {
+...
+
+because the id is null after taking the second branch of this if in SessionSaveOperation.perform:
+
+        if (context.getSessionImpl().hasPermission("/", Session.ACTION_READ)) {
+            id = context.getRootNodeId();
+        } else {
+            id = context.getItemStateManager().getIdOfRootTransientNodeState();
+        }
+
+context.toString() says:
+
+session-author-3623:
+ItemManager (org.apache.jackrabbit.core.ItemManager@1e911ccc)
+Items in cache:
+
+SessionItemStateManager (org.apache.jackrabbit.core.state.SessionItemStateManager@15472b43)
+[transient]
+{}[attic]
+{}
+
+which I assume means there's nothing to save.
+
+The correct behavior is probably to do nothing in perform to avoid the NPE.

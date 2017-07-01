@@ -1,0 +1,22 @@
+Oracle JDBC Class Cast Exception
+
+
+
+Description:
+When utilizing the OraclePersistenceManager (package org.apache.jackrabbit.core.persistence.db) (I realize this is marked as deprecated) we noticed during our migration from Jackrabbit 1.6.1 to 2.2.10/11 that when starting the application server an error message is displayed to us that indicates that the Connection object passed to the createTemporaryBlob method of the BLOB class can't be cast to oracle.jdbc.OracleConnection
+
+Here the interesting lines from our log:
+2012-03-15 17:15:47,926 ERROR [org.apache.jackrabbit.core.persistence.db.OraclePersistenceManager] failed to write node state: cafebabe-cafe-babe-cafe-babecafebabe
+java.lang.ClassCastException: org.apache.commons.dbcp.PoolingDataSource$PoolGuardConnectionWrapper cannot be cast to oracle.jdbc.OracleConnection
+	at oracle.sql.BLOB.createTemporary(BLOB.java:708)
+	at org.apache.jackrabbit.core.persistence.db.OraclePersistenceManager.createTemporaryBlob(OraclePersistenceManager.java:375)
+
+I want to highlight at this point that the do not see the issue when using the Oracle Bundled persistence manager, however due to the fact that we haven't used the bundled version in the past we have a lot of customers with repo layouts that can not be used by the bundled persistence manager - we ran some tests and noticed that the consistency check fails.
+-> At the moment there is no good upgrade path to move a repo to the bundled structure, the paths provided thus far are shaky at best.
+
+I did find a solution to the problem that has shown no issues thus far and wanted to share this with you:
+
+It is a one line change that can be made before the wrapped connection is passed to the Oracle driver:
+org.apache.jackrabbit.core.util.db.ConnectionFactory.unwrap(con);
+
+This then solves the problem, I also wanted to share that we are using an XA datasource.

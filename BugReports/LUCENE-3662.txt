@@ -1,0 +1,18 @@
+extend LevenshteinAutomata to support transpositions as primitive edits
+
+
+
+Description:
+This would be a nice improvement for spell correction: currently a transposition counts as 2 edits,
+which means users of DirectSpellChecker must use larger values of n (e.g. 2 instead of 1) and 
+larger priority queue sizes, plus some sort of re-ranking with another distance measure for good results.
+
+Instead if we can integrate "chapter 7" of http://citeseerx.ist.psu.edu/viewdoc/summary?doi=10.1.1.16.652 
+then you can just build an alternative DFA where a transposition is only a single edit 
+(http://en.wikipedia.org/wiki/Damerau%E2%80%93Levenshtein_distance)
+
+According to the benchmarks in the original paper, the performance for LevT looks to be very similar to Lev.
+
+Support for this is now in moman (https://bitbucket.org/jpbarrette/moman/) thanks to Jean-Philippe 
+Barrette-LaPierre.
+

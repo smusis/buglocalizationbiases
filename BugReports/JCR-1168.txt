@@ -1,0 +1,46 @@
+broken test in AddEventListener
+
+
+
+Description:
+Here's the test code, comments inline prefixed with "reschke"
+
+    /**
+     * Tests if {@link javax.jcr.observation.Event#NODE_ADDED} is created only
+     * for the specified path if <code>isDeep</code> is <code>false</code>.
+     */
+    public void testIsDeepFalseNodeAdded() throws RepositoryException {
+        EventResult listener = new EventResult(log);
+
+        // reschke: we are listening for changes at testRoot/nodeName1, with isDeep==false 
+        obsMgr.addEventListener(listener, Event.NODE_ADDED, testRoot + "/" + nodeName1, false, null, null, false);
+
+        // reschke; node at "testRoot/nodeName1" being created, the associated parent node for this event is "testRoot"
+        Node n = testRootNode.addNode(nodeName1, testNodeType);
+
+        // reschke: node at "testRoot/nodeName1/nodeName2" being created, the associated parent node for this event is "testRoot/nodeName1"
+        n.addNode(nodeName2);
+        testRootNode.save();
+
+        Event[] events = listener.getEvents(DEFAULT_WAIT_TIMEOUT);
+        obsMgr.removeEventListener(listener);
+
+        // reschke: test case expects event with path "testRoot/nodeName1"
+        checkNodeAdded(events, new String[]{nodeName1});
+    }
+
+So, in plain english:
+
+- test case listens for events where the associated parent node equals "testRoot/nodeName1", but
+- it expects a single event where the Event.getPath() returns "testRoot/nodeName1".
+
+This is incorrect (IMHO), because the associated parent node for *that* event is "testRoot". 
+
+So the correct test would be to check for:
+
+        checkNodeAdded(events, new String[]{nodeName1 + "/" + nodeName2});
+
+Making this change of course leads to a test failure reported against the RI.
+
+Feedback appreciated.
+

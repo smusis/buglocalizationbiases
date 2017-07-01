@@ -1,0 +1,16 @@
+Quick Start guide for HttpClient 4.0
+
+
+
+Description:
+cannot determine the required jar files to compile samples/ own files
+
+example org.apache.http.examples.client.ClientFormLogin
+
+used
+
+set CLASSPATH=P:\j\samples\httpClient\examples;j:\j\j5\h;P:\j\e\mysql.jar;P:\j\e\commons-logging-api-1.1.1.jar;P:\j\e\commons-logging-1.1.1.jar;P:\j\e\4\httpmime-4.0-beta2.jar;P:\j\e\4\httpclient-4.0-beta2.jar;P:\j\e\4\h\e\4\httpcore-4.0-beta3.jar;P:\j\e\4\httpcore-nio-4.0-beta3.jar
+
+but still needs org.apache.http.*; ... where are these jars? a quick start guide / link to all jars for one version would help
+
+- only known workaround - go back to old version 3.1

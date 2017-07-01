@@ -1,0 +1,6 @@
+Change all contrib TokenStreams/Filters to use the new TokenStream API
+
+
+
+Description:
+Now that we have the new TokenStream API (LUCENE-1422) we should change all contrib modules to use it.

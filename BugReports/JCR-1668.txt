@@ -1,0 +1,32 @@
+After RepositoryImpl instance has been created and shut down, some classes cannot be unloaded
+
+
+
+Description:
+I've built a simple web-application, which contains one servlet loaded at start-up. In its init() method an instance of RepositoryImpl() is created, in its destroy() method this instance is stopped (using shutdown()).
+From the servlet code, only classes in jackrabbit-core, JCR API and Servlet API are referenced.
+jackrabbit-core version is 1.4.5, and jackrabbit-jcr-commons version is 1.4.2. Other jackrabbit libs are all of 1.4 version.
+
+Even if servlet's doGet() method never gets called, when the web-application is redeployed, all its classes still hang in memory, which produces a memory leak.
+
+init() method is 
+
+    public void init() throws ServletException {
+        super.init();
+        try {
+            RepositoryConfig repoConfig = RepositoryConfig.create(getClass().getResourceAsStream("repository.xml"), ".");
+            repo = RepositoryImpl.create(repoConfig);
+        } catch (Exception e) {
+            throw new ServletException(e);
+        }
+    }
+
+while destroy() method is
+
+    public void destroy() {
+        repo.shutdown();
+        super.destroy();
+    }
+
+Even when I applied patches from JCR-1636 and added TransientFileFactory.shutdown() call to destroy() method, nothing has changed.
+Tested this in Jetty 6.1.9 and Tomcat 6.0.14.

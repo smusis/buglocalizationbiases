@@ -1,0 +1,8 @@
+Uploade Lucene 2.1 to ibiblio
+
+
+
+Description:
+Please uploaded Lucene (specifically lucene-core) 2.1.0 to ibiblio. I see 2.0.0 but not 2.1.0.
+
+Thanks!

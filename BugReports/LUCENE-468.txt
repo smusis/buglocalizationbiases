@@ -1,0 +1,14 @@
+Searchable.java: The info in the @deprecated tags do not refer to the search(Weight, etc...) versions...
+
+
+
+Description:
+E.g.
+
+The javadoc for 
+          void search(Query query, Filter filter, HitCollector results)
+states:
+          Deprecated. use search(Query, Filter, HitCollector) instead.
+instead of:
+          Deprecated. use search(Weight, Filter, HitCollector) instead.
+

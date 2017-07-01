@@ -1,0 +1,26 @@
+Cookies with ',' in the value string is not parsed correctly in some cases
+
+
+
+Description:
+This version extracts the "Set-Cookie" statementes of the following
+HTTP response headers incorrectly.
+
+The HTTP response is sent when executing GET method on --->
+"http://my.taishinbank.com.tw/netbank/nbslogin.asp?
+subFunID=https://my.taishinbank.com.tw/netbank/AccountQuery/QAccbyID.asp"
+
+After the HttpClient extracts Set-Cookie from the response, it generates a wrong
+cookie statement---->
+
+  [INFO] wire - ->> "Cookie: $Version=0; _mysite=520163500; 1027657033=null; 
+   1027787539=null; 0=null; $Path=/; cata=11; $Path=/;   
+   ASPSESSIONIDGGGQQXEU=ADLCDAGAJLKEBJEKBOMMAMOB; 
+   $Path=/"
+
+, where it shall 
+be "_mysite=520163500,1027657033,1027787539,1027787539,0;" ,but 
+not "_mysite=520163500; 1027657033=null; 1027787539=null; 0=null;"
+ 
+
+Thank you

@@ -1,0 +1,6 @@
+SPNEGO authentication scheme
+
+
+
+Description:
+Consider integrating the SPNEGO auth scheme from Commons HttpClient contrib package into HttpClient 4.0

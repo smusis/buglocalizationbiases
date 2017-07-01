@@ -1,0 +1,21 @@
+Provide a JackrabbitNode#setMixins(String[] mixinNames) method
+
+
+
+Description:
+assume the following scenario:
+
+- mixin A declares the mandatory property p
+- mixin A' extends from A
+- node n has mixin A'
+- we'd like to migrate/downgrade node n from mixin A' to A
+
+currently there's no easy way of replacing the assigned mixins.
+
+assigning A first results in a NOP since A would be redundant.
+removing A' first removes the mandatory property p.
+
+a new method setMixins(String[]) would allow to migrate
+a node from mixin A' to A while preserving 'shared' content.
+the semantics of setMixins(String[]) would be similar to
+Node.setPrimaryType(String).

@@ -1,0 +1,8 @@
+Database Data Store
+
+
+
+Description:
+We want to have a database backed data store implementation.
+An implementation using files is already available as part of JCR-926.
+

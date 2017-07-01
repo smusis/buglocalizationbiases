@@ -1,0 +1,13 @@
+ParallelReader fails on deletes and on seeks of previously unused fields
+
+
+
+Description:
+In using ParallelReader I've hit two bugs:
+
+1.  ParallelReader.doDelete() and doUndeleteAll() call doDelete() and doUndeleteAll() on the subreaders, but these methods do not set hasChanges.  Thus the changes are lost when the readers are closed.  The fix is to call deleteDocument() and undeleteAll() on the subreaders instead.
+
+2.  ParallelReader discovers the fields in each subindex by using IndexReader.getFieldNames() which only finds fields that have occurred on at least one document.  In general a parallel index is designed with assignments of fields to sub-indexes and term seeks (including searches) may be done on any of those fields, even if no documents in a particular state of the index have yet had an assigned field.  Seeks/searches on fields that have not yet been indexed generated an NPE in ParallelReader's various inner class seek() and next() methods because fieldToReader.get() returns null on the unseen field.  The fix is to extend the add() methods to supply the correct list of fields for each subindex.
+
+Patch that corrects both of these issues attached.
+

@@ -1,0 +1,21 @@
+ObjectConverterImpl.getObject(Session, Class, String) may not resolve mapping correctly for incompletely described mappings
+
+
+
+Description:
+When a node is mapped by calling the ObjectConverter.getObject(Session, Class, String) method and no discriminator property is configured the ObjectConverterImpl class tries to find a "best" mapping for the effective node. This is done by walking the class descriptor hierarchy starting at the descriptor for the selected class until a mapping for the node type is found.
+
+In case the class descriptor hierarchy is incomplete because an improperly defined class descriptor would actually perfectly map the node but is not declared to extend (or implement) its parent classes/interfaces, the hierarchy walk down will not find the mapping and thus in the end, the originally requested class will be instantiated. If the class is abstract or an interface this of course fails.
+
+If an exact class descriptor for the node type would be looked up directly, the mapping might be found immediately and the class of the descriptor can be verified it actually is assignement compatible with the requested class. If this would fail, we could still walk the hierarchy to see, whether we find another classdescriptor.
+
+To clarify the issue consider the following example of an abstract base class and a concrete extension class with their node types
+
+   AbstractBaseClass maps abstractly to AbstractBaseType
+   BaseClass (extends AbstractBaseClass) maps to BaseType ( with supertype AbstractBaseType )
+
+Note, that the BaseClass mapping does not declare to extend the AbstractBaseClass.
+
+When calling ObjectConverterImpl.getObject(session, AbstractBaseClass.class, aBaseTypeNode), the descriptor fore the AbstractBaseClass is inspected agains the node and then it is decided to check the class descriptor hierarchy. Node mapping can be found by walking the hierarchy and hence the AbstractBaseClass is instantiated, which of course fails.
+
+If the BaseClass mapping would be declared as extending the AbstractBaseClass mapping, everything would be fine.

@@ -1,0 +1,29 @@
+Field Selection and Lazy Field Loading
+
+
+
+Description:
+The patch to come shortly implements a Field Selection and Lazy Loading mechanism for Document loading on the IndexReader.
+
+It introduces a FieldSelector interface that defines the accept method:
+FieldSelectorResult accept(String fieldName);
+
+(Perhaps we want to expand this to take in other parameters such as the field metadata (term vector, etc.))
+
+Anyone can implement a FieldSelector to define how they want to load fields for a Document.  
+The FieldSelectorResult can be one of four values: LOAD, LAZY_LOAD, NO_LOAD, LOAD_AND_BREAK.  
+The FieldsReader, as it is looping over the FieldsInfo, applies the FieldSelector to determine what should be done with the current field.
+
+I modeled this after the java.io.FileFilter mechanism.  There are two implementations to date: SetBasedFieldSelector and LoadFirstFieldSelector.  The former takes in two sets of field names, one to load immed. and one to load lazily.  The latter returns LOAD_AND_BREAK on the first field encountered.  See TestFieldsReader for examples.
+
+It should support UTF-8 (I borrowed code from Issue 509, thanks!).  See TestFieldsReader for examples
+
+I added an expert method on IndexInput  named skipChars that takes in the number of characters to skip.  This is a compromise on changing the file format of the fields to better support seeking.  It does some of the work of readChars, but not all of it.  It doesn't require buffer storage and it doesn't do the bitwise operations.  It just reads in the appropriate number of bytes and promptly ignores them.  This is useful for skipping non-binary, non-compressed stored fields.
+
+The biggest change is by far the introduction of the Fieldable interface (as per Doug's suggestion from a mailing list email on Lazy Field loading from a while ago).  Field is now a Fieldable.  All uses of Field have been changed to use Fieldable.  FieldsReader.LazyField also implements Fieldable.
+
+Lazy Field loading is now implemented.  It has a major caveat (that is Documented) in that it clones the underlying IndexInput upon lazy access to the Field value.  IT IS UNDEFINED whether a Lazy Field can be loaded after the IndexInput parent has been closed (although, from what I saw, it does work).  I thought about adding a reattach method, but it seems just as easy to reload the document.  See the TestFieldsReader and DocHelper for examples.
+
+I updated a couple of other tests to reflect the new fields that are on the DocHelper document.
+
+All tests pass.

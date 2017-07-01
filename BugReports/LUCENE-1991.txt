@@ -1,0 +1,17 @@
+Similarity#score deprecated method - javadoc reference + SimilarityDelegator
+
+
+
+Description:
+Old method  
+
+  public float scorePayload(String fieldName, byte [] payload, int offset, int length)
+
+has been deprecated by - 
+
+  public float scorePayload(int docId, String fieldName, int start, int end, byte [] payload, int offset, int length)
+
+
+References in PayLoadNearQuery (javadoc) changed. 
+
+Also - SimilarityDelegator overrides the new method as opposed to the (deprecated) old one. 

@@ -1,0 +1,15 @@
+IndexWriter can flush too early when flushing by RAM usage
+
+
+
+Description:
+There is a silly bug in how DocumentsWriter tracks its RAM usage:
+whenever term vectors are enabled, it incorrectly counts the space
+used by term vectors towards flushing, when in fact this space is
+recycled per document.
+
+This is not a functionality bug.  All it causes is flushes to happen
+too frequently, and, IndexWriter will use less RAM than you asked it
+to.  To work around it you can simply give it a bigger RAM buffer.
+
+I will commit a fix shortly.

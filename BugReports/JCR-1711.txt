@@ -1,0 +1,14 @@
+Download: improve user experience
+
+
+
+Description:
+The download section at http://jackrabbit.apache.org/downloads.html
+contains many files. The number of files should be reduced.
+
+Some of them contain other files, for example the .rar files, and the .war files. 
+The file jackrabbit-jca-1.4.rar  contains an old version of jackrabbit-core:
+jackrabbit-core-1.4.jar - however the newest version of jackrabbit-core is 
+jackrabbit-core-1.4.5.jar
+
+This often leads to problems.

@@ -1,0 +1,6 @@
+Caching client has a class for common headers that was not being used consistently in the code
+
+
+
+Description:
+The HttpCachingClient has a class called HeaderConstants that contains all the cache interesting headers that are used in the code base.  This class of string constants was not being used consistently in the code base.  The attached patch cleans this up.

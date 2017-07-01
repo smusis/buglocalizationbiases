@@ -1,0 +1,10 @@
+Grouping module should allow subclasses to set the group key per document
+
+
+
+Description:
+The new grouping module can only group by a single-valued indexed field.
+
+But, if we make the 'getGroupKey' a method that a subclass could override, then I think we could refactor Solr over to the module, because it could do function queries and normal queries via subclass (I think).
+
+This also makes the impl more extensible to apps that might have their own interesting group values per document.

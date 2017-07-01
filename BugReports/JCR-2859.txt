@@ -1,0 +1,9 @@
+Make open scoped locks recoverable
+
+
+
+Description:
+The lock tokens for open scoped locks are currently tied to the session which created the lock. If the session dies (for whatever reason) there is no way to recover the lock and unlock the node.
+There is a theoretical way of adding the lock token to another session, but in most cases the lock token is not available.
+
+Fortunately, the spec allows to relax this behaviour and I think it would make sense to allow all sessions from the same user to unlock the node - this is still in compliance with the spec but would make unlocked locked nodes possible in a programmatic way.

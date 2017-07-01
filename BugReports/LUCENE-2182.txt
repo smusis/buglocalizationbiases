@@ -1,0 +1,14 @@
+DEFAULT_ATTRIBUTE_FACTORY faills to load implementation class when iterface comes from different classloader
+
+
+
+Description:
+This is a followup for [http://www.lucidimagination.com/search/document/1724fcb3712bafba/using_the_new_tokenizer_api_from_a_jar_file]:
+
+The DEFAULT_ATTRIBUTE_FACTORY should load the implementation class for a given attribute interface from the same classloader like the attribute interface. The current code loads it from the classloader of the lucene-core.jar file. In solr this fails when the interface is in a JAR file coming from the plugins folder. 
+
+The interface is loaded correctly, because the addAttribute(FooAttribute.class) loads the FooAttribute.class from the plugin code and this with success. But as addAttribute tries to load the class from its local lucene-core.jar classloader it will not find the attribute.
+
+The fix is to tell Class.forName to use the classloader of the corresponding interface, which is the correct way to handle it, as the impl and the attribute should always be in the same classloader and file.
+
+I hope I can somehow add a test for that.

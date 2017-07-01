@@ -1,0 +1,6 @@
+Remove Deprecated Benchmarking Utilities from contrib/benchmark
+
+
+
+Description:
+The old Benchmark utilities in contrib/benchmark have been deprecated and should be removed in 2.9 of Lucene.

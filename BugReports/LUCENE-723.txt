@@ -1,0 +1,8 @@
+QueryParser support for MatchAllDocs
+
+
+
+Description:
+It seems like there really should be QueryParser support for MatchAllDocsQuery.
+I propose *:* (brings back memories of DOS :-)
+

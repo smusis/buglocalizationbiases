@@ -1,0 +1,9 @@
+NTLM Authentication Fails
+
+
+
+Description:
+NTLM Authentication requires multiple request/responses for the authentication
+to succeed.  Since HttpMethodBase is now using just the host, port and realm to
+identify whether or not authentication has been attempted the second pass for
+NTLM authentication is never performed.

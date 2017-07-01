@@ -1,0 +1,6 @@
+Cleanup 'good' queries code
+
+
+
+Description:
+Before moving some of the classes from the queries contrib to the queries module, I want to just pass over them and clean them up, since we want code in modules to be of the same calibre as core code.

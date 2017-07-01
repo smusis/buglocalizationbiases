@@ -1,0 +1,15 @@
+it is not possible to register an event listener which listens to mixin nodetypes
+
+
+
+Description:
+it would be a nice enhancement if one could as well define mixin nodetypes to be listened:
+...
+om.addEventListener(this,
+                        Event.PROPERTY_ADDED | Event.PROPERTY_CHANGED | Event.PROPERTY_REMOVED,
+                        "/",
+                        true,
+                        null,
+                        new String[]{"mix:Custom"},
+                        false);
+...

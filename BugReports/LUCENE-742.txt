@@ -1,0 +1,6 @@
+SpanOrQuery.java: simplification and test
+
+
+
+Description:
+The current SpanOrQuery.java has some unnessary attributes. After removing these, I found that there was no existing test for it, so I added some tests to TestSpans.java.

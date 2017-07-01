@@ -1,0 +1,6 @@
+ItemInfoBuilder should not include PropertyInfos in ChildInfos
+
+
+
+Description:
+When building a NodeInfo instance using the ItemInfoBuilder, getChildInfos() returns entries for the PopertyInfos. This is wrong: getChildInfos should only include entries for the child nodes. 

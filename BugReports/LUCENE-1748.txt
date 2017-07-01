@@ -1,0 +1,10 @@
+getPayloadSpans on org.apache.lucene.search.spans.SpanQuery should be abstract
+
+
+
+Description:
+I just spent a long time tracking down a bug resulting from upgrading to Lucene 2.4.1 on a project that implements some SpanQuerys of its own and was written against 2.3.  Since the project's SpanQuerys didn't implement getPayloadSpans, the call to that method went to SpanQuery.getPayloadSpans which returned null and caused a NullPointerException in the Lucene code, far away from the actual source of the problem.  
+
+It would be much better for this kind of thing to show up at compile time, I think.
+
+Thanks!

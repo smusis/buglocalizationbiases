@@ -1,0 +1,11 @@
+Change Visibility of fields[] in MultiFieldQueryParser
+
+
+
+Description:
+In MultiFieldQueryParser the two methods 
+
+  protected Query getFuzzyQuery(String field, String termStr, float minSimilarity) throws ParseException
+  protected Query getWildcardQuery(String field, String termStr) throws ParseException
+
+are intended to be overwritten if one would like to avoid fuzzy and wildcard queries. However, the String[] fields attribute of this class is private and hence it is not accessible in subclasses of MFQParser. If you just change it to protected this issue should be solved.

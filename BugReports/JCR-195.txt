@@ -1,0 +1,51 @@
+ArrayIndexOutOfBounds thrown on re-index of repository
+
+
+
+Description:
+I encountered a problem with the Lucene NodeIndexer when forcing the repository to re-index itself.
+
+Using the default repository.xml file provided with the examples contribution, I loaded a number of PDF files using the sample application FSImport.  In this utility, the "encoding" property is set to the empty string "" for all the files.  The system appeared to index everything properly.  I then stopped the repository, deleted the index files and then restarted the repositoyr.  Re-indexing was initiated and a "ArrayIndexOutOfBoundsException" was thrown from the org.apache.jackrabbit.core.query.lucene.NodeIndexer.java
+
+The code in question:
+
+                // jcr:encoding is not mandatory
+                String encoding = null;
+                if (node.hasPropertyName(JCR_ENCODING)) {
+                    PropertyState encodingProp =
+                            (PropertyState) stateProvider.getItemState(new PropertyId(node.getUUID(), JCR_ENCODING));
+                    encodingProp.getValues()[0].internalValue().toString();
+
+
+                }
+
+Expects the encodingProperty to be set if the property exists.  However, the node has the property, but the XMLPersistenceManager did not create any entries in the property array.  Either there is a problem in the XMLPersistenceManager (zero length string issues), or the NodeIndexer needs to be altered to verify that there is actually a value for a particular property.
+
+Since the jcr:encoding property is not considered a multi-value property, the requirement to check for an initialized array is probably not the correct route.
+
+Looking at the code for the XMLPersistenceManager readState(DOMWalker walker, PropertyState state) method (line 294), it indicates that if the content length for a property is zero, the property will not have a value added.  However, our encoding property is configured as the empty string and should be created.  Therefore, a suggested alteration is to check if the property is a string, and, even if zero length, add the property value.
+
+        ArrayList values = new ArrayList();
+        if (walker.enterElement(VALUES_ELEMENT)) {
+            while (walker.iterateElements(VALUE_ELEMENT)) {
+                // read serialized value
+                String content = walker.getContent();
+                if ((content.length() > 0) || (PropertyType.STRING == type)) {   // <==== suggested update
+                    if (type == PropertyType.BINARY) {
+                        // special handling required for binary value:
+                        // the value stores the path to the actual binary file in the blob store
+                        try {
+                            values.add(InternalValue.create(new FileSystemResource(blobStore, content)));
+                        } catch (IOException ioe) {
+                            String msg = "error while reading serialized binary value";
+                            log.debug(msg);
+                            throw new ItemStateException(msg, ioe);
+                        }
+                    } else {
+                        values.add(InternalValue.valueOf(content, type));
+                    }
+                }
+            }
+            walker.leaveElement();
+        }
+

@@ -1,0 +1,8 @@
+filter jcr properties in jcr-server
+
+
+
+Description:
+attached is a patch that implements jcr property filtering in jcr-server in the same way that nodes and resources are filtered. with the default filter configuration, this has the effect of filtering jcr:created, jcr:mixinTypes, and jcr:primaryType from nt:folder and nt:file nodes. 
+
+this is likely the expected default behavior for most webdav servers - they want to return the normal dav properties, live properties defined themselves, and dead properties defined by clients, but not jcr-internal properties which are for all intents and purposes implementation-specific.

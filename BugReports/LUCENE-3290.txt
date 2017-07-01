@@ -1,0 +1,16 @@
+add FieldInvertState.numUniqueTerms, Terms.sumDocFreq
+
+
+
+Description:
+For scoring systems like lnu.ltc (http://trec.nist.gov/pubs/trec16/papers/ibm-haifa.mq.final.pdf), we need to supply 3 stats:
+* average tf within d
+* # of unique terms within d
+* average number of unique terms across field
+
+If we add FieldInvertState.numUniqueTerms, you can incorporate the first two into your norms/docvalues (once we cut over),
+the average tf within d being length / numUniqueTerms.
+
+to compute the average across the field, we can just write the sum of all terms' docfreqs into the terms dictionary header,
+and you can then divide this by maxdoc to get the average.
+

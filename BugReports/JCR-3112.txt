@@ -1,0 +1,10 @@
+NodeTypeDefDiff.PropDefDiff.init() constraints change check bugs
+
+
+
+Description:
+Two bugs have been found in NodeTypeDefDiff.PropDefDiff.init() when try to modify property constraints of an already registered node type:
+
+1) according to the java doc it should be possible to remove all constraints from a property, but it is not (marked as a MAJOR change).
+ 
+2) it's allowed (TRIVIAL) to set a constraint to a property that had no constraint at all before, which is wrong, because it could affect the consistency of existing repository content.

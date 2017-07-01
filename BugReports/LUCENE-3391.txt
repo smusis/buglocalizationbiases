@@ -1,0 +1,6 @@
+Make EasySimilarityProvider a full-fledged class 
+
+
+
+Description:
+The {{EasySimilarityProvider}} in {{TestEasySimilarity}} would be a good candidate for a full-fledged class. Both {{DefaultSimilarity}} and {{BM25Similarity}} have their own providers, which are effectively the same,so I don't see why we couldn't add one generic provider for convenience.

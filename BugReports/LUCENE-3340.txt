@@ -1,0 +1,8 @@
+Buffered deletes are not flushed by RAM or count
+
+
+
+Description:
+When a segment is flushed, we will generally NOT flush the deletes, ie we simply buffer up the pending delete terms/queries, and the only apply them if 1) a segment is going to be merged (so we can remove the del docs in that segment), or 2) the buffered deletes' RAM exceeds 1/2 of IW's RAM limit when we are flushing a segment, or 3) the buffered deletes count exceeds IWC's maxBufferedDeleteTerms.
+
+But the latter 2 triggers are currently broken on trunk; I suspect (but I'm not sure) when we landed DWPT we introduced this bug.

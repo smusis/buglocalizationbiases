@@ -1,0 +1,26 @@
+Add a waitForMerges() method to IndexWriter
+
+
+
+Description:
+It would be very useful to have a waitForMerges() method on the IndexWriter.
+
+Right now, the only way i can see to achieve this is to call IndexWriter.close()
+
+ideally, there would be a method on the IndexWriter to wait for merges without actually closing the index.
+This would make it so that background merges (or optimize) can be waited for without closing the IndexWriter, and then reopening a new IndexWriter
+
+the close() reopen IndexWriter method can be problematic if the close() fails as the write lock won't be released
+this could then result in the following sequence:
+* close() - fails
+* force unlock the write lock (per close() documentation)
+* new IndexWriter() (acquires write lock)
+* finalize() on old IndexWriter releases the write lock
+* Index is now not locked, and another IndexWriter pointing to the same directory could be opened
+
+If you don't force unlock the write lock, opening a new IndexWriter will fail until garbage collection calls finalize() the old IndexWriter
+
+If the waitForMerges() method is available, i would likely never need to close() the IndexWriter until right before the process being shutdown, so this issue would not occur (worst case scenario, the waitForMerges() fails)
+
+
+

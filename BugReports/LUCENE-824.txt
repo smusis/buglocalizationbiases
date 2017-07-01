@@ -1,0 +1,6 @@
+IndexWriter#addIndexesNoOptimize has redundent try/catch
+
+
+
+Description:
+With the new transaction code, the try/catch clause at the beginning of IndexWriter#addIndexesNoOptimize is redundant.

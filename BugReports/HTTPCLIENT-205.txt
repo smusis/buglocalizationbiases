@@ -1,0 +1,8 @@
+HttpMethodBase(String) incorrectly encoding URI
+
+
+
+Description:
+The HttpMethodBase(String) constructor is handling URIs incorrectly. The
+Javadocs indicate that the given URI should already be escaped but the
+constructor uses the URI constructor for unescaped URIs.

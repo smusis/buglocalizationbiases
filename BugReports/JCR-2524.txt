@@ -1,0 +1,6 @@
+Reduce memory usage of DocIds
+
+
+
+Description:
+Implementations of DocIds are used to cache parent child relations of nodes in the index. Usually there are a lot of duplicate objects because a DocId instance is used to identify the parent of a node in the index. That is, sibling nodes will all have DocIds with the same value. Currently a new DocId instance is created for each node. Caching the most recently used DocIds and reuse them might help to reduce the memory usage. Furthermore there are DocIds that could be represented with a short instead of an int when possible.

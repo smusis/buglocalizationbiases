@@ -1,0 +1,8 @@
+Better integration of the TestWebApp-HowTo into the documentation
+
+
+
+Description:
+The excellent webapp howto written by Olegolas needs to be integrated better
+into httpclient documentation.  Currently it is in the docs directory as a html
+file, but it would be better if it was in the xdocs directory as an xml file.

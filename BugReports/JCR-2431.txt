@@ -1,0 +1,12 @@
+CooperativeFileLock improvements
+
+
+
+Description:
+The CooperativeFileLock doesn't have any test cases. Also, there are a few ways to improve it:
+
+- Avoid the exception "lock file modified in the future"
+- Stop the thread immediately after releasing the lock
+- Detect locked repositories a bit earlier
+
+

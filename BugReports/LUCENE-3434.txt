@@ -1,0 +1,8 @@
+Make ShingleAnalyzerWrapper and PerFieldAnalyzerWrapper immutable
+
+
+
+Description:
+Both ShingleAnalyzerWrapper and PerFieldAnalyzerWrapper have setters which change some state which impacts their analysis stack.  If these are going to become reusable, then the state must be immutable as changing it will have no effect.
+
+Process will be similar to QueryAutoStopWordAnalyzer, I will remove in trunk and deprecate in 3x.

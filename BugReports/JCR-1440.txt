@@ -1,0 +1,23 @@
+NPE Thrown when two Cluster Nodes are hitting the same underlying database.
+
+
+
+Description:
+I've created a test that creates two repositories with clustering enabled that are backed by the same database.  Using the following workflow causes a NullPointerException to be thrown.
+
+The workflow I'm using is:
+The root node is versioned.
+ClusterNode1 creates a versioned child node named "foo".
+The test waits to make sure the syncDelay has passed so ClusterNode2 will notice the newly created node.
+ClusterNode2 retrieves the "foo" child node and removes it.
+The test waits for the change ClusterNode1 to sync with that change.
+ClusterNode1 tries to create another new node however a NullPointerException is thrown when the it tries to checkout the rootNode.
+
+java.lang.NullPointerException: null values not allowed
+	at org.apache.commons.collections.map.AbstractReferenceMap.put(AbstractReferenceMap.java:251)
+	at org.apache.jackrabbit.core.version.VersionManagerImpl.getItem(VersionManagerImpl.java:280)
+	at org.apache.jackrabbit.core.version.XAVersionManager.getItem(XAVersionManager.java:334)
+	at org.apache.jackrabbit.core.version.AbstractVersionManager.getVersion(AbstractVersionManager.java:87)
+	at org.apache.jackrabbit.core.NodeImpl.getBaseVersion(NodeImpl.java:3198)
+	at org.apache.jackrabbit.core.NodeImpl.checkout(NodeImpl.java:2991)
+	at com.cerner.system.configuration.repository.jcr.SimpleJackrabbitConflictTest.testNullPointerExceptionThrown(SimpleJackrabbitConflictTest.java:96)

@@ -1,0 +1,9 @@
+Add User#changePassword(String newPw, String oldPw)
+
+
+
+Description:
+... where the oldPw must match in order to have the password of the user successfully changed.
+
+while this could be done by applications with quite some effort, the implementation can easily achieve this
+as the functionality required is already present.

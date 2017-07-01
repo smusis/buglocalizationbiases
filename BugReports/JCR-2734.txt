@@ -1,0 +1,25 @@
+Inconsistencies in BitSetKey comparison
+
+
+
+Description:
+Hi,
+
+I encountered a problem with the BitsetENTCacheImpl and the BitsetKey comparisons. I have 3 bitsets A, B and C , defined as :
+
+A : bits 0,4,17,38,60,63 
+B : bits 4,17,38,52,59,60
+C : bits 0,17,38,60,61,63
+
+If call BitsetKey.compareTo  method on each pair , i get : 
+
+A < B
+B < C
+C < A
+
+which is not correct and leads to inconsistencies in the TreeSet.
+
+All 2 bitsets are contained in one single word (max bit is 63). So, the method is comparing first the 32 MSB - which are enough in that case to compare the bits. But the problem is, that the difference between the 32 MSB of B and C is too big to fit in an integer : for B, we have 403701824 - for C , 2952790080 . The difference between both is 2549088256 (positive) , which is bigger than Integer.MAX_VALUE , and makes a  -1745879040 (negative) after casting to an int .
+
+In order to fix that, the shift should either be bigger in order to fit a signed integer ( 33 instead of 32 ), or a simple -1 / 0 / +1 could be returned
+

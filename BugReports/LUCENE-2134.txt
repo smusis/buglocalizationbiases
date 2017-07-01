@@ -1,0 +1,138 @@
+[PATCH] ant-task "javadocs-all" fails with OutOfMemoryError
+
+
+
+Description:
+Hi all,
+
+the current nightly build's "ant dist" fails with an OutOfMemoryError at ant task javadocs-all (see below).
+Apparently javadoc needs more memory.
+
+A similar case has been reported in HADOOP-5561 (add a maxmemory statement to the javadoc task), and I propose the same change for Lucene as well.
+
+Cheers,
+Christian
+
+
+javadocs-all:
+  [javadoc] Generating Javadoc
+  [javadoc] Javadoc execution
+  [javadoc] Loading source files for package org.apache.lucene...
+  [javadoc] Loading source files for package org.apache.lucene.analysis...
+(...)
+  [javadoc] Loading source files for package org.apache.lucene.queryParser.standard.config...
+  [javadoc] Loading source files for package org.apache.lucene.queryParser.standard.nodes...
+  [javadoc] Loading source files for package org.apache.lucene.queryParser.standard.parser...
+  [javadoc] Loading source files for package org.apache.lucene.queryParser.standard.processors...
+  [javadoc] Constructing Javadoc information...
+  [javadoc] Standard Doclet version 1.6.0_15
+  [javadoc] Building tree for all the packages and classes...
+
+ (takes a long time here until OOME)
+
+  [javadoc] java.lang.OutOfMemoryError: Java heap space
+  [javadoc] java.lang.OutOfMemoryError: Java heap space
+  [javadoc] 	at java.lang.Throwable.getStackTraceElement(Native Method)
+  [javadoc] 	at java.lang.Throwable.getOurStackTrace(Throwable.java:591)
+  [javadoc] 	at java.lang.Throwable.printStackTrace(Throwable.java:462)
+  [javadoc] 	at java.lang.Throwable.printStackTrace(Throwable.java:451)
+  [javadoc] 	at com.sun.tools.doclets.internal.toolkit.builders.AbstractBuilder.build(AbstractBuilder.java:103)
+  [javadoc] 	at com.sun.tools.doclets.internal.toolkit.builders.AbstractMemberBuilder.build(AbstractMemberBuilder.java:56)
+  [javadoc] 	at com.sun.tools.doclets.internal.toolkit.builders.ClassBuilder.buildMemberSummary(ClassBuilder.java:279)
+  [javadoc] 	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+  [javadoc] 	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:39)
+  [javadoc] 	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:25)
+  [javadoc] 	at java.lang.reflect.Method.invoke(Method.java:597)
+  [javadoc] 	at com.sun.tools.doclets.internal.toolkit.builders.ClassBuilder.invokeMethod(ClassBuilder.java:101)
+  [javadoc] 	at com.sun.tools.doclets.internal.toolkit.builders.AbstractBuilder.build(AbstractBuilder.java:90)
+  [javadoc] 	at com.sun.tools.doclets.internal.toolkit.builders.ClassBuilder.buildClassDoc(ClassBuilder.java:124)
+  [javadoc] 	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+  [javadoc] 	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:39)
+  [javadoc] 	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:25)
+  [javadoc] 	at java.lang.reflect.Method.invoke(Method.java:597)
+  [javadoc] 	at com.sun.tools.doclets.internal.toolkit.builders.ClassBuilder.invokeMethod(ClassBuilder.java:101)
+  [javadoc] 	at com.sun.tools.doclets.internal.toolkit.builders.AbstractBuilder.build(AbstractBuilder.java:90)
+  [javadoc] 	at com.sun.tools.doclets.internal.toolkit.builders.ClassBuilder.build(ClassBuilder.java:108)
+  [javadoc] 	at com.sun.tools.doclets.formats.html.HtmlDoclet.generateClassFiles(HtmlDoclet.java:155)
+  [javadoc] 	at com.sun.tools.doclets.internal.toolkit.AbstractDoclet.generateClassFiles(AbstractDoclet.java:164)
+  [javadoc] 	at com.sun.tools.doclets.internal.toolkit.AbstractDoclet.startGeneration(AbstractDoclet.java:106)
+  [javadoc] 	at com.sun.tools.doclets.internal.toolkit.AbstractDoclet.start(AbstractDoclet.java:64)
+  [javadoc] 	at com.sun.tools.doclets.formats.html.HtmlDoclet.start(HtmlDoclet.java:42)
+  [javadoc] 	at com.sun.tools.doclets.standard.Standard.start(Standard.java:23)
+  [javadoc] 	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+  [javadoc] 	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:39)
+  [javadoc] 	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:25)
+  [javadoc] 	at java.lang.reflect.Method.invoke(Method.java:597)
+  [javadoc] 	at com.sun.tools.javadoc.DocletInvoker.invoke(DocletInvoker.java:269)
+  [javadoc] java.lang.OutOfMemoryError: Java heap space
+  [javadoc] 	at java.util.Arrays.copyOfRange(Arrays.java:3209)
+  [javadoc] 	at java.lang.String.<init>(String.java:215)
+  [javadoc] 	at com.sun.tools.javac.util.Convert.utf2string(Convert.java:131)
+  [javadoc] 	at com.sun.tools.javac.util.Name.toString(Name.java:164)
+  [javadoc] 	at com.sun.tools.javadoc.ClassDocImpl.getClassName(ClassDocImpl.java:341)
+  [javadoc] 	at com.sun.tools.javadoc.TypeMaker.getTypeName(TypeMaker.java:100)
+  [javadoc] 	at com.sun.tools.javadoc.ParameterizedTypeImpl.parameterizedTypeToString(ParameterizedTypeImpl.java:117)
+  [javadoc] 	at com.sun.tools.javadoc.TypeMaker.getTypeString(TypeMaker.java:121)
+  [javadoc] 	at com.sun.tools.javadoc.ExecutableMemberDocImpl.makeSignature(ExecutableMemberDocImpl.java:217)
+  [javadoc] 	at com.sun.tools.javadoc.ExecutableMemberDocImpl.signature(ExecutableMemberDocImpl.java:198)
+  [javadoc] 	at com.sun.tools.doclets.internal.toolkit.util.VisibleMemberMap.getMemberKey(VisibleMemberMap.java:485)
+  [javadoc] 	at com.sun.tools.doclets.internal.toolkit.util.VisibleMemberMap.access$1000(VisibleMemberMap.java:28)
+  [javadoc] 	at com.sun.tools.doclets.internal.toolkit.util.VisibleMemberMap$ClassMembers.isOverridden(VisibleMemberMap.java:442)
+  [javadoc] 	at com.sun.tools.doclets.internal.toolkit.util.VisibleMemberMap$ClassMembers.addMembers(VisibleMemberMap.java:316)
+  [javadoc] 	at com.sun.tools.doclets.internal.toolkit.util.VisibleMemberMap$ClassMembers.build(VisibleMemberMap.java:278)
+  [javadoc] 	at com.sun.tools.doclets.internal.toolkit.util.VisibleMemberMap$ClassMembers.access$100(VisibleMemberMap.java:230)
+  [javadoc] 	at com.sun.tools.doclets.internal.toolkit.util.VisibleMemberMap.<init>(VisibleMemberMap.java:93)
+  [javadoc] 	at com.sun.tools.doclets.formats.html.ConstructorWriterImpl.<init>(ConstructorWriterImpl.java:38)
+  [javadoc] 	at com.sun.tools.doclets.formats.html.WriterFactoryImpl.getConstructorWriter(WriterFactoryImpl.java:129)
+  [javadoc] 	at com.sun.tools.doclets.formats.html.WriterFactoryImpl.getMemberSummaryWriter(WriterFactoryImpl.java:141)
+  [javadoc] 	at com.sun.tools.doclets.internal.toolkit.builders.MemberSummaryBuilder.init(MemberSummaryBuilder.java:104)
+  [javadoc] 	at com.sun.tools.doclets.internal.toolkit.builders.MemberSummaryBuilder.getInstance(MemberSummaryBuilder.java:64)
+  [javadoc] 	at com.sun.tools.doclets.internal.toolkit.builders.BuilderFactory.getMemberSummaryBuilder(BuilderFactory.java:191)
+  [javadoc] 	at com.sun.tools.doclets.formats.html.ClassWriterImpl.navSummaryLinks(ClassWriterImpl.java:474)
+  [javadoc] 	at com.sun.tools.doclets.formats.html.ClassWriterImpl.printSummaryDetailLinks(ClassWriterImpl.java:456)
+  [javadoc] 	at com.sun.tools.doclets.formats.html.HtmlDocletWriter.navLinks(HtmlDocletWriter.java:462)
+  [javadoc] 	at com.sun.tools.doclets.formats.html.ClassWriterImpl.writeFooter(ClassWriterImpl.java:146)
+  [javadoc] 	at com.sun.tools.doclets.internal.toolkit.builders.ClassBuilder.buildClassFooter(ClassBuilder.java:330)
+  [javadoc] 	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+  [javadoc] 	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:39)
+  [javadoc] 	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:25)
+  [javadoc] 	at java.lang.reflect.Method.invoke(Method.java:597)
+  [javadoc] java.lang.OutOfMemoryError: Java heap space
+  [javadoc] 	at java.util.LinkedHashMap.createEntry(LinkedHashMap.java:424)
+  [javadoc] 	at java.util.LinkedHashMap.addEntry(LinkedHashMap.java:406)
+  [javadoc] 	at java.util.HashMap.put(HashMap.java:385)
+  [javadoc] 	at sun.util.resources.OpenListResourceBundle.loadLookup(OpenListResourceBundle.java:118)
+  [javadoc] 	at sun.util.resources.OpenListResourceBundle.loadLookupTablesIfNecessary(OpenListResourceBundle.java:97)
+  [javadoc] 	at sun.util.resources.OpenListResourceBundle.handleGetObject(OpenListResourceBundle.java:58)
+  [javadoc] 	at sun.util.resources.TimeZoneNamesBundle.handleGetObject(TimeZoneNamesBundle.java:59)
+  [javadoc] 	at java.util.ResourceBundle.getObject(ResourceBundle.java:378)
+  [javadoc] 	at java.util.ResourceBundle.getObject(ResourceBundle.java:381)
+  [javadoc] 	at java.util.ResourceBundle.getStringArray(ResourceBundle.java:361)
+  [javadoc] 	at sun.util.TimeZoneNameUtility.retrieveDisplayNames(TimeZoneNameUtility.java:100)
+  [javadoc] 	at sun.util.TimeZoneNameUtility.retrieveDisplayNames(TimeZoneNameUtility.java:81)
+  [javadoc] 	at java.util.TimeZone.getDisplayNames(TimeZone.java:399)
+  [javadoc] 	at java.util.TimeZone.getDisplayName(TimeZone.java:350)
+  [javadoc] 	at java.util.Date.toString(Date.java:1025)
+  [javadoc] 	at com.sun.tools.doclets.formats.html.markup.HtmlDocWriter.today(HtmlDocWriter.java:337)
+  [javadoc] 	at com.sun.tools.doclets.formats.html.HtmlDocletWriter.printHtmlHeader(HtmlDocletWriter.java:281)
+  [javadoc] 	at com.sun.tools.doclets.formats.html.ClassWriterImpl.writeHeader(ClassWriterImpl.java:122)
+  [javadoc] 	at com.sun.tools.doclets.internal.toolkit.builders.ClassBuilder.buildClassHeader(ClassBuilder.java:164)
+  [javadoc] 	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+  [javadoc] 	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:39)
+  [javadoc] 	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:25)
+  [javadoc] 	at java.lang.reflect.Method.invoke(Method.java:597)
+  [javadoc] 	at com.sun.tools.doclets.internal.toolkit.builders.ClassBuilder.invokeMethod(ClassBuilder.java:101)
+  [javadoc] 	at com.sun.tools.doclets.internal.toolkit.builders.AbstractBuilder.build(AbstractBuilder.java:90)
+  [javadoc] 	at com.sun.tools.doclets.internal.toolkit.builders.ClassBuilder.buildClassDoc(ClassBuilder.java:124)
+  [javadoc] 	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+  [javadoc] 	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:39)
+  [javadoc] 	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:25)
+  [javadoc] 	at java.lang.reflect.Method.invoke(Method.java:597)
+  [javadoc] 	at com.sun.tools.doclets.internal.toolkit.builders.ClassBuilder.invokeMethod(ClassBuilder.java:101)
+  [javadoc] 	at com.sun.tools.doclets.internal.toolkit.builders.AbstractBuilder.build(AbstractBuilder.java:90)
+  [javadoc] java.lang.OutOfMemoryError: Java heap space
+  [javadoc] java.lang.OutOfMemoryError: Java heap space
+  [javadoc] java.lang.OutOfMemoryError: Java heap space
+  [javadoc] java.lang.OutOfMemoryError: Java heap space
+  [javadoc] java.lang.OutOfMemoryError: Java heap space
+

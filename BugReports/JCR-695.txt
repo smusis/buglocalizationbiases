@@ -1,0 +1,10 @@
+Repository requires access to external resource
+
+
+
+Description:
+With the changes from JCR-626 jackrabbit requires access to the resource at the URL http://jackrabbit.apache.org/dtd/repository-1.2.dtd. If no connection to the internet is available jackrabbit will refuse to start. At least that's the case when I run the test cases in the above mentioned environment.
+
+I'm not an XML expert, but shouldn't the doctype declaration use a public identifier? Otherwise the ConfigurationEntityResolver class doesn't make much sense.
+
+The attached patch solve the issue for me, please comment. I've also targetted this issue for 1.2 because it seems rather serious to me if you can't start jackrabbit when you don't have an internet connection, or am I the only one with this issue?

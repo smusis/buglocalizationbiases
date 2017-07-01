@@ -1,0 +1,6 @@
+Added the functionality to Map and Manage Type Enum
+
+
+
+Description:
+OCM API does not come with a mapper that can map Type Enum.  I have added this functionality.  Attached patch has test cases that tests the feature for Simple fields and Collection fields (For both anotations and digester based implementations)

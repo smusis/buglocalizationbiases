@@ -1,0 +1,14 @@
+Clustering: race condition may cause duplicate entries in search index
+
+
+
+Description:
+There seems to be a race condition that may cause duplicate search index entries. It is reproducible as follows (Jackrabbit 1.3):
+1) Start clusternode 1 that just adds a single node of node type clustering:test.
+2) Shutdown clusternode 1.
+3) Start clusternode 2 with an empty search index.
+4) Execute the query  //element(*, clustering:test).
+4) Print the result of the query (UUIDs of nodes in the result set).
+
+When I just run clusternode 2, then there is one node in the resultset, as expected. However, when I debug clusternode 2 and have a breakpoint (i.e., a pause of a few seconds at line 306 of RepositoryImpl.java - just before the clusternode is started), then the resultset contains two results, both with the same UUID.
+

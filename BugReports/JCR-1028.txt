@@ -1,0 +1,10 @@
+Remove WARN logs for missing text extractors
+
+
+
+Description:
+In jackrabbit-core/src/main/java/org/apache/jackrabbit/core/query/lucene/JackrabbitTextExtractor.java, the method extractText logs at WARN level when no indexer is available.
+
+Can we move this to DEBUG, as not all applications need full text indexing of the text nodes and this message fills the logs?
+
+

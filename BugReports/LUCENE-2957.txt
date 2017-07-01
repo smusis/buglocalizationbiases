@@ -1,0 +1,28 @@
+generate-maven-artifacts target should include all non-Mavenized Lucene & Solr dependencies
+
+
+
+Description:
+Currently, in addition to deploying artifacts for all of the Lucene and Solr modules to a repository (by default local), the {{generate-maven-artifacts}} target also deploys artifacts for the following non-Mavenized Solr dependencies (lucene_solr_3_1 version given here):
+
+# {{solr/lib/commons-csv-1.0-SNAPSHOT-r966014.jar}} as org.apache.solr:solr-commons-csv:3.1
+# {{solr/lib/apache-solr-noggit-r944541.jar}} as org.apache.solr:solr-noggit:3.1
+\\ \\
+The following {{.jar}}'s should be added to the above list (lucene_solr_3_1 version given here):
+\\ \\
+# {{lucene/contrib/icu/lib/icu4j-4_6.jar}}
+# {{lucene/contrib/benchmark/lib/xercesImpl-2.9.1-patched-XERCESJ}}{{-1257.jar}}
+# {{solr/contrib/clustering/lib/carrot2-core-3.4.2.jar}}**
+# {{solr/contrib/uima/lib/uima-an-alchemy.jar}}
+# {{solr/contrib/uima/lib/uima-an-calais.jar}}
+# {{solr/contrib/uima/lib/uima-an-tagger.jar}}
+# {{solr/contrib/uima/lib/uima-an-wst.jar}}
+# {{solr/contrib/uima/lib/uima-core.jar}}
+\\ \\
+I think it makes sense to follow the same model as the current non-Mavenized dependencies:
+\\ \\
+* {{groupId}} = {{org.apache.solr/.lucene}}
+* {{artifactId}} = {{solr-/lucene-}}<original-name>,
+* {{version}} = <lucene-solr-release-version>.
+
+**The carrot2-core jar doesn't need to be included in trunk's release artifacts, since there already is a Mavenized Java6-compiled jar.  branch_3x and lucene_solr_3_1 will need this Solr-specific Java5-compiled maven artifact, though.

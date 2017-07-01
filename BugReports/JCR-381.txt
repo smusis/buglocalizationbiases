@@ -1,0 +1,21 @@
+Repository does not start if text filter dependencies are missing
+
+
+
+Description:
+When the search index is configured with a text filter class that requries another jar file and that jar file is missing the repository will not start and log the following misleading error:
+
+Caused by: javax.jcr.RepositoryException
+    at org.apache.jackrabbit.core.SearchManager.initializeQueryHandler(SearchManager.java:536)
+    at org.apache.jackrabbit.core.SearchManager.<init>(SearchManager.java:278)
+    at org.apache.jackrabbit.core.RepositoryImpl$WorkspaceInfo.getSearchManager(RepositoryImpl.java:1430)
+    at org.apache.jackrabbit.core.RepositoryImpl.initWorkspace(RepositoryImpl.java:538)
+    at org.apache.jackrabbit.core.RepositoryImpl.<init>(RepositoryImpl.java:245)
+    at org.apache.jackrabbit.core.RepositoryImpl.create(RepositoryImpl.java:482)
+    at org.jbpm.jcr.impl.JackrabbitJcrService.start(JackrabbitJcrService.java:119)
+    ... 63 more
+Caused by: java.lang.IllegalArgumentException
+    at org.apache.commons.collections.BeanMap.put(BeanMap.java:374)
+    at org.apache.jackrabbit.core.config.BeanConfig.newInstance(BeanConfig.java:97)
+    at org.apache.jackrabbit.core.SearchManager.initializeQueryHandler(SearchManager.java:530)
+    ... 69 more 

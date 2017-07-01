@@ -1,0 +1,25 @@
+ShingleFilter skips over trie-shingles if outputUnigram is set to false
+
+
+
+Description:
+Spinoff from http://lucene.markmail.org/message/uq4xdjk26yduvnpa
+
+{quote}
+I noticed that if I set outputUnigrams to false it gives me the same output for
+maxShingleSize=2 and maxShingleSize=3.
+
+please divide divide this this sentence
+
+when i set maxShingleSize to 4 output is:
+
+please divide please divide this sentence divide this this sentence
+
+I was expecting the output as follows with maxShingleSize=3 and
+outputUnigrams=false :
+
+please divide this divide this sentence 
+{quote}
+
+
+

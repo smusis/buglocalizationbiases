@@ -1,0 +1,28 @@
+Text Search Syntax Deviates from Spec
+
+
+
+Description:
+Original JSR 170 EG Email by David B Victor 2005/03/23:
+
+For Query test XPathQueryLevel2Test.java (src\java\org\apache\jackrabbit\test\api\query) in the TCK, method getFullTextStatement() (used by testFullTextSearch()) uses the word "AND" in the syntax in its test that is not in the spec (/*[jcrfnContains("'quick brown' AND -cat")]...).  Section "6.6.4.2 contains function" of v0.16.3, page 100, outlines the EBNF, which does not include the word "AND".  Additionally, the paragraphs here go out of their way to explain that AND is implicit.
+
+At this point, I think it would be best to omit "AND" from the TCK method and let it test the implicit AND.
+
+------------------------------------------------------------
+David Neuscheler Reply 2005/03/24:
+
+thanks for pointing that out.
+
+i think we should probably track all the tck bugs in jackrabbit jira.
+http://issues.apache.org/jira/browse/JCR
+
+could you open a bug for that?
+
+this actually is because we used an non-spec compliant query
+parser in the RI, so it actually is even a bug in the RI and the TCK.
+
+thanks again.
+
+regards,
+david

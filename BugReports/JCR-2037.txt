@@ -1,0 +1,6 @@
+SPI2DAV: setup automated test execution
+
+
+
+Description:
+task copied from JCR-1877

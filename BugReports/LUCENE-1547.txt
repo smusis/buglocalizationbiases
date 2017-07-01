@@ -1,0 +1,35 @@
+Rare thread hazard in IndexWriter.commit()
+
+
+
+Description:
+The nightly build 2 nights ago hit this:
+
+{code}
+ NOTE: random seed of testcase 'testAtomicUpdates' was: -5065675995121791051
+    [junit] ------------- ---------------- ---------------
+    [junit] Testcase: testAtomicUpdates(org.apache.lucene.index.TestAtomicUpdate):	FAILED
+    [junit] expected:<100> but was:<91>
+    [junit] junit.framework.AssertionFailedError: expected:<100> but was:<91>
+    [junit] 	at org.apache.lucene.index.TestAtomicUpdate.runTest(TestAtomicUpdate.java:142)
+    [junit] 	at org.apache.lucene.index.TestAtomicUpdate.testAtomicUpdates(TestAtomicUpdate.java:194)
+    [junit] 	at org.apache.lucene.util.LuceneTestCase.runTest(LuceneTestCase.java:88)
+{code}
+
+It's an intermittant failure that only happens when multiple threads
+are calling commit() at once.  With autoComit=true and
+ConcurrentMergeScheduler, this can happen more often because each
+merge thread calls commit after it's done.
+
+The problem happens when one thread has already begun the commit
+process, but another two or more threads then come along wanting to
+also commit after further changes have happened.  Those two or more
+threads would wait until the currently committing thread finished, and
+then they'd wake up and do their commit.  The problem was, after
+waking up they would fail to check whether they had been superseded,
+ie whether another thread had already committed more up-to-date
+changes.
+
+The fix is simple -- after waking up, check again if your commit has
+been superseded, and skip your commit if so.
+

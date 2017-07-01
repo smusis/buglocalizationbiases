@@ -1,0 +1,8 @@
+JCR-2523 break the transaction handling in container managed environment
+
+
+
+Description:
+during the cleanup (returning to the pool) of an jca managed connection,  an new internal session is created in the object JCAManagedConnection in the method cleanup, this is supposed to fix JCR-2523, The sideeffect is, that the XA-Resource (variable-xaResource) in JCAManagedConnection is not anymore the same XASessionImpl Object like the session Object. Subsequent calls on this connection, lead that the internal session variable is not anymore informed about the current transaction context. (XAItemStateManager, variables tx and txLog are null), because only the xaResource is informed about the new transaction context. Result is that the complete transaction handling does not work anymore.
+I attached a sample project which shows this behaviour.
+

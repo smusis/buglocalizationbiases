@@ -1,0 +1,6 @@
+changes-to-html: fixes and improvements
+
+
+
+Description:
+The [Lucene Hudson Changes.html|http://hudson.zones.apache.org/hudson/job/Lucene-trunk/lastSuccessfulBuild/artifact/lucene/build/docs/changes/Changes.html] looks bad because changes2html.pl doesn't properly handle some new usages in CHANGES.txt.

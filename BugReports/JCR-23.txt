@@ -1,0 +1,8 @@
+PersistentVersionManager contains grow-only cache
+
+
+
+Description:
+The PersistentVersionManager class contains a private HashMap "histories" which contains references to InternalVersionHistory objects. The bad thing about this cache is, that it only grows, but is not being managed to forget about "unused" histories. This is even badder, as the class has support for on-demand loading of version histories.
+
+Example: A repository which is filled with 9350 nodes and 52813 properties grows this histories map to 1'222'030 (!) entries. In this concrete case, the VM allocates 213MB to the heap of which 41MB is referenced by the PersistentVersionManager.histories map.

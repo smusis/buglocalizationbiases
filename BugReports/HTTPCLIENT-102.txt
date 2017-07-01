@@ -1,0 +1,15 @@
+Unable to get the status line from a http method object
+
+
+
+Description:
+The status line (typically the first line returned from a http connection read)
+is hidden inside httpclient with no way for client code to retrieve it intact.
+readStatusLine() in HttpMethodBase is where the status line is
+read, but it is never stored and is not available outside the method.
+
+We could store the status line as a string and add a getStatusLine
+method to the HttpMethod interface and HttpMethodBase class.  Alternatively, we
+could create a header for it with the name StatusLine (or perhaps just null) so
+that it could be retrieved with getHeader("StatusLine").  This would preserve
+the interface but would be a bit of a kludge.

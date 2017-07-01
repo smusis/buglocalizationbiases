@@ -1,0 +1,6 @@
+DatabaseJournal needs connection reestablishment logic
+
+
+
+Description:
+The DB based file system and persistence manager implementations have logic for connection reestablishment in case the DB server bounces while the repository is running, but the DB based journal implementation doesn't.

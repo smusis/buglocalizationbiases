@@ -1,0 +1,16 @@
+IllegalStateException: Authentication state already initialized
+
+
+
+Description:
+Hi,
+
+I am running HttpClient 3.0 RC2 in my application and a user send me a logfile
+telling "IllegalStateException: Authentication state already initialized". 
+
+He wanted to access a site on SUN.com and is behind a proxy. The site seems to
+redirect to a different domain.
+
+I have attached a Debug+Trace HttpClient log.
+
+Ben

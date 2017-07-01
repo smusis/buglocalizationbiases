@@ -1,0 +1,19 @@
+Journal log file rotation overwrites old files
+
+
+
+Description:
+Journal log files are rotated as follows:
+
+  journal.log.N -> journal.log.(N+1)
+
+Because the list of files to be rotated is created with alphanumeric sort order
+(descending), it may destroy files in the following situation:
+
+  journal.log.9  -> journal.log.10
+  ..
+  journal.log.2  -> journal.log.3
+  journal.log.10 -> journal.log.11 (!)
+  journal.log.1  -> journal.log.2
+
+i.e. journal.log.10 is overwritten by journal.log.9 and then moved.

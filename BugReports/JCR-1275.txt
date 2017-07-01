@@ -1,0 +1,18 @@
+NullPointerException in AbstractVersionManager.createVersionHistory()
+
+
+
+Description:
+Running ConcurrentCheckinMixedTransactionTest with 200 threads results in NullPointerExceptions in AbstractVersionManager.
+
+Exception in thread "Thread-16" java.lang.NullPointerException
+	at org.apache.jackrabbit.core.version.AbstractVersionManager.createVersionHistory(AbstractVersionManager.java:309)
+	at org.apache.jackrabbit.core.version.XAVersionManager.createVersionHistory(XAVersionManager.java:145)
+	at org.apache.jackrabbit.core.ItemImpl.initVersionHistories(ItemImpl.java:785)
+	at org.apache.jackrabbit.core.ItemImpl.save(ItemImpl.java:1221)
+	at org.apache.jackrabbit.core.SessionImpl.save(SessionImpl.java:897)
+	at org.apache.jackrabbit.core.ConcurrentCheckinMixedTransactionTest$1$1.execute(ConcurrentCheckinMixedTransactionTest.java:66)
+	at org.apache.jackrabbit.core.AbstractConcurrencyTest$Executor.run(AbstractConcurrencyTest.java:110)
+	at java.lang.Thread.run(Thread.java:619)
+
+I'm not sure why the node that is created by the current thread is not available. I assume that some other thread using XA transactions is committing changes while the current thread creates the node. The changes from the committing thread then overwrite the node that has been modified by the current thread. The write lock is somewhat bypassed in that case.

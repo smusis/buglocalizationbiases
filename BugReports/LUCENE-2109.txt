@@ -1,0 +1,29 @@
+Make DocsEnum subclass of DocIdSetIterator
+
+
+
+Description:
+Spinoff from LUCENE-1458:
+
+One thing I came along long time ago, but now with a new API it get's interesting again: 
+DocsEnum should extend DocIdSetIterator, that would make it simplier to use and implement e.g. in MatchAllDocQuery.Scorer, FieldCacheRangeFilter and so on. You could e.g. write a filter for all documents that simply returns the docs enumeration from IndexReader.
+
+So it should be an abstract class that extends DocIdSetIterator. It has the same methods, only some methods must be a little bit renamed. The problem is, because java does not support multiple inheritace, we cannot also extends attributesource  Would DocIdSetIterator be an interface it would work (this is one of the cases where interfaces for really simple patterns can be used, like iterators).
+
+The problem with multiple inheritance could be solved by an additional method attributes() that creates a new AttributeSource on first access then (because constructing an AttributeSource is costly).  The same applies for the other *Enums, it should be separated for lazy init.
+
+DocsEnum could look like this:
+
+{code}
+public abstract class DocsEnum extends DocIdSetIterator {
+  private AttributeSource atts = null;
+  public int freq()
+  public DontKnowClassName positions()
+  public final AttributeSource attributes() {
+   if (atts==null) atts=new AttributeSource();
+   return atts;
+  }
+  ...default impl of the bulk access using the abstract methods from DocIdSetIterator
+}
+{code}
+

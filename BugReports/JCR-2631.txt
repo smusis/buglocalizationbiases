@@ -1,0 +1,6 @@
+Move backwards compatibility tests to trunk
+
+
+
+Description:
+As discussed on dev@, I'd like to move the backwards compatibility tests from the Jackrabbit sandbox to trunk.

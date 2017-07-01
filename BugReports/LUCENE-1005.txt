@@ -1,0 +1,12 @@
+GData TestDateFormater (sic) fails when the Date returned is: Sun, 23 Sep 2007 01:29:06 GMT+00:00
+
+
+
+Description:
+TestDateFormater.testFormatDate fails when the Date returned is Sun, 23 Sep 2007 01:29:06 GMT+00:00
+
+The issue lies with the +00:00 at the end of the string.  
+
+The question is, though, is that a valid date for GData?
+
+This is marked as major b/c it is causing nightly builds to fail.

@@ -1,0 +1,6 @@
+Webdav: Drop xerces dependency
+
+
+
+Description:
+jukka is the final assignee :) thanks for taking over.

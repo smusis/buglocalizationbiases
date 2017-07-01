@@ -1,0 +1,11 @@
+KeywordTokenizer does not set start/end offset of the Token it produces
+
+
+
+Description:
+I think just adding these two lines in the next(Token) method is the right fix:
+
+           reusableToken.setStartOffset(0);
+           reusableToken.setEndOffset(upto);
+
+I don't think this is a back compat issue because the start/end offset are now meaningless since they will inherit whatever the reusable token had previously been used for.

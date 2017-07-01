@@ -1,0 +1,11 @@
+Make Jackrabbit compile on Java 7
+
+
+
+Description:
+Compiling on Java 7 fails with the following error:
+
+    jackrabbit-core/src/main/java/org/apache/jackrabbit/core/util/db/DataSourceWrapper.java:[30,7] error:
+    DataSourceWrapper is not abstract and does not override abstract method getParentLogger() in CommonDataSource
+
+We should fix that.

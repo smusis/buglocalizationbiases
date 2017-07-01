@@ -1,0 +1,13 @@
+Authentication fails when connecting to server with username and password in non ascii characters
+
+
+
+Description:
+Tried connecting to an exchange server using NTLM authentication
+Username : íñëäíñëä
+password : íñëäíñëä
+
+I am getting 401 response.
+Auth failed
+Body: 
+Error: Access is Denied.

@@ -1,0 +1,24 @@
+File leak when IOException occurs during index optimization.
+
+
+
+Description:
+I am not sure if this issue requires a fix due to the nature of its occurrence, or if it exists in other versions of Lucene.
+
+I am using Lucene Java 3.0.3 on a SUSE Linux machine with Java 6 and have noticed there are a number of file handles that are not being released from my java application. There are IOExceptions in my log regarding disk full, which causes a merge and the optimization to fail. The index is not currupt upon encountering the IOException. I am using CFS for my index format, so 3X my largest index size during optimization certainly consumes all of my available disk. 
+
+I realize that I need to add more disk space to my machine, but I investigated how to clean up the leaking file handles. After failing to find a misuse of Lucene's IndexWriter in the code I have wrapping Lucene, I did a quick search for close() being invoked in the Lucene Jave source code. I found a number of source files that attempt to close more than one object within the same close() method. I think a try/catch should be put around each of these close() attempts to avoid skipping a subsequent closes. The catch may be able to ignore a caught exception to avoid masking the original exception like done in SimpleFSDirectory.close().
+
+Locations in Lucene Java source where I suggest a try/catch should be used:
+- org.apache.lucene.index.FormatPostingFieldsWriter.finish()
+- org.apache.lucene.index.TermInfosWriter.close()
+- org.apache.lucene.index.SegmentTermPositions.close()
+- org.apache.lucene.index.SegmentMergeInfo.close()
+- org.apache.lucene.index.SegmentMerger.mergeTerms() (The finally block)
+- org.apache.lucene.index.DirectoryReader.close()
+- org.apache.lucene.index.FieldsReader.close()
+- org.apache.lucene.index.MultiLevelSkipListReader.close()
+- org.apache.lucene.index.MultipleTermPositions.close()
+- org.apache.lucene.index.SegmentMergeQueue.close()
+- org.apache.lucene.index.SegmentMergeDocs.close()
+- org.apache.lucene.index.TermInfosReader.close()

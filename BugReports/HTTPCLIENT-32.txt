@@ -1,0 +1,7 @@
+querystring still not set in Url*Method constructors
+
+
+
+Description:
+The queryString is still not set in various Url*Method's constructors. It does 
+get set in setUrl. The simplest fix is to call setUrl in these constructors.

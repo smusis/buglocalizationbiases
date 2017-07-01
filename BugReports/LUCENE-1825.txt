@@ -1,0 +1,22 @@
+Incorrect usage of AttributeSource.addAttribute/getAttribute leads to failures when onlyUseNewAPI=true
+
+
+
+Description:
+when seting "use only new API" for TokenStream, i received the following exception:
+
+{code}
+   [junit] Caused by: java.lang.IllegalArgumentException: This AttributeSource does not have the attribute 'interface org.apache.lucene.analysis.tokenattributes.TermAttribute'.
+    [junit] 	at org.apache.lucene.util.AttributeSource.getAttribute(AttributeSource.java:249)
+    [junit] 	at org.apache.lucene.index.TermsHashPerField.start(TermsHashPerField.java:252)
+    [junit] 	at org.apache.lucene.index.DocInverterPerField.processFields(DocInverterPerField.java:145)
+    [junit] 	at org.apache.lucene.index.DocFieldProcessorPerThread.processDocument(DocFieldProcessorPerThread.java:244)
+    [junit] 	at org.apache.lucene.index.DocumentsWriter.updateDocument(DocumentsWriter.java:772)
+    [junit] 	at org.apache.lucene.index.DocumentsWriter.updateDocument(DocumentsWriter.java:755)
+    [junit] 	at org.apache.lucene.index.IndexWriter.updateDocument(IndexWriter.java:2613)
+{code}
+
+However, i can't actually see the culprit that caused this exception
+
+suggest that the IllegalArgumentException include "getClass().getName()" in order to be able to identify which TokenStream implementation actually caused this
+

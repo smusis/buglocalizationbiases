@@ -1,0 +1,8 @@
+Add a variable-sized int block codec
+
+
+
+Description:
+We already have support for fixed block size int block codecs, making it very simple to create a codec from a int encoder algorithms like FOR/PFOR.
+
+But algorithms like Simple9/16 are not fixed -- they encode a variable number of adjacent ints at once, depending on the specific values of those ints.

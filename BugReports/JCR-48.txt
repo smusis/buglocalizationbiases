@@ -1,0 +1,6 @@
+XMLPersistenceManager trims string property values
+
+
+
+Description:
+The XMLPersistenceManager trims the text of property values read in, so what's returned doesn't match the value set if it included whitespace at the start or end.

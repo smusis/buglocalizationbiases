@@ -1,0 +1,6 @@
+Use jackrabbit-jcr-commons in jackrabbit-jcr-rmi
+
+
+
+Description:
+The jackrabbit-jcr-rmi component should leverage the general-purpose classes in jackrabbit-jcr-commons even at the expense of introducing an extra dependency.

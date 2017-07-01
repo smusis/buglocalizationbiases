@@ -1,0 +1,21 @@
+Rename Field.Index.UN_TOKENIZED/TOKENIZED/NO_NORMS
+
+
+
+Description:
+There is confusion about these current Field options and I think we
+should rename them, deprecating the old names in 2.4/2.9 and removing
+them in 3.0.  How about this:
+
+{code}
+TOKENIZED --> ANALYZED
+UN_TOKENIZED --> NOT_ANALYZED
+NO_NORMS --> NOT_ANALYZED_NO_NORMS
+{code}
+
+Should we also add ANALYZED_NO_NORMS?
+
+Spinoff from here:
+
+    http://mail-archives.apache.org/mod_mbox/lucene-java-user/200808.mbox/%3C48a3076a.2679420a.1c53.ffffa5c4%40mx.google.com%3E
+    

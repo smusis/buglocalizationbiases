@@ -1,0 +1,15 @@
+Typo on query parser syntax web page.
+
+
+
+Description:
+On the web page http://lucene.apache.org/java/docs/queryparsersyntax.html#N10126 the text says:
+
+"To search for documents that must contain "jakarta" and may contain "lucene" use the query:"
+
+The example says:
+
++jakarta apache
+
+The problem:
+The example uses apache where the text says lucene.

@@ -1,0 +1,8 @@
+Change remaining contrib streams/filters to use new TokenStream API
+
+
+
+Description:
+All other contrib streams/filters have already been converted with LUCENE-1460.
+
+The two shingle filters are the last ones we need to convert.

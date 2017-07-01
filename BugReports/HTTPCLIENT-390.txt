@@ -1,0 +1,11 @@
+SSL + proxy + Host auth + Keep Alive off causes an infinite loop in HttpMethodDirector
+
+
+
+Description:
+The combination of SSL tunnelling, host authentication, and disabled persistent
+connection support (HTTPD KeepAlive off) causes an infinite loop in
+HttpMethodDirector. 
+
+The problem has been reported on the httpclient-dev list by Rindress MacDonald
+<RMacDona at enterasys.com>

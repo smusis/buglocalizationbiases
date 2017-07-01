@@ -1,0 +1,12 @@
+Query with document order fails when result set size > caching hierarchy manager size
+
+
+
+Description:
+When a query returns a lot of nodes in the query result and document order is enabled (which is the default) then the query will fail with error messages in the log:
+
+*ERROR* [main] DocOrderNodeIteratorImpl: Internal error: unable to determine document order of nodes: (DocOrderNodeIteratorImpl.java, line 241)
+*ERROR* [main] DocOrderNodeIteratorImpl:    Node1: /stuff/node[2]/node[13]/node9 (DocOrderNodeIteratorImpl.java, line 242)
+*ERROR* [main] DocOrderNodeIteratorImpl:    Node2: /stuff/node[2]/node[13]/node5 (DocOrderNodeIteratorImpl.java, line 243)
+
+The critical size seems to be equivalent to the cache size of the caching hierarchy manager. Attached are two test cases. The first one simply creates test nodes and the second one executes a query for those nodes. Using the cache size of 10'000 in the CachingHierarchyManager#DEFAULT_UPPER_LIMIT everything works fine, but when this value is set to 1000 (you need to re-compile the class CachingHierarchyManager) the test fails with the mentioned errors.

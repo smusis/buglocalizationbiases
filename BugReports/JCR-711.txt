@@ -1,0 +1,6 @@
+Select * does not return declared properties of node type in FROM clause
+
+
+
+Description:
+The query only returns the default columns: jcr:primaryType, jcr:score and jcr:path

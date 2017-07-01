@@ -1,0 +1,8 @@
+HyphenationCompoundWordTokenFilter fails to load DTD in Crimson parser (JDK 1.4)
+
+
+
+Description:
+HyphenationCompoundWordTokenFilter loads the DTD in its XML parser from memory by supplying EntityResolver. In Java 1.4 (affects Lucene 2.9, but also later versions if not Apache Xerces is used as XML parser) this does not work, because Cromson does not even ask the entity resolver, if no base URI is known. As the hyphenation file is loaded from Reader/InputStream no base URI is known. Crimson needs at least a non-null systemId to proceed.
+
+This patch (Lucene 2.9 only)  fakes this by supplying a fake systemId to the InputSource.

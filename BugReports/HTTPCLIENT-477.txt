@@ -1,0 +1,189 @@
+There is no way to specify a different auth scheme priority for host and proxy
+
+
+
+Description:
+Using HttpClient 3.0 rc2, you cannot authenticate to a site using Basic
+Autentication and to a proxy server using NTLM authentication.
+
+When you indicate a prefference to use NTLM over Basic authentication the
+authentication will fail when it tries to authenticate NTML to the Proxy and to
+the Site. If you indicate Basic, then NTLM authentication order the Basic
+authentication will fail when used for the Proxy (since basic authentication
+can't send the domain name it fails).
+
+The email thread from the discussion group is pasted below for refference.
+
+==============================================================
+==============================================================
+
+Hi all,
+I am trying to authenticate to a server via a proxy which also requires
+authentication. It seems that I can get either the proxy authentication to work
+OR the site authentication to work, but not both.
+
+Both seem to work independently when I set the credentials (or proxy
+credentials) using NTCredentials (e.g. if I connect to the site from a network
+not using a proxy I can get it to work, and I can authenticate to the proxy only
+to get a 401 authentication failed from the server when using the proxy).
+
+I read in the Authentication tutorial that you can't authenticate using NTLM to
+both the proxy and site, so I'm trying various combinations of authentication,
+but I can't find any documentation that specifically covers this case and I feel
+like I'm just taking stabs in the dark right now.
+
+If anyone can point me in the direction of the light at the end of the tunnel
+I'd really appreciate it.
+
+Thanks,
+David
+
+----------------
+
+On Wed, Jun 29, 2005 at 09:53:07AM -0700, David Parks wrote:
+> Hi all,
+> I am trying to authenticate to a server via a proxy which also requires
+authentication. It seems that I can get either the proxy authentication to work
+OR the site authentication to work, but not both.
+> 
+> Both seem to work independently when I set the credentials (or proxy
+credentials) using NTCredentials (e.g. if I connect to the site from a network
+not using a proxy I can get it to work, and I can authenticate to the proxy only
+to get a 401 authentication failed from the server when using the proxy).
+> 
+> I read in the Authentication tutorial that you can't authenticate using NTLM
+to both the proxy and site, so I'm trying various combinations of
+authentication, but I can't find any documentation that specifically covers this
+case and I feel like I'm just taking stabs in the dark right now.
+
+David,
+
+You _really_ can't use NTLM to authenticate with the proxy and the
+target host at the same, due to the nature of this authentication
+scheme. Really. That was not a joke.
+
+Please consider using one of the following combinations instead:
+
+(1) BASIC proxy + NTLM host if both the clent and the proxy are within a
+trusted network segment
+
+(2) NTLM proxy + SSL + BASIC host
+
+Both combinations should provide an adequate (or better in the latter case)
+security
+
+Hope this helps
+
+Oleg
+
+> 
+> If anyone can point me in the direction of the light at the end of the tunnel
+I'd really appreciate it.
+> 
+> Thanks,
+> David
+> 
+> 
+
+-------------------
+
+Thanks for the reply Oleg. This is what I figured, but I cannot see how to use
+different authentication schemes for the Proxy vs. the Site authentication
+challenge.
+
+I tried adding the code suggested in the Authentication tutorial:
+
+        List authPrefs = new ArrayList(2);
+        authPrefs.add(AuthPolicy.DIGEST);
+        authPrefs.add(AuthPolicy.BASIC);
+        authPrefs.add(AuthPolicy.NTLM);
+         This will exclude the NTLM authentication scheme
+        httpclient.getParams().setParameter(AuthPolicy.AUTH_SCHEME_PRIORITY,
+authPrefs);
+
+I got a message stating that it was attempting BASIC authentication for the
+Proxy and that it failed (probably because the domain doesn't get passed I
+guess). So my thought is that I need NTLM for the proxy authentication and Basic
+will work for the site authentication.
+
+The question I am then working on is how to direct the HttpClient to select that
+order of authentication methods. If I let it take NTLM as the preffered
+authentication method then it will try to authenticate both challenges with NTLM.
+
+I sure there is just some little detail I'm missing here somewhere, it's just
+hard to find it.
+
+Thanks a lot!
+David
+
+------------------
+
+David,
+
+I see the problem. This will require a patch and a new parameter.
+Luckily the preference API introduced in HttpClient 3.0 allows up to add
+parameters quite easily. Please file a feature request with Bugzilla
+ASAP and I'll do my best to hack up a patch before I leave for holidays
+(that is Friday, July 1st)
+
+Oleg
+
+
+--------------
+
+Hi Oleg, thanks, I'll put that request in today.
+This helps a lot, at least I know I'm on the right path now.
+
+I am attempting to devise a workaround for this by handling the authentication
+manually (setDoAuthentication(false)).
+
+When I see a 401 error I am processing a basic authentication with the site
+credentials, when I see a 407 error I want to process an NTLM authentication
+with the proxy credentials.
+
+To that end I have the following code that runs after
+httpclient.execute(getmethod) executes. The code below works perfectly for the
+basic authentication (when the proxy is not in the picture).
+
+In looking up the Handshake of the NTLM authentication I see that I have a
+problem with the code below since the handshake includes 2 challenge and
+authorization steps before the authentication succeeds. I'm not clear how I
+could manually authenticate the NTLM response. I would expect the NTLMScheme
+class to contain a Type 1 and Type 3 authenticate() method for processing both
+challenge responses. Is there another way of processing the NTLM authentication
+after receiving the initial authentication challenge from the server?
+
+        //Check for Proxy or Site authentication
+        if(getmethod.getStatusCode() == 401){
+            //Authenticate to the site using Basic authentication.
+            BasicScheme basicscheme = new BasicScheme();
+            String basic_auth_string = basicscheme.authenticate(new
+NTCredentials("cwftp", "664A754c", "", ""), getmethod);
+            Header basic_auth_header = new Header("Authorization",
+basic_auth_string);
+            getmethod.addRequestHeader(basic_auth_header);
+            try{
+                httpclient.executeMethod(getmethod);
+            }catch(Exception e){
+                logger.log(Level.SEVERE, "ack!!!!", e);
+            }
+            return getmethod;
+       }else if(getmethod.getStatusCode() == 407){
+            //Authenticate to the site using Basic authentication
+            NTLMScheme ntlmscheme = new NTLMScheme();
+            String basic_auth_string = ntlmscheme.authenticate(new
+NTCredentials("00mercbac", "!@SAMmerc2004", "simproxy", "CFC"), getmethod);
+            Header basic_auth_header = new Header("Authorization",
+basic_auth_string);
+            getmethod.addRequestHeader(basic_auth_header);
+            try{
+                httpclient.executeMethod(getmethod);
+            }catch(Exception e){
+                logger.log(Level.SEVERE, "ack!!!!", e);
+            }
+            return getmethod;
+       }
+
+
+Thanks,
+David

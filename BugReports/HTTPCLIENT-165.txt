@@ -1,0 +1,23 @@
+'100-continue' response times out unexpectedly
+
+
+
+Description:
+Entity encosing methods time out (3 seconds) rather than getting the
+100-continue response. Then, after it has send the body, the 100-continue
+response is received and returned.
+
+Adding
+
+  method.setUseExpectHeader(false);
+
+seems to fix it.
+
+Platform 1: Jetty server on Windows XP, Sun JDK 1.4.1_01, 
+Platform 2: Tomcat-4.1.18 + Turbine on Windows 2000 Pro, Sun JDK 1.3.1
+Platform 3: Tomcat-4.1.18 on Linux if the connection is running over stunnel-4.00
+
+Reported by: 
+ Simon Roberts <simon.roberts@fifthweb.net>
+ Aurelien Pernoud <apernoud@sopragroup.com>
+ Ingo Brunberg <ib@fiz-chemie.de>

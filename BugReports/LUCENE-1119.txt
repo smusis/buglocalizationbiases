@@ -1,0 +1,16 @@
+Optimize TermInfosWriter.add
+
+
+
+Description:
+I found one more optimization, in how terms are written in
+TermInfosWriter.  Previously, each term required a new Term() and a
+new String().  Looking at the cpu time (using YourKit), I could see
+this was adding a non-trivial cost to flush() when indexing Wikipedia.
+
+I changed TermInfosWriter.add to accept char[] directly, instead.
+
+I ran a quick test building first 200K docs of Wikipedia.  With this
+fix it took 231.31 sec (best of 3) and without the fix it took 236.05
+sec (best of 3) = ~2% speedup.
+

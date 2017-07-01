@@ -1,0 +1,17 @@
+Node.getReferences() does not properly reflect saved but not yet committed changes
+
+
+
+Description:
+Node.getReferences() currently only returns committed references. The specification however says:
+
+<quote>
+Some level 2 implementations may only return properties that have been
+saved (in a transactional setting this includes both those properties
+that have been saved but not yet committed, as well as properties that
+have been committed). Other level 2 implementations may additionally
+return properties that have been added within the current Session but are
+not yet saved.
+</quote>
+
+Jackrabbit does not support the latter, but at least has to support the first.

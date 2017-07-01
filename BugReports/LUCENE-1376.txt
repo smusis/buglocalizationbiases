@@ -1,0 +1,10 @@
+sometimes if a BG merge hits an exception, optimize() will fail to forward the exception
+
+
+
+Description:
+I was seeing an intermittant failure, only on a Windows instance running inside VMWare, of TestIndexWriter.testAddIndexOnDiskFull.
+
+It is happening because the while loop that checks for merge exceptions that had occurred during optimize fails to catch the case where all the BG optimize merges completed (or hit exceptions) before the while loop begins.  IE, all BG threads finished before the FG thread advanced to the while loop.  In that case the code fails to check if there were any exceptions.
+
+The fix is straightforward: change the while loop so that it always checks, at least once, whether there were exceptions.

@@ -1,0 +1,59 @@
+Deadlock on concurrent save/checkin operations possible
+
+
+
+Description:
+Save and checkin operations are trying to acquire 2 locks in different order, what leads to deadlock.
+
+->save
+1.SharedItemStateManager.acquireWriteLock
+2.AbstractVersionManager.acquireWriteLock	->	locked
+
+->checkin
+1.AbstractVersionManager.acquireWriteLock
+2.SharedItemStateManager.acquireReadLock	->	locked
+
+"Thread-4" prio=6 tid=0x0312d840 nid=0x824 in Object.wait() [0x03cef000..0x03cefa68]
+	at java.lang.Object.wait(Native Method)
+	- waiting on <0x23210968> (a EDU.oswego.cs.dl.util.concurrent.WriterPreferenceReadWriteLock$WriterLock)
+	at java.lang.Object.wait(Unknown Source)
+	at EDU.oswego.cs.dl.util.concurrent.WriterPreferenceReadWriteLock$WriterLock.acquire(Unknown Source)
+	- locked <0x23210968> (a EDU.oswego.cs.dl.util.concurrent.WriterPreferenceReadWriteLock$WriterLock)
+	at org.apache.jackrabbit.core.version.AbstractVersionManager.acquireWriteLock(AbstractVersionManager.java:124)
+	at org.apache.jackrabbit.core.version.VersionManagerImpl.setNodeReferences(VersionManagerImpl.java:413)
+	at org.apache.jackrabbit.core.version.VersionItemStateProvider.setNodeReferences(VersionItemStateProvider.java:125)
+	at org.apache.jackrabbit.core.state.SharedItemStateManager$Update.end(SharedItemStateManager.java:699)
+	at org.apache.jackrabbit.core.state.SharedItemStateManager.update(SharedItemStateManager.java:810)
+	at org.apache.jackrabbit.core.state.LocalItemStateManager.update(LocalItemStateManager.java:326)
+	at org.apache.jackrabbit.core.state.XAItemStateManager.update(XAItemStateManager.java:313)
+	at org.apache.jackrabbit.core.state.LocalItemStateManager.update(LocalItemStateManager.java:302)
+	at org.apache.jackrabbit.core.state.SessionItemStateManager.update(SessionItemStateManager.java:295)
+	at org.apache.jackrabbit.core.ItemImpl.save(ItemImpl.java:1204)
+	- locked <0x2332eaa0> (a org.apache.jackrabbit.core.XASessionImpl)
+	at JrTestDeadlock.run(JrTestDeadlock.java:87)
+
+"Thread-3" prio=6 tid=0x0312db18 nid=0xa04 in Object.wait() [0x03caf000..0x03cafae8]
+	at java.lang.Object.wait(Native Method)
+	- waiting on <0x232d1360> (a EDU.oswego.cs.dl.util.concurrent.WriterPreferenceReadWriteLock$ReaderLock)
+	at java.lang.Object.wait(Unknown Source)
+	at EDU.oswego.cs.dl.util.concurrent.WriterPreferenceReadWriteLock$ReaderLock.acquire(Unknown Source)
+	- locked <0x232d1360> (a EDU.oswego.cs.dl.util.concurrent.WriterPreferenceReadWriteLock$ReaderLock)
+	at org.apache.jackrabbit.core.state.SharedItemStateManager.acquireReadLock(SharedItemStateManager.java:1361)
+	at org.apache.jackrabbit.core.state.SharedItemStateManager.hasItemState(SharedItemStateManager.java:270)
+	at org.apache.jackrabbit.core.state.LocalItemStateManager.hasItemState(LocalItemStateManager.java:180)
+	at org.apache.jackrabbit.core.state.XAItemStateManager.hasItemState(XAItemStateManager.java:252)
+	at org.apache.jackrabbit.core.state.SessionItemStateManager.hasItemState(SessionItemStateManager.java:188)
+	at org.apache.jackrabbit.core.ItemManager.itemExists(ItemManager.java:256)
+	at org.apache.jackrabbit.core.NodeImpl.hasProperty(NodeImpl.java:1509)
+	at org.apache.jackrabbit.core.version.InternalFrozenNodeImpl.checkin(InternalFrozenNodeImpl.java:276)
+	at org.apache.jackrabbit.core.version.InternalFrozenNodeImpl.checkin(InternalFrozenNodeImpl.java:248)
+	at org.apache.jackrabbit.core.version.InternalVersionHistoryImpl.checkin(InternalVersionHistoryImpl.java:440)
+	at org.apache.jackrabbit.core.version.AbstractVersionManager.checkin(AbstractVersionManager.java:397)
+	at org.apache.jackrabbit.core.version.VersionManagerImpl$2.run(VersionManagerImpl.java:289)
+	at org.apache.jackrabbit.core.version.VersionManagerImpl$DynamicESCFactory.doSourced(VersionManagerImpl.java:611)
+	- locked <0x2320c5d8> (a org.apache.jackrabbit.core.version.VersionManagerImpl$DynamicESCFactory)
+	at org.apache.jackrabbit.core.version.VersionManagerImpl.checkin(VersionManagerImpl.java:285)
+	at org.apache.jackrabbit.core.version.XAVersionManager.checkin(XAVersionManager.java:161)
+	at org.apache.jackrabbit.core.NodeImpl.checkin(NodeImpl.java:2944)
+	at JrTestDeadlock.run(JrTestDeadlock.java:103)
+

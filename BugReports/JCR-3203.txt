@@ -1,0 +1,10 @@
+GroupImp#getMembers and #getDeclaredMembers should return RangeIterator
+
+
+
+Description:
+for those cases where the total amount of members can easily be detected/calculated the
+implementations of Group#getMembers() and #getDeclaredMembersOf() should return a RangeIterator.
+
+so far i found that Group#declaredMembers() can be easily adjusted for those cases where
+the group members are stored in a multivalued property.

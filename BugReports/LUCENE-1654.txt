@@ -1,0 +1,20 @@
+Include diagnostics per-segment when writing a new segment
+
+
+
+Description:
+It would be very helpful if each segment in an index included
+diagnostic information, such as the current version of Lucene.
+
+EG, in LUCENE-1474 this would be very helpful to see if certain
+segments were written under 2.4.0.
+
+We can start with just the current version.
+
+We could also consider making this extensible, so you could provide
+your own arbitrary diagnostics, but SegmentInfo/s is not public so I
+think such an API would be "one-way" in that you'd have to use
+CheckIndex to check on it later.  Or we could wait on such extensibility
+until we provide some consistent way to access per-segment details
+in the index.
+

@@ -1,0 +1,9 @@
+[PATCH] Ordered spanquery with slop can fail
+
+
+
+Description:
+In CVS of 7 April 2004. 
+An ordered SpanQuery with slop 1 querying: w1 w2 w3 
+in document: w1 w3 w2 w3 
+fails. It should match as: w1 . w2 w3

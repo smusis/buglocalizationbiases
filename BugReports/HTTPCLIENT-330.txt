@@ -1,0 +1,20 @@
+[PATCH] Wirelog corrections
+
+
+
+Description:
+This patch 
+
+* fixes the problem reported by Geir H. Pettersen <geir at cellus.no>. See
+http://marc.theaimsgroup.com/?t=108072355300004&r=1&w=2 for details
+
+* increases the priority of HTTP request/status line & HTTP headers output from
+DEBUG to INFO. Quite often request/response content generate excessive amount of
+output in the wirelog and produce no valuable debug information of what so ever.
+By setting wirelog verbosity to INFO one can turn off the logging of 
+request/response content.
+
+I believe the patch should be applied to both CVS HEAD and 2.0 branch. Please
+let me know if you agree
+
+Oleg

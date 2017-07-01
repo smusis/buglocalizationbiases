@@ -1,0 +1,20 @@
+Cookie Documentation clarifications
+
+
+
+Description:
+The JavaDoc for CookieSpec mentions that the default policy is RFC2109 - it
+would be nice if this was mentioned on
+http://jakarta.apache.org/commons/httpclient/cookies.html as well
+(likewise for 2.0)
+
+The Javadoc for getDefaultPolicy() says to use getCookieSpec(String); it would
+be better to say to use getCookieSpec(DEFAULT), and it would be helpful to
+mention getDefaultSpec().
+
+CookiePolicy Javadoc does not mention the IGNORE_COOKIES policy in the header
+documentation.
+
+The cookies.html page mentions automatic and manual handling of cookies, but
+does not provide any links as to how to control these. For example, how does one
+turn off automatic cookie handling?

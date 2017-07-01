@@ -1,0 +1,8 @@
+Upgrade to easymock 2.5.2
+
+
+
+Description:
+Currently we have a dependency on easymock:easymock:1.1 in the jackrabbit-parent pom's dependency management section. This dependency is not actually used, but I am planning to start using it soon in the core. Upgrading it to 2.5.2 would give us generics support and a lot of improvements and bug fixes.
+
+Note that the upgrade changes the groupId of the dependency.

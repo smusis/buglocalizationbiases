@@ -1,0 +1,17 @@
+JCR-Server: Workspace.restore not mapped correctly
+
+
+
+Description:
+(issue reported by David Kennedy)
+
+Workspace.restore(Version[], boolean) won't work, since versions are not retrieved correctly. The version history that can be access from the request  resource, cannot be used to retrieve the versions needed for a workspace.restore call.
+
+possible short term fix:
+From the version-hrefs present in the request body of the UPDATE request, version resources must be built and
+the corresponding version item retrieved.
+
+alternative:
+find a proper mapping for Workspace.restore(Version[], boolean). having UPDATE on a resource representing a javax.jcr.Node being mapped to a workspace.restore is odd.
+
+

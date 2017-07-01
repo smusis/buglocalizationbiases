@@ -1,0 +1,6 @@
+JSR 283: Evaluate Capabilities 
+
+
+
+Description:
+Exposed by Session.hasCapability

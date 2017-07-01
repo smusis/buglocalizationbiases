@@ -1,0 +1,6 @@
+The servlet-api dependency scope should be "provided" in jackrabbit-jcr-server
+
+
+
+Description:
+Using the default "compile" scope for servlet-api in jackrabbit-jcr-server causes warnings about the scope not being "provided" when building jackrabbit-webapp.

@@ -1,0 +1,8 @@
+Implement QueryObjectModelFactory.fullTextSearch() in QueryManagerImpl
+
+
+
+Description:
+While doing the JCR-1104 upgrade to JCR 2.0, we ran into an issue on how to best handle the QueryObjectModelFactory.fullTextSearch() method that seems to have changed a bit since the spi-commons version was written.
+
+Marcel, can you take a look at this when you have time. The dummy implementation I added now is at line 97 of QueryManagerImpl.java in jackrabbit-core.

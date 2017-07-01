@@ -1,0 +1,11 @@
+don't spawn thread statically in FSDirectory on Mac OS X
+
+
+
+Description:
+on the Mac, creating the digester starts up a PKCS11 thread.
+
+I do not think threads should be created statically (I have this same issue with TimeLimitedCollector and also FilterManager).
+
+Uwe discussed removing this md5 digester, I don't care if we remove it or not, just as long as it doesn't create a thread,
+and just as long as it doesn't use the system default locale.

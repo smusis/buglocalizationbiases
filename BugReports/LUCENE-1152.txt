@@ -1,0 +1,14 @@
+SpellChecker does not work properly on calling indexDictionary after clearIndex
+
+
+
+Description:
+We have to call clearIndex and indexDictionary to rebuild dictionary from fresh. The call to SpellChecker clearIndex() function does not reset the searcher. Hence, when we call indexDictionary after that, many entries that are already in the stale searcher will not be indexed.
+
+Also, I see that IndexReader reader is used for the sole purpose of obtaining the docFreq of a given term in exist() function. This functionality can also be obtained by using just the searcher by calling searcher.docFreq. Thus, can we get away completely with reader and code associated with it like
+      if (IndexReader.isLocked(spellIndex)){
+	IndexReader.unlock(spellIndex);
+      }
+and the reader related code in finalize?
+
+

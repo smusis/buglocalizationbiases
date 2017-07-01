@@ -1,0 +1,6 @@
+Allow (or bring back) the ability to setRAMBufferSizeMB on an open IndexWriter
+
+
+
+Description:
+In 3.1 the ability to setRAMBufferSizeMB is deprecated, and removed in trunk. It would be great to be able to control that on a live IndexWriter. Other possible two methods that would be great to bring back are setTermIndexInterval and setReaderTermsIndexDivisor. Most of the other setters can actually be set on the MergePolicy itself, so no need for setters for those (I think).

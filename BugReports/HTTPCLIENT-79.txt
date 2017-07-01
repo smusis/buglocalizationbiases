@@ -1,0 +1,8 @@
+Preemtive Auth fails whithout credentials
+
+
+
+Description:
+The preemtive authorization causes a HttpException to be thrown in teh
+Authenticator if no credentials were provided at all. This case should be
+handled quietly. A test case should be added.

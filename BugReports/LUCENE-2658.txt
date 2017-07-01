@@ -1,0 +1,6 @@
+TestIndexWriterExceptions random failure: AIOOBE in ByteBlockPool.allocSlice
+
+
+
+Description:
+TestIndexWriterExceptions threw this today, and its reproducable

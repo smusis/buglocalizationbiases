@@ -1,0 +1,20 @@
+Make CMS smarter about thread priorities
+
+
+
+Description:
+Spinoff from LUCENE-2161...
+
+The hard throttling CMS does (blocking the incoming thread that wants
+to launch a new merge) can be devastating when it strikes during NRT
+reopen.
+
+It can easily happen if a huge merge is off and running, but then a
+tiny merge is needed to clean up recently created segments due to
+frequent reopens.
+
+I think a small change to CMS, whereby it assigns a higher thread
+priority to tiny merges than big merges, should allow us to increase
+the max merge thread count again, and greatly reduce the chance that
+NRT's reopen would hit this.
+

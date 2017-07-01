@@ -1,0 +1,17 @@
+CheckIndex should allow term position = -1
+
+
+
+Description:
+
+Spinoff from this discussion:
+
+    http://mail-archives.apache.org/mod_mbox/lucene-java-user/200803.mbox/%3CPine.LNX.4.62.0803292323350.16762@radix.cryptio.net%3E
+
+Right now CheckIndex claims the index is corrupt if you index a Token with -1 position, which happens if your first token has positionIncrementGap set to 0.
+
+But, as far as I can tell, Lucene doesn't "mind" when this happens.
+
+So I plan to fix CheckIndex to allow this case.  I'll backport to 2.3.2 as well.
+
+LUCENE-1253 is one example where Lucene's core analyzers could do this.

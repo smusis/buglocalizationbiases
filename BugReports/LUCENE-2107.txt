@@ -1,0 +1,8 @@
+Add contrib/fast-vector-highlighter to Maven central repo
+
+
+
+Description:
+I'm not at all familiar with the Lucene build/deployment process, but it would be very nice if releases of the fast vector highlighter were pushed to the maven central repository, as is done with other contrib modules.
+
+(Issue filed at the request of Grant Ingersoll.)

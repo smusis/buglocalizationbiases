@@ -1,0 +1,21 @@
+intermittant exceptions in TestConcurrentMergeScheduler
+
+
+
+Description:
+
+The TestConcurrentMergeScheduler throws intermittant exceptions that
+do not result in a test failure.
+
+The exception happens in the "testNoWaitClose()" test, which repeated
+tests closing an IndexWriter with "false", meaning abort any
+still-running merges.  When a merge is aborted it can hit various
+exceptions because the files it is reading and/or writing have been
+deleted, so we ignore these exceptions.
+
+The bug was just that we were failing to properly check whether the
+running merge was actually aborted because of a scoping issue of the
+"merge" variable in ConcurrentMergeScheduler.  So the exceptions are
+actually "harmless".  Thanks to Ning for spotting it!
+
+

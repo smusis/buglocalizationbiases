@@ -1,0 +1,8 @@
+Jackrabbit performance test suite
+
+
+
+Description:
+I'd like to set up a multi-version performance test suite inside jackrabbit-core/src/test/performance, similar to the compatibility test suite we added in JCR-2631. This performance test suite would produce comparable performance numbers for a number of simple benchmark tests across different Jackrabbit versions, including the latest snapshot.
+
+

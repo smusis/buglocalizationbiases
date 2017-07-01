@@ -1,0 +1,26 @@
+infinite loop on 302 redirect with different host in Location: header
+
+
+
+Description:
+Using the CVS version - 2.1 rc I think.
+
+Trying to get the url contents for a url with followRedirects specified and 
+StrictMode off and I get a 302 redirect to a different url with a different 
+host in the Location header causes it to go into an infinite loop (mercifully 
+aborting at 100 redirects).  An example offending url: 
+
+http://www.snowcrest.net/mice/mice.htm
+
+The problem lies in HttpMethodBase.java version 1.177 at line 1225.  It does 
+the following:
+
+        if (getRequestHeader("host") != null) {
+            LOG.debug(
+                "Request to add Host header ignored: header already added");
+            return;
+        }
+
+and there is already the Host header from the previous url request so it 
+endlessly loops until it aborts at the max redirects (default is 100 I guess).  
+I commented this out and it worked fine.

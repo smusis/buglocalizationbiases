@@ -1,0 +1,30 @@
+Make getAttribute(Class attClass) Generic
+
+
+
+Description:
+org.apache.lucene.util.AttributeSource
+
+current:
+public Attribute getAttribute(Class attClass) {
+    final Attribute att = (Attribute) this.attributes.get(attClass);
+    if (att == null) {
+      throw new IllegalArgumentException("This AttributeSource does not have the attribute '" + attClass.getName() + "'.");
+    }
+    return att;
+}
+sample usage:
+TermAttribute termAtt = (TermAttribute)ts.getAttribute(TermAttribute.class)
+
+
+my improvment:
+@SuppressWarnings("unchecked")
+	public <T> T getAttribute2(Class<? extends Attribute> attClass) {
+    final T att = (T) this.attributes.get(attClass);
+    if (att == null) {
+      throw new IllegalArgumentException("This AttributeSource does not have the attribute '" + attClass.getName() + "'.");
+    }
+    return att;
+ }
+sample usage:
+TermAttribute termAtt = ts.getAttribute(TermAttribute.class)

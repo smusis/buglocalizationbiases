@@ -1,0 +1,14 @@
+document LengthFilter wrt Unicode 4.0
+
+
+
+Description:
+LengthFilter calculates its min/max length from TermAttribute.termLength()
+This is not characters, but instead UTF-16 code units.
+
+In my opinion this should not be changed, merely documented.
+If we changed it, it would have an adverse performance impact because we would have to actually calculate Character.codePointCount() on the text.
+
+If you feel strongly otherwise, fixing it to count codepoints would be a trivial patch, but I'd rather not hurt performance.
+I admit I don't fully understand all the use cases for this filter.
+

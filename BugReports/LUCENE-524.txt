@@ -1,0 +1,12 @@
+Current implementation of fuzzy and wildcard queries inappropriately implemented as Boolean query rewrites
+
+
+
+Description:
+The implementation of MultiTermQuery in terms of BooleanQuery introduces several problems:
+
+1) Collisions with maximum clause limit on boolean queries which throws an exception.  This is most problematic because it is difficult to ascertain in advance how many terms a fuzzy query or wildcard query might involve.
+
+2) The boolean disjunctive scoring is not appropriate for either fuzzy or wildcard queries.  In effect the score is divided by the number of terms in the query which has nothing to do with the relevancy of the results.
+
+3) Performance of disjunctive boolean queries for large term sets is quite sub-optimal

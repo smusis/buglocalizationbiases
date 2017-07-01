@@ -1,0 +1,6 @@
+Remaining contrib testcases should use Version based ctors instead of deprecated ones
+
+
+
+Description:
+Many testcases in contrib use deprecated ctors for WhitespaceTokenizer / Analyzer etc.

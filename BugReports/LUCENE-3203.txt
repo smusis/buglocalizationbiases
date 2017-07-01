@@ -1,0 +1,15 @@
+Rate-limit IO used by merging
+
+
+
+Description:
+Large merges can mess up searches and increase NRT reopen time (see
+http://blog.mikemccandless.com/2011/06/lucenes-near-real-time-search-is-fast.html).
+
+A simple rate limiter improves the spikey NRT reopen times during big
+merges, so I think we should somehow make this possible.  Likely this
+would reduce impact on searches as well.
+
+Typically apps that do indexing and searching on same box are in no
+rush to see the merges complete so this is a good tradeoff.
+

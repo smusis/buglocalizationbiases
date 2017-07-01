@@ -1,0 +1,6 @@
+add calendar mime types to jcr-server's mime type registry
+
+
+
+Description:
+attached is a patch that adds mime types for .ics and .ifb files to jcr-server's mime type registry.

@@ -1,0 +1,14 @@
+When using QueryWrapperFilter with CachingWrapperFilter, QueryWrapperFilter returns a DocIdSet that creates a Scorer, which gets cached rather than a bit set
+
+
+
+Description:
+there is a large performance cost to this.
+
+The old impl for this type of thing, QueryFilter, recommends :
+
+@deprecated use a CachingWrapperFilter with QueryWrapperFilter
+
+The deprecated QueryFilter itself also suffers from the problem because its now implemented using a CachingWrapperFilter and QueryWrapperFilter.
+
+see http://search.lucidimagination.com/search/document/7f54715f14b8b7a/lucene_2_9_0rc4_slower_than_2_4_1

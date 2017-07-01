@@ -1,0 +1,19 @@
+Allow configuration of SO_LINGER
+
+
+
+Description:
+There is currently no way to configure the SO_LINGER option on a socket.
+
+Please change the HttpClient class to allow the configuration of the SO_LINGER
+option on a socket, similar to the way the SO_TIMEOUT can be configured.
+
+Suggested extension to the interface of the HttpClient class:
+- Add method setSoLinger() to set the current setting for SO_LINGER. The method
+could accept one argument. A negative value could indicate that the SO_LINGER
+should be disabled.
+- Add method getSoLinger() that returns the current setting for SO_LINGER. A
+negative value would indicate that the SO_LINGER option is disabled.
+
+See:
+http://java.sun.com/j2se/1.4.2/docs/api/java/net/Socket.html#setSoLinger(boolean,%20int)

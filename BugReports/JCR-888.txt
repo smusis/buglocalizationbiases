@@ -1,0 +1,26 @@
+javax.jcr.NamespaceException: : is not a registered namespace uri
+
+
+
+Description:
+Using the first hops with both versions 1.2.3 and 1.3, the repository is created successfully the first time it is run.  Subsequent attempts to login result in a javax.jcr.NamespaceException.
+
+
+DEBUG - Initializing transient repository
+INFO - Starting repository...
+INFO - LocalFileSystem initialized at path repository\repository
+Exception in thread "main" javax.jcr.NamespaceException: : is not a registered namespace uri.
+	at org.apache.jackrabbit.core.NamespaceRegistryImpl.getPrefix(NamespaceRegistryImpl.java:538)
+	at org.apache.jackrabbit.core.nodetype.NodeTypeRegistry.checkNamespace(NodeTypeRegistry.java:1292)
+	at org.apache.jackrabbit.core.nodetype.NodeTypeRegistry.validateNodeTypeDef(NodeTypeRegistry.java:1415)
+	at org.apache.jackrabbit.core.nodetype.NodeTypeRegistry.internalRegister(NodeTypeRegistry.java:1221)
+	at org.apache.jackrabbit.core.nodetype.NodeTypeRegistry.<init>(NodeTypeRegistry.java:671)
+	at org.apache.jackrabbit.core.nodetype.NodeTypeRegistry.create(NodeTypeRegistry.java:118)
+	at org.apache.jackrabbit.core.RepositoryImpl.createNodeTypeRegistry(RepositoryImpl.java:571)
+	at org.apache.jackrabbit.core.RepositoryImpl.<init>(RepositoryImpl.java:262)
+	at org.apache.jackrabbit.core.RepositoryImpl.create(RepositoryImpl.java:584)
+	at org.apache.jackrabbit.core.TransientRepository$2.getRepository(TransientRepository.java:245)
+	at org.apache.jackrabbit.core.TransientRepository.startRepository(TransientRepository.java:265)
+	at org.apache.jackrabbit.core.TransientRepository.login(TransientRepository.java:333)
+	at org.apache.jackrabbit.core.TransientRepository.login(TransientRepository.java:388)
+	at testing.FirstHops.main(FirstHops.java:24)

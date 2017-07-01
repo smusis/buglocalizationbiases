@@ -1,0 +1,14 @@
+Move Jackrabbit Query Parser from core to spi-commons
+
+
+
+Description:
+The query parser can be used outside jackrabbit-core, for instances in other repository implementations based on JCR2SPI.
+
+Proposal:
+
+- move source and build infrastructure from o.a.j.core.query to o.a.j.spi.commons.query
+
+- switch over jackrabbit.core to use spi-commons for query
+
+- optimally, add specific test cases for the query tree generation. 

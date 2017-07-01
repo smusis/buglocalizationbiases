@@ -1,0 +1,6 @@
+Add WaitForMergesTask
+
+
+
+Description:
+When building an index, if you just .close the IW, you may leave merges still needing to be done... so a WaitForMerges task lets algs fix this.

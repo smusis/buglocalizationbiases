@@ -1,0 +1,19 @@
+jcr2spi: Unprocessed ItemInfos call to RepositoryService#getItemInfos
+
+
+
+Description:
+stefan reported the following problem:
+
+- batchread config reads with depths infinity
+- invalidate tree by calling Node.refresh(false)
+- force loading of the tree (e.g. Node.getPath())
+
+afterwards, there may still be invalidated item states indicating that not all ItemInfos were processed.
+consequently, there are additional calls to getItemInfos that should have been covered by the loading of the tree.
+the problem occuring is not related to limitation of the item-cache size.
+
+problem analysis:
+
+there is a bug in WorkspaceItemStateFactory#createItemStates.
+there is a wrapper built around the ItemInfo-Iterator but later on the ItemInfo-Iterator is used instead of the wrapper, which pre-fetches items from the underlying iterator and process them upon hasNext()/next().

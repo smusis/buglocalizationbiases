@@ -1,0 +1,10 @@
+Choose a specific Directory implementation running the CheckIndex main
+
+
+
+Description:
+It should be possible to choose a specific Directory implementation to use during the CheckIndex process when we run it from its main.
+What about an additional main parameter?
+In fact, I'm experiencing some problems with MMapDirectory working with a big segment, and after some failed attempts playing with maxChunkSize, I decided to switch to another FSDirectory implementation but I needed to do that on my own main.
+Should we also consider to use a FileSwitchDirectory?
+I'm willing to contribute, could you please let me know your thoughts about it?

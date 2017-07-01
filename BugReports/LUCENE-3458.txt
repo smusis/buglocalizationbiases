@@ -1,0 +1,6 @@
+Change BooleanFilter to have only a single clauses ArrayList (so toString() works fine, clauses() method could be added) so it behaves more lik BooleanQuery
+
+
+
+Description:
+This is unrelated to the other BF changes, but should be done

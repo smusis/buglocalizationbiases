@@ -1,0 +1,6 @@
+Privilege content representation should be of property type NAME
+
+
+
+Description:
+the content representation of jcr privileges should reflect that fact that privilege names changed from simple string to JCR name.

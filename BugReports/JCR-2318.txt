@@ -1,0 +1,6 @@
+Keep WebDAV exception causes
+
+
+
+Description:
+The DavMethodBase and ExceptionConverter classes in jackrabbit-webdav and jackrabbit-spi2dav don't include the cause when throwing an exception based on some caught cause. This makes it harder to identify what is causing a  particular problem. The attached patch fixes that.

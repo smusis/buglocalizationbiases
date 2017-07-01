@@ -1,0 +1,6 @@
+Missing log4j.properties file
+
+
+
+Description:
+The log4j.properties file is missing in the test resources.

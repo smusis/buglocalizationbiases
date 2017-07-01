@@ -1,0 +1,14 @@
+SimpleSelectionTest assumes RowIterator.getSize() not to return -1
+
+
+
+Description:
+Test case "testSingleProperty" assumes that RowIterator.getSize() will not return -1. This is an incorrect assumption, according to the JavaDoc for RangeIterator.
+
+Suggested change:
+
+        long size = result.getRows().getSize();
+        if (size != -1) {
+            assertEquals("Should have only 1 result", 1, size);
+        }
+

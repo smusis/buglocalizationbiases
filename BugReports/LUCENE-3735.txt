@@ -1,0 +1,10 @@
+Fix PayloadProcessorProvider to no longer use Directory for lookup, instead AtomicReader
+
+
+
+Description:
+The PayloadProcessorProvider has a broken API, this should be fixed. The current trunk mimics the old behaviour, but not 100%.
+
+The PayloadProcessorProvider API should return a PayloadProcessor based on the AtomicReader instance that gets merged. As AtomicReader do no longer know the directory they are reside (they could be e.g. FilterIndexReaders, MemoryIndexes,...) a selection by Directory is no longer possible.
+
+The current code in Lucene trunk mimics the old behavior by doing an instanceof SegmentReader check and then asking for a DirProvider. If something else is merged in, Payload processing is not supported. This should be changed, the old API could be kept backwards compatible by moving the instanceof check in a "convenience class" DirPayloadProcessorProvider, extending PayloadProcessorProvider.

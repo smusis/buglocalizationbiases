@@ -1,0 +1,6 @@
+Remove oal.util.MapBackedSet (Java 6 offsers Collections.newSetFromMap())
+
+
+
+Description:
+Easy search and replace job. In 3.x we still need the class, as Java 5 does not have Collections.newSetFromMap().

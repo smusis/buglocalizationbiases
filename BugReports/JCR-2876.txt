@@ -1,0 +1,13 @@
+org.apache.jackrabbit.server.io.IOUtil getTempFile misses dot in tmp suffix
+
+
+
+Description:
+At line 168:
+File tmpFile = File.createTempFile("__importcontext", "tmp");
+Suffix tmp has no use because the dot is missing.
+
+Should be:
+File tmpFile = File.createTempFile("__importcontext", ".tmp");
+
+

@@ -1,0 +1,20 @@
+duplicate package.html files in queryParser and analsysis.cn packages
+
+
+
+Description:
+These files conflict with eachother when building the javadocs. there can be only one (of each) ...
+
+{code}
+hossman@brunner:~/lucene/java$ find src contrib -name package.html | perl -ple 's{.*src/java/}{}' | sort | uniq -c | grep -v " 1 "
+   2 org/apache/lucene/analysis/cn/package.html
+   2 org/apache/lucene/queryParser/package.html
+hossman@brunner:~/lucene/java$ find src contrib -path \*queryParser/package.html
+src/java/org/apache/lucene/queryParser/package.html
+contrib/queryparser/src/java/org/apache/lucene/queryParser/package.html
+hossman@brunner:~/lucene/java$ find src contrib -path \*cn/package.html
+contrib/analyzers/common/src/java/org/apache/lucene/analysis/cn/package.html
+contrib/analyzers/smartcn/src/java/org/apache/lucene/analysis/cn/package.html
+{code}
+
+

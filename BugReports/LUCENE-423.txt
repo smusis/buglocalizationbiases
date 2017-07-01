@@ -1,0 +1,8 @@
+thread pool implementation of parallel queries
+
+
+
+Description:
+This component is a replacement for ParallelMultiQuery that runs a thread pool
+with queue instead of starting threads for every query execution (so its
+performance is better).

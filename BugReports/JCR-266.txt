@@ -1,0 +1,10 @@
+Denying a primaryType does not work in XPath
+
+
+
+Description:
+The following query does not work:
+
+//element(*, my:type)[jcr:contains(.,'foo') and @jcr:primaryType != 'nt:frozenNode')
+
+The jcr:primaryType predicate does not respect the 'not equal' operation.

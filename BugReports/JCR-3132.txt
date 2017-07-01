@@ -1,0 +1,8 @@
+Test tooling updates
+
+
+
+Description:
+To leverage advances in test tooling I'd like to upgrade our JUnit dependency to 4.x and switch to using the Maven Failsafe plugin  [1] instead of our current custom POM settings for integration tests. I'll also upgrade the Easymock dependency to 3.0.
+
+[1] http://maven.apache.org/plugins/maven-failsafe-plugin/

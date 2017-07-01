@@ -1,0 +1,8 @@
+connection wrapper prevents GC of TSCCM
+
+
+
+Description:
+Even if a connection is released back to the ThreadSafeClientConnManager, a hard reference to the connection wrapper will prevent GC of the TSCCM.
+Make sure the connection wrapper is properly detached on release. Then update TestTSCCMWithServer.testConnectionManagerGC() accordingly. 
+

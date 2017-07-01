@@ -1,0 +1,7 @@
+consolidate FieldCache and ExtendedFieldCache instances
+
+
+
+Description:
+It's confusing and error prone having two instances of FieldCache... FieldCache .DEFAULT and ExtendedFieldCache .EXT_DEFAULT.
+Accidentally use the wrong one and you silently double the memory usage for that field.  Since ExtendedFieldCache extends FieldCache, there's no reason not to share the same instance across both.

@@ -1,0 +1,71 @@
+Optimize the core tokenizers/analyzers & deprecate Token.termText
+
+
+
+Description:
+There is some "low hanging fruit" for optimizing the core tokenizers
+and analyzers:
+
+  - Re-use a single Token instance during indexing instead of creating
+    a new one for every term.  To do this, I added a new method "Token
+    next(Token result)" (Doron's suggestion) which means TokenStream
+    may use the "Token result" as the returned Token, but is not
+    required to (ie, can still return an entirely different Token if
+    that is more convenient).  I added default implementations for
+    both next() methods in TokenStream.java so that a TokenStream can
+    choose to implement only one of the next() methods.
+
+  - Use "char[] termBuffer" in Token instead of the "String
+    termText".
+
+    Token now maintains a char[] termBuffer for holding the term's
+    text.  Tokenizers & filters should retrieve this buffer and
+    directly alter it to put the term text in or change the term
+    text.
+
+    I only deprecated the termText() method.  I still allow the ctors
+    that pass in String termText, as well as setTermText(String), but
+    added a NOTE about performance cost of using these methods.  I
+    think it's OK to keep these as convenience methods?
+
+    After the next release, when we can remove the deprecated API, we
+    should clean up Token.java to no longer maintain "either String or
+    char[]" (and the initTermBuffer() private method) and always use
+    the char[] termBuffer instead.
+
+  - Re-use TokenStream instances across Fields & Documents instead of
+    creating a new one for each doc.  To do this I added an optional
+    "reusableTokenStream(...)" to Analyzer which just defaults to
+    calling tokenStream(...), and then I implemented this for the core
+    analyzers.
+
+I'm using the patch from LUCENE-967 for benchmarking just
+tokenization.
+
+The changes above give 21% speedup (742 seconds -> 585 seconds) for
+LowerCaseTokenizer -> StopFilter -> PorterStemFilter chain, tokenizing
+all of Wikipedia, on JDK 1.6 -server -Xmx1024M, Debian Linux, RAID 5
+IO system (best of 2 runs).
+
+If I pre-break Wikipedia docs into 100 token docs then it's 37% faster
+(1236 sec -> 774 sec), I think because of re-using TokenStreams across
+docs.
+
+I'm just running with this alg and recording the elapsed time:
+
+  analyzer=org.apache.lucene.analysis.LowercaseStopPorterAnalyzer
+  doc.tokenize.log.step=50000
+  docs.file=/lucene/wikifull.txt
+  doc.maker=org.apache.lucene.benchmark.byTask.feeds.LineDocMaker
+  doc.tokenized=true
+  doc.maker.forever=false
+
+  {ReadTokens > : *
+
+See this thread for discussion leading up to this:
+
+  http://www.gossamer-threads.com/lists/lucene/java-dev/51283
+
+I also fixed Token.toString() to work correctly when termBuffer is
+used (and added unit test).
+

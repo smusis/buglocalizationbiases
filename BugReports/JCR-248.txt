@@ -1,0 +1,6 @@
+create configuration on InputStream
+
+
+
+Description:
+RepositoryConfig should be possible to create based on InputStreams (in case of URLs) ; right now it's possible only using String and InputSource. Please update also the JCA connector. 

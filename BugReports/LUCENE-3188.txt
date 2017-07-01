@@ -1,0 +1,7 @@
+The class from cotrub directory org.apache.lucene.index.IndexSplitter creates a non correct index
+
+
+
+Description:
+When using the method IndexSplitter.split(File destDir, String[] segs) from the Lucene cotrib directory (contrib/misc/src/java/org/apache/lucene/index) it creates an index with segments descriptor file with wrong data. Namely wrong is the number representing the name of segment that would be created next in this index.
+If some of the segments of the index already has this name this results either to impossibility to create new segment or in crating of an corrupted segment.

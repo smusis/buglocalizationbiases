@@ -1,0 +1,12 @@
+change sort order to binary order
+
+
+
+Description:
+Since flexible indexing, terms are now represented as byte[], but for backwards compatibility reasons, they are not sorted as byte[], but instead as if they were char[].
+
+I think its time to look at sorting terms as byte[]... this would yield the following improvements:
+* terms are more opaque by default, they are byte[] and sort as byte[]. I think this would make lucene friendlier to customizations.
+* numerics and collation are then free to use their own encoding (full byte) rather than avoiding the use of certain bits to remain compatible with char[] sort order.
+* automaton gets simpler because as in LUCENE-2265, it uses byte[] too, and has special hacks because terms are sorted as char[]
+

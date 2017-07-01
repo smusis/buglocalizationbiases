@@ -1,0 +1,58 @@
+IndexWriter does not release its write lock when trying to open an index which does not yet exist
+
+
+
+Description:
+In version 2.0.0, the private IndexWriter constructor does not properly remove its write lock in the event of an error. This can be seen when one attempts to open (not create) an index in a directory which exists, but in which there is no segments file. Here is the offending code:
+
+    247   private IndexWriter(Directory d, Analyzer a, final boolean create, boolean closeDir)
+    248     throws IOException {
+    249       this.closeDir = closeDir;
+    250       directory = d;
+    251       analyzer = a;
+    252 
+    253       Lock writeLock = directory.makeLock(IndexWriter.WRITE_LOCK_NAME);
+    254       if (!writeLock.obtain(writeLockTimeout)) // obtain write lock
+    255         throw new IOException("Index locked for write: " + writeLock);
+    256       this.writeLock = writeLock;                   // save it
+    257 
+    258       synchronized (directory) {        // in- & inter-process sync
+    259         new Lock.With(directory.makeLock(IndexWriter.COMMIT_LOCK_NAME), commitLockTimeout) {
+    260             public Object doBody() throws IOException {
+    261               if (create)
+    262                 segmentInfos.write(directory);
+    263               else
+    264                 segmentInfos.read(directory);
+    265               return null;
+    266             }
+    267           }.run();
+    268       }
+    269   }
+
+On line 254, a write lock is obtained by the constructor. If an exception is raised inside the doBody() method (on line 260), then that exception is propagated, the constructor will fail, but the lock is not released until the object is garbage collected. This is typically an issue except when using the IndexModifier class.
+
+As of the filing of this bug, this has not yet been fixed in the trunk (IndexWriter.java#472959):
+
+    251   private IndexWriter(Directory d, Analyzer a, final boolean create, boolean closeDir)
+    252     throws IOException {
+    253       this.closeDir = closeDir;
+    254       directory = d;
+    255       analyzer = a;
+    256 
+    257       Lock writeLock = directory.makeLock(IndexWriter.WRITE_LOCK_NAME);
+    258       if (!writeLock.obtain(writeLockTimeout)) // obtain write lock
+    259         throw new IOException("Index locked for write: " + writeLock);
+    260       this.writeLock = writeLock;                   // save it
+    261 
+    262       synchronized (directory) {        // in- & inter-process sync
+    263         new Lock.With(directory.makeLock(IndexWriter.COMMIT_LOCK_NAME), commitLockTimeout) {
+    264             public Object doBody() throws IOException {
+    265               if (create)
+    266                 segmentInfos.write(directory);
+    267               else
+    268                 segmentInfos.read(directory);
+    269               return null;
+    270             }
+    271           }.run();
+    272       }
+    273   }

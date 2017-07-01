@@ -1,0 +1,32 @@
+Performance of AC Evaluation
+
+
+
+Description:
+1. Performance in access control evaluation
+=====================================================================
+
+ - main focus on
+   > read performance
+   > resource-based access control in .a.j.c/s/authorization/acl/*
+
+ - comparison admin vs. anonymous with full permissions
+ - comparision between shortcut and ACL-evaluation.
+ - comparison JR 1.4 vs JR 2.0 [actually i will compare Day's CRX as it already provided
+   some custom AC stuff with JR 1.4]
+
+
+2. Potential Problems
+=====================================================================
+
+   I would expect the most significant problems to be found in
+
+a) ACLProvider#retrieveResultEntries: calculating effective ACEs
+     for each session separately.
+
+b) AclPermission:
+     Each instance registering an event listener in order to
+     keep the result cache up to date
+
+c) AclPermission:
+     Resolution form Path to Item or to nearest existing Item 

@@ -1,0 +1,23 @@
+IndexReader.getCurrentVersion() and isCurrent should use commit lock.
+
+
+
+Description:
+There is a race condition if one machine is checking the current version of an index while another wants to update the segments file in IndexWriter.close().
+
+java.io.IOException: Cannot delete segments
+	at org.apache.lucene.store.FSDirectory.renameFile(FSDirectory.java:213)
+	at org.apache.lucene.index.SegmentInfos.write(SegmentInfos.java:90)
+	at org.apache.lucene.index.IndexWriter$3.doBody(IndexWriter.java:503)
+	at org.apache.lucene.store.Lock$With.run(Lock.java:109)
+	at org.apache.lucene.index.IndexWriter.mergeSegments(IndexWriter.java:501)
+	at org.apache.lucene.index.IndexWriter.flushRamSegments(IndexWriter.java:440)
+	at org.apache.lucene.index.IndexWriter.close(IndexWriter.java:242)
+
+On the windows platform reading the contents of a file disallows deleting the file.
+
+I use Lucene to maintain an index of +-700.000 documents, one server adds documents, while other servers handle the searches.
+The search servers poll the index version regularly to check if they have to reopen their IndexSearcher.
+Once in a while (about once every two days on average), IndexWriter.close() fails because it cannot delete the previous segments file, even though it hold the commit lock.
+The reason is probably that search servers are reading the segments file to check the version without using the commit lock.
+

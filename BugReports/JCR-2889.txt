@@ -1,0 +1,8 @@
+Occasional JCA test failures
+
+
+
+Description:
+As discussed in JCR-2870, the JCA packaging tests are occasionally failing with assertion failures in TransientRepository.startRepository(). We haven't seen this before JCR-2870, but it doesn't look like that change could possibly trigger this failure except perhaps by subtly affecting garbage collection. Thus I'm opening this new issue to track this as a separate problem.
+
+Based on my analysis so far it looks likely that this problem has something to do with the ReferenceMap used by TransientRepository to track open sessions. The fact that the problem occurs only occasionally and on just some systems supports the assumption that this is related to some non-deterministic process like garbage collection.

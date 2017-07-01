@@ -1,0 +1,18 @@
+Little improvement for SimpleHTMLEncoder
+
+
+
+Description:
+The SimpleHTMLEncoder could be improved slightly: all characters with code >=
+128 should be encoded as character entities. The reason is, that the encoder
+does not know the encoding that is used for the response. Therefore it is safer
+to encode all characters beyond ASCII as character entities.
+
+Here is the necessary modification of SimpleHTMLEncoder:
+
+       default:
+         if (c < 128) {
+           result.append(c);
+         } else {
+           result.append("&#").append((int)c).append(";");
+         }

@@ -1,0 +1,78 @@
+Deadlock in SharedItemStateManager on session.move and node.save
+
+
+
+Description:
+I have multiple threads in a test case for performing action on different workflow instances stored inside a Jackrabbit repository.
+Most of the time the test case hangs because of the following deadlock:
+
+"ActionTrigger38" daemon prio=10 tid=0x9060ec00 nid=0x2f7e in Object.wait() [0x8f505000..0x8f505f20]
+   java.lang.Thread.State: WAITING (on object monitor)
+        at java.lang.Object.wait(Native Method)
+        - waiting on <0xb3ef0208> (a EDU.oswego.cs.dl.util.concurrent.WriterPreferenceReadWriteLock$ReaderLock)
+        at java.lang.Object.wait(Object.java:485)
+        at EDU.oswego.cs.dl.util.concurrent.WriterPreferenceReadWriteLock$ReaderLock.acquire(Unknown Source)
+        - locked <0xb3ef0208> (a EDU.oswego.cs.dl.util.concurrent.WriterPreferenceReadWriteLock$ReaderLock)
+        at org.apache.jackrabbit.core.state.DefaultISMLocking$ReadLockImpl.<init>(DefaultISMLocking.java:84)
+        at org.apache.jackrabbit.core.state.DefaultISMLocking$ReadLockImpl.<init>(DefaultISMLocking.java:78)
+        at org.apache.jackrabbit.core.state.DefaultISMLocking.acquireReadLock(DefaultISMLocking.java:44)
+        at org.apache.jackrabbit.core.state.SharedItemStateManager.acquireReadLock(SharedItemStateManager.java:1409)
+        at org.apache.jackrabbit.core.state.SharedItemStateManager.hasItemState(SharedItemStateManager.java:286)
+        at org.apache.jackrabbit.core.state.XAItemStateManager.hasItemState(XAItemStateManager.java:295)
+        at org.apache.jackrabbit.core.state.SessionItemStateManager.hasItemState(SessionItemStateManager.java:206)
+        at org.apache.jackrabbit.core.HierarchyManagerImpl.hasItemState(HierarchyManagerImpl.java:164)
+        at org.apache.jackrabbit.core.CachingHierarchyManager.nodeAdded(CachingHierarchyManager.java:674)
+        at org.apache.jackrabbit.core.CachingHierarchyManager.nodeAdded(CachingHierarchyManager.java:366)
+        - locked <0xb4020630> (a java.lang.Object)
+        at org.apache.jackrabbit.core.state.StateChangeDispatcher.notifyNodeAdded(StateChangeDispatcher.java:159)
+        at org.apache.jackrabbit.core.state.SessionItemStateManager.nodeAdded(SessionItemStateManager.java:905)
+        at org.apache.jackrabbit.core.state.NodeState.notifyNodeAdded(NodeState.java:852)
+        at org.apache.jackrabbit.core.state.NodeState.renameChildNodeEntry(NodeState.java:370)
+        - locked <0xb26df780> (a org.apache.jackrabbit.core.state.NodeState)
+        at org.apache.jackrabbit.core.NodeImpl.renameChildNode(NodeImpl.java:559)
+        at org.apache.jackrabbit.core.SessionImpl.move(SessionImpl.java:1034)
+        at org.ametys.plugins.repository.DefaultSessionFactory$SessionWrapper.move(DefaultSessionFactory.java:398)
+        at org.ametys.plugins.workflow.store.JackrabbitWorkflowStore.moveToHistory(JackrabbitWorkflowStore.java:797)
+        at com.opensymphony.workflow.AbstractWorkflow.createNewCurrentStep(AbstractWorkflow.java:1474)
+        at com.opensymphony.workflow.AbstractWorkflow.transitionWorkflow(AbstractWorkflow.java:1256)
+        at com.opensymphony.workflow.AbstractWorkflow.doAction(AbstractWorkflow.java:567)
+        at org.ametys.plugins.workflow.Workflow.doAction(Workflow.java:227)
+        at org.ametys.plugins.workflow.WorkflowTestCase$ActionTrigger.run(WorkflowTestCase.java:195)
+
+"ActionTrigger12" daemon prio=10 tid=0x904dd000 nid=0x2f64 waiting for monitor entry [0x8fd3f000..0x8fd40020]
+   java.lang.Thread.State: BLOCKED (on object monitor)
+        at org.apache.jackrabbit.core.CachingHierarchyManager.nodeModified(CachingHierarchyManager.java:306)
+        - waiting to lock <0xb4020630> (a java.lang.Object)
+        at org.apache.jackrabbit.core.state.StateChangeDispatcher.notifyNodeModified(StateChangeDispatcher.java:189)
+        at org.apache.jackrabbit.core.state.SessionItemStateManager.nodeModified(SessionItemStateManager.java:929)
+        at org.apache.jackrabbit.core.state.StateChangeDispatcher.notifyNodeModified(StateChangeDispatcher.java:189)
+        at org.apache.jackrabbit.core.state.LocalItemStateManager.stateModified(LocalItemStateManager.java:446)
+        at org.apache.jackrabbit.core.state.XAItemStateManager.stateModified(XAItemStateManager.java:595)
+        at org.apache.jackrabbit.core.state.StateChangeDispatcher.notifyStateModified(StateChangeDispatcher.java:111)
+        at org.apache.jackrabbit.core.state.SharedItemStateManager.stateModified(SharedItemStateManager.java:400)
+        at org.apache.jackrabbit.core.state.ItemState.notifyStateUpdated(ItemState.java:244)
+        at org.apache.jackrabbit.core.state.ChangeLog.persisted(ChangeLog.java:285)
+        at org.apache.jackrabbit.core.state.SharedItemStateManager$Update.end(SharedItemStateManager.java:735)
+        at org.apache.jackrabbit.core.state.SharedItemStateManager.update(SharedItemStateManager.java:1092)
+        at org.apache.jackrabbit.core.state.LocalItemStateManager.update(LocalItemStateManager.java:337)
+        at org.apache.jackrabbit.core.state.XAItemStateManager.update(XAItemStateManager.java:347)
+        at org.apache.jackrabbit.core.state.LocalItemStateManager.update(LocalItemStateManager.java:312)
+        at org.apache.jackrabbit.core.state.SessionItemStateManager.update(SessionItemStateManager.java:313)
+        at org.apache.jackrabbit.core.ItemImpl.save(ItemImpl.java:1103)
+        - locked <0xb4004650> (a org.apache.jackrabbit.core.XASessionImpl)
+        at org.apache.jackrabbit.core.SessionImpl.save(SessionImpl.java:858)
+        at org.ametys.plugins.repository.DefaultSessionFactory$SessionWrapper.save(DefaultSessionFactory.java:414)
+        at org.ametys.plugins.workflow.store.JackrabbitWorkflowStore.markFinished(JackrabbitWorkflowStore.java:757)
+        at com.opensymphony.workflow.AbstractWorkflow.createNewCurrentStep(AbstractWorkflow.java:1473)
+        at com.opensymphony.workflow.AbstractWorkflow.transitionWorkflow(AbstractWorkflow.java:1256)
+        at com.opensymphony.workflow.AbstractWorkflow.doAction(AbstractWorkflow.java:567)
+        at org.ametys.plugins.workflow.Workflow.doAction(Workflow.java:227)
+        at org.ametys.plugins.workflow.WorkflowTestCase$ActionTrigger.run(WorkflowTestCase.java:203)
+
+Different session instances (not XA) are used in both threads.
+The nodes modified are different:
+- ActionTrigger38 is moving a node and the session has not been saved yet.
+- ActionTrigger12 has updated another node and is saving it.
+
+I try to reproduce this behavior in a Jackrabbit test case without success.
+If you need more information or a test case, let me know i will give it a second try.

@@ -1,0 +1,12 @@
+ObjectContentManagerImpl.getObject(Query) throws NoSuchElementException when query does not match an object
+
+
+
+Description:
+When a query returns no objects, ObjectContentManagerImpl.getObject(Query) throws the following exception:
+
+java.util.NoSuchElementException
+        at java.util.AbstractList$Itr.next(AbstractList.java:427)
+        at org.apache.jackrabbit.ocm.manager.impl.ObjectContentManagerImpl.getObject(ObjectContentManagerImpl.java:538)
+
+Javadocs for ObjectContentManager interface suggest that a ObjectContentManagerException should be thrown in this case.

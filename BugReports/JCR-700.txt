@@ -1,0 +1,6 @@
+Tests fail with NoClassDefFoundError: org/w3c/dom/ranges/DocumentRange
+
+
+
+Description:
+The nekohtml dependency in jackrabbit-text-extractors brings in a transitive xerces 2.4.0 dependency without the extra XML API classes required by Xerces. This causes test failures in jackrabbit-core and jackrabbit-jca because the Xerces dependency included in the test classpath overrides the default XML parser. Then, when the test cases try to parse XML documents, the missing XML API dependency causes a NoClassDefFoundError.

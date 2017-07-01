@@ -1,0 +1,13 @@
+problems with IR's readerFinishedListener
+
+
+
+Description:
+There are two major problems:
+1. The listener api does not really apply all indexreaders. for example segmentreaders dont fire it on close, only segmentcorereaders. this is wrong, a segmentcorereader is *not* an indexreader. Furthermore, if you register it on a top-level reader you get events for anything under the reader tree (sometimes, unless they are segmentreaders as mentioned above, where it doesnt work correctly at all).
+2. Furthermore your listener is 'passed along' in a viral fashion from clone() and reopen(). This means for example, if you are trying to listen to readers in NRT search you are just accumulating reader listeners, all potentially keeping references to old indexreaders (because, in order to deal with #1 your listener must 'keep' a reference to the IR it was registered on, so it can check if thats *really* the one).
+
+We should discuss how to fix #1. 
+
+I will create a patch for #2 shortly and commit it, its just plain wrong.
+

@@ -1,0 +1,6 @@
+Provide Readme's for subprojects jcr-mapping and jcr-nodemanagement
+
+
+
+Description:
+There need to be Readme files in each of the subprojects "jcr-mapping" and "jcr-nodemanagement" to provide some information about the scope of the subproject, building and hints on how to get started.

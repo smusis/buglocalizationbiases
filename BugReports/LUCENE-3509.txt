@@ -1,0 +1,6 @@
+Add settings to IWC to optimize IDV indices for CPU or RAM respectivly
+
+
+
+Description:
+spinnoff from LUCENE-3496 - we are seeing much better performance if required bits for PackedInts are rounded up to a 8/16/32/64. We should add this option to IWC and default to round up ie. more RAM & faster lookups.

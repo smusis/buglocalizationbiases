@@ -1,0 +1,14 @@
+InternalValue.createCopy for binary properties (jcr:data) causes problems
+
+
+
+Description:
+Running 1.4 with no data store configured, and option org.jackrabbit.useDataStore not set (i.e true), the following code gives 0 for the property length.
+
+Node n = root.getNode(relPath);
+session.getWorkspace().copy(n.getPath(), destPath);
+Node contentNode = n.getNode(JcrConstants.JCR_CONTENT);
+Property p = contentNode.getProperty(JcrConstants.JCR_DATA);
+System.out.println("length = "+p.getLength());
+
+InternalValue.createCopy checks USE_DATA_STORE and returns the same value for the source node's state. BundleBinding.writeState() calls BLOBInMemory.discard() when persisting the new node. This has now changed the value of the existing nodes property. Setting the option org.jackrabbit.useDataStore to false works fine. Possibly the check for binary property type in InternalValue.createCopy should be done first?

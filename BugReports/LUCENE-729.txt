@@ -1,0 +1,6 @@
+non-recursive MultiTermDocs
+
+
+
+Description:
+A non-recursive implementation of MultiTermDocs.next() and skipTo() would be nice as it's currently possible to get a stack overflow in very rare situations.

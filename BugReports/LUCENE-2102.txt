@@ -1,0 +1,8 @@
+LowerCaseFilter for Turkish language
+
+
+
+Description:
+java.lang.Character.toLowerCase() converts 'I' to 'i' however in Turkish alphabet lowercase of 'I' is not 'i'. It is LATIN SMALL LETTER DOTLESS I.
+
+

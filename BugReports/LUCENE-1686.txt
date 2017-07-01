@@ -1,0 +1,9 @@
+Remove Unnecessary NULL check in FindSegmentsFile - cleanup
+
+
+
+Description:
+FindSegmentsFile accesses the member "directory" in line 579 while performing a null check in 592. The null check is unnecessary as if directory is null line 579 would throw a NPE.
+I removed the null check and made the member "directory" final. In addition I added a null check in the constructor as If the value is null we should catch it asap. 
+
+

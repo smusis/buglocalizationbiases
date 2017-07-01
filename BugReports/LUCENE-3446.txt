@@ -1,0 +1,29 @@
+NullPointerException in BooleanFilter 
+
+
+
+Description:
+BooleanFilter getDISI() method used with QueryWrapperFilter occur NullPointerException,
+if any QueryWrapperFilter not match terms in IndexReader.
+
+---------------------------------------------------
+java.lang.NullPointerException
+	at org.apache.lucene.util.OpenBitSetDISI.inPlaceAnd(OpenBitSetDISI.java:66)
+	at org.apache.lucene.search.BooleanFilter.getDocIdSet(BooleanFilter.java:102)
+	at org.apache.lucene.search.IndexSearcher.searchWithFilter(IndexSearcher.java:551)
+	at org.apache.lucene.search.IndexSearcher.search(IndexSearcher.java:532)
+	at org.apache.lucene.search.IndexSearcher.search(IndexSearcher.java:463)
+	at org.apache.lucene.search.IndexSearcher.search(IndexSearcher.java:433)
+	at org.apache.lucene.search.IndexSearcher.search(IndexSearcher.java:356)
+	at test.BooleanFilterTest.main(BooleanFilterTest.java:50)
+---------------------------------------------------
+
+null-check below lines.
+---------------------------------------------------
+res = new OpenBitSetDISI(getDISI(shouldFilters, i, reader), reader.maxDoc());
+res.inPlaceOr(getDISI(shouldFilters, i, reader));
+res = new OpenBitSetDISI(getDISI(notFilters, i, reader), reader.maxDoc());
+res.inPlaceNot(getDISI(notFilters, i, reader));
+res = new OpenBitSetDISI(getDISI(mustFilters, i, reader), reader.maxDoc());
+res.inPlaceAnd(getDISI(mustFilters, i, reader));
+---------------------------------------------------

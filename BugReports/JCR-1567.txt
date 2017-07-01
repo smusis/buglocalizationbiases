@@ -1,0 +1,21 @@
+Upgrade to PDFBox 0.7.3
+
+
+
+Description:
+while trying to upload a PDF document (which I can view fine with Acrobat Reader once it is loaded) I get the following exception: 
+
+01.05.2008 12:24:44 *WARN * PdfTextExtractor: Failed to extract PDF text content (PdfTextExtractor.java, line 91)
+java.io.IOException: Error: Expected an integer type, actual='%%EOF'
+        at org.pdfbox.pdfparser.BaseParser.readInt(BaseParser.java:1159)
+        at org.pdfbox.pdfparser.PDFParser.parseObject(PDFParser.java:349)
+        at org.pdfbox.pdfparser.PDFParser.parse(PDFParser.java:132)
+        at org.apache.jackrabbit.extractor.PdfTextExtractor.extractText(PdfTextExtractor.java:69)
+        at org.apache.jackrabbit.extractor.CompositeTextExtractor.extractText(CompositeTextExtractor.java:90)
+        at org.apache.jackrabbit.core.query.lucene.JackrabbitTextExtractor.extractText(JackrabbitTextExtractor.java:195)
+        at org.apache.jackrabbit.core.query.lucene.NodeIndexer.addBinaryValue(NodeIndexer.java:393)
+ ....
+
+I replaced the version of pdfbox (0.6.4) that is bundled with the jackrabbit war file with a more recent version (0.7.3 and fontbox 01.) and it worked fine. The bundled versions should be upgraded.
+
+On the other hand, this software appears to be inactive. Probably a different package should be selected in the long run, but for now, a simple upgrade will do the trick.

@@ -1,0 +1,6 @@
+JcrRemotingServlet should interpolate system properties in the home init-param
+
+
+
+Description:
+For deployment scenarios where the same Jackrabbit WAR file is deployed multiple times on the same server with the same current working directory, it is useful to have the home init-param support system property interpolation.

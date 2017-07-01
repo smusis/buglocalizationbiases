@@ -1,0 +1,55 @@
+Explicit VirtualHosts Can Cause Issues On Redirects
+
+
+
+Description:
+If you set an explicit virtual host then a getmethod may get stuck in a redirect
+loop (up to maxRedirects).
+
+e.g. execute a get on www.google.com (with a www.google.com virtualhost).  That
+redirects to www.google.co.nz (at least if you come from an NZ IP).  The current
+httpclient behavior is to then connect to www.google.co.nz but pass through,
+with the request, "Host: www.google.com".  Google will then reply with another
+www.google.co.nz redirect and the loop continues.
+
+There are probably a few ways to work around this.  It seems reasonable to drop
+an explicity set virtual host in the event a redirect redirects to a different
+uri authority.  The following patch works for me:
+
+
+diff -Naur
+../../t2/commons-httpclient/src/java/org/apache/commons/httpclient/HttpMethodDirector.java
+src/java/org/apache/commons/httpclient/HttpMethodDirector.java
+---
+../../t2/commons-httpclient/src/java/org/apache/commons/httpclient/HttpMethodDirector.java
+2005-12-22 01:06:55.000000000 +1300
++++ src/java/org/apache/commons/httpclient/HttpMethodDirector.java	2005-12-22
+19:09:51.000000000 +1300
+@@ -605,6 +605,27 @@
+ 					redirectUri = new URI(currentUri, redirectUri);
+ 				}
+ 			}
++            do {
++                // scenario we're trying to avoid:
++                // virtual host is set (e.g. google.com); a request to that
+server responds
++                // with a redirect to google.co.nz; we issue a request to
+google.co.nz with 
++                // a virtual host request of google.com
++                // 
++                // This code will remove any set virtual host if the redirect
+is to a different 
++                // domain
++
++                if(redirectUri.isRelativeURI()) {
++                    break;
++                }
++
++                String vhost = hostConfiguration.getParams().getVirtualHost();
++                if(vhost==null)
++                    break;
++                if(redirectUri.getAuthority()!=currentUri.getAuthority()) {
++                    hostConfiguration.getParams().setVirtualHost(null);
++                }
++            } while(false);
++

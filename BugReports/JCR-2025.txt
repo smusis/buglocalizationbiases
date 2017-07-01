@@ -1,0 +1,12 @@
+Optimize concurrent queries
+
+
+
+Description:
+There are a number of bottlenecks that prevent scalability of concurrent queries:
+
+- Fake norms are created repeatedly because a new SearchIndex$CombinedIndexReader is created for each query. This prevents caching of fake norms on the level of the CombinedIndexReader. Creating fake norms for index readers that span multiple sub reader is inefficient and should be avoided. Like with other Jackrabbit specific queries, there should be one for TermQuery, which is aware of sub readers. Its weight should then create one scorer for each sub reader. This effectively reuses the fake norms on the sub reader.
+
+- There should be a  UUID cache that maps document number to UUID. This is basically the inverse of the existing DocNumberCache. UUID lookup is regularly a bottleneck in the SegmentReader where the method document() is synchronized and does I/O.
+
+- Queries often contain constraints that limit the result to nodes with a certain flag set to a literal. These constraints should be cached in the query handler.

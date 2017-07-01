@@ -1,0 +1,6 @@
+Improve FilteredQuery to shortcut on wrapped MatchAllDocsQuery
+
+
+
+Description:
+Since the rewrite of Lucene trunk to delegate all Filter logic to FilteredQuery, by simply wrapping in IndexSearcher.wrapFilter(), we can do more short circuits and improve query execution. A common use case it to pass MatchAllDocsQuery as query to IndexSearcher and a filter. For the underlying hit collection this is stupid and slow, as MatchAllDocsQuery simply increments the docID and checks acceptDocs. If the filter is sparse, this is a big waste. This patch changes FilteredQuery.rewrite() to short circuit and return ConstantScoreQuery, if the query is MatchAllDocs.

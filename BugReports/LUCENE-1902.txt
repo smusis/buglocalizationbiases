@@ -1,0 +1,8 @@
+Changes.html not explicitly included in release
+
+
+
+Description:
+None of the release related ant targets explicitly call cahnges-to-html ... this seems like an oversight.  (currently it's only called as part of the nightly target)
+
+

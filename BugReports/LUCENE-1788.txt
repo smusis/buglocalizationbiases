@@ -1,0 +1,6 @@
+Cleanup highlighter test class
+
+
+
+Description:
+cleanup highlighter test class - did some of this in another issue, but there is a bit more to do

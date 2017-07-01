@@ -1,0 +1,8 @@
+Error while restoring OPV=Version childnodes (Restore of root version not allowed)
+
+
+
+Description:
+when restoring a version of a node (by name) that has opv=version childnodes, the following error is thrown, if such a version does not exist in the child nodes versionhistory:
+
+Error while restoring nodes: javax.jcr.version.VersionException: Restore of root version not allowed.

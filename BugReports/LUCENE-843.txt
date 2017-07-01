@@ -1,0 +1,35 @@
+improve how IndexWriter uses RAM to buffer added documents
+
+
+
+Description:
+I'm working on a new class (MultiDocumentWriter) that writes more than
+one document directly into a single Lucene segment, more efficiently
+than the current approach.
+
+This only affects the creation of an initial segment from added
+documents.  I haven't changed anything after that, eg how segments are
+merged.
+
+The basic ideas are:
+
+  * Write stored fields and term vectors directly to disk (don't
+    use up RAM for these).
+
+  * Gather posting lists & term infos in RAM, but periodically do
+    in-RAM merges.  Once RAM is full, flush buffers to disk (and
+    merge them later when it's time to make a real segment).
+
+  * Recycle objects/buffers to reduce time/stress in GC.
+
+  * Other various optimizations.
+
+Some of these changes are similar to how KinoSearch builds a segment.
+But, I haven't made any changes to Lucene's file format nor added
+requirements for a global fields schema.
+
+So far the only externally visible change is a new method
+"setRAMBufferSize" in IndexWriter (and setMaxBufferedDocs is
+deprecated) so that it flushes according to RAM usage and not a fixed
+number documents added.
+

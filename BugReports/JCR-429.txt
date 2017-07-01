@@ -1,0 +1,16 @@
+Session scoped lock not always removed on Session.logout()
+
+
+
+Description:
+Consider the following use case:
+
+      Session s = repo.login(...);
+      Node root = s.getRootNode();
+      root.lock(true, true); // session-scoped, deep lock
+      // modifiy items
+      // root.isModified() still is true
+      s.logout();
+
+To my understanding, the session scoped locks should be removed (unlocked) and unsaved should be dropped on logout of a session. Unfortunately currently this is not the case, as the lock implementation gets notified by the SessionImpl on the logout situation and just calls Node.unlock() on the lock's node for session scoped locks. This method fails as there are unsaved changes. Hence after logout, the lock on the session is still there and will only be gone when the repository is stopped.
+      

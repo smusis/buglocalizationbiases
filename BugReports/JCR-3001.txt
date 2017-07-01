@@ -1,0 +1,6 @@
+DescendantSelfAxisQuery may fail with IOException when session has limited access
+
+
+
+Description:
+The DescendantSelfAxisQuery uses the current session to look up nodes by id. When the session does not have access to a node the exception is incorrectly re-thrown an IOException. Instead, any ItemNotFoundException should be caught and ignored. This is probably a regression caused by JCR-1365 introduced with Jackrabbit 1.5.

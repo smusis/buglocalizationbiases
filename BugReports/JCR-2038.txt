@@ -1,0 +1,6 @@
+Lower log level in o.a.j.jcr2spi.query.NodeIteratorImpl
+
+
+
+Description:
+NodeIteratorImpl.fetchNext() logs an error when it cannot load a node and skips that node. Since this is not an error condition (the node could have been deleted by another session), logging should occur at the warn level.

@@ -1,0 +1,35 @@
+[PATCH] Highlighter: Delegate output escaping to Formatter
+
+
+
+Description:
+Patch for jakarta-lucene-sandbox/contributions/highlighter
+CVS version 3rd February 2005
+
+This patch allows the highlighter Formatter to control escaping of the non
+highlighted text as well as the highlighting of the matching text.
+
+The example formatters highlight the matching text using XML/HTML tags. This
+works fine if the plain text does not contain any characters that need to be
+escaped for HTML output (i.e. <, &, and "), however this cannot be guaranteed.
+As the formatter controls the method of highlighting (in the examples this is
+HTML, but it could be any other form of markup) it should also be responsible
+for escaping the rest of the output.
+
+This patch adds a method, encodeText(String), to the Formatter interface. This
+is a breaking change. This method is called from the Highlighter with the text
+that is not passed to the formatter's highlightTerm method. 
+The SimpleHTMLFormatter has a public static method for performing simple HTML
+escaping called htmlEncode. 
+The SimpleHTMLFormatter, GradientFormatter, and SpanGradientFormatter have been
+updated to implement the encodeText method and call the htmlEncode method to
+escape the output.
+
+For existing formatter to maintain exactly the same behaviour as before applying
+this patch they would need to implement the encodeText method to return the
+argument value without modification, e.g.:
+
+public String encodeText(String originalText)
+{
+  return originalText;
+}

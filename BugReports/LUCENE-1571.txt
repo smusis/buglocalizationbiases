@@ -1,0 +1,27 @@
+DistanceFilter problem with deleted documents
+
+
+
+Description:
+I know this is the locallucene lib, but wanted to make sure we don't get this bug when it gets into lucene contrib.
+
+I suspect that the issue is that deleted documents are trying to be evaluated by the filter.  I did some debugging and I confirmed that it is bombing on a document that is marked as deleted (using Luke).
+
+
+Thanks!
+
+Using the locallucene library 1.51, I get a NullPointerException at line 123 of DistanceFilter
+The method is 	public BitSet bits(IndexReader reader) 
+The line is double x = NumberUtils.SortableStr2double(sx);
+
+The stack trace is:
+java.lang.NullPointerException
+	at org.apache.solr.util.NumberUtils.SortableStr2long(NumberUtils.java:149)
+	at org.apache.solr.util.NumberUtils.SortableStr2double(NumberUtils.java:104)
+	at com.pjaol.search.geo.utils.DistanceFilter.bits(DistanceFilter.java:123)
+	at org.apache.lucene.search.Filter.getDocIdSet(Filter.java:49)
+	at org.apache.lucene.search.IndexSearcher.search(IndexSearcher.java:140)
+	at org.apache.lucene.search.IndexSearcher.search(IndexSearcher.java:112)
+	at org.apache.lucene.search.Hits.getMoreDocs(Hits.java:113)
+	at org.apache.lucene.search.Hits.<init>(Hits.java:90)
+	at org.apache.lucene.search.Searcher.search(Searcher.java:72)

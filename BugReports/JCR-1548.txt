@@ -1,0 +1,17 @@
+Several bugs in last SVN commit
+
+
+
+Description:
+Just a few bugs in the last SVN commit, but since I work with it, i thought useful to mention them :
+1) org.apache.jackrabbit.ocm.reflection.ReflectionUtils should handle Set --> just add it in defaultImplementation
+2) in org.apache.jackrabbit.ocm.manager.collectionconverter.ManageableObjectsUtil.getManageableObjects, correct defaultImplementation test :
+        		if (defaultImplementation == null)
+        		{
+        			throw new JcrMappingException("No default implementation for the interface " + manageableObjectsClass);
+
+Thank you and keep up the good work!
+
+Sincerely yours,
+
+Stephane

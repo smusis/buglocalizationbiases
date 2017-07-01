@@ -1,0 +1,15 @@
+AttributeSource holds strong reference to class instances and prevents unloading e.g. in Solr if webapplication reload and custom attributes in separate classloaders are used (e.g. in the Solr plugins classloader)
+
+
+
+Description:
+When working on the dynmaic proxy classes using cglib/javaassist i recognized a problem in the caching code inside AttributeSource:
+- AttributeSource has a static (!) cache map that holds implementation classes for attributes to be faster on creating new attributes (reflection cost)
+- AttributeSource has a static (!) cache map that holds a list of all interfaces implemented by a specific AttributeImpl
+
+Also:
+- VirtualMethod in 3.1 hold a map of implementation distances keyed by subclasses of the deprecated API
+
+Both have the problem that this strong reference is inside Lucene's classloader and so persists as long as lucene lives. The classes referenced can never be unloaded therefore, which would be fine if all live in the same classloader. As soon as the Attribute or implementation class or the subclass of the deprecated API are loaded by a different classloder (e.g. Lucene lives in bootclasspath of tomcat, but lucene-consumer with custom attributes lives in a webapp), they can never be unloaded, because a reference exists.
+
+Libs like CGLIB or JavaAssist or JDK's reflect.Proxy have a similar cache for generated class files. They also manage this by a WeakHashMap. The cache will always work perfect and no class will be evicted without reason, as classes are only unloaded when the classloader goes and this will only happen on request (e.g. by Tomcat).

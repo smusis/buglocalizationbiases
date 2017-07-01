@@ -1,0 +1,6 @@
+Use type StaticOperand for fullTextSearchExpression
+
+
+
+Description:
+See: https://jsr-283.dev.java.net/issues/show_bug.cgi?id=691

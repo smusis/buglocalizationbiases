@@ -1,0 +1,6 @@
+extend ConsistencyChecker API to allow adoption of orphaned nodes to a to-be-specified parent node
+
+
+
+Description:
+The optional ConsistencyChecker API on persistence managers allows analyzing and fixing storage inconsistencies. The current fixup code though does not attempt to "adopt" orphaned nodes.

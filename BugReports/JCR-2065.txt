@@ -1,0 +1,10 @@
+use the internal CND file for builtin nodetypes
+
+
+
+Description:
+the jackrabbit node type registry is reading the built in node types from a XML file.
+since the CND (compact node type definition notation) is now specified by jsr283,
+i would like to drop the builtin .xml file and read the builtin node typesonly from the .cnd file.
+this certainly helps the developers. furthermore, all the node types in jsr283 are now speced
+in CND, and converting them to XML is a pain and error prone.

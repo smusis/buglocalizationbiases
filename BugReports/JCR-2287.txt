@@ -1,0 +1,6 @@
+Mandatory jcr:activities node missing after upgrade
+
+
+
+Description:
+The mandatory node is only created when the repository is initially empty. The node is missing when an existing repository instance is upgraded. 

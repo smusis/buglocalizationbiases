@@ -1,0 +1,12 @@
+IndexOutput.writeString() should write length in bytes
+
+
+
+Description:
+We should change the format of strings written to indexes so that the length of the string is in bytes, not Java characters.  This issue has been discussed at:
+
+http://www.mail-archive.com/java-dev@lucene.apache.org/msg01970.html
+
+We must increment the file format number to indicate this change.  At least the format number in the segments file should change.
+
+I'm targetting this for 2.1, i.e., we shouldn't commit it to trunk until after 2.0 is released, to minimize incompatible changes between 1.9 and 2.0 (other than removal of deprecated features).

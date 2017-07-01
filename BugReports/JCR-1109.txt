@@ -1,0 +1,19 @@
+Resource association not compliant to JTA spec
+
+
+
+Description:
+According to JTA specifcation, section 3.4.4 (Transaction Association), a resource's association may be ended (state T0 in the spec's table) in the suspended state (T2), i.e. without having been resumed (T1) again. The code in XASessionImpl.end(), however, assumes that the resource must be associated in order to end its association. This causes an exception in JBoss 4.0.5.GA:
+
+09:37:15,525 WARN  [TransactionImpl] XAException: tx=TransactionImpl:XidImpl[FormatId=257, GlobalId=kneipix.dev.day.com/14, BranchQual=, localId=14] errorCode=XAER_PROTO
+javax.transaction.xa.XAException
+        at org.apache.jackrabbit.core.XASessionImpl.end(XASessionImpl.java:279)
+        at org.apache.jackrabbit.jca.TransactionBoundXAResource.end(TransactionBoundXAResource.java:46)
+        at org.jboss.tm.TransactionImpl$Resource.endResource(TransactionImpl.java:2143)
+        at org.jboss.tm.TransactionImpl$Resource.endResource(TransactionImpl.java:2118)
+        at org.jboss.tm.TransactionImpl.endResources(TransactionImpl.java:1462)
+        at org.jboss.tm.TransactionImpl.beforePrepare(TransactionImpl.java:1116)
+        at org.jboss.tm.TransactionImpl.commit(TransactionImpl.java:324)
+        at org.jboss.tm.TxManager.commit(TxManager.java:240)
+        at org.jboss.aspects.tx.TxPolicy.endTransaction(TxPolicy.java:175)
+

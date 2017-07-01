@@ -1,0 +1,10 @@
+Some Lucene tests try and use a Junit Assert in new threads
+
+
+
+Description:
+There are a few cases in Lucene tests where JUnit Asserts are used inside a new threads run method - this won't work because Junit throws an exception when a call to Assert fails - that will kill the thread, but the exception will not propagate to JUnit - so unless a failure is caused later from the thread termination, the Asserts are invalid.
+
+TestThreadSafe
+TestStressIndexing2
+TestStringIntern

@@ -1,0 +1,6 @@
+Deprecate all non-bundle persistence managers
+
+
+
+Description:
+Bundle persistence has been the recommended default since Jackrabbit 1.3, and there is little reason for anyone to be using non-bundle persistence anymore. Thus I'd like to deprecate all non-bundle PMs in Jackrabbit 2.2 and target for their removal in Jackrabbit 3.0.

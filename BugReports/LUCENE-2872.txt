@@ -1,0 +1,18 @@
+Terms dict should block-encode terms
+
+
+
+Description:
+With PrefixCodedTermsReader/Writer we now encode each term standalone,
+ie its bytes, metadata, details for postings (frq/prox file pointers),
+etc.
+
+But, this is costly when something wants to visit many terms but pull
+metadata for only few (eg respelling, certain MTQs).  This is
+particularly costly for sep codec because it has more metadata to
+store, per term.
+
+So instead I think we should block-encode all terms between indexed
+term, so that the metadata is stored "column stride" instead.  This
+makes it faster to enum just terms.
+

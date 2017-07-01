@@ -1,0 +1,12 @@
+NumericRangeQuery.NumericRangeTermsEnum sometimes seeks backwards
+
+
+
+Description:
+Subclasses of FilteredTermsEnum are "supposed to" seek forwards only (this gives better performance, typically).
+
+However, we don't check for this, so I added an assert to do that (while digging into testing the SimpleText codec) and NumericRangeQuery trips the assert!
+
+Other MTQs seem not to trip it.
+
+I think I know what's happening -- say NRQ has term ranges a-c, e-f to seek to, but then while it's .next()'ing through the first range, the first term after c is f.  At this point NRQ sees the range a-c is done, and then tries to seek to term e which is before f.  Maybe NRQ's accept method should detect this case (where you've accidentally .next()'d into or possibly beyond the next one or more seek ranges)?

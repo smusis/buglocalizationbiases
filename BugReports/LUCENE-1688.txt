@@ -1,0 +1,12 @@
+Deprecating StopAnalyzer ENGLISH_STOP_WORDS - General replacement with an immutable Set
+
+
+
+Description:
+StopAnalyzer and StandartAnalyzer are using the static final array ENGLISH_STOP_WORDS by default in various places. Internally this array is converted into a mutable set which looks kind of weird to me. 
+I think the way to go is to deprecate all use of the static final array and replace it with an immutable implementation of CharArraySet. Inside an analyzer it does not make sense to have a mutable set anyway and we could prevent set creation each time an analyzer is created. In the case of an immutable set we won't have multithreading issues either. 
+in essence we get rid of a fair bit of "converting string array to set" code, do not have a PUBLIC static reference to an array (which is mutable) and reduce the overhead of analyzer creation.
+
+let me know what you think and I create a patch for it.
+
+simon

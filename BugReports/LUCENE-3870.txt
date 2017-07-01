@@ -1,0 +1,12 @@
+VarDerefBytesImpl doc values prefix length may fall across two pages
+
+
+
+Description:
+The VarDerefBytesImpl doc values encodes the unique byte[] with prefix (1 or 2 bytes) first, followed by bytes, so that it can use PagedBytes.fillSliceWithPrefix.
+
+It does this itself rather than using PagedBytes.copyUsingLengthPrefix...
+
+The problem is, it can write an invalid 2 byte prefix spanning two blocks (ie, last byte of block N and first byte of block N+1), which fillSliceWithPrefix won't decode correctly.
+
+

@@ -1,0 +1,347 @@
+Stale connection check does not work with IBM JSSE/JRE
+
+
+
+Description:
+OS: Windows/AIX
+JRE: IBM JRE 1.4.1
+JSSE: IBM's implementation (SSLite?)
+HttpClient Library: 2.0.2 release
+
+My code enabled connection pooling feature to gain performance improvement in 
+the SSL Handshake area. The code works perfectly on Sun JRE 1.4.2 with a think 
+time of 60seconds between requests, but the same code fails on IBM JRE. On IBM 
+JRE, the code fails to detech stale connections, thus causing down the stream 
+setSoTimeout() call to fail.
+
+Further debugging into the library code revealed difference in the way the 
+HTTPConnection.isStale() behaves. With in that method, particularly, the 
+inputStream.isAvailable() method returns 0 with Sun JRE but -1 with IBM JRE.
+
+I made a small code change to HttpConnection.isStale() method by moving the try
+{}finally{} block outside of the if(inputStream.isAvailable()==0) check in the 
+following code and BINGO, everything started working on IBM JVMs. It did not 
+break anything on Suns JVM.
+
+============== CODE BEGIN
+    protected boolean isStale() {
+    	LOG.debug("##SUBBA## HttpConnection.isStale() got called. soTimeout=" 
++ soTimeout);
+        boolean isStale = true;
+        if (isOpen) {
+        	LOG.debug("##SUBBA## HttpConnection.isStale() got called. 
+isOpen=" + isOpen);        	
+            // the connection is open, but now we have to see if we can read it
+            // assume the connection is not stale.
+            isStale = false;
+
+                try {         
+                    if (inputStream.available() == 0) {		// ALWAYS 
+RETURNS -1 on IBM JVM  0 on SUN
+                    	
+		  // try {		// SUBBA  MOVED OUTSIDE IF
+	                	socket.setSoTimeout(1);
+	                  	LOG.debug("##SUBBA## HttpConnection.isStale() 
+got called. setSoTimeout(1)");                    	
+	                    
+	                    inputStream.mark(1);
+	                    int byteRead = inputStream.read();
+	                	LOG.debug("##SUBBA## HttpConnection.isStale() 
+got called. bytesRead=" + byteRead);                    	
+	                    
+	                    if (byteRead == -1) {
+	                    	LOG.debug("##SUBBA## HttpConnection.isStale() 
+got called. SETTING isStale to TRUE HERE");                    	
+	                    	
+	                        // again - if the socket is reporting all data 
+read,
+	                        // probably stale
+	                        isStale = true;
+	                    } else {
+	                        inputStream.reset();
+	                    }
+		    // SUBBA  MOVED OUTSIDE IF
+                //} finally {
+                //	LOG.debug("##SUBBA## HttpConnection.isStale() got 
+called. finally block - BEGIN " + soTimeout);                    	
+                //    socket.setSoTimeout(soTimeout);
+                //	LOG.debug("##SUBBA## HttpConnection.isStale() got 
+called. finally block - DONE");                        
+               // }
+
+	
+                    }                        
+                } finally {
+                	LOG.debug("##SUBBA## HttpConnection.isStale() got 
+called. finally block - BEGIN " + soTimeout);                    	
+                    socket.setSoTimeout(soTimeout);
+                	LOG.debug("##SUBBA## HttpConnection.isStale() got 
+called. finally block - DONE");                        
+                }
+.....
+.....
+.....
+========================== CODE END
+
+
+I've attached logs captured before and after the change on both the JRE's for 
+your review:
+
+==================================
+IBMs LOG (after change):
+==================================
+<Jun 10, 2005 1:26:55 PM EDT> <DEBUG> 
+<apache.commons.httpclient.MultiThreadedHttpConnectionManager:700> <Getting 
+free connection, hostConfig=HostConfiguration
+[host=uatservices30.ilab.fnfismd.com, protocol=https:443, port=443]>
+<Jun 10, 2005 1:26:55 PM EDT> <DEBUG> 
+<apache.commons.httpclient.HttpConnection:492> <##SUBBA## 
+HttpConnection.isStale() got called. soTimeout=0>
+<Jun 10, 2005 1:26:55 PM EDT> <DEBUG> 
+<apache.commons.httpclient.HttpConnection:495> <##SUBBA## 
+HttpConnection.isStale() got called. isOpen=true>
+<Jun 10, 2005 1:26:55 PM EDT> <DEBUG> 
+<apache.commons.httpclient.HttpConnection:500> <##SUBBA## 
+HttpConnection.isStale() got called. [class 
+java.io.BufferedInputStream].available=-1>
+<Jun 10, 2005 1:26:55 PM EDT> <DEBUG> 
+<apache.commons.httpclient.HttpConnection:523> <##SUBBA## 
+HttpConnection.isStale() got called. finally block - BEGIN 0>
+<Jun 10, 2005 1:26:55 PM EDT> <DEBUG> 
+<apache.commons.httpclient.HttpConnection:532> <An error occurred while 
+reading from the socket, is appears to be stale>
+java.net.SocketException: Socket is closed
+	at java.net.Socket.setSoTimeout(Socket.java:927)
+	at com.ibm.sslite.bf.setSoTimeout(Unknown Source)
+	at com.ibm.jsse.bg.setSoTimeout(Unknown Source)
+	at org.apache.commons.httpclient.HttpConnection.isStale
+(HttpConnection.java:524)
+	at org.apache.commons.httpclient.HttpConnection.isOpen
+(HttpConnection.java:436)
+	at 
+org.apache.commons.httpclient.MultiThreadedHttpConnectionManager$HttpConnection
+Adapter.isOpen(MultiThreadedHttpConnectionManager.java:1122)
+	at org.apache.commons.httpclient.HttpClient.executeMethod
+(HttpClient.java:626)
+	at org.apache.commons.httpclient.HttpClient.executeMethod
+(HttpClient.java:497)
+	at 
+com.touchpoint.pia.services.transactions.msp.ApacheHttpClient.invokeRequest
+(ApacheHttpClient.java:69)
+	at 
+com.touchpoint.pia.services.transactions.msp.MsWSManager.invokeRequest
+(MsWSManager.java:86)
+	at 
+com.touchpoint.pia.services.transactions.msp.MsWSManager.invokeRequestWithPaylo
+ad(MsWSManager.java:114)
+	at com.touchpoint.pia.services.transactions.msp.MsWSManager.main
+(MsWSManager.java:179)
+<Jun 10, 2005 1:26:55 PM EDT> <DEBUG> 
+<apache.commons.httpclient.HttpConnection:540> <##SUBBA## 
+HttpConnection.isStale() return=true>
+<Jun 10, 2005 1:26:55 PM EDT> <DEBUG> 
+<apache.commons.httpclient.HttpConnection:437> <Connection is stale, 
+closing...>
+
+==================================
+IBMs LOG (before change):
+==================================
+<Jun 10, 2005 1:07:29 PM EDT> <DEBUG> 
+<apache.commons.httpclient.MultiThreadedHttpConnectionManager:666> <enter 
+HttpConnectionManager.ConnectionPool.getHostPool(HostConfiguration)>
+<Jun 10, 2005 1:07:29 PM EDT> <DEBUG> 
+<apache.commons.httpclient.MultiThreadedHttpConnectionManager:700> <Getting 
+free connection, hostConfig=HostConfiguration
+[host=uatservices30.ilab.fnfismd.com, protocol=https:443, port=443]>
+<Jun 10, 2005 1:07:29 PM EDT> <DEBUG> 
+<apache.commons.httpclient.HttpConnection:492> <##SUBBA## 
+HttpConnection.isStale() got called.>
+<Jun 10, 2005 1:07:29 PM EDT> <DEBUG> 
+<apache.commons.httpclient.HttpConnection:495> <##SUBBA## 
+HttpConnection.isStale() got called. isOpen=true>
+<Jun 10, 2005 1:07:29 PM EDT> <DEBUG> 
+<apache.commons.httpclient.HttpConnection:500> <##SUBBA## 
+HttpConnection.isStale() got called. [class 
+java.io.BufferedInputStream].available=-1>
+<Jun 10, 2005 1:07:29 PM EDT> <DEBUG> 
+<apache.commons.httpclient.HttpConnection:538> <##SUBBA## 
+HttpConnection.isStale() return=false>
+<Jun 10, 2005 1:07:29 PM EDT> <DEBUG> 
+<apache.commons.httpclient.HttpConnection:599> <HttpConnection.setSoTimeout(0)>
+<Jun 10, 2005 1:07:29 PM EDT> <WARN> 
+<apache.commons.httpclient.HttpConnection:607> <##SUBBA## Socket Exception>
+java.net.SocketException: Socket is closed
+	at java.net.Socket.setSoTimeout(Socket.java:927)
+	at com.ibm.sslite.bf.setSoTimeout(Unknown Source)
+	at com.ibm.jsse.bg.setSoTimeout(Unknown Source)
+	at org.apache.commons.httpclient.HttpConnection.setSoTimeout
+(HttpConnection.java:603)
+	at 
+org.apache.commons.httpclient.MultiThreadedHttpConnectionManager$HttpConnection
+Adapter.setSoTimeout(MultiThreadedHttpConnectionManager.java:1296)
+	at org.apache.commons.httpclient.HttpClient.executeMethod
+(HttpClient.java:633)
+	at org.apache.commons.httpclient.HttpClient.executeMethod
+(HttpClient.java:497)
+	at 
+com.touchpoint.pia.services.transactions.msp.ApacheHttpClient.invokeRequest
+(ApacheHttpClient.java:69)
+	at 
+com.touchpoint.pia.services.transactions.msp.MsWSManager.invokeRequest
+(MsWSManager.java:86)
+	at 
+com.touchpoint.pia.services.transactions.msp.MsWSManager.invokeRequestWithPaylo
+ad(MsWSManager.java:114)
+	at com.touchpoint.pia.services.transactions.msp.MsWSManager.main
+(MsWSManager.java:179)
+<Jun 10, 2005 1:07:29 PM EDT> <DEBUG> 
+<apache.commons.httpclient.HttpConnection:1151> <enter 
+HttpConnection.releaseConnection()>
+<Jun 10, 2005 1:07:29 PM EDT> <DEBUG> 
+<apache.commons.httpclient.MultiThreadedHttpConnectionManager:513> <enter 
+HttpConnectionManager.releaseConnection(HttpConnection)>
+<Jun 10, 2005 1:07:29 PM EDT> <DEBUG> 
+<apache.commons.httpclient.MultiThreadedHttpConnectionManager:791> <Freeing 
+connection, hostConfig=HostConfiguration[host=uatservices30.ilab.fnfismd.com, 
+protocol=https:443, port=443]>
+<Jun 10, 2005 1:07:29 PM EDT> <DEBUG> 
+<apache.commons.httpclient.MultiThreadedHttpConnectionManager:666> <enter 
+HttpConnectionManager.ConnectionPool.getHostPool(HostConfiguration)>
+<Jun 10, 2005 1:07:29 PM EDT> <DEBUG> 
+<apache.commons.httpclient.MultiThreadedHttpConnectionManager:774> <Notifying 
+no-one, there are no waiting threads>
+java.net.SocketException: Socket is closed
+	at java.net.Socket.setSoTimeout(Socket.java:927)
+	at com.ibm.sslite.bf.setSoTimeout(Unknown Source)
+	at com.ibm.jsse.bg.setSoTimeout(Unknown Source)
+	at org.apache.commons.httpclient.HttpConnection.setSoTimeout
+(HttpConnection.java:603)
+	at 
+org.apache.commons.httpclient.MultiThreadedHttpConnectionManager$HttpConnection
+Adapter.setSoTimeout(MultiThreadedHttpConnectionManager.java:1296)
+	at org.apache.commons.httpclient.HttpClient.executeMethod
+(HttpClient.java:633)
+	at org.apache.commons.httpclient.HttpClient.executeMethod
+(HttpClient.java:497)
+	at 
+com.touchpoint.pia.services.transactions.msp.ApacheHttpClient.invokeRequest
+(ApacheHttpClient.java:69)
+	at 
+com.touchpoint.pia.services.transactions.msp.MsWSManager.invokeRequest
+(MsWSManager.java:86)
+	at 
+com.touchpoint.pia.services.transactions.msp.MsWSManager.invokeRequestWithPaylo
+ad(MsWSManager.java:114)
+	at com.touchpoint.pia.services.transactions.msp.MsWSManager.main
+(MsWSManager.java:179)
+java.net.SocketException: Socket is closed
+	at java.net.Socket.setSoTimeout(Socket.java:927)
+	at com.ibm.sslite.bf.setSoTimeout(Unknown Source)
+	at com.ibm.jsse.bg.setSoTimeout(Unknown Source)
+	at org.apache.commons.httpclient.HttpConnection.setSoTimeout
+(HttpConnection.java:603)
+	at 
+org.apache.commons.httpclient.MultiThreadedHttpConnectionManager$HttpConnection
+Adapter.setSoTimeout(MultiThreadedHttpConnectionManager.java:1296)
+	at org.apache.commons.httpclient.HttpClient.executeMethod
+(HttpClient.java:633)
+	at org.apache.commons.httpclient.HttpClient.executeMethod
+(HttpClient.java:497)
+	at 
+com.touchpoint.pia.services.transactions.msp.ApacheHttpClient.invokeRequest
+(ApacheHttpClient.java:69)
+	at 
+com.touchpoint.pia.services.transactions.msp.MsWSManager.invokeRequest
+(MsWSManager.java:86)
+	at 
+com.touchpoint.pia.services.transactions.msp.MsWSManager.invokeRequestWithPaylo
+ad(MsWSManager.java:114)
+	at com.touchpoint.pia.services.transactions.msp.MsWSManager.main
+(MsWSManager.java:179)
+Exception in thread "main" java.net.SocketException: Socket is closed
+	at java.net.Socket.setSoTimeout(Socket.java:927)
+	at com.ibm.sslite.bf.setSoTimeout(Unknown Source)
+	at com.ibm.jsse.bg.setSoTimeout(Unknown Source)
+	at org.apache.commons.httpclient.HttpConnection.setSoTimeout
+(HttpConnection.java:603)
+	at 
+org.apache.commons.httpclient.MultiThreadedHttpConnectionManager$HttpConnection
+Adapter.setSoTimeout(MultiThreadedHttpConnectionManager.java:1296)
+	at org.apache.commons.httpclient.HttpClient.executeMethod
+(HttpClient.java:633)
+	at org.apache.commons.httpclient.HttpClient.executeMethod
+(HttpClient.java:497)
+	at 
+com.touchpoint.pia.services.transactions.msp.ApacheHttpClient.invokeRequest
+(ApacheHttpClient.java:69)
+	at 
+com.touchpoint.pia.services.transactions.msp.MsWSManager.invokeRequest
+(MsWSManager.java:86)
+	at 
+com.touchpoint.pia.services.transactions.msp.MsWSManager.invokeRequestWithPaylo
+ad(MsWSManager.java:114)
+	at com.touchpoint.pia.services.transactions.msp.MsWSManager.main
+(MsWSManager.java:179)
+
+
+============================================
+**SUNs LOG (after change = before change):
+============================================
+<Jun 10, 2005 1:25:12 PM EDT> <DEBUG> 
+<apache.commons.httpclient.MultiThreadedHttpConnectionManager:700> <Getting 
+free connection, hostConfig=HostConfiguration
+[host=uatservices30.ilab.fnfismd.com, protocol=https:443, port=443]>
+<Jun 10, 2005 1:25:12 PM EDT> <DEBUG> 
+<apache.commons.httpclient.HttpConnection:492> <##SUBBA## 
+HttpConnection.isStale() got called. soTimeout=0>
+<Jun 10, 2005 1:25:12 PM EDT> <DEBUG> 
+<apache.commons.httpclient.HttpConnection:495> <##SUBBA## 
+HttpConnection.isStale() got called. isOpen=true>
+<Jun 10, 2005 1:25:12 PM EDT> <DEBUG> 
+<apache.commons.httpclient.HttpConnection:500> <##SUBBA## 
+HttpConnection.isStale() got called. [class 
+java.io.BufferedInputStream].available=0>
+<Jun 10, 2005 1:25:12 PM EDT> <DEBUG> 
+<apache.commons.httpclient.HttpConnection:506> <##SUBBA## 
+HttpConnection.isStale() got called. setSoTimeout(1)>
+<Jun 10, 2005 1:25:12 PM EDT> <DEBUG> 
+<apache.commons.httpclient.HttpConnection:510> <##SUBBA## 
+HttpConnection.isStale() got called. bytesRead=-1>
+<Jun 10, 2005 1:25:12 PM EDT> <DEBUG> 
+<apache.commons.httpclient.HttpConnection:513> <##SUBBA## 
+HttpConnection.isStale() got called. SETTING isStale to TRUE HERE>
+<Jun 10, 2005 1:25:12 PM EDT> <DEBUG> 
+<apache.commons.httpclient.HttpConnection:523> <##SUBBA## 
+HttpConnection.isStale() got called. finally block - BEGIN 0>
+<Jun 10, 2005 1:25:12 PM EDT> <DEBUG> 
+<apache.commons.httpclient.HttpConnection:532> <An error occurred while 
+reading from the socket, is appears to be stale>
+java.net.SocketException: Socket Closed
+	at java.net.PlainSocketImpl.setOption(PlainSocketImpl.java:177)
+	at java.net.Socket.setSoTimeout(Socket.java:924)
+	at com.sun.net.ssl.internal.ssl.SSLSocketImpl.setSoTimeout(DashoA12275)
+	at org.apache.commons.httpclient.HttpConnection.isStale
+(HttpConnection.java:524)
+	at org.apache.commons.httpclient.HttpConnection.isOpen
+(HttpConnection.java:436)
+	at 
+org.apache.commons.httpclient.MultiThreadedHttpConnectionManager$HttpConnection
+Adapter.isOpen(MultiThreadedHttpConnectionManager.java:1122)
+	at org.apache.commons.httpclient.HttpClient.executeMethod
+(HttpClient.java:626)
+	at org.apache.commons.httpclient.HttpClient.executeMethod
+(HttpClient.java:497)
+	at 
+com.touchpoint.pia.services.transactions.msp.ApacheHttpClient.invokeRequest
+(ApacheHttpClient.java:69)
+	at 
+com.touchpoint.pia.services.transactions.msp.MsWSManager.invokeRequest
+(MsWSManager.java:86)
+	at 
+com.touchpoint.pia.services.transactions.msp.MsWSManager.invokeRequestWithPaylo
+ad(MsWSManager.java:114)
+	at com.touchpoint.pia.services.transactions.msp.MsWSManager.main
+(MsWSManager.java:179)
+<Jun 10, 2005 1:25:12 PM EDT> <DEBUG> 
+<apache.commons.httpclient.HttpConnection:540> <##SUBBA## 
+HttpConnection.isStale() return=true>

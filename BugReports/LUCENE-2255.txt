@@ -1,0 +1,10 @@
+IndexWriter.getReader() allocates file handles
+
+
+
+Description:
+I am not sure if this is a "bug" or really just me not reading the Javadocs right...
+
+The IR returned by IW.getReader() leaks file handles if you do not close() it, leading to starvation of the available file handles/process. If it was clear from the docs that this was a *new* reader and not some reference owned by the writer then this would probably be ok. But as I read the docs the reader is internally managed by the IW, which at first shot lead me to believe that I shouldn't close it.
+
+So perhaps the docs should be amended to clearly state that this is a caller-owns reader that *must* be closed? Attaching a simple app that illustrates the problem.

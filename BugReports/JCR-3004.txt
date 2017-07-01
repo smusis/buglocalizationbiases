@@ -1,0 +1,13 @@
+Check if a DAV-Request has a Label in the header, before checking if it's version-controlled
+
+
+
+Description:
+When looking at our MySQL logs, I realized that jackrabbit on each DAV Request calls the VERSION table every time I get a new node (which is not cached yet), even if I only do a simple getNode. 
+As a versioning table can get pretty large, this may have a performance impact.
+
+I found out, that DavResourceFactoryImpl checks, if a node is versioned to decide, if we have to check for the Label header to later check out another version for the GET request. I re-ordered those checks now so that it first checks, if there's an http Label-header and only then checks, if the node is versioned. The check for a Label header should be much faster than checking a DB, if it's versioned (and scale much better, too)
+
+
+
+

@@ -1,0 +1,8 @@
+Upgrade to Tika 0.6 and PDFBox 1.0.0
+
+
+
+Description:
+Tika version 0.6 uses POI 3.6 that's notably smaller (-10MB!) than previous versions. There are also a number of other improvements in Tika 0.6 since the 0.5 release.
+
+While doing the upgrade we should also force the PDFBox version to 1.0.0 from the 0.8.0-incubating version that Tika 0.6 uses. PDFBox 1.0.0 has some nice performance gains (around 30% faster) to text extraction along with other improvements.

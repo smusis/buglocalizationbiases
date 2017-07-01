@@ -1,0 +1,8 @@
+Lazy initialize ItemDefinition
+
+
+
+Description:
+The item definition is currently set immediately when an ItemData is instantiated. Accessing nodes usually does not require reading the item definition, thus it is not necessary to load/set it that early.
+
+Lazy initialization also has the benefit that content migration in an upgrade scenario becomes easier. Instead of throwing an exception early, jackrabbit could allow access to the item until an item definition is really required for the operation.

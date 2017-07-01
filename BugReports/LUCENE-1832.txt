@@ -1,0 +1,23 @@
+minor/nitpick TermInfoReader bug ?
+
+
+
+Description:
+Some code flagged by a bytecode static analyzer - I guess a nitpick, but we should just drop the null check in the if? If its null it will fall to the below code and then throw a NullPointer exception anyway. Keeping the nullpointer check implies we expect its possible - but then we don't handle it correctly.
+
+{code}
+  /** Returns the nth term in the set. */
+  final Term get(int position) throws IOException {
+    if (size == 0) return null;
+
+    SegmentTermEnum enumerator = getThreadResources().termEnum;
+    if (enumerator != null && enumerator.term() != null &&
+        position >= enumerator.position &&
+	position < (enumerator.position + totalIndexInterval))
+      return scanEnum(enumerator, position);      // can avoid seek
+
+    seekEnum(enumerator, position/totalIndexInterval); // must seek
+    return scanEnum(enumerator, position);
+  }
+
+{code}

@@ -1,0 +1,15 @@
+Omit default BatchReadConfig in Spi2davexRepositoryServiceFactory
+
+
+
+Description:
+i'd like to remove the default batchread configuration created in Spi2davexRepositoryServiceFactory (ll 79) and instead pass 
+null if the service configuration doesn't define the batch-read-config.
+
+for test execution e.g. the given default isn't really optimal as sessions only have a short life time and only read
+a very limited amount of items (in general)... always reading with depth 4 doesn't add any benefit in this case.
+running the level1 jcr tests in jcr2dav (that as far as i saw doesn't define an extra batchread-config took 1.5, 2.5 and 13 minutes
+from null-config -> depth2 -> depth4.
+
+if there is a strong reason for keeping that default in the factory we should at least change that for the tests.
+michael, what do you think?

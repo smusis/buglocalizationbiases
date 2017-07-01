@@ -1,0 +1,8 @@
+Handle Returning Null consistantly
+
+
+
+Description:
+Consider returning empty arrays instead of null consistantly.  eg:
+getResponseBody().  There may be good reason for both null and empty array
+depending on the circumstannces.

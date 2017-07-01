@@ -1,0 +1,33 @@
+David Spencer Spell Checker improved
+
+
+
+Description:
+hy,
+i developed a SpellChecker based on the David Spencer code (DSc) but more flexible.
+the structure of the index is inspired of the DSc (for a 3-4 gram):
+word:
+gram3:
+gram4:
+ 
+3start:
+4start:
+..
+3end:
+4end:
+..
+transposition:
+ 
+This index is a dictonary so there isn't the "freq" field like with DSc version.
+it's independant of the user index. So we can add words becoming to several
+fields of several index for example or, why not, to a file with a list of words.
+The suggestSimilar method return a list of suggests word sorted by the
+Levenshtein distance and optionaly to the popularity of the word for a specific
+field in a user index. More of that, this list can be restricted only to words
+present in a specific field of a user index.
+ 
+See the test case.
+ 
+i hope this code will be put in the lucene sandbox. 
+ 
+Nicolas Maisonneuve

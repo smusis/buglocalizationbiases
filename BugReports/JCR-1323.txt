@@ -1,0 +1,6 @@
+When using QueryImpl.setLimit() and QueryImpl.setOffset(), then NodeIterator.getSize() reports wrong size
+
+
+
+Description:
+When using QueryImpl.setLimit() and QueryImpl.setOffset(), then NodeIterator.getSize() reports wrong size. Returned size seems to be allways the same as the limit.

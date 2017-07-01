@@ -1,0 +1,16 @@
+Support contains queries with wildcard prefix
+
+
+
+Description:
+The current implementation only allows wildcards in the middle or at the end of a search term. 
+
+The following queries work right now:
+//*[jcr:contains(., 'foo*')
+//*[jcr:contains(., 'fo?o')
+
+But the following does not:
+//*[jcr:contains(., '*bar')
+
+There was already a thread in the mailing list on this topic:
+http://thread.gmane.org/gmane.comp.apache.jackrabbit.devel/3304

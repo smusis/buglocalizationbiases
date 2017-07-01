@@ -1,0 +1,11 @@
+Single quote in contains function is not parsed correctly
+
+
+
+Description:
+If there is a single quote in the contains statement the parser will throw an exception.
+
+Example:
+//element(*, nt:resource)[jcr:contains(., 'it''s fun')]
+
+The LuceneQueryBuilder replaces the single quote with a double quote and hence the lucene fulltext query parser fails because there is a missing closing double quote. Not sure why this is done in the code, maybe this is a left over from an early JSR 170 draft.

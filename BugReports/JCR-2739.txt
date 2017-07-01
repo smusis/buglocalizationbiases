@@ -1,0 +1,11 @@
+RFC4918IfHeaderTest.testPutIfLockToken could fail with 412 Precondition Failed
+
+
+
+Description:
+In org.apache.jackrabbit.webdav.server.RFC4918IfHeaderTest:110 (webdav-test), 
+the lock request is initialized with a timeout of 1800 milliseconds, which is rounded as Timeout: Second-1 (at org.apache.jackrabbit.webdav.header.TimeoutHeader:46).
+
+The assertion in the finally block MUST fail (412, Precondition Failed) if the lock has expired (cf. RFC 4918, Section 10.4.10).
+
+The lock request should be initialized with a higher timeout, at least several seconds.

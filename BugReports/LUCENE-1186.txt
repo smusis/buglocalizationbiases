@@ -1,0 +1,19 @@
+[PATCH] Clear ThreadLocal instances in close()
+
+
+
+Description:
+As already found out in LUCENE-436, there seems to be a garbage collection problem with ThreadLocals at certain constellations, resulting in an OutOfMemoryError.
+The resolution there was to remove the reference to the ThreadLocal value when calling the close() method of the affected classes (see FieldsReader and TermInfosReader).
+For Java < 5.0, this can effectively be done by calling threadLocal.set(null); for Java >= 5.0, we would call threadLocal.remove()
+
+Analogously, this should be done in *any* class which creates ThreadLocal values
+
+Right now, two classes of the core API make use of ThreadLocals, but do not properly remove their references to the ThreadLocal value
+1. org.apache.lucene.index.SegmentReader
+2. org.apache.lucene.analysis.Analyzer
+
+For SegmentReader, I have attached a simple patch.
+For Analyzer, there currently is no patch because Analyzer does not provide a close() method (future to-do?)
+
+

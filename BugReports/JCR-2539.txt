@@ -1,0 +1,8 @@
+spi2dav: Observation's user data not property handled
+
+
+
+Description:
+org.apache.jackrabbit.test.api.observation#GetUserDataTest still fail in the setup jcr2spi - spi2dav(ex) - jcr-server.
+
+

@@ -1,0 +1,17 @@
+NPE when copying nodes with Workspace.copy()
+
+
+
+Description:
+I get a NullpointerException when using Workspace.copy():
+
+java.lang.NullPointerException
+at org.apache.jackrabbit.core.BatchedItemOperations.copyNodeState(BatchedItemOperations.java:1834)
+at org.apache.jackrabbit.core.BatchedItemOperations.copyNodeState(BatchedItemOperations.java:1806)
+at org.apache.jackrabbit.core.BatchedItemOperations.copyNodeState(BatchedItemOperations.java:1806)
+at org.apache.jackrabbit.core.BatchedItemOperations.copy(BatchedItemOperations.java:423)
+at org.apache.jackrabbit.core.WorkspaceImpl.internalCopy(WorkspaceImpl.java:444)
+at org.apache.jackrabbit.core.WorkspaceImpl.copy(WorkspaceImpl.java:666)
+at xxx.MyClass.myMeth(MyClass.java)
+
+It seems that it happens not all the time. The error occurs since we use Jackrabbit 1.6.0. We do not get the error with previous versions. It seems that we only get the error when trying to copy nodes that were created with Jackrabbit 1.4 and copied with Jackrabbit 1.6.

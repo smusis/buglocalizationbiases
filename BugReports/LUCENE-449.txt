@@ -1,0 +1,19 @@
+NullPointerException when temporary directory not readable
+
+
+
+Description:
+We have customers reporting errors such as:
+
+Caused by: java.lang.NullPointerException
+	at org.apache.lucene.store.FSDirectory.create(FSDirectory.java:200)
+	at org.apache.lucene.store.FSDirectory.getDirectory(FSDirectory.java:144)
+	at org.apache.lucene.store.FSDirectory.getDirectory(FSDirectory.java:117)
+	at org.apache.lucene.index.IndexWriter.<init>(IndexWriter.java:205)
+	at com.atlassian.jira.util.LuceneUtils.getIndexWriter(LuceneUtils.java:46)
+	at com.atlassian.jira.issue.index.DefaultIndexManager.getIndexWriter(DefaultIndexManager.java:568)
+	at com.atlassian.jira.issue.index.DefaultIndexManager.indexIssuesAndComments(DefaultIndexManager.java:287)
+	... 59 more
+
+
+This occurs when the lock directory is unreadable (eg. because Tomcat sets java.io.tmpdir to temp/ and the permissions here are broken). Attached is 

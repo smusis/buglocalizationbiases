@@ -1,0 +1,8 @@
+Not getting random-seed/reproduce-with if a test fails from another thread
+
+
+
+Description:
+See https://builds.apache.org/job/Lucene-Solr-tests-only-trunk/12822/console as an example.
+
+This is at least affecting 4.0, maybe 3.x too

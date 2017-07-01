@@ -1,0 +1,6 @@
+Add support for custom ExecutorServices in ParallelMultiSearcher
+
+
+
+Description:
+Right now, the ParallelMultiSearcher uses a cachedThreadPool, which is limitless and a poor choice for a web application, given the threaded nature of the requests (say a webapp with tomcat-default 200 threads and 100 indexes could be looking at 2000 searching threads pretty easily).  Support for adding a custom ExecutorService is pretty trivial.  Patch forthcoming.

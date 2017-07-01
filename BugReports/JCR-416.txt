@@ -1,0 +1,23 @@
+Webdav Simple: Delegate PROPPATCH to (extended) IOHandlers
+
+
+
+Description:
+complete description:
+http://article.gmane.org/gmane.comp.apache.jackrabbit.devel/6582
+
+Proposed solution
+------------------------------------------------------------------------------------------------------------------------------------
+
+The situation described before leads me to the following conclusion:
+
+- IOHandler should not only read/write resource data and properties during GET, PUT, PROPFIND but should
+   also take care of setting/removing properties upon PROPPATCH.
+
+- Since the previous suggestion would still limit the properties to (jcr:encoding, jcr:mimeType and
+   jcr:lastModified), we may think about changing the default nodetype for the jcr:content node to
+   nt:unstructured.
+
+I guess this would meet the requirements for those expecting a webDAV server that is (as a first step)
+not limited regarding PROPPATCH. Second it would allow to have a handling of property modifications
+which is specific for individual resource types instead of trying to set all properties to the uppermost node.

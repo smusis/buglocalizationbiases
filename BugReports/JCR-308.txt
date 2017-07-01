@@ -1,0 +1,16 @@
+Nodes having OPV=Ignore are removed on restore
+
+
+
+Description:
+JCR1.0 Specification mentions:
+
+8.2.11.5 IGNORE
+  Child Node
+    On checkin of N, no state information about C will be stored in VN.
+    On restore of VN, the child node C of the current N will remain and not be removed.
+  Property
+    On checkin of N, no state information about P will be stored in VN.
+    On restore of VN, the property P of the current N will remain and not be removed.
+
+but the current implementation removed the ignore child.

@@ -1,0 +1,15 @@
+comparator API for segment versions
+
+
+
+Description:
+See LUCENE-3012 for an example.
+
+Things get ugly if you want to use SegmentInfo.getVersion()
+
+For example, what if we committed my patch, release 3.2, but later released 3.1.1 (will "3.1.1" this be whats written and returned by this function?)
+Then suddenly we broke the index format because we are using Strings here without a reasonable comparator API.
+
+In this case one should be able to compute if the version is < 3.2 safely.
+
+If we don't do this, and we rely upon this version information internally in lucene, I think we are going to break something.

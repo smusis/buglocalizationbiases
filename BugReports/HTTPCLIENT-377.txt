@@ -1,0 +1,6 @@
+[API Doc] HttpClient tutorial update
+
+
+
+Description:
+Bring the tutorial up to date with the latest best practices

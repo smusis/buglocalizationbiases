@@ -1,0 +1,6 @@
+HttpClient treats URI fragments in redirect URIs incosistently
+
+
+
+Description:
+HttpClient treats URI fragments in redirect URIs incosistently. It strips fragments from relative URIs but leaves absolute ones unchanges.  

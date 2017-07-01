@@ -1,0 +1,14 @@
+missing sync in InternalVersionManagerImpl.externalUpdate can cause ConcurrentModificationException
+
+
+
+Description:
+In
+
+        for (Map.Entry<ItemId, InternalVersionItem> entry : versionItems.entrySet()) {
+            if (changes.has(entry.getKey())) {
+                items.add(entry.getValue());
+            }
+        }
+
+we need to sync on versionItems, I believe.

@@ -1,0 +1,12 @@
+Catch Throwables while calling TextExtractors
+
+
+
+Description:
+There are different Exception Handlings in the current TextExtractors.
+The Method Signature throws IOException but the internal Handling is different.
+
+For example in the MsExcelTextExtractor there will be RuntimeException's catched but not in all Extractors.
+@see JCR-574
+
+I think we should catch Throwables in the NodeIndexer to prevent OutOfMemoryErros while indexing a node.

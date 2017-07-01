@@ -1,0 +1,10 @@
+remove MoreLikeThis's default analyzer
+
+
+
+Description:
+MoreLikeThis has the following:
+
+{code}
+public static final Analyzer DEFAULT_ANALYZER = new StandardAnalyzer(Version.LUCENE_CURRENT);
+{code}

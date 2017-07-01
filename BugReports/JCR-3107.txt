@@ -1,0 +1,10 @@
+Speed up hierarchy cache initialization
+
+
+
+Description:
+Initializing a workspace can take quite a long time if there is a big number of nodes and some search indexes involved. The reason is that the setup of the CachingIndexReader is processed using chunks of a certain size (actually 400K) in order to reduce the memory footprint. As soon as the number of documents exceeds this limit some operations (actually traversing complete indexes) are performed again and again.
+
+It seems that the current algorithm "initializeParents" in the CachingIndexReader class can't be optimized without increasing the memory consumption. Therefore it should be a promising approach to persist the "state" of this class (actually it's main member array and map) and reload it on startup.
+
+The "load" of the state can be done implicitly in the initializing phase of the cache. This is obvious. The correct point of time to call the "save" operation isn't obvious at all. I tried the "doClose" method of the class and it seems sufficient.

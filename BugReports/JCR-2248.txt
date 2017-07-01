@@ -1,0 +1,8 @@
+QValueFactoryImpl$BinaryQValue must not return 'this' on getBinary
+
+
+
+Description:
+This is basically the same as JCR-2238, but for the spi-commons module. BinaryQValue returns 'this' on getBinary(), which will lead to a file not found exception because Binary.dispose() will delete the the underlying temp file.
+
+The issue is partially hidden by the presence of a bug in BinaryQValue.read(): the RandomAccessFile is not closed after reading, which might prevent deleting of the temp file.

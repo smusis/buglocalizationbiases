@@ -1,0 +1,6 @@
+FastVectorHighlighter adds a multi value separator (space) to the end of the highlighted text
+
+
+
+Description:
+The FVH adds an additional ' ' (the multi value separator) to the end of the highlighted text.

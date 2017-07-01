@@ -1,0 +1,9 @@
+optimization in sending request
+
+
+
+Description:
+By doing network sniffering, I noticed that httpclient send the request line 
+and headers as separate packages. All other httpclient, including IE, Netscape, 
+Java's URLConnection all send it as one package. This can be easily fixed using 
+some buffering in HttpMethodBase.

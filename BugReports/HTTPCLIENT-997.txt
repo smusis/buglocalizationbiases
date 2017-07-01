@@ -1,0 +1,10 @@
+cache module should handle out-of-order validations properly and unconditionally refresh
+
+
+
+Description:
+There is a protocol recommendation that when we attempt to revalidate a cache entry, but we receive a response that has a Date header that's actually *older* than that of our current entry, we SHOULD revalidate again unconditionally with either max-age=0 or no-cache (since some upstream cache would appear to be out-of-date).
+
+http://www.w3.org/Protocols/rfc2616/rfc2616-sec13.html#sec13.2.6
+
+

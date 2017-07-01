@@ -1,0 +1,10 @@
+FieldComparator.TermOrdValComparator compares by value unnecessarily
+
+
+
+Description:
+Digging on LUCENE-2504, I noticed that TermOrdValComparator's compareBottom method falls back on compare-by-value when it needn't.
+
+Specifically, if we know the current bottom ord "matches" the current segment, we can skip the value comparison when the ords are the same (ie, return 0) because the ords are exactly comparable.
+
+This is hurting string sort perf especially for optimized indices (and also unoptimized indices), and especially for highly redundant (not many unique values) fields.  This affects all releases >= 2.9.x, but trunk is likely more severely affected since looking up a value is more costly.

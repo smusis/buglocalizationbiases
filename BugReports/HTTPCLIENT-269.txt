@@ -1,0 +1,9 @@
+HttpConnection.isResponseAvailable() calls setSoTimeout() but does not catch IOException
+
+
+
+Description:
+HttpConnection.isResponseAvailable() can throw an IOException when setting the
+soTimeout but should probably just return false in this case.
+
+<http://marc.theaimsgroup.com/?t=106268485100002&r=1&w=2>

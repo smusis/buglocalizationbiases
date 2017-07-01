@@ -1,0 +1,29 @@
+NPE in PhraseQuery.toString(String f)
+
+
+
+Description:
+the section
+
+public String toString(String f) {
+    StringBuffer buffer = new StringBuffer();
+    if (!field.equals(f)) {
+      buffer.append(field);
+      buffer.append(":");
+    }
+    <snip>
+
+
+should be
+
+public String toString(String f) {
+    StringBuffer buffer = new StringBuffer();
+    if (field != null && !field.equals(f)) {
+      buffer.append(field);
+      buffer.append(":");
+    }
+    <snip>
+
+
+The issue arises if a phrase query is created, no terms are added, then the phrase query is added to a boolean query. Calling toString on the boolean query will result in a NPE insdie of the PhraseQuery.
+

@@ -1,0 +1,25 @@
+TestNLS fails with ja locale
+
+
+
+Description:
+set ANT_ARGS="-Dargs=-Duser.language=ja -Duser.country=JP"
+ant test-core -Dtestcase=TestNLS
+
+The test has 2 sets of message, one fallback, and one ja.
+The tests assume if it asks for a non-ja locale, that it will get the fallback message,
+but this is not how ResourceBundle.getBundle works:
+{noformat}
+Otherwise, the following sequence is generated from the attribute values of the specified locale 
+(language1, country1, and variant1) and of the default locale (language2, country2, and variant2):
+
+baseName + "_" + language1 + "_" + country1 + "_" + variant1
+baseName + "_" + language1 + "_" + country1
+baseName + "_" + language1
+baseName + "_" + language2 + "_" + country2 + "_" + variant2
+baseName + "_" + language2 + "_" + country2
+baseName + "_" + language2
+baseName
+{noformat}
+
+So in the case of ja default locale, you get a japanese message instead from the baseName + "_" + language2 match

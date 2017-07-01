@@ -1,0 +1,8 @@
+Refactoring of FilteredTermsEnum and MultiTermQuery
+
+
+
+Description:
+FilteredTermsEnum is confusing as it is initially positioned to the first term. It should instead work like an uninitialized TermsEnum for a field before the first call to next() or seek().
+FilteredTermsEnums cannot implement seek() as eg. NRQ or Automaton are not able to support this. Seeking is also not needed for MTQ at all, so seek can just throw UOE.
+This issue changes some of the internal behaviour of MTQ and FilteredTermsEnum to allow also seeking in NRQ and Automaton (see comments below).

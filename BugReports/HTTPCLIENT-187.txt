@@ -1,0 +1,8 @@
+Provide general HTTP date parsing
+
+
+
+Description:
+Add generally accessible support for parsing HTTP dates as used in headers/cookies.
+
+Initially submitted to HttpClient dev by Chris Brown.

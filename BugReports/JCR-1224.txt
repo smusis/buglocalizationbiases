@@ -1,0 +1,40 @@
+Release references to JCR items in tearDown
+
+
+
+Description:
+On my 64-Bit environment OS/JVM I tried a "mvn clean install" and got an OutOfMemory Exception.
+On my 32-Bit environment Mac OSX 10.5 Java 1.5 the tests were all  fine and the IndexMerger was significant faster.
+
+Running org.apache.jackrabbit.test.TestAll
+21.11.2007 10:29:51 *INFO * [IndexMerger] IndexMerger: merged 549 documents in 289 ms into _a. (IndexMerger.java, line 304)
+21.11.2007 10:29:55 *ERROR* [main] ImportHandler: fatal error encountered at line: 1, column: 10 while parsing XML stream: org.xml.sax.SAXParseException: Attribute name "is" associated with an element type "this" must be followed by the ' = ' character. (ImportHandler.java, line 116)
+21.11.2007 10:29:55 *ERROR* [main] ImportHandler: fatal error encountered at line: 1, column: 10 while parsing XML stream: org.xml.sax.SAXParseException: Attribute name "is" associated with an element type "this" must be followed by the ' = ' character. (ImportHandler.java, line 104)
+21.11.2007 10:29:59 *ERROR* [main] ImportHandler: fatal error encountered at line: -1, column: -1 while parsing XML stream: org.xml.sax.SAXParseException: Premature end of file. (ImportHandler.java, line 104)
+21.11.2007 10:29:59 *ERROR* [main] ImportHandler: fatal error encountered at line: -1, column: -1 while parsing XML stream: org.xml.sax.SAXParseException: Premature end of file. (ImportHandler.java, line 116)
+21.11.2007 10:30:45 *INFO * [IndexMerger] IndexMerger: merged 555 documents in 2015 ms into _l. (IndexMerger.java, line 304)
+21.11.2007 10:33:13 *INFO * [IndexMerger] IndexMerger: merged 412 documents in 25587 ms into _w. (IndexMerger.java, line 304)
+Exception in thread "Timer-1" java.lang.OutOfMemoryError: Java heap space
+        at org.apache.lucene.store.BufferedIndexOutput.<init>(BufferedIndexOutput.java:26)
+        at org.apache.lucene.store.FSDirectory$FSIndexOutput.<init>(FSDirectory.java:592)
+        at org.apache.lucene.store.FSDirectory.createOutput(FSDirectory.java:435)
+        at org.apache.lucene.util.BitVector.write(BitVector.java:122)
+        at org.apache.lucene.index.SegmentReader.doCommit(SegmentReader.java:236)
+        at org.apache.lucene.index.IndexReader.commit(IndexReader.java:794)
+        at org.apache.lucene.index.FilterIndexReader.doCommit(FilterIndexReader.java:190)
+        at org.apache.lucene.index.IndexReader.commit(IndexReader.java:825)
+        at org.apache.lucene.index.IndexReader.close(IndexReader.java:841)
+        at org.apache.jackrabbit.core.query.lucene.AbstractIndex.close(AbstractIndex.java:327)
+        at org.apache.jackrabbit.core.query.lucene.MultiIndex$DeleteIndex.execute(MultiIndex.java:1715)
+        at org.apache.jackrabbit.core.query.lucene.MultiIndex.executeAndLog(MultiIndex.java:936)
+        at org.apache.jackrabbit.core.query.lucene.MultiIndex.flush(MultiIndex.java:880)
+        at org.apache.jackrabbit.core.query.lucene.MultiIndex.checkFlush(MultiIndex.java:1110)
+        at org.apache.jackrabbit.core.query.lucene.MultiIndex.access$100(MultiIndex.java:75)
+        at org.apache.jackrabbit.core.query.lucene.MultiIndex$1.run(MultiIndex.java:324)
+        at java.util.TimerThread.mainLoop(Timer.java:512)
+        at java.util.TimerThread.run(Timer.java:462)
+21.11.2007 10:34:37 *ERROR* [main] DatabasePersistenceManager: failed to write node state: cfbffd6d-114d-4738-9383-48da2b5dbc1d (DatabasePersistenceManager.java, line 441)
+java.lang.OutOfMemoryError: Java heap space
+        at java.util.Properties$LineReader.<init>(Properties.java:346)
+        at java.util.Properties.load(Properties.java:284)
+

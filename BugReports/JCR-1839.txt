@@ -1,0 +1,6 @@
+JSR 283: Introduce Event.getDate()
+
+
+
+Description:
+JSR 283 adds a method to an Event that returns the date when the change happened that caused the event.

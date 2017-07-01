@@ -1,0 +1,11 @@
+Implement search facility for users and groups
+
+
+
+Description:
+Implement a search facility for users and groups supporting:
+- search for users and/or groups with a certain property (value) either directly on the user/group node or on any of its sub nodes
+- full text search on user and/or group nodes and its sub nodes
+- inclusion/exclusion based on group membership: i.e. restricting search to members of a group or to groups with a certain member
+- ordering 
+- paging

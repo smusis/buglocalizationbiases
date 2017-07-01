@@ -1,0 +1,7 @@
+Data Store: Oracle fails to create the table
+
+
+
+Description:
+When using an Oracle database, the following exception occurs when trying to create the table: ORA.00902: invalid datatype
+The problem is that Oracle doesn't support the data type BIGINT. Instead, LONG should be used.

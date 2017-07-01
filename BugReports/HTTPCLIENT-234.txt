@@ -1,0 +1,12 @@
+Customizable Cookie Policy
+
+
+
+Description:
+Even if the server is not complying with the cookie specification, sometimes 
+you still need to talk to it.
+
+It would be nice that when setting the Cookie Policy for the HttpMethod, you 
+could specify a custom policy that implements the CookieSpecBase but may 
+handle certain problems more leniently.  This would be instead of specifying 
+one of the three hard-coded policies.

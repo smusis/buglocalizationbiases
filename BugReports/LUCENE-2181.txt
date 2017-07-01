@@ -1,0 +1,9 @@
+benchmark for collation
+
+
+
+Description:
+Steven Rowe attached a contrib/benchmark-based benchmark for collation (both jdk and icu) under LUCENE-2084, along with some instructions to run it... 
+
+I think it would be a nice if we could turn this into a committable patch and add it to benchmark.
+

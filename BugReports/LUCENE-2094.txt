@@ -1,0 +1,7 @@
+Prepare CharArraySet for Unicode 4.0
+
+
+
+Description:
+CharArraySet does lowercaseing if created with the correspondent flag. This causes that  String / char[] with uncode 4 chars which are in the set can not be retrieved in "ignorecase" mode.
+

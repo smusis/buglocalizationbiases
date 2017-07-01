@@ -1,0 +1,16 @@
+MMapDirectory speedups
+
+
+
+Description:
+MMapDirectory has some performance problems:
+# When the file is larger than Integer.MAX_VALUE, we use MultiMMapIndexInput, 
+which does a lot of unnecessary bounds-checks for its buffer-switching etc. 
+Instead, like MMapIndexInput, it should rely upon the contract of these operations
+in ByteBuffer (which will do a bounds check always and throw BufferUnderflowException).
+Our 'buffer' is so large (Integer.MAX_VALUE) that its rare this happens and doing
+our own bounds checks just slows things down.
+# the readInt()/readLong()/readShort() are slow and should just defer to ByteBuffer.readInt(), etc
+This isn't very important since we don't much use these, but I think there's no reason
+users (e.g. codec writers) should have to readBytes() + wrap as bytebuffer + get an 
+IntBuffer view when readInt() can be almost as fast...

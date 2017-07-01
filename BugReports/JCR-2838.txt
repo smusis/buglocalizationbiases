@@ -1,0 +1,8 @@
+Tika regressions in 0.8
+
+
+
+Description:
+There are a few notable problems in Tika 0.8, namely TIKA-548 and TIKA-556, that may adversely affect users of Jackrabbit 2.2.
+
+Since we don't have a Tika 0.9 release available yet, I'll add workarounds for these issues in Jackrabbit.

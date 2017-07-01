@@ -1,0 +1,6 @@
+Session logout doesn't release locks acquired using addLockToken
+
+
+
+Description:
+Session.addLockToken doesn't register locks with the session so when logout is called they are not released. Locks acquired this way maintain a reference to the Session after logout and new sessions attempting to acquire the locks will fail.

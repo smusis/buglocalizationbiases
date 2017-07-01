@@ -1,0 +1,27 @@
+Problem with formerly escaped JCR node names when upgrading to Jackrabbit 2.2.9
+
+
+
+Description:
+The following unit test fails:
+
+{code}
+import static org.junit.Assert.*;
+
+import org.apache.jackrabbit.util.Text;
+import org.junit.Test;
+
+public class TestEscaping
+{
+   @Test
+   public void testEscaping() throws Exception
+   {
+      // expect this as an escaped string (e.g. formerly escaped with jackrabbit 1.6)
+      String escaped = "nam%27e";
+      String unescaped = Text.unescapeIllegalJcrChars(escaped);
+      assertEquals(escaped, Text.escapeIllegalJcrChars(unescaped));
+   }
+}
+{code}
+
+This is a major problem when upgrading from 1.6.x to 2.2.9. The node names that were escaped in jackrabbit 1.6 are not longer escaped and that breaks the backward compatibility. I think the problem comes in with JCR-2198. 

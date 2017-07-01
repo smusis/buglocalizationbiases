@@ -1,0 +1,7 @@
+PathElement.equals doesn't handle INDEX_UNDEFINED
+
+
+
+Description:
+PathElement (and therefore Path) comparisons fail when INDEX_UNDEFINED is used (it's treated differently from INDEX_DEFAULT).
+

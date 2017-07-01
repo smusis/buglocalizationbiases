@@ -1,0 +1,28 @@
+BooleanScorer2 does not compile with ecj
+
+
+
+Description:
+BooleanScorer2, derived from scorer, has two inner classes both derived, ultimately, from Scorer.
+As such they all define doc() or inherit it.
+ecj produces an error when doc() is called from score in the inner classes in the methods
+        countingDisjunctionSumScorer
+    and
+        countingConjunctionSumScorer
+
+The error message is:
+    The method doc is defined in an inherited type and in an enclosing scope.
+
+The affected lines are: 160, 161, 178, and 179
+
+
+I have run the junit test TestBoolean2 (as well as all the others) with
+        doc()
+    changed to
+        BooleanScorer2.this.doc()
+    and also to:
+        this.doc();
+The result was that the tests passed for both.
+
+I added debug statements to all the doc methods and the score methods in the affected classes, but I could not determine what it should be.
+

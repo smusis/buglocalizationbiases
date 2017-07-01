@@ -1,0 +1,10 @@
+Repository is corrupt after concurrent changes with the same session
+
+
+
+Description:
+After concurrent write operations using the same session, the repository can get corrupt, meaning a ItemNotFoundException is thrown when trying to remove a node.
+
+Concurrent write operations are not supported, however I believe the persistent state of the repository should not be get corrupt.
+
+One way to solve this problem is to synchronize on the session internally.

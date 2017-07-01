@@ -1,0 +1,12 @@
+inconsistent repository after overlapping node add operations
+
+
+
+Description:
+It seems I can reproduce a sequence of operations that cause the repository to be inconsistent.
+
+The short version: 2 sessions add a same-named child node to the same parent folder (not allowing same-name-siblings). Session 1's save() succeeds. Session 2's save() fails, but succeeds on retry (!).
+
+After the operation, the child node created by session 1 is still present, but the parent doesn't list it as child node anymore.
+
+(will add test case)

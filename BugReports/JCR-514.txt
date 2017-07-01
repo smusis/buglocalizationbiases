@@ -1,0 +1,11 @@
+TCK: NodeOrderableChildNodesTest tests node order even if node type doesn't support child node ordering
+
+
+
+Description:
+NodeOrderableChildNodesTest# testOrderBeforeUnsupportedRepositoryOperationException
+
+This test calls prepareTest, which requires getNodes() to return the child nodes in the order added, even if the node type doesn't support child node ordering.  JSR-170 (Section 4.4.2) imposes no such requirement.
+
+Proposal: do not check child node order in this test case.
+

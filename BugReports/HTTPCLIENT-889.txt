@@ -1,0 +1,20 @@
+Should USE_EXPECT_CONTINUE be false by default?
+
+
+
+Description:
+It seems the point of USE_EXPECT_CONTINUE is to improve performance when posting large data. 
+http://www.w3.org/Protocols/rfc2616/rfc2616-sec8.html says:
+
+<< The purpose of the 100 (Continue) status (see section 10.1.1) is to allow a client that is sending a request message with a request body to determine if the origin server is willing to accept the request (based on the request headers) before the client sends the request body. In some cases, it might either be inappropriate or highly inefficient for the client to send the body if the server will reject the message without looking at the body. >>
+
+There's nothing wrong with HttpClient performing well by default, however, every other HTTP client library I've used does not behave like this (PHP curl, Perl LWP). The default is always to do one request, including the body. Maybe dumb, but simple.
+
+It seems to me HttpClient's default behavior should the simplest, most compatible with all HTTP-speaking services out there. "100 Continue" is somewhat advanced, and may not be correctly implemented by all services. (That's of course how I found out about it -- my server doesn't implement it.)
+
+If USE_EXPECT_CONTINUE is used only for performance reasons, it seems like it would be simpler (and therefore maybe more "correct") to have it "off" by default. And only enable it when needed, when there is a good reason to.
+
+Just my thoughts. And a wish. Thanks! 
+
+
+

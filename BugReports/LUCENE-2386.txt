@@ -1,0 +1,10 @@
+IndexWriter commits unnecessarily on fresh Directory
+
+
+
+Description:
+I've noticed IndexWriter's ctor commits a first commit (empty one) if a fresh Directory is passed, w/ OpenMode.CREATE or CREATE_OR_APPEND. This seems unnecessarily, and kind of brings back an autoCommit mode, in a strange way ... why do we need that commit? Do we really expect people to open an IndexReader on an empty Directory which they just passed to an IW w/ create=true? If they want, they can simply call commit() right away on the IW they created.
+
+I ran into this when writing a test which committed N times, then compared the number of commits (via IndexReader.listCommits) and was surprised to see N+1 commits.
+
+Tried to change doCommit to false in IW ctor, but it got IndexFileDeleter jumping on me .. so the change might not be that simple. But I think it's manageable, so I'll try to attack it (and IFD specifically !) back :).

@@ -1,0 +1,14 @@
+Documentation bug.  The 2.4.1 query parser syntax wiki page says it is for 1.9
+
+
+
+Description:
+This page:
+
+http://lucene.apache.org/java/2_4_1/queryparsersyntax.html
+
+says this:
+.bq
+This page provides the Query Parser syntax in Lucene 1.9. If you are using a different version of Lucene, please consult the copy of docs/queryparsersyntax.html that was distributed with the version you are using. 
+
+This is misleading on a doc page for 2.4.1

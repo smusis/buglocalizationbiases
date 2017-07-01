@@ -1,0 +1,20 @@
+TCK: NodeTest#testAddNodeItemExistsException fails if validation deferred until save
+
+
+
+Description:
+The test expects addNode to fail if a same-name sibling already exists.  JSR-170 allows this validation to be deferred until save.
+
+Proposal: call save in the "try" block.
+
+--- NodeTest.java       (revision 422074)
++++ NodeTest.java       (working copy)
+@@ -380,6 +391,7 @@
+         try {
+             // try to add a node with same name again
+             defaultTestNode.addNode(nodeName3, testNodeType);
++            defaultRootNode.save();
+             fail("Adding a node to a location where same name siblings are not allowed, but a node with same name" +
+                     " already exists should throw ItemExistsException ");
+         } catch (ItemExistsException e) {
+

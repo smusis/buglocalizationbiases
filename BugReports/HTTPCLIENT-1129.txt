@@ -1,0 +1,32 @@
+Redirect and Kerberos authentication in conflict
+
+
+
+Description:
+We are using the HttpClient to connect to a Website that uses Kerberos-Authentication.
+
+Beware this trigger word: Kerberos! I think this is *not* the problem, but please read on.
+
+Here is the sequence of events:
+
+Client: GET /
+Server: Unauthorized.
+Client: GET / and includes authentication.
+Server: 302 to /something on the same host (this shows that in principle authentication works)
+Client: GET /something,  does not include authentication
+Server: Unauthorized
+
+Client quits with 401-Unauthorized.
+
+I would have expected one of the following instead:
+
+1) Client immediately sends authorization information with the redirected GET /something
+2) Client re-requests the /something with authorization after 401-Unauthorized.
+
+We could get around the problem by setting the ConnectionReuseStrategy to a constant false.
+
+It would be great if someone could tell me if HttpClient works as expected or whether there is a bug or misconfiguration lurking.
+
+Thanks,
+Harald.
+

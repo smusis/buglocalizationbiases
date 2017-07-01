@@ -1,0 +1,8 @@
+better diagnostics when version storage is broken
+
+
+
+Description:
+In InternalVersionManagerBase, the code doesn't do a null-check on the predecessors property, assuming it'll always be present. When this is not the case due to a repository problem, we'll see a NPE.
+
+Proposal: add code that generates a more meaningful error message; making it easier to debug in production.

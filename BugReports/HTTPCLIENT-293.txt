@@ -1,0 +1,11 @@
+Provide support for non-ASCII charsets in the multipart disposition-content header
+
+
+
+Description:
+Because of the the following line in getAsciiBytes 
+ data.getBytes("US-ASCII");
+
+The returned string is modified if has Latin Characters.
+
+Ex : Document non-controlÃ© -> Document non-control?

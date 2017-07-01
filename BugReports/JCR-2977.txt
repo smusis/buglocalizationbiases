@@ -1,0 +1,6 @@
+AccessControlManager#getApplicablePolicy should check for colliding rep:policy node
+
+
+
+Description:
+while AccessControlManager#getApplicablePolicy returns an empty iterator if the target node cannot get the accesscontrollable-mixin set, it does not test if there is a colliding child node that would prevent the policy to be applied calling AccessControlManager#setPolicy. consequently, the setPolicy call fails with ItemExistsException. A simple test upfront could prevent this unexpected failure.

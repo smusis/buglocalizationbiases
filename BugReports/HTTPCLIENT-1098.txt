@@ -1,0 +1,8 @@
+Populating exception message with InetSocketAddress.getHostName() can take a long time
+
+
+
+Description:
+In the PlainSocketFactory class, when a SocketTimeoutException occurs a call is made to InetSocketAddress.getHostName() when generating the exception message. Unfortunately, this call can take a long time. In my case, the address I am specifying is an IP address, which InetSocketAddress attempts to perform a reverse-lookup on to determine the hostname; however, since  the address does not have a hostname assigned to it, the operation takes a long time to return.
+
+I'm attaching a patch for trunk with my proposed fix. Viewing the source history, it looks like the code used to have the behavior I'm proposing, but it was changed in revision 1070943. Based on the source commits and linked issues, I cannot determine a specific reason for the change. If there is a reason the code needs to be the way it is, then I apologize for inconvenience I have caused.

@@ -1,0 +1,27 @@
+SnowballAnalyzer lacks a constructor that takes a Set of Stop Words
+
+
+
+Description:
+As discussed on the java-user list, the SnowballAnalyzer has been updated to use a Set of stop words. However, there is no constructor which accepts a Set, there's only the original String[] one
+
+This is an issue, because most of the common sources of stop words (eg StopAnalyzer) have deprecated their String[] stop word lists, and moved over to Sets (eg StopAnalyzer.ENGLISH_STOP_WORDS_SET). So, for now, you either have to use a deprecated field on StopAnalyzer, or manually turn the Set into an array so you can pass it to the SnowballAnalyzer
+
+I would suggest that a constructor is added to SnowballAnalyzer which accepts a Set. Not sure if the old String[] one should be deprecated or not.
+
+A sample patch against 2.9.1 to add the constructor is:
+
+
+--- SnowballAnalyzer.java.orig  2009-12-15 11:14:08.000000000 +0000
++++ SnowballAnalyzer.java       2009-12-14 12:58:37.000000000 +0000
+@@ -67,6 +67,12 @@
+     stopSet = StopFilter.makeStopSet(stopWords);
+   }
+ 
++  /** Builds the named analyzer with the given stop words. */
++  public SnowballAnalyzer(Version matchVersion, String name, Set stopWordsSet) {
++    this(matchVersion, name);
++    stopSet = stopWordsSet;
++  }
++
+

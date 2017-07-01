@@ -1,0 +1,8 @@
+Jcr-Server: Avoid xml parsing if request body is missing
+
+
+
+Description:
+Originally reported by Brian.
+
+

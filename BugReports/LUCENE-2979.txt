@@ -1,0 +1,10 @@
+Simplify configuration API of contrib Query Parser
+
+
+
+Description:
+The current configuration API is very complicated and inherit the concept used by Attribute API to store token information in token streams. However, the requirements for both (QP config and token stream) are not the same, so they shouldn't be using the same thing.
+
+I propose to simplify QP config and make it less scary for people intending to use contrib QP. The task is not difficult, it will just require a lot of code change and figure out the best way to do it. That's why it's a good candidate for a GSoC project.
+
+I would like to hear good proposals about how to make the API more friendly and less scaring :)

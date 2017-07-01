@@ -1,0 +1,46 @@
+Introduce QValueConstraint and change return type of QPropertyDefinition.getValueConstraints()
+
+
+
+Description:
+public interface QValueConstraint {
++
++    /**
++     * Empty array of <code>QValueConstraint</code>.
++     */
++    public static final QValueConstraint[] EMPTY_ARRAY = new QValueConstraint[0];
++
++    /**
++     * Check if the specified value matches this constraint.
++     *
++     * @param value The value to be tested.
++     * @throws ConstraintViolationException If the specified value is
++     * <code>null</code> or does not matches the constraint.
++     * @throws RepositoryException If another error occurs.
++     */
++    void check(QValue value) throws ConstraintViolationException, RepositoryException;
++
++    /**
++     * For constraints that are not namespace prefix mapping sensitive this
++     * method returns the same defined in
++     * <code>{@link PropertyDefinition#getValueConstraints()}</code>.
++     * <p/>
++     * Those that are namespace prefix mapping sensitive (e.g.
++     * <code>NameConstraint</code>, <code>PathConstraint</code> and
++     * <code>ReferenceConstraint</code>) return an expanded string.
++     *
++     * @return the expanded definition String
++     */
++    String getExpandedDefinition();
++
++}
+
+
++++ jackrabbit-spi/src/main/java/org/apache/jackrabbit/spi/QPropertyDefinition.java	(working copy)
+@@ -45,7 +45,7 @@
+      *
+      * @return the array of value constraints.
+      */
+-    public String[] getValueConstraints();
++    public QValueConstraint[] getValueConstraints();
+

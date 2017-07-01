@@ -1,0 +1,61 @@
+OutOfMemoryError when re-indexing the repository
+
+
+
+Description:
+[ERROR] 20060825 17:06:40
+(org.apache.jackrabbit.core.observation.ObservationManagerFactory) -
+Synchronous EventConsumer threw exception. java.lang.OutOfMemoryError
+
+when we try to re-index a repository, the repository is quite big (more then 4 Gb of disk usage) and sometimes it stores 40Mb size documents.
+
+As attach I put all the last logs we registered, with the full stack traces.
+
+Related to this whe have also errors with Lucene:
+
+[DEBUG] 20060803 08:24:01 (org.apache.jackrabbit.core.query.LazyReader)
+- Dump: 
+java.io.IOException: Invalid header signature; read 8656037701166316554,
+expected -2226271756974174256
+        at org.apache.jackrabbit.core.query.MsWordTextFilter
+
+and then this ones:
+
+[DEBUG] 20060803 08:37:17 (org.apache.jackrabbit.core.ItemManager) -
+removing item 8637bf5f-4689-4e75-888f-b7b89bef40c8 from cache
+[ WARN] 20060803 08:40:13 (org.apache.jackrabbit.core.RepositoryImpl) -
+Existing lock file at C:\Wave\Repository\.lock deteteced. Repository was
+not shut down properly.
+[ERROR] 20060803 09:33:14
+(org.apache.jackrabbit.core.observation.ObservationManagerFactory) -
+Synchronous EventConsumer threw exception.
+java.lang.NullPointerException: null values not allowed
+
+this is our repository.xml configuration for indexing
+
+<SearchIndex
+class="org.apache.jackrabbit.core.query.lucene.SearchIndex">
+        <param name="path" value="${wsp.home}/index"/>
+        <param name="textFilterClasses"
+value="org.apache.jackrabbit.core.query.lucene.TextPlainTextFilter,
+org.apache.jackrabbit.core.query.MsExcelTextFilter,
+org.apache.jackrabbit.core.query.MsPowerPointTextFilter, 
+org.apache.jackrabbit.core.query.MsWordTextFilter,
+org.apache.jackrabbit.core.query.PdfTextFilter,
+org.apache.jackrabbit.core.query.HTMLTextFilter,
+org.apache.jackrabbit.core.query.XMLTextFilter,
+org.apache.jackrabbit.core.query.RTFTextFilter,
+                        org.apache.jackrabbit.core.query.OpenOfficeTextFilter"/>
+        <param name="useCompoundFile" value="true"/>
+        <param name="minMergeDocs" value="100"/>
+        <param name="volatileIdleTime" value="3"/>
+        <param name="maxMergeDocs" value="100000"/>
+        <param name="mergeFactor" value="10"/>
+        <param name="bufferSize" value="10"/>
+        <param name="cacheSize" value="1000"/>
+        <param name="forceConsistencyCheck" value="false"/>
+        <param name="autoRepair" value="true"/>
+                <param name="respectDocumentOrder" value="false"/>
+        <param name="analyzer"
+value="org.apache.lucene.analysis.standard.StandardAnalyzer"/>
+</SearchIndex>

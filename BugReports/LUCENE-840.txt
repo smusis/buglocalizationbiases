@@ -1,0 +1,12 @@
+contrib/benchmark unit tests
+
+
+
+Description:
+The need came up in this thread: 
+http://www.mail-archive.com/java-dev@lucene.apache.org/msg09260.html
+
+: We might want to start thinking about Unit Tests...  :-)  Seems kind
+: of weird to have tests for tests, but this is becoming sufficiently
+: complex that it should have some tests.
+

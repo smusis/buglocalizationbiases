@@ -1,0 +1,11 @@
+Inconsistencies if "everyone" Group is created by User Management
+
+
+
+Description:
+currently the 'everyone' principal used to define ACEs that apply for all regular users in the repository is hardcoded in the
+principal management. this leads to inconsistencies if a group (or user) is created within the user management that has a principal 
+name 'everyone'.
+
+
+

@@ -1,0 +1,11 @@
+ResidualProperties Converter uses wrong AtomicType Converter on update
+
+
+
+Description:
+When writing back data, the ResidualPropertiesCollectionConverterImpl.internalSetProperties method looks at the type of the Java object
+to find the atomic type converter instead of getting the converter according to the collection descriptor.
+
+This may lead to NullPointerExceptions in case the concrete type is an extension (or implementation) of the declared type.
+
+I am currently working on a patch to attache to this bug.

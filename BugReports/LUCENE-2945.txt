@@ -1,0 +1,6 @@
+Surround Query doesn't properly handle equals/hashcode
+
+
+
+Description:
+In looking at using the surround queries with Solr, I am hitting issues caused by collisions due to equals/hashcode not being implemented on the anonymous inner classes that are created by things like DistanceQuery (branch 3.x, near line 76)

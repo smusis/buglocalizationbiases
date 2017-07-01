@@ -1,0 +1,8 @@
+Change contrib/spatial to use trie's NumericUtils, and remove NumberUtils
+
+
+
+Description:
+Currently spatial contrib includes a copy of NumberUtils from solr (otherwise it would depend on solr)
+
+Once LUCENE-1496 is sorted out, this copy should be removed.

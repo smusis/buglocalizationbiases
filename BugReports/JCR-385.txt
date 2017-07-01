@@ -1,0 +1,6 @@
+ClassCastExeption when executing union queries
+
+
+
+Description:
+The XPathQueryBuilder throws a ClassCastException on line 322 in release 0.9 when executing syntactically valid union queries. An example query would be "//element(*, nt:file) or //element(*, mix:lockable)". It appears that in the invocation of the visit method the SimpleNode id indicates a type of JJTROOTDESCENDANTS at a certain point but the data is actually an OrQueryNode and hence the cast to a PathQueryNode fails.

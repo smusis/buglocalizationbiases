@@ -1,0 +1,12 @@
+Update commons-io dependency from versiom 1.4 to 2.0.1 
+
+
+
+Description:
+Jackrabbit may be used as JackRabbit-JCA. In many application servers we need to change the classloading policy to "global" or "flat". These classloading policies result in many conflicts between versions of own server implementation or version of applications. It would be diminished if Jackrabbit dependences are keep "up-to-date".
+
+<dependency>
+	<groupId>commons-io</groupId>
+	<artifactId>commons-io</artifactId>
+	<version>2.0.1</version>
+</dependency>

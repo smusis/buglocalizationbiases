@@ -1,0 +1,7 @@
+cache should not generate stale responses to requests explicitly requesting first-hand or fresh ones
+
+
+
+Description:
+The current implementation will serve a stale response in the case that it has a stale cache entry but revalidation with the origin fails. However, the RFC says we SHOULD NOT do this if the client explicitly requested a first-hand or fresh response (via no-cache, max-age, max-stale, or min-fresh).
+

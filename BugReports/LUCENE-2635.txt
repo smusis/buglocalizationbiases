@@ -1,0 +1,43 @@
+BQ provides an explanation on a non-match
+
+
+
+Description:
+Plug in seed -6336594106867842617L into TestExplanations then run TestSimpleExplanationsOfNonMatches and you'll hit this:
+{noformat}
+    [junit] Testsuite: org.apache.lucene.search.TestSimpleExplanationsOfNonMatches
+    [junit] Testcase: testBQ2(org.apache.lucene.search.TestSimpleExplanationsOfNonMatches):	FAILED
+    [junit] Explanation of [[+yy +w3]] for #0 doesn't indicate non-match: 0.08778467 = (MATCH) product of:
+    [junit]   0.17556934 = (MATCH) sum of:
+    [junit]     0.17556934 = (MATCH) weight(field:w3 in 0), product of:
+    [junit]       0.5165708 = queryWeight(field:w3), product of:
+    [junit]         0.7768564 = idf(docFreq=4, maxDocs=4)
+    [junit]         0.6649502 = queryNorm
+    [junit]       0.33987468 = (MATCH) fieldWeight(field:w3 in 0), product of:
+    [junit]         1.0 = tf(termFreq(field:w3)=1)
+    [junit]         0.7768564 = idf(docFreq=4, maxDocs=4)
+    [junit]         0.4375 = fieldNorm(field=field, doc=0)
+    [junit]   0.5 = coord(1/2)
+    [junit]  expected:<0.0> but was:<0.08778467>
+    [junit] junit.framework.AssertionFailedError: Explanation of [[+yy +w3]] for #0 doesn't indicate non-match: 0.08778467 = (MATCH) product of:
+    [junit]   0.17556934 = (MATCH) sum of:
+    [junit]     0.17556934 = (MATCH) weight(field:w3 in 0), product of:
+    [junit]       0.5165708 = queryWeight(field:w3), product of:
+    [junit]         0.7768564 = idf(docFreq=4, maxDocs=4)
+    [junit]         0.6649502 = queryNorm
+    [junit]       0.33987468 = (MATCH) fieldWeight(field:w3 in 0), product of:
+    [junit]         1.0 = tf(termFreq(field:w3)=1)
+    [junit]         0.7768564 = idf(docFreq=4, maxDocs=4)
+    [junit]         0.4375 = fieldNorm(field=field, doc=0)
+    [junit]   0.5 = coord(1/2)
+    [junit]  expected:<0.0> but was:<0.08778467>
+    [junit] 	at org.apache.lucene.search.CheckHits.checkNoMatchExplanations(CheckHits.java:60)
+    [junit] 	at org.apache.lucene.search.TestSimpleExplanationsOfNonMatches.qtest(TestSimpleExplanationsOfNonMatches.java:36)
+    [junit] 	at org.apache.lucene.search.TestExplanations.qtest(TestExplanations.java:101)
+    [junit] 	at org.apache.lucene.search.TestSimpleExplanations.testBQ2(TestSimpleExplanations.java:235)
+    [junit] 	at org.apache.lucene.util.LuceneTestCase.runBare(LuceneTestCase.java:397)
+    [junit] 	at org.apache.lucene.util.LuceneTestCase.run(LuceneTestCase.java:389)
+{noformat}
+
+The bug is real -- BQ's explain method fails to properly enforce required clauses when the sub-scorer is null.  Thank you random testing!
+

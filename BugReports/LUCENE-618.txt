@@ -1,0 +1,16 @@
+GData - Server wrong commit does not build
+
+
+
+Description:
+The last GData - Server commit  does not build due to a wrong commit.
+Yonik did not commit all the files in the diff file. There are several sources and packages missing.
+  
+The diff - file with the date of 26.06.06 should be applied.
+--> http://issues.apache.org/jira/browse/LUCENE-598
+26.06.06.diff (644 kb)
+
+could any of the lucene committers apply this patch. Yonik is on the way to Dublin.
+
+Thanks Simon
+

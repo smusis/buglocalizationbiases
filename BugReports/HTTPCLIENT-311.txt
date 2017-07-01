@@ -1,0 +1,8 @@
+getScheme() and getPort() return wrong defaults for HttpsURL
+
+
+
+Description:
+getScheme(), if called on an instance of HttpsURL, wrongly returns http instead
+of https. That's because dynamic data binding doesn't work for final static
+fields (see DEFAULT_SCHEME).

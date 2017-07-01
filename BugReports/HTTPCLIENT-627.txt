@@ -1,0 +1,10 @@
+overhaul connection manager and associated connection interface
+
+
+
+Description:
+MultiThreadedHttpConnectionManager/HttpHostConnection needs to be overhauled to provide a layer on top of OperatedClientConnection.
+Preliminary working names: ThreadSafeClientConnManager/ManagedClientConnection
+
+This implies some work on former HttpMethodDirector and HttpClient to verify completeness of the new connection management API.
+

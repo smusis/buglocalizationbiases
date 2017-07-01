@@ -1,0 +1,13 @@
+Make TokenStream Reuse Mandatory for Analyzers
+
+
+
+Description:
+In LUCENE-2309 it became clear that we'd benefit a lot from Analyzer having to return reusable TokenStreams.  This is a big chunk of work, but its time to bite the bullet.
+
+I plan to attack this in the following way:
+
+- Collapse the logic of ReusableAnalyzerBase into Analyzer
+- Add a ReuseStrategy abstraction to Analyzer which controls whether the TokenStreamComponents are reused globally (as they are today) or per-field.
+- Convert all Analyzers over to using TokenStreamComponents.  I've already seen that some of the TokenStreams created in tests need some work to be reusable (even if they aren't reused).
+- Remove Analyzer.reusableTokenStream and convert everything over to using .tokenStream (which will now be returning reusable TokenStreams).

@@ -1,0 +1,6 @@
+HttpClient 'ParamBeans' for easier configuration
+
+
+
+Description:
+As I did for a 'core' here I would like to contribute for 'client' part as few 'ParamBeans' for easier external configuration... Any comment or improvement is very welcome...

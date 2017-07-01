@@ -1,0 +1,18 @@
+Support lower and upper case functions in "order by" clause
+
+
+
+Description:
+The query languages should support lower- and upper-case functions within the "order by" clause.  This would provide case-insensitive ordering of query results.
+
+Example:  Find all "nt:base" nodes ordered by the "foo" property, but ignoring case
+
+In XPath:
+
+//element(*,nt:base) order by fn:lower-case(@foo)
+
+In SQL:
+
+SELECT * FROM nt:base ORDER BY lower(foo)
+
+

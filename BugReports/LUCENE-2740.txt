@@ -1,0 +1,9 @@
+PerFieldCodecWrapper causes crashes if not all per field codes have been used
+
+
+
+Description:
+If a PerFieldCodecWrapper is used an SegmentMerger tries to merge two segments where one segment only has a subset of the field PerFieldCodecWrapper defines SegmentMerger tries to open non-existing files since Codec#files(Directory, SegmentInfo, Set<String>) blindly copies the expected files into the given set. This also hits exceptions in CheckIndex and addIndexes(). 
+The reason for this is that PerFieldCodecWrapper simply iterates over the codecs it knows and adds all files without checking if they are present in the given Directory. We need to have some mechnanism that check if the "required" files for a codec are present and only add the files to the set if that field is really there.
+
+

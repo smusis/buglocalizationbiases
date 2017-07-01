@@ -1,0 +1,27 @@
+replacing an extended mixin with it's supertype is problematic
+
+
+
+Description:
+node.addMixin() / node.removeMixin() have some checks to avoid redundant mixin settings on a node and not only when the node is saved.
+
+eg: have 2 mixins: mix:A and mix:AA where mix:AA > mix:A and a node (N with mix:AA) on it.
+
+then, N.addMixin(mix:A)  has no effect, since it's regarded as redundant.  so you have to remove mix:AA first and then add mix:A.
+there is the first problem when applying mixin types programmatically, just be sure to remove them first before adding new ones.
+
+the 2nd problem occurs when mix:A has a mandatory property. then somehow when downgrading from mix:AA to mix:A, some information is lost, and a save call results in
+
+Unable to save node 'N': javax.jcr.nodetype.ConstraintViolationException: /test/A: mandatory property {}prop does not exist.
+you need to "touch" the property, otherwise it will not work.
+
+so only this works:
+
+N.removeMixin("mix:AA");
+N.addMixin("mix:A");
+N.setProperty("prop", N.getProperty("prop").getValue());
+session.save();
+
+
+
+

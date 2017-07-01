@@ -1,0 +1,12 @@
+Possible rare thread hazard in IW.commit
+
+
+
+Description:
+I was seeing a very rare intermittent failure in TestIndexWriter.testCommitThreadSafety.
+
+The issue happens if one thread calls commit while another is flushing, and is exacerbated at high flush rates (eg maxBufferedDocs=2).  The thread doing commit will first flush, and then it syncs the files.  However in between those two, if other threads manage to add enough docs and trigger another flush, a 2nd new segment can sneak into the SegmentInfos before we sync.
+
+This is normally harmless, in that it just means the commit includes a few more docs that had been added by other threads, so it's fine. But, it can mean that a committed segment references the still-open doc store files.  Our tests now catch this (I changed MockDirWrapper to throw an exception in this case), and so testCommitThreadSafety can fail with this exception.  If you hardwire the maxBufferedDocs to 2 it happens quite often.
+
+It's not clear this is really a problem in real apps vs just our anal MockDirWrapper but I think we should fix it...

@@ -1,0 +1,6 @@
+javacc ant task for contrib/misc precedence query parser
+
+
+
+Description:
+Add a javacc task in contrib/misc for the precedence query parser.

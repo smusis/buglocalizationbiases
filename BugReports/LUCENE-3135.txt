@@ -1,0 +1,10 @@
+backport suggest module to branch 3.x
+
+
+
+Description:
+It would be nice to develop a plan to expose the autosuggest functionality to Lucene users in 3.x
+
+There are some complications, such as seeing if we can backport the FST-based functionality,
+which might require a good bit of work. But I think this would be well-worth it.
+

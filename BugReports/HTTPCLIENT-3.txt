@@ -1,0 +1,9 @@
+Http Authentication with invalid credentials causes infinite loop
+
+
+
+Description:
+At HttpMethodBase(460), a break statement is executed only if
+log.isInfoEnabled(). The break statement needs to be moved outside of the if
+statement so that it breaks if realms already contains foo. Patch submitted on
+mailing list as per Apache site guidelines.

@@ -1,0 +1,26 @@
+Refactoring of the Persistence Managers
+
+
+
+Description:
+currently the persistence managers reside in:
+ org.apache.jackrabbit.core.state
+ org.apache.jackrabbit.core.state.db
+ org.apache.jackrabbit.core.state.mem
+ org.apache.jackrabbit.core.state.obj
+ org.apache.jackrabbit.core.state.xml
+ (org.apache.jackrabbit.core.state.util)
+
+there are also a lot of other classes that deal with states (eg:
+SharedItemStateManager) in the state package that do not relate to
+pms.
+
+i would like to move all persistencemanagers and pm related stuff to:
+
+ org.apache.jackrabbit.core.persistence
+
+I'd keep the current classes as deprecated subclasses within
+jackrabbit-core.jar until Jackrabbit 2.0. There may (?) be people who
+are extending the existing classes, so I'd avoid breaking binary
+compatibility there even though we've never promised to actually honor
+compatiblity within o.a.j.core.

@@ -1,0 +1,8 @@
+XML import using MacOS X WebDAV client does not work
+
+
+
+Description:
+when trying to import a xml file via a webdav mount this does not work.
+
+this is mainly because the client first tries to create a 0-sized file, which fails with the xml importer. after the file is created, it will lock it and put the xml body. a second problem might be the "dot-underscore" files mac tries to create. 

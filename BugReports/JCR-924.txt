@@ -1,0 +1,10 @@
+Use the Jackrabbit RMI extensions by default in jackrabbit-webapp
+
+
+
+Description:
+Using the Jackrabbit RMI extensions by default in jackrabbit-webapp
+
+Ref :  http://www.nabble.com/Custom-node-types-with-RMI-tf3728625.html
+
+

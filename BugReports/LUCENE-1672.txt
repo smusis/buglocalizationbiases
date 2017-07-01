@@ -1,0 +1,11 @@
+Deprecate all String/File ctors/opens in IndexReader/IndexWriter/IndexSearcher
+
+
+
+Description:
+During investigation of LUCENE-1658, I found out, that even LUCENE-1453 is not completely fixed.
+As 1658 deprecates all FSDirectory.getDirectory() static factories, we should not use them anymore. As the user is now free to choose the correct directory implementation using direct instantiation or using FSDir.open() he should no longer use all ctors/methods in IndexWriter/IndexReader/IndexSearcher & Co. that simply take path names as String or File and always instantiate the Directory himself.
+
+LUCENE-1453 currently works for the cached directory implementations from FSDir.getDirectory, but not with uncached, non refcounting FSDirs. Sometime reopen() closes the directory (as far as I see, when a SegmentReader changes to a MultiSegmentReader and/or deletes apply). This is hard to track. In Lucene 3.0 we then can remove the whole bunch of closeDirectory parameters/fields in these classes and simply do not care anymore about closing directories.
+
+To remove this closeDirectory parameter now (before 3.0) and also fix 1453 correctly, an additional idea would be to change these factories that take the File/String to return the IndexReader wrapped by a FilteredIndexReader, that keeps track on closing the underlying directory after close and reopen. This is simplier than passing this boolean between different DirectoryIndexReader instances. The small performance impact by wrapping with FilterIndexReader should not be so bad, because the method is deprecated and we can state, that it is better to user the factory method with Directory parameter.

@@ -1,0 +1,11 @@
+need tests to guarantee transparency of caching module on end-to-end headers
+
+
+
+Description:
+"A transparent proxy SHOULD NOT modify an end-to-end header unless the definition of that header requires or specifically allows that."
+
+http://www.w3.org/Protocols/rfc2616/rfc2616-sec13.html#sec13.5.2
+
+This is already true of our implementation, but we should have tests to preserve that behavior.
+

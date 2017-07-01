@@ -1,0 +1,13 @@
+Node merge method doesnt seems to recurse thru childs of the right source node
+
+
+
+Description:
+I checked the NodeImpl.merge(...)
+
+it seems the way it process the childs nodes is wrong
+as it calls the merge on the childs of the src node that come from the source workspace.
+plus in the case srcNode is null it would end on a NullPointerException as
+
+it does  NodeIterator ni = srcNode.getNodes(); in the second statment of the if condition
+

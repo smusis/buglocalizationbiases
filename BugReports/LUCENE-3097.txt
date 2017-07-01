@@ -1,0 +1,28 @@
+Post grouping faceting
+
+
+
+Description:
+This issues focuses on implementing post grouping faceting.
+* How to handle multivalued fields. What field value to show with the facet.
+* Where the facet counts should be based on
+** Facet counts can be based on the normal documents. Ungrouped counts. 
+** Facet counts can be based on the groups. Grouped counts.
+** Facet counts can be based on the combination of group value and facet value. Matrix counts.   
+
+And properly more implementation options.
+
+The first two methods are implemented in the SOLR-236 patch. For the first option it calculates a DocSet based on the individual documents from the query result. For the second option it calculates a DocSet for all the most relevant documents of a group. Once the DocSet is computed the FacetComponent and StatsComponent use one the DocSet to create facets and statistics.  
+
+This last one is a bit more complex. I think it is best explained with an example. Lets say we search on travel offers:
+|||hotel||departure_airport||duration||
+|Hotel a|AMS|5
+|Hotel a|DUS|10
+|Hotel b|AMS|5
+|Hotel b|AMS|10
+
+If we group by hotel and have a facet for airport. Most end users expect (according to my experience off course) the following airport facet:
+AMS: 2
+DUS: 1
+
+The above result can't be achieved by the first two methods. You either get counts AMS:3 and DUS:1 or 1 for both airports.

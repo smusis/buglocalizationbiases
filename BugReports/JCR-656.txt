@@ -1,0 +1,6 @@
+JCR-Server: Allow header misses colong (RootCollection, WorkspaceResourceImpl)
+
+
+
+Description:
+List of supported dav methods misses some colons.

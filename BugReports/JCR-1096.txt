@@ -1,0 +1,36 @@
+Problems with custom nodes in journal
+
+
+
+Description:
+I have an application that uses custom node types and I am having problems in a clustered configuration.
+
+Issue 1: the following definition in a nodetype is incorrectly read from the journal:
+  + * (nt:hierarchyNode) version
+
+The * is stored in the journal as _x002a_ since it should be a QName and it gets escaped.
+When read, the code ...core.nodetype.compact.CompactNodeTypeDefReader.doChildNodeDefinition does the following test:
+
+        if (currentTokenEquals('*')) {
+            ndi.setName(ItemDef.ANY_NAME); 
+        } else {
+            ndi.setName(toQName(currentToken));
+        }
+
+Since currentToken is _x002a_ and not * toQName(currentToken) is called but it fails.
+I changed the test to:
+        if (currentTokenEquals('*') || currentTokenEquals("_x002a_"))
+            ....
+and that fixes the problem.
+
+Issue 2: when storing a nodeType in the journal the superclass nt:base is not store, but when reading I get an error saying the node should be a subclass of nt:base.
+
+The code in...core.nodetype.compact.CompactNodeTypeDefWriter.writeSupertypes skips nt:base when writing the node.
+
+When reading the nodetype definition from the journal the following exception is thrown:
+
+Unable to deliver node type operation: [{http://namespace/app/repository/1.0}resource] all primary node types except nt:base itself must be (directly or indirectly) derived from nt:base
+
+probably because nt:base is not re-added to the nodetype definition
+
+ 

@@ -1,0 +1,8 @@
+A replacement for AsciiFoldingFilter that does a more thorough job of removing diacritical marks or non-spacing modifiers.
+
+
+
+Description:
+The ISOLatin1AccentFilter takes Unicode characters that have diacritical marks and replaces them with a version of that character with the diacritical mark removed.  For example Ã© becomes e.  However another equally valid way of representing an accented character in Unicode is to have the unaccented character followed by a non-spacing modifier character (like this:  Ã©  )    The ISOLatin1AccentFilter doesn't handle the accents in decomposed unicode characters at all.    Additionally there are some instances where a word will contain what looks like an accented character, that is actually considered to be a separate unaccented character  such as  Å?  but which to make searching easier you want to fold onto the latin1  lookalike  version   L  .   
+
+The UnicodeNormalizationFilter can filter out accents and diacritical marks whether they occur as composed characters or decomposed characters, it can also handle cases where as described above characters that look like they have diacritics (but don't) are to be folded onto the letter that they look like ( Å?  -> L )

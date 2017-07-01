@@ -1,0 +1,9 @@
+Incorporate GeoHash in contrib/spatial
+
+
+
+Description:
+Based on comments from Yonik and Ryan in SOLR-773 
+GeoHash provides the ability to store latitude / longitude values in a single field consistent hash field.
+Which elements the need to maintain 2 field caches for latitude / longitude fields, reducing the size of an index
+and the amount of memory needed for a spatial search.

@@ -1,0 +1,6 @@
+Default proxy set at the client level has no effect
+
+
+
+Description:
+Default proxy set at the client level has no effect, as client parameters are not correctly propagated to the HttpRoutePlanner

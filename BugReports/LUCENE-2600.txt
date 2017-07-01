@@ -1,0 +1,8 @@
+don't try to cache a composite reader's MultiBits deletedDocs
+
+
+
+Description:
+MultiFields.getDeletedDocs now builds up a MultiBits instance (so that one can check if a top-level docID is deleted), but it now stuffs it into a private cache on IndexReader.
+
+This is invalid when the composite reader is read/write, and can result in a MultiReader falsely claiming a doc was not deleted.

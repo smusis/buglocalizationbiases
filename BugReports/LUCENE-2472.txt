@@ -1,0 +1,8 @@
+The terms index divisor in IW should be set via IWC not via getReader
+
+
+
+Description:
+The getReader call gives a false sense of security... since if deletions have already been applied (and IW is pooling) the readers have already been loaded with a divisor of 1.
+
+Better to set the divisor up front in IWC.

@@ -1,0 +1,11 @@
+[PATCH] disable coord for generated BooleanQueries
+
+
+
+Description:
+Here's a patch that disables Similiarty.coord() in the scoring of most
+automatically generated boolean queries.  The coord() score factor is
+appropriate when clauses are independently specified by a user, but is usually
+not appropriate when clauses are generated automatically, e.g., by a fuzzy,
+wildcard or range query.  Matches on such automatically generated queries are
+currently penalized for not matching all terms.

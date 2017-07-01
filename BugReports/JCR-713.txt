@@ -1,0 +1,57 @@
+ConcurrentModificationException during registration of nodetypes
+
+
+
+Description:
+During the registration of a set of nodetypes this exception may be encountered:
+
+java.util.ConcurrentModificationException
+        at org.apache.commons.collections.map.AbstractReferenceMap$ReferenceEntrySetIterator.checkMod(AbstractReferenceMap.java:761)
+        at org.apache.commons.collections.map.AbstractReferenceMap$ReferenceEntrySetIterator.hasNext(AbstractReferenceMap.java:735)
+        at org.apache.jackrabbit.core.nodetype.NodeTypeRegistry.notifyRegistered(NodeTypeRegistry.java:1750)
+        at org.apache.jackrabbit.core.nodetype.NodeTypeRegistry.registerNodeTypes(NodeTypeRegistry.java:223)
+
+It seems that the copying of the listeners triggered this exception:
+
+    private void notifyRegistered(QName ntName) {
+        // copy listeners to array to avoid ConcurrentModificationException
+        NodeTypeRegistryListener[] la =
+                new NodeTypeRegistryListener[listeners.size()];
+        Iterator iter = listeners.values().iterator();
+        int cnt = 0;
+1750:   while (iter.hasNext()) {
+            la[cnt++] = (NodeTypeRegistryListener) iter.next();
+        }
+        for (int i = 0; i < la.length; i++) {
+            if (la[i] != null) {
+                la[i].nodeTypeRegistered(ntName);
+            }
+        }
+    }
+
+The methods "notifyReRegistered" and "notifyUnregistered" will probably suffer from the same problem.
+
+Reproduction of this exception may be tricky; it only occurred once in our application. It is probably a race condition: another thread might access the listeners during the copy. It may be helpful to use a debugger and set a breakpoint in the middle of the copy giving other threads the opportunity to access the listeners...
+
+We think that a possible solution is the following:
+
+    /**
+     * Notify the listeners that a node type <code>ntName</code> has been registered.
+     */
+    private void notifyRegistered(QName ntName) {
+        // copy listeners to array to avoid ConcurrentModificationException
+    	NodeTypeRegistryListener[] la;
+    	synchronized (listeners) {
+            la = (NodeTypeRegistryListener[]) listeners.values().toArray(new NodeTypeRegistryListener[listeners.size()]);
+		}
+
+        for (int i = 0; i < la.length; i++) {
+            if (la[i] != null) {
+                la[i].nodeTypeRegistered(ntName);
+            }
+        }
+    }
+
+
+
+

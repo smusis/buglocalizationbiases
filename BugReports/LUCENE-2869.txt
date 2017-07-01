@@ -1,0 +1,36 @@
+remove Query.getSimilarity()
+
+
+
+Description:
+Spinoff of LUCENE-2854.
+
+See LUCENE-2828 and LUCENE-2854 for reference.
+
+In general, the SimilarityDelegator was problematic with regards to back-compat, and if queries
+want to score differently, trying to runtime subclass Similarity only causes trouble.
+
+The reason we could not fix this in LUCENE-2854 is because:
+{noformat}
+Michael McCandless added a comment - 08/Jan/11 01:53 PM
+bq. Is it possible to remove this method Query.getSimilarity also? I don't understand why we need this method!
+
+I would love to! But I think that's for another day...
+
+I looked into this and got stuck with BoostingQuery, which rewrites to an anon 
+subclass of BQ overriding its getSimilarity in turn override its coord method. 
+Rather twisted... if we can do this differently I think we could remove Query.getSimilarity.
+{noformat}
+
+here is the method in question:
+
+{noformat}
+/** Expert: Returns the Similarity implementation to be used for this query.
+ * Subclasses may override this method to specify their own Similarity
+ * implementation, perhaps one that delegates through that of the Searcher.
+ * By default the Searcher's Similarity implementation is returned.*/
+public Similarity getSimilarity(IndexSearcher searcher) {
+  return searcher.getSimilarity();
+}
+{noformat}
+

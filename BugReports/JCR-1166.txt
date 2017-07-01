@@ -1,0 +1,16 @@
+JCR2SPI does not provide actual size on RangeIterator.getSize()
+
+
+
+Description:
+Currently, JCR2SPI always returns -1 on RangeIterator.getSize().
+
+This return value is legal (meaning "unknown"), but may cause clients to simply iterate through the whole list when what they really want is simply the count.
+
+Use case:
+
+"The use case is to count the number of members of a NT_FOLDER without having to open up the NT_FOLDER and count all the members (and I assume load them into memory) "
+
+To make this happen we probably need to move away from simple Iterators on the SPI level, and put quite some additional work into JCR2SPI.
+
+Feedback appreciated.

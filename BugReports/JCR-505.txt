@@ -1,0 +1,38 @@
+TCK: AbstractJCRTest fails if setUp/tearDown cannot remove children of test node
+
+
+
+Description:
+If the test node exists, the setUp and tearDown methods remove all its child nodes.  In some repositories these child nodes may be mandatory or protected, causing test setup/teardown to fail.
+
+Proposal: tolerate exceptions thrown in removing a child node in test setup/teardown.
+
+--- ../AbstractJCRTest.java     (revision 422074)
++++ ../AbstractJCRTest.java     (working copy)
+@@ -344,7 +344,11 @@
+                 // clean test root
+                 testRootNode = root.getNode(testPath);
+                 for (NodeIterator children = testRootNode.getNodes(); children.hasNext();) {
+-                    children.nextNode().remove();
++                    try {
++                      children.nextNode().remove();
++                    } catch (RepositoryException e) {
++                      // consume
++                    }
+                 }
+             } else {
+                 // create nodes to testPath
+@@ -375,7 +379,11 @@
+                         // clean test root
+                         testRootNode = root.getNode(testPath);
+                         for (NodeIterator children = testRootNode.getNodes(); children.hasNext();) {
+-                            children.nextNode().remove();
++                            try {
++                              children.nextNode().remove();
++                            } catch (RepositoryException e) {
++                              // consume
++                            }
+                         }
+                         root.save();
+                     }
+

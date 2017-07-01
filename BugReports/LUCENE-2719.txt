@@ -1,0 +1,11 @@
+Re-add SorterTemplate and use it to provide fast ArraySorting and replace BytesRefHash sorting
+
+
+
+Description:
+This patch adds back an optimized and rewritten SorterTemplate back to Lucene (removed after release of 3.0). It is of use for several components:
+
+- Automaton: Automaton needs to sort States and other things. Using Arrays.sort() is slow, because it clones internally to ensure stable search. This component is much faster. This patch adds Arrays.sort() replacements in ArrayUtil that work with natural order or using a Comparator<?>. You can choose between quickSort and mergeSort.
+- BytesRefHash uses another QuickSort algorithm without insertionSort for very short ord arrays. This class uses SorterTemplate to provide the same with insertionSort fallback in a very elegant way. Ideally this class can be used everywhere, where the sort algorithm needs to be separated from the underlying data and you can implement a swap() and compare() function (that get slot numbers instead of real values). This also applies to Solr (Yonik?).
+
+SorterTemplate provides quickSort and mergeSort algorithms. Internally for short arrays, it automatically chooses insertionSort (like JDK's Arrays). The quickSort algorith was copied modified from old BytesRefHash. This new class only shares MergeSort with the original CGLIB SorterTemplate, which is no longer maintained.

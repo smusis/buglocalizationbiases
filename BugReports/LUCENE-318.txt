@@ -1,0 +1,10 @@
+"System Properties" doc lists "lockDir" instead of "lockdir"
+
+
+
+Description:
+The "System Properties" documentation page states that the lock file directory
+can be set with the system property "org.apache.lucene.lockDir".  However, as
+implemented in org.apache.lucene.store.FSDirectory, line 56, the property name
+is actually "org.apache.lucene.lockdir" (lower case "d" in "lockdir"). 
+Recommend changing documentation to match code.

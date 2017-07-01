@@ -1,0 +1,21 @@
+Fix pom.xml in jackrabbit core (small fix, big return)
+
+
+
+Description:
+Change the following dependency in pom.xml to match what is really available at the maven repos:
+FROM:
+    <dependency>
+      <groupId>jsr170</groupId>
+      <artifactId>jcr</artifactId>
+      <version>1.0</version>
+    </dependency>
+
+
+TO:
+    <dependency>
+      <groupId>javax.jcr</groupId>
+      <artifactId>jcr</artifactId>
+      <version>1.0</version>
+    </dependency>
+

@@ -1,0 +1,33 @@
+"Index already present" exception when opening a restored repository
+
+
+
+Description:
+I have created a new repository, added one node, then copied all files while Jackrabbit is running.
+Then closed the repository, restored the backup, and tried to open the repository.
+Unfortunately, this resulted in the following exception:
+
+javax.jcr.RepositoryException: Index already present: Index already present: Index already present
+	at org.apache.jackrabbit.core.SearchManager.initializeQueryHandler(SearchManager.java:575)
+	at org.apache.jackrabbit.core.SearchManager.<init>(SearchManager.java:255)
+	at org.apache.jackrabbit.core.RepositoryImpl$WorkspaceInfo.getSearchManager(RepositoryImpl.java:1613)
+	at org.apache.jackrabbit.core.RepositoryImpl.initWorkspace(RepositoryImpl.java:606)
+
+The backup contains the following index file:
+workspaces/default/index/redo.log
+There are no other files or directories or files in that directory (also no _n directories). The content of redo.log is:
+
+-1 STR
+-1 ADD cafebabe-cafe-babe-cafe-babecafebabe
+-1 COM
+0 STR
+0 DEL cafebabe-cafe-babe-cafe-babecafebabe
+0 ADD fa87759b-f9fe-4ba8-986c-d1914ffce3de
+0 ADD eda04b36-9c21-4712-bedf-206c36f0e3d2
+0 ADD ae917cca-a0bb-4ac0-a16d-805aac6c7b10
+0 ADD cafebabe-cafe-babe-cafe-babecafebabe
+0 COM
+1 STR
+1 ADD 0121f271-bbe7-4f71-a793-5f4380f3c487
+1 COM
+

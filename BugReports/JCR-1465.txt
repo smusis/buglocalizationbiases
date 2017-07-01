@@ -1,0 +1,6 @@
+Configurable Similarity
+
+
+
+Description:
+The similarity implementation for indexing and searching should be configurable.

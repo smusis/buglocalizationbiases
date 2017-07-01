@@ -1,0 +1,7 @@
+allow unsetting of DEFAULT_PROXY and FORCED_ROUTE parameters in the client stack
+
+
+
+Description:
+Since we don't want to delay client alpha3 until HTTPCORE-139 is solved in beta2, we need a parameter specific solution for unsetting these client parameters on the request level.
+

@@ -1,0 +1,6 @@
+.toString on empty MultiPhraseQuery hits NPE
+
+
+
+Description:
+Ross Woolf hit this on java-user thread "MultiPhraseQuery.toString() throws null pointer exception".  It's still present on trunk...

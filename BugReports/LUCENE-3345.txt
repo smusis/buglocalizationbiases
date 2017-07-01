@@ -1,0 +1,6 @@
+docvalues FNFE
+
+
+
+Description:
+I created a test for LUCENE-3335, and it found an unrelated bug in docvalues.

@@ -1,0 +1,13 @@
+Align the code base with checkstyle
+
+
+
+Description:
+The style use in HttpClient is still quite inconsistant.  checkstyle should be
+used to align the code base to a similar style.
+
+The checkstyle report can be found at:
+http://jakarta.apache.org/commons/httpclient/checkstyle-report.html
+
+And can be generated with:
+maven checkstyle:generate-report

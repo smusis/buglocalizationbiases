@@ -1,0 +1,6 @@
+[API DOC] Authentication guide update: alternate authentication
+
+
+
+Description:
+Add a section on alternate authentication.

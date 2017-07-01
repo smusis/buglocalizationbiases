@@ -1,0 +1,19 @@
+multilingual analyzer based on icu
+
+
+
+Description:
+The standard analyzer in lucene is not exactly unicode-friendly with regards to breaking text into words, especially with respect to non-alphabetic scripts.  This is because it is unaware of unicode bounds properties.
+
+I actually couldn't figure out how the Thai analyzer could possibly be working until i looked at the jflex rules and saw that codepoint range for most of the Thai block was added to the alphanum specification. defining the exact codepoint ranges like this for every language could help with the problem but you'd basically be reimplementing the bounds properties already stated in the unicode standard. 
+
+in general it looks like this kind of behavior is bad in lucene for even latin, for instance, the analyzer will break words around accent marks in decomposed form. While most latin letter + accent combinations have composed forms in unicode, some do not. (this is also an issue for asciifoldingfilter i suppose). 
+
+I've got a partially tested standardanalyzer that uses icu Rule-based BreakIterator instead of jflex. Using this method you can define word boundaries according to the unicode bounds properties. After getting it into some good shape i'd be happy to contribute it for contrib but I wonder if theres a better solution so that out of box lucene will be more friendly to non-ASCII text. Unfortunately it seems jflex does not support use of these properties such as [\p{Word_Break = Extend}] so this is probably the major barrier.
+
+Thanks,
+Robert
+
+
+
+

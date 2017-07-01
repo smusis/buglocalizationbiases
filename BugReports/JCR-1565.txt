@@ -1,0 +1,9 @@
+JSR 283 lifecycle management
+
+
+
+Description:
+JSR 283 specifies a simple lifecycle management mechanism for nodes, and as the reference implementation we should implement that feature. We also need to implement the related TCK tests.
+
+This feature introduces a few new API methods, but during Jackrabbit 1.x we can just introduce them as custom jsr-283 API extensions.
+

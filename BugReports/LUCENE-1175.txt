@@ -1,0 +1,6 @@
+occasional MergeException while indexing
+
+
+
+Description:
+TestStressIndexing2.testMultiConfig occasionally hits merge exceptions

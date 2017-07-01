@@ -1,0 +1,6 @@
+PersistenceManager sanity check
+
+
+
+Description:
+Library that provides a framework for testing the repository consistency and repairing it if necessary.

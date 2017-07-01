@@ -1,0 +1,6 @@
+contrib.ssl.HostConfigurationWithHostFactory
+
+
+
+Description:
+I'd like to contribute an example specialized HostConfiguration, to replace the one I contributed in HTTPCLIENT-634.

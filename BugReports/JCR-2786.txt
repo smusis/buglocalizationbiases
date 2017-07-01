@@ -1,0 +1,16 @@
+Cluster sync not always done when calling session.refresh(..)
+
+
+
+Description:
+Session.refresh(..) is supposed to synchronize cluster changes, but this doesn't always happen, specially if the syncDelay is low. The reason is a wrong assumption in ClusterNode.sync: The code there to avoid duplicate sync calls doesn't always work as expected. The following algorithm is used:
+
+        int count = syncCount;
+        syncLock.acquire();
+        if (count == syncCount) {
+            journalSync();
+            syncCount++;
+        }
+        syncLock.release();
+
+The problem is that the background thread might be at the line "syncCount++" when Session.refresh(..) is called, so that the main thread believes journalSync was already called and thus doesn't call it.

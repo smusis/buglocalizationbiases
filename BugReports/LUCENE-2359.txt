@@ -1,0 +1,24 @@
+CartesianPolyFilterBuilder doesn't handle edge case around the 180 meridian
+
+
+
+Description:
+Test case:  
+Points all around the globe, plus two points at 0, 179.9 and 0,-179.9 (on each side of the meridian).  Then, do a Cartesian Tier filter on a point right near those two.  It will return all the points when it should just return those two.
+
+The flawed logic is in the else clause below:
+{code}
+if (longX2 != 0.0) {
+		//We are around the prime meridian
+		if (longX == 0.0) {
+			longX = longX2;
+			longY = 0.0;
+        	shape = getShapeLoop(shape,ctp,latX,longX,latY,longY);
+		} else {//we are around the 180th longitude
+			longX = longX2;
+			longY = -180.0;
+			shape = getShapeLoop(shape,ctp,latY,longY,latX,longX);
+	}
+{code}
+
+Basically, the Y and X values are transposed.  This currently says go from longY (-180) all the way around  to longX which is the lower left longitude of the box formed.  Instead, it should go from the lower left long to -180.

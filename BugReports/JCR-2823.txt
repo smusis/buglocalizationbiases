@@ -1,0 +1,6 @@
+Replace TrackingInpuStream with Commons IO
+
+
+
+Description:
+The TrackingInputStream class in jackrabbit-core implements essentially the same functionality as the Commons IO class CountingInputStream.

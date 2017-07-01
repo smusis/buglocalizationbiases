@@ -1,0 +1,7 @@
+Create resource sensitive cache for item states
+
+
+
+Description:
+there is currently a lru-caching strategy for the itemstates in the shared ism, with a hardcoded limit of 1000 entries. the problem is that the size of the states is not respected in the caching strategy; this poses a problem, if the
+states are large (i.e. large values in property states, or large number of childnode entries).

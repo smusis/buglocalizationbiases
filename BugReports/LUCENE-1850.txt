@@ -1,0 +1,8 @@
+Update overview example code
+
+
+
+Description:
+See http://lucene.apache.org/java/2_4_1/api/core/overview-summary.html - need to update for non-deprecated best-practices/recommended API usage.
+
+Also, double-check that the demo app works as documented.

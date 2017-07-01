@@ -1,0 +1,54 @@
+Several test cases fail when declaring nt:base / nt:hierarchy node types as 'abstract' 
+
+
+
+Description:
+JSR283 introduces a new node type attribute 'abstract' and defines nt:base and nt:hierarchyNode as such.
+when changing those nodetypes, the following test cases fail:
+
+Failed tests: 
+  testDefinedAndLegalType(org.apache.jackrabbit.test.api.nodetype.CanAddChildNodeCallWithNodeTypeTest)
+  testResidualAndLegalType(org.apache.jackrabbit.test.api.nodetype.CanAddChildNodeCallWithNodeTypeTest)
+
+Tests in error: 
+  testAddNodeConstraintViolationExceptionUndefinedNodeType(org.apache.jackrabbit.test.api.NodeTest)
+  testRemoveMandatoryNode(org.apache.jackrabbit.test.api.NodeTest)
+  testCloneNodesConstraintViolationException(org.apache.jackrabbit.test.api.WorkspaceCloneTest)
+  testCopyNodesConstraintViolationException(org.apache.jackrabbit.test.api.WorkspaceCopyBetweenWorkspacesTest)
+  testCopyNodesConstraintViolationException(org.apache.jackrabbit.test.api.WorkspaceCopyTest)
+  testMoveNodesConstraintViolationException(org.apache.jackrabbit.test.api.WorkspaceMoveTest)
+  testNodeTypeConstraintViolationWorkspaceWithHandler(org.apache.jackrabbit.test.api.SerializationTest)
+  testNodeTypeConstraintViolationSessionWithHandler(org.apache.jackrabbit.test.api.SerializationTest)
+  testNodeTypeConstraintViolationWorkspace(org.apache.jackrabbit.test.api.SerializationTest)
+  testNodeTypeConstraintViolationSession(org.apache.jackrabbit.test.api.SerializationTest)
+  testJoinFilterPrimaryType(org.apache.jackrabbit.test.api.query.SQLJoinTest)
+  testElementTest(org.apache.jackrabbit.test.api.query.ElementTest)
+  testElementTestAnyNode(org.apache.jackrabbit.test.api.query.ElementTest)
+  testElementTestAnyNodeNtBase(org.apache.jackrabbit.test.api.query.ElementTest)
+  testElementTestAnyNodeSomeNT(org.apache.jackrabbit.test.api.query.ElementTest)
+  testElementTestNameTest(org.apache.jackrabbit.test.api.query.ElementTest)
+  testElementTestNameTestNtBase(org.apache.jackrabbit.test.api.query.ElementTest)
+  testElementTestNameTestSomeNT(org.apache.jackrabbit.test.api.query.ElementTest)
+  testElementTestNameTestSomeNTWithSNS(org.apache.jackrabbit.test.api.query.ElementTest)
+  testNodeType(org.apache.jackrabbit.test.api.observation.AddEventListenerTest)
+
+
+here's a stacktrace of a failing test:
+
+javax.jcr.nodetype.ConstraintViolationException: nt:hierarchyNode: is an abstract node type.
+        at org.apache.jackrabbit.core.NodeImpl.internalAddChildNode(NodeImpl.java:768)
+        at org.apache.jackrabbit.core.NodeImpl.internalAddNode(NodeImpl.java:737)
+        at org.apache.jackrabbit.core.NodeImpl.internalAddNode(NodeImpl.java:691)
+        at org.apache.jackrabbit.core.NodeImpl.addNode(NodeImpl.java:2147)
+        at org.apache.jackrabbit.test.api.SessionTest.testMoveItemExistsException(SessionTest.java:69)
+
+
+the failing tests are actually a backwards compatibility issue. nt:base and nt:hierarchyNode were
+non-abstract in JCR 1.0, i.e. 
+
+     node.addNode("foo", "nt:base");
+
+was perfectly legal.
+
+however, as of JCR 2.0, above statement fails. all above mentioned tests fail because they 
+create nodes of type nt:base or nt:hierarchyNode.

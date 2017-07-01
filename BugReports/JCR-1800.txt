@@ -1,0 +1,12 @@
+JCR2SPI: lockmgr isn't aware about external unlock (CacheBehavior.OBSERVATION)
+
+
+
+Description:
+issue occurring with CacheBehavior.OBSERVATION only:
+
+the lock manager expects the jcr:lockIsDeep property to be created upon successful lock.
+this however isn't the case since the time, we changed the Operation.persisted method to invalidate the affected states. consequently the mgr never started to listen on changes made to the jcr:lockIsDeep property and consequently wasn't aware of an external removal.
+
+suggested fix:
+force re-loading of the lock holding node.

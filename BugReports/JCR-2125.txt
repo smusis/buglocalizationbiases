@@ -1,0 +1,6 @@
+serialVersionUID for AuthorizableExistsException
+
+
+
+Description:
+

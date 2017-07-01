@@ -1,0 +1,11 @@
+TrecDocMaker skips over documents when "Date" is missing from documents
+
+
+
+Description:
+TrecDocMaker skips over Trec documents if they do not have a "Date" line. When such a document is encountered, the code may skip over several documents until the next tag that is searched for is found.
+The result is, instead of reading ~25M documents from the GOV2 collection, the code reads only ~23M (don't remember the actual numbers).
+
+The fix adds a terminatingTag to read() such that the code looks for prefix, but only until terminatingTag is found. Appropriate changes were made in getNextDocData().
+
+Patch to follow

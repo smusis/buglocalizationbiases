@@ -1,0 +1,8 @@
+Token type as BitSet: typeBits()
+
+
+
+Description:
+It is sometimes useful to have a more compact, easy to parse, type representation for Token than the current type() String.  This patch adds a BitSet onto Token, defaulting to null, with accessors for setting bit flags on a Token.  This is useful for communicating information about a token to TokenFilters further down the chain.  
+
+For example, in the WikipediaTokenizer, the possibility exists that a token could be both a category and bold (or many other variations), yet it is difficult to communicate this without adding in a lot of different Strings for type.  Unlike using the payload information (which could serve this purpose), the BitSet does not get added to the index (although one could easily convert it to a payload.)

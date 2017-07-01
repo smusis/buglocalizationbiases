@@ -1,0 +1,22 @@
+Make retrieveTerms(int docNum) public in MoreLikeThis
+
+
+
+Description:
+It would be useful if 
+{code}
+private PriorityQueue retrieveTerms(int docNum) throws IOException {
+{code}
+
+were public, since it is similar in use to 
+{code}
+public PriorityQueue retrieveTerms(Reader r) throws IOException {
+{code}
+
+It also seems useful to add 
+{code}
+public String [] retrieveInterestingTerms(int docNum) throws IOException{
+{code}
+to mirror the one that works on Reader.
+
+

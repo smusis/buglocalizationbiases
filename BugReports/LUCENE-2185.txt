@@ -1,0 +1,11 @@
+add @Deprecated annotations
+
+
+
+Description:
+as discussed on LUCENE-2084, I think we should be consistent about use of @Deprecated annotations if we are to use it.
+
+This patch adds the missing annotations... unfortunately i cannot commit this for some time, because my internet connection does not support heavy committing (it is difficult to even upload a large patch).
+
+So if someone wants to take it, have fun, otherwise in a week or so I will commit it if nobody objects.
+

@@ -1,0 +1,23 @@
+lazily create SegmentMergeInfo.docMap
+
+
+
+Description:
+Since creating the docMap is expensive, and it's only used during segment merging, not searching, defer creation until it is requested.
+
+SegmentMergeInfo is also used in MultiTermEnum, the term enumerator for a MultiReader.  TermEnum is used by queries such as PrefixQuery, RangeQuery, WildcardQuery, as well as RangeFilter, DateFilter, and sorting the first time (filling the FieldCache).
+
+Performance Results:
+  A simple single field index with 555,555 documents, and 1000 random deletions was queried 1000 times with a PrefixQuery matching a single document.
+
+Performance Before Patch:
+  indexing time = 121,656 ms
+  querying time = 58,812 ms
+
+Performance After Patch:
+  indexing time = 121,000 ms
+  querying time =         598 ms
+
+A 100 fold increase in query performance!
+
+All lucene unit tests pass.

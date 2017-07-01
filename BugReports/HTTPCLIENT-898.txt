@@ -1,0 +1,6 @@
+Improve multihome support
+
+
+
+Description:
+MultihomePlainSocketFactory is basically broken and should be deprecated. Multihome logic needs to be moved to the DefaultClientConnectionOperator

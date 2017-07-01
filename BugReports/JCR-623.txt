@@ -1,0 +1,6 @@
+Clustering
+
+
+
+Description:
+Implement basic clustering, i.e. make two or more repositories available at the same time,  allowing them to stay in sync with changes applied to only one of them.

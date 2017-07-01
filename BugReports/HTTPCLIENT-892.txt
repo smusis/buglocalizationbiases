@@ -1,0 +1,7 @@
+Links in Section "Example Code" are broken
+
+
+
+Description:
+Steps to Reproduce: Go to http://hc.apache.org/user-docs.html
+Click of one of the Links in the Section "Example Code"

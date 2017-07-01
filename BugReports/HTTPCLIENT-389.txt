@@ -1,0 +1,15 @@
+Provide Date Header Util Methods
+
+
+
+Description:
+Hello,
+
+It would be really nice to have util methods that help with setting date
+headers.  For instance, like the servlet spec's setDateHeader() method.  This
+allows for the client of HttpClient to not have to deal with formatting the date
+into the correct string.  There is a parseDate method that turns a String into a
+Date.  It would be nice to have the opposite method.
+
+Thanks!
+Seth

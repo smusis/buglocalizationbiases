@@ -1,0 +1,46 @@
+Inconsistent, order dependant behaviour in HttpMethodBase.getResponse*
+
+
+
+Description:
+`getReponseBodyAsString` is storing the body  and may therefore provide a valid result if the code is requesting the body as stream afterwards. If you switch the order and first call getResponseBodyAsStream and afterwards try to `getReponseBodyAsString`, the result will be `null`.
+
+I wrote a unittest which hopefully describes the IMHO confusing behaviour:
+
+    public void testHttpClientBodyVsStream() throws HttpException, IOException {
+        final HttpClient httpClient = new HttpClient();
+        final GetMethod getMethod = new GetMethod("http://www.heise.de/");
+        final String bodyFromStream;
+        final String body;
+        try {
+            httpClient.executeMethod(getMethod);
+            body = getMethod.getResponseBodyAsString();
+            bodyFromStream = IOUtils.toString(getMethod
+                    .getResponseBodyAsStream());
+        } finally {
+            getMethod.releaseConnection();
+        }
+        assertEquals(body, bodyFromStream);
+    }
+    
+    public void testHttpClientStreamVsBody() throws HttpException, IOException {
+        final HttpClient httpClient = new HttpClient();
+        final GetMethod getMethod = new GetMethod("http://www.heise.de/");
+        final String bodyFromStream;
+        final String body;
+        try {
+            httpClient.executeMethod(getMethod);
+            bodyFromStream = IOUtils.toString(getMethod
+                    .getResponseBodyAsStream());
+            body = getMethod.getResponseBodyAsString();
+        } finally {
+            getMethod.releaseConnection();
+        }
+        // ** This will fail **
+        assertEquals(body, bodyFromStream);
+    }
+
+Searching http://svn.apache.org/repos/asf/jakarta/commons/proper/httpclient/trunk/src/java/org/apache/commons/httpclient/HttpMethodBase.java I understand the outcome, but this is confusing.
+
+I would expect the body data to be gone after calling one of the getResponse*-Methods and calling them again not to return null but even to throw an IllegalStateException. I would not store the body at all in the method.
+

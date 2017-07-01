@@ -1,0 +1,6 @@
+need getResponseContentLength in HttpMethod
+
+
+
+Description:
+We need a way to find out the response content length in HttpMethod

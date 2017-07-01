@@ -1,0 +1,6 @@
+Use Iterable<? extends UrlEncodedFormEntity> instead of List<? extends UrlEncodedFormEntity> in URLEncodedUtils.format and UrlEncodedFormEntity
+
+
+
+Description:
+UrlEncodedFormEntity requires a List<? extends UrlEncodedFormEntity> to pass it to URLEncodedUtils.format. It would be nice to use Iterable<? extends UrlEncodedFormEntity> to be able to use other collections, e.g. a Set<? extends UrlEncodedFormEntity>

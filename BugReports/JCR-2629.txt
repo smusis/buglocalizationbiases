@@ -1,0 +1,15 @@
+LoginModuleConfig should allow to specify principalProvider-name in addition to the class
+
+
+
+Description:
+Gilles Metz reported this issue regarding login module configuration with Day's CRX based on Jackrabbit, which in
+previous versions allowed to specify multiple prinicpal providers of the same class but with different configurations.
+With JR 2.0 and 2.1 this is not supported as the pp class name is used as key in the registry and does not allow
+to specify a separate key/name.
+
+
+
+
+
+

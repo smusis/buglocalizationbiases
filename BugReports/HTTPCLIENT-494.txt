@@ -1,0 +1,15 @@
+Invalid redirects are not corrected
+
+
+
+Description:
+If a get is made to a page with a query argument containing a space, many web
+servers, notably including Tomcat 5 can generate a redirect in which the space
+in the query argument is not escaped correctly.  Most browsers including IE and
+Firefox compensate for this by quoting any included spaces in the redirect
+location.  Http client does not.  When this broken URL is presented to a
+subsequent server, the GET command is interprted incorrectly resulting (usually)
+in a 505.
+
+The fix is to replace spaces in redirect locations with +'s.  This doesn't
+entirely fix the problem but that is the job of the web server developers.

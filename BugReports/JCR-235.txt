@@ -1,0 +1,23 @@
+Cache jcr name to QName mappings
+
+
+
+Description:
+Currently jcr names are always parsed and resolved into QName instances. Introducing a cache would increase performance and also save memory because well known and often used jcr names would always return the same QName instance from cache.
+
+Testing with common read operations shows a performance improvement of about 25%.
+The test involved the following methods on Node interface:
+
+- getProperty()
+- getProperties()
+- getName()
+- getPath()
+- isLocked()
+- isNodeType()
+- getPrimaryNodeType()
+- hasNodes()
+- getNodes()
+
+Attached proposed implementation of a QNameResolver.
+
+Please comment.

@@ -1,0 +1,6 @@
+Automatic upgrade to 2.0
+
+
+
+Description:
+Jackrabbit 2.0 contains some changes that are not compatible with repositories created with earlier versions. It would be nice if Jackrabbit would automatically detect and upgrade repositories created with 1.x versions.

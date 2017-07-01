@@ -1,0 +1,6 @@
+Use only one scheduler for repository tasks
+
+
+
+Description:
+There are still a few Timer instances being used by Jackrabbit. It would be better if all tasks were scheduled by the central ScheduledExecutorService thread pool of the repository.

@@ -1,0 +1,9 @@
+Highlighter should support all MultiTermQuery subclasses without casts
+
+
+
+Description:
+In order to support MultiTermQuery subclasses the Highlighter component applies instanceof checks for concrete classes from the lucene core. This prevents classes like RegexQuery in contrib from being supported. Introducing dependencies on other contribs is not feasible just for being supported by the highlighter.
+
+While the instanceof checks and subsequent casts might hopefully go somehow away  in the future but for supporting more multterm queries I have a alternative approach using a fake IndexReader that uses a RewriteMethod to force the MTQ to pass the field name to the given reader without doing any real work. It is easier to explain once you see the patch - I will upload shortly.
+

@@ -1,0 +1,20 @@
+Missing class JNDIDatabaseJournal
+
+
+
+Description:
+We're dealing to set up a clustered repository and run into some issues and missing features stated to be fixed in the upcoming v1.4. But while scanning the sources of the v1.4-rc1, i still can't find the class
+
+  JNDIDatabaseJournal (org.apache.jackrabbit.core.journal.JNDIDatabaseJournal)
+
+as a silbing to the classes 
+
+  JNDIDatabaseFileSystem (org.apache.jackrabbit.core.fs.db.JNDIDatabaseFileSystem)
+
+and 
+
+  JNDIDatabasePersistenceManager (org.apache.jackrabbit.core.persistence.db.JNDIDatabasePersistenceManager)
+
+The missing one you'll need to configure all parts of a repository handeled in an abstract way by (e.g one common) JNDI database resource. From the shortness and simplicity of the source code of the other ones, i think adding this missing feature takes just about an hour.
+
+Thank you for support

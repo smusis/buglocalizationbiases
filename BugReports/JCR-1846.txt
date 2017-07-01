@@ -1,0 +1,189 @@
+Jackrabbit thread contention issue due to fat lock
+
+
+
+Description:
+Hello,
+
+We are running jackrabbit 1.4.5 using a persistent file data store within a weblogic container and encountering a variety of thread locking issues. To get around the problem, we are forced synchronize thread access to the JCR repository or reduce thread worker count to 1 which has a heavy performance impact on our application. I'm not exactly sure what the problem is and was wondering someone is looking into this issue and if there is a workaround/fix planned?
+
+<Oct 30, 2008 10:45:32 AM PDT> <Error> <WebLogicServer> <BEA-000337> <[STUCK] ExecuteThread: '5' for queue: 'weblogic.kernel.Default (self-tuning)' has been busy for "1,863" seconds working on the request "weblogic.work.j2ee.J2EEWorkManager$WorkWithListener@2117cc9", which is more than the configured time (StuckThreadMaxTime) of "1,800" seconds. Stack trace:
+Thread-94 "[STUCK] ExecuteThread: '5' for queue: 'weblogic.kernel.Default (self-tuning)'" <alive, in native, suspended, waiting, priority=1, DAEMON> {
+    -- Waiting for notification on: EDU.oswego.cs.dl.util.concurrent.WriterPreferenceReadWriteLock$WriterLock@152c384[fat lock]
+    java.lang.Object.wait(Object.java:???)
+    java.lang.Object.wait(Object.java:474)
+    EDU.oswego.cs.dl.util.concurrent.WriterPreferenceReadWriteLock$WriterLock.acquire(Unknown Source)
+    org.apache.jackrabbit.core.journal.AbstractJournal.lockAndSync(AbstractJournal.java:235)
+    org.apache.jackrabbit.core.journal.DefaultRecordProducer.append(DefaultRecordProducer.java:49)
+
+}
+
+>
+<Oct 30, 2008 10:45:32 AM PDT> <Error> <WebLogicServer> <BEA-000337> <[STUCK] ExecuteThread: '2' for queue: 'weblogic.kernel.Default (self-tuning)' has been busy for "1,916" seconds working on the request "weblogic.work.j2ee.J2EEWorkManager$WorkWithListener@227b6d4", which is more than the configured time (StuckThreadMaxTime) of "1,800" seconds. Stack trace:
+Thread-25 "[STUCK] ExecuteThread: '2' for queue: 'weblogic.kernel.Default (self-tuning)'" <alive, in native, suspended, waiting, priority=1, DAEMON> {
+    -- Waiting for notification on: EDU.oswego.cs.dl.util.concurrent.LinkedNode@42d58e0[fat lock]
+    java.lang.Object.wait(Object.java:???)
+    java.lang.Object.wait(Object.java:474)
+    EDU.oswego.cs.dl.util.concurrent.SynchronousChannel.put(Unknown Source)
+    EDU.oswego.cs.dl.util.concurrent.PooledExecutor$WaitWhenBlocked.blockedAction(Unknown Source)
+    EDU.oswego.cs.dl.util.concurrent.PooledExecutor.execute(Unknown Source)
+...
+    org.apache.jackrabbit.core.state.XAItemStateManager.update(XAItemStateManager.java:334)
+    org.apache.jackrabbit.core.state.LocalItemStateManager.update(LocalItemStateManager.java:307)
+    org.apache.jackrabbit.core.state.SessionItemStateManager.update(SessionItemStateManager.java:317)
+    org.apache.jackrabbit.core.ItemImpl.save(ItemImpl.java:1072)
+    ^-- Holding lock: org.apache.jackrabbit.core.query.lucene.VolatileIndex@3eb0f41[thin lock]
+    org.apache.jackrabbit.core.SessionImpl.save(SessionImpl.java:895)
+    org.apache.jackrabbit.jca.JCASessionHandle.save(JCASessionHandle.java:178)
+    com.qpass.inventory.ingestion.IngestionServiceImpl$1.doInJCR(IngestionServiceImpl.java:124)
+    com.qpass.inventory.model.JCRTemplate.execute(JCRTemplate.java:17)
+    com.qpass.inventory.ingestion.IngestionServiceImpl.ingestProduct(IngestionServiceImpl.java:93)
+    com.qpass.inventory.ingestion.bulk.AbstractBulkIngester.ingestProduct(AbstractBulkIngester.java:42)
+    com.qpass.inventory.ingestion.bulk.ZipFileBulkIngester.processFile(ZipFileBulkIngester.java:35)
+    com.qpass.inventory.ingestion.bulk.IngestionWorker.processFile(IngestionWorker.java:26)
+    com.qpass.inventory.ingestion.bulk.IngestionWorker$1.run(IngestionWorker.java:64)
+    org.springframework.scheduling.commonj.DelegatingWork.run(DelegatingWork.java:61)
+    weblogic.work.j2ee.J2EEWorkManager$WorkWithListener.run(J2EEWorkManager.java:245)
+    weblogic.work.ExecuteThread.execute(ExecuteThread.java:206)
+    weblogic.work.ExecuteThread.run(ExecuteThread.java:173)
+}
+
+>
+<Oct 30, 2008 10:45:32 AM PDT> <Error> <WebLogicServer> <BEA-000337> <[STUCK] ExecuteThread: '1' for queue: 'weblogic.kernel.Default (self-tuning)' has been busy for "1,891" seconds working on the request "weblogic.work.j2ee.J2EEWorkManager$WorkWithListener@2117c83", which is more than the configured time (StuckThreadMaxTime) of "1,800" seconds. Stack trace:
+Thread-24 "[STUCK] ExecuteThread: '1' for queue: 'weblogic.kernel.Default (self-tuning)'" <alive, in native, suspended, waiting, priority=1, DAEMON> {
+    -- Waiting for notification on: EDU.oswego.cs.dl.util.concurrent.WriterPreferenceReadWriteLock$WriterLock@152c384[fat lock]
+    java.lang.Object.wait(Object.java:???)
+    java.lang.Object.wait(Object.java:474)
+    EDU.oswego.cs.dl.util.concurrent.WriterPreferenceReadWriteLock$WriterLock.acquire(Unknown Source)
+    org.apache.jackrabbit.core.journal.AbstractJournal.lockAndSync(AbstractJournal.java:235)
+    org.apache.jackrabbit.core.journal.DefaultRecordProducer.append(DefaultRecordProducer.java:49)
+    org.apache.jackrabbit.core.cluster.ClusterNode$WorkspaceUpdateChannel.updateCreated(ClusterNode.java:556)
+...
+
+
+<Oct 30, 2008 11:21:30 AM PDT> <Warning> <netuix> <BEA-423420> <Redirect is executed in begin or refresh action. Redirect url is /console/console.portal?_nfpb=true&_pageLabel=HomePage1.>
+<Oct 30, 2008 11:44:32 AM PDT> <Error> <WebLogicServer> <BEA-000337> <[STUCK] ExecuteThread: '4' for queue: 'weblogic.kernel.Default (self-tuning)' has been busy for "1,803" seconds working on the request "Http Request: /inventory/rpc/searchService", which is more than the configured time (StuckThreadMaxTime) of "1,800" seconds. Stack trace:
+Thread-51 "[STUCK] ExecuteThread: '4' for queue: 'weblogic.kernel.Default (self-tuning)'" <alive, in native, suspended, waiting, priority=1, DAEMON> {
+    -- Waiting for notification on: java.lang.Object@1569e04[fat lock]
+    java.lang.Object.wait(Object.java:???)
+    java.lang.Object.wait(Object.java:474)
+    org.apache.jackrabbit.core.query.lucene.MultiIndex.getIndexReader(MultiIndex.java:694)
+    org.apache.jackrabbit.core.query.lucene.SearchIndex.getIndexReader(SearchIndex.java:825)
+    org.apache.jackrabbit.core.query.lucene.SearchIndex.executeQuery(SearchIndex.java:682)
+    org.apache.jackrabbit.core.query.lucene.QueryResultImpl.executeQuery(QueryResultImpl.java:242)
+    org.apache.jackrabbit.core.query.lucene.QueryResultImpl.getResults(QueryResultImpl.java:271)
+    org.apache.jackrabbit.core.query.lucene.QueryResultImpl.<init>(QueryResultImpl.java:177)
+    org.apache.jackrabbit.core.query.lucene.QueryImpl.execute(QueryImpl.java:105)
+    org.apache.jackrabbit.core.query.QueryImpl.execute(QueryImpl.java:174)
+    com.qpass.inventory.service.QueryProfiler.execute(QueryProfiler.java:20)
+    com.qpass.inventory.service.SearchServiceImpl$1.doInJCR(SearchServiceImpl.java:59)
+    com.qpass.inventory.model.JCRTemplate.execute(JCRTemplate.java:17)
+    com.qpass.inventory.service.SearchServiceImpl.doSearch(SearchServiceImpl.java:54)
+    com.qpass.inventory.ui.impl.SearchUIServiceImpl.search(SearchUIServiceImpl.java:48)
+    sun.reflect.NativeMethodAccessorImpl.invoke0(NativeMethodAccessorImpl.java:???)
+    sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:27)
+    sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:25)
+    java.lang.reflect.Method.invoke(Method.java:570)
+    org.springframework.aop.support.AopUtils.invokeJoinpointUsingReflection(AopUtils.java:309)
+    org.springframework.aop.framework.ReflectiveMethodInvocation.invokeJoinpoint(ReflectiveMethodInvocation.java:182)
+    org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:148)
+    org.acegisecurity.intercept.method.aopalliance.MethodSecurityInterceptor.invoke(MethodSecurityInterceptor.java:62)
+    org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:148)
+    org.springframework.aop.framework.JdkDynamicAopProxy.invoke(JdkDynamicAopProxy.java:151)
+    $Proxy74.search(Unknown Source)
+    sun.reflect.NativeMethodAccessorImpl.invoke0(NativeMethodAccessorImpl.java:???)
+    sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:27)
+    sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:25)
+    java.lang.reflect.Method.invoke(Method.java:570)
+    org.gwtwidgets.server.spring.GWTRPCServiceExporter.invokeMethodOnService(GWTRPCServiceExporter.java:157)
+    org.gwtwidgets.server.spring.GWTRPCServiceExporter.processCall(GWTRPCServiceExporter.java:295)
+    com.google.gwt.user.server.rpc.RemoteServiceServlet.doPost(RemoteServiceServlet.java:173)
+    org.gwtwidgets.server.spring.GWTRPCServiceExporter.handleRequest(GWTRPCServiceExporter.java:361)
+    com.qpass.base.ui.security.GWTServiceExporter.handleRequest(GWTServiceExporter.java:45)
+    org.springframework.web.servlet.mvc.HttpRequestHandlerAdapter.handle(HttpRequestHandlerAdapter.java:49)
+    org.springframework.web.servlet.DispatcherServlet.doDispatch(DispatcherServlet.java:831)
+    org.springframework.web.servlet.DispatcherServlet.doService(DispatcherServlet.java:781)
+    org.springframework.web.servlet.FrameworkServlet.processRequest(FrameworkServlet.java:567)
+    org.springframework.web.servlet.FrameworkServlet.doPost(FrameworkServlet.java:511)
+    javax.servlet.http.HttpServlet.service(HttpServlet.java:736)
+    javax.servlet.http.HttpServlet.service(HttpServlet.java:851)
+    weblogic.servlet.internal.StubSecurityHelper$ServletServiceAction.run(StubSecurityHelper.java:224)
+    weblogic.servlet.internal.StubSecurityHelper.invokeServlet(StubSecurityHelper.java:108)
+    weblogic.servlet.internal.ServletStubImpl.execute(ServletStubImpl.java:198)
+    weblogic.servlet.internal.TailFilter.doFilter(TailFilter.java:26)
+    weblogic.servlet.internal.FilterChainImpl.doFilter(FilterChainImpl.java:41)
+    org.acegisecurity.util.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:259)
+    org.acegisecurity.intercept.web.FilterSecurityInterceptor.invoke(FilterSecurityInterceptor.java:93)
+    org.acegisecurity.intercept.web.FilterSecurityInterceptor.doFilter(FilterSecurityInterceptor.java:71)
+    org.acegisecurity.util.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:259)
+    com.qpass.usersecurity.auth.UpdatePermissionsOnContextChangeFilter.doFilter(UpdatePermissionsOnContextChangeFilter.java:44)
+    org.acegisecurity.util.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:259)
+    org.acegisecurity.ui.AbstractProcessingFilter.doFilter(AbstractProcessingFilter.java:191)
+    org.acegisecurity.util.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:259)
+    org.acegisecurity.context.HttpSessionContextIntegrationFilter.doFilter(HttpSessionContextIntegrationFilter.java:195)
+    org.acegisecurity.util.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:259)
+    org.acegisecurity.util.FilterChainProxy.doFilter(FilterChainProxy.java:122)
+    org.springframework.web.filter.DelegatingFilterProxy.invokeDelegate(DelegatingFilterProxy.java:236)
+    org.springframework.web.filter.DelegatingFilterProxy.doFilter(DelegatingFilterProxy.java:154)
+    weblogic.servlet.internal.FilterChainImpl.doFilter(FilterChainImpl.java:41)
+    com.qpass.base.applicationcontext.RequestContextFilter.doFilter(RequestContextFilter.java:103)
+    org.springframework.web.filter.DelegatingFilterProxy.invokeDelegate(DelegatingFilterProxy.java:236)
+    org.springframework.web.filter.DelegatingFilterProxy.doFilter(DelegatingFilterProxy.java:154)
+    weblogic.servlet.internal.FilterChainImpl.doFilter(FilterChainImpl.java:41)
+    org.springframework.web.filter.CharacterEncodingFilter.doFilterInternal(CharacterEncodingFilter.java:90)
+    org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:61)
+    weblogic.servlet.internal.FilterChainImpl.doFilter(FilterChainImpl.java:41)
+    weblogic.servlet.internal.RequestEventsFilter.doFilter(RequestEventsFilter.java:24)
+    weblogic.servlet.internal.FilterChainImpl.doFilter(FilterChainImpl.java:41)
+    weblogic.servlet.internal.WebAppServletContext$ServletInvocationAction.run(WebAppServletContext.java:3214)
+    weblogic.security.acl.internal.AuthenticatedSubject.doAs(AuthenticatedSubject.java:308)
+    weblogic.security.service.SecurityManager.runAs(SecurityManager.java:117)
+    weblogic.servlet.internal.WebAppServletContext.securedExecute(WebAppServletContext.java:1946)
+    weblogic.servlet.internal.WebAppServletContext.execute(WebAppServletContext.java:1868)
+    weblogic.servlet.internal.ServletRequestImpl.run(ServletRequestImpl.java:1331)
+    weblogic.work.ExecuteThread.execute(ExecuteThread.java:206)
+    weblogic.work.ExecuteThread.run(ExecuteThread.java:173)
+}
+
+
+
+
+<Oct 2, 2008 2:09:36 PM PDT> <Error> <WebLogicServer> <BEA-000337> <[STUCK] ExecuteThread: '1' for queue: 'weblogic.kernel.Default (self-tuning)' has been busy for "696" seconds working on the request "weblogic.work.j2ee.J2EEWorkManager$WorkWithListener@863e564", which is more than the configured time (StuckThreadMaxTime) of "600" seconds. Stack trace:
+Thread-21 "[STUCK] ExecuteThread: '1' for queue: 'weblogic.kernel.Default (self-tuning)'" <alive, in native, suspended, priority=1, DAEMON> {
+    java.io.FileOutputStream.writeBytes(FileOutputStream.java:???)
+    java.io.FileOutputStream.write(FileOutputStream.java:260)
+    java.io.BufferedOutputStream.write(BufferedOutputStream.java:100)
+    ^-- Holding lock: java.io.BufferedOutputStream@39d70a5[thin lock]
+    org.apache.jackrabbit.core.persistence.util.FileSystemBLOBStore.put(FileSystemBLOBStore.java:88)
+    org.apache.jackrabbit.core.persistence.bundle.util.BundleBinding.writeState(BundleBinding.java:561)
+    org.apache.jackrabbit.core.persistence.bundle.util.BundleBinding.writeBundle(BundleBinding.java:245)
+    org.apache.jackrabbit.core.persistence.bundle.Oracle9PersistenceManager.storeBundle(Oracle9PersistenceManager.java:114)
+    ^-- Holding lock: org.apache.jackrabbit.core.persistence.bundle.Oracle9PersistenceManager@140f7b9[thin lock]
+    org.apache.jackrabbit.core.persistence.bundle.AbstractBundlePersistenceManager.putBundle(AbstractBundlePersistenceManager.java:703)
+    org.apache.jackrabbit.core.persistence.bundle.AbstractBundlePersistenceManager.store(AbstractBundlePersistenceManager.java:526)
+    ^-- Holding lock: org.apache.jackrabbit.core.persistence.bundle.Oracle9PersistenceManager@140f7b9[thin lock]
+    org.apache.jackrabbit.core.persistence.bundle.BundleDbPersistenceManager.store(BundleDbPersistenceManager.java:517)
+    ^-- Holding lock: org.apache.jackrabbit.core.persistence.bundle.Oracle9PersistenceManager@140f7b9[thin lock]
+    org.apache.jackrabbit.core.state.SharedItemStateManager$Update.end(SharedItemStateManager.java:699)
+    org.apache.jackrabbit.core.state.SharedItemStateManager.update(SharedItemStateManager.java:873)
+    org.apache.jackrabbit.core.state.LocalItemStateManager.update(LocalItemStateManager.java:334)
+    org.apache.jackrabbit.core.state.XAItemStateManager.update(XAItemStateManager.java:334)
+    org.apache.jackrabbit.core.state.LocalItemStateManager.update(LocalItemStateManager.java:307)
+    org.apache.jackrabbit.core.state.SessionItemStateManager.update(SessionItemStateManager.java:317)
+    org.apache.jackrabbit.core.ItemImpl.save(ItemImpl.java:1072)
+    ^-- Holding lock: org.apache.jackrabbit.core.XASessionImpl@1f2653b[thin lock]
+    org.apache.jackrabbit.core.SessionImpl.save(SessionImpl.java:895)
+    org.apache.jackrabbit.jca.JCASessionHandle.save(JCASessionHandle.java:178)
+    com.qpass.inventory.ingestion.IngestionServiceImpl$1.doInJCR(IngestionServiceImpl.java:140)
+    com.qpass.inventory.model.JCRTemplate.execute(JCRTemplate.java:17)
+    com.qpass.inventory.ingestion.IngestionServiceImpl.ingestProduct(IngestionServiceImpl.java:112)
+    ^-- Holding lock: java.lang.Object@849ca9e[fat lock]
+    com.qpass.inventory.ingestion.bulk.AbstractBulkIngester.ingestProduct(AbstractBulkIngester.java:42)
+    com.qpass.inventory.ingestion.bulk.ZipFileBulkIngester.processFile(ZipFileBulkIngester.java:35)
+    com.qpass.inventory.ingestion.bulk.IngestionWorker.processFile(IngestionWorker.java:26)
+    com.qpass.inventory.ingestion.bulk.IngestionWorker$1.run(IngestionWorker.java:64)
+    org.springframework.scheduling.commonj.DelegatingWork.run(DelegatingWork.java:61)
+    weblogic.work.j2ee.J2EEWorkManager$WorkWithListener.run(J2EEWorkManager.java:245)
+    weblogic.work.ExecuteThread.execute(ExecuteThread.java:206)
+    weblogic.work.ExecuteThread.run(ExecuteThread.java:173)
+

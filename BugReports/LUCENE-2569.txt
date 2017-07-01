@@ -1,0 +1,30 @@
+TestParallelTermEnum fails with Sep codec
+
+
+
+Description:
+reproduceable in the 'preflexfixes' branch (since we test all codecs there) with: ant test-core -Dtestcase=TestParallelTermEnum -Dtests.codec=Sep
+
+But I think there are probably more tests like this that have only been run with Standard and we might find more like this.
+I don't think this should block LUCENE-2554.
+
+{noformat}
+    [junit] Testsuite: org.apache.lucene.index.TestParallelTermEnum
+    [junit] Testcase: test1(org.apache.lucene.index.TestParallelTermEnum):      Caused an ERROR
+    [junit] read past EOF
+    [junit] java.io.IOException: read past EOF
+    [junit]     at org.apache.lucene.store.BufferedIndexInput.refill(BufferedIndexInput.java:154)
+    [junit]     at org.apache.lucene.store.BufferedIndexInput.readByte(BufferedIndexInput.java:39)
+    [junit]     at org.apache.lucene.store.DataInput.readVInt(DataInput.java:86)
+    [junit]     at org.apache.lucene.index.codecs.sep.SingleIntIndexInput$Reader.next(SingleIntIndexInput.java:64)
+    [junit]     at org.apache.lucene.index.codecs.sep.SepPostingsReaderImpl$SepDocsEnum.nextDoc(SepPostingsReaderImpl.java:316)
+    [junit]     at org.apache.lucene.index.TestParallelTermEnum.test1(TestParallelTermEnum.java:188)
+    [junit]     at org.apache.lucene.util.LuceneTestCase.runBare(LuceneTestCase.java:316)
+    [junit]
+    [junit] Tests run: 1, Failures: 0, Errors: 1, Time elapsed: 0.009 sec
+    [junit]
+    [junit] ------------- Standard Output ---------------
+    [junit] NOTE: random codec of testcase 'test1' was: Sep
+    [junit] ------------- ---------------- ---------------
+{noformat}
+

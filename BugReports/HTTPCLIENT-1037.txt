@@ -1,0 +1,12 @@
+FormBodyPart code does not agree with ContentDescriptor Javadoc wrt nullability of mimeType and transferEncoding
+
+
+
+Description:
+The FormBodyPart does not agree with ContentDescriptor Javadoc wrt nullability of mimeType and transferEncoding:
+
+The code in FormBodyPart explicitly allows mimeType and transferEncoding to be null, in which case the relevant header is not generated.
+This is useful behaviour, as the headers are not necessaruly needed.
+
+However the bahaviour disagrees with the Javadoc in the ContentDescriptor interface - null is not allowed.
+Also, AbstractContentBody does not allow mime-type to be null.

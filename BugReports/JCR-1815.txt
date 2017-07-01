@@ -1,0 +1,6 @@
+Benchmark: Improve transparency of test results
+
+
+
+Description:
+as discussed in JCR-1501.

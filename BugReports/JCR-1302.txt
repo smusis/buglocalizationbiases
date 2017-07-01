@@ -1,0 +1,24 @@
+ArrayHits does not end properly when skipTo doesn't find document
+
+
+
+Description:
+If skipTo(target) does not find a document that that has a higher value than the target, it falls out of the loop and calls next() possibly returning a previously found document. The patch makes sure that -1 is returned in this case, otherwise confusing results might occur.
+
+Index: src/main/java/org/apache/jackrabbit/core/query/lucene/hits/ArrayHits.java
+===================================================================
+--- src/main/java/org/apache/jackrabbit/core/query/lucene/hits/ArrayHits.java	(revision 608900)
++++ src/main/java/org/apache/jackrabbit/core/query/lucene/hits/ArrayHits.java	(working copy)
+@@ -87,9 +87,9 @@
+             int nextDocValue = hits[i];
+             if (nextDocValue >= target) {
+                 index = i;
+-                break;
++                return next();
+             }
+         }
+-        return next();
++        return -1;
+     }
+ }
+

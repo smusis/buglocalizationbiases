@@ -1,0 +1,20 @@
+ArrayIndexOutOfBounds Exception on invalid content-length
+
+
+
+Description:
+If the server returns an invalid (not parsable to int) content legnth the method
+protected int getResponseContentLength() in HttpMethodBase walks off the
+end of the Header[] array and throws the ArrayIndexOutOfBoundsException.
+
+The loop at line 687 in HttpMethodBase.java:
+
+   for (int i = headers.length - 1; i >= 0; i++) {
+
+starts at the end of the array, but uses ++ intead of -- and so walks off the
+end of the array on the next line if the header is invalid.  If the header is
+valid the return statement in the try block succeeds so there is no error.
+
+The fix is simply to change the line to be
+
+   for (int i = headers.length -1; i>=0; i--) {

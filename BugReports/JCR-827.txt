@@ -1,0 +1,11 @@
+SetValueFormatExceptiontest.testNode() relies on addMixin(), does not allow specification of node type
+
+
+
+Description:
+SetValueFormatExceptiontest.testNode() has two flaws:
+
+- it doesn't cope with cases where the created node already is mix:referenceable.
+
+- it doesn't allow specification of the node typer to be created.
+

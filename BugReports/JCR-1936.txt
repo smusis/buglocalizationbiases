@@ -1,0 +1,29 @@
+Incorrect license headers in multiple components
+
+
+
+Description:
+As noticed by Thomas, we have a number of files with missing or incorrect license headers both in trunk and in the 1.5 branch.
+
+The following lists all troublesome files in the 1.5.1 release candidate:
+
+ !????? ./jackrabbit-api/src/main/java/org/apache/jackrabbit/api/security/user/User.java
+ !????? ./jackrabbit-core/src/main/java/org/apache/jackrabbit/core/security/authorization/principalbased/ACLEditor.java
+ !????? ./jackrabbit-core/src/main/java/org/apache/jackrabbit/core/security/authorization/principalbased/ACLProvider.java
+ !????? ./jackrabbit-core/src/test/java/org/apache/jackrabbit/api/jsr283/retention/AbstractRetentionTest.java
+ !????? ./jackrabbit-core/src/test/java/org/apache/jackrabbit/core/security/authorization/combined/TestAll.java
+ !????? ./jackrabbit-core/src/test/java/org/apache/jackrabbit/core/security/authorization/principalbased/EvaluationTest.java
+ !????? ./jackrabbit-core/src/test/java/org/apache/jackrabbit/core/security/authorization/principalbased/TestAll.java
+ !????? ./jackrabbit-core/src/test/java/org/apache/jackrabbit/core/security/principal/TestAll.java
+ !????? ./jackrabbit-core/src/test/java/org/apache/jackrabbit/core/security/user/AdministratorTest.java
+ !????? ./jackrabbit-ocm/src/main/java/org/apache/jackrabbit/ocm/manager/objectconverter/impl/AbstractLazyLoader.java
+ !????? ./jackrabbit-ocm/src/main/java/org/apache/jackrabbit/ocm/manager/objectconverter/impl/OcmProxy.java
+ !????? ./jackrabbit-ocm/src/main/java/org/apache/jackrabbit/ocm/manager/objectconverter/impl/OcmProxyUtils.java
+ !????? ./jackrabbit-ocm/src/test/java/org/apache/jackrabbit/ocm/testmodel/MultiValueWithObjectCollection.java
+ !????? ./jackrabbit-ocm/src/test/java/org/apache/jackrabbit/ocm/testmodel/SimpleAnnotedAbstractClass.java
+ !????? ./jackrabbit-ocm/src/test/java/org/apache/jackrabbit/ocm/testmodel/SimpleAnnotedClass.java
+ !????? ./jackrabbit-ocm/src/test/java/org/apache/jackrabbit/ocm/testmodel/SimpleInterface.java
+ !????? ./jackrabbit-ocm/src/test/java/org/apache/jackrabbit/ocm/testmodel/UnmappedInterface.java
+ !????? ./jackrabbit-ocm/src/test/java/org/apache/jackrabbit/ocm/testmodel/version/Author.java
+ !????? ./jackrabbit-ocm/src/test/java/org/apache/jackrabbit/ocm/testmodel/version/PressRelease.java
+

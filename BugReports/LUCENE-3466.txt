@@ -1,0 +1,6 @@
+Rename Analyzer.reusableTokenStream() to tokenStream()
+
+
+
+Description:
+All Analysis consumers now use reusableTokenStream().  To finally make reuse mandatory, lets rename resuableTokenStream() to tokenStream() (removing the old tokenStream() method).

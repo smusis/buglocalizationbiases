@@ -1,0 +1,6 @@
+Provide base classes to simplify read only RepositoryService implementations
+
+
+
+Description:
+There should be base classes that simplify the implementation of a RepositoryService for read only access.

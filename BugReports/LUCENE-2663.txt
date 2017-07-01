@@ -1,0 +1,10 @@
+wrong exception from NativeFSLockFactory (LIA2 test case)
+
+
+
+Description:
+As part of integrating Lucene In Action 2 test cases (LUCENE-2661), I found one of the test cases fail
+
+the test is pretty simple, and passes on 3.0. The exception you get instead (LockReleaseFailedException) is 
+pretty confusing and I think we should fix it.
+

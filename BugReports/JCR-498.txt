@@ -1,0 +1,42 @@
+TCK: ImpersonateTest#testImpersonate should allow LoginException
+
+
+
+Description:
+JSR-170 allows Session.impersonate to throw LoginException if the session lacks permission to impersonate another user.  Some repositories may not allow any session to impersonate another user, in which case this test would fail.
+
+Proposal: catch and consume LoginException.
+
+--- ImpersonateTest.java        (revision 422074)
++++ ImpersonateTest.java        (working copy)
+@@ -17,11 +17,13 @@
+ package org.apache.jackrabbit.test.api;
+  
+ import org.apache.jackrabbit.test.AbstractJCRTest;
++import org.apache.jackrabbit.test.NotExecutableException;
+  
+ import javax.jcr.Session;
+ import javax.jcr.Credentials;
+ import javax.jcr.NodeIterator;
+ import javax.jcr.Node;
++import javax.jcr.LoginException;
+ import java.security.AccessControlException;
+  
+ /**
+@@ -40,7 +42,14 @@
+      */
+     public void testImpersonate() throws Exception {
+         // impersonate to read-only user
+-        Session session = superuser.impersonate(helper.getReadOnlyCredentials());
++        Session session = null;
++
++        try {
++            session = superuser.impersonate(helper.getReadOnlyCredentials());
++        }
++        catch (LoginException e) {
++          throw new NotExecutableException("impersonate threw LoginException");
++        }
+  
+         // get a path to test the permissions on
+         String thePath = "";
+

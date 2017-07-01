@@ -1,0 +1,8 @@
+Fixed README.txt on textfilters project
+
+
+
+Description:
+- Fixed a little mistake: changed org.apache.jackrabbit.core.query..RTFTextFilter to org.apache.jackrabbit.core.query.RTFTextFilter
+
+- Added the OpenOfficeTextFilter to the sample configuration line.

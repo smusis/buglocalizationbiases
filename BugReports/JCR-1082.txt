@@ -1,0 +1,8 @@
+cache getting out of sync with transientstore causes pathnotfoundexception
+
+
+
+Description:
+Done some further debugging and think the problem is in the synchronization between cache and transientstore. When I retrieve a childnode when I just made its parent node transient (by removing a prop or something), it will not be added to the cache. When I then remove this node, its nodeid is not removed from cache since its stateId wasn't saved in the cache.  After that I add the same node node again with the same name. When I now try to retrieve this node, I get a path not found exception. I see that by retrieving it, its nodeit is resolved from the cache using its path. Only since the removed node was not removed from cache it returns the nodeid of the already removed node. There is no node present with this id in the transientstore and therefor it throws a pathnotfoundexception.
+
+provided a failing junit test and repository.xml

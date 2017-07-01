@@ -1,0 +1,6 @@
+ParallelMultiSearcher should shut down thread pool on close
+
+
+
+Description:
+ParallelMultiSearcher does not shut down its internal thread pool on close. As a result, programs that create multiple instances of this class over their lifetime end up "leaking" threads.

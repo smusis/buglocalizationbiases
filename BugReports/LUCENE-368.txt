@@ -1,0 +1,21 @@
+Surround query language
+
+
+
+Description:
+This is a copy of what I posted about a year ago. 
+ 
+The whole thing is hereby licenced under the Apache Licence 2.0, 
+copyright 2005 Apache Software Foundation. 
+ 
+For inclusion in Lucene (sandbox perhaps?) it will need 
+at least the following adaptations: 
+- renaming of package names 
+  (org.surround to somewhere org.apache.lucene ) 
+- moves of the source files to corresponding directories 
+ 
+Although it uses the identifier sncf in some places 
+I'm not associated with French railroads, but I like the TGV. 
+ 
+Regards, 
+Paul Elschot

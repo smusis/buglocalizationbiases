@@ -1,0 +1,8 @@
+Remove code duplication in MultiReader/DirectoryReader, make everything inside final
+
+
+
+Description:
+After making IndexReader readOnly (LUCENE-3606) there is no need to have completely different DirectoryReader and MultiReader, the current code is heavy code duplication and violations against finalness patterns. There are only few differences in reopen and things like isCurrent/getDirectory/...
+
+This issue will clean this up by introducing a hidden package-private base class for both and only handling reopen and incRef/decRef different. DirectoryReader is now final and all fields in BaseMultiReader, MultiReader and DirectoryReader are final now. DirectoryReader has now only static factories, no public ctor anymore.

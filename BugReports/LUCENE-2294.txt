@@ -1,0 +1,22 @@
+Create IndexWriterConfiguration and store all of IW configuration there
+
+
+
+Description:
+I would like to factor out of all IW configuration parameters into a single configuration class, which I propose to name IndexWriterConfiguration (or IndexWriterConfig). I want to store there almost everything besides the Directory, and to reduce all the ctors down to one: IndexWriter(Directory, IndexWriterConfiguration). What I was thinking of storing there are the following parameters:
+* All of ctors parameters, except for Directory.
+* The different setters where it makes sense. For example I still think infoStream should be set on IW directly.
+
+I'm thinking that IWC should expose everything in a setter/getter methods, and defaults to whatever IW defaults today. Except for Analyzer which will need to be defined in the ctor of IWC and won't have a setter.
+
+I am not sure why MaxFieldLength is required in all IW ctors, yet IW declares a DEFAULT (which is an int and not MaxFieldLength). Do we still think that 10000 should be the default? Why not default to UNLIMITED and otherwise let the application decide what LIMITED means for it? I would like to make MFL optional on IWC and default to something, and I hope that default will be UNLIMITED. We can document that on IWC, so that if anyone chooses to move to the new API, he should be aware of that ...
+
+I plan to deprecate all the ctors and getters/setters and replace them by:
+* One ctor as described above
+* getIndexWriterConfiguration, or simply getConfig, which can then be queried for the setting of interest.
+* About the setters, I think maybe we can just introduce a setConfig method which will override everything that is overridable today, except for Analyzer. So someone could do iw.getConfig().setSomething(); iw.setConfig(newConfig);
+** The setters on IWC can return an IWC to allow chaining set calls ... so the above will turn into iw.setConfig(iw.getConfig().setSomething1().setSomething2()); 
+
+BTW, this is needed for Parallel Indexing (see LUCENE-1879), but I think it will greatly simplify IW's API.
+
+I'll start to work on a patch.

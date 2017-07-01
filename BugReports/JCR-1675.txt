@@ -1,0 +1,6 @@
+Provide names for constants in QueryConstants
+
+
+
+Description:
+For debugging, logging, and user interaction purposes QueryConstants should include descriptive names for the constants it provides.

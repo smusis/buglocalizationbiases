@@ -1,0 +1,14 @@
+JMX Bindings for Jackrabbit
+
+
+
+Description:
+There has been a slight interest in the past for adding JMX support.
+This would be the first stab at it. It is a Top 15 slow query log. (the 15 part is configurable)
+
+It is not enabled by default, so just being there should not affect the overall performance too much. You can enable it and play a little, tell me what you think.
+I've also added a test case that does a duration comparison with and without the logger.
+
+The most important part of this issue is that it should open the way for some proper monitoring tools support around queries, caches, anything/everything Jackrabbit.
+
+As usual, please let me know what you guys think

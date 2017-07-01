@@ -1,0 +1,11 @@
+NamespaceRegistryTest uses an invalid URI as namespace URI
+
+
+
+Description:
+The test cases use "www.apache.org/..." as a namespace URI, but this is not a URI.
+
+Suggest to fix by using a proper URI, such as by prefixing with "http://".
+
+A related question is what our expectation is for JCR implementations. Are they allowed to reject something that doesn't parse as a URI according to RFC3986?
+

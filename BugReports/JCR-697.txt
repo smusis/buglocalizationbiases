@@ -1,0 +1,57 @@
+.war distribution should be configurable, prompting you to setup JNDI with the Repository Home and Config locations.
+
+
+
+Description:
+The Embedded Deployment Model documentation (http://jackrabbit.apache.org/doc/deploy/howto-model1.html) on the jackrabbit page describes how to package up a .war file so that you can use JNDI Resource settings to change the location of the repository home and the repository configuration xml file.
+
+Unfortunately, the .war file that is provided as part of the Jackrabbit distribution doesn't behave like this. Instead, it has an inbuilt repository.xml file and settings in web.xml that act as defaults. These defaults are not useful and force a user to act like a developer and modify the files within the .war file.
+
+The current situation is that we have a .war that's not going to be useful to anyone without modification. The repository.xml file that is contained within the .war makes the repository home to be the Tomcat/bin/repository directory. This is not a useful default. It's better to have no default setup and a clear error message that JNDI needs to be setup. It would be even better if the web application could recognise when the JNDI wasn't configured and could prompt the user with an instructional webpage, describing how to setup the required JNDI settings on Tomcat, JBoss etc.
+
+----
+
+The .war distribution for Jackrabbit ignores the JNDI settings that are described in the documentation. I am using this Tomcat config.xml snippet to configure Tomcat 5.5:
+
+{{{
+<?xml version='1.0' encoding='utf-8'?>
+<Context displayName="Ark" docBase="c:\dev\ark\jackrabbit-server-1.1.1.war" path="/ark" 
+         useNaming="false" workDir="work\Catalina\localhost\ark" unpackWAR="false">
+
+<Resource name="jcr/repository"
+          auth="Container"
+          type="javax.jcr.Repository"
+          factory="org.apache.jackrabbit.core.jndi.BindableRepositoryFactory"
+          configFilePath="c:/dev/ark/src/main/resources/repository.xml"
+          repHomeDir="c:/jackrabbitrepo"/>
+
+</Context>
+}}}
+
+Jackrabbit loads fine. However, the logs show:
+
+{{{
+02.01.2007 10:33:00 *INFO * RepositoryStartupServlet: RepositoryStartupServlet initializing... (RepositoryStartupServlet.java, line 190)
+02.01.2007 10:33:00 *INFO * RepositoryStartupServlet:   repository-home = C:\Program Files\Apache Software Foundation\Tomcat 5.5\bin\jackrabbit\repository (RepositoryStartupServlet.java, line 242)
+
+...
+...
+
+02.01.2007 10:33:00 *INFO * LocalFileSystem: LocalFileSystem initialized at path C:\Program Files\Apache Software Foundation\Tomcat 5.5\bin\jackrabbit\repository\repository (LocalFileSystem.java, line 166)
+}}}
+
+
+
+
+
+
+----
+
+My use case is that I want to use Jackrabbit to host a Maven 2 repository within my company. So, ideally I want to:
+   * Download the Jackrabbit .war file and mount it on my Tomcat server as context "/maven2".
+   * Configure Tomcat to use LDAP authentication and point it at my company's LDAP server. This is a standard J2EE feature, of course.
+   * Create my own repository.xml file which points to my AccessManager implementation (which goes to my company's SingleSignOn service for authorization). My AccessManager implementation will be placed on the Tomcat shared classpath.
+   * Set the repository home directory, where all the working files will be placed and the location of the repository.xml file. Ideally, this would be done in JNDI.
+
+If I have to put together my own Jackrabbit .war file, I consider that I have my "developer" hat on when I only really want to have my "Jackrabbit user" hat on.
+

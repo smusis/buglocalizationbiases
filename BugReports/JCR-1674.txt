@@ -1,0 +1,12 @@
+Provide means for exception handling for QueryNodeVisitor implementations
+
+
+
+Description:
+Currently the methods of QueryNodeVisitor do not declare any exceptions. Even though the query tree might be syntactically correct, an implementation might reach a point where it cannot continue (i.e. if it does not support one of the optional query features). For such cases there are currently two solution: 1. throw an unchecked exception or 2. communicate the error state through the visitor using the data object passed along. 
+While I don't like 2. it is still an option. For 1. I'm not sure if this is the right way to go. It might be better to actually throw a checked exception. I therefore created a patch which declares RepositoryException on all visit methods of QueryNodeVisitor. Although the necessary changes in classes using QueryNodeVisitor are trivial, there are quite many of them. 
+
+Any opinions on checked exception with probably breaking (trivially) existing code vs. using not checked exceptions?
+
+
+

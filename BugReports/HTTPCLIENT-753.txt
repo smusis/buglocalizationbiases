@@ -1,0 +1,21 @@
+move class Scheme and friends to a separate package
+
+
+
+Description:
+We currently have a recursive dependency between packages o.a.h.conn and o.a.h.conn.routing, because routing depends on Scheme/SchemeRegistry. While these classes are used throughout the connection management code, they are not really part of the connection management itself and would therefore fit nicely into a separate package.
+
+preliminary list of classes and interfaces to move:
+- Scheme
+- SchemeRegistry
+- SocketFactory
+- LayeredSocketFactory
+- PlainSocketFactory
+
+suggested package name: o.a.h.conn.scheme
+
+Package o.a.h.conn.ssl can stay where it is, it only changes its dependency from conn to the new package.
+
+cheers,
+  Roland
+

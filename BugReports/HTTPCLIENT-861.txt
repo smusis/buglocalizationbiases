@@ -1,0 +1,6 @@
+URI reference resolution fails examples in RFC 3986
+
+
+
+Description:
+org.apache.http.client.utils.URIUtils.resolve(final URI baseURI, URI reference) fails to resolve some examples from RFC 3986 section 5.3 correctly. See TestCase.

@@ -1,0 +1,70 @@
+war missing jcr jar 
+
+
+
+Description:
+dropping the latest war (from latest svn) presents with this error when i point my browser to http://localhost:8080/jackrabbit-webapp-1.4-SNAPSHOT/. Simple solution is to make sure the jcr-1.0.jar is added to the generated war.
+
+org.apache.jasper.JasperException: Unable to compile class for JSP: 
+
+An error occurred at line: 1 in the generated java file
+The type javax.jcr.Repository cannot be resolved. It is indirectly referenced from required .class files
+
+An error occurred at line: 9 in the generated java file
+The import javax.jcr.Repository cannot be resolved
+
+An error occurred at line: 27 in the jsp file: /index.jsp
+Repository cannot be resolved to a type
+24: </head>
+25: <body style="font-family:monospace">
+26: <%
+27:     Repository rep;
+28:     try {
+29:         rep = RepositoryAccessServlet.getRepository(pageContext.getServletContext());
+30:     } catch (Throwable e) {
+
+
+An error occurred at line: 84 in the jsp file: /index.jsp
+Repository.REP_VENDOR_URL_DESC cannot be resolved to a type
+81:     </li>
+82: </ol>
+83: <p/>
+84: <hr size="1"><em>Powered by <a href="<%= rep.getDescriptor(Repository.REP_VENDOR_URL_DESC) %>"><%= rep.getDescriptor(Repository.REP_NAME_DESC)%></a> version <%= rep.getDescriptor(Repository.REP_VERSION_DESC) %>.</em>
+85: </body>
+86: </html>
+
+
+An error occurred at line: 84 in the jsp file: /index.jsp
+Repository.REP_NAME_DESC cannot be resolved to a type
+81:     </li>
+82: </ol>
+83: <p/>
+84: <hr size="1"><em>Powered by <a href="<%= rep.getDescriptor(Repository.REP_VENDOR_URL_DESC) %>"><%= rep.getDescriptor(Repository.REP_NAME_DESC)%></a> version <%= rep.getDescriptor(Repository.REP_VERSION_DESC) %>.</em>
+85: </body>
+86: </html>
+
+
+An error occurred at line: 84 in the jsp file: /index.jsp
+Repository.REP_VERSION_DESC cannot be resolved to a type
+81:     </li>
+82: </ol>
+83: <p/>
+84: <hr size="1"><em>Powered by <a href="<%= rep.getDescriptor(Repository.REP_VENDOR_URL_DESC) %>"><%= rep.getDescriptor(Repository.REP_NAME_DESC)%></a> version <%= rep.getDescriptor(Repository.REP_VERSION_DESC) %>.</em>
+85: </body>
+86: </html>
+
+
+Stacktrace:
+	org.apache.jasper.compiler.DefaultErrorHandler.javacError(DefaultErrorHandler.java:92)
+	org.apache.jasper.compiler.ErrorDispatcher.javacError(ErrorDispatcher.java:330)
+	org.apache.jasper.compiler.JDTCompiler.generateClass(JDTCompiler.java:423)
+	org.apache.jasper.compiler.Compiler.compile(Compiler.java:308)
+	org.apache.jasper.compiler.Compiler.compile(Compiler.java:286)
+	org.apache.jasper.compiler.Compiler.compile(Compiler.java:273)
+	org.apache.jasper.JspCompilationContext.compile(JspCompilationContext.java:566)
+	org.apache.jasper.servlet.JspServletWrapper.service(JspServletWrapper.java:317)
+	org.apache.jasper.servlet.JspServlet.serviceJspFile(JspServlet.java:320)
+	org.apache.jasper.servlet.JspServlet.service(JspServlet.java:266)
+	javax.servlet.http.HttpServlet.service(HttpServlet.java:803)
+
+note The full stack trace of the root cause is available in the Apache Tomcat/6.0.14 logs.

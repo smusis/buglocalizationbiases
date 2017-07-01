@@ -1,0 +1,8 @@
+URI uses  sun.security.action.GetPropertyAction
+
+
+
+Description:
+URI uses a sun.* class but should not.  Use of this class should be removed.
+
+Reported my Mark Wilcox

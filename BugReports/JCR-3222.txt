@@ -1,0 +1,8 @@
+Allow servlet filters to specify custom session providers
+
+
+
+Description:
+In order to integrate the Jackrabbit davex server functionality with their custom authentication logic, the Sling project currently needs to embed and subclass the davex servlet classes. It would be cleaner if such tight coupling wasn't needed.
+
+One way to achieve something like that would be to allow external components to provide a custom SessionProvider instance as an extra request attribute. This way for example a servlet filter that implements such custom authentication logic could easily make its functionality available to the standard davex servlet in Jackrabbit.

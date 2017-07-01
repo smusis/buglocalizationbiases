@@ -1,0 +1,6 @@
+Improve behaviour when 'too many open files' occurs
+
+
+
+Description:
+The MultiIndex may leave unused directories that were created in an attempt to create an index segment. The directory is not removed again when an error occurs (e.g. 'too many open files').

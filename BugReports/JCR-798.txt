@@ -1,0 +1,35 @@
+ConcurrentModificationException during logout
+
+
+
+Description:
+We regularly get the following exception:
+
+java.util.ConcurrentModificationException
+        at org.apache.commons.collections.map.AbstractReferenceMap$ReferenceEntrySetIterator.checkMod(AbstractReferenceMap.java:761)
+        at org.apache.commons.collections.map.AbstractReferenceMap$ReferenceEntrySetIterator.hasNext(AbstractReferenceMap.java:735)
+        at java.util.Collections$UnmodifiableCollection$1.hasNext(Collections.java:1009)
+        at java.util.Collections$UnmodifiableCollection$1.hasNext(Collections.java:1009)
+        at org.apache.jackrabbit.core.state.LocalItemStateManager.dispose(LocalItemStateManager.java:341)
+        at org.apache.jackrabbit.core.WorkspaceImpl.dispose(WorkspaceImpl.java:170)
+        at org.apache.jackrabbit.core.SessionImpl.logout(SessionImpl.java:1225)
+        at org.apache.jackrabbit.core.XASessionImpl.logout(XASessionImpl.java:379)
+
+Two causes for this exception have been identified:
+
+ (Taken from an email to the dev-list from Marcel Reutegger):
+> - session A reads some items I
+> - session B transiently removes items in I
+> - session A logs out and starts to iterate over I in  LocalItemStateManager (LISM)
+> - session B saves changes and removed items are evicted from A's LISM
+> - session A gets concurrent modification exception
+
+Another scenario is the following:
+- Session A gets the iterator of the values of (the primary cache of) an ItemStateReferenceCache in LocalItemStateManager.dispose.
+- Session B then does something that triggers the CacheManager.
+- The CacheManager then calls resizeAll, and evicts some items from the secondary cache of the ItemStateReferenceCache of which the LocalItemStateManager has a values iterator.
+- The garbage collector then runs and evicts the removed items also from the primary cache, which effectively modifies the set over which is iterated.
+
+Regards,
+
+Martijn Hendriks

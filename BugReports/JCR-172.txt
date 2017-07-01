@@ -1,0 +1,6 @@
+Improved READMEs for building sequence of trunk and jcr-server
+
+
+
+Description:
+

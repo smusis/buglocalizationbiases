@@ -1,0 +1,6 @@
+Best effort merge if concurrent modifications include changes to mixin types
+
+
+
+Description:
+currently the NodeStateMerger#merge method immediately aborts if the mixin types of the 2 nodes are not the same.

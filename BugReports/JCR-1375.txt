@@ -1,0 +1,6 @@
+Limit fields read from index
+
+
+
+Description:
+Reading a lucene document from the index should be limited to only those fields that are necessary.

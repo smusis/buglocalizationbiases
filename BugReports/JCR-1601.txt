@@ -1,0 +1,22 @@
+Occasional NullPointerException in ItemManager
+
+
+
+Description:
+From time to time I see a NullPointerException in ItemManager when running ConcurrentReadWriteTest. The exception is probably caused by another session that removes the property, which has the effect that the ItemState in ItemData is set to null.
+
+Exception in thread "Thread-11" java.lang.NullPointerException
+	at org.apache.jackrabbit.core.ItemManager.canRead(ItemManager.java:313)
+	at org.apache.jackrabbit.core.ItemManager.getItemData(ItemManager.java:293)
+	at org.apache.jackrabbit.core.ItemManager.getItem(ItemManager.java:226)
+	at org.apache.jackrabbit.core.ItemManager.getItem(ItemManager.java:486)
+	at org.apache.jackrabbit.core.LazyItemIterator.prefetchNext(LazyItemIterator.java:111)
+	at org.apache.jackrabbit.core.LazyItemIterator.<init>(LazyItemIterator.java:93)
+	at org.apache.jackrabbit.core.LazyItemIterator.<init>(LazyItemIterator.java:75)
+	at org.apache.jackrabbit.core.ItemManager.getChildProperties(ItemManager.java:658)
+	at org.apache.jackrabbit.core.NodeImpl.getProperties(NodeImpl.java:2663)
+	at org.apache.jackrabbit.core.ConcurrentReadWriteTest$1$1.execute(ConcurrentReadWriteTest.java:65)
+	at org.apache.jackrabbit.core.AbstractConcurrencyTest$Executor.run(AbstractConcurrencyTest.java:206)
+	at java.lang.Thread.run(Thread.java:595)
+
+This issue does not occur in a release but only in trunk.

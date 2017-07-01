@@ -1,0 +1,21 @@
+Superfluous AndQueryNode  in query tree built by SQL parser
+
+
+
+Description:
+Test query (tested with <http://people.apache.org/~mreutegg/jcr-query-translator/translator.html>):
+
+  SELECT * FROM nt:folder WHERE x = 1 
+
+generates the following query tree:
+
++ Root node
++ Select properties: *
+  + PathQueryNode
+    + LocationStepQueryNode:  NodeTest=* Descendants=true Index=NONE
+      + AndQueryNode
+        + RelationQueryNode: Op: =  Prop=@{}x Type=LONG Value=1
+      + NodeTypeQueryNode:  Prop={http://www.jcp.org/jcr/1.0}primaryType Value={http://www.jcp.org/jcr/nt/1.0}folder
+
+It seems the AndQueryNode is superfluous.
+

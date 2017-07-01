@@ -1,0 +1,35 @@
+Simplify StandardTokenizer JFlex grammar
+
+
+
+Description:
+Summary of thread entitled "Fullwidth alphanumeric characters, plus a question on Korean ranges" begun by Daniel Noll on java-user, and carried over to java-dev:
+
+On 01/07/2008 at 5:06 PM, Daniel Noll wrote:
+> I wish the tokeniser could just use Character.isLetter and
+> Character.isDigit instead of having to know all the ranges itself, since
+> the JRE already has all this information.  Character.isLetter does
+> return true for CJK characters though, so the ranges would still come in
+> handy for determining what kind of letter they are.  I don't support
+> JFlex has a way to do this...
+
+The DIGIT macro could be replaced by JFlex's predefined character class [:digit:], which has the same semantics as java.lang.Character.isDigit().
+
+Although JFlex's predefined character class [:letter:] (same semantics as java.lang.Character.isLetter()) includes CJK characters, there is a way to handle this using JFlex's regex negation syntax {{!}}.  From [the JFlex documentation|http://jflex.de/manual.html]:
+
+bq. [T]he expression that matches everything of {{a}} not matched by {{b}} is !(!{{a}}|{{b}}) 
+
+So to exclude CJ characters from the LETTER macro:
+
+{code}
+    LETTER = ! ( ! [:letter:] | {CJ} )
+{code}
+ 
+Since [:letter:] includes all of the Korean ranges, there's no reason (AFAICT) to treat them separately; unlike Chinese and Japanese characters, which are individually tokenized, the Korean characters should participate in the same token boundary rules as all of the other letters.
+
+I looked at some of the differences between Unicode 3.0.0, which Java 1.4.2 supports, and Unicode 5.0, the latest version, and there are lots of new and modified letter and digit ranges.  This stuff gets tweaked all the time, and I don't think Lucene should be in the business of trying to track it, or take a position on which Unicode version users' data should conform to.  
+
+Switching to using JFlex's [:letter:] and [:digit:] predefined character classes ties (most of) these decisions to the user's choice of JVM version, and this seems much more reasonable to me than the current status quo.
+
+I will attach a patch shortly.
+

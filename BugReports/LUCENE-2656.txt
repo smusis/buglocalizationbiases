@@ -1,0 +1,12 @@
+If tests fail, don't report about unclosed resources
+
+
+
+Description:
+LuceneTestCase ensures in afterClass() if you closed all your directories, which in turn will check if you have closed any open files.
+
+This is good, as a test will fail if we have resource leaks.
+
+But if a test truly fails, this is just confusing, because its usually not going to make it to the part of its code where it would call .close()
+
+So, if any tests fail, I think we should omit this check in afterClass()

@@ -1,0 +1,6 @@
+Hide ugly repository init code for OCM
+
+
+
+Description:
+Hide repository namespace registration and ocm:discriminator node type registration in implementation of OCM

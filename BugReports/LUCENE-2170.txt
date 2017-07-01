@@ -1,0 +1,8 @@
+Thread starvation problems in some tests
+
+
+
+Description:
+In some of the tests, a time limit is set and the tests have a "while (inTime)" loop. If creation of thread under heavy load is too slow, the tasks are not done. Most tests are only useful, if the task is at least done once (most would even fail).
+
+This thread changes the loops to be do...while, so the task is run at least one time.

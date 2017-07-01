@@ -1,0 +1,12 @@
+SSLSocketFactory.connectSocket() possible NPE - or use of wrong variable?
+
+
+
+Description:
+SSLSocketFactory.connectSocket() has a possible NPE at line 324:
+
+            sock.connect(remoteAddress, connTimeout);
+
+Or perhaps this should really be:
+
+            sslsock.connect(remoteAddress, connTimeout);

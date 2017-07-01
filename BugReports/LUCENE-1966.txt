@@ -1,0 +1,6 @@
+Arabic Analyzer: Stopwords list needs enhancement
+
+
+
+Description:
+The provided Arabic stopwords list needs some enhancements (e.g. it contains a lot of words that not stopwords, and some cleanup) . patch will be provided with this issue.

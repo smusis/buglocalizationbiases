@@ -1,0 +1,15 @@
+Improve parallel tests
+
+
+
+Description:
+As mentioned on the dev@ mailing list here: http://www.lucidimagination.com/search/document/93432a677917b9bd/lucenejunitresultformatter_sometimes_fails_to_lock
+
+It would be useful to not create a lockfactory for each test suite (As they are run sequentially in the same separate JVM).
+Additionally, we create a lot of JVMs (26) for each batch, because we have to run one for each letter.
+Instead, we use a technique here to divide up the tests with a custom selector: http://blog.code-cop.org/2009/09/parallel-junit.html
+(I emailed the blog author and received permission to use this code)
+
+This gives a nice boost to the speed of overall tests, especially Solr tests, as many start with an "S", but this is no longer a problem.
+
+

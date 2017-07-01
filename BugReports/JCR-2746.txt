@@ -1,0 +1,8 @@
+Sleep in possibly endless loop in ObservationDispatcher
+
+
+
+Description:
+The rate-limitation code we added in JCR-2402 to prevent the observation queue from growing too large was a good idea, but the current implementation is a bit troublesome since it blocks the thread while it still holds the journal lock, the SISM reader lock, and the SessionState lock. This can cause a deadlock under heavy workloads if any of the observation listeners attempts to reuse the session (not recommended/supported, but can still happen) or write to the repository (quite likely).
+
+To solve this problem we should move the rate-limiter code to outside the scope of any internal locks.

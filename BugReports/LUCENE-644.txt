@@ -1,0 +1,22 @@
+Contrib: another highlighter approach
+
+
+
+Description:
+Mark Harwoods highlighter package is a great contribution to Lucene, I've used it a lot! However, when you have *large* documents (fields), highlighting can be quite time consuming if you increase the number of bytes to analyze with setMaxDocBytesToAnalyze(int). The default value of 50k is often too low for indexed PDFs etcetera, which results in empty highlight strings.
+
+This is an alternative approach using term position vectors only to build fragment info objects. Then a StringReader can read the relevant fragments and skip() between them. This is a lot faster. Also, this method uses the *entire* field for finding the best fragments so you're always guaranteed to get a highlight snippet.
+
+Because this method only works with fields which have term positions stored one can check if this method works for a particular field using following code (taken from TokenSources.java):
+
+        TermFreqVector tfv = (TermFreqVector) reader.getTermFreqVector(docId, field);
+        if (tfv != null && tfv instanceof TermPositionVector)
+        {
+          // use FulltextHighlighter
+        }
+        else
+        {
+          // use standard Highlighter
+        }
+
+Someone else might find this useful so I'm posting the code here.

@@ -1,0 +1,8 @@
+Support for passing an SSLContext to the SSLSocketFactory of HttpClient
+
+
+
+Description:
+Would it be possible to use an existing instance of SSLContext to initialise an SSLSocketFactory? This would allow using SSLContexts configured with more options, such as CRLs.
+
+(This follows the thread of the httpclient-commons-dev list: http://marc.info/?l=httpclient-commons-dev&m=121737017814116&w=2 ).

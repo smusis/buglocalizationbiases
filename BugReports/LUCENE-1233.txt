@@ -1,0 +1,8 @@
+Fix Document.getFieldables and others to never return null
+
+
+
+Description:
+Document.getFieldables (and other similar methods) returns null if there are no fields matching the name.  We can avoid NPE in consumers of this API if instead we return an empty array.
+
+Spinoff from http://markmail.org/message/g2nzstmce4cnf3zj

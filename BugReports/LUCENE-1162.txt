@@ -1,0 +1,14 @@
+Improve architecture of FieldSortedHitQueue
+
+
+
+Description:
+Per the discussion (quite some time ago) on issue LUCENE-806, I'd like to propose an architecture change to the way FieldSortedHitQueue works, and in particular the way it creates SortComparatorSources. I think (I hope) that anyone who looks at the FSHQ code will agree that the class does a lot and much of it's repetitive stuff that really has no business being in that class.
+
+I am about to attach a patch which, in and of itself, doesn't really achieve much that's concrete but does tidy things up a great deal and makes it easier to plug in different behaviours. I then have a subsequent patch which provides a fairly simple and flexible example of how you might replace an implementation, in this case the field-local-String-comparator version from LUCENE-806.
+
+The downside to this patch is that it involved changing the signature of SortComparatorSource.newComparator to take a Locale. There would be ways around this (letting FieldSortedHitQueue take in either a SortComparatorSource or some new, improved interface which takes a Locale (and possibly extends SortComparatorSource). I'm open to this but personally I think that the Locale version makes sense and would suggest that the code would be nicer by breaking the API (and hence targeting this to, presumably, 3.0 at a minimum).
+
+This code does not include specific tests (I will add these, if people like the general idea I'm proposing here) but all current tests pass with this change.
+
+Patch to follow.

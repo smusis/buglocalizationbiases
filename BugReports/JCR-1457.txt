@@ -1,0 +1,28 @@
+Restart of RMI-component fails (because it's not released while shutdown)
+
+
+
+Description:
+I just moved setup model for the Jackrabbit repository from a Tomcat-global JNDI-datasouce to a autonomous server connected via RMI to get rid off the problem of a total restart of the tomcat, if e.g. something is changed in the jackrabbit setup.
+
+But the restart of the RMI component of the jackrabbit server package will fail, because on shutdown the rmi binding isn't released. From that, at restart, the socket is still in use and the (just) RMI component fails to start. In the other hand, it isn't possible to connect to the server through the remaining rmi component; you'll get a EOF-exception in RMI communication. Of course, a complete restart of the Tomcat will help, but isn't appropriate. 
+
+It looks to me like just some release on shutdown is missing. May somebody provide a patch?
+
+(log exception at restart)
+20080306-093849.086 INFO  [ajp-8009-2] [] [RepositoryStartupServlet] Cannot create Registry
+java.rmi.server.ExportException: Port already in use: 1099; nested exception is: 
+        java.net.BindException: Address already in use
+        at sun.rmi.transport.tcp.TCPTransport.listen(TCPTransport.java:249)
+        at sun.rmi.transport.tcp.TCPTransport.exportObject(TCPTransport.java:184)
+        at sun.rmi.transport.tcp.TCPEndpoint.exportObject(TCPEndpoint.java:382)
+        at sun.rmi.transport.LiveRef.exportObject(LiveRef.java:116)
+        at sun.rmi.server.UnicastServerRef.exportObject(UnicastServerRef.java:180)
+        at sun.rmi.registry.RegistryImpl.setup(RegistryImpl.java:92)
+        at sun.rmi.registry.RegistryImpl.<init>(RegistryImpl.java:68)
+        at java.rmi.registry.LocateRegistry.createRegistry(LocateRegistry.java:222)
+        at org.apache.jackrabbit.j2ee.RepositoryStartupServlet.registerRMI(RepositoryStartupServlet.
+        at org.apache.jackrabbit.j2ee.RepositoryStartupServlet.startup(RepositoryStartupServlet.java
+        at org.apache.jackrabbit.j2ee.RepositoryStartupServlet.init(RepositoryStartupServlet.java:21
+        at javax.servlet.GenericServlet.init(GenericServlet.java:212)
+

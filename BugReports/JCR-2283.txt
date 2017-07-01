@@ -1,0 +1,61 @@
+Incorrect CND for mix:etag
+
+
+
+Description:
+Jackrabbit currently defined mix:etag as follows:
+
+[mix:etag]
+  mixin
+  // currently has a default value because auto-creation not handled see JCR-2116
+  - jcr:etag (STRING) = '' protected autocreated
+
+I think this violates the spec, which says:
+
+[mix:etag] mixin
+  - jcr:etag (STRING) protected autocreated
+
+This also affects the predefined node type test in jackrabbit-jcr-tests where mix-etag.txt is:
+
+NodeTypeName
+  mix:etag
+Supertypes
+  []
+IsMixin
+  true
+HasOrderableChildNodes
+  false
+PrimaryItemName
+  null
+PropertyDefinition
+  Name jcr:etag
+  RequiredType STRING
+  DefaultValues []
+  AutoCreated true
+  Mandatory false
+  OnParentVersion COPY
+  Protected true
+  Multiple false
+
+but should rather be:
+
+NodeTypeName
+  mix:etag
+Supertypes
+  []
+IsMixin
+  true
+HasOrderableChildNodes
+  false
+PrimaryItemName
+  null
+PropertyDefinition
+  Name jcr:etag
+  RequiredType STRING
+  DefaultValues null               <===
+  AutoCreated true
+  Mandatory false
+  OnParentVersion COPY
+  Protected true
+  Multiple false
+

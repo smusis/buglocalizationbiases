@@ -1,0 +1,8 @@
+RepositoryStub implementation in jackrabbit-core
+
+
+
+Description:
+Currently setting up a Jackrabbit repository for use with the TCK is a relatively complex operation with a large repositoryStubImpl.properties file and lots of specially crafted test content and settings to worry about. This makes it hard to set up new TCK test instances with the various JCR and SPI layers we now have.
+
+To simplify things I'd like to introduce a RepositoryStubImpl class and related configuration files inside src/main/java in jackrabbit-core.

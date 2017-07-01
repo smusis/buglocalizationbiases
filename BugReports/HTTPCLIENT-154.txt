@@ -1,0 +1,14 @@
+Allow redirects between hosts and ports
+
+
+
+Description:
+Redirects to different hosts, ports and protocols are currently prevented. 
+Historicly, HttpMethodBase.checkValidRedirects() is used to prevent these types
+of redirects due how state information was being managed in the connection.  
+
+Much has changed since then.  We should relax the check and allow for redirects
+ between hosts and ports. 
+
+Redirects across protocols should not be considered at this time as there are
+other issues related to security that is best left up to the user of HttpClient.

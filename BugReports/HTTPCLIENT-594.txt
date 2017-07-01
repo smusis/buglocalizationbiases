@@ -1,0 +1,12 @@
+HttpMethodBase#aborted variable mistakenly declared transient instead of volatile
+
+
+
+Description:
+HttpMethodBase#aborted variable mistakenly declared transient instead of volatile. This is quite nasty. 
+
+Do we want to cut an emergency release (3.0.2) because of that or can this wait until 3.1-beta1?
+
+Fix attached.
+
+Oleg

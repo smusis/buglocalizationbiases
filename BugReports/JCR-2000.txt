@@ -1,0 +1,8 @@
+Deadlock on concurrent commits
+
+
+
+Description:
+As reported in the followup to JCR-1979, there's a case where two transactions may be concurrently inside a commit. This is bad as it breaks the main assumption in http://jackrabbit.apache.org/concurrency-control.html about all transactions first acquiring the versioning write lock.
+
+Looking deeper into this I find that the versioning write lock is only acquired if the transaction being committed contains versioning operations. This is incorrect as all transactions in any case need to access the version store when checking for references.

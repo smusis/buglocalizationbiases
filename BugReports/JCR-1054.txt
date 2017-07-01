@@ -1,0 +1,14 @@
+Duplicate attribute in BeanDescriptor and CollectionDescriptor
+
+
+
+Description:
+2 different attributes are used in BeanDescriptor and CollectionDescriptor to store the jcr type (jcrType and jcrNodeType). JcrNodeType can be removed. 
+This imply modifications in  the DTD, the pm implementation and the different mapping xml files used for the unit tests. 
+
+Furthermore, it should be nice to use the same name (jcrType)  in all descriptors.  There is a lot of confusion across the different descriptors. sometime jcrType is used, sometime jcrNodeType is used. I propose to use only jcrType with the following purpose : 
+
+* In the ClassDescriptor, it  is used to store the primary node type of the class. 
+* In the FieldDescriptor, it  is used to store the property type. 
+* In the BeanDescriptor  it is used to defined the child node type. 
+* In the CollectionDescriptor , it is used to defined the child node type. 

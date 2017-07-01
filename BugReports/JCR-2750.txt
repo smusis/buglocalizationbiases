@@ -1,0 +1,22 @@
+MultiStatusResponse should not call resource.getProperties
+
+
+
+Description:
+current constructor MultiStatusResponse() calls resource.getProperties() even if propFindType == PROPFIND_BY_PROPERTY.
+
+This is inconvenient, because some properties are expensive to generate if they are not requested. MultiStatusResponse() constructor with parameter PROPFIND_BY_PROPERTY should do:
+
+===
+if (propFindType == PROPFIND_BY_PROPERTY) {
+  for (propName : propNameSet) {
+    prop = resource.getProperty(propName);
+    if (prop != null)
+      status200.addContent(prop);
+    else
+      status404.addContent(propName);
+  }
+} else {
+  ...
+}
+===

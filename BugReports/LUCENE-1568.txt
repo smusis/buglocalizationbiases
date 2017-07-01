@@ -1,0 +1,6 @@
+Fix for NPE's in Spatial Lucene for searching bounding box only
+
+
+
+Description:
+NPE occurs when using DistanceQueryBuilder for minimal bounding box search without the distance filter.

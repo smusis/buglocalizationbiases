@@ -1,0 +1,20 @@
+New feature rich higlighter for Lucene.
+
+
+
+Description:
+Well, I refactored (took) some code from two previous highlighters.
+This highlighter:
++ use TermPositionVector where available
++ use Analyzer if no TermPositionVector found or is forced to use it.
++ support for all lucene queries (Term, Phrase with slops, Prefix, Wildcard, Range) except Fuzzy Query (can be implemented easly)
+
+- has no support for scoring (yet)
+- use same prefix,postfix for accepted terms (yet)
+
+? It's written in Java5
+
+In next release I'd like to add support for Fuzzy, "coloring" f.e. diffrent color for terms btw. phrase terms (slops), scoring of fragments
+
+It's apache licensed - I hope so :-) I put licene statement in every file
+

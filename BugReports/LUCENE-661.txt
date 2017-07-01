@@ -1,0 +1,6 @@
+BUILD.txt instructions wrong for JavaCC
+
+
+
+Description:
+The text in BUILD.txt for javacc says to set the property to the bin directory in the javacc installation. It should actually be set to the javacc installation directory, the directory containing the bin directory. The comments common-build.xml correctly state this.

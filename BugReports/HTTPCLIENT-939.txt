@@ -1,0 +1,20 @@
+302 response without location header throws exception
+
+
+
+Description:
+Hi, 
+
+According to HTTP 1.1 Spec : http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html#sec10.3.3
+"The temporary URI SHOULD be given by the Location field in the response. Unless the request method was HEAD, the entity of the response SHOULD contain a short hypertext note with a hyperlink to the new URI(s)."
+
+Now, in "DefaultRedirectStrategy.getLocationURI()", there's a ProtocolException thrown if location header is null.  
+
+if (locationHeader == null) {
+    // got a redirect response, but no location header
+    throw new ProtocolException(
+        "Received redirect response " + response.getStatusLine()
+       + " but no location header");
+ }
+
+The specs says "SHOULD" and not "MUST". ProtocolException "signals that an HTTP protocol violation has occurred", which is not exactly true.

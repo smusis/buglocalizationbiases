@@ -1,0 +1,8 @@
+NodeTypeRegistry.validateNodeTypeDef causes NullPointerException
+
+
+
+Description:
+NodeTypeRegistry.registerNodeType(NodeTypeDef) checks the given node type definition for circular inheritance (amongst other things, of course). If the the node type definition does not contain a list of super types, the validateNodeTypeDef() (line 442) causes a NullPointerException being thrown in checkForCircularInheritance() because the "supertypes" variable is null and is not being checked.
+
+Interestingly the other accesses to the same supertypes object in validNodeTypeDef() are all guarded against null and length==0. Might be an ommission.

@@ -1,0 +1,12 @@
+gcj ant target doesn't work on windows
+
+
+
+Description:
+In order to fix it I made two changes, both really simple.
+
+First I added to org/apache/lucene/store/GCJIndexInput.cc some code to use windows memory-mapped I/O instead than unix mmap().
+
+Then I had to rearrange the link order in the Makefile in order to avoid unresolved symbol errors. Also to build repeatedly I had to instruct make to ignore the return code for the mkdir command as on windows it fails if the directory already exists.
+
+I'm attaching two patches corresponding to the changes; please note that with the patches applied, the gcj target still works on linux. Both patches apply cleanly to the current svn head.

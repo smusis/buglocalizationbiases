@@ -1,0 +1,17 @@
+SSL contrib files do not use standard javax.net.ssl package provided from JDK 1.4.2
+
+
+
+Description:
+Hi all,
+
+While trying to use ssl on AIX, i found that some of the files contributed in 
+src/contrib/org/apache/commons/httpclient/contrib/ssl were making hard 
+references to com.sun.net.ssl package. Since JDK 1.4.2, one shall use the 
+javax.net.ssl package instead.
+
+I have then:
+1/ fixed the source files appropriately
+2/ updated the build.xml to also build a commons-http-client-contrib.jar 
+
+I will attached to this bug report the resulting unified diff to include in svn

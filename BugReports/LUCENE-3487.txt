@@ -1,0 +1,8 @@
+TestBooleanMinShouldMatch test failure
+
+
+
+Description:
+ant test -Dtestcase=TestBooleanMinShouldMatch -Dtestmethod=testRandomQueries -Dtests.seed=505d62a62e9f90d0:-60daa428161b404b:-406411290a98f416
+
+I think its an absolute/relative epsilon issue

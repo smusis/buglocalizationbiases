@@ -1,0 +1,22 @@
+Using WildcardQuery with MultiSearcher, and Boolean MUST_NOT clause
+
+
+
+Description:
+We are searching across multiple indices using a MultiSearcher. There seems to be a problem when we use a WildcardQuery to exclude documents from the result set. I attach a set of unit tests illustrating the problem.
+
+In these tests, we have two indices. Each index contains a set of documents with fields for 'title',  'section' and 'index'. The final aim is to do a keyword search, across both indices, on the title field and be able to exclude documents from certain sections (and their subsections) using a
+WildcardQuery on the section field.
+ 
+ e.g. return documents from both indices which have the string 'xyzpqr' in their title but which do not lie
+ in the news section or its subsections (section = /news/*).
+ 
+The first unit test (testExcludeSectionsWildCard) fails trying to do this.
+ If we relax any of the constraints made above, tests pass:
+ 
+* Don't use WildcardQuery, but pass in the news section and it's child section to exclude explicitly (testExcludeSectionsExplicit)</li>
+* Exclude results from just one section, not it's children too i.e. don't use WildcardQuery(testExcludeSingleSection)</li>
+* Do use WildcardQuery, and exclude a section and its children, but just use one index thereby using the simple
+   IndexReader and IndexSearcher objects (testExcludeSectionsOneIndex).
+* Try the boolean MUST clause rather than MUST_NOT using the WildcardQuery i.e. only include results from the /news/ section
+   and its children.

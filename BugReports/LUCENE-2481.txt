@@ -1,0 +1,15 @@
+Enhance SnapshotDeletionPolicy to allow taking multiple snapshots
+
+
+
+Description:
+A spin off from here: http://www.gossamer-threads.com/lists/lucene/java-dev/99161?do=post_view_threaded#99161
+
+I will:
+# Replace snapshot() with snapshot(String), so that one can name/identify the snapshot
+# Add some supporting methods, like release(String), getSnapshots() etc.
+# Some unit tests of course.
+
+This is mostly written already - I want to contribute it. I've also written a PersistentSDP, which persists the snapshots on stable storage (a Lucene index in this case) to support opening an IW with existing snapshots already, so they don't get deleted. If it's interesting, I can contribute it as well.
+
+Porting my patch to the new API. Should post it soon.

@@ -1,0 +1,6 @@
+[patch] Fix overly specific casting in core
+
+
+
+Description:
+several places in core, casts are made to overly concrete classes when, interfaces are only needed. Doing so ties the algorithms to specific implementations, unnecessarily. patch fixes these.

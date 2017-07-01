@@ -1,0 +1,7 @@
+Jcr-Server: DavException doesn't allow to specify an exception cause
+
+
+
+Description:
+While DavException extends Exception it does not allow to specify a exception cause in the constructor.
+Adding a separate constructor taking status code plus a Throwable would provide the possibility to specify the original cause.

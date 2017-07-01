@@ -1,0 +1,16 @@
+website: 404 for several documentation pages
+
+
+
+Description:
+There are several 404 Not Found pages linked from hc.apache.org.
+Please fix them as it's important documentation for HttpClient.
+
+Specifically:
+
+linked from http://hc.apache.org/user-docs.html
+
+not found:
+http://hc.apache.org/httpcomponents-client/primer.html
+http://hc.apache.org/httpcomponents-client-4.0.1/httpclient/apidocs/index.html
+http://hc.apache.org/httpcomponents-client-4.0.1/httpmime/apidocs/index.html

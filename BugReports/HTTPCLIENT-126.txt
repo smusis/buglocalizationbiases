@@ -1,0 +1,8 @@
+Default charset
+
+
+
+Description:
+As defined in RFC2616 the default character set is ISO-8859-1 an not US-ASCII 
+as defined in HttpMethodBase. See "3.7.1 Canonicalization and Text Defaults" at
+RFC 2616

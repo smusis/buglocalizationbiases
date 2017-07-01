@@ -1,0 +1,6 @@
+Fix exception handling and thread safety in realtime branch
+
+
+
+Description:
+Several tests are currently failing in the realtime branch - most of them due to thread safety problems (often exceptions in ConcurrentMergeScheduler) and in tests that test for aborting and non-aborting exceptions.

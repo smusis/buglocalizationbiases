@@ -1,0 +1,18 @@
+wrong charset indication in HttpConstants.getContentString()
+
+
+
+Description:
+Around line 236 in HttpConstants.getConstentString() the charset is wrongly indicated as 
+"DEFAULT_CONTENT_CHARSET" where it should have been indicated as "charset" like in the 
+getContentBytes function.
+
+            if (LOG.isWarnEnabled()) {
+                LOG.warn("Unsupported encoding: " 
+                    + DEFAULT_CONTENT_CHARSET // <== should be the variable "charset" here
+                    + ". Default HTTP encoding used");
+            }
+
+Wrong copy/paste I guess :-)
+
+ZC.

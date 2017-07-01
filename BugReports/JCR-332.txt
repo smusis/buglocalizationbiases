@@ -1,0 +1,12 @@
+Upgrade to Maven 2
+
+
+
+Description:
+If you are interested in migrating to maven2 (or adding optional maven 2 build scripts) this is a full maven 2 pom.xml for the main jackrabbit jar.
+
+All the xpath/javacc stuff, previously done in maven.xml, was pretty painfull to reproduce in maven2... the attached pom exactly reproduces the m1 build by using the maven2 javacc plugin + a couple of antrun executions.
+Test configuration is not yet complete, I think it will be a lot better to reproduce the previous behaviour (init tests run first) without any customization (maybe using a single junit test suite with setUp tasks). Also custom packaging goals added to maven.xml (that can be esily done in m2 by using the assembly plugin) are not yet reproduced too.
+
+If there is interest, I can also provide poms for the contribution projects (that will be easy, the only complex pom is the main one).
+

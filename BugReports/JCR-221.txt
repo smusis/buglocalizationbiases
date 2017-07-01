@@ -1,0 +1,20 @@
+NoSuchItemStateException if Node.checkin() is invoked within a transaction
+
+
+
+Description:
+When you run a code that takes versionning outside transactions - everything goes ok. But when you run it inside transaction, it fails:
+Here's the stacktrace:
+
+15:41:14,434 ERROR (TransactionalItemStateManager.java:114) -
+java.lang.Exception: Cannot commit transaction.
+[...]
+Caused by: org.apache.jackrabbit.core.state.TransactionException: Unable
+to commit transaction.:
+31f78b39-6422-4ec8-b41e-2571b6807b05/{http://www.jcp.org/jcr/1.0}isCheckedOut
+[...]
+Caused by: org.apache.jackrabbit.core.state.NoSuchItemStateException:
+31f78b39-6422-4ec8-b41e-2571b6807b05/{http://www.jcp.org/jcr/1.0}isCheckedOut
+[...]
+
+When you dont checkin the node transaction commits well, but the node is left checked out...

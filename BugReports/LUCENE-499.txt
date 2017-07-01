@@ -1,0 +1,11 @@
+Documentation improvements for 1.9 release
+
+
+
+Description:
+I've poked arround the 1.9-rc1 builds and noticed a few simple documentation things that could be cleaned up, a patch will follow that...
+
+1) Adds some additional info to the README.txt
+2) Updates the version info in queryparsersyntax.xml and fileformats.html, and advises people 
+     with older versions how to find the correct documentation for their version
+3) Builds javadocs for all of the contrib modules (the list was incomplete)

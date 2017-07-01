@@ -1,0 +1,17 @@
+DefaultHttpRequestRetryHandler must not retry non-idempotent http methods (violates RFC 2616)
+
+
+
+Description:
+In DefaultHttpRequestRetryHandler, in case of NoHttpResponseException, the request is retried, without taking into account whether the http method is idempotent or not. This violates RFC 2616 section 8.1.4 which states :
+{quote}
+This means that clients, servers, and proxies MUST be able to recover
+   from asynchronous close events. Client software SHOULD reopen the
+   transport connection and retransmit the aborted sequence of requests
+   without user interaction so long as the request sequence is
+   idempotent (see section 9.1.2). Non-idempotent methods or sequences
+   MUST NOT be automatically retried, although user agents MAY offer a
+   human operator the choice of retrying the request(s).
+{quote}
+
+The fix is simple : at line 94, just remove the {{if (exception instanceof NoHttpResponseException) }} block. This way the idempotency of the method will be taken into account a bit further in the same method.

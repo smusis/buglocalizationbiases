@@ -1,0 +1,19 @@
+Generify FST shortestPaths() to take a comparator
+
+
+
+Description:
+Not sure we should do this, it costs 5-10% performance for WFSTSuggester.
+But maybe we can optimize something here, or maybe its just no big deal to us.
+
+Because in general, this could be pretty powerful, e.g. if you needed to store 
+some custom stuff in the suggester, you could use pairoutputs, or whatever.
+
+And the possibility we might need shortestPaths for other cool things... at the
+least I just wanted to have the patch up here.
+
+I haven't tested this on pairoutputs... but i've tested it with e.g. FloatOutputs
+and other things and it works fine.
+
+I tried to minimize the generics violations, there is only 1 (cannot create generic array).
+

@@ -1,0 +1,22 @@
+StandardQueryParser ignores AND operator for tokenized query terms
+
+
+
+Description:
+The standard query parser uses the default query operator for query clauses that are created from tokenization in the query parser instead of the actual operator for the source term.
+
+here is an example:
+{code}
+StandardQueryParser parser = new StandardQueryParser(new StandardAnalyzer(Version.LUCENE_34));
+parser.setDefaultOperator(Operator.OR);
+System.out.println(((BooleanQuery)parser.parse("_deleted:true AND title:æ?±äº¬", "f")));
+{code}
+
+this should yield:
++_deleted:true +(title:æ?± title:äº¬)
+
+as our former core query parser does but actually yields:
++_deleted:true title:æ?± title:äº¬
+
+seems like a bug to me, looking at the tests seems we don't test for this kind of queries in the standard query parser tests too.
+

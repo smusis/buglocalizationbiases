@@ -1,0 +1,10 @@
+Fixed Spelling mailinglist.xml
+
+
+
+Description:
+Just fixed some spelling in the mailinglist.xml in /java/trunk/xdocs
+
+
+
+

@@ -1,0 +1,6 @@
+Mark contrib/wikipedia as experimental
+
+
+
+Description:
+I am going to add javadocs to trunk and 2_3 branch that mark the WikipediaTokenizer as experimental.  I think it is fine to release, but I want people to know that the grammar may change in the next release (although I will try to keep it the same)

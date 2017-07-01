@@ -1,0 +1,6 @@
+intermittent deadlock in TestAtomicUpdate,TestIndexWriterExceptions
+
+
+
+Description:
+While backporting issues for 2.9.x/3.0.x release I hit deadlocks in these two tests, under both test-core and test-tag.

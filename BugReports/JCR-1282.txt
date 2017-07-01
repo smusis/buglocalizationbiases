@@ -1,0 +1,6 @@
+Publish the jackrabbit-ocm DTD
+
+
+
+Description:
+The jackrabbit-ocm DTD from jackrabbit-ocm/src/dtd should be made available for reference on the Jackrabbit web site.

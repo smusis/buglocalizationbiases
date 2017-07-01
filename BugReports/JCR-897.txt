@@ -1,0 +1,29 @@
+ItemState constructor throws IllegalArgumentException
+
+
+
+Description:
+When running ConcurrentReadWriteTest it may happen that a reading session gets an IllegalArgumentException:
+
+Exception in thread "Thread-7" java.lang.IllegalArgumentException: illegal status: 0
+	at org.apache.jackrabbit.core.state.ItemState.<init>(ItemState.java:138)
+	at org.apache.jackrabbit.core.state.PropertyState.<init>(PropertyState.java:79)
+	at org.apache.jackrabbit.core.state.LocalItemStateManager.getPropertyState(LocalItemStateManager.java:121)
+	at org.apache.jackrabbit.core.state.LocalItemStateManager.getItemState(LocalItemStateManager.java:152)
+	at org.apache.jackrabbit.core.state.XAItemStateManager.getItemState(XAItemStateManager.java:226)
+	at org.apache.jackrabbit.core.state.SessionItemStateManager.getItemState(SessionItemStateManager.java:175)
+	at org.apache.jackrabbit.core.ItemManager.createItemInstance(ItemManager.java:495)
+	at org.apache.jackrabbit.core.ItemManager.getItem(ItemManager.java:326)
+	at org.apache.jackrabbit.core.LazyItemIterator.prefetchNext(LazyItemIterator.java:90)
+	at org.apache.jackrabbit.core.LazyItemIterator.<init>(LazyItemIterator.java:75)
+	at org.apache.jackrabbit.core.ItemManager.getChildProperties(ItemManager.java:485)
+	at org.apache.jackrabbit.core.NodeImpl.getProperties(NodeImpl.java:2481)
+	at org.apache.jackrabbit.core.ConcurrentReadWriteTest$1$1.execute(ConcurrentReadWriteTest.java:61)
+	at org.apache.jackrabbit.core.AbstractConcurrencyTest$Executor.run(AbstractConcurrencyTest.java:107)
+	at java.lang.Thread.run(Thread.java:595)
+
+Status 0 is STATUS_UNDEFINED. I think the following happens: when the reading session retrieves the ItemState from the SharedItemStateManager it is still valid but a short time later the writing session removes the item and changes the status to STATUS_UNDEFINED. Then the reading session tries to create an overlayed ItemState for the LocalItemStateManager using the changed status.
+
+Adding the STATUS_UNDEFINED to the list of 'valid' status in the ItemState constructor seems to solve the issue, but I'm not sure if that's the right way to do it.
+
+Opinions?

@@ -1,0 +1,33 @@
+Add IW.add/updateDocuments to support nested documents
+
+
+
+Description:
+I think nested documents (LUCENE-2454) is a very compelling addition
+to Lucene.  It's also a popular (many votes) issue.
+
+Beyond supporting nested document querying, which is already an
+incredible addition since it preserves the relational model on
+indexing normalized content (eg, DB tables, XML docs), LUCENE-2454
+should also enable speedups in grouping implementation when you group
+by a nested field.
+
+For the same reason, it can also enable very fast post-group facet
+counting impl (LUCENE-3097) when you what to
+count(distinct(nestedField)), instead of unique documents, as your
+"identifier".  I expect many apps that use faceting need this ability
+(to count(distinct(nestedField)) not distinct(docID)).
+
+To support these use cases, I believe the only core change needed is
+the ability to atomically add or update multiple documents, which you
+cannot do today since in between add/updateDocument calls a flush (eg
+due to commit or getReader()) could occur.
+
+This new API (addDocuments(Iterable<Document>), updateDocuments(Term
+delTerm, Iterable<Document>) would also further guarantee that the
+documents are assigned sequential docIDs in the order the iterator
+provided them, and that the docIDs all reside in one segment.
+
+Segment merging never splits segments apart, so this invariant would
+hold even as merges/optimizes take place.
+

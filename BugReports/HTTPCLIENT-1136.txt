@@ -1,0 +1,12 @@
+BasicClientConnectionManager.releaseConnection accesses poolEntry using non-standard lock
+
+
+
+Description:
+According to the annotation, poolEntry is @GuardedBy("this").
+
+However, in at least one place, it is accessed without holding a lock on this: 
+
+BasicClientConnectionManager.releaseConnection synchronizes on managedConn, and then accesses poolEntry without synchronising on this.
+
+[Synch. only works if all parties use the same lock.]

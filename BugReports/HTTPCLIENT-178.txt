@@ -1,0 +1,7 @@
+MultiThreadedHttpConnectionManager never reclaims unused connectons
+
+
+
+Description:
+There is no limit on the number of connections that will get created by the
+MultiThreadedHttpConnectionManager.  Unused connections are never destroyed.

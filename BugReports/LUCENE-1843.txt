@@ -1,0 +1,8 @@
+Convert some tests to new TokenStream API, better support of cross-impl AttributeImpl.copyTo()
+
+
+
+Description:
+This patch converts some remaining tests to the new TokenStream API and non-deprecated classes.
+This patch also enhances AttributeImpl.copyTo() of Token and TokenWrapper to also support copying e.g. TermAttributeImpl into Token. The target impl must only support all interfaces but must not be of the same type. Token and TokenWrapper use optimized coping without casting to 6 interfaces where possible.
+Maybe the special tokenizers in contrib (shingle matrix and so on using tokens to cache may be enhanced by that). Also Yonik's request for optimized copying of states between incompatible AttributeSources may be enhanced by that (possibly a new issue).

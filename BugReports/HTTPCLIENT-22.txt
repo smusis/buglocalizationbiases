@@ -1,0 +1,17 @@
+shouldn't automatically set Content-Length in request header
+
+
+
+Description:
+currently, httpclient automatically add Content-Length: 0 in the request 
+header, this is causing problems with some web servers, particularly, with
+
+ar.atwola.com
+
+Try the following URL
+http://ar.atwola.com/file/adsWrapper.js
+
+It will block indefinitely. This problem can be fixed by not sending the 
+Content-Length header, this is the browser's behavior. I'm not sure why this 
+casue problem, but let's conform to a standard browser's practice and avoid 
+troubles.

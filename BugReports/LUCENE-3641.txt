@@ -1,0 +1,6 @@
+MultiReader does not propagate readerFinishedListeners to clones/reopened readers
+
+
+
+Description:
+While working on refactoring MultiReader/DirectoryReader in trunk, I found out that MultiReader does not correctly pass readerFinishedListeners to its clones and reopened readers.

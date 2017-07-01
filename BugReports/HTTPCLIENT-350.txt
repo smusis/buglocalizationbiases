@@ -1,0 +1,7 @@
+HttpState#matchCredentials is broken
+
+
+
+Description:
+Credentials matching algorithm is flawed, generates unnecessary garbage by
+instantiating intermediate object during lookup

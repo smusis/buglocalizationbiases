@@ -1,0 +1,15 @@
+Session.importXml should close the input stream (as to JSR 283/JCR 2.0)
+
+
+
+Description:
+http://markmail.org/thread/crwx27dkt2cnjjy7
+
+This is available for all that follow:
+  Node.setProperty(String, InputStream)
+  Property.setValue(InputStream)
+  ValueFactory.createValue(InputStream)
+  ValueFactory.createBinary(InputStream)
+  Session.importXML(String, InputStream, int)
+  Workspace.importXML(String, InputStream, int)
+

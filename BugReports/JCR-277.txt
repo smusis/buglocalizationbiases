@@ -1,0 +1,57 @@
+reorganize xdocs and website
+
+
+
+Description:
+i would like to propose a change to the website and xdocs structure.
+
+the current structure below seems like it could use a brush up.
+
+---
+Overview
+Architecture Doc
+.Overview
+..JSR-170 Levels
+.Deployment Models
+..Application HOWTO
+..Model 1 HOWTO
+..Model 2 HOWTO
+..Model 3 HOWTO
+.Core Operations
+..Start-up, Initialize
+..QueryManager Implementation
+First Steps
+JCR API Documentation
+Layout
+Downloads
+FAQ
+---
+
+i would propose the following, instead:
+---
+About 
+Documentation
+.First Steps
+.JCR
+.API Documentation
+.Jackrabbit Architecture
+..Start-up, Initialize
+..QueryManager Implementation
+.Deployment Models
+..Application HOWTO
+..Model 1 HOWTO
+..Model 2 HOWTO
+..Model 3 HOWTO
+.Nodetype Modelling *new*
+Layout
+Downloads
+FAQ
+---
+
+also i would like to introduce a new "homepage" with a little bit more attractive content like jackrabbit
+news, maybe featured jackrabbit applications, schedules and events.
+
+ideally i would like to re-organize the file structure according to the navigation, which may break
+bookmarks and search indexes.
+
+thoughts?

@@ -1,0 +1,11 @@
+Support for NTLM authentication
+
+
+
+Description:
+A late write in for this would be support for NTLM authenticatin as well as
+basic and digest.  Obviously non-trivial but it would be a very big feature.
+
+Adrian Sutton, Software Engineer
+Ephox Corporation
+www.ephox.com <http://www.ephox.com>

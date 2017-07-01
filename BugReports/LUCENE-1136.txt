@@ -1,0 +1,12 @@
+add ability to not count sub-task doLogic increment to contri/benchmark
+
+
+
+Description:
+Sometimes, you want to run a sub-task like CloseIndex, and include the time it takes to run, but not include the count that it returns when reporting rec/s.
+
+We could adopt this approach: if a task is preceded by a "-" character, then, do not count the value returned by doLogic.
+
+See discussion leading to this here:
+
+  http://www.gossamer-threads.com/lists/lucene/java-dev/57081

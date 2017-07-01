@@ -1,0 +1,12 @@
+XMLTextExtractor returns an empty reader when encoding is unsupported
+
+
+
+Description:
+XMLTextExtractor is failing to index xml files.  Searching for content in xml files is not coming back with results.
+
+On the extractText(InputStream stream, String type, String encoding) method, the encoding is coming in as an empty string, and it throws an exception at line 62 (reader.parse(source)).
+
+modifying the following statement fixes the problem:
+before:  if (encoding != null) {
+after:  if (encoding != null && !encoding.equals("")) {

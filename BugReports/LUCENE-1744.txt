@@ -1,0 +1,26 @@
+BooleanScorer2 fails to update this.doc when its the top scorer
+
+
+
+Description:
+When BooleanScorer2 runs the top collection loop (one of its
+score(Collector)) methods, it uses a local "doc" var, ie:
+
+{code}
+public void score(Collector collector) throws IOException {
+    collector.setScorer(this);
+    int doc;
+    while ((doc = countingSumScorer.nextDoc()) != NO_MORE_DOCS) {
+      collector.collect(doc);
+    }
+}
+{code}
+
+The problem is, if the child collector calls scorer.doc() it will
+always get -1.  Most Collectors don't actually call scorer.doc(), but
+one important one that does is ScoreCachingWrapperScorer, as it uses
+the doc to know when to invalidate its cache.  Since this always
+returns -1, the ScoreCachingWrapperScorer keeps returning score=0.0 to
+its caller, thus messing up a SortField.SCORE comparator instance if
+it's included in the sort fields.
+

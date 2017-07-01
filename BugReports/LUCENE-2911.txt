@@ -1,0 +1,9 @@
+synchronize grammar/token types across StandardTokenizer, UAX29EmailURLTokenizer, ICUTokenizer, add CJK types.
+
+
+
+Description:
+I'd like to do LUCENE-2906 (better cjk support for these tokenizers) for a future target such as 3.2
+
+But, in 3.1 I would like to do a little cleanup first, and synchronize all these token types, etc.
+

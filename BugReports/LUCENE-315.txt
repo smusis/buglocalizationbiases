@@ -1,0 +1,22 @@
+Documentation Error for FilteredTermEnum
+
+
+
+Description:
+As pointed out in 
+http://nagoya.apache.org/eyebrowse/ReadMsg?listName=lucene-user@jakarta.apache.org&msgNo=11034
+the documentation of FilteredTermEnum.term() is wrong:
+it says 
+'Returns the current Term in the enumeration. Initially invalid, valid after
+next() called for the first time.'
+but the implementation of the constructors of the two derived classes
+(FuzzyTermEnum and WildcardTermEnum) already initializes the object to point to
+the first match. So calling next() before accessing terms will leave out the
+first match.
+
+So I suggest to replace the second sentance by something like
+'Returns null if no Term matches or all terms have been enumerated.'
+(I checked that for WildcardTermEnum only).
+Further one might add some note to the docs of the constructors of FuzzyTermEnum
+and WildcardTermEnum that they will point to the first element of the
+enumeration (if any).

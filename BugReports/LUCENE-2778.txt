@@ -1,0 +1,10 @@
+Allow easy extension of RAMDirectory
+
+
+
+Description:
+RAMDirectory uses RAMFiles to store the data. RAMFile offers a newBuffer() method for extensions to override and allocate buffers differently, from e.g. a pool or something. However, RAMDirectory always allocates RAMFile and doesn't allow allocating a RAMFile extension, which makes RAMFile.newBuffer() unusable.
+
+I think we can simply introduce a newRAMFile() method on RAMDirectory and make the RAMFiles map protected, and it will allow really extending RAMDir.
+
+I will post a patch later.

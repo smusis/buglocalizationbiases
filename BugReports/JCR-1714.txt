@@ -1,0 +1,36 @@
+QueryImpl result offSet must be considered after security class grant the item.
+
+
+
+Description:
+ackrabbit version is 1.4 (jackrabbit-core - 1.4.5).
+I use searches with result limit and offset but it is working some wrong for my case.
+Lets suppose the total of nodes that will return with the search:
+
+NAME      - GRANTACCESS -   OFFSET
+node1     -     true                    - 0
+node2     -     false                  -  1
+node3     -     true                    - 2
+node4     -     true                    - 3
+node5     -     false                  -  4
+
+My page must have 2 records, so first I do a count for the search and get size of 3 records (after filtered by my security class invoked automatically by jackrabbit), so I have 2 pages to show to the user. The first page must return 2 records, of course, and the second must return 1 record.
+
+In the first search I do set:
+QueryImp.setOffset(0);
+QueryImpl.setLimit(2);
+
+So, I get the nodes 1 and 3, thats correct.
+
+In the second same search (for second page), I do set:
+QueryImp.setOffset(2);
+QueryImpl.setLimit(2);
+
+This way I pretend to get two records, starting from the record nro 3, which would be only the node4.
+But, the result I got is node3 (again) and node4, because the offset worked not according to the grantacess (provided by the security class), but according to the sequence of the raw result.
+
+This offset have to start in the correct position, counting only the granted nodes returned by the security class.
+Hope this make sense for you.
+
+Thanks.
+Helio.

@@ -1,0 +1,6 @@
+Move contribs/modules away from QueryParser dependency
+
+
+
+Description:
+Some contribs and modules depend on the core QueryParser just for simplicity in their tests.  We should apply the same process as I did to the core tests, and move them away from using the QueryParser where possible.

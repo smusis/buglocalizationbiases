@@ -1,0 +1,6 @@
+Highlighter dist jar includes memory binary class files
+
+
+
+Description:
+Mark Harwood sent me a note about this issue noticed by a colleague. Previous releases have the memory class files in the Highlighter distribution jar. The Highlighter uses the same contrib dependency method that the xml query parser does - the problem doesn't manifest there because of the alphabetical order of build though. Fix is to not inheritAll when launching the ant task to build memory contrib.

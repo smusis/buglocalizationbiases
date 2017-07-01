@@ -1,0 +1,11 @@
+Nightly build archives do not contain Java source code.
+
+
+
+Description:
+Under the Lucene News section of the Overview page, this item's link:
+
+26 January 2006 - Nightly builds available
+http://cvs.apache.org/dist/lucene/java/nightly/
+
+goes to a directory with several 1.9M files, none of which have the src/java tree in them.

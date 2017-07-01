@@ -1,0 +1,26 @@
+Concurrency issues in SegmentInfo.files() could lead to ConcurrentModificationException
+
+
+
+Description:
+The multi-threaded call of the files() in SegmentInfo could lead to the ConcurrentModificationException if one thread is not finished additions to the ArrayList (files) yet while the other thread already obtained it as cached (see below). This is a rare exception, but it would be nice to fix. I see the code is no longer problematic in the trunk (and others ported from flex_1458), looks it was fixed while implementing post 3.x features. The fix to 3.x and 2.9.x branches could be the same - create the files set first and populate it, and then assign to the member variable at the end of the method. This will resolve the issue. I could prepare the patch for 2.9.4 and 3.x, if needed.
+
+--
+
+INFO: [19] webapp= path=/replication params={command=fetchindex&wt=javabin} status=0 QTime=1
+Jul 30, 2010 9:13:05 AM org.apache.solr.core.SolrCore execute
+INFO: [19] webapp= path=/replication params={command=details&wt=javabin} status=0 QTime=24
+Jul 30, 2010 9:13:05 AM org.apache.solr.handler.ReplicationHandler doFetch
+SEVERE: SnapPull failed
+java.util.ConcurrentModificationException
+        at java.util.AbstractList$Itr.checkForComodification(AbstractList.java:372)
+        at java.util.AbstractList$Itr.next(AbstractList.java:343)
+        at java.util.AbstractCollection.addAll(AbstractCollection.java:305)
+        at org.apache.lucene.index.SegmentInfos.files(SegmentInfos.java:826)
+        at org.apache.lucene.index.DirectoryReader$ReaderCommit.<init>(DirectoryReader.java:916)
+        at org.apache.lucene.index.DirectoryReader.getIndexCommit(DirectoryReader.java:856)
+        at org.apache.solr.search.SolrIndexReader.getIndexCommit(SolrIndexReader.java:454)
+        at org.apache.solr.handler.SnapPuller.fetchLatestIndex(SnapPuller.java:261)
+        at org.apache.solr.handler.ReplicationHandler.doFetch(ReplicationHandler.java:264)
+        at org.apache.solr.handler.ReplicationHandler$1.run(ReplicationHandler.java:146)
+

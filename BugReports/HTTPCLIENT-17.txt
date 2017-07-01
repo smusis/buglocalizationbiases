@@ -1,0 +1,10 @@
+need a way to set time out when using HttpClient and HttpMultiClient
+
+
+
+Description:
+When using class HttpClient or HttpMultiClient, there is no way to set the time 
+out value. Because the setTimeout method is in HttpConnection and HttpClient or 
+HttpMultiClient doesn't expose the HttpConnection object. One option is to add 
+a method setTimeout in HttpClient and HttpMultiClient. Another option is to add 
+such a method in HttpMethod.

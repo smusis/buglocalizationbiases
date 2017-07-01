@@ -1,0 +1,6 @@
+Land DWPT on trunk
+
+
+
+Description:
+With LUCENE-2956 we have resolved the last remaining issue for LUCENE-2324 so we can proceed landing the DWPT development on trunk soon. I think one of the bigger issues here is to make sure that all JavaDocs for IW etc. are still correct though. I will start going through that first.

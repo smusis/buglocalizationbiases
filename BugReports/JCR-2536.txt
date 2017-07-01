@@ -1,0 +1,17 @@
+spi2davex: InvalidItemStateException not properly extracted from ambiguous response error
+
+
+
+Description:
+NodeTest#testSaveInvalidStateException
+SessionTest#testSaveInvalidStateException
+
+fail with PathNotFoundException instead of InvalidItemStateException.
+
+i remember that i already addressed that issue in spi2dav a long time ago. with the batched writing in
+spi2davex it is back: the server isn't aware of the distinction and just isn't able to retrieve that removed
+item... either the client side finds a way to distinguish between path-not-found and externally modified
+or we have to leave this as known issue...
+
+in spi2dav i added add quick hack: if the operation was some write operation the path-not-found is
+simply converted into invaliditemstateexception.

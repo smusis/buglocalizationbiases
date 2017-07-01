@@ -1,0 +1,9 @@
+Authorizable#getProperty and #setProperty should deal with relativePath 
+
+
+
+Description:
+Authorizable#getProperty and #setProperty defines the property to be identified by a name.
+
+The JCR item based implementation could easily deal with relative paths instead and also retrieve or write properties below child
+nodes of the rep:Authorizable node.

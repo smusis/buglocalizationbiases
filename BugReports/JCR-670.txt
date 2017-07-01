@@ -1,0 +1,9 @@
+LocalNamespaceMappings does not make use of NameCache in NamespaceRegistryImpl
+
+
+
+Description:
+This basically means that the NameCache in NamespaceRegistryImpl is never used.
+
+The LocalNamespaceMappings should also implement NameCache and forward calls to the NamespaceRegistryImpl for names
+with namespace URIs that are not locally remapped. See proposed patch.

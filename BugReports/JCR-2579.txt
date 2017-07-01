@@ -1,0 +1,137 @@
+InvalidItemStateException when attempting concurrent, non conflicting writes
+
+
+
+Description:
+I'm having some problems doing concurrent addition of nodes to a parent node in Jackrabbit.  I've attached a simple test which starts up a bunch of threads which add nodes to a parent node concurrently. If I add in locks I can get this to work, however according to the mailing list this should work without locks. However, the test always fails with this:
+
+javax.jcr.InvalidItemStateException: Item cannot be saved because it has been modified externally: node /testParent
+	at org.apache.jackrabbit.core.ItemImpl.getTransientStates(ItemImpl.java:281)
+	at org.apache.jackrabbit.core.ItemImpl.save(ItemImpl.java:939)
+	at org.mule.galaxy.impl.JackrabbitConcurrentWriteTest$1.run(JackrabbitConcurrentWriteTest.java:71)
+
+I'm using Jackrabbit 1.6.1. Here is my (verbose) node type:
+
+  <nodeType name="galaxy:noSiblings" 
+    isMixin="false" 
+    hasOrderableChildNodes="false"
+    primaryItemName="">
+    <propertyDefinition name="*" requiredType="undefined" onParentVersion="COPY" />
+    <propertyDefinition name="*" requiredType="undefined" onParentVersion="COPY" multiple="true"/>
+    <childNodeDefinition name="*" defaultPrimaryType="nt:unstructured" onParentVersion="COPY" sameNameSiblings="false" />
+    <supertypes>
+        <supertype>nt:base</supertype>
+        <supertype>mix:referenceable</supertype>
+        <supertype>mix:lockable</supertype>
+    </supertypes>
+  </nodeType>
+
+And my test:    
+
+package org.mule.galaxy.impl;
+
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.UUID;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.TimeUnit;
+
+import javax.jcr.LoginException;
+import javax.jcr.Node;
+import javax.jcr.Repository;
+import javax.jcr.RepositoryException;
+import javax.jcr.Session;
+import javax.jcr.SimpleCredentials;
+
+import junit.framework.TestCase;
+
+import org.apache.commons.io.FileUtils;
+import org.apache.jackrabbit.api.JackrabbitNodeTypeManager;
+import org.apache.jackrabbit.core.RepositoryImpl;
+import org.apache.jackrabbit.core.TransientRepository;
+import org.apache.jackrabbit.core.config.RepositoryConfig;
+
+public class JackrabbitConcurrentWriteTest extends TestCase {
+    
+    private Repository repository;
+    private Session session;
+    private String parentUUID;
+    private boolean continueLoop = true;
+    
+    public void setUp() throws Exception {
+        FileUtils.deleteDirectory(new File("repository"));
+        File repoDir = new File("repository");
+        repoDir.mkdirs();
+        RepositoryConfig config = RepositoryConfig.create(new File("src/test/resources/META-INF/jackrabbit-repo-test.xml"), repoDir);
+        repository = RepositoryImpl.create(config);
+        session = createSession();
+        
+        createCustomNodeTypes(session);
+        
+        parentUUID = session.getRootNode().addNode("testParent", "galaxy:noSiblings").getUUID();
+        session.save();
+        session.logout();
+    }
+
+    private Session createSession() throws LoginException, RepositoryException {
+        return repository.login(new SimpleCredentials("username", "password".toCharArray()));
+    }
+    
+    public void testConcurrency() throws Exception {
+        final List<Exception> exceptions = new ArrayList<Exception>();
+        int threadCount = 20;
+        final CountDownLatch latch = new CountDownLatch(threadCount);
+        
+        for (int i = 0; i < threadCount; i++) {
+            Thread thread = new Thread() {
+
+                @Override
+                public void run() {
+                    try {
+                        while (continueLoop) {
+                            Session session = createSession();
+                            try {
+                                Node node = session.getNodeByUUID(parentUUID);
+                                node.addNode(UUID.randomUUID().toString());
+                                node.save();
+                                session.save();
+                            } finally {
+                                session.logout();
+                            }   
+                        }
+                    } catch (RepositoryException e) {
+                        exceptions.add(e);
+                        continueLoop = false;
+                    }
+                    latch.countDown();
+                }
+                
+            };
+            thread.start();
+        }
+        
+        latch.await(10, TimeUnit.SECONDS);
+        continueLoop = false;
+        
+        for (Exception e : exceptions) {
+            e.printStackTrace();
+        }
+        assertEquals(0, exceptions.size());
+    }
+    
+    public void createCustomNodeTypes(Session session) throws RepositoryException, IOException {
+        // Get the JackrabbitNodeTypeManager from the Workspace.
+        // Note that it must be cast from the generic JCR NodeTypeManager to
+        // the Jackrabbit-specific implementation.
+        // (see: http://jackrabbit.apache.org/node-types.html)
+        JackrabbitNodeTypeManager manager = (JackrabbitNodeTypeManager) session.getWorkspace().getNodeTypeManager();
+
+        // Register the custom node types defined in the CND file
+        InputStream is = Thread.currentThread().getContextClassLoader()
+                .getResourceAsStream("org/mule/galaxy/impl/jcr/nodeTypes.xml");
+        manager.registerNodeTypes(is, JackrabbitNodeTypeManager.TEXT_XML);
+    }
+}

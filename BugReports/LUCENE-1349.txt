@@ -1,0 +1,8 @@
+Mark Fieldable as allowing some changes in 2.x future releases
+
+
+
+Description:
+See http://lucene.markmail.org/message/4k2gqs3n7coh4lmd?q=Fieldable
+
+1. We mark Fieldable as being subject to change. We heavily advertise (on java-dev and java-user and maybe general) that in the next minor release of Lucene (2.4), Fieldable will be changing. It is also marked at the top of CHANGES.txt very clearly for all the world to see. Since 2.4 is probably at least a month away, I think this gives anyone with a pulse enough time to react. 

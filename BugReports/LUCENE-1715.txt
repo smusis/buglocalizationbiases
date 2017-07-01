@@ -1,0 +1,11 @@
+DirectoryIndexReader finalize() holding TermInfosReader longer than necessary
+
+
+
+Description:
+DirectoryIndexReader has a finalize method, which causes the JDK to keep a reference to the object until it can be finalized.  SegmentReader and MultiSegmentReader are subclasses that contain references to, potentially, hundreds of megabytes of cached data in a TermInfosReader.
+
+Some options would be removing finalize() from DirectoryIndexReader (it releases a write lock at the moment) or possibly nulling out references in various close() and doClose() methods throughout the class hierarchy so that the finalizable object doesn't references the Term arrays.
+
+Original mailing list message:
+http://mail-archives.apache.org/mod_mbox/lucene-java-user/200906.mbox/%3C7A5CB4A7BBCE0C40B81C5145C326C31301A62971@NUMEVP06.na.imtn.com%3E

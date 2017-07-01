@@ -1,0 +1,11 @@
+improve HttpRoute API
+
+
+
+Description:
+Some of the constructors of HttpRoute have three boolean parameters.
+Use enumerations to reduce the potential for confusion.
+
+The flags for tunnelled and layered are not independent, since layered implies tunnelled.
+These can be combined to a 3-valued enum.
+

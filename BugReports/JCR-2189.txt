@@ -1,0 +1,8 @@
+Move MemoryJournal from test to main
+
+
+
+Description:
+Running our tests with the FileJournal implementation on a windows box can be quite slow because of the many FileDescriptor.sync() calls.
+
+I'd like to move the MemoryJournal in jackrabbit-core test to the main sources. That way we can use it in other test setups.

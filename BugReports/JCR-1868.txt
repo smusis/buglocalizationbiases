@@ -1,0 +1,35 @@
+Inconsistent state when removing mix:lockable from a locked Node
+
+
+
+Description:
+when the lock holder removes mix:lockable from a locked node, the lock related properties get removed.
+however, the lock still is live and present on the node.
+
+i would have expected that either
+
+- removing mix:lockable was not allowed or
+- the lock was automatically released
+
+test code:
+
+    public void testRemoveMixLockableFromLockedNode() throws RepositoryException {
+
+        Node n = testRootNode.addNode(nodeName1);
+        n.addMixin(mixLockable);
+        testRootNode.save();
+
+        Lock l = n.lock(true, true);
+        n.removeMixin(mixLockable);
+        n.save();
+
+        assertFalse(n.isNodeType(mixLockable));                                <===== ok
+        assertFalse(l.isLive());                                                                    <===== lock is still live
+        assertFalse(n.isLocked());                                                            <=====  node is still locked
+        List tokens = Arrays.asList(superuser.getLockTokens());
+        assertFalse(tokens.contains(l.getLockToken()));                    <=====  session contains the token
+
+        assertFalse(n.hasProperty(jcrLockOwner));                             <=====  ok. prop got removed.
+        assertFalse(n.hasProperty(jcrlockIsDeep));                             <=====  ok. prop got removed.
+        n.unlock();                                                                                         <===== LockException (node not lockable)
+    }

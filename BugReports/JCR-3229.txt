@@ -1,0 +1,6 @@
+FileRevision should have a flag to control whether to sync the file on every write.
+
+
+
+Description:
+FileRevision class syncs the underlying revision.log file it uses on every write which could be a performance problem. Add a boolean flag to control whether to sync the file on every write.

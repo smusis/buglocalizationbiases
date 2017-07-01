@@ -1,0 +1,40 @@
+NPE Exception Thrown By FileJournal During Commit Operation
+
+
+
+Description:
+The following exception stack traces appearing repeatedly during a performance test of a JCR cluster at a customer site. 
+
+ERROR - Unexpected error while preparing log entry.
+java.lang.NullPointerException
+	at org.apache.jackrabbit.core.cluster.FileRevision.unlock(FileRevision.java:117)
+	at org.apache.jackrabbit.core.cluster.FileRevision.get(FileRevision.java:146)
+	at org.apache.jackrabbit.core.cluster.FileJournal.sync(FileJournal.java:296)
+	at org.apache.jackrabbit.core.cluster.FileJournal.begin(FileJournal.java:435)
+	at org.apache.jackrabbit.core.cluster.ClusterNode.updatePrepared(ClusterNode.java:399)
+	at org.apache.jackrabbit.core.cluster.ClusterNode.access$000(ClusterNode.java:40)
+	at org.apache.jackrabbit.core.cluster.ClusterNode$WorkspaceUpdateChannel.updatePrepared(ClusterNode.java:559)
+	at org.apache.jackrabbit.core.state.SharedItemStateManager$Update.begin(SharedItemStateManager.java:647)
+	at org.apache.jackrabbit.core.state.SharedItemStateManager.beginUpdate(SharedItemStateManager.java:778)
+	at org.apache.jackrabbit.core.state.SharedItemStateManager.update(SharedItemStateManager.java:808)
+	at org.apache.jackrabbit.core.state.LocalItemStateManager.update(LocalItemStateManager.java:326)
+	at org.apache.jackrabbit.core.state.XAItemStateManager.update(XAItemStateManager.java:313)
+	at org.apache.jackrabbit.core.state.LocalItemStateManager.update(LocalItemStateManager.java:302)
+	at org.apache.jackrabbit.core.state.SessionItemStateManager.update(SessionItemStateManager.java:295)
+	at org.apache.jackrabbit.core.ItemImpl.save(ItemImpl.java:1204)
+	at org.apache.jackrabbit.core.SessionImpl.save(SessionImpl.java:821)
+	
+ERROR - Unexpected error while committing log entry.
+java.lang.NullPointerException
+	at org.apache.jackrabbit.core.cluster.FileJournal.commit(FileJournal.java:660)
+	at org.apache.jackrabbit.core.cluster.ClusterNode.updateCommitted(ClusterNode.java:425)
+	at org.apache.jackrabbit.core.cluster.ClusterNode$WorkspaceUpdateChannel.updateCommitted(ClusterNode.java:566)
+	at org.apache.jackrabbit.core.state.SharedItemStateManager$Update.end(SharedItemStateManager.java:712)
+	at org.apache.jackrabbit.core.state.SharedItemStateManager.update(SharedItemStateManager.java:808)
+	at org.apache.jackrabbit.core.state.LocalItemStateManager.update(LocalItemStateManager.java:326)
+	at org.apache.jackrabbit.core.state.XAItemStateManager.update(XAItemStateManager.java:313)
+	at org.apache.jackrabbit.core.state.LocalItemStateManager.update(LocalItemStateManager.java:302)
+	at org.apache.jackrabbit.core.state.SessionItemStateManager.update(SessionItemStateManager.java:295)
+	at org.apache.jackrabbit.core.ItemImpl.save(ItemImpl.java:1204)
+	at org.apache.jackrabbit.core.SessionImpl.save(SessionImpl.java:821)
+	

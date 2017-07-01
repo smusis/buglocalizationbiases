@@ -1,0 +1,9 @@
+Typo in PropertyDefinitionTemplate
+
+
+
+Description:
+setValueConstarints should read setValueConstraints
+
+
+

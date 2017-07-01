@@ -1,0 +1,6 @@
+TokenStream/Tokenizer/TokenFilter/Token javadoc improvements
+
+
+
+Description:
+Some of the javadoc for the new TokenStream/Tokenizer/TokenFilter/Token APIs had javadoc errors.  To the best of my knowledge, I corrected these and refined the copy a bit.

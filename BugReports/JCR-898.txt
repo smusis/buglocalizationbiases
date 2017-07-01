@@ -1,0 +1,10 @@
+Improve excerpt fragments
+
+
+
+Description:
+Improve the excerpt fragments:
+
+- If a fragment starts at the very beginning of a text, the first Word is cut off
+- If a fragment does not start with the beginning of a sentence a '...' should be prepended
+- If matching terms in a fragment are within range of 75 characters the fragment is extended too far and may produce a larger fragment than requested

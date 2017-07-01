@@ -1,0 +1,12 @@
+Utility code for filtering and packaging trees
+
+
+
+Description:
+The attached zip contains new utility code for filtering and packaging trees in the repository.
+
+A tree can be traversed by the provided tree walker. During the traversal configurable filters can be applied. The filters have influence on the traversal, like skipping nodes or properties.
+Included filters test the node name, node type etc. Custom filters are possible as well.
+A tree walker notifies a tree walker listener (interface) whenever it traverses an item.
+
+The second utility code is able to package a whole tree (through a description) and export this in some way - the exporter is an interface and could e.g. be an exporter serializing the tree into a zip archiv etc.

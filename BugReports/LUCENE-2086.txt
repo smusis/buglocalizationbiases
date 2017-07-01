@@ -1,0 +1,6 @@
+When resolving deletes, IW should resolve in term sort order
+
+
+
+Description:
+See java-dev thread "IndexWriter.updateDocument performance improvement".

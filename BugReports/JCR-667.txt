@@ -1,0 +1,19 @@
+Variant spelling "Trasaction" and "Transaction" now in codebase
+
+
+
+Description:
+Incorrectly spelled "Trasaction" now in codebase.  The correctly spelled "Transaction" appears a far greater number of times.
+
+Isolated to package: org.apache.jackrabbit.jca
+
+Incorrectly  spelled "Trasaction" found in:
+(3x) JCAManagedConnection.java 
+(7x) JCAManagedConnectionFActory.java
+
+Correctly spelled "Transaction" found in:
+(20x) JCAManagedConnection.java 
+(2x) JCAManagedConnectionFActory.java 
+(1x) JCAResourceAdapter.java 
+(12x) TransactionBoundXAResource.java 
+

@@ -1,0 +1,198 @@
+ChunkedInputStream broken (2 bugs + fixes, 1 suggestion)
+
+
+
+Description:
+Bug 1.
+
+In the     
+
+read(byte[] b, int off, int len)  method
+
+of ChunkedInputStream, the number of bytes to read from the underlying 
+InputStream is calculated wrongly. In the code this is done by
+
+len = Math.min(len, chunkSize);
+
+This could (and will) cause the server (also Apache) to indeed serve that 
+number of bytes (let's say chunkSize), but it may be that we already had a 
+number of bytes on the first read. The result is that the input is now NOT 
+positioned on the end of a chunk and the rest of the reader fails because it 
+cannot find CRLF or a valid chunksize.
+
+Proposed fix (works, tested)
+len = Math.min(len, chunkSize-pos);
+
+Bug 2.
+
+In the calculation of the chunkSize (method getChunkSizeFromInputStream) the 
+conversion to int is done by calling             
+
+result = Integer.parseInt(dataString, 16);
+
+This is not robust and causes the occasional crash. The fix is simple and in 
+fact implements what is done when the chunkSize is commented (see lines in code 
+above)
+
+result = Integer.parseInt(dataString.trim(), 16);
+
+Tested and works.
+
+
+
+Suggestion:
+Same routine, input state machine. Perhaps just being pedantic..change while 
+loop to:
+
+        while (state != 2) {
+            int b = in.read();
+            if (b == -1) throw new IOException("chunked stream ended 
+unexpectedly");
+            switch (state) {
+                case 0:
+                    if (b == '\r')
+                      state = 1;
+                    else
+                      baos.write(b);
+                    break;
+                case 1:
+                    if (b == '\n')
+                      state = 2;
+                    else{
+                     // this was not CRLF, so now write '\r' + this char
+                      baos.write('\r');
+                      baos.write(b);
+                      state = 0;
+                    }
+                    break;
+                default: throw new RuntimeException("assertion failed");
+            }
+        }.
+
+In the     
+
+read(byte[] b, int off, int len)  method
+
+of ChunkedInputStream, the number of bytes to read from the underlying 
+InputStream is calculated wrongly. In the code this is done by
+
+len = Math.min(len, chunkSize);
+
+This could (and will) cause the server (also Apache) to indeed serve that 
+number of bytes (let's say chunkSize), but it may be that we already had a 
+number of bytes on the first read. The result is that the input is now NOT 
+positioned on the end of a chunk and the rest of the reader fails because it 
+cannot find CRLF or a valid chunksize.
+
+Proposed fix (works, tested)
+len = Math.min(len, chunkSize-pos);
+
+Bug 1.
+
+In the     
+
+read(byte[] b, int off, int len)  method
+
+of ChunkedInputStream, the number of bytes to read from the underlying 
+InputStream is calculated wrongly. In the code this is done by
+
+len = Math.min(len, chunkSize);
+
+This could (and will) cause the server (also Apache) to indeed serve that 
+number of bytes (let's say chunkSize), but it may be that we already had a 
+number of bytes on the first read. The result is that the input is now NOT 
+positioned on the end of a chunk and the rest of the reader fails because it 
+cannot find CRLF or a valid chunksize.
+
+Proposed fix (works, tested)
+len = Math.min(len, chunkSize-pos);
+
+Bug 2.
+
+In the calculation of the chunkSize (method getChunkSizeFromInputStream) the 
+conversion to int is done by calling             
+
+result = Integer.parseInt(dataString, 16);
+
+This is not robust and causes the occasional crash. The fix is simple and in 
+fact implements what is done when the chunkSize is commented (see lines in code 
+above)
+
+result = Integer.parseInt(dataString.trim(), 16);
+
+Tested and works.
+
+
+
+Suggestion:
+Same routine, input state machine. Perhaps just being pedantic..change while 
+loop to:
+
+        while (state != 2) {
+            int b = in.read();
+            if (b == -1) throw new IOException("chunked stream ended 
+unexpectedly");
+            switch (state) {
+                case 0:
+                    if (b == '\r')
+                      state = 1;
+                    else
+                      baos.write(b);
+                    break;
+                case 1:
+                    if (b == '\n')
+                      state = 2;
+                    else{
+                     // this was not CRLF, so now write '\r' + this char
+                      baos.write('\r');
+                      baos.write(b);
+                      state = 0;
+                    }
+                    break;
+                default: throw new RuntimeException("assertion failed");
+            }
+        }.
+
+In the calculation of the chunkSize (method getChunkSizeFromInputStream) the 
+conversion to int is done by calling             
+
+result = Integer.parseInt(dataString, 16);
+
+This is not robust and causes the occasional crash. The fix is simple and in 
+fact implements what is done when the chunkSize is commented (see lines in code 
+above)
+
+result = Integer.parseInt(dataString.trim(), 16);
+
+Tested and works.
+
+
+
+Suggestion:
+Same routine, input state machine. Perhaps just being pedantic..change while 
+loop to:
+
+        while (state != 2) {
+            int b = in.read();
+            if (b == -1) throw new IOException("chunked stream ended 
+unexpectedly");
+            switch (state) {
+                case 0:
+                    if (b == '\r')
+                      state = 1;
+                    else
+                      baos.write(b);
+                    break;
+                case 1:
+                    if (b == '\n')
+                      state = 2;
+                    else{
+                     // this was not CRLF, so now write '\r' + this char
+                      baos.write('\r');
+                      baos.write(b);
+                      state = 0;
+                    }
+                    break;
+                default: throw new RuntimeException("assertion failed");
+            }
+        }

@@ -1,0 +1,7 @@
+DefaultAccessManager#hasPrivileges(String,Set,Privilege[]) doesn't close compiled permissions
+
+
+
+Description:
+DefaultAccessManager#hasPrivileges(String,Set,Privilege[]) retrieves the compiled permissions for the specified set of principals
+from the ac provider but omit the CompiledPermissions#close() call before returning.

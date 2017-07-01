@@ -1,0 +1,31 @@
+potential memory leak when using ThreadSafeClientConnManager
+
+
+
+Description:
+When using ThreadSafeClientConnManager and developing with Jetty using auto-redeploy feature eventually I run into a PermGen out of memory exception.  I investigated with YourKit 8.0.6 and found a class loader circular reference in RefQueueWorker.  Not really sure what I was doing I made the refQueueHandler non-final and nulled it in the shutdown method of RedQueueWorker.  I don't seem to have the problem any longer with circular class loader references.
+
+Here is a diff from 4.0-beta2
+
+
+--- httpclient/src/main/java/org/apache/http/impl/conn/tsccm/RefQueueWorker.jav(revision 763223)
++++ httpclient/src/main/java/org/apache/http/impl/conn/tsccm/RefQueueWorker.jav(working copy)
+@@ -50,7 +50,7 @@
+     protected final ReferenceQueue<?> refQueue;
+ 
+     /** The handler for the references found. */
+-    protected final RefQueueHandler refHandler;
++    protected RefQueueHandler refHandler;
+ 
+ 
+     /**
+@@ -112,6 +112,8 @@
+             this.workerThread = null; // indicate shutdown
+             wt.interrupt();
+         }
++
++        refHandler = null;
+     }
+ 
+ 
+

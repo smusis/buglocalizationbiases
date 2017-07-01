@@ -1,0 +1,6 @@
+ValueSourceQuery hits synchronization bottleneck in IndexReader.isDeleted
+
+
+
+Description:
+I plan to fix it the same way we did in LUCENE-1316 for MatchAllDocsQuery (use TermDocs(null)).

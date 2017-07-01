@@ -1,0 +1,9 @@
+NodeStateMerger.merge should abort if the primary type of the 2 states to be compare are not the same
+
+
+
+Description:
+the NodeStateMerger#merge currently aborts if the mixin types of the passed state and its overlayed state are not equal.
+as of jsr 283 not the only the mixin types but also the primary type of a node can be modified.
+
+for consistency reasons NodeStateMerger#merge should abort and return false if the primary types are not the same.

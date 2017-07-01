@@ -1,0 +1,13 @@
+Adding Event interface and isLocal()
+
+
+
+Description:
+when a repository cluster is used, it seems that a common problem many people have is to detect if an observation event is send because of changes on the local instance or a remote instance of the cluster.
+
+This is especially important if you want to do post processing of data
+based on observation (the post processing should only be done by one instance in the cluster).
+
+A current solution is to cast the jcr event object to the EventImpl of jackrabbit core which is obviously not a nice solution :)
+
+So what about adding an event interface to jackrabbit api which extends the jcr event interface and adds the isLocal() method? 

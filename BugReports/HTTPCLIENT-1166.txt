@@ -1,0 +1,37 @@
+URIUtils.extractHost(...) throws a NumberFormatException line 310
+
+
+
+Description:
+Original Jboss-seam-wicket-booking application in Jboss-4.2.3.GA started, post a login request thanks httpclient, then NumberFormatException.
+
+
+
+regarding this page :
+http://hc.apache.org/httpcomponents-client-dev/httpclient/clover/org/apache/http/client/utils/URIUtils.html
+
+305 	   	// Extract the port suffix, if present
+306 	   	if (host != null) {
+307 	  	   int colon = host.indexOf(':');
+308 	   	   if (colon >= 0) {
+309 	   	      if (colon+1 < host.length()) {
+310 	   	          port = Integer.parseInt(host.substring(colon+1));
+311 	   	      }
+312 	  	   host = host.substring(0,colon);
+313 	   	   }
+314 	   	}
+
+resolving the port throw a NumberFormatException
+
+java.lang.NumberFormatException: For input string: "8080;jsessionid=9E9EDA0B6E1CDD499A0A15C4A8F212D8"
+	at java.lang.NumberFormatException.forInputString(NumberFormatException.java:48)
+	at java.lang.Integer.parseInt(Integer.java:458)
+	at java.lang.Integer.parseInt(Integer.java:499)
+	at org.apache.http.client.utils.URIUtils.extractHost(URIUtils.java:310)
+	at org.apache.http.impl.client.AbstractHttpClient.determineTarget(AbstractHttpClient.java:764)
+	at org.apache.http.impl.client.AbstractHttpClient.execute(AbstractHttpClient.java:754)
+	at org.tagbrowser.api.TagBrowser.request(TagBrowser.java:109)
+
+
+another case of this problem canbe found hier :
+https://gitorious.org/yacy/rc1/commit/8b0920b0b5eb67ae17eec24c1bf3a059543cb6e8/diffs

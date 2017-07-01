@@ -1,0 +1,6 @@
+bad route computed for redirected requests
+
+
+
+Description:
+BasicRouteDirector appears to miscalculate complex routes. Example to follow. 

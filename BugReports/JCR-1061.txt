@@ -1,0 +1,6 @@
+Allow extendability of RepositoryImpl.WorkspaceInfo
+
+
+
+Description:
+the workspace info has some package private and some protected methods. in order to be able to extend the workspace info, we need to have all methods protected.

@@ -1,0 +1,6 @@
+Annotation based implementation of jackrabbit ocm
+
+
+
+Description:
+we have created an annotation based implementation of jackrabbit-ocm that can be used instead of the digester one

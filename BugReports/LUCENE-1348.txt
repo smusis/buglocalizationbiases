@@ -1,0 +1,20 @@
+TestTimeLimitedCollector  shuold not fail if the testing machine happens to be slow
+
+
+
+Description:
+The test fails on Hudson about once a month, like this:
+
+{quote}
+   [junit] Testcase: testTimeoutNotGreedy(org.apache.lucene.search.TestTimeLimitedCollector):  FAILED
+   [junit] lastDoc=21 ,&& allowed=799 ,&& elapsed=900 >= 886 = ( 2*resolution +  TIME_ALLOWED + SLOW_DOWN = 2*20 + 799 + 47)
+   [junit] junit.framework.AssertionFailedError: lastDoc=21 ,&& allowed=799 ,&& elapsed=900 >= 886 = ( 2*resolution +  TIME_ALLOWED + SLOW_DOWN = 2*20 + 799 + 47)
+   [junit]     at org.apache.lucene.search.TestTimeLimitedCollector.doTestTimeout(TestTimeLimitedCollector.java:189)
+   [junit]     at org.apache.lucene.search.TestTimeLimitedCollector.testTimeoutNotGreedy(TestTimeLimitedCollector.java:150)
+   [junit]
+   [junit]
+   [junit] Test org.apache.lucene.search.TestTimeLimitedCollector FAILED
+{quote}
+
+Modify the test to just print a warning in this case - but still verify that there was an early termination.
+

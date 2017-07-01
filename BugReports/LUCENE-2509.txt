@@ -1,0 +1,6 @@
+Improve readability of StandardTermsDictWriter
+
+
+
+Description:
+One variable is named indexWriter, but it is a termsIndexWriter. Also some layout.

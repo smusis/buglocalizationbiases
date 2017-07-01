@@ -1,0 +1,6 @@
+have jackrabbit-core produce a test jar
+
+
+
+Description:
+I'm writing a custom FileSystem implementation and it would be nice to be able to reuse AbstractFileSystemTest.

@@ -1,0 +1,12 @@
+Setting different MAX_HOST_CONNECTION values per host using a single MultiThreadedHttpConnectionManager
+
+
+
+Description:
+Right now, it's not possible to use the
+MultiThreadedHttpConnectionManager.setMaxConnectionsPerHost(int) method in a per
+HostConfiguration basis. The value applies to every HostConfiguration the
+current connection manager is managing.
+
+I would be quite useful to allow the connection manager to set different values
+depending on the HostConfiguration.

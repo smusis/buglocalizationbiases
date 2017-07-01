@@ -1,0 +1,16 @@
+java.lang.IllegalStateException: Connection already open.
+
+
+
+Description:
+I am seeing many of the same problems noted in HTTPCLIENT-741 using the latest builds from the maven repo.
+
+java.lang.IllegalStateException: Connection already open.
+        at org.apache.http.impl.conn.AbstractPoolEntry.open(AbstractPoolEntry.java:150)
+        at org.apache.http.impl.conn.AbstractPooledConnAdapter.open(AbstractPooledConnAdapter.java:119)
+        at org.apache.http.impl.client.DefaultClientRequestDirector.execute(DefaultClientRequestDirector.java:308)
+        at org.apache.http.impl.client.AbstractHttpClient.execute(AbstractHttpClient.java:501)
+        at org.apache.http.impl.client.AbstractHttpClient.execute(AbstractHttpClient.java:456)
+        at org.apache.http.impl.client.AbstractHttpClient.execute(AbstractHttpClient.java:422)
+        at com.hi5.os.Hi5RemoteContentFetcher.fetch(Hi5RemoteContentFetcher.java:279)
+

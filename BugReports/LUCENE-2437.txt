@@ -1,0 +1,11 @@
+Indonesian Analyzer
+
+
+
+Description:
+This is an implementation of http://www.illc.uva.nl/Publications/ResearchReports/MoL-2003-02.text.pdf
+
+The only change is that I added an option to disable derivational stemming, 
+in case you want to just remove inflectional particles and possessive pronouns.
+
+

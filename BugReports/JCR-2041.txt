@@ -1,0 +1,8 @@
+Create Jcr-Client Module
+
+
+
+Description:
+task copied from JCR-1877:
+
+i think it would be wise to create a new module that mainly consists of a RepositoryFactory and combines jackrabbit-jcr2spi with the known (and also any other) spi implementations.

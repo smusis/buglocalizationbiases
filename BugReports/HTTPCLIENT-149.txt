@@ -1,0 +1,21 @@
+303 Redirects are not handled properly
+
+
+
+Description:
+When the server spits back a 303 (See Other), the redirect is not handled. 
+Looking at the code, I saw that the processRedirectResponse method in
+HttpMethodBase does not check for SC_SEE_OTHER in the case statement. 
+SC_SEE_OTHER is a redirect and should be handled appropriately.
+
+Here is a trace from the output of the client and server.
+
+GET http://172.30.229.75/CGI/Screenshot HTTP/1.1 
+Authorization: Basic c3VwZXJ1c2VyOnJvb3Q= 
+Host: 172.30.229.75 
+User-Agent: Jakarta Commons-HttpClient/2.0M1 
+
+HTTP/1.1 303 See Other 
+Location: http://172.30.229.75/FS/CIP_0_5842
+Content-Length: 0 
+Server: *snip*

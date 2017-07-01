@@ -1,0 +1,8 @@
+improve BaseTokenStreamTestCase random string generation
+
+
+
+Description:
+Most analysis tests use mocktokenizer (which splits on whitespace), but
+its rare that we generate a string with 'many tokens'. So I think we should
+try to generate more realistic test strings.

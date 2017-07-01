@@ -1,0 +1,9 @@
+IndexWriter.unlock does does nothing if NativeFSLockFactory is used
+
+
+
+Description:
+If NativeFSLockFactory is used, IndexWriter.unlock will return, silently doing nothing. The reason is that NativeFSLockFactory's makeLock always creates a new NativeFSLock. NativeFSLock's release first checks if its lock is not null. However, only if obtain() is called, that lock is not null. So release actually does nothing, and so IndexWriter.unlock does not delete the lock, or fail w/ exception.
+This is only a problem in NativeFSLock, and not in other Lock implementations, at least as I was able to see.
+
+Need to think first how to reproduce in a test, and then fix it. I'll work on it.

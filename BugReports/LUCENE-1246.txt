@@ -1,0 +1,10 @@
+Missing a null check in BooleanQuery.toString(String)
+
+
+
+Description:
+Our queryParser/tokenizer in some situations creates null query and was added as a clause to Boolean query.
+When we try to log the query, NPE is thrown from log(booleanQuery).
+
+In BooleanQuery.toString(String), a simple null check is overlooked.
+

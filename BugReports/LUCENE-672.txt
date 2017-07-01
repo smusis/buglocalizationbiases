@@ -1,0 +1,8 @@
+new merge policy
+
+
+
+Description:
+New merge policy developed in the course of 
+http://issues.apache.org/jira/browse/LUCENE-565
+http://issues.apache.org/jira/secure/attachment/12340475/newMergePolicy.Sept08.patch

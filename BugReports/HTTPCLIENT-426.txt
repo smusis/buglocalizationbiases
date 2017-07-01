@@ -1,0 +1,104 @@
+httpclient doesn't read and parse response from certain types of proxy servers when POST method is used
+
+
+
+Description:
+It was determined that when sending post data to server via Squid proxy server
+of version 2.4.STABLE2 and Squid responds 
+with "407 proxy authentication required" response, httpclient doesn't read this
+response in order to parse, but rather
+fails with soket exception "java.net.SocketException: Software caused connection
+abort: recv failed".
+
+This behaviour is reproduced with the latest nigtly build of httpclient version
+3.0. (from 9 of February 2005) as
+well as 3.0. RC1, 2.0.2 and 2.0.
+
+This is the piece of code that sends post data using httpclient:
+
+try
+{
+	HttpClientParams httpClientParams = new HttpClientParams();
+	HttpClient client = new HttpClient(httpClientParams);
+
+	HostConfiguration hostconfig = new HostConfiguration();
+	hostconfig.setProxy("db00-devl.eps.agfa.be", 3128); // SQUID proxy server
+version 2.4.STABLE2
+	client.setHostConfiguration(hostconfig);
+	PostMethod postMethod = new
+PostMethod("http://brugge.eps.agfa.be/portal03/servlet/selectFiles");
+
+	postMethod.addParameter("data", "some data");
+	int status = client.executeMethod(postMethod);
+	System.out.println("status = " + status);
+	if (status == HttpStatus.SC_OK)
+		System.out.println("Ok");
+	else if (status == HttpStatus.SC_PROXY_AUTHENTICATION_REQUIRED)
+		System.out.println("Proxy authentication required.");
+}
+catch (Exception e)
+{
+	System.out.println("Socket exception.");
+	e.printStackTrace();
+}
+
+Look at "debug log of the problem" attachment to see all output from httpclient
+and mentioned piece of code.
+In "problem_request_response_interaction" attacment it is possible to see
+interaction beetween httpclient and Squid proxy server: httpclient sends initial
+request and headers, then squid responds with "proxy authentication required"
+response and afterwards httpclient tries to send post data(without reading the
+response) but fails because connection is already closed.
+
+For more details look at "ethereal_problem" attachment for all network traffic
+during running of mentioned piece of code:
+Ethereal protocol analyzer can be used to open this file(http://www.ethereal.com/).
+
+Most likely this particular version of Squid closes connection after it sends
+proxy athentication response back,
+which causes httpclient to fail while sending post data.
+
+Let's have a look at what writeRequest(...) method of HttpMethodBase class does:
+
+1) sends request line and headers to server,
+2) handles 'Expect: 100-continue' handshake if needed,
+3) sends post data to server.
+
+My question is should HTTPClient send initial request and headers before data
+even if it is not going to read 
+a response from the server(proxy server), or this should be done only in case of
+'Expect: 100-continue' handshake 
+(this seems the only case when HTTPClient is going to listen to server
+in-between of steps 1 and 3)?
+
+My understanding is that the command
+
+        // make sure the status line and headers have been sent
+        conn.flushRequestOutputStream();
+        
+which actually splits sending of data in two parts are needed only for 'Expect:
+100-continue' handshake case.
+Just by moving "flush" command to appropriate place inside 'Expect:
+100-continue' handshake case:
+		.....
+                try {
+	            conn.flushRequestOutputStream(); // moved
+                    conn.setSocketTimeout(RESPONSE_WAIT_TIME_MS);
+		.....
+it is posible to solve described problem.
+
+I created PostMethodEx that overrides writeRequest(...) method of
+HttpMethodBase(look at "PostMethodEx" attachment) 
+and for all cases but the 'Expect: 100-continue' handshake it sends request
+line, headers and post data to server 
+at once.
+
+When mentioned piece of code(with PostMethod changed to PostMethodEx) is
+executed everyting works fine:
+look at "debug log of the fix", "fix_request_response_interaction" and
+"ethereal_fix"(all network trafic) 
+attachments.
+
+According to mentioned logs httpclient sends all post data at once and then
+reads and parses "proxy authentication required" 
+response from squid and sets status code to 407. Correct.

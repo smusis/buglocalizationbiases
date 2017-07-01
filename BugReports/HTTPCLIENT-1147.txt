@@ -1,0 +1,48 @@
+When HttpClient-Cache cannot open cache file, should act like miss
+
+
+
+Description:
+Set up HttpClient-Cache like this:
+final String cacheDir = "cachedir";
+HttpClient cachingHttpClient;
+final CacheConfig cacheConfig = new CacheConfig();
+cacheConfig.setSharedCache(false);
+cacheConfig.setMaxObjectSizeBytes(262144); //256kb
+
+if(! new File(cacheDir, "httpclient-cache").exists()){
+	if(!new File(cacheDir, "httpclient-cache").mkdir()){
+		throw new RuntimeException("failed to create httpclient cache directory: " + new File(cacheDir, "httpclient-cache").getAbsolutePath());
+	}
+}
+final ResourceFactory resourceFactory = new FileResourceFactory(new File(cacheDir, "httpclient-cache"));
+
+final HttpCacheStorage httpCacheStorage = new ManagedHttpCacheStorage(cacheConfig);
+
+cachingHttpClient = new CachingHttpClient(client, resourceFactory, httpCacheStorage, cacheConfig);
+
+Then make a request:
+final HttpGet get = new HttpGet(url);
+final HttpResponse response = cachingHttpClient.execute(get);
+final StatusLine statusLine = response.getStatusLine();
+if (statusLine.getStatusCode() >= 300) {
+	if(statusLine.getStatusCode() == 404)
+		throw new NoResultException();
+    throw new HttpResponseException(statusLine.getStatusCode(),
+            statusLine.getReasonPhrase());
+}
+response.getEntity().getContent();
+
+Everything worked as expected.
+
+Now delete the cache directory ("cachedir/httpclient-cache" in this example).
+
+And make the same request again.
+
+Actual:
+ Caused by: java.lang.IllegalStateException: Content has been consumed
+	at org.apache.http.entity.BasicHttpEntity.getContent(BasicHttpEntity.java:84)
+	at org.apache.http.conn.BasicManagedEntity.getContent(BasicManagedEntity.java:100)
+
+Expected:
+HttpClient shouldn't throw an exception - it should just perform the request again acting like a cache miss.

@@ -1,0 +1,22 @@
+optimize lev automata construction
+
+
+
+Description:
+in our lev automata algorithm, we compute an upperbound of the maximum possible states (not the true number), and
+create some "useless" unconnected states "floating around".
+
+this isn't harmful, in the original impl we did the Automaton is simply a pointer to the initial state, and all algorithms
+traverse this list, so effectively the useless states were dropped immediately. But recently we changed automaton to
+cache its numberedStates, and we set them here, so these useless states are being kept around.
+
+it has no impact on performance, but can be really confusing if you are debugging (e.g. toString). Thanks to Dawid Weiss
+for noticing this. 
+
+at the same time, forcing an extra traversal is a bit scary, so i did some benchmarking with really long strings and found
+that actually its helpful to reduce() the number of transitions (typically cuts them in half) for these long strings, as it
+speeds up some later algorithms. 
+
+won't see any speedup for short terms, but I think its easier to work with these simpler automata anyway, and it eliminates
+the confusion of seeing the redundant states without slowing anything down.
+

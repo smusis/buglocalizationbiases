@@ -1,0 +1,141 @@
+NullPointerException when using HttpHead and Request/Response interceptors
+
+
+
+Description:
+When you try to execute a HttpHead object instead of a HttpGet object while using the add request/response interceptors, you get a nullpointerexception.
+
+I can replicate the exception when using the ClientGZipContentCompression example that can be found at the HttpClient examples. But instead of using the HttpGet object I execute a HttpHead object. When I comment the interceptor parts out, I don't get the exception. 
+
+This is the error stack trace I get when executing the code in netbeans:
+
+Exception in thread "main" java.lang.NullPointerException
+	at testhttphead.ClientGZipContentCompression$2.process(ClientGZipContentCompression.java:74)
+	at org.apache.http.protocol.ImmutableHttpProcessor.process(ImmutableHttpProcessor.java:116)
+	at org.apache.http.protocol.HttpRequestExecutor.postProcess(HttpRequestExecutor.java:342)
+	at org.apache.http.impl.client.DefaultRequestDirector.execute(DefaultRequestDirector.java:472)
+	at org.apache.http.impl.client.AbstractHttpClient.execute(AbstractHttpClient.java:820)
+	at org.apache.http.impl.client.AbstractHttpClient.execute(AbstractHttpClient.java:754)
+	at org.apache.http.impl.client.AbstractHttpClient.execute(AbstractHttpClient.java:732)
+	at testhttphead.ClientGZipContentCompression.main(ClientGZipContentCompression.java:92)
+Java Result: 1
+
+Here is the code that gives me the error:
+
+package testhttphead;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.zip.GZIPInputStream;
+import org.apache.http.*;
+import org.apache.http.client.methods.HttpHead;
+import org.apache.http.entity.HttpEntityWrapper;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.protocol.HttpContext;
+import org.apache.http.util.EntityUtils;
+
+/**
+ * Demonstration of the use of protocol interceptors to transparently modify
+ * properties of HTTP messages sent / received by the HTTP client.
+ * <p/>
+ * In this particular case HTTP client is made capable of transparent content
+ * GZIP compression by adding two protocol interceptors: a request interceptor
+ * that adds 'Accept-Encoding: gzip' header to all outgoing requests and a
+ * response interceptor that automatically expands compressed response entities
+ * by wrapping them with a uncompressing decorator class. The use of protocol
+ * interceptors makes content compression completely transparent to the consumer
+ * of the {@link org.apache.http.client.HttpClient HttpClient} interface.
+ */
+public class ClientGZipContentCompression {
+
+    public final static void main(String[] args) throws Exception {
+        DefaultHttpClient httpclient = new DefaultHttpClient();
+
+        try {
+            httpclient.addRequestInterceptor(new HttpRequestInterceptor() {
+
+                public void process(
+                        final HttpRequest request,
+                        final HttpContext context) throws HttpException, IOException {
+                    if (!request.containsHeader("Accept-Encoding")) {
+                        request.addHeader("Accept-Encoding", "gzip");
+                    }
+                }
+            });
+
+            httpclient.addResponseInterceptor(new HttpResponseInterceptor() {
+
+                public void process(
+                        final HttpResponse response,
+                        final HttpContext context) throws HttpException, IOException {
+                    HttpEntity entity = response.getEntity();
+                    Header ceheader = entity.getContentEncoding();
+                    if (ceheader != null) {
+                        HeaderElement[] codecs = ceheader.getElements();
+                        for (int i = 0; i < codecs.length; i++) {
+                            if (codecs[i].getName().equalsIgnoreCase("gzip")) {
+                                response.setEntity(
+                                        new GzipDecompressingEntity(response.getEntity()));
+                                return;
+                            }
+                        }
+                    }
+                }
+            });
+
+            HttpHead httpHead = new HttpHead("http://www.howest.be");
+
+            // Execute HTTP request
+            System.out.println("executing request " + httpHead.getURI());
+            HttpResponse response = httpclient.execute(httpHead);
+
+            System.out.println("----------------------------------------");
+            System.out.println(response.getStatusLine());
+            System.out.println(response.getLastHeader("Content-Encoding"));
+            System.out.println(response.getLastHeader("Content-Length"));
+            System.out.println("----------------------------------------");
+
+            HttpEntity entity = response.getEntity();
+
+            if (entity != null) {
+                String content = EntityUtils.toString(entity);
+                System.out.println(content);
+                System.out.println("----------------------------------------");
+                System.out.println("Uncompressed size: " + content.length());
+            }
+
+        } finally {
+            // When HttpClient instance is no longer needed,
+            // shut down the connection manager to ensure
+            // immediate deallocation of all system resources
+            httpclient.getConnectionManager().shutdown();
+        }
+    }
+
+    static class GzipDecompressingEntity extends HttpEntityWrapper {
+
+        public GzipDecompressingEntity(final HttpEntity entity) {
+            super(entity);
+        }
+
+        @Override
+        public InputStream getContent()
+                throws IOException, IllegalStateException {
+
+            // the wrapped entity's getContent() decides about repeatability
+            InputStream wrappedin = wrappedEntity.getContent();
+
+            return new GZIPInputStream(wrappedin);
+        }
+
+        @Override
+        public long getContentLength() {
+            // length of ungzipped content is not known
+            return -1;
+        }
+    }
+}
+
+With kind regards,
+
+Peter

@@ -1,0 +1,11 @@
+Remove/Uncommit SegmentingTokenizerBase
+
+
+
+Description:
+I added this class in LUCENE-3305 to support analyzers like Kuromoji,
+but Kuromoji no longer needs it as of LUCENE-3767. So now nothing uses it.
+
+I think we should uncommit before releasing, svn doesn't forget so
+we can add this back if we want to refactor something like Thai or Smartcn
+to use it.

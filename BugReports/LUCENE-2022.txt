@@ -1,0 +1,6 @@
+remove contrib deprecations
+
+
+
+Description:
+there aren't too many deprecations in contrib to remove for 3.0, but we should get rid of them.

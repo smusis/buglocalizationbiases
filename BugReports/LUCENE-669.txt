@@ -1,0 +1,12 @@
+finalize()-methods of FSDirectory.FSIndexInput and FSDirectory.FSIndexOutput try to close already closed file
+
+
+
+Description:
+Hi all,
+
+I found a small problem in FSDirectory: The finalize()-methods of FSDirectory.FSIndexInput and FSDirectory.FSIndexOutput try to close the underlying file. This is not a problem unless the file has been closed before by calling the close() method. If it has been closed before, the finalize method throws an IOException saying that the file is already closed. Usually this IOException would go unnoticed, because the GarbageCollector, which calls finalize(), just eats it. However, if I use the Eclipse debugger the execution of my code will always be suspended when this exception is thrown.
+
+Even though this exception probably won't cause problems during normal execution of Lucene, the code becomes cleaner if we apply this small patch. Might this IOException also have a performance impact, if it is thrown very frequently?
+
+I attached the patch which applies cleanly on the current svn HEAD. All testcases pass and I verfied with the Eclipse debugger that the IOException is not longer thrown.

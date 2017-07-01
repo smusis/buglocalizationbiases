@@ -1,0 +1,6 @@
+IndexWriter commits update documents without corresponding delete
+
+
+
+Description:
+while backporting the testcase from LUCENE-3348 I ran into this thread hazard in the 3.x branch. We actually fixed this issue in LUCENE-3348 for Lucene 4.0 but since DWPT has a slightly different behavior when committing segments I create a new issue to track this down in 3.x. when we prepare a commit we sync on IW flush the DW and apply all deletes then release the lock, maybeMerge and start the commit (IW#startCommit(userdata)). Yet, a new segment could be flushed via getReader and sneak into the SegementInfos which are cloned in IW#startCommit instead of in prepareCommit right after the flush. 

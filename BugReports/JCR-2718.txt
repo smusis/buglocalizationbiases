@@ -1,0 +1,6 @@
+Incorrect results from joins on multivalued properties
+
+
+
+Description:
+It looks like join conditions on multivalued properties only use one of the multiple values for the comparison.

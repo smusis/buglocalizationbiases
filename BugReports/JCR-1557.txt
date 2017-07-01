@@ -1,0 +1,49 @@
+Avoid exceptions during shutting repository down if several PMs/FSs use same DB
+
+
+
+Description:
+According to docs and forum discussions, it's legal to use same DB for different FileSystems/Persistence Managers. Such configurations seem to work fine, but when repository is stopped, exceptions are produced like following:
+
+SEVERE: Error while closing Version Manager.
+java.sql.SQLNonTransientConnectionException: No current connection.
+	at org.apache.derby.impl.jdbc.SQLExceptionFactory40.getSQLException(Unknown Source)
+	at org.apache.derby.impl.jdbc.Util.newEmbedSQLException(Unknown Source)
+	at org.apache.derby.impl.jdbc.Util.newEmbedSQLException(Unknown Source)
+	at org.apache.derby.impl.jdbc.Util.noCurrentConnection(Unknown Source)
+	at org.apache.derby.impl.jdbc.EmbedConnection.checkIfClosed(Unknown Source)
+	at org.apache.derby.impl.jdbc.EmbedConnection.getMetaData(Unknown Source)
+	at org.apache.jackrabbit.core.persistence.db.DerbyPersistenceManager.closeConnection(DerbyPersistenceManager.java:109)
+	at org.apache.jackrabbit.core.persistence.db.DatabasePersistenceManager.close(DatabasePersistenceManager.java:261)
+	at org.apache.jackrabbit.core.version.VersionManagerImpl.close(VersionManagerImpl.java:201)
+	at org.apache.jackrabbit.core.RepositoryImpl.doShutdown(RepositoryImpl.java:1000)
+	at org.apache.jackrabbit.core.RepositoryImpl.shutdown(RepositoryImpl.java:948)
+	at org.apache.jackrabbit.core.TransientRepository.stopRepository(TransientRepository.java:275)
+	at org.apache.jackrabbit.core.TransientRepository.loggedOut(TransientRepository.java:427)
+	at org.apache.jackrabbit.core.SessionImpl.notifyLoggedOut(SessionImpl.java:574)
+	at org.apache.jackrabbit.core.SessionImpl.logout(SessionImpl.java:1247)
+	at org.apache.jackrabbit.core.XASessionImpl.logout(XASessionImpl.java:403)
+	at com.blandware.tooling.jcrplugin.ExportMojo.execute(ExportMojo.java:81)
+	at org.apache.maven.plugin.DefaultPluginManager.executeMojo(DefaultPluginManager.java:447)
+	at org.apache.maven.lifecycle.DefaultLifecycleExecutor.executeGoals(DefaultLifecycleExecutor.java:539)
+	at org.apache.maven.lifecycle.DefaultLifecycleExecutor.executeStandaloneGoal(DefaultLifecycleExecutor.java:493)
+	at org.apache.maven.lifecycle.DefaultLifecycleExecutor.executeGoal(DefaultLifecycleExecutor.java:463)
+	at org.apache.maven.lifecycle.DefaultLifecycleExecutor.executeGoalAndHandleFailures(DefaultLifecycleExecutor.java:311)
+	at org.apache.maven.lifecycle.DefaultLifecycleExecutor.executeTaskSegments(DefaultLifecycleExecutor.java:278)
+	at org.apache.maven.lifecycle.DefaultLifecycleExecutor.execute(DefaultLifecycleExecutor.java:143)
+	at org.apache.maven.DefaultMaven.doExecute(DefaultMaven.java:333)
+	at org.apache.maven.DefaultMaven.execute(DefaultMaven.java:126)
+	at org.apache.maven.cli.MavenCli.main(MavenCli.java:282)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:39)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:25)
+	at java.lang.reflect.Method.invoke(Method.java:597)
+	at org.codehaus.classworlds.Launcher.launchEnhanced(Launcher.java:315)
+	at org.codehaus.classworlds.Launcher.launch(Launcher.java:255)
+	at org.codehaus.classworlds.Launcher.mainWithExitCode(Launcher.java:430)
+	at org.codehaus.classworlds.Launcher.main(Launcher.java:375)
+Caused by: java.sql.SQLException: No current connection.
+	at org.apache.derby.impl.jdbc.SQLExceptionFactory.getSQLException(Unknown Source)
+	at org.apache.derby.impl.jdbc.SQLExceptionFactory40.wrapArgsForTransportAcrossDRDA(Unknown Source)
+	... 35 more
+

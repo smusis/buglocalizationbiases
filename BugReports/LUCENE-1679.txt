@@ -1,0 +1,12 @@
+Make WildcardTermEnum#difference() non-final
+
+
+
+Description:
+The method WildcardTermEnum#difference() is declared final. I found it very useful to subclass WildcardTermEnum to implement different scoring for exact vs. partial matches. The change is rather trivial (attached)  but I guess it could make life easier for a couple of users.
+
+I attached two patches:
+ - one which contains the single change to make difference() non-final (WildcardTermEnum.patch)
+ - one which does also contain some minor cleanup of WildcardTermEnum. I removed unnecessary member initialization and made those final. ( WildcardTermEnum_cleanup.patch)
+
+Thanks simon

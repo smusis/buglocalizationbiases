@@ -1,0 +1,6 @@
+PropertyReadMethodsTest should also work on NAME property
+
+
+
+Description:
+Some test cases in PropertyReadMethodsTest require a String property even though a NAME property like jcr:primaryType would be sufficient.

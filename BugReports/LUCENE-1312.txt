@@ -1,0 +1,6 @@
+InstantiatedIndexReader does not implement getFieldNames properly
+
+
+
+Description:
+Causes error in org.apache.lucene.index.SegmentMerger.mergeFields

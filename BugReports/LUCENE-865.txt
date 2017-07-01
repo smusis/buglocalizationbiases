@@ -1,0 +1,6 @@
+SpellChecker not working because of stale IndexSearcher
+
+
+
+Description:
+The SpellChecker unit test did not work, because of a stale IndexReader and IndexSearcher instance after calling indexDictionary(Dictionary).

@@ -1,0 +1,9 @@
+DbDataStore connection does not always reconnect
+
+
+
+Description:
+If a DbDataStore connection is closed due to an error all subsequent addRecord calls will fail with 'connection has been closed and autoReconnect == false'
+ after getRecord is called and the connection is reconnected addRecord will succeed.
+
+the connection should be validated before setting autoReconnect = false or on retrieval from the pool.

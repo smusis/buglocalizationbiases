@@ -1,0 +1,8 @@
+Identifier paths for inexistent items throw exception
+
+
+
+Description:
+The following fails with a RepositoryException but it should rather return false:
+
+session.itemExists("[" + UUID.randomUUID() + "]")

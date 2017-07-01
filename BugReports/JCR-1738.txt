@@ -1,0 +1,10 @@
+BeanConfig may incorrectly throw ConfigurationException
+
+
+
+Description:
+With the changes from JCR-1462 the BeanConfig.newInstance() may throw a ConfigurationException if the bean does not support a configuration parameter that is configured.
+
+There may be cases where the check in newInstance() yields an unsupported property even though there is a bean property present with the given key. Because the implementation uses 'map.get(key) == null'  as a check for a property name the method will throw if the key exists but the value is null.
+
+The implementation should rather use 'map.containsKey(key)'.

@@ -1,0 +1,12 @@
+Simple Webdav: dir with same name as repository has incorrect behavior
+
+
+
+Description:
+Using a default repository named "default" for example, creating a directory named "default" in that repository will have issues.  The directory will not behave correctly. 
+
+Viewing the dir in Jetty http://localhost:8080/jackrabbit/repository/default/default/ will show the contents of the "default" directory.  However, clicking on any of the contents will go to an incorrect URL.  E.g. if a directory named "test" was created, then the URL for test will be "http://localhost:8080/jackrabbit/repository/default/test/"  instead of "http://localhost:8080/jackrabbit/repository/default/default/test/".
+
+Notice that there is only one "default" in the path provided by jackrabbit.  
+
+This causes the contents of such directories to be inaccessible

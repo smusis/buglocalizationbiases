@@ -1,0 +1,6 @@
+The Field ctors that take byte[] shouldn't take Store, since it must be YES
+
+
+
+Description:
+API silliness.  Makes you think you can set Store.NO for binary fields.  This used to be meaningful when we also accepted COMPRESS, but now it's an orphan.

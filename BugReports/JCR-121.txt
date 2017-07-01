@@ -1,0 +1,16 @@
+JCRTest.java (First Steps example code) creates a StringValue with "new"
+
+
+
+Description:
+The JCRTest.java file described in the First Steps document (http://incubator.apache.org/jackrabbit/firststeps.html) on the jackrabbit incubator website contains a line that attempts to create a StringValue using new, rather than using the ValueFactory interface. This causes the code to fail to compile - perhaps an initiative test, but could be off-putting...
+
+Simple fix is to swap the line:
+
+ n.setProperty("testprop", new StringValue("Hello, World."));
+
+to 
+
+n.setProperty("testprop", session.getValueFactory().createValue("Hello, World."));
+
+

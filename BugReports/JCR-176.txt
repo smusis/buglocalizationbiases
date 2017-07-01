@@ -1,0 +1,19 @@
+JCRTest.java (First Steps example code): to few parameters in session.importXML
+
+
+
+Description:
+In the code on the First Steps page:
+
+if (!rn.hasNode("importxml")) {
+        System.out.println("importing xml");
+        Node n=rn.addNode("importxml", "nt:unstructured");
+        session.importXML("/importxml", new FileInputStream("repotest/test.xml"));
+        session.save();
+      }
+
+The importXML needs a third parameter, compare to: 
+
+http://www.day.com/maven/jsr170/javadocs/jcr-1.0/javax/jcr/Session.html
+
+This prevents the code from the First Steps page from compiling.

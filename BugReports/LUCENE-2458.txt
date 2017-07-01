@@ -1,0 +1,17 @@
+queryparser makes all CJK queries phrase queries regardless of analyzer
+
+
+
+Description:
+The queryparser automatically makes *ALL* CJK, Thai, Lao, Myanmar, Tibetan, ... queries into phrase queries, even though you didn't ask for one, and there isn't a way to turn this off.
+
+This completely breaks lucene for these languages, as it treats all queries like 'grep'.
+
+Example: if you query for f:abcd with standardanalyzer, where a,b,c,d are chinese characters, you get a phrasequery of "a b c d". if you use cjk analyzer, its no better, its a phrasequery of  "ab bc cd", and if you use smartchinese analyzer, you get a phrasequery like "ab cd". But the user didn't ask for one, and they cannot turn it off.
+
+The reason is that the code to form phrase queries is not internationally appropriate and assumes whitespace tokenization. If more than one token comes out of whitespace delimited text, its automatically a phrase query no matter what.
+
+The proposed patch fixes the core queryparser (with all backwards compat kept) to only form phrase queries when the double quote operator is used. 
+
+Implementing subclasses can always extend the QP and auto-generate whatever kind of queries they want that might completely break search for languages they don't care about, but core general-purpose QPs should be language independent.
+

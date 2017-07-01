@@ -1,0 +1,54 @@
+Trunk fails tests, FSD.open() - related
+
+
+
+Description:
+    [junit] Testcase: testReadAfterClose(org.apache.lucene.index.TestCompoundFile):	FAILED
+    [junit] expected readByte() to throw exception
+    [junit] junit.framework.AssertionFailedError: expected readByte() to throw exception
+    [junit] 	at org.apache.lucene.index.TestCompoundFile.demo_FSIndexInputBug(TestCompoundFile.java:345)
+    [junit] 	at org.apache.lucene.index.TestCompoundFile.testReadAfterClose(TestCompoundFile.java:313)
+    [junit] 	at org.apache.lucene.util.LuceneTestCase.runTest(LuceneTestCase.java:88)
+
+This one is a non-bug, if you ask me. The test should fail on SimpleFSD, but on my system FSD.open() creates MMapD and that one cannot be closed, so the read succeeds.
+
+    [junit] ------------- Standard Output ---------------
+    [junit] Thread[Thread-34,5,main]: exc
+    [junit] java.nio.BufferUnderflowException
+    [junit] 	at java.nio.Buffer.nextGetIndex(Buffer.java:474)
+    [junit] 	at java.nio.DirectByteBuffer.get(DirectByteBuffer.java:229)
+    [junit] 	at org.apache.lucene.store.MMapDirectory$MMapIndexInput.readByte(MMapDirectory.java:67)
+    [junit] 	at org.apache.lucene.store.ChecksumIndexInput.readByte(ChecksumIndexInput.java:36)
+    [junit] 	at org.apache.lucene.store.IndexInput.readInt(IndexInput.java:70)
+    [junit] 	at org.apache.lucene.index.SegmentInfos.read(SegmentInfos.java:238)
+    [junit] 	at org.apache.lucene.index.DirectoryIndexReader$1.doBody(DirectoryIndexReader.java:106)
+    [junit] 	at org.apache.lucene.index.SegmentInfos$FindSegmentsFile.run(SegmentInfos.java:699)
+    [junit] 	at org.apache.lucene.index.DirectoryIndexReader.open(DirectoryIndexReader.java:126)
+    [junit] 	at org.apache.lucene.index.IndexReader.open(IndexReader.java:374)
+    [junit] 	at org.apache.lucene.index.IndexReader.open(IndexReader.java:260)
+    [junit] 	at org.apache.lucene.search.IndexSearcher.<init>(IndexSearcher.java:76)
+    [junit] 	at org.apache.lucene.index.TestStressIndexing$SearcherThread.doWork(TestStressIndexing.java:109)
+    [junit] 	at org.apache.lucene.index.TestStressIndexing$TimedThread.run(TestStressIndexing.java:52)
+    [junit] NOTE: random seed of testcase 'testStressIndexAndSearching' was: -7374705829444180151
+    [junit] ------------- ---------------- ---------------
+    [junit] Testcase: testStressIndexAndSearching(org.apache.lucene.index.TestStressIndexing):	FAILED
+    [junit] null
+    [junit] junit.framework.AssertionFailedError
+    [junit] 	at org.apache.lucene.index.TestStressIndexing.runStressTest(TestStressIndexing.java:155)
+    [junit] 	at org.apache.lucene.index.TestStressIndexing.testStressIndexAndSearching(TestStressIndexing.java:178)
+    [junit] 	at org.apache.lucene.util.LuceneTestCase.runTest(LuceneTestCase.java:88)
+
+This one suceeds sometimes, sometimes (mostly) fails. Is obviously linked with switch to MMapD, but what is the real cause - I don't know.
+
+    [junit] ------------- Standard Output ---------------
+    [junit] NOTE: random seed of testcase 'testSetBufferSize' was: 8481546620770090440
+    [junit] ------------- ---------------- ---------------
+    [junit] Testcase: testSetBufferSize(org.apache.lucene.store.TestBufferedIndexInput):	Caused an ERROR
+    [junit] org.apache.lucene.store.MMapDirectory$MMapIndexInput cannot be cast to org.apache.lucene.store.BufferedIndexInput
+    [junit] java.lang.ClassCastException: org.apache.lucene.store.MMapDirectory$MMapIndexInput cannot be cast to org.apache.lucene.store.BufferedIndexInput
+    [junit] 	at org.apache.lucene.store.TestBufferedIndexInput$MockFSDirectory.tweakBufferSizes(TestBufferedIndexInput.java:226)
+    [junit] 	at org.apache.lucene.store.TestBufferedIndexInput.testSetBufferSize(TestBufferedIndexInput.java:181)
+    [junit] 	at org.apache.lucene.util.LuceneTestCase.runTest(LuceneTestCase.java:88)
+
+Broken assumptions.
+

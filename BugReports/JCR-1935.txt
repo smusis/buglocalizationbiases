@@ -1,0 +1,6 @@
+Incomplete JCR-1664 fix in BindableRepository
+
+
+
+Description:
+The changes in JCR-1664 were not fully merged from trunk to the 1.4 branch due to a typo in the commit message of revision 683268. As a result a BindableRepository subclass becomes a bit cumbersome to implement. I hope to fix this in 1.4.7 so that subclasses written for both the partial and fully merged JCR-1664 fix should work.

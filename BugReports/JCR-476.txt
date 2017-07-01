@@ -1,0 +1,20 @@
+Remove recently added getJCRPath()/getQPath() from NamespaceResolver
+
+
+
+Description:
+issue JCR-473 added 2 new methods to NamespaceResolver: 
+
+    public Path getQPath(String jcrPath) throws MalformedPathException;
+    public String getJCRPath(Path qPath) throws NoPrefixDeclaredException;
+
+which do not belong here, since the NamespaceResolver has nothing to do with paths. suggest to remove them.
+
+further is the naming of the QName related methods a bit vague. suggest to rename them to:
+
+   QName parseName(String jcrName)
+   String formatName(QName qName)
+
+(although they do not belong here either, but helps to leverage evt. caching namespace resolvers).
+
+

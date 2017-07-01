@@ -1,0 +1,29 @@
+"fdx size mismatch" exception in StoredFieldsWriter.closeDocStore() when closing index with 500M documents
+
+
+
+Description:
+When closing index that contains 500,000,000 randomly generated documents, an exception is thrown:
+
+java.lang.RuntimeException: after flush: fdx size mismatch: 500000000 docs vs 4000000004 length in bytes of _0.fdx
+	at org.apache.lucene.index.StoredFieldsWriter.closeDocStore(StoredFieldsWriter.java:94)
+	at org.apache.lucene.index.DocFieldConsumers.closeDocStore(DocFieldConsumers.java:83)
+	at org.apache.lucene.index.DocFieldProcessor.closeDocStore(DocFieldProcessor.java:47)
+	at org.apache.lucene.index.DocumentsWriter.closeDocStore(DocumentsWriter.java:367)
+	at org.apache.lucene.index.IndexWriter.flushDocStores(IndexWriter.java:1688)
+	at org.apache.lucene.index.IndexWriter.doFlush(IndexWriter.java:3518)
+	at org.apache.lucene.index.IndexWriter.flush(IndexWriter.java:3442)
+	at org.apache.lucene.index.IndexWriter.closeInternal(IndexWriter.java:1623)
+	at org.apache.lucene.index.IndexWriter.close(IndexWriter.java:1588)
+	at org.apache.lucene.index.IndexWriter.close(IndexWriter.java:1562)
+        ...
+
+This appears to be a bug at StoredFieldsWriter.java:93:
+
+      if (4+state.numDocsInStore*8 != state.directory.fileLength(state.docStoreSegmentName + "." + IndexFileNames.FIELDS_INDEX_EXTENSION))
+
+where the multiplication by 8 is causing integer overflow. The fix would be to cast state.numDocsInStore to long before multiplying.
+
+It appears that this is another instance of the mistake that caused bug LUCENE-1519. I did a cursory seach for \*8 against the code to see if there might be yet more instances of the same mistake, but found none. 
+
+

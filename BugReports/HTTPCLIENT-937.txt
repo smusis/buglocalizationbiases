@@ -1,0 +1,6 @@
+Make CacheEntry use an immutable object to represent cache content 
+
+
+
+Description:
+Make CacheEntry use an immutable object to represent cache content similar to HttpEntity

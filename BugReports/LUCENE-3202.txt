@@ -1,0 +1,6 @@
+Add DataInput/DataOutput subclasses that delegate to an InputStream/OutputStream.
+
+
+
+Description:
+Such classes would be handy for FST serialization/deserialization.

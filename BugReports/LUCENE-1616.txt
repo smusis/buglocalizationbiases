@@ -1,0 +1,10 @@
+add one setter for start and end offset to OffsetAttribute
+
+
+
+Description:
+add OffsetAttribute. setOffset(startOffset, endOffset);
+
+trivial change, no JUnit needed
+
+Changed CharTokenizer to use it

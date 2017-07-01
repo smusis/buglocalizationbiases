@@ -1,0 +1,14 @@
+First Steps document is outdated
+
+
+
+Description:
+As reported by Manoj Prasad on the development mailing list, the code and configuration shown on the First Steps document [1] is no longer up to date with the latest Jackrabbit sources. The differences are:
+
+   * the Versioning element needs to be added to the repository configuration file
+   * the output values printed by the examples have changes (log messages, new node types, etc.)
+   * multiple values (especially jcr:mixinTypes properties) are not handled correctly
+
+The document should be updated.
+
+[1] http://incubator.apache.org/jackrabbit/firststeps.html

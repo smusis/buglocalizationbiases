@@ -1,0 +1,6 @@
+NodeIndexer creates unnecessary string representation of Name value
+
+
+
+Description:
+NodeIndexer.addNameValue() calls Name.toString() but never uses it.

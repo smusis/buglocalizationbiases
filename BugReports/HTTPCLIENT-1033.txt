@@ -1,0 +1,10 @@
+HttpRoute.equals(Object o) is quite inefficient, as it does not take full advantage of shortcut logic
+
+
+
+Description:
+HttpRoute.equals(Object o) is quite inefficient, as it does not take full advantage of shortcut logic.
+
+It should return as soon as the first  false is detected.
+
+Patch to follow implements short-circuit checking.

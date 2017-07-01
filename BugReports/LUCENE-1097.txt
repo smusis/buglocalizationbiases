@@ -1,0 +1,16 @@
+IndexWriter.close(false) does not actually stop background merge threads
+
+
+
+Description:
+Right now when you close(false), IndexWriter marks any running merges
+as aborted but then does not wait for these merges to finish.  This
+can cause problems because those threads still hold files open, so,
+someone might think they can call close(false) and then (say) delete
+all files from that directory, which would fail on Windows.
+
+Instead, close(false) should notify each running merge that it has
+been aborted, and not return until all running merges are done.  Then,
+SegmentMerger should periodically check whether it has been aborted
+and stop if so.
+

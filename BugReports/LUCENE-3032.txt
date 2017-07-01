@@ -1,0 +1,36 @@
+TestIndexWriterException fails with NPE on realtime
+
+
+
+Description:
+{noformat}
+   [junit] Testsuite: org.apache.lucene.index.TestIndexWriterExceptions
+    [junit] Testcase: testRandomExceptionsThreads(org.apache.lucene.index.TestIndexWriterExceptions):	Caused an ERROR
+    [junit] (null)
+    [junit] java.lang.NullPointerException
+    [junit] 	at org.apache.lucene.index.DocumentsWriterPerThread.prepareFlush(DocumentsWriterPerThread.java:329)
+    [junit] 	at org.apache.lucene.index.DocumentsWriter.doFlush(DocumentsWriter.java:378)
+    [junit] 	at org.apache.lucene.index.DocumentsWriter.flushAllThreads(DocumentsWriter.java:512)
+    [junit] 	at org.apache.lucene.index.IndexWriter.doFlush(IndexWriter.java:2619)
+    [junit] 	at org.apache.lucene.index.IndexWriter.flush(IndexWriter.java:2594)
+    [junit] 	at org.apache.lucene.index.IndexWriter.prepareCommit(IndexWriter.java:2464)
+    [junit] 	at org.apache.lucene.index.IndexWriter.commitInternal(IndexWriter.java:2537)
+    [junit] 	at org.apache.lucene.index.IndexWriter.commit(IndexWriter.java:2519)
+    [junit] 	at org.apache.lucene.index.IndexWriter.commit(IndexWriter.java:2503)
+    [junit] 	at org.apache.lucene.index.TestIndexWriterExceptions.testRandomExceptionsThreads(TestIndexWriterExceptions.java:230)
+    [junit] 	at org.apache.lucene.util.LuceneTestCase$LuceneTestCaseRunner.runChild(LuceneTestCase.java:1226)
+    [junit] 	at org.apache.lucene.util.LuceneTestCase$LuceneTestCaseRunner.runChild(LuceneTestCase.java:1154)
+    [junit] 
+    [junit] 
+    [junit] Tests run: 18, Failures: 0, Errors: 1, Time elapsed: 22.548 sec
+    [junit] 
+    [junit] ------------- Standard Error -----------------
+    [junit] NOTE: reproduce with: ant test -Dtestcase=TestIndexWriterExceptions -Dtestmethod=testRandomExceptionsThreads -Dtests.seed=-5079747362001734044:1572064802119081373
+    [junit] WARNING: test method: 'testRandomExceptionsThreads' left thread running: merge thread: _25(4.0):cv2/1 _29(4.0):cv2/1 _20(4.0):cv3/1 into _2m
+    [junit] RESOURCE LEAK: test method: 'testRandomExceptionsThreads' left 1 thread(s) running
+    [junit] NOTE: test params are: codec=RandomCodecProvider: {content=Pulsing(freqCutoff=2), field=MockSep, id=Pulsing(freqCutoff=2), other=MockSep, contents=SimpleText, content1=MockSep, content2=SimpleText, content4=MockRandom, content5=MockRandom, content6=MockVariableIntBlock(baseBlockSize=41), crash=Standard, content7=MockFixedIntBlock(blockSize=1633)}, locale=en_GB, timezone=Europe/Vaduz
+    [junit] NOTE: all tests run in this JVM:
+    [junit] [TestToken, TestDateTools, Test2BTerms, TestAddIndexes, TestFilterIndexReader, TestIndexWriterExceptions]
+    [junit] NOTE: Linux 2.6.37-gentoo amd64/Sun Microsystems Inc. 1.6.0_24 (64-bit)/cpus=8,threads=1,free=155417240,total=292945920
+    [junit] ------------- ---------------- ---------------
+{noformat}

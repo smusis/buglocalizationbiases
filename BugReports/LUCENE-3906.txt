@@ -1,0 +1,7 @@
+allow specifying -Dbootclasspath for javac/javadocs
+
+
+
+Description:
+So that you can compile/javadoc against the actual target JRE libraries
+even if you have a newer compiler.

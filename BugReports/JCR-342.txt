@@ -1,0 +1,7 @@
+Jcr-Server: DavResource#getDavSession() missing
+
+
+
+Description:
+Instead of having DavResource#getDavSession() this method is defined individually by most of the
+derived interfaces.

@@ -1,0 +1,20 @@
+Lucene's nightly Hudson builds don't have svn version in MANIFEST.MF
+
+
+
+Description:
+Solr had the same issue but apparently made a configuration change to the Hudson configuration to get it working:
+
+    https://issues.apache.org/jira/browse/SOLR-684
+
+Also I opened this INFRA issue:
+
+    https://issues.apache.org/jira/browse/INFRA-1721
+
+which says the svnversion exe is located in this path:
+
+    /opt/subversion-current/bin
+
+In that INRA issue, /etc/init.d/tomcat was also fixed in theory so that svnversion would be on the path the next time Hudson is restarted.  Still, in case that doesn't work, or it changes in the future, it seems a good idea to make the same change that Solr made to Lucene's Hudson configuration.
+
+Hoss can you detail what you needed to do for Solr?  Or maybe just do it also for Lucene ;)  Thanks!

@@ -1,0 +1,20 @@
+Allow users to disable validation
+
+
+
+Description:
+DigesterMapperImpl leaves validating set to default true when creating a DigesterDescriptorReader.
+
+But as the dtd is not available anywhere (published or in the source), it is usually not declared in mapping files, and DigesterDescriptorReader complains about it.
+
+Could it be possible to leave the user a way to configure the validation? The simpliest way would be to add this constructor to DigesterMapperImpl :
+
+    public DigesterMapperImpl(InputStream[] streams, boolean validate) {
+        descriptorReader = new DigesterDescriptorReader(streams);
+        DigesterDescriptorReader.class.cast(descriptorReader).setValidating(validate);
+        this.buildMapper();
+    }
+
+Best regard,
+
+Stephane Landelle

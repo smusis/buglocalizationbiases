@@ -1,0 +1,121 @@
+TestSimpleExplanations failure
+
+
+
+Description:
+{noformat}
+ant test -Dtestcase=TestSimpleExplanations -Dtestmethod=testDMQ8 -Dtests.seed=-7e984babece66153:3e3298ae627b33a9:3093059db62bcc71
+{noformat}
+
+fails w/ this on current trunk... looks like silly floating point precision issue:
+
+{noformat}
+
+    [junit] Testsuite: org.apache.lucene.search.TestSimpleExplanations
+    [junit]   1.4508595 = (MATCH) sum of:
+    [junit]     1.4508595 = (MATCH) weight(field:yy in 2) [DefaultSimilarity], result of:
+    [junit]       1.4508595 = score(doc=2,freq=1.0 = termFreq=1
+    [junit] ), product of:
+    [junit]         1.287682 = queryWeight, product of:
+    [junit]           1.287682 = idf(docFreq=2, maxDocs=4)
+    [junit]           1.0 = queryNorm
+    [junit]         1.1267219 = fieldWeight in 2, product of:
+    [junit]           1.0 = tf(freq=1.0), with freq of:
+    [junit]             1.0 = termFreq=1
+    [junit]           1.287682 = idf(docFreq=2, maxDocs=4)
+    [junit]           0.875 = fieldNorm(doc=2)
+    [junit]   145085.95 = (MATCH) weight(field:xx^100000.0 in 2) [DefaultSimilarity], result of:
+    [junit]     145085.95 = score(doc=2,freq=1.0 = termFreq=1
+    [junit] ), product of:
+    [junit]       128768.2 = queryWeight, product of:
+    [junit]         100000.0 = boost
+    [junit]         1.287682 = idf(docFreq=2, maxDocs=4)
+    [junit]         1.0 = queryNorm
+    [junit]       1.1267219 = fieldWeight in 2, product of:
+    [junit]         1.0 = tf(freq=1.0), with freq of:
+    [junit]           1.0 = termFreq=1
+    [junit]         1.287682 = idf(docFreq=2, maxDocs=4)
+    [junit]         0.875 = fieldNorm(doc=2)
+    [junit]  expected:<145086.66> but was:<145086.69>)
+    [junit] Tests run: 1, Failures: 1, Errors: 0, Time elapsed: 0.544 sec
+    [junit] 
+    [junit] ------------- Standard Error -----------------
+    [junit] NOTE: reproduce with: ant test -Dtestcase=TestSimpleExplanations -Dtestmethod=testDMQ8 -Dtests.seed=144152895b276837:eb7ba4953db943f:33373b79a971db02
+    [junit] NOTE: test params are: codec=PreFlex, sim=RandomSimilarityProvider(queryNorm=false,coord=false): {field=DefaultSimilarity, alt=DFR I(ne)LZ(0.3), KEY=IB LL-D2}, locale=en_IN, timezone=Pacific/Samoa
+    [junit] NOTE: all tests run in this JVM:
+    [junit] [TestSimpleExplanations]
+    [junit] NOTE: Linux 2.6.33.6-147.fc13.x86_64 amd64/Sun Microsystems Inc. 1.6.0_21 (64-bit)/cpus=24,threads=1,free=130426744,total=189988864
+    [junit] ------------- ---------------- ---------------
+    [junit] Testcase: testDMQ8(org.apache.lucene.search.TestSimpleExplanations):	FAILED
+    [junit] ((field:yy field:w5^100.0) | field:xx^100000.0)~0.5: score(doc=2)=145086.66 != explanationScore=145086.69 Explanation: 145086.69 = (MATCH) max plus 0.5 times others of:
+    [junit]   1.4508595 = (MATCH) sum of:
+    [junit]     1.4508595 = (MATCH) weight(field:yy in 2) [DefaultSimilarity], result of:
+    [junit]       1.4508595 = score(doc=2,freq=1.0 = termFreq=1
+    [junit] ), product of:
+    [junit]         1.287682 = queryWeight, product of:
+    [junit]           1.287682 = idf(docFreq=2, maxDocs=4)
+    [junit]           1.0 = queryNorm
+    [junit]         1.1267219 = fieldWeight in 2, product of:
+    [junit]           1.0 = tf(freq=1.0), with freq of:
+    [junit]             1.0 = termFreq=1
+    [junit]           1.287682 = idf(docFreq=2, maxDocs=4)
+    [junit]           0.875 = fieldNorm(doc=2)
+    [junit]   145085.95 = (MATCH) weight(field:xx^100000.0 in 2) [DefaultSimilarity], result of:
+    [junit]     145085.95 = score(doc=2,freq=1.0 = termFreq=1
+    [junit] ), product of:
+    [junit]       128768.2 = queryWeight, product of:
+    [junit]         100000.0 = boost
+    [junit]         1.287682 = idf(docFreq=2, maxDocs=4)
+    [junit]         1.0 = queryNorm
+    [junit]       1.1267219 = fieldWeight in 2, product of:
+    [junit]         1.0 = tf(freq=1.0), with freq of:
+    [junit]           1.0 = termFreq=1
+    [junit]         1.287682 = idf(docFreq=2, maxDocs=4)
+    [junit]         0.875 = fieldNorm(doc=2)
+    [junit]  expected:<145086.66> but was:<145086.69>
+    [junit] junit.framework.AssertionFailedError: ((field:yy field:w5^100.0) | field:xx^100000.0)~0.5: score(doc=2)=145086.66 != explanationScore=145086.69 Explanation: 145086.69 = (MATCH) max plus 0.5 times others of:
+    [junit]   1.4508595 = (MATCH) sum of:
+    [junit]     1.4508595 = (MATCH) weight(field:yy in 2) [DefaultSimilarity], result of:
+    [junit]       1.4508595 = score(doc=2,freq=1.0 = termFreq=1
+    [junit] ), product of:
+    [junit]         1.287682 = queryWeight, product of:
+    [junit]           1.287682 = idf(docFreq=2, maxDocs=4)
+    [junit]           1.0 = queryNorm
+    [junit]         1.1267219 = fieldWeight in 2, product of:
+    [junit]           1.0 = tf(freq=1.0), with freq of:
+    [junit]             1.0 = termFreq=1
+    [junit]           1.287682 = idf(docFreq=2, maxDocs=4)
+    [junit]           0.875 = fieldNorm(doc=2)
+    [junit]   145085.95 = (MATCH) weight(field:xx^100000.0 in 2) [DefaultSimilarity], result of:
+    [junit]     145085.95 = score(doc=2,freq=1.0 = termFreq=1
+    [junit] ), product of:
+    [junit]       128768.2 = queryWeight, product of:
+    [junit]         100000.0 = boost
+    [junit]         1.287682 = idf(docFreq=2, maxDocs=4)
+    [junit]         1.0 = queryNorm
+    [junit]       1.1267219 = fieldWeight in 2, product of:
+    [junit]         1.0 = tf(freq=1.0), with freq of:
+    [junit]           1.0 = termFreq=1
+    [junit]         1.287682 = idf(docFreq=2, maxDocs=4)
+    [junit]         0.875 = fieldNorm(doc=2)
+    [junit]  expected:<145086.66> but was:<145086.69>
+    [junit] 	at org.apache.lucene.search.CheckHits.verifyExplanation(CheckHits.java:324)
+    [junit] 	at org.apache.lucene.search.CheckHits$ExplanationAsserter.collect(CheckHits.java:494)
+    [junit] 	at org.apache.lucene.search.Scorer.score(Scorer.java:60)
+    [junit] 	at org.apache.lucene.search.IndexSearcher.search(IndexSearcher.java:580)
+    [junit] 	at org.apache.lucene.search.IndexSearcher.search(IndexSearcher.java:363)
+    [junit] 	at org.apache.lucene.search.CheckHits.checkExplanations(CheckHits.java:302)
+    [junit] 	at org.apache.lucene.search.QueryUtils.checkExplanations(QueryUtils.java:92)
+    [junit] 	at org.apache.lucene.search.QueryUtils.check(QueryUtils.java:126)
+    [junit] 	at org.apache.lucene.search.QueryUtils.check(QueryUtils.java:122)
+    [junit] 	at org.apache.lucene.search.QueryUtils.check(QueryUtils.java:106)
+    [junit] 	at org.apache.lucene.search.CheckHits.checkHitCollector(CheckHits.java:89)
+    [junit] 	at org.apache.lucene.search.TestExplanations.qtest(TestExplanations.java:99)
+    [junit] 	at org.apache.lucene.search.TestSimpleExplanations.testDMQ8(TestSimpleExplanations.java:224)
+    [junit] 	at org.apache.lucene.util.LuceneTestCase$2$1.evaluate(LuceneTestCase.java:611)
+    [junit] 	at org.apache.lucene.util.LuceneTestCaseRunner.runChild(LuceneTestCaseRunner.java:148)
+    [junit] 	at org.apache.lucene.util.LuceneTestCaseRunner.runChild(LuceneTestCaseRunner.java:50)
+    [junit] 
+    [junit] 
+    [junit] Test org.apache.lucene.search.TestSimpleExplanations FAILED
+{noformat}

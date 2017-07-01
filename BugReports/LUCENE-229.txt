@@ -1,0 +1,18 @@
+[PATCH] Binary stored fields
+
+
+
+Description:
+Provides a binary Field type that can be used to store byte arrays in the Lucene
+index. Can be used for a variety of applications from compressed text storage,
+image storage or as a basis for implementing typed storage (e.g: Integers,
+Floats, etc.)
+
+Based on discussion from lucene-dev list started here:
+http://marc.theaimsgroup.com/?l=lucene-dev&m=108455161204687&w=2
+
+Directly based on design fleshed out here:
+http://marc.theaimsgroup.com/?l=lucene-dev&m=108456898230542&w=2
+
+Patch includes updated code and unit tests not included in the patch sent do the
+lucene-dev list.

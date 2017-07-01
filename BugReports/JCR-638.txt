@@ -1,0 +1,21 @@
+Support lower-/upper-case functions
+
+
+
+Description:
+The query languages should support lower- and upper-case functions when matching property values to string literals.
+
+Example 1: find all nodes with a string property foo with a lower-cased value that equals 'bar':
+
+In XPath that's:
+
+//*[fn:lower-case(@foo) = 'bar']
+
+An in SQL:
+SELECT * FROM nt:base WHERE LOWER(foo) = 'bar'
+
+Example 2: find all nodes with a string property foo with an upper-cased value that matches '%JCR%'
+
+XPath: //*[jcr:like(fn:upper-case(@foo), '%JCR%')]
+
+SQL: SELECT * FROM nt:base WHERE UPPPER(foo) LIKE '%JCR%'

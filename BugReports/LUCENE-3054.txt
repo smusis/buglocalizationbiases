@@ -1,0 +1,18 @@
+SorterTemplate.quickSort stack overflows on broken comparators that produce only few disticnt values in large arrays
+
+
+
+Description:
+Looking at Otis's sort problem on the mailing list, he said:
+{noformat}
+* looked for other places where this call is made - found it in
+MultiPhraseQuery$MultiPhraseWeight and changed that call from
+ArrayUtil.quickSort to ArrayUtil.mergeSort
+* now we no longer see SorterTemplate.quickSort in deep recursion when we do a
+thread dump
+{noformat}
+
+I thought this was interesting because PostingsAndFreq's comparator
+looks like it needs a tiebreaker.
+
+I think in our sorts we should add some asserts to try to catch some of these broken comparators.

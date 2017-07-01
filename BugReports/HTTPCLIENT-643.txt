@@ -1,0 +1,6 @@
+Provide fail-over for multi-home remote servers (if one server in a farm goes down)
+
+
+
+Description:
+The HTTP Client does not provide automatic fail-over for multi-home remote servers (web-farm) if one server in a farm goes down

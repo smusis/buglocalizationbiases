@@ -1,0 +1,17 @@
+Bug in UtilDateTypeConverterImpl
+
+
+
+Description:
+In this converter following line is used:
+return this.getValueFactory().createValue(((java.util.Date) propValue).getTime());
+but propValue must be converted to java.util.Calendar, not into long! ValueFactory than converts to LongValue not DateValue as expected.
+
+Following code works OK:
+final long timeInMilis = ((java.util.Date) propValue).getTime();
+final Calendar calendar = Calendar.getInstance();
+calendar.setTimeInMillis(timeInMilis);
+return this.getValueFactory().createValue( calendar );
+
+but I dont know better Date-> Calendar conversion.
+

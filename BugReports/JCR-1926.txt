@@ -1,0 +1,13 @@
+Text.unescape("%") throws a StringIndexOutOfBoundsException
+
+
+
+Description:
+You get the following exception:
+
+java.lang.StringIndexOutOfBoundsException: String index out of range: 3
+	at java.lang.String.substring(String.java:1935)
+	at org.apache.jackrabbit.util.Text.unescape(Text.java:407)
+	at org.apache.jackrabbit.util.Text.unescape(Text.java:438)
+
+It would be better if it failed with IllegalArgumentException.

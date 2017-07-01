@@ -1,0 +1,10 @@
+Do MultiTermQuery boolean rewrites per segment
+
+
+
+Description:
+MultiTermQuery currently rewrites FuzzyQuery (using TopTermsBooleanQueryRewrite), the auto constant rewrite method and the ScoringBQ rewrite methods using a MultiFields wrapper on the top-level reader. This is inefficient.
+
+This patch changes the rewrite modes to do the rewrites per segment and uses some additional datastructures (hashed sets/maps) to exclude duplicate terms. All tests currently pass, but FuzzyQuery's tests should not, because it depends for the minimum score handling, that the terms are collected in order..
+
+Robert will fix FuzzyQuery in this issue, too. This patch is just a start.

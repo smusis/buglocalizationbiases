@@ -1,0 +1,9 @@
+Restore top level disjunction performance
+
+
+
+Description:
+This patch restores the performance of top level disjunctions. 
+The introduction of BooleanScorer2 had impacted this as reported
+on java-user on 21 Nov 2006 by Stanislav Jordanov.
+

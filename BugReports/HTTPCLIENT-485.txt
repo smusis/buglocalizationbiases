@@ -1,0 +1,27 @@
+Connection is not released back to the pool if a runtime exception is thrown in HttpMethod#releaseConnection method
+
+
+
+Description:
+the default config of leaving the HttpClientParams.CONNECTION_MANAGER_TIMEOUT as zero means 
+that the first time the connection manager fails to immediately get a connection you application hangs. 
+(at least using MultiThreadedHttpConnectionManager.)
+
+this is because the zero gets passed onto a call to Object.wait(long timeout) and, from the docs, "If 
+timeout is zero, however, then real time is not taken into consideration and the thread simply waits 
+until notified.". 
+
+since nothing ever "notify()"s the thread everything just stops...
+
+the default behaviour of the client more should be more predictable. you don't expect it to hang your 
+entire app if it can't get a connection, you expect it to timeout then throw an exception or give some 
+other kind of feedback.
+
+it would make sense to give a default of, say, arbitrarily, 10 seconds or so. this would save every single 
+user of the classes having to dig around in the code/documentation and explictly set this param. they 
+might decide that the default value isn't right and hence change it, but that's tweaking behaviour, not 
+correcting it. i certainly thought it was a bug in the code (yours or mine), not my config and have been 
+fretting around it for a while.
+
+best,
+garry

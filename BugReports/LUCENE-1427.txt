@@ -1,0 +1,32 @@
+QueryWrapperFilter should not do scoring
+
+
+
+Description:
+The purpose of QueryWrapperFilter is to simply filter to include the docIDs that match the query.
+
+Its implementation is wasteful now because it computes scores for those matching docs even though the score is unused.  We could fix this by getting a Scorer and iterating through the docs without asking for the score:
+
+{code}
+Index: src/java/org/apache/lucene/search/QueryWrapperFilter.java
+===================================================================
+--- src/java/org/apache/lucene/search/QueryWrapperFilter.java	(revision 707060)
++++ src/java/org/apache/lucene/search/QueryWrapperFilter.java	(working copy)
+@@ -62,11 +62,9 @@
+   public DocIdSet getDocIdSet(IndexReader reader) throws IOException {
+     final OpenBitSet bits = new OpenBitSet(reader.maxDoc());
+ 
+-    new IndexSearcher(reader).search(query, new HitCollector() {
+-      public final void collect(int doc, float score) {
+-        bits.set(doc);  // set bit for hit
+-      }
+-    });
++    final Scorer scorer = query.weight(new IndexSearcher(reader)).scorer(reader);
++    while(scorer.next())
++      bits.set(scorer.doc());
+     return bits;
+   }
+{code}
+
+Maybe I'm missing something, but this seams like a simple win?
+

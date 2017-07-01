@@ -1,0 +1,17 @@
+test cases relying on Node.equals()
+
+
+
+Description:
+Several test cases rely on Node.equals to compare nodes, where instead isSame() should be used:
+
+org.apache.jackrabbit.test.api.NodeTest.testNodeIdentity(NodeTest.java:751)
+org.apache.jackrabbit.test.api.NodeTest.testNodeIdentity(NodeTest.java:753)
+org.apache.jackrabbit.test.api.version.VersionHistoryTest.testInitallyGetAllVersionsContainsTheRootVersion(VersionHistoryTest.java:126)
+org.apache.jackrabbit.test.api.version.VersionHistoryTest.testGetVersion(VersionHistoryTest.java:180)
+org.apache.jackrabbit.test.api.version.CheckinTest.testMultipleCheckinHasNoEffect(CheckinTest.java:93)
+org.apache.jackrabbit.test.api.version.VersionGraphTest.testInitialBaseVersionPointsToRootVersion(VersionGraphTest.java:47)
+org.apache.jackrabbit.test.api.version.RemoveVersionTest.testRemoveVersionAdjustPredecessorSet(RemoveVersionTest.java:120)
+org.apache.jackrabbit.test.api.version.RemoveVersionTest.testRemoveVersionAdjustSucessorSet(RemoveVersionTest.java:144)
+
+ 

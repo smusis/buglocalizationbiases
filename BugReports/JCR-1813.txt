@@ -1,0 +1,49 @@
+Invalid journal records during XATransactions
+
+
+
+Description:
+During the prepare phase of a XATransaction, XAItemStateManager.prepare calls ShareItemStageManager.beginUpdate that, in case of a ClusterNode, calls ClusterNode.updatePrepared that does a ChangeLogRecord.write().
+
+This last method is located in ClusterRecord and systematically write the begin and the end of the journal record.
+
+As a consequence, useless corrupted records are written in the journal everytime a transaction ends without jackrabbit update! This causes polution of the journal, as other cluster nodes try to sync with the corrupted updates and fail doing so as ClusterRecordDeserializer can't deserialize it (the record identifier is empty).
+
+ChangeLogRecord (and even other ClusterRecord implementations too) should only write if there's effective updates.
+
+I propose the following solution:
+*) add the following method in Changelog so clients can know if there's effective updates:
+    public boolean hasUpdates() {
+    	return !(addedStates.isEmpty() && modifiedStates.isEmpty() && deletedStates.isEmpty() && modifiedRefs.isEmpty());
+    }
+
+*) change ClusterRecord with:
+    public final void write() throws JournalException {
+    	
+    	if (hasUpdates()) {
+	        record.writeString(workspace);
+	        doWrite();
+	        record.writeChar(END_MARKER);
+    	}
+    }
+    
+    protected abstract boolean hasUpdates();
+
+*) implement hasUpdates for every ClusterRecord implementation:
+ ----> ChangeLogRecord:
+    protected boolean hasUpdates() {
+    	return changes.hasUpdates() || !events.isEmpty();
+    }
+ ----> LockRecord and NamespaceRecord:
+    protected boolean hasUpdates() {
+    	return true;
+    }
+
+ ----> NodeTypeRecord:
+    protected boolean hasUpdates() {
+    	return !collection.isEmpty();
+    }
+
+Best regards,
+
+Stephane Landelle

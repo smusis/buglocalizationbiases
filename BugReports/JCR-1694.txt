@@ -1,0 +1,16 @@
+System properties does not get replaced in a Cluster configuration
+
+
+
+Description:
+Since JCR-1304 has been added to jackrabbit 1.4 I guess this should be reported as a bug...
+
+Still not debugged deeply, but if I try to configure a Cluster using:
+<Cluster id="${server}" syncDelay="10">
+
+after setting a "server" system property I expect to have the cluster initialized properly using the value of such property... I just realized that my cluster node gets initialized with the final value of "${server}" instead :(
+
+Cluster config is a very good place where to use system properties, since all the configuration is usually identical between cluster nodes while the "id" property must be different...
+
+Is there anything I missed/did wrong in my configuration?
+

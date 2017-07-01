@@ -1,0 +1,11 @@
+Add Apache RAT (Release Audit Tool) target to build.xml
+
+
+
+Description:
+
+Apache RAT is a useful tool to check for common mistakes in our source code (eg missing copyright headers):
+
+    http://incubator.apache.org/rat/
+
+I'm just copying the patch Grant worked out for Solr (SOLR-762).  I plan to commit to 2.4 & 2.9.

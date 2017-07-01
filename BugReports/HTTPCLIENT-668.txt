@@ -1,0 +1,8 @@
+make sure no static loggers are used
+
+
+
+Description:
+Review all loggers used in the component, make sure they are stored in non-static attributes only.
+http://wiki.apache.org/jakarta-commons/Logging/StaticLog
+

@@ -1,0 +1,28 @@
+RepositoryException when using BindVariables in JCR-SQL2 CONTAINS
+
+
+
+Description:
+When using a BindVariable in a JCR-SQL2 CONTAINS constraint, the query fails with a RepositoryException.
+
+For example:
+
+String sql = "SELECT * FROM [nt:unstructured] WHERE ISCHILDNODE([/testroot]) AND CONTAINS(mytext, $searchExpression)";
+Query q = superuser.getWorkspace().getQueryManager().createQuery(sql, Query.JCR_SQL2);
+q.bindValue("searchExpression", superuser.getValueFactory().createValue("fox"));
+q.execute();
+
+Results in:
+
+javax.jcr.RepositoryException: Unknown static operand type: org.apache.jackrabbit.spi.commons.query.qom.BindVariableValueImpl@591a4d
+        at org.apache.jackrabbit.core.query.lucene.LuceneQueryFactoryImpl.create(LuceneQueryFactoryImpl.java:215)
+        at org.apache.jackrabbit.core.query.lucene.constraint.FullTextConstraint.<init>(FullTextConstraint.java:42)
+        at org.apache.jackrabbit.core.query.lucene.constraint.ConstraintBuilder$Visitor.visit(ConstraintBuilder.java:175)
+        at org.apache.jackrabbit.spi.commons.query.qom.FullTextSearchImpl.accept(FullTextSearchImpl.java:117)
+        at org.apache.jackrabbit.core.query.lucene.constraint.ConstraintBuilder$Visitor.visit(ConstraintBuilder.java:137)
+        at org.apache.jackrabbit.spi.commons.query.qom.AndImpl.accept(AndImpl.java:72)
+        at org.apache.jackrabbit.core.query.lucene.constraint.ConstraintBuilder.create(ConstraintBuilder.java:82)
+        at org.apache.jackrabbit.core.query.lucene.QueryObjectModelImpl.execute(QueryObjectModelImpl.java:109)
+        at org.apache.jackrabbit.core.query.QueryImpl.execute(QueryImpl.java:127)
+
+I tried to fix this issue but there is no way to access the BindVariables from the ConstraintBuilder from the LuceneQueryFactoryImpl and the ConstraintBuilder just passes the FullTextSearchImpl QOM subtree to the factory (via FullTextConstraint constructor) without any further visiting. If the signature would be "LuceneQueryFactoryImpl#create(FullTextSearchImpl fts, Value searchExpression)" we could visit the StaticOperand in the ConstraintBuilder and then modify the FullTextSearchImpl constructor accordingly, but this would imply that LuceneQueryFactory interface would need to be change accordingly and I don't know what that would mean.

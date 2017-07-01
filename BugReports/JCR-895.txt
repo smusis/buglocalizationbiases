@@ -1,0 +1,15 @@
+Registering node type names with spaces fails in clustered environment
+
+
+
+Description:
+Registering a node type name that contains at least one space in a clustered environment will cause a JournalException in cluster nodes trying to read that change back from the journal. The stack trace observed is:
+
+JournalException: Parse error while reading node type definition.
+       at AbstractRecord.readNodeTypeDef(AbstractRecord.java:245)
+       ...
+Caused by: ParseException: Missing '[' delimiter for beginning of node type name ((internal), line 47)
+       at Lexer.fail(Lexer.java:148)
+       ...
+
+(package names and intermediate frames omitted for brevity).

@@ -1,0 +1,13 @@
+Remove PropDefId and NodeDefId
+
+
+
+Description:
+the PropDefIds and NodeDefIds are used to quickly lookup a childnode- or property definition in the nodetype registry (or effective nodetype).
+this is heavily used during reading, when calling Property.getDefinition() usually when checking the isMultiple() flag. and of course while writing when getting the definition for the property or childnode. 
+
+however, this poses problems when a nodetype is changed that is still used in the content. if a property definition is changed due to an altered nodetype, subsequent accesses to that property result in a "invalid propdefid" warning in the log - but the id is recomputed. this is especially a problem when upgrade jackrabbit from 1.x to 2.0, where some of the builtin nodetypes are defined differently.
+
+i think that it should be feasible to remove the propdefids and nodedefids and compute the definition on demand. i think this can be implemented without performance loss, when some sort of 'signatures' of the items are computed to quickly find the definitions in the effective node type. furthermore, the most common usecase for using the property definition is probably the isMultiple() check - which is now on the Property interface itself - which does not need a definition lookup at all.
+
+and last but not least, it saves 8 bytes per item in the persistence layer.

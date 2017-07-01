@@ -1,0 +1,21 @@
+Lucene Search not scalling
+
+
+
+Description:
+I've noticed that when doing thousands of searches in a single thread the average time is quite low i.e. a few milliseconds. When adding more concurrent searches doing exactly the same search the average time increases drastically. 
+I've profiled the search classes and found that the whole of lucene blocks on 
+
+org.apache.lucene.index.SegmentCoreReaders.getTermsReader
+org.apache.lucene.util.VirtualMethod
+  public synchronized int getImplementationDistance 
+org.apache.lucene.util.AttributeSourcew.getAttributeInterfaces
+
+These cause search times to increase from a few milliseconds to up to 2 seconds when doing 500 concurrent searches on the same in memory index. Note: That the index is not being updates at all, so not refresh methods are called at any stage.
+
+
+Some questions:
+  Why do we need synchronization here?
+  There must be a non-lockable solution for these, they basically cause lucene to be ok for single thread applications but disastrous for any concurrent implementation.
+
+I'll do some experiments by removing the synchronization from the methods of these classes.

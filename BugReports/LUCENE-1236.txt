@@ -1,0 +1,6 @@
+EdgeNGram* documentation improvement
+
+
+
+Description:
+To clarify what "edge" means, I added some description. That edge means the beggining edge of a term or ending edge of a term.

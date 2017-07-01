@@ -1,0 +1,6 @@
+Upgrade to Tika 0.8
+
+
+
+Description:
+Apache Tika version 0.8 is now available, and we should upgrade to benefit from the various fixes and improvements included in that version.

@@ -1,0 +1,40 @@
+Formatting error in ReportTask in contrib/benchmark
+
+
+
+Description:
+I am building a new Task, AnalyzerTask, that lets you change the Analyzer in the loop, thus allowing for the comparison of the same Analyzers over the set of documents.
+
+My algorithm declaration looks like:
+NewAnalyzer(WhitespaceAnalyzer, SimpleAnalyzer, StopAnalyzer, standard.StandardAnalyzer)
+
+And it could be longer.
+
+The exception is:
+Error: cannot execute the algorithm! String index out of range: 85
+java.lang.StringIndexOutOfBoundsException: String index out of range: 85
+	at java.lang.String.substring(String.java:1765)
+	at org.apache.lucene.benchmark.byTask.utils.Format.format(Format.java:85)
+	at org.apache.lucene.benchmark.byTask.tasks.ReportTask.tableTitle(ReportTask.java:85)
+	at org.apache.lucene.benchmark.byTask.tasks.ReportTask.genPartialReport(ReportTask.java:140)
+	at org.apache.lucene.benchmark.byTask.tasks.RepSumByNameTask.reportSumByName(RepSumByNameTask.java:77)
+	at org.apache.lucene.benchmark.byTask.tasks.RepSumByNameTask.doLogic(RepSumByNameTask.java:39)
+	at org.apache.lucene.benchmark.byTask.tasks.PerfTask.runAndMaybeStats(PerfTask.java:83)
+	at org.apache.lucene.benchmark.byTask.tasks.TaskSequence.doSerialTasks(TaskSequence.java:112)
+	at org.apache.lucene.benchmark.byTask.tasks.TaskSequence.doLogic(TaskSequence.java:93)
+	at org.apache.lucene.benchmark.byTask.utils.Algorithm.execute(Algorithm.java:228)
+	at org.apache.lucene.benchmark.byTask.Benchmark.execute(Benchmark.java:73)
+	at org.apache.lucene.benchmark.byTask.Benchmark.main(Benchmark.java:109)
+
+The error seems to be caused by the fact that ReportTask uses the OP (operation) column for the String, but then uses the length of the algorithm declaration to index into the String, resulting in the index out of bounds exception.
+
+The line in question is:
+return (s + padd).substring(0, col.length());
+
+And probably should be changed to something like:
+    String s1 = (s + padd);
+    return s1.substring(0, Math.min(col.length(), s1.length()));
+
+Either that or the column should be trimmed.  The workaround is to explicitly name the task.
+
+If no objections, I will make the change, tomorrow.  

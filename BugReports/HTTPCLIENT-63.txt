@@ -1,0 +1,8 @@
+Response handlers
+
+
+
+Description:
+Perhaps plugin handlers should be used to handle various ranges of http
+responses.  Could be used to respond, auto-forward, resubmit ... Could solve the
+difficulty in handling a 303 response.

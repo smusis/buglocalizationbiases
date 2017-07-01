@@ -1,0 +1,10 @@
+Revise NIOFSDirectory and its usage due to NIO limitations on Thread.interrupt
+
+
+
+Description:
+I created this issue as a spin off from http://mail-archives.apache.org/mod_mbox/lucene-java-dev/201001.mbox/%3Cf18c9dde1001280051w4af2bc50u1cfd55f85e50914f@mail.gmail.com%3E
+
+We should decide what to do with NIOFSDirectory, if we want to keep it as the default on none-windows platforms and how we want to document this.
+
+

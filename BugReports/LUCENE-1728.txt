@@ -1,0 +1,12 @@
+Move SmartChineseAnalyzer & resources to own contrib project
+
+
+
+Description:
+SmartChineseAnalyzer depends on  a large dictionary that causes the analyzer jar to grow up to 3MB. The dictionary is quite big compared to all the other resouces / class files contained in that jar. 
+Having a separate analyzer-cn contrib project enables footprint-sensitive users (e.g. using lucene on a mobile phone) to include analyzer.jar without getting into trouble with disk space.
+
+Moving SmartChineseAnalyzer to a separate project could also include a small refactoring as Robert mentioned in [LUCENE-1722|https://issues.apache.org/jira/browse/LUCENE-1722] several classes should be package protected, members and classes could be final, commented syserr and logging code should be removed etc.
+
+I set this issue target to 2.9 - if we can not make it until then feel free to move it to 3.0
+

@@ -1,0 +1,21 @@
+registration of new namespace does not respect existing session mappings
+
+
+
+Description:
+consider the following (starting with a default namespace registry):
+
+// remap nt namespace
+Session.setNamespacePrefix("foobar", "http://www.jcp.org/jcr/nt/1.0");
+
+// create new namespace
+NamespaceRegistry.registerNamespace("foobar", "http://www.foo.org/bar/1.0");
+
+now the session used above that remapped the nt namespace has an ambigous namespace mapping:
+foobar --> "http://www.jcp.org/jcr/nt/1.0"
+"http://www.jcp.org/jcr/nt/1.0" --> foobar
+"http://www.foo.org/bar/1.0" --> foobar
+
+i.e. the new foobar namespace is hidden for this session. either the registration should not work, or an automatic prefix is to be defined in all local session mappings.
+
+

@@ -1,0 +1,10 @@
+Setting Query.setOffset() passed the results total returns negative getSize() instead of zero
+
+
+
+Description:
+1. Have a query that returns 3 results
+2. Now set Query.setOffset(10) (passed the total of 3)
+3. Row/NodeIterator.getSize() returns -7 (incorrect)
+
+Expected: getSize() should return 0

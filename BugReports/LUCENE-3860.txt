@@ -1,0 +1,7 @@
+3.x indexes have the wrong normType set in fieldinfos
+
+
+
+Description:
+3.x codec claims the single byte norms are BYTES_VAR_STRAIGHT in FieldInfos,
+but the norms implementation itself then has the type as FIXED_INTS_8.

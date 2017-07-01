@@ -1,0 +1,35 @@
+When BG merge hits an exception, optimize sometimes throws an IOException missing the root cause
+
+
+
+Description:
+
+When IndexWriter.optimize() is called, ConcurrentMergeScheduler will
+run the requested merges with background threads and optimize() will
+wait for these merges to complete.
+
+If a merge hits an exception, it records the root cause exception such
+that optimize can then retrieve this root cause and throw its own
+exception, with the root cause.
+
+But there is a bug: sometimes, the fact that an exception occurred on
+a merge is recorded, but the root cause is missing.  In this cause,
+optimize() still throws an exception (correctly indicating that the
+optimize() has not finished successfully), but it's not helpful
+because it's missing the root cause.  You must then go find the root
+cause in the JRE's stderr logs.
+
+This has hit a few users on this lists, most recently:
+
+  http://www.nabble.com/Background-merge-hit-exception-td19540409.html#a19540409
+
+I found the isssue, and finally got a unit test to intermittently show
+it.  It's a simple thread safety issue: in a finally clause in
+IndexWriter.merge we record the fact that the merge hit an exception
+before actually setting the root cause, and then only in
+ConcurrentMergeScheduler's exception handler do we set the root
+cause.  If the optimize thread is scheduled in between these two, it
+can throw an exception missing its root cause.
+
+The fix is straightforward.  I plan to commit to 2.4 & 2.9.
+

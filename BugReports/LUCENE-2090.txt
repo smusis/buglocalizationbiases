@@ -1,0 +1,10 @@
+convert automaton to char[] based processing and TermRef / TermsEnum api
+
+
+
+Description:
+The automaton processing is currently done with String, mostly because TermEnum is based on String.
+it is easy to change the processing to work with char[], since behind the scenes this is used anyway.
+
+in general I think we should make sure char[] based processing is exposed in the automaton pkg anyway, for things like pattern-based tokenizers and such.
+

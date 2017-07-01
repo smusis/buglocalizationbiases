@@ -1,0 +1,30 @@
+TCK: SetPropertyAssumeTypeTest doesn't allow ValueFormatException upon type conversion failure
+
+
+
+Description:
+SetPropertyAssumeTypeTest# testValuesConstraintVioloationExceptionBecauseOfInvalidTypeParameter
+
+This test should allow an implementation to throw ValueFormatException.  In Section 7.1.5, the Javadoc for setProperty(String, Value[] int) states: "If the property type of the supplied Value objects is different from that specified, then a best-effort conversion is attempted. If the conversion fails, a ValueFormatException is thrown."
+
+Proposal: catch and consume ValueFormatException.
+
+--- SetPropertyAssumeTypeTest.java      (revision 422074)
++++ SetPropertyAssumeTypeTest.java      (working copy)
+@@ -28,6 +28,7 @@
+ import javax.jcr.PropertyType;
+ import javax.jcr.RepositoryException;
+ import javax.jcr.Property;
++import javax.jcr.ValueFormatException;
+ import java.util.Calendar;
+ import java.util.Date;
+  
+@@ -525,6 +526,9 @@
+         catch (ConstraintViolationException e) {
+             // success
+         }
++        catch (ValueFormatException e) {
++            // success
++        }
+     }
+

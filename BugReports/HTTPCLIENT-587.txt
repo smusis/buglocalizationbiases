@@ -1,0 +1,26 @@
+derelativizing of relative URIs with a scheme is incorrect
+
+
+
+Description:
+URI constructor "public URI(URI base, URI relative) throws URIException" assumes that if given 'relative' URI has a scheme, it should provide an authority and complete path to the constructed URI. However, a URI can have a scheme but still be relative, requiring the authority and base path of the 'base' URI. 
+
+Demonstration code:
+
+URI base = new URI("http://www.example.com/some/page");
+URI rel = new URI("http:boo");
+URI derel = new URI(base,rel);
+derel.toString();
+(java.lang.String) http:boo
+
+In fact, derel should be "http://www.example.com/some/boo". 
+
+RFC2396 is a little confused about this; section 3.1 states ""Relative URI references are distinguished from absolute URI in that they do not begin with a scheme name." But, in section 5, there are several sentences talking about relative URIs that begin with schemes (and how this prevents using relative URIs that have leading path segments that look like scheme identifiers). 
+
+RFC3896, which supercedes RFC2396, removes the implication a relative URI cannot begin with a scheme, leaving the other text explcitly discussing relative URIs with schemes. 
+
+Both Firefox (1.5) and IE (6.0) treat "http:boo" the same as "boo" for purposes of derelativization against an HTTP base URI, which would give the final URI "http://www.example.com/some/boo" in the example above. 
+
+Even relative URIs like "http:../../boo" are explicitly legal. 
+
+

@@ -1,0 +1,7 @@
+HttpRoutePlanner based on ProxySelector
+
+
+
+Description:
+Since we now require Java 5, we should have a route planner that uses the standard Java ProxySelector. That would allow us to automatically pick up proxy settings from system properties or the browser running an applet.
+

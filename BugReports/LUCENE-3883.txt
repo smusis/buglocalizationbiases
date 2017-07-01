@@ -1,0 +1,8 @@
+Analysis for Irish
+
+
+
+Description:
+Adds analysis for Irish.
+
+The stemmer is generated from a snowball stemmer. I've sent it to Martin Porter, who says it will be added during the week.

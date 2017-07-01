@@ -1,0 +1,16 @@
+An IOException or RuntimeException leaves the underlying socket in an undetermined state
+
+
+
+Description:
+If an application level IOException or RuntimeException occurs, the underlying
+socket will be in an undetermined state. In many cases, this will lead to zombie
+connections in the pool that do not respond properly.
+
+Simple example: uploading a file via POST. If we promise the server 1MB of data.
+Shortly after starting the transfer an IOException occurs (e.g. the NFS server
+the file was residing on stops responding). The connection is returned to the
+pool (see HTTPCLIENT-302) but the the server is still expecting close to 1MB of data
+on that socket. The next request on that socket (e.g. a GET) will send the HTTP
+header but  the server thinks the header is part of the old stream and doesn't
+respond.

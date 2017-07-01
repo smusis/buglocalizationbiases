@@ -1,0 +1,12 @@
+Similarity.Stats class for term & collection statistics
+
+
+
+Description:
+In order to support ranking methods besides TF-IDF, we need to make the statistics they need available. These statistics could be computed in computeWeight (soon to become computeStats) and stored in a separate object for easy access. Since this object will be used solely by subclasses of Similarity, it should be implented as a static inner class, i.e. Similarity.Stats.
+
+There are two ways this could be implemented:
+- as a single Similarity.Stats class, reused by all ranking algorithms. In this case, this class would have a member field for all statistics;
+- as a hierarchy of Stats classes, one for each ranking algorithm. Each subclass would define only the statistics needed for the ranking algorithm.
+
+In the second case, the Stats class in DefaultSimilarity would have a single field, idf, while the one in e.g. BM25Similarity would have idf and average field/document length.

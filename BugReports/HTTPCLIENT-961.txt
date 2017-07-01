@@ -1,0 +1,13 @@
+not all applicable URIs are invalidated on PUT/POST/DELETEs that pass through client cache
+
+
+
+Description:
+"Some HTTP methods MUST cause a cache to invalidate an entity. This is either the entity referred to by the Request-URI, or by the Location or Content-Location headers (if present). These methods are: PUT, DELETE, POST."
+
+http://www.w3.org/Protocols/rfc2616/rfc2616-sec13.html#sec13.10
+
+The current caching implementation only invalidates the Request URI, and not those present in the Location or Content-Location headers on the request.
+
+I have a patch that fixes this which I will upload momentarily.
+

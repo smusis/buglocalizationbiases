@@ -1,0 +1,6 @@
+Consolidate CND related classes from SPI and Core
+
+
+
+Description:
+currently SPI Commons and Core, both have a CND Reader/Writer. they should be consolidated; i.e. core should use the SPI one.

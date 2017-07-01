@@ -1,0 +1,9 @@
+Run 'test-tag' in nightly build
+
+
+
+Description:
+Changes in this trivial patch:
+- ant target 'nightly' now also depends on 'test-tag'
+- adds property 'compatibility.tag' to common-build.xml that should always point to the last tagged release; its unit tests will be downloaded unless -Dtag="" is used to override
+- 'download-tag' does not fail if the svn checkout wasn't successful; instead 'test-tag' checks if the specified tag is checked-out and available, if not it fails 

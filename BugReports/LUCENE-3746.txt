@@ -1,0 +1,6 @@
+suggest.fst.Sort.BufferSize should not automatically fail just because of freeMemory()
+
+
+
+Description:
+Follow up op dev thread: [FSTCompletionTest failure "At least 0.5MB RAM buffer is needed" | http://markmail.org/message/d7ugfo5xof4h5jeh]

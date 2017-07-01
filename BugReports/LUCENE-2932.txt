@@ -1,0 +1,12 @@
+clean up obselete information on the website
+
+
+
+Description:
+When searching for information on 'lucene indexing speed' I get back some really out of date stuff:
+1. on the features page it proudly proclaims 20MB/minute, on some really old hardware. I think we should
+change this to 95GB/hour: http://blog.mikemccandless.com/2010/09/lucenes-indexing-is-fast.html
+2. there are ancient benchmarks results from versioned data we link to the website. We list versioned
+websites for ancient versions going back to 1.4.3. Also i noticed when just casually googling for
+API documentation I tend to get results going to these ancient versions. I think we should remove
+stuff for all versions prior to 2.9

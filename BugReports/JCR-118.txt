@@ -1,0 +1,9 @@
+Session.importXML and Workspace.importXML throw wrong exception
+
+
+
+Description:
+According to the JCR specification (section 7.3.6 and 7.3.7), if uuidBehaviour is set to IMPORT_UUID_COLLISION_REMOVE_EXISTING, a ConstraintViolationException should be thrown, when an incoming node has the same UUID as the node at parentAbsPath or one of its ancestors.
+
+Currently, a RepositoryException is thrown instead.
+

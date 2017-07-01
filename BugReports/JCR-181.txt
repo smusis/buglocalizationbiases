@@ -1,0 +1,11 @@
+jcr-server should honor a webdav request's Content-Type and Content-Language headers
+
+
+
+Description:
+when processing a PUT or a POST, the DavResource should have access to the Content-Type and Content-Language headers presented in the webdav request, if any.
+
+when the client explicitly communicates these headers, their values should take priority over server calculations (such as that done in SetContentTypeCommand), or at least be input into server calculations
+
+furthermore, the dav getcontentlanguage is not at all supported by at least the simple webdav server.
+

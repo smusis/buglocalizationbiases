@@ -1,0 +1,230 @@
+Subclasses do not have write access to StatusLine
+
+
+
+Description:
+HttpMethodBase provides the readStatusLine method explicitly designed for
+subclasses to override. However, any attempt to do so quickly encounters issues
+since the subclass does not have access to the statusLine member variable in
+HttpMethodBase. The same holds true for several other member variables as well.
+
+Recommend that all access to member variables occur through accessors and that
+mutators be provided to set them. See patch below.
+----------------------------------------------------------
+
+Index: HttpMethodBase.java
+===================================================================
+--- HttpMethodBase.java	(revision 390815)
++++ HttpMethodBase.java	(working copy)
+@@ -563,7 +563,7 @@
+      * @return the status code associated with the latest response.
+      */
+     public int getStatusCode() {
+-        return statusLine.getStatusCode();
++        return getStatusLine().getStatusCode();
+     }
+ 
+     /**
+@@ -577,6 +577,13 @@
+     }
+ 
+     /**
++     * @param statusLine The statusLine to set.
++     */
++    protected final void setStatusLine(StatusLine statusLine) {
++        this.statusLine = statusLine;
++    }
++
++    /**
+      * Checks if response data is available.
+      * @return <tt>true</tt> if response data is available, <tt>false</tt>
+otherwise.
+      */
+@@ -798,7 +805,7 @@
+      * @return The status text.
+      */
+     public String getStatusText() {
+-        return statusLine.getReasonPhrase();
++        return getStatusLine().getReasonPhrase();
+     }
+ 
+     /**
+@@ -920,16 +927,16 @@
+         }
+         LOG.debug("Resorting to protocol version default close connection policy");
+         // missing or invalid connection header, do the default
+-        if (this.effectiveVersion.greaterEquals(HttpVersion.HTTP_1_1)) {
++        if (getEffectiveVersion().greaterEquals(HttpVersion.HTTP_1_1)) {
+             if (LOG.isDebugEnabled()) {
+-                LOG.debug("Should NOT close connection, using " +
+this.effectiveVersion.toString());
++                LOG.debug("Should NOT close connection, using " +
+getEffectiveVersion().toString());
+             }
+         } else {
+             if (LOG.isDebugEnabled()) {
+-                LOG.debug("Should close connection, using " +
+this.effectiveVersion.toString());
++                LOG.debug("Should close connection, using " +
+getEffectiveVersion().toString());
+             }
+         }
+-        return this.effectiveVersion.lessEquals(HttpVersion.HTTP_1_0);
++        return getEffectiveVersion().lessEquals(HttpVersion.HTTP_1_0);
+     }
+     
+     /**
+@@ -980,14 +987,14 @@
+         this.responseConnection = conn;
+ 
+         checkExecuteConditions(state, conn);
+-        this.statusLine = null;
++        setStatusLine(null);
+         this.connectionCloseForced = false;
+ 
+         conn.setLastResponseInputStream(null);
+ 
+         // determine the effective protocol version
+-        if (this.effectiveVersion == null) {
+-            this.effectiveVersion = this.params.getVersion(); 
++        if (getEffectiveVersion() == null) {
++            setEffectiveVersion(this.params.getVersion()); 
+         }
+ 
+         writeRequest(state, conn);
+@@ -996,7 +1003,7 @@
+         // the method has successfully executed
+         used = true; 
+ 
+-        return statusLine.getStatusCode();
++        return getStatusCode();
+     }
+ 
+     /**
+@@ -1048,8 +1055,8 @@
+         getRequestHeaderGroup().clear();
+         getResponseHeaderGroup().clear();
+         getResponseTrailerHeaderGroup().clear();
+-        statusLine = null;
+-        effectiveVersion = null;
++        setStatusLine(null);
++        setEffectiveVersion(null);
+         aborted = false;
+         used = false;
+         params = new HttpMethodParams();
+@@ -1586,18 +1593,18 @@
+         "enter HttpMethodBase.readResponse(HttpState, HttpConnection)");
+         // Status line & line may have already been received
+         // if 'expect - continue' handshake has been used
+-        while (this.statusLine == null) {
++        while (getStatusLine() == null) {
+             readStatusLine(state, conn);
+             processStatusLine(state, conn);
+             readResponseHeaders(state, conn);
+             processResponseHeaders(state, conn);
+             
+-            int status = this.statusLine.getStatusCode();
++            int status = getStatusCode(); 
+             if ((status >= 100) && (status < 200)) {
+                 if (LOG.isInfoEnabled()) {
+-                    LOG.info("Discarding unexpected response: " +
+this.statusLine.toString()); 
++                    LOG.info("Discarding unexpected response: " +
+getStatusLine().toString()); 
+                 }
+-                this.statusLine = null;
++                setStatusLine(null);
+             }
+         }
+         readResponseBody(state, conn);
+@@ -1675,7 +1682,7 @@
+         if (Wire.CONTENT_WIRE.enabled()) {
+             is = new WireLogInputStream(is, Wire.CONTENT_WIRE);
+         }
+-        boolean canHaveBody = canResponseHaveBody(statusLine.getStatusCode());
++        boolean canHaveBody = canResponseHaveBody(getStatusCode());
+         InputStream result = null;
+         Header transferEncodingHeader =
+responseHeaders.getFirstHeader("Transfer-Encoding");
+         // We use Transfer-Encoding if present and ignore Content-Length.
+@@ -1714,7 +1721,7 @@
+         } else {
+             long expectedLength = getResponseContentLength();
+             if (expectedLength == -1) {
+-                if (canHaveBody &&
+this.effectiveVersion.greaterEquals(HttpVersion.HTTP_1_1)) {
++                if (canHaveBody &&
+getEffectiveVersion().greaterEquals(HttpVersion.HTTP_1_1)) {
+                     Header connectionHeader =
+responseHeaders.getFirstHeader("Connection");
+                     String connectionDirective = null;
+                     if (connectionHeader != null) {
+@@ -1850,19 +1857,19 @@
+         } while(true);
+ 
+         //create the status line from the status string
+-        statusLine = new StatusLine(s);
++        setStatusLine(new StatusLine(s));
+ 
+         //check for a valid HTTP-Version
+-        String versionStr = statusLine.getHttpVersion();
++        String versionStr = getStatusLine().getHttpVersion();
+         if (getParams().isParameterFalse(HttpMethodParams.UNAMBIGUOUS_STATUS_LINE) 
+            && versionStr.equals("HTTP")) {
+             getParams().setVersion(HttpVersion.HTTP_1_0);
+             if (LOG.isWarnEnabled()) {
+                 LOG.warn("Ambiguous status line (HTTP protocol version missing):" +
+-                statusLine.toString());
++                getStatusLine().toString());
+             }
+         } else {
+-            this.effectiveVersion = HttpVersion.parse(versionStr);
++            setEffectiveVersion(HttpVersion.parse(versionStr));
+         }
+ 
+     }
+@@ -1943,9 +1950,9 @@
+                     readResponseHeaders(state, conn);
+                     processResponseHeaders(state, conn);
+ 
+-                    if (this.statusLine.getStatusCode() ==
+HttpStatus.SC_CONTINUE) {
++                    if (getStatusCode() == HttpStatus.SC_CONTINUE) {
+                         // Discard status line
+-                        this.statusLine = null;
++                        setStatusLine(null);
+                         LOG.debug("OK to continue received");
+                     } else {
+                         return;
+@@ -2087,7 +2094,7 @@
+      */
+     private String getRequestLine(HttpConnection conn) {
+         return  HttpMethodBase.generateRequestLine(conn, getName(),
+-                getPath(), getQueryString(), this.effectiveVersion.toString());
++                getPath(), getQueryString(), getEffectiveVersion().toString());
+     }
+ 
+     /**
+@@ -2128,6 +2135,13 @@
+     }
+ 
+     /**
++     * @param effectiveVersion The effectiveVersion to set.
++     */
++    protected final void setEffectiveVersion(HttpVersion effectiveVersion) {
++        this.effectiveVersion = effectiveVersion;
++    }
++
++    /**
+      * Per RFC 2616 section 4.3, some response can never contain a message
+      * body.
+      *
+@@ -2358,7 +2372,7 @@
+     ) {
+         // set used so that the response can be read
+         this.used = true;
+-        this.statusLine = statusline;
++        setStatusLine(statusline);
+         this.responseHeaders = responseheaders;
+         this.responseBody = null;
+         this.responseStream = responseStream;

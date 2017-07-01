@@ -1,0 +1,7 @@
+"JCR levels" link on http://jackrabbit.apache.org/doc/index.html broken
+
+
+
+Description:
+The "JCR levels" link on the Jackrabbit home page is broken.
+

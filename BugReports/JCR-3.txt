@@ -1,0 +1,6 @@
+jcr:mixinTypes property inconsitent, if addMixin() throws exception
+
+
+
+Description:
+If Node.addMixin() throws an exception, that was not due to validation checks but rather internal, the jcr:mixinTypes still contains the newly added nodetype. a subsequent call to Item.save() will store that property. The effective nodetype is not affected though.

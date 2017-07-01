@@ -1,0 +1,8 @@
+Initial size of ConcurrentCache depends on number of segments (available processors)
+
+
+
+Description:
+This causes a build failure on my machine. Tests run into an OOME because the initial memory footprint of a ConcurrentCache on my machine is 8k. Many of the tests keep references to some kind of repository objects (node, session, x-manager), which means ConcurrentCache instances  cannot be garbage collected immediately after a test run.
+
+I think the overall initial size of the cache should be independent of the number of segments. See proposed patch.

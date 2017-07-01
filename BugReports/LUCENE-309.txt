@@ -1,0 +1,14 @@
+[PATCH] IndexSearcher.search(query,filter,nDocs) accepts zero nDocs
+
+
+
+Description:
+This caused an npe from the ht.top().score lateron. 
+The root cause was a bug in a test case, which took 
+more time to track down than would have been necessary 
+with the attached patch. 
+The patch throws an IllegalArgumentException for non positive nDocs. 
+All current tests pass with the patch applied. 
+ 
+Regards, 
+Paul

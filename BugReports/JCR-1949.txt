@@ -1,0 +1,53 @@
+NullPointerException on DelegatingObservationDispatcher cause by parameter null on call : createEventStateCollection(null)
+
+
+
+Description:
+There is a NullPointerException when jackrabbit try to synchronise its indexes :
+22 janv. 2009 09:53:56 INFO  [ClusterNode] - Processing revision: 4485
+22 janv. 2009 09:53:56 ERROR [ClusterNode] - Unexpected error while syncing of journal: null
+java.lang.NullPointerException
+        at org.apache.jackrabbit.core.observation.DelegatingObservationDispatcher.createEventStateCollection(DelegatingObservationDispatcher.java:80)
+        at org.apache.jackrabbit.core.version.VersionManagerImpl$DynamicESCFactory.createEventStateCollection(VersionManagerImpl.java:556)
+        at org.apache.jackrabbit.core.version.VersionManagerImpl.externalUpdate(VersionManagerImpl.java:500)
+        at org.apache.jackrabbit.core.cluster.ClusterNode.process(ClusterNode.java:853)
+        at org.apache.jackrabbit.core.cluster.ChangeLogRecord.process(ChangeLogRecord.java:457)
+        at org.apache.jackrabbit.core.cluster.ClusterNode.consume(ClusterNode.java:799)
+        at org.apache.jackrabbit.core.journal.AbstractJournal.doSync(AbstractJournal.java:213)
+        at org.apache.jackrabbit.core.journal.AbstractJournal.sync(AbstractJournal.java:188)
+        at org.apache.jackrabbit.core.cluster.ClusterNode.sync(ClusterNode.java:315)
+        at org.apache.jackrabbit.core.cluster.ClusterNode.run(ClusterNode.java:286)
+        at java.lang.Thread.run(Thread.java:595)
+
+In fact the method createEventStateCollection() of DelegatingObservationDispatcher is called by the VersionManagerImpl with session parameter as null...
+
+DelegatingObservationDispatcher:
+
+ public EventStateCollection createEventStateCollection(SessionImpl session,
+                                                           Path pathPrefix) {
+        String userData = null;
+        try {
+            userData = ((ObservationManagerImpl) session.getWorkspace().getObservationManager()).getUserData();
+        } catch (RepositoryException e) {
+            // should never happen because this
+            // implementation supports observation
+        }
+        return new EventStateCollection(this, session, pathPrefix, userData);
+    }
+
+VersionManagerImpl$DynamicESCFactory :
+ public EventStateCollection createEventStateCollection(SessionImpl source) {
+            return obsMgr.createEventStateCollection(source, VERSION_STORAGE_PATH);
+        }
+
+VersionManagerImpl :
+public void externalUpdate(ChangeLog changes, List events,
+                               long timestamp, String userData)
+            throws RepositoryException {
+        EventStateCollection esc = getEscFactory().createEventStateCollection(null);
+        esc.addAll(events);
+        esc.setTimestamp(timestamp);
+        esc.setUserData(userData);
+
+        sharedStateMgr.externalUpdate(changes, esc);
+    }

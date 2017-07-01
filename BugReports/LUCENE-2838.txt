@@ -1,0 +1,15 @@
+ConstantScoreQuery should directly support wrapping Query and simply strip off scores
+
+
+
+Description:
+Especially in MultiTermQuery rewrite modes we often simply need to strip off scores from Queries and make them constant score. Currently the code to do this looks quite ugly: new ConstantScoreQuery(new QueryWrapperFilter(query))
+
+As the name says, QueryWrapperFilter should make any other Query constant score, so why does it not take a Query as ctor param? This question was aldso asked quite often by my customers and is simply correct, if you think about it.
+
+Looking closer into the code, it is clear that this would also speed up MTQs:
+- One additional wrapping and method calls can be removed
+- Maybe we can even deprecate QueryWrapperFilter in 3.1 now (it's now only used in tests and the use-case for this class is not really available) and LUCENE-2831 does not need the stupid hack to make Simon's assertions pass
+- CSQ now supports out-of-order scoring and topLevel scoring, so a CSQ on top-level now directly feeds the Collector. For that a small trick is used: The score(Collector) calls are directly delegated and the scores are stripped by wrapping the setScorer() method in Collector
+
+During that I found a visibility bug in Scorer (LUCENE-2839): The method "boolean score(Collector collector, int max, int firstDocID)" should be public not protected, as its not solely intended to be overridden by subclasses and is called from other classes, too! This leads to no compiler bugs as the other classes that calls it is mainly BooleanScorer(2) and thats in same package, but visibility is wrong. I will open an issue for that and fix it at least in trunk where we have no backwards-requirement.

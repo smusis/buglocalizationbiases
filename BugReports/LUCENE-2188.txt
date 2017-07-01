@@ -1,0 +1,8 @@
+A handy utility class for tracking deprecated overridden methods
+
+
+
+Description:
+This issue provides a new handy utility class that keeps track of overridden deprecated methods in non-final sub classes. This class can be used in new deprecations.
+
+See the javadocs for an example.

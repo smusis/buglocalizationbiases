@@ -1,0 +1,8 @@
+Remove jdk 1.4 restriction for jcr-tests
+
+
+
+Description:
+This restriction only exist because these tests form the TCK for JSR-283 which needed to support JDK 1.4. If maintenance on the JSR-283 TCK is needed, it can happen in a previous branch (2.3?).
+
+

@@ -1,0 +1,6 @@
+cutover FunctionQuery tests to use RandomIndexWriter, for better testing
+
+
+
+Description:
+

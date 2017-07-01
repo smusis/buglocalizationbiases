@@ -1,0 +1,6 @@
+Document Maven nightly builds, artifact generation, and using Maven to build Lucene/Solr
+
+
+
+Description:
+There should be documentation we can point people to when they ask how to use Maven with Lucene and Solr.

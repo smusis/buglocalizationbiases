@@ -1,0 +1,17 @@
+Response Folded Headers throws HttpException
+
+
+
+Description:
+As of 4/4/02 CVS repository the HttpMethodBase class
+doesn't handle folded headers in the 
+readResponseHeaders method
+
+HTTP/1.1 and HTTP/1.0 descriptions of folded headers (see 
+section 2.2 Basic Rules)
+http://www.ietf.org/rfc/rfc2616.txt
+http://www-
+old.ics.uci.edu/pub/ietf/http/rfc1945.html#Basic-Rules
+
+I've prepared a patch and was 
+emailed to jakarta-commons@jakarta.apache.org

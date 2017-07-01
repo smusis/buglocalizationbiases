@@ -1,0 +1,9 @@
+SessionImpl.createSession uses same Subject/LoginContext
+
+
+
+Description:
+SessionImpl.createSession(String) uses the same loginctx/subject to create a new session.
+this will cause problems if Session.logout() is called on the original instance.
+
+i suggest to fix that by creating a new subject for the new session instance.

@@ -1,0 +1,8 @@
+Remove old hooks for the implementation of hard links
+
+
+
+Description:
+Early drafts of the JCR specification specified that repositories should support "hard links", which woud lead to the situation, that items might have multiple parent nodes. In the meantime hard links have been removed from the spec and are unlikely to be re-added in future revisions.
+
+Nevertheless, Jackrabbit still contains some references to supporting this mechanism (e.g. the NodeState.parentUUIDs field), which should be removed.

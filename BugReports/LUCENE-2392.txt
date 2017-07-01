@@ -1,0 +1,38 @@
+Enable flexible scoring
+
+
+
+Description:
+This is a first step (nowhere near committable!), implementing the
+design iterated to in the recent "Baby steps towards making Lucene's
+scoring more flexible" java-dev thread.
+
+The idea is (if you turn it on for your Field; it's off by default) to
+store full stats in the index, into a new _X.sts file, per doc (X
+field) in the index.
+
+And then have FieldSimilarityProvider impls that compute doc's boost
+bytes (norms) from these stats.
+
+The patch is able to index the stats, merge them when segments are
+merged, and provides an iterator-only API.  It also has starting point
+for per-field Sims that use the stats iterator API to compute boost
+bytes.  But it's not at all tied into actual searching!  There's still
+tons left to do, eg, how does one configure via Field/FieldType which
+stats one wants indexed.
+
+All tests pass, and I added one new TestStats unit test.
+
+The stats I record now are:
+
+  - field's boost
+
+  - field's unique term count (a b c a a b --> 3)
+
+  - field's total term count (a b c a a b --> 6)
+
+  - total term count per-term (sum of total term count for all docs
+    that have this term)
+
+Still need at least the total term count for each field.
+

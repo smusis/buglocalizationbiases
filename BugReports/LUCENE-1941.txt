@@ -1,0 +1,6 @@
+MinPayloadFunction returns 0 when only one payload is present
+
+
+
+Description:
+In some experiments with payload scoring through PayloadTermQuery, I'm seeing 0 returned when using MinPayloadFunction.  I believe there is a bug there.  No time at the moment to flesh out a unit test, but wanted to report it for tracking.

@@ -1,0 +1,8 @@
+Implement RepositoryFactory in jcr2dav
+
+
+
+Description:
+It's currently a bit cumbersome to set up a spi2dav instance because of the two levels of factories (RepositoryFactory & RepositoryServiceFactory) involved in the process. It would be easier if spi2dav implemented RepositoryFactory directly, so downstream users would only need to provide the server URI parameter instead of specifying also the RepositoryServiceFactory classname.
+
+To do this, spi2dav would need to depend also on jcr2spi. This change would actually simplify downstream projects, that then wouldn't need to depend also to jcr2spi to get JCR -> DAV connectivity.

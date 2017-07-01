@@ -1,0 +1,8 @@
+CachingIndexReader.initializeParents() does not scale well with large indexes
+
+
+
+Description:
+On a 40+ GB index that I'm testing with, the time to initialize the parents cache is 40 minutes.
+
+This is way to much, needs optimization and should be done in a background thread.

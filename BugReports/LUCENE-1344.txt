@@ -1,0 +1,6 @@
+Make the Lucene jar an OSGi bundle
+
+
+
+Description:
+In order to use Lucene in an OSGi environment, some additional headers are needed in the manifest of the jar. As Lucene has no dependency, it is pretty straight forward and it ill be easy to maintain I think.

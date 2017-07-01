@@ -1,0 +1,49 @@
+PROPPATCH in simple webdav server failing with 403 Forbidden error
+
+
+
+Description:
+
+i've configured the import-collection chain (called via MKCOL) to add nodes with the node type "dav:collection", which is defined as such:
+
+NodeTypeName
+  dav:collection
+SuperTypes
+  nt:folder
+IsMixin
+  false
+HasOrderableChildNodes
+  false
+PrimaryItemName
+  null
+PropertyDef
+  Name *
+  RequiredType UNDEFINED
+  DefaultValues null
+  AutoCreate false
+  Mandatory false
+  OnParentVersion COPY
+  Protected false
+  Multiple false
+PropertyDef
+  Name *
+  RequiredType UNDEFINED
+  DefaultValues null
+  AutoCreate false
+  Mandatory false
+  OnParentVersion COPY
+  Protected false
+  Multiple true
+
+the idea is that i should be able to set arbitrary webdav properties (single- or multi-value) on a webdav collection.
+
+when i use cadaver to mkcol a collection (creating a jcr node of type dav:collection) and then try to propset an arbitrary property on that collection (which as i understand it would set a jcr property of the same name on the dav:collection node), i get a 403 Forbidden error:
+
+dav:/home/> mkcol hi
+Creating `hi': succeeded.
+
+dav:/home/> propset hi hi hi
+Setting property on `hi': failed:
+403 Forbidden
+
+it's not clear to me if i'm using cadaver incorrectly, misunderstanding the PROPPATCH implementation, or both :) 

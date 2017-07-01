@@ -1,0 +1,13 @@
+UsernamePasswordCredentials.equals(null) throws NPE
+
+
+
+Description:
+Steps to reproduce:
+1. new UsernamePasswordCredentials().equals(null);
+
+Observed:
+NullPointerException is thrown
+
+Expected:
+equals() returns false

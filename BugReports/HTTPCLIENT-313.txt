@@ -1,0 +1,7 @@
+Improper EOL for text files on Windows
+
+
+
+Description:
+version 2.0-rc3. Improper EOL for text files on Windows for README.txt and
+LICENSE.txt, docs/*.txt. The files display as one loooong line in Notepad.

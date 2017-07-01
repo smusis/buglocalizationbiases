@@ -1,0 +1,6 @@
+Add args to test-macro
+
+
+
+Description:
+Add passing args to JUnit.  (Like Solr and mainly for debugging).  

@@ -1,0 +1,10 @@
+o.a.l.messages should be moved to core
+
+
+
+Description:
+contrib/queryParser contains an org.apache.lucene.messages package containing some generallized code that (claims in it's javadocs) is not specific to the queryParser.
+
+If this is truely general purpose code, it should probably be moved out of hte queryParser contrib -- either into it's own contrib, or into the core (it's very small)
+
+*EDIT:* alternate suggestion to rename package to fall under the o.a.l.queryParser namespace retracted due to comments in favor of (eventually) promoting to it's own contrib

@@ -1,0 +1,6 @@
+DateUtils should cache SimpleDateFormat
+
+
+
+Description:
+DateUtils create a SimpleDateFormat for each invocation of #formatDate and #parseDate. This can be optimized if SimpleDateFormat instances are cached. Since SimpleDateFormat is not threadsafe, the cache must be threadlocal.

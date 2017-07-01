@@ -1,0 +1,9 @@
+need to ensure that sims that use collection-level stats (e.g. sumTotalTermFreq) handle non-existent field
+
+
+
+Description:
+Because of things like queryNorm, unfortunately similarities have to handle the case where they are asked to computeStats() for a term, where the field does not exist at all.
+(Note they will never have to actually score anything, but unless we break how queryNorm works for TFIDF, we have to deal with this case).
+
+I noticed this while doing some benchmarking, so i created a test to test some cases like this across all the sims.

@@ -1,0 +1,133 @@
+DocumentsWriter blocks flushes when applyDeletes takes forever - memory not released
+
+
+
+Description:
+In DocumentsWriter we have a safety check that applies all deletes if the deletes consume too much RAM to prevent too-frequent flushing of a long tail of tiny segments. If we enter applyAllDeletes we essentially lock on IW -> BufferedDeletes which is fine since this usually doesn't take long and doesn't keep DWPTs from indexing. Yet, if that takes long and at the same time a semgent is flushed and subsequently published to the IW we take the lock on the ticket queue and the IW. Now this prevents all other threads to append to the ticketQueue which is done BEFORE we actually flush the segment concurrently and free up the RAM.
+
+Essentially its ok to block on the IW lock but we should not keep concurrent flushed from execution just because we apply deletes. The threads will block once they try to execute maybeMerge after the segment is flushed so we don't pile up subsequent memory but we should actually allow the DWPT to be flushed since we actually try to get rid of memory.
+
+I ran into this by accident due to a coding bug using delete queries instead of terms for each document. This thread dump show the problem:
+
+{noformat}
+"Application Worker Thread" prio=10 tid=0x00007fdda0238000 nid=0x3256 waiting for
+monitor entry [0x00007fddad3c2000]
+  java.lang.Thread.State: BLOCKED (on object monitor)
+       at org.apache.lucene.index.DocumentsWriter.doFlush(DocumentsWriter.java:424)
+       - waiting to lock <0x00007fddb74ff990> (a
+org.apache.lucene.index.DocumentsWriter$TicketQueue)
+       at org.apache.lucene.index.DocumentsWriter.postUpdate(DocumentsWriter.java:320)
+       at org.apache.lucene.index.DocumentsWriter.updateDocument(DocumentsWriter.java:393)
+       at org.apache.lucene.index.IndexWriter.updateDocument(IndexWriter.java:1484)
+       at org.apache.lucene.index.IndexWriter.updateDocument(IndexWriter.java:1456)
+       at org.apache.solr.update.DirectUpdateHandler2.addDoc(DirectUpdateHandler2.java:160)
+
+"Application Worker Thread" prio=10 tid=0x00007fdda0236000 nid=0x3255 waiting for
+monitor entry [0x00007fddad4c3000]
+  java.lang.Thread.State: BLOCKED (on object monitor)
+       at org.apache.lucene.index.IndexWriter.updatePendingMerges(IndexWriter.java:1854)
+       - waiting to lock <0x00007fddb74fe350> (a
+org.apache.solr.update.SolrIndexWriter)
+       at org.apache.lucene.index.IndexWriter.maybeMerge(IndexWriter.java:1848)
+       at org.apache.lucene.index.IndexWriter.maybeMerge(IndexWriter.java:1843)
+       at org.apache.lucene.index.IndexWriter.updateDocument(IndexWriter.java:1493)
+       at org.apache.lucene.index.IndexWriter.updateDocument(IndexWriter.java:1456)
+       at org.apache.solr.update.DirectUpdateHandler2.addDoc(DirectUpdateHandler2.java:160)
+
+"Application Worker Thread" prio=10 tid=0x00007fdda0234000 nid=0x3254 waiting for
+monitor entry [0x00007fddad5c4000]
+  java.lang.Thread.State: BLOCKED (on object monitor)
+       at org.apache.lucene.index.IndexWriter.updatePendingMerges(IndexWriter.java:1854)
+       - waiting to lock <0x00007fddb74fe350> (a
+org.apache.solr.update.SolrIndexWriter)
+       at org.apache.lucene.index.IndexWriter.maybeMerge(IndexWriter.java:1848)
+       at org.apache.lucene.index.IndexWriter.maybeMerge(IndexWriter.java:1843)
+       at org.apache.lucene.index.IndexWriter.updateDocument(IndexWriter.java:1493)
+       at org.apache.lucene.index.IndexWriter.updateDocument(IndexWriter.java:1456)
+       at org.apache.solr.update.DirectUpdateHandler2.addDoc(DirectUpdateHandler2.java:160)
+
+"Application Worker Thread" prio=10 tid=0x00007fdda0232000 nid=0x3253 waiting for
+monitor entry [0x00007fddad6c5000]
+  java.lang.Thread.State: BLOCKED (on object monitor)
+       at org.apache.lucene.index.DocumentsWriter.doFlush(DocumentsWriter.java:424)
+       - waiting to lock <0x00007fddb74ff990> (a
+org.apache.lucene.index.DocumentsWriter$TicketQueue)
+       at org.apache.lucene.index.DocumentsWriter.postUpdate(DocumentsWriter.java:320)
+       at org.apache.lucene.index.DocumentsWriter.updateDocument(DocumentsWriter.java:393)
+       at org.apache.lucene.index.IndexWriter.updateDocument(IndexWriter.java:1484)
+       at org.apache.lucene.index.IndexWriter.updateDocument(IndexWriter.java:1456)
+       at org.apache.solr.update.DirectUpdateHandler2.addDoc(DirectUpdateHandler2.java:160)
+
+"Application Worker Thread" prio=10 tid=0x00007fdda0230800 nid=0x3252 waiting for
+monitor entry [0x00007fddad7c6000]
+  java.lang.Thread.State: BLOCKED (on object monitor)
+       at org.apache.lucene.index.IndexWriter.updatePendingMerges(IndexWriter.java:1854)
+       - waiting to lock <0x00007fddb74fe350> (a
+org.apache.solr.update.SolrIndexWriter)
+       at org.apache.lucene.index.IndexWriter.maybeMerge(IndexWriter.java:1848)
+       at org.apache.lucene.index.IndexWriter.maybeMerge(IndexWriter.java:1843)
+       at org.apache.lucene.index.IndexWriter.updateDocument(IndexWriter.java:1493)
+       at org.apache.lucene.index.IndexWriter.updateDocument(IndexWriter.java:1456)
+       at org.apache.solr.update.DirectUpdateHandler2.addDoc(DirectUpdateHandler2.java:160)
+
+"Application Worker Thread" prio=10 tid=0x00007fdda022e800 nid=0x3251 runnable
+[0x00007fddad8c6000]
+  java.lang.Thread.State: RUNNABLE
+       at java.nio.Bits.copyToArray(Bits.java:715)
+       at java.nio.DirectByteBuffer.get(DirectByteBuffer.java:233)
+       at org.apache.lucene.store.MMapDirectory$MMapIndexInput.readBytes(MMapDirectory.java:319)
+       at org.apache.lucene.index.codecs.BlockTreeTermsReader$FieldReader$SegmentTermsEnum$Frame.loadBlock(BlockTreeTermsReader.java:2283)
+       at org.apache.lucene.index.codecs.BlockTreeTermsReader$FieldReader$SegmentTermsEnum.seekExact(BlockTreeTermsReader.java:1600)
+       at org.apache.lucene.util.TermContext.build(TermContext.java:97)
+       at org.apache.lucene.search.TermQuery.createWeight(TermQuery.java:180)
+       at org.apache.lucene.search.BooleanQuery$BooleanWeight.<init>(BooleanQuery.java:186)
+       at org.apache.lucene.search.BooleanQuery.createWeight(BooleanQuery.java:423)
+       at org.apache.lucene.search.IndexSearcher.createNormalizedWeight(IndexSearcher.java:583)
+       at org.apache.lucene.search.QueryWrapperFilter.getDocIdSet(QueryWrapperFilter.java:55)
+       at org.apache.lucene.index.BufferedDeletesStream.applyQueryDeletes(BufferedDeletesStream.java:431)
+       at org.apache.lucene.index.BufferedDeletesStream.applyDeletes(BufferedDeletesStream.java:268)
+       - locked <0x00007fddb751e1e8> (a
+org.apache.lucene.index.BufferedDeletesStream)
+       at org.apache.lucene.index.IndexWriter.applyAllDeletes(IndexWriter.java:2852)
+       - locked <0x00007fddb74fe350> (a org.apache.solr.update.SolrIndexWriter)
+       at org.apache.lucene.index.DocumentsWriter.applyAllDeletes(DocumentsWriter.java:188)
+       at org.apache.lucene.index.DocumentsWriter.doFlush(DocumentsWriter.java:470)
+       at org.apache.lucene.index.DocumentsWriter.postUpdate(DocumentsWriter.java:320)
+       at org.apache.lucene.index.DocumentsWriter.updateDocument(DocumentsWriter.java:393)
+       at org.apache.lucene.index.IndexWriter.updateDocument(IndexWriter.java:1484)
+       at org.apache.lucene.index.IndexWriter.updateDocument(IndexWriter.java:1456)
+       at org.apache.solr.update.DirectUpdateHandler2.addDoc(DirectUpdateHandler2.java:160)
+       
+
+"Application Worker Thread" prio=10 tid=0x00007fdda022d800 nid=0x3250 waiting for
+monitor entry [0x00007fddad9c8000]
+  java.lang.Thread.State: BLOCKED (on object monitor)
+       at org.apache.lucene.index.DocumentsWriter.doFlush(DocumentsWriter.java:424)
+       - waiting to lock <0x00007fddb74ff990> (a
+org.apache.lucene.index.DocumentsWriter$TicketQueue)
+       at org.apache.lucene.index.DocumentsWriter.postUpdate(DocumentsWriter.java:320)
+       at org.apache.lucene.index.DocumentsWriter.updateDocument(DocumentsWriter.java:393)
+       at org.apache.lucene.index.IndexWriter.updateDocument(IndexWriter.java:1484)
+       at org.apache.lucene.index.IndexWriter.updateDocument(IndexWriter.java:1456)
+       at org.apache.solr.update.DirectUpdateHandler2.addDoc(DirectUpdateHandler2.java:160)
+   
+"Application Worker Thread" prio=10 tid=0x00007fdda022d000 nid=0x324f waiting for
+monitor entry [0x00007fddadac9000]
+  java.lang.Thread.State: BLOCKED (on object monitor)
+       at org.apache.lucene.index.IndexWriter.useCompoundFile(IndexWriter.java:2274)
+       - waiting to lock <0x00007fddb74fe350> (a
+org.apache.solr.update.SolrIndexWriter)
+       at org.apache.lucene.index.IndexWriter.prepareFlushedSegment(IndexWriter.java:2156)
+       at org.apache.lucene.index.DocumentsWriter.publishFlushedSegment(DocumentsWriter.java:526)
+       at org.apache.lucene.index.DocumentsWriter.finishFlush(DocumentsWriter.java:506)
+       at org.apache.lucene.index.DocumentsWriter.applyFlushTickets(DocumentsWriter.java:483)
+       - locked <0x00007fddb74ff990> (a
+org.apache.lucene.index.DocumentsWriter$TicketQueue)
+       at org.apache.lucene.index.DocumentsWriter.doFlush(DocumentsWriter.java:449)
+       at org.apache.lucene.index.DocumentsWriter.postUpdate(DocumentsWriter.java:320)
+       at org.apache.lucene.index.DocumentsWriter.updateDocument(DocumentsWriter.java:393)
+       at org.apache.lucene.index.IndexWriter.updateDocument(IndexWriter.java:1484)
+       at org.apache.lucene.index.IndexWriter.updateDocument(IndexWriter.java:1456)
+       at org.apache.solr.update.DirectUpdateHandler2.addDoc(DirectUpdateHandler2.java:160)
+
+{noformat}

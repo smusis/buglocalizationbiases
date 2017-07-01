@@ -1,0 +1,8 @@
+[PATCH] reduce duplicate conversions from OffsetCharSequence to (lower/upper) strings
+
+
+
+Description:
+code repetitively converts OffsetCharSequence to strings, and then repetitively converts to lower/upper case, when generating search terms.
+
+Patch fixes this.

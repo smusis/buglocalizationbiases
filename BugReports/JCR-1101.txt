@@ -1,0 +1,7 @@
+Observation tests should throw NotExecutableException when repository does not support observation
+
+
+
+Description:
+The observation tests should throw NotExecutableException when repository does not support observation.
+

@@ -1,0 +1,22 @@
+Expose explicit 2-phase commit in IndexWriter
+
+
+
+Description:
+Currently when IndexWriter commits, it does so with a two-phase
+commit, internally: first it prepares all the new index files, syncs
+them; then it writes a new segments_N file and syncs that, and only if
+that is successful does it remove any now un-referenced index files.
+
+However, these two phases are done privately, internal to the commit()
+method.
+
+But when Lucene is involved in a transaction with external resources
+(eg a database), it's very useful to explicitly break out the prepare
+phase from the commit phase.
+
+Spinoff from this thread:
+
+  http://mail-archives.apache.org/mod_mbox/lucene-java-dev/200804.mbox/%3C16627610.post@talk.nabble.com%3E
+
+

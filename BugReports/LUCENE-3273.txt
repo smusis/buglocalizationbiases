@@ -1,0 +1,6 @@
+Convert Lucene Core tests over to a simple MockQueryParser
+
+
+
+Description:
+Most tests use Lucene Core's QueryParser for convenience.  We want to consolidate it into a QP module which we can't have as a dependency.  We should add a simple MockQueryParser which does String.split() on the query string, analyzers the terms and builds a BooleanQuery if necessary.  Any more complex Queries (such as phrases) should be done programmatically. 

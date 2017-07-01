@@ -1,0 +1,22 @@
+GData Server IndexComponent
+
+
+
+Description:
+New Feature added:
+
+-> Indexcomponent.
+-> Content extraction from entries.
+-> Custom content ext. strategies added.
+-> user defined index schema.
+-> extended gdata-config.xml schema (xsd)
+-> Indexcomponent UnitTests
+-> Spellchecking on some JavaDoc.
+
+##############
+New jars included:
+
+nekoHTML.jar 
+xercesImpl.jar
+
+@yonik: don't miss the '+' button to add directories :)

@@ -1,0 +1,6 @@
+wrong class name in statemgmt.xml
+
+
+
+Description:
+"BasicClientCookie" should read "BasicCookieStore", see the patch for details

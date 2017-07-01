@@ -1,0 +1,10 @@
+JCR2SPI: Move test execution to SPI2JCR
+
+
+
+Description:
+proposed patches see  issue JCR-1629
+
+this allows to
+- remove dependency to jackrabbit-spi2jcr and jackrabbit-core from jcr2spi
+- remove duplicated tests from sandbox/spi

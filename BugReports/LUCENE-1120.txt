@@ -1,0 +1,49 @@
+Use bulk-byte-copy when merging term vectors
+
+
+
+Description:
+Indexing all of Wikipedia, with term vectors on, under the YourKit
+profiler, shows that 26% of the time (!!) was spent merging the
+vectors.  This was without offsets & positions, which would make
+matters even worse.
+
+Depressingly, merging, even with ConcurrentMergeScheduler, cannot in
+fact keep up with the flushing of new segments in this test, and this
+is on a strong IO system (Mac Pro with 4 drive RAID 0 array, 4 CPU
+cores).
+
+So, just like Robert's idea to merge stored fields with bulk copying
+whenever the field name->number mapping is "congruent" (LUCENE-1043),
+we can do the same with term vectors.
+
+It's a little trickier because the term vectors format doesn't quite
+make it easy to bulk-copy because it doesn't directly encode the
+offset into the tvf file.
+
+I worked out a patch that changes the tvx format slightly, by storing
+the absolute position in the tvf file for the start of each document
+into the tvx file, just like it does for tvd now.  This adds an extra
+8 bytes (long) in the tvx file, per document.
+
+Then, I removed a vLong (the first "position" stored inside the tvd
+file), which makes tvd contents fully position independent (so you can
+just copy the bytes).
+
+This adds up to 7 bytes per document (less for larger indices) that
+have term vectors enabled, but I think this small increase in index
+size is acceptable for the gains in indexing performance?
+
+With this change, the time spent merging term vectors dropped from 26%
+to 3%.  Of course, this only applies if your documents are "regular".
+I think in the future we could have Lucene try hard to assign the same
+field number for a given field name, if it had been seen before in the
+index...
+
+Merging terms now dominates the merge cost (~20% over overall time
+building the Wikipedia index).
+
+I also beefed up TestBackwardsCompatibility unit test: test a non-CFS
+and a CFS of versions 1.9, 2.0, 2.1, 2.2 index formats, and added some
+term vector fields to these indices.
+

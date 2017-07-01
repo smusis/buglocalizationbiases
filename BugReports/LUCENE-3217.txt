@@ -1,0 +1,6 @@
+Improve DocValues merging
+
+
+
+Description:
+Some DocValues impl. still load all values from merged segments into memory during merge. For efficiency we should merge them on the fly without buffering in memory

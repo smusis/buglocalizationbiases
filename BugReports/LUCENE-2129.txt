@@ -1,0 +1,6 @@
+standard codec's terms dict seek should only scan if new term is in same index block
+
+
+
+Description:
+TermInfosReader in trunk already optimizes for this case... just need to do the same on flex.

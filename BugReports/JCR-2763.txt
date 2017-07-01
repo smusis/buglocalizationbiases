@@ -1,0 +1,6 @@
+Drop the Dumpable interface
+
+
+
+Description:
+I belive the o.a.j.core.util.Dumpable interface was originally used for diagnostic purposes, but AFAIUI we don't use it anywhere anymore. I'd like to drop the interface and refactor the dump() methods in various Jackrabbit classes to more detailed toString() methods that would be more useful to debuggers and other general-purpose diagnostic tools.

@@ -1,0 +1,24 @@
+Ensure the features.html and index.html adequately give httpclient enough credit
+
+
+
+Description:
+See the email thread started by Eric Johnson.
+http://archives.apache.org/eyebrowse/BrowseList?listId=128&by=thread&from=316092
+
+Initial post:
+Based on the recent URI discussion, and some other points, it strikes me that we
+could take a little more credit for the work that has gone into HttpClient.
+
+On the HttpClient home page
+(http://jakarta.apache.org/commons/httpclient/index.html) four RFCs are listed.
+
+Given all the discussion about URIs being thrown around, I think it might be
+reasonable to add RFC 2396 - for URI compliance.  Then there is RFC 1867, for
+multipart/form-data POST requests (I think I got the right number there).  Are
+there RFCs corresponding to our "cookie" compliance? Any other RFCs we can claim
+credit for conforming to?
+
+With the recent "Protocol" changes, I think we've made it relatively
+straightforward for clients of HttpClient to plug in their own secure sockets
+implementations, making it easier to use third party, non-Sun solutions.

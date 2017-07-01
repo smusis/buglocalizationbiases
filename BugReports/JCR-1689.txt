@@ -1,0 +1,6 @@
+Multiple tests test for locking instead of versioning
+
+
+
+Description:
+Multiple tests claim to check whether versioning is supported, but in reality check for locking.  Patch included.

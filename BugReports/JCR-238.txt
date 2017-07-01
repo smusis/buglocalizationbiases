@@ -1,0 +1,6 @@
+workspace.copy causes 2 nodes in the same workspace to have the same version history
+
+
+
+Description:
+workspace.copy creates a copy of a versionable node with a new uuid which share the same version. "In a given workspace, there is at most one versionable node per version history" (4.11 spec)

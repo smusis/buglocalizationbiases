@@ -1,0 +1,6 @@
+Remove excessive dependencies from jcr-client module
+
+
+
+Description:
+

@@ -1,0 +1,6 @@
+SQL2 Join with OR clause still has some issues
+
+
+
+Description:
+There are still some issues with Joins that have OR clauses in them. I changed the test, so that it reflects the changes

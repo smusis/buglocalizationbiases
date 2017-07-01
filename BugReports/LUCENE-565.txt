@@ -1,0 +1,87 @@
+Supporting deleteDocuments in IndexWriter (Code and Performance Results Provided)
+
+
+
+Description:
+Today, applications have to open/close an IndexWriter and open/close an
+IndexReader directly or indirectly (via IndexModifier) in order to handle a
+mix of inserts and deletes. This performs well when inserts and deletes
+come in fairly large batches. However, the performance can degrade
+dramatically when inserts and deletes are interleaved in small batches.
+This is because the ramDirectory is flushed to disk whenever an IndexWriter
+is closed, causing a lot of small segments to be created on disk, which
+eventually need to be merged.
+
+We would like to propose a small API change to eliminate this problem. We
+are aware that this kind change has come up in discusions before. See
+http://www.gossamer-threads.com/lists/lucene/java-dev/23049?search_string=indexwriter%20delete;#23049
+. The difference this time is that we have implemented the change and
+tested its performance, as described below.
+
+API Changes
+-----------
+We propose adding a "deleteDocuments(Term term)" method to IndexWriter.
+Using this method, inserts and deletes can be interleaved using the same
+IndexWriter.
+
+Note that, with this change it would be very easy to add another method to
+IndexWriter for updating documents, allowing applications to avoid a
+separate delete and insert to update a document.
+
+Also note that this change can co-exist with the existing APIs for deleting
+documents using an IndexReader. But if our proposal is accepted, we think
+those APIs should probably be deprecated.
+
+Coding Changes
+--------------
+Coding changes are localized to IndexWriter. Internally, the new
+deleteDocuments() method works by buffering the terms to be deleted.
+Deletes are deferred until the ramDirectory is flushed to disk, either
+because it becomes full or because the IndexWriter is closed. Using Java
+synchronization, care is taken to ensure that an interleaved sequence of
+inserts and deletes for the same document are properly serialized.
+
+We have attached a modified version of IndexWriter in Release 1.9.1 with
+these changes. Only a few hundred lines of coding changes are needed. All
+changes are commented by "CHANGE". We have also attached a modified version
+of an example from Chapter 2.2 of Lucene in Action.
+
+Performance Results
+-------------------
+To test the performance our proposed changes, we ran some experiments using
+the TREC WT 10G dataset. The experiments were run on a dual 2.4 Ghz Intel
+Xeon server running Linux. The disk storage was configured as RAID0 array
+with 5 drives. Before indexes were built, the input documents were parsed
+to remove the HTML from them (i.e., only the text was indexed). This was
+done to minimize the impact of parsing on performance. A simple
+WhitespaceAnalyzer was used during index build.
+
+We experimented with three workloads:
+  - Insert only. 1.6M documents were inserted and the final
+    index size was 2.3GB.
+  - Insert/delete (big batches). The same documents were
+    inserted, but 25% were deleted. 1000 documents were
+    deleted for every 4000 inserted.
+  - Insert/delete (small batches). In this case, 5 documents
+    were deleted for every 20 inserted.
+
+                                current       current          new
+Workload                      IndexWriter  IndexModifier   IndexWriter
+-----------------------------------------------------------------------
+Insert only                     116 min       119 min        116 min
+Insert/delete (big batches)       --          135 min        125 min
+Insert/delete (small batches)     --          338 min        134 min
+
+As the experiments show, with the proposed changes, the performance
+improved by 60% when inserts and deletes were interleaved in small batches.
+
+
+Regards,
+Ning
+
+
+Ning Li
+Search Technologies
+IBM Almaden Research Center
+650 Harry Road
+San Jose, CA 95120

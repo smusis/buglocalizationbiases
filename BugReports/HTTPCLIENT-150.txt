@@ -1,0 +1,10 @@
+StringIndexOutOfBound exception in RFC2109 cookie validate when host name contains no domain information and is short in length than the cookie domain.
+
+
+
+Description:
+If the target server is identified by hostname only (no domain) and the domain
+of the cookie is greater in length than the target hostname, a
+StringIndexOutOfBoundsException occurs.
+
+Offending line(s) of code: 174-176 in o.a.c.h.cookie.RFC2109Spec.java

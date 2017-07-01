@@ -1,0 +1,6 @@
+ID Field Descriptor is not inherited as is the case with UUID Field Descriptor
+
+
+
+Description:
+ID Field descriptor when defined in the base class in jcr-mapping is not inherited. The child class also has to define it again. A patch for the same is attached herewith. Patch is on similar lines of UUID Field Descriptor

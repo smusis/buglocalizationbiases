@@ -1,0 +1,8 @@
+Query#mergeBooleanQueries argument should be of type BooleanQuery[] instead of Query[]
+
+
+
+Description:
+The method #mergeBooleanQueries accepts Query[] and casts elements to BooleanQuery without checking. This will guarantee a ClassCastException if it is not a boolean query. We should enforce this by changing the signature. This won't really break back compat. as it only works with instances of BooleanQuery.
+
+

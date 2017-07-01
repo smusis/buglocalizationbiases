@@ -1,0 +1,35 @@
+Invalid behavior of StandardTokenizerImpl
+
+
+
+Description:
+The following code prints the output of StandardAnalyzer:
+
+        Analyzer analyzer = new StandardAnalyzer();
+        TokenStream ts = analyzer.tokenStream("content", new StringReader("<some text>"));
+        Token t;
+        while ((t = ts.next()) != null) {
+            System.out.println(t);
+        }
+
+If you pass "www.abc.com", the output is (www.abc.com,0,11,type=<HOST>) (which is correct in my opinion).
+However, if you pass "www.abc.com." (notice the extra '.' at the end), the output is (wwwabccom,0,12,type=<ACRONYM>).
+
+I think the behavior in the second case is incorrect for several reasons:
+1. It recognizes the string incorrectly (no argue on that).
+2. It kind of prevents you from putting URLs at the end of a sentence, which is perfectly legal.
+3. An ACRONYM, at least to the best of my understanding, is of the form A.B.C. and not ABC.DEF.
+
+I looked at StandardTokenizerImpl.jflex and I think the problem comes from this definition:
+// acronyms: U.S.A., I.B.M., etc.
+// use a post-filter to remove dots
+ACRONYM    =  {ALPHA} "." ({ALPHA} ".")+
+
+Notice how the comment relates to acronym as U.S.A., I.B.M. and not something else. I changed the definition to
+ACRONYM    =  {LETTER} "." ({LETTER} ".")+
+and it solved the problem.
+
+This was also reported here:
+http://www.nabble.com/Inconsistent-StandardTokenizer-behaviour-tf596059.html#a1593383
+http://www.nabble.com/Standard-Analyzer---Host-and-Acronym-tf3620533.html#a10109926
+

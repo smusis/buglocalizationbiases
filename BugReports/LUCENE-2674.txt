@@ -1,0 +1,14 @@
+improve how MTQs interact with the terms dict cache
+
+
+
+Description:
+Some small improvements:
+
+  * Adds a TermsEnum.cacheCurrentTerm "hint" (codec can make this a no-op)
+
+  * Removes the FTE.useTermsCache
+
+  * Changes MTQ's TermCollector API to accept the TermsEnum so collectors can eg call .docFreq directly
+
+  * Adds expert ctor to TermQuery allowing you to pass in the docFreq

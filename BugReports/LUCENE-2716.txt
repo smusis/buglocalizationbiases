@@ -1,0 +1,10 @@
+Improve automaton's MinimizeOperations.minimizeHopcroft() to not create so many objects
+
+
+
+Description:
+MinimizeOperations.minimizeHopcroft() creates a lot of objects because of strange arrays and useless ArrayLists with fixed length. E.g. it created List<List<List<>>>. This patch minimizes this and makes the whole method much more GC friendler by using simple arrays or avoiding empty LinkedLists at all (inside reverse array). 
+
+minimize() is called very very often, especially in tests (MockAnalyzer).
+
+A test for the method is prepared by Robert, we found a bug somewhere else in automaton, so this is pending until his issue and fix arrives.

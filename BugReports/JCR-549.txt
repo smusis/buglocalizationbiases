@@ -1,0 +1,12 @@
+TransientFileFactory may throw ConcurrentModificationException on shutdown
+
+
+
+Description:
+When Jackrabbit is stopped the shutdown hook of the TransientFileFactory iterates over all tracked temp files and deletes them. At the same time the reaper thread may still remove file references from the list of tracked temp files. This may lead to a ConcurrentModificationException in the shutdown hook:
+
+java.util.ConcurrentModificationException
+	at java.util.AbstractList$Itr.checkForComodification(Unknown Source)
+	at java.util.AbstractList$Itr.next(Unknown Source)
+	at org.apache.jackrabbit.util.TransientFileFactory$1.run(TransientFileFactory.java:86)
+

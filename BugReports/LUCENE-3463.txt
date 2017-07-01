@@ -1,0 +1,80 @@
+Jenkins trunk tests (nightly only) fail quite often with OOM in Automaton/FST tests
+
+
+
+Description:
+The nightly Job Lucene-trunk quite often fails with OOM (in several methods, not always in the same test):
+
+Example from last night (this time a huge Automaton):
+
+{noformat}
+[junit] java.lang.OutOfMemoryError: Java heap space
+[junit] Dumping heap to /home/hudson/hudson-slave/workspace/Lucene-trunk/heapdumps/java_pid38855.hprof ...
+[junit] Heap dump file created [86965954 bytes in 1.186 secs]
+[junit] Testsuite: org.apache.lucene.index.TestTermsEnum
+[junit] Testcase: testIntersectRandom(org.apache.lucene.index.TestTermsEnum):	Caused an ERROR
+[junit] Java heap space
+[junit] java.lang.OutOfMemoryError: Java heap space
+[junit] 	at org.apache.lucene.util.automaton.RunAutomaton.<init>(RunAutomaton.java:128)
+[junit] 	at org.apache.lucene.util.automaton.ByteRunAutomaton.<init>(ByteRunAutomaton.java:28)
+[junit] 	at org.apache.lucene.util.automaton.CompiledAutomaton.<init>(CompiledAutomaton.java:134)
+[junit] 	at org.apache.lucene.index.TestTermsEnum.testIntersectRandom(TestTermsEnum.java:266)
+[junit] 	at org.apache.lucene.util.LuceneTestCase$2$1.evaluate(LuceneTestCase.java:611)
+[junit] 	at org.apache.lucene.util.LuceneTestCaseRunner.runChild(LuceneTestCaseRunner.java:148)
+[junit] 	at org.apache.lucene.util.LuceneTestCaseRunner.runChild(LuceneTestCaseRunner.java:50)
+[junit] 
+[junit] 
+[junit] Tests run: 6, Failures: 0, Errors: 1, Time elapsed: 11.699 sec
+{noformat}
+
+Other traces:
+
+{noformat}
+[junit] Testsuite: org.apache.lucene.util.fst.TestFSTs
+[junit] Testcase: testRealTerms(org.apache.lucene.util.fst.TestFSTs):	Caused an ERROR
+[junit] Java heap space
+[junit] java.lang.OutOfMemoryError: Java heap space
+[junit] 	at org.apache.lucene.util.ArrayUtil.grow(ArrayUtil.java:338)
+[junit] 	at org.apache.lucene.util.fst.FST$BytesWriter.writeBytes(FST.java:927)
+[junit] 	at org.apache.lucene.util.fst.ByteSequenceOutputs.write(ByteSequenceOutputs.java:113)
+[junit] 	at org.apache.lucene.util.fst.ByteSequenceOutputs.write(ByteSequenceOutputs.java:32)
+[junit] 	at org.apache.lucene.util.fst.FST.addNode(FST.java:451)
+[junit] 	at org.apache.lucene.util.fst.NodeHash.add(NodeHash.java:122)
+[junit] 	at org.apache.lucene.util.fst.Builder.compileNode(Builder.java:180)
+[junit] 	at org.apache.lucene.util.fst.Builder.finish(Builder.java:495)
+[junit] 	at org.apache.lucene.index.codecs.memory.MemoryCodec$TermsWriter.finish(MemoryCodec.java:232)
+[junit] 	at org.apache.lucene.index.FreqProxTermsWriterPerField.flush(FreqProxTermsWriterPerField.java:414)
+[junit] 	at org.apache.lucene.index.FreqProxTermsWriter.flush(FreqProxTermsWriter.java:92)
+[junit] 	at org.apache.lucene.index.TermsHash.flush(TermsHash.java:117)
+[junit] 	at org.apache.lucene.index.DocInverter.flush(DocInverter.java:80)
+[junit] 	at org.apache.lucene.index.DocFieldProcessor.flush(DocFieldProcessor.java:78)
+[junit] 	at org.apache.lucene.index.DocumentsWriterPerThread.flush(DocumentsWriterPerThread.java:472)
+[junit] 	at org.apache.lucene.index.DocumentsWriter.doFlush(DocumentsWriter.java:420)
+[junit] 	at org.apache.lucene.index.DocumentsWriter.flushAllThreads(DocumentsWriter.java:568)
+[junit] 	at org.apache.lucene.index.IndexWriter.getReader(IndexWriter.java:366)
+[junit] 	at org.apache.lucene.index.IndexReader.open(IndexReader.java:317)
+[junit] 	at org.apache.lucene.util.fst.TestFSTs.testRealTerms(TestFSTs.java:1034)
+[junit] 	at org.apache.lucene.util.LuceneTestCase$2$1.evaluate(LuceneTestCase.java:611)
+{noformat}
+
+or:
+
+{noformat}
+[junit] Testsuite: org.apache.lucene.util.automaton.TestCompiledAutomaton
+[junit] Testcase: testRandom(org.apache.lucene.util.automaton.TestCompiledAutomaton):	Caused an ERROR
+[junit] Java heap space
+[junit] java.lang.OutOfMemoryError: Java heap space
+[junit] 	at org.apache.lucene.util.automaton.RunAutomaton.<init>(RunAutomaton.java:128)
+[junit] 	at org.apache.lucene.util.automaton.ByteRunAutomaton.<init>(ByteRunAutomaton.java:28)
+[junit] 	at org.apache.lucene.util.automaton.CompiledAutomaton.<init>(CompiledAutomaton.java:134)
+[junit] 	at org.apache.lucene.util.automaton.TestCompiledAutomaton.build(TestCompiledAutomaton.java:39)
+[junit] 	at org.apache.lucene.util.automaton.TestCompiledAutomaton.testTerms(TestCompiledAutomaton.java:55)
+[junit] 	at org.apache.lucene.util.automaton.TestCompiledAutomaton.testRandom(TestCompiledAutomaton.java:101)
+[junit] 	at org.apache.lucene.util.LuceneTestCase$2$1.evaluate(LuceneTestCase.java:611)
+[junit] 	at org.apache.lucene.util.LuceneTestCaseRunner.runChild(LuceneTestCaseRunner.java:148)
+[junit] 	at org.apache.lucene.util.LuceneTestCaseRunner.runChild(LuceneTestCaseRunner.java:50)
+{noformat}
+
+Almost every nightly test fails, history: [https://builds.apache.org/job/Lucene-trunk]
+
+We should maybe raise the max heap space or reduce doc counts/...

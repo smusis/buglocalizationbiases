@@ -1,0 +1,10 @@
+JCR2SPI NamespaceRegistryImpl.unregisterNamespace passes prefix to storage when uri is expected
+
+
+
+Description:
+When trying to unregister a namespace through SPI, Jackrabbit throws a NamespaceException : <prefix>: is not a registered namespace uri.
+
+javax.jcr.NamespaceRegistry.unregisterNamespace(String prefix) expects the namespace prefix. Though, org.apache.jackrabbit.jcr2spi.NamespaceRegistryImpl.unregisterNamespace(String prefix) calls directly org.apache.jackrabbit.jcr2spi.NamespaceStorage.unregisterNamespace(String uri), which expects the namespace uri.
+
+The namespace registry should first retrieve the uri for the provided prefix.

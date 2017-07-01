@@ -1,0 +1,19 @@
+BitVector.isSparse is sometimes wrong
+
+
+
+Description:
+In working on LUCENE-3246, I found a few problems with
+BitVector.isSparse:
+
+  * Its math can overflow int, such that if there are enough deleted
+    docs and maxDoc() is largish, isSparse may incorrectly return true
+
+  * It over-estimates the size of the sparse file, since when
+    estimating number of bytes for the vInt dgaps it uses bits.length
+    instead of bits.length divided by number of set bits (ie, the
+    "average" gap between set bits)
+
+This is relatively harmless (just affects performance / size of .del
+file on disk, not correctness).
+

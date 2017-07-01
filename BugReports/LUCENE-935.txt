@@ -1,0 +1,11 @@
+Improve maven artifacts
+
+
+
+Description:
+There are a couple of things we can improve for the next release:
+- "*pom.xml" files should be renamed to "*pom.xml.template"
+- artifacts "lucene-parent" should extend "apache-parent"
+- add source jars as artifacts
+- update <generate-maven-artifacts> task to work with latest version of maven-ant-tasks.jar
+- metadata filenames should not contain "local"

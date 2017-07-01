@@ -1,0 +1,6 @@
+test case (TCK) maintenance for JCR 2.0
+
+
+
+Description:
+Umbrella issue for changes/additions to JUnit test cases, setup and config.

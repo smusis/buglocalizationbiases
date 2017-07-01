@@ -1,0 +1,24 @@
+Node.getLock() on a lock non-lockable node throws javax.jcr.UnsupportedRepositoryOperationException
+
+
+
+Description:
+Consider Node "/test" with mixin type mix:lockable and Node "/test/child" without mixin type mix:lockable.
+
+       Node root = Session.getRootNode();
+       Node test = root.getNode("test");
+       Node child = test.getNode("child");
+
+       // create lock on /test
+       test.lock();
+
+       // succeeds
+       Lock lock = test.getLock();
+
+       // sets flag true
+       boolean locked = child.isLocked();
+
+       // throws UnsupportedRepositoryOperationException
+       lock = child.getLock();
+
+According to the spec, the getLock() method must return the applicable lock if the node is locked regardless of whether the node has mixin type "mix:lockable" or not.

@@ -1,0 +1,13 @@
+contrib/memory: PatternAnalyzerTest is a very, very, VERY, bad unit test
+
+
+
+Description:
+while working on something else i was started getting consistent IllegalStateExceptions from PatternAnalyzerTest -- but only when running the test from the top level.
+
+Digging into the test, i've found numerous things that are very scary...
+* instead of using assertions to test that tokens streams match, it throws an IllegalStateExceptions when they don't, and then logs a bunch of info about the token streams to System.out -- having assertion messages that tell you *exactly* what doens't match would make a lot more sense.
+* it builds up a list of files to analyze using patsh thta it evaluates relative to the current working directory -- which means you get different files depending on wether you run the tests fro mthe contrib level, or from the top level build file
+* the list of files it looks for include: "../../*.txt", "../../*.html", "../../*.xml" ... so not only do you get different results when you run the tests in the contrib vs at the top level, but different people runing the tests via the top level build file will get different results depending on what types of text, html, and xml files they happen to have two directories above where they checked out lucene.
+* the test comments indicates that it's purpose is to show that PatternAnalyzer produces the same tokens as other analyzers - but points out this will fail for WhitespaceAnalyzer because of the 255 character token limit WhitespaceTokenizer imposes -- the test then proceeds to compare PaternAnalyzer to WhitespaceTokenizer, garunteeing a test failure for anyone who happens to have a text file containing more then 255 characters of non-whitespace in a row somewhere in "../../" (in my case: my bookmarks.html file, and the hex encoded favicon.gif images)
+

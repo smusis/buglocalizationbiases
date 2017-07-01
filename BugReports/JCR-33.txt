@@ -1,0 +1,6 @@
+sysview import does not resolve references
+
+
+
+Description:
+when importing a sysview with references, those are not resolved against the new uuids of the mix:referenceable nodes

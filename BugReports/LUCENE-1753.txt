@@ -1,0 +1,17 @@
+Make not yet final core/contrib TokenStream/Filter implementations final
+
+
+
+Description:
+Lucene's analysis package is designed in a way, that you can plug different *implementations* of analysis in chains of TokenStreams and TokenFilters. An analyzer is build of several TokenStreams/Filters that do the tokenization of text. If you want to modify the behaviour of tokenization, you implement a new subclass of TokenStream/-Filter/Tokenizer.
+
+Most classes in the core are correctly implemented like that. They are itsself final or their implementation methods are final (CharTokenizer).
+
+A lot of problems with backwards-compatibility of LUCENE-1693 are some classes in Lucene's core/contrib not yet final:
+- KeywordTokenizer should be declared final or its implementation methods should be final
+- StandardTokenizer should be declared final or its implementation methods should be final
+- ISOLatin1Filter is deprecated, so it will be removed in 3.0, nothing to do.
+
+CharTokenizer is the abstract base class of several other classes. The design is correct: Child classes cannot override the implementation, they can only change the behaviour of this final implementation.
+
+Contrib should be checked, that all implementation classes are at least final or they are designed in the same way like CharTokenizer.

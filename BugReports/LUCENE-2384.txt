@@ -1,0 +1,8 @@
+Reset zzBuffer in StandardTokenizerImpl* when lexer is reset.
+
+
+
+Description:
+When indexing large documents, the lexer buffer may stay large forever. This sub-issue resets the lexer buffer back to the default on reset(Reader).
+
+This is done on the enclosing issue.

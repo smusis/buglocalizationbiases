@@ -1,0 +1,12 @@
+Offset not working correctly in user/group query when restricting to group members
+
+
+
+Description:
+For user/group queries having a scope *and* a  limit clause offsetting does not work correctly.
+
+    builder.setScope("contributors", false);
+    builder.setLimit(100, 50);
+
+In the above case, the result is often not offset at 100 but instead at some place >100.
+

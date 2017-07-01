@@ -1,0 +1,22 @@
+Single-pass grouping collector based on doc blocks
+
+
+
+Description:
+LUCENE-3112 enables adding/updating a contiguous block of documents to
+the index, guaranteed (yet, experimental!) to retain adjacent docID
+assignment through the full life of the index as long the app doesn't
+delete individual docs from the block.
+
+When an app does this, it can enable neat features like LUCENE-2454
+(nested documents), post-group facet counting (LUCENE-3097).
+
+It also makes single-pass grouping possible, when you group by
+the "identifier" field shared by the doc block, since we know we will
+see a given group only once with all of its docs within one block.
+
+This should be faster than the fully general two-pass collectors we
+already have.
+
+I'm working on a patch but not quite there yet...
+

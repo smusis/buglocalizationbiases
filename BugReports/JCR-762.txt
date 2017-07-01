@@ -1,0 +1,27 @@
+System view XML uses hardcoded sv: prefix
+
+
+
+Description:
+Jackrabbit enforces that the xml docment that imported into repository through the use of  ContentHandler have attributte "name" with specific prefix ("sv"), instead of specific namespace ("com.cisco.topos.jcr.sv").
+
+Example of wrong behavior:
+Calling
+marshaller.marshal(entry, session.getImportContentHandler(session.getNodeByUUID(channelId).getPath(), ImportUUIDBehavior.IMPORT_UUID_CREATE_NEW));
+
+where entry is object that represent xml structure with namespace "com.cisco.topos.jcr.sv" assigned to prefix other then "sv" or as default namespace  will cause  exception
+java.lang.RuntimeException: javax.xml.bind.MarshalException
+
+ javax.jcr.InvalidSerializedDataException: missing mandatory sv:name attribute of element sv:node
+	at org.apache.jackrabbit.core.xml.SysViewImportHandler.startElement(SysViewImportHandler.java:122)
+	at org.apache.jackrabbit.core.xml.ImportHandler.startElement(ImportHandler.java:192)
+	at com.sun.xml.bind.v2.runtime.output.SAXOutput.endStartTag(SAXOutput.java:80)
+	at com.sun.xml.bind.v2.runtime.XMLSerializer.endAttributes(XMLSerializer.java:273)
+	at com.sun.xml.bind.v2.runtime.XMLSerializer.childAsSoleContent(XMLSerializer.java:531)
+	at com.sun.xml.bind.v2.runtime.ClassBeanInfoImpl.serializeRoot(ClassBeanInfoImpl.java:283)
+	at com.sun.xml.bind.v2.runtime.XMLSerializer.childAsRoot(XMLSerializer.java:461)
+	at com.sun.xml.bind.v2.runtime.MarshallerImpl.write(MarshallerImpl.java:292)
+	... 24 more
+
+
+

@@ -1,0 +1,6 @@
+Merge CharTermAttribute and deprecations to stable
+
+
+
+Description:
+This should be merged to trunk until flex lands, so the analyzers can be ported to new api.

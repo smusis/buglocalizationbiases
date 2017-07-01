@@ -1,0 +1,21 @@
+Yet another race in IW#nrtIsCurrent
+
+
+
+Description:
+In IW#nrtIsCurrent looks like this:
+
+{code}
+  synchronized boolean nrtIsCurrent(SegmentInfos infos) {
+    ensureOpen();
+    return infos.version == segmentInfos.version && !docWriter.anyChanges() && !bufferedDeletesStream.any();
+  }
+{code}
+
+* the version changes once we checkpoint the IW
+* docWriter has changes if there are any docs in ram or any deletes in the delQueue
+* bufferedDeletes contain all frozen del packages from the delQueue
+
+yet, what happens is 1. we decrement the numDocsInRam in DWPT#doAfterFlush (which is executed during DWPT#flush) but before we checkpoint. 2. if we freeze deletes (empty the delQueue) we put them in the flushQueue to maintain the order.  This means they are not yet in the bufferedDeleteStream.
+
+Bottom line, there is a window where we could see IW#nrtIsCurrent returning true if we check within this particular window. Phew, I am not 100% sure if that is the reason for our latest failure in SOLR-2861 but from what the logs look like this could be what happens. If we randomly hit low values for maxBufferedDocs & maxBufferedDeleteTerms this is absolutely possible.

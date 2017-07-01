@@ -1,0 +1,6 @@
+NodeDefinitionTemplateImpl.setDefaultPrimaryTypeName(null) throws exception
+
+
+
+Description:
+expect to clear the name.

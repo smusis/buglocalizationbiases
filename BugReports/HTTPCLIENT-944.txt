@@ -1,0 +1,6 @@
+In case of SocketTimeoutException and using HttpRequestRetryHandler the execution is always +1
+
+
+
+Description:
+If my request encounter a SocketTimeoutException, the HttpRequestRetryHandler#retryRequest will be called with an executionCount with a value +1.

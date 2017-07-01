@@ -1,0 +1,14 @@
+Bug in SegmentTermPositions if used for first term in the dictionary
+
+
+
+Description:
+When a SegmentTermPositions object is reset via seek() it does not move
+the proxStream to the correct position in case the term is the first one
+in the dictionary.
+
+The reason for this behavior is that the skipStream is only moved if
+lazySkipPointer is != 0. But 0 is a valid value for the posting list of
+the very first term. The fix is easy: We simply have to set lazySkipPointer
+to -1 in case no lazy skip has to be performed and then we only move the
+skipStream if lazySkipPointer!=-1.

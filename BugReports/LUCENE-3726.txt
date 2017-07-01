@@ -1,0 +1,24 @@
+Default KuromojiAnalyzer to use search mode
+
+
+
+Description:
+Kuromoji supports an option to segment text in a way more suitable for search,
+by preventing long compound nouns as indexing terms.
+
+In general 'how you segment' can be important depending on the application 
+(see http://nlp.stanford.edu/pubs/acl-wmt08-cws.pdf for some studies on this in chinese)
+
+The current algorithm punishes the cost based on some parameters (SEARCH_MODE_PENALTY, SEARCH_MODE_LENGTH, etc)
+for long runs of kanji.
+
+Some questions (these can be separate future issues if any useful ideas come out):
+* should these parameters continue to be static-final, or configurable?
+* should POS also play a role in the algorithm (can/should we refine exactly what we decompound)?
+* is the Tokenizer the best place to do this, or should we do it in a tokenfilter? or both?
+  with a tokenfilter, one idea would be to also preserve the original indexing term, overlapping it: e.g. ABCD -> AB, CD, ABCD(posInc=0)
+  from my understanding this tends to help with noun compounds in other languages, because IDF of the original term boosts 'exact' compound matches.
+  but does a tokenfilter provide the segmenter enough 'context' to do this properly?
+
+Either way, I think as a start we should turn on what we have by default: its likely a very easy win.
+

@@ -1,0 +1,15 @@
+Remove support for pre-3.0 indexes
+
+
+
+Description:
+We should remove support for 2.x (and 1.9) indexes in 4.0. It seems that nothing can be done in 3x because there is no special code which handles 1.9, so we'll leave it there. This issue should cover:
+# Remove the .zip indexes
+# Remove the unnecessary code from SegmentInfo and SegmentInfos. Mike suggests we compare the version headers at the top of SegmentInfos, in 2.9.x vs 3.0.x, to see which ones can go.
+# remove FORMAT_PRE from FieldInfos
+# Remove old format from TermVectorsReader
+
+If you know of other places where code can be removed, then please post a comment here.
+
+I don't know when I'll have time to handle it, definitely not in the next few days. So if someone wants to take a stab at it, be my guest.
+

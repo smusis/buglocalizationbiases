@@ -1,0 +1,8 @@
+rename optimize to a less cool-sounding name
+
+
+
+Description:
+I think users see the name optimize and feel they must do this, because who wants a suboptimal system? but this probably just results in wasted time and resources.
+
+maybe rename to collapseSegments or something?

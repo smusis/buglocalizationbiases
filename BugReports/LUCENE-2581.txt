@@ -1,0 +1,6 @@
+FastVectorHighlighter: Make FragmentsBuilder use Encoder
+
+
+
+Description:
+Make FragmentsBuilder use Encoder, as Highlighter does.

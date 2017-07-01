@@ -1,0 +1,7 @@
+[PATCH] Contribution: A QueryParser which passes wildcard and prefix queries to analyzer
+
+
+
+Description:
+Lucenes built-in QueryParser class does not analyze prefix nor wildcard queries.
+Attached is a subclass which passes these queries to the analyzer as well.

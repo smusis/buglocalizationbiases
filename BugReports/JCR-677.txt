@@ -1,0 +1,14 @@
+Do not fulltext index jcr:uuid property
+
+
+
+Description:
+The UUID value of a referenceable nodes is currently add to the index four times:
+- As a system field _:UUID
+- As a property value for jcr:uuid
+- As part of the node scope fulltext index
+- As part of the jcr:uuid property scope fulltext index
+
+In a repository with lots of referenceable nodes this bloates the index and does not add much value. Searching a node by its UUID is preferably done using the equal operator and not by using the jcr:contains() function.
+
+I suggest to remove fulltext indexing of the jcr:uuid property. Existing indexes would still work after this change, new or updated nodes would simply not have the property jcr:uuid fulltext indexed anymore.

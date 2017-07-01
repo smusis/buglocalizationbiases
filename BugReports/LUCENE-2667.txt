@@ -1,0 +1,17 @@
+Fix FuzzyQuery's defaults, so its fast.
+
+
+
+Description:
+We worked a lot on FuzzyQuery, but you need to be a rocket scientist to ensure good results.
+
+The main problem is that the default distance is 0.5f, which doesn't take into account the length of the string.
+To add insult to injury, the default number of expansions is 1024 (traditionally from BooleanQuery maxClauseCount)
+
+I propose:
+* The syntax of FuzzyQuery is enhanced, so that you can specify raw edits too: such as foobar~2 (all terms within 2 levenshtein edits of foobar). Previously if you specified any amount >=1, you got IllegalArgumentException, so this won't break anyone. You can still use foobar~0.5, and it works just as before
+* The default for minimumSimilarity then becomes LevenshteinAutomata.MAXIMUM_SUPPORTED_DISTANCE, which is 2. This way if you just do foobar~, its always fast.
+* The size of the priority queue is reduced by default from 1024 to a much more reasonable value: 50. This is what FuzzyLikeThis uses.
+
+I think its best to just change the defaults for this query, since it was so aweful before. We can add notes in migrate.txt that if you care about using the old values, then you should provide them explicitly, and you will get the same results!
+

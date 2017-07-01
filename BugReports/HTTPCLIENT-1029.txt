@@ -1,0 +1,8 @@
+Update 3.x legacy homepage with end of life notification and pointer to HTTPComponents
+
+
+
+Description:
+If you google for "http client" or "httpclient" or "apache http client" the first result is always legacy Commons-HttpClient page.  If you follow the link, there's no indication whatsoever on the legacy page that its not the latest version, or that it's end-of-lifed.  Unless you're already aware of HttpComponents, there's no obvious way to find it from the legacy page.  The only reference to HttpComponents is actually in the 'History' section.  
+
+The source for the legacy page should be updated to indicate Commons-HttpClient is an end-of-lifed project and should provide a pointer to the new HttpComponents page in a more prominent location.

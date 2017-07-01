@@ -1,0 +1,10 @@
+primaryItemName is not inherited
+
+
+
+Description:
+if no primaryItemName is defined for a nodetype definition, it should be inherited from one of the supertypes. the spec is unclear about this, though it seems to be the natural behaviour.
+
+for example when extending nt:resource, the subtype should not be force to redefine the jcr:data as primaryItemName.
+
+

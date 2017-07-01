@@ -1,0 +1,6 @@
+Add support for type whitelist in TypeTokenFilter
+
+
+
+Description:
+A usual use case for TypeTokenFilter is allowing only a set of token types. That is, listing allowed types, instead of filtered ones. I'm attaching a patch to add a useWhitelist option for that.

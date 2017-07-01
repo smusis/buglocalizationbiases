@@ -1,0 +1,18 @@
+Observation logs error when a node is moved in place
+
+
+
+Description:
+An error message is written to the log when the following sequence of operations is executed:
+
+- create node 'parent'
+- create node 'child' as a child of 'parent'
+- save
+- create node 'tmp'
+- move 'child' under 'tmp'
+- remove 'parent'
+- move 'tmp' to former path of 'parent'
+
+The log will say: EventStateCollection: Unable to calculate old path of moved node
+
+This is because the zombie path of 'child' is equal to the new path after the move. The EventStateCollection detects a new parentId assigned to 'child' and expects a new path that is different from the zombie path. The above case however shows that there is a use case where the paths are equal and events should be generated.

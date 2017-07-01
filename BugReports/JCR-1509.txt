@@ -1,0 +1,130 @@
+[SUBMISSION] Amazon S3 Persistence Manager Project
+
+
+
+Description:
+As I noted previously on the dev-list (http://markmail.org/search/?q=amazon+list%3Aorg.apache.jackrabbit.dev#query:amazon%20list%3Aorg.apache.jackrabbit.dev+page:1+mid:qw27gopsn4lnbde5+state:results) I have written an Amazon S3 bundle persistence manager for Jackrabbit. I want to submit the code for the sandbox, the full source is included in the zip file. Licensed under the ASF.
+
+The project also aims to implement a normal persistence manager (which I abandoned in favor of the more efficient bundle pm, which is implemented, but does not work 100%), a file system impl for S3 (only rough structure present) and an SPI impl that connects to S3 (dreaming ;-)). For more infos, I will include the README.txt of the project here:
+
+=================================================================
+Welcome to Jackrabbit persistence for Amazon Webservices (ie. S3)
+=================================================================
+
+This module contains various persistence options for using
+Amazon Webservices as backend for Jackrabbit / JCR. Amazon has
+two persistence services: S3 (public) and SimpleDB (still beta).
+The following options are available/ideas:
+
+- (1) persistence managers that connects to S3
+      (normal + bundle, in work, probably not very efficient)
+      
+- (2) persistence manager that connects to SimpleDB
+      (NOT feasible)
+      
+- (3) SPI implementation that connects to S3
+      (not implemented, very complicated, probably more efficient)
+      
+See details below and also TODO.txt
+
+
+Installing / Testing
+====================
+
+This needs a patched Jackrabbit 1.3.x version. The patches can
+be found in the directory "patches-for-1.3". One patch will modify
+the pom of jackrabbit-core to generated the jackrabbit test jar
+for reuse in this project. To build that customized version, you need
+to do the following steps:
+
+1) svn co http://svn.apache.org/repos/asf/jackrabbit/branches/1.3 jackrabbit-1.3
+2) cd jackrabbit-1.3
+3) apply all patches from the "patches-for-1.3" directory:
+   patch -p0 < %JR-AMAZON-PATH%/patches-for-1.3/%PATCH%.patch
+4) mvn install
+5) cd %JR-AMAZON-PATH%
+6) change jackrabbit version number in pom.xml to the one you just built
+   (eg. project/parent/version = 1.3.4)
+7) cp aws.properties.template aws.properties
+8) enter your credentials in aws.properties
+9) mvn test
+
+For debugging, you can change the logging in applications/test/log4j.properties
+and set up proxying (for monitoring the traffic with eg. tcp mon) in
+applications/test/jets3t.properties.
+
+
+Details about Implementations
+=============================
+
+(1) org.apache.jackrabbit.persistence.amazon.AmazonS3PersistenceManager
+
+http://www.amazon.com/s3
+
+Stores JCR Nodes and Properties inside S3 Objects. Uses UUID for Nodes and
+UUID/Name for Properties as Object names. Node references are stored
+via references/UUID.
+
+Configuration parameters:
+
+accessKey
+    Amazon AWS access key (aka account user id) [required]
+
+secretKey
+    Amazon AWS secret key (aka account password) [required]
+    
+bucket
+    Name of the S3 bucket to use [optional, default uses accessKey]
+    Note that bucket names are global, so using your accessKey is
+    recommended to prevent conflicts with other AWS users. 
+    
+objectPrefix
+    Prefix used for all object names [optional, default is ""]
+    Should include the workspace name ("${wsp.name}" or "version" for
+    the versioning PM) to put multiple workspaces into one bucket.
+
+Example XML Config:
+
+<PersistenceManager class="org.apache.jackrabbit.persistence.amazon.AmazonS3PersistenceManager">
+    <param name="accessKey"    value="abcde01234"/>
+    <param name="secretKey"    value="topsecret"/>
+    <param name="bucket"       value="abcde01234.jcrstore"/>
+    <param name="objectPrefix" value="${wsp.name}/"/>
+</PersistenceManager>
+
+-----
+
+(2) AmazonSimpleDBPersistenceManager
+
+This is *not* feasible because of the restrictions that are applied
+to SimpleDB. An item can only have up to 256 attributes, each attribute
+can only contain a string value and that one can only have 1024 chars.
+See this link for more information:
+
+http://docs.amazonwebservices.com/AmazonSimpleDB/2007-11-07/DeveloperGuide/SDB_API_PutAttributes.html
+
+-----
+
+(3) org.apache.jackrabbit.spi2s3
+
+TODO
+
+lots of work...
+
+
+About
+=====
+
+It was originally written by Alexander Klimetschek
+(alexander.klimetschek at googlemail dot com) in 2008.
+
+See the Apache Jackrabbit web site (http://jackrabbit.apache.org/)
+for documentation and other information. You are welcome to join the
+Jackrabbit mailing lists (http://jackrabbit.apache.org/mail-lists.html)
+to discuss this component and to use the Jackrabbit issue tracker
+(http://issues.apache.org/jira/browse/JCR) to report issues or request
+new features.
+
+Apache Jackrabbit is a project of the Apache Software Foundation
+(http://www.apache.org).
+

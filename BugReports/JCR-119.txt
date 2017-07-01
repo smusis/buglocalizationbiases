@@ -1,0 +1,19 @@
+workspace.copy does not copy binary properties properly
+
+
+
+Description:
+Workspace copy works fine for everything else but if you copy a hierarchy which contains binary properties
+and remove the source after copying it removes the binary from "copied" newly created hierarchy as well.
+
+How to reproduce:
+
+1. create hierarchy with any type of nodes  - /site / en / image [Type Binary]
+2. create another hierarchy at different level - /site2
+3. copy /site/en under /site2
+-- till now everything is fine, its a proper copy and if you export xml out of these 2 hierarchies you will see that "image" is actually copied
+4. now delete /site/en
+5. you will see all other properties as copied before /site2/en... except binary.
+
+are binary types are always referenced? even if you copy via workspace copy
+

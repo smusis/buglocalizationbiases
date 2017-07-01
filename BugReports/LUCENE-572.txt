@@ -1,0 +1,22 @@
+SpanNotQuery.hashCode ignores exclude
+
+
+
+Description:
+filing as bug for tracking/refrence...
+
+On May 16, 2006, at 3:33 AM, Chris Hostetter wrote:
+
+> SpanNodeQuery's hashCode method makes two refrences to  
+> include.hashCode(),
+> but none to exclude.hashCode() ... this is a mistake yes/no?
+
+Date: Tue, 16 May 2006 05:57:15 -0400
+From: Erik Hatcher
+To: java-dev@lucene.apache.org
+Subject: Re: SpanNotQuery.hashCode cut/paste error?
+
+Yes, this is a mistake.  I'm happy to fix it, but looks like you have  
+other patches in progress.
+
+

@@ -1,0 +1,25 @@
+NullPointerException when iterating over properties
+
+
+
+Description:
+Running ConcurrentReadWriteTest (NUM_NODES=5, NUM_THREADS=3, RUN_NUM_SECONDS=120) resulted in a NullPointerException:
+
+Exception in thread "Thread-11" java.lang.NullPointerException
+	at org.apache.commons.collections.map.AbstractReferenceMap$ReferenceEntry.getValue(AbstractReferenceMap.java:596)
+	at org.apache.commons.collections.map.AbstractReferenceMap.containsKey(AbstractReferenceMap.java:204)
+	at org.apache.jackrabbit.core.state.ItemStateMap.contains(ItemStateMap.java:66)
+	at org.apache.jackrabbit.core.state.ItemStateReferenceCache.isCached(ItemStateReferenceCache.java:91)
+	at org.apache.jackrabbit.core.state.LocalItemStateManager.hasItemState(LocalItemStateManager.java:173)
+	at org.apache.jackrabbit.core.state.XAItemStateManager.hasItemState(XAItemStateManager.java:252)
+	at org.apache.jackrabbit.core.state.SessionItemStateManager.getItemState(SessionItemStateManager.java:174)
+	at org.apache.jackrabbit.core.ItemManager.createItemInstance(ItemManager.java:495)
+	at org.apache.jackrabbit.core.ItemManager.getItem(ItemManager.java:326)
+	at org.apache.jackrabbit.core.LazyItemIterator.prefetchNext(LazyItemIterator.java:90)
+	at org.apache.jackrabbit.core.LazyItemIterator.next(LazyItemIterator.java:203)
+	at org.apache.jackrabbit.core.LazyItemIterator.nextProperty(LazyItemIterator.java:118)
+	at org.apache.jackrabbit.core.ConcurrentReadWriteTest$1$1.execute(ConcurrentReadWriteTest.java:64)
+	at org.apache.jackrabbit.core.AbstractConcurrencyTest$Executor.run(AbstractConcurrencyTest.java:110)
+	at java.lang.Thread.run(Thread.java:619)
+
+The cache is not synchronized and is accessed at the same time by the current thread and another thread that notified ItemStates about changes.

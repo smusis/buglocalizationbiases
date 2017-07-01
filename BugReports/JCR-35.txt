@@ -1,0 +1,8 @@
+NodeTypeDefDiff compares to restrictive
+
+
+
+Description:
+The NodeTypeDefDiff class is used to compare NodeTypeDef instances. Unfortunately this class reports two NodeTypeDef instances which are not equal but have no structural difference as having trivial changes. The correct result would be to have no modification at all.
+
+I suggest to modify the NodeTypeDefDiff.init() method such, that the initial type is "NONE" instead of "TRIVIAL" and to first compare the "hasOrderableChildNodes" first and raise the level to "TRIVIAL" if not equal. Next the rest of the current comparisons would follow.

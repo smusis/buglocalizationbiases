@@ -1,0 +1,13 @@
+bad assumptions in VersionHistoryTest.testInitallyGetAllVersionsContainsTheRootVersion()
+
+
+
+Description:
+There are two incorrect assumptions in testInitallyGetAllVersionsContainsTheRootVersion:
+
+- getAllVersions() returns versions in a particular order (test assumes root version comes first), and
+
+- Node.equals() is suitable for node comparison
+
+And finally, there's a typo in the test case name.
+

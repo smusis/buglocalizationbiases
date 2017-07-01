@@ -1,0 +1,10 @@
+test granularity for calendar (date) properties
+
+
+
+Description:
+There are repositories out there that do support properties of type Date, but not Calendar (the main difference being that Calendar also captures the time zone). Also, some repositories may not be able to store timestamps with millisecond resolution.
+
+Although both these restrictions make a repository non-compliant, it would be useful for the tests to test these aspects as separate issues. Thus I propose to simplify the existing tests so that they just compare timestamps (factoring out the time zone), and do not require resolution finer than 1s. These two aspects then should be tested in a separate test case (thinking of it, they currently may not test sub-second resolution, in which case I propose to leave things as they are with respect to this).
+
+

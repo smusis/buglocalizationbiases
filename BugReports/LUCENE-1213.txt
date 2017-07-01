@@ -1,0 +1,9 @@
+MultiFieldQueryParser ignores slop parameter
+
+
+
+Description:
+MultiFieldQueryParser.getFieldQuery(String, String, int) calls super.getFieldQuery(String, String), thus obliterating any slop parameter present in the query.
+
+It should probably be changed to call super.getFieldQuery(String, String, int), except doing only that will result in a recursive loop which is a side-effect of what may be a deeper problem in MultiFieldQueryParser -- getFieldQuery(String, String, int) is documented as delegating to getFieldQuery(String, String), yet what it actually does is the exact opposite.  This also causes problems for subclasses which need to override getFieldQuery(String, String) to provide different behaviour.
+

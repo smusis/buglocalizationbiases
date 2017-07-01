@@ -1,0 +1,6 @@
+Improve NodeTypeRegistry.effectiveNodeType()
+
+
+
+Description:
+The current getEffectiveNodeType() implementation has a minor bug that prevents from proper caching for certain nodetype combinations. further performance enhancements can be made to the effective node type cache.

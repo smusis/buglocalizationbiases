@@ -1,0 +1,8 @@
+Incorrect decodedAttributeValue in AbstractImportXmlTest
+
+
+
+Description:
+The string literal is not correctly escaped.
+
+Later on the decoded attribute value should be used to check the imported value. There is currently an odd test that checks the encoded attribute value twice.

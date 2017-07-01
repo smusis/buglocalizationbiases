@@ -1,0 +1,6 @@
+Un-deprecate QueryParser and remove documentation that says it will be replaced in 3.0
+
+
+
+Description:
+This looks like the consensus move at first blush. We can (of course) re-evaluate if things change.

@@ -1,0 +1,7 @@
+review TSCCM for spurious wakeups
+
+
+
+Description:
+Review the code of the TSCCM/ConnPoolByRoute for places where spurious wakeups may happen.
+Verify that this case is dealt with correctly. Unit test by giving invalid wakeup signals?

@@ -1,0 +1,10 @@
+[PATCH] Remove equals() from internal Comparator of ConjunctionScorer
+
+
+
+Description:
+As written, the equals() method is not used. 
+The docs of java.util.Comparator have an equals() with a single 
+arg to compare the Comparator itself to another one, which is 
+hardly ever useful. 
+Patch follows

@@ -1,0 +1,10 @@
+JSR 283: new Property Types
+
+
+
+Description:
+the new property types are
+
+- WEAKREFERENCE
+- URI
+- DECIMAL

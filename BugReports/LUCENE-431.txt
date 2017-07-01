@@ -1,0 +1,26 @@
+RAMInputStream and RAMOutputStream without further buffering
+
+
+
+Description:
+From java-dev, Doug's reply of 12 Sep 2005 
+on Delaying buffer allocation in BufferedIndexInput: 
+ 
+Paul Elschot wrote: 
+... 
+> I noticed that RAMIndexInput extends BufferedIndexInput. 
+> It has all data in buffers already, so why is there another 
+> layer of buffering? 
+ 
+No good reason: it's historical. 
+ 
+To avoid this either: (a) the BufferedIndexInput API would need to be  
+modified to permit subclasses to supply the buffer; or (b)  
+RAMInputStream could subclass IndexInput directly, using its own  
+buffers.  The latter would probably be simpler. 
+ 
+End of quote. 
+ 
+I made version (b) of RAMInputStream. 
+Using this RAMInputStream, TestTermVectorsReader failed as the only 
+failing test.

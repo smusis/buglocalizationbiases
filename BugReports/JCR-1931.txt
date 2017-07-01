@@ -1,0 +1,29 @@
+SharedFieldCache$StringIndex memory leak causing OOM's 
+
+
+
+Description:
+SharedFieldCache$StringIndex is not working properly. It is meant to cache the docnumbers in lucene along with the term to sort on. The issue is twofold. I have a solution for the second one, the first one is not really solvable from jr pov, because lucene index readers are already heavily caching Terms. 
+
+Explanation of the problem:
+
+For *each* unique property where is sorted on, a new lucene ScoreDocComparator is created (see SharedFieldComparator newComparator). This new comparator creates *per* lucene indexreader  SharedFieldCache.StringIndex which is stored in a WeakHashMap with as key, the indexreader . As this indexreader  almost *never* can be garbage collected (only if it is merged and thus unused after), the SharedFieldCache.StringIndex are there to be the rest of the jvm life (which is sometime short, as can be seen from the simple unittest attached).  Obviously, this results pretty fast in OOM.
+
+1) issue one:  The cached terms[] in SharedFieldCache.StringIndex can become huge when you sort on a common property (date) which is present in a lot of nodes. It you sort on large properties, like 'title' this SharedFieldCache.StringIndex  will quickly use hundreds of Mb for a couple of hundred of thousand of nodes with a title. This issue is already a lucene issue, as lucene already caches the terms. OTOH, I really doubt whether we should index long string values as UNTOKENIZED in lucene at all. A half working solution might be a two-step solution, where the first sort is on the first 10 chars, and only if the comparator returns 0, take the entire string to sort on
+
+2) issue two:  The cached terms[] in SharedFieldCache.StringIndex is frequently sparse, consuming an incredible amount of memory for string arrays containing mainly null values. For example (see attached unit test):
+
+- add 1.000.000 nodes
+- do a query and sort on a non existing property
+- you'll loose 1.000.000 * 4 bytes ~ 4 Mb of memory
+- sort on another non existing prop : another 4 Mb is lost
+- do it 100 times --> 400 Mb is lost, and can't be reclaimed
+
+I'll attach a solution which works really fine for me, still having the almost unavoidable memory absorption, but makes it much smaller. The solution is, that if < 10% of the String array is filled, i consider the array already sparse, and move to a HashMap solution. Performance does not decrease much (and in case of large sparsity increases because less memory consumption --> less gc, etc). 
+
+Perhaps it does not seem to be a common issue (certainly the unit test) but our production environments memory snapshots indicate most memory being held by the SharedFieldCache$StringIndex (and the lucene Terms, which is harder to avoid)
+
+I'd like to see this in the 1.5.1 if others are ok with it
+
+
+

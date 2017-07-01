@@ -1,0 +1,12 @@
+Introduce similarity function
+
+
+
+Description:
+The query handler should support a similarity function that allows one to find nodes that are similar to a given existing one.
+
+Example:
+
+//*[rep:similar("/foo/bar")]
+
+Finds nodes that are similar to node /foo/bar.

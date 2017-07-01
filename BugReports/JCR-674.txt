@@ -1,0 +1,24 @@
+String properties with invalid XML characters export as invalid XML
+
+
+
+Description:
+As noted in the current JCR 1.0.1 maintenance draft, sections 6.4.1,
+6.4.2.6, XML export of string properties that contain invalid XML
+characters isn't well-defined currently, since those characters are
+not permissible in XML.  The proposed fix is to use base64
+encoding for such values in System View.
+
+Most characters below #x20 are examples of this.  Currently, these
+are escaped numerically in output (such as (amp)#0; )  but
+such escape sequences can't be parsed by the XML
+import methods.
+
+The current behavior is particularly problematic, because the user
+doesn't know the output is corrupt until later, when they try to import it
+and get InvalidSerializedDataException.
+
+If for some reason the base64 option is delayed, it might
+make sense, as an interim solution, to fail on export
+or to somehow patch import to relax its parsing and allow
+these escape codes.

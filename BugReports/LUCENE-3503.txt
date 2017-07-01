@@ -1,0 +1,28 @@
+DisjunctionSumScorer gives slightly (float iotas) different scores when you .nextDoc vs .advance
+
+
+
+Description:
+Spinoff from LUCENE-1536.
+
+I dug into why we hit a score diff when using luceneutil to benchmark
+the patch.
+
+At first I thought it was BS1/BS2 difference, but because of a bug in
+the patch it was still using BS2 (but should be BS1) -- Robert's last
+patch fixes that.
+
+But it's actually a diff in BS2 itself, whether you next or advance
+through the docs.
+
+It's because DisjunctionSumScorer, when summing the float scores for a
+given doc that matches multiple sub-scorers, might sum in a different
+order, when you had .nextDoc'd to that doc than when you had .advance'd
+to it.
+
+This in turn is because the PQ used by that scorer (ScorerDocQueue)
+makes no effort to break ties.  So, when the top N scorers are on the
+same doc, the PQ doesn't care what order they are in.
+
+Fixing ScorerDocQueue to break ties will likely be a non-trivial perf
+hit, though, so I'm not sure whether we should do anything here...

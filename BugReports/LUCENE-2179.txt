@@ -1,0 +1,24 @@
+CharArraySet.clear()
+
+
+
+Description:
+I needed CharArraySet.clear() for something I was working on in Solr in a tokenstream.
+
+instead I ended up using CharArrayMap<Boolean> because it supported .clear()
+
+it would be better to use a set though, currently it will throw UOE for .clear() because AbstractSet will call iterator.remove() which throws UOE.
+
+In Solr, the very similar CharArrayMap.clear() looks like this:
+{code}
+  @Override
+  public void clear() {
+    count = 0;
+    Arrays.fill(keys,null);
+    Arrays.fill(values,null);
+  }
+{code}
+
+I think we can do a similar thing as long as we throw UOE for the UnmodifiableCharArraySet
+
+will submit a patch later tonight (unless someone is bored and has nothing better to do)

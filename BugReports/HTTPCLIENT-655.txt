@@ -1,0 +1,30 @@
+User-Agent string violates RFC
+
+
+
+Description:
+Our User-Agent says "Jakarta Commons-HttpClient/3.1-rc1". But space is a reserved character to separate individual *products* and comments according to RFC 2616, section 14.43. Jakarta is not a product. At the same time we may want to drop the Jakarta name altogether.
+
+We should change this to something more standard like: 
+
+"Apache-HttpClient/3.1-rc1 ("+ System.getProperty("os.name") +";"+ System.getProperty("os.arch") +") "+
+"Java/"+ System.getProperty("java.vm.version") +" ("+ System.getProperty("java.vm.vendor") +")"
+
+which renders:
+
+"Apache-HttpClient/3.1-rc1 (Windows XP 5.1;x86) Java/1.5.0_08 (Sun Microsystems Inc.)"
+
+Sun's internal Http client uses something like "Java/1.5.0_08".
+
+I am completely ignoring the fact that real-world user agents use almost arbitrary strings.
+Some fine examples of misbehaviour from my private logs:
+
+"Jakmpqes dihurxf wfyiupsc" -- apparently somebody has to hide something...
+"Missigua Locator 1.9"
+"Poodle predictor 1.0"
+"shelob v1.0"
+"ISC Systems iRc Search 2.1"
+"ping.blogug.ch aggregator 1.0"
+"http://www.uni-koblenz.de/~flocke/robot-info.txt"  -- ...sigh
+
+I am very tempted to write a User-Agent string validator that prevents misuse of this field in HttpClient.

@@ -1,0 +1,6 @@
+NodeType.canSetProperty() does not include type conversion
+
+
+
+Description:
+for example, NodeType.canSetProperty(String propertyName, Value value) must return true if the property requires a StringValue and value is a DateValue (but does not)

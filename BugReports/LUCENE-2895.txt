@@ -1,0 +1,8 @@
+MockRandomCodec loads termsIndex even if termsIndexDivisor is set to -1
+
+
+
+Description:
+When working on LUCENE-2891 (on trunk), I found out that if MockRandomCodec is used, then setting IWC.readerTermsIndexDivisor to -1 allows seeking e.g., termDocs, when it shouldn't. Other Codecs fail to seek, as expected by the test. We need to find out why MockRandomCodec does not fail as expected.
+
+To verify that, run "ant test-core -Dtestcase=TestIndexWriterReader -Dtestmethod=testNoTermsIndex -Dtests.codec=MockRandom", but comment out the line which adds MockRandom to the list of illegal codecs in the test.

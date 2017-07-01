@@ -1,0 +1,43 @@
+Deadlock between SingleClientConnManager.releaseConnection() and SingleClientConnManager.shutdown()
+
+
+
+Description:
+It's possible to create a deadlock within SingleClientConnectionManager.
+
+When JMeter interrupts a test, it calls HttpUriRequest.abort(), and as part of thread end processing it calls SingleClientConnManager.shutdown().
+
+See deadlock details below.
+
+I don't yet know why the shutdown is called before the abort finishes; that is probably a bug.
+
+However, there may be a issue with the locking strategy within SCCM, hence this report.
+
+"Thread-18":
+        at org.apache.http.impl.conn.SingleClientConnManager.releaseConnection(SingleClientConnManager.java:258)
+        - waiting to lock <0x19e00118> (a org.apache.http.impl.conn.SingleClientConnManager)
+        at org.apache.http.impl.conn.AbstractClientConnAdapter.abortConnection(AbstractClientConnAdapter.java:323)
+        - locked <0x19e00148> (a org.apache.http.impl.conn.SingleClientConnManager$ConnAdapter)
+        at org.apache.http.client.methods.HttpRequestBase.abort(HttpRequestBase.java:161)
+        at org.apache.jmeter.protocol.http.sampler.HTTPHC4Impl.interrupt(HTTPHC4Impl.java:1090)
+        at org.apache.jmeter.protocol.http.sampler.HTTPSamplerProxy.interrupt(HTTPSamplerProxy.java:77)
+        at org.apache.jmeter.threads.JMeterThread.interrupt(JMeterThread.java:580)
+        at org.apache.jmeter.engine.StandardJMeterEngine.tellThreadsToStop(StandardJMeterEngine.java:552)
+        at org.apache.jmeter.engine.StandardJMeterEngine.access$2(StandardJMeterEngine.java:547)
+        at org.apache.jmeter.engine.StandardJMeterEngine$StopTest.run(StandardJMeterEngine.java:284)
+        at java.lang.Thread.run(Thread.java:662)
+"Thread Group 1-1":
+        at org.apache.http.impl.conn.AbstractPooledConnAdapter.detach(AbstractPooledConnAdapter.java:106)
+        - waiting to lock <0x19e00148> (a org.apache.http.impl.conn.SingleClientConnManager$ConnAdapter)
+        at org.apache.http.impl.conn.SingleClientConnManager.shutdown(SingleClientConnManager.java:342)
+        - locked <0x19e00118> (a org.apache.http.impl.conn.SingleClientConnManager)
+        at org.apache.jmeter.protocol.http.sampler.HTTPHC4Impl.closeThreadLocalConnections(HTTPHC4Impl.java:1076)
+        at org.apache.jmeter.protocol.http.sampler.HTTPHC4Impl.threadFinished(HTTPHC4Impl.java:1065)
+        at org.apache.jmeter.protocol.http.sampler.HTTPSamplerProxy.threadFinished(HTTPSamplerProxy.java:71)
+        at org.apache.jmeter.threads.JMeterThread$ThreadListenerTraverser.addNode(JMeterThread.java:553)
+        at org.apache.jorphan.collections.HashTree.traverseInto(HashTree.java:986)
+        at org.apache.jorphan.collections.HashTree.traverse(HashTree.java:969)
+        at org.apache.jmeter.threads.JMeterThread.threadFinished(JMeterThread.java:528)
+        at org.apache.jmeter.threads.JMeterThread.run(JMeterThread.java:308)
+        at java.lang.Thread.run(Thread.java:662)
+

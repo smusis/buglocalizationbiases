@@ -1,0 +1,6 @@
+Deprecate / Remove DutchAnalyzer.setStemDictionary
+
+
+
+Description:
+DutchAnalyzer.setStemDictionary(File) prevents reuse of TokenStreams (and also uses a File which isn't ideal).  It should be deprecated in 3x, removed in trunk.

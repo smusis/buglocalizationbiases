@@ -1,0 +1,12 @@
+Support synonym searches
+
+
+
+Description:
+Jackrabbit should support synonym searches in the jcr:contains function like Google does.
+
+Example:
+
+//element(*, nt:resource)[jcr:contains(., '~food')]
+
+-> finds all nt:resource nodes that contain the word food or synonyms for food.

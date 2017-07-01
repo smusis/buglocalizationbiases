@@ -1,0 +1,6 @@
+SQL Azure support: clustered indexes
+
+
+
+Description:
+We tried to install JackRabbit in the Windows Azure cloud using SQL Azure. One of the limitations of SQL Azure is that it needs clustered indexes to work but the current implementation of the JackRabbit creates the indexes not clustered.

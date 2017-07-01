@@ -1,0 +1,22 @@
+NullPointerException in ItemManager
+
+
+
+Description:
+We have a lot of these occurring:
+java.lang.NullPointerException
+	at org.apache.jackrabbit.core.ItemManager.getDefinition(ItemManager.java:206)
+	at org.apache.jackrabbit.core.ItemData.getDefinition(ItemData.java:99)
+	at org.apache.jackrabbit.core.AbstractNodeData.getNodeDefinition(AbstractNodeData.java:73)
+	at org.apache.jackrabbit.core.NodeImpl.getDefinition(NodeImpl.java:2430)
+	at org.apache.jackrabbit.core.ItemValidator.isProtected(ItemValidator.java:373)
+	at org.apache.jackrabbit.core.ItemValidator.checkCondition(ItemValidator.java:273)
+	at org.apache.jackrabbit.core.ItemValidator.checkRemove(ItemValidator.java:254)
+	at org.apache.jackrabbit.core.ItemRemoveOperation.perform(ItemRemoveOperation.java:63)
+	at org.apache.jackrabbit.core.session.SessionState.perform(SessionState.java:200)
+	at org.apache.jackrabbit.core.ItemImpl.perform(ItemImpl.java:91)
+	at org.apache.jackrabbit.core.ItemImpl.remove(ItemImpl.java:322)
+	at org.apache.jackrabbit.core.NPEandCMETest$TestTask.run(NPEandCMETest.java:87)
+	at java.lang.Thread.run(Thread.java:679)
+
+I'll attach a junit test to reproduce this exception.

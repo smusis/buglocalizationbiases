@@ -1,0 +1,6 @@
+PrefixQuery is missing the equals() method
+
+
+
+Description:
+The PrefixQuery is inheriting the java.lang.Object's object default equals method. This makes it hard to have test working of PrefixFilter or any other task requiring equals to work proerply (insertion in Set, etc.). The equal method should be very similar, not to say identical except for class casting, to the equals() of TermQuery. 

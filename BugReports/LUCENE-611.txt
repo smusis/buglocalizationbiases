@@ -1,0 +1,15 @@
+TestConstantScoreRangeQuery does not compile with ecj
+
+
+
+Description:
+TestConstantScoreRangeQuery has an assertEquals(String, Float, Float)
+but most of the calls to assertEquals are (String, int, int).
+
+ecj complains with the following error:
+The method assertEquals(String, float, float) is ambiguous for the type TestConstantScoreRangeQuery
+
+The simple solution is to supply an assertEquals(String, int, int) which calls Assert.assertEquals(String, int, int)
+
+Patch to follow.
+

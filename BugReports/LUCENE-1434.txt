@@ -1,0 +1,10 @@
+IndexableBinaryStringTools: convert arbitrary byte sequences into Strings that can be used as index terms, and vice versa
+
+
+
+Description:
+Provides support for converting byte sequences to Strings that can be used as index terms, and back again. The resulting Strings preserve the original byte sequences' sort order (assuming the bytes are interpreted as unsigned).
+
+The Strings are constructed using a Base 8000h encoding of the original binary data - each char of an encoded String represents a 15-bit chunk from the byte sequence.  Base 8000h was chosen because it allows for all lower 15 bits of char to be used without restriction; the surrogate range [U+D800-U+DFFF] does not represent valid chars, and would require complicated handling to avoid them and allow use of char's high bit.
+
+This class is intended to serve as a mechanism to allow CollationKeys to serve as index terms.

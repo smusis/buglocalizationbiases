@@ -1,0 +1,10 @@
+cleanup contrib/demo
+
+
+
+Description:
+I don't think we should include optimize in the demo; many people start from the demo and may think you must optimize to do searching, and that's clearly not the case.
+
+I think we should also use a buffered reader in FileDocument?
+
+And... I'm tempted to remove IndexHTML (and the html parser) entirely.  It's ancient, and we now have Tika to extract text from many doc formats.

@@ -1,0 +1,9 @@
+Initializing SeededSecureRandom may be slow
+
+
+
+Description:
+For systems where reading from /dev/random is very slow (so that the alternative seed algorithm is used), initializing the org.apache.jackrabbit.core.id.SeededSecureRandom singleton may be very slow, because it is not synchronized. Each thread that calls SeededSecureRandom.getInstance() will wait up to 1 second until the singleton is initialized.
+
+At the same time, I would like to add more entropy to the alternative seed algorithm.
+

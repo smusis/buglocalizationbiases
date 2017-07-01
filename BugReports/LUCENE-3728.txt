@@ -1,0 +1,52 @@
+better handling of files inside/outside CFS by codec
+
+
+
+Description:
+Since norms and deletes were moved under Codec (LUCENE-3606, LUCENE-3661),
+we never really properly addressed the issue of how Codec.files() should work,
+considering these files are always stored outside of CFS.
+
+LUCENE-3606 added a hack, LUCENE-3661 cleaned up the hack a little bit more,
+but its still a hack.
+
+Currently the logic in SegmentInfo.files() is:
+{code}
+clearCache()
+
+if (compoundFile) {
+  // don't call Codec.files(), hardcoded CFS extensions, etc
+} else {
+  Codec.files()
+}
+
+// always add files stored outside CFS regardless of CFS setting
+Codec.separateFiles()
+
+if (sharedDocStores) {
+  // hardcoded shared doc store extensions, etc
+}
+{code}
+
+Also various codec methods take a Directory parameter, but its inconsistent
+what this Directory is in the case of CFS: for some parts of the index its
+the CFS directory, for others (deletes, separate norms) its not.
+
+I wonder if instead we could restructure this so that SegmentInfo.files() logic is:
+{code}
+clearCache()
+Codec.files()
+{code}
+
+and so that Codec is instead responsible.
+
+instead Codec.files logic by default would do the if (compoundFile) thing, and
+Lucene3x codec itself would only have the if (sharedDocStores) thing, and any
+part of the codec that wants to put stuff always outside of CFS (e.g. Lucene3x separate norms, deletes) 
+could just use SegmentInfo.dir. Directory parameters in the case of CFS would always
+consistently be the CFSDirectory.
+
+I haven't totally tested if this will work but there is definitely some cleanups 
+we can do either way, and I think it would be a good step to try to clean this up
+and simplify it.
+

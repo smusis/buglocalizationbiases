@@ -1,0 +1,8 @@
+Extend the consistency check in BundleDbPersistenceManager's to fix child-parent relations
+
+
+
+Description:
+It could happen that a child node is not in the ChildNodeEntries of its parent node.
+You will get something like (javax.jcr.ItemNotFoundException: failed to build path of node1: parentNode has no child entry for node1) if you try to retrieve the path from node1.
+We should handle such cases and fix it on consistency check

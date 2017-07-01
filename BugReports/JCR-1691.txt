@@ -1,0 +1,26 @@
+Includes new (old) mimetypes that OpenOfficeTextExtractor can handle
+
+
+
+Description:
+The following patch adds the old openoffice (1.0 version) mimetypes to have their contents extracted. 
+I've tested with simple files and it worked here. 
+
+
+$ cat OpenOfficeTextExtractor-mimetype.patch
+--- jackrabbit-1.4/jackrabbit-text-extractors/src/main/java/org/apache/jackrabbit/extractor/OpenOfficeTextExtractor.java    2007-12-19 12:57:58.000000000 -0200
++++ jackrabbit-1.4-modified/jackrabbit-text-extractors/src/main/java/org/apache/jackrabbit/extractor/OpenOfficeTextExtractor.java  2008-07-24 15:01:08.000000000 -0300
+@@ -54,7 +54,11 @@
+                            "application/vnd.oasis.opendocument.graphics",
+                            "application/vnd.oasis.opendocument.presentation",
+                            "application/vnd.oasis.opendocument.spreadsheet",
+-                           "application/vnd.oasis.opendocument.text"});
++                           "application/vnd.oasis.opendocument.text",
++                           "application/vnd.sun.xml.calc",
++                           "application/vnd.sun.xml.draw",
++                           "application/vnd.sun.xml.impress",
++                           "application/vnd.sun.xml.writer"});
+     }
+
+     //-------------------------------------------------------< TextExtractor >
+

@@ -1,0 +1,6 @@
+SpanQueryFilter addition
+
+
+
+Description:
+Similar to the QueryFilter (or whatever it is called now) the SpanQueryFilter is a regular Lucene Filter, but it also can return Spans-like information.  This is useful if you not only want to filter based on a Query, but you then want to be able to compare how a given match from a new query compared to the positions of the filtered SpanQuery.  Patch to come shortly also contains a caching mechanism for the SpanQueryFilter

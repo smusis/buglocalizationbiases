@@ -1,0 +1,14 @@
+Allow parsing custom elements in workspace config
+
+
+
+Description:
+In RepositoryConfigurationParser, most *Config elements can be extended in a derived class, e.g.
+
+    public LoginModuleConfig parseLoginModuleConfig(Element security)
+
+Unfortunately, parseWorkspaceConfig expects an InputSource. One should add a
+
+    protected WorkspaceConfig parseWorkspaceConfig(Element root)
+
+to allow returning a WorkspaceConfig derived class, without having to copy the entire implementation.

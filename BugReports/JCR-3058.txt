@@ -1,0 +1,6 @@
+BundleDumper to analyze broken bundles
+
+
+
+Description:
+The BundleReader fails if it can't read a bundle. We should have a tool to analyze broken bundles.

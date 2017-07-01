@@ -1,0 +1,6 @@
+Grouping collector that computes grouped facet counts
+
+
+
+Description:
+Spinoff from issue SOLR-2898. 

@@ -1,0 +1,8 @@
+NPE doing local sensitive sorting when sort field is missing
+
+
+
+Description:
+If you do a local sensitive sort against a field that is missing from some documents in the index an NPE will get thrown.
+
+Attached is a patch which resolved the issue and updates the sort test case to give coverage to this issue.

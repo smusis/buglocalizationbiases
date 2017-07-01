@@ -1,0 +1,15 @@
+AbstractJCRTest fails on level 1 repositories
+
+
+
+Description:
+If a test case indicates that it's not read-only, org.apache.jackrabbit.test.AbstractJCRTest tries to cleanup the test root in the setUp method. This will cause the test case to fail, because a Level 1 repository will throw an UnsupportedOperationException here.
+
+Proposal: before trying the cleanup, check for L2 functionality and throw a NotExecutableException otherwise:
+
+            if (! isSupported(Repository.LEVEL_2_SUPPORTED)) {
+              cleanUp();
+              String msg = "Test case requires level 2 functionality";
+              throw new NotExecutableException(msg);
+            }
+

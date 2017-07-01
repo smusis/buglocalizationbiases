@@ -1,0 +1,28 @@
+HttpClient does not properly handle 'application/x-www-form-urlencoded' encoding
+
+
+
+Description:
+As always I'd like to pass on my thanks, I'm finding HttpClient really useful.
+
+The problem occurs because I use Struts map based ActionForm and these generate 
+request parameters of the form:
+
+<input type="text" name="searchSelection(c)">
+
+When this is submitted using the PostMethod class the generateRequestBody() is 
+called and in turn this calls the URI.encode() method with a BitSet of the 
+acceptable characters. In this case the '(' and ')' characters are marked as 
+acceptable.
+
+The problem is that this does not work correctly when I submit it to my remote 
+server. If however I issue the request directly (from a webpage rather than 
+using HttpClient) it works and when I examine the request input stream I can see 
+that the parameter has been re-written so that 'select(c)' is displayed as 
+'select%28c%29'.
+
+This may be my error because of encoding problems or the fact I am not setting 
+the content type etc. correctly. Or it could be a bug. I'm afraid my HTTP 
+knowledge is not good enough.
+
+Chris Mein

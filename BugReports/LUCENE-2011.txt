@@ -1,0 +1,6 @@
+Remove deprecated Scorer.explain(int) method
+
+
+
+Description:
+This is the only remaining deprecation in core, but is not so easy to handle, because lot's of code in core still uses the explain() method in Scorer. So e.g. in PhraseQuery, the explain method has to be moved from Scorer to the Weight.

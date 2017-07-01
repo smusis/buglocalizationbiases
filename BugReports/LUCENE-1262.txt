@@ -1,0 +1,37 @@
+IndexOutOfBoundsException from FieldsReader after problem reading the index
+
+
+
+Description:
+There is a situation where there is an IOException reading from Hits, and then the next time you get a NullPointerException instead of an IOException.
+
+Example stack traces:
+
+java.io.IOException: The specified network name is no longer available
+	at java.io.RandomAccessFile.readBytes(Native Method)
+	at java.io.RandomAccessFile.read(RandomAccessFile.java:322)
+	at org.apache.lucene.store.FSIndexInput.readInternal(FSDirectory.java:536)
+	at org.apache.lucene.store.BufferedIndexInput.readBytes(BufferedIndexInput.java:74)
+	at org.apache.lucene.index.CompoundFileReader$CSIndexInput.readInternal(CompoundFileReader.java:220)
+	at org.apache.lucene.store.BufferedIndexInput.refill(BufferedIndexInput.java:93)
+	at org.apache.lucene.store.BufferedIndexInput.readByte(BufferedIndexInput.java:34)
+	at org.apache.lucene.store.IndexInput.readVInt(IndexInput.java:57)
+	at org.apache.lucene.index.FieldsReader.doc(FieldsReader.java:88)
+	at org.apache.lucene.index.SegmentReader.document(SegmentReader.java:344)
+	at org.apache.lucene.index.IndexReader.document(IndexReader.java:368)
+	at org.apache.lucene.search.IndexSearcher.doc(IndexSearcher.java:84)
+	at org.apache.lucene.search.Hits.doc(Hits.java:104)
+
+That error is fine.  The problem is the next call to doc generates:
+
+java.lang.NullPointerException
+	at org.apache.lucene.index.FieldsReader.getIndexType(FieldsReader.java:280)
+	at org.apache.lucene.index.FieldsReader.addField(FieldsReader.java:216)
+	at org.apache.lucene.index.FieldsReader.doc(FieldsReader.java:101)
+	at org.apache.lucene.index.SegmentReader.document(SegmentReader.java:344)
+	at org.apache.lucene.index.IndexReader.document(IndexReader.java:368)
+	at org.apache.lucene.search.IndexSearcher.doc(IndexSearcher.java:84)
+	at org.apache.lucene.search.Hits.doc(Hits.java:104)
+
+Presumably FieldsReader is caching partially-initialised data somewhere.  I would normally expect the exact same IOException to be thrown for subsequent calls to the method.
+

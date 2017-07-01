@@ -1,0 +1,8 @@
+Upgrade to Java 5 as the base platform
+
+
+
+Description:
+As discussed on the mailing list, Jackrabbit 2.0 will use Java 5 as the base platform.
+
+Now that 1.x has been branched, we can update the build settings in trunk to use Java 5.

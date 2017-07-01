@@ -1,0 +1,32 @@
+NodeReferences are lost when deleting and setting the same reference in the same save() cycle
+
+
+
+Description:
+I've written the following snippet to illustrate the issue :
+
+        Node root = session.getRootNode();
+        
+        Node a = root.addNode("a");
+        Node b = root.addNode("b");
+        b.addMixin("mix:referenceable");
+        
+        a.setProperty("p", b);
+        
+        root.save();
+        
+        System.out.println(b.getReferences().getSize());     // --> correctly returns 1
+        
+        a.setProperty("p", (Node) null);
+        a.setProperty("p", b);
+        
+        root.save();
+        
+        System.out.println(b.getReferences().getSize());    // --> returns 0 !
+
+When the ChangeLog is processed, added references are processed before deleted ones, so the persisted NodeReferences is finally wrong.
+
+I've set the priority of this issue to critical, because the persisted references count is corrupted.
+
+A simple workaround is to first remove the property, then save, then add the property again, but it not satisfying.
+

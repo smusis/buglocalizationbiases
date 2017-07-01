@@ -1,0 +1,10 @@
+Improve reading of cached UUID for given document number
+
+
+
+Description:
+CachingIndexReader.document(int n, FieldSelector fieldSelector) creates a new
+Field from the cached UUID. The lucene Field implementation always does a
+String.intern() on the field name, which is quite slow. We should probably have
+our own implementation for that specific use case where we know that the name
+is already interned. e.g. UUIDField implements Fieldable.

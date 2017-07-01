@@ -1,0 +1,51 @@
+session.exportDocumentView() does not work with jaxb 2.1.x  UnmarshallerHandler
+
+
+
+Description:
+I tried to update my project from Jackrabbit 1.4 to 1.5 and found following error, that is critical for my app.
+Project uses Import/Export features of JCR and JAXB to map XML from JCR to java objects.
+
+exportDocumentView() works with streams when I call it like this:
+
+              Unmarshaller umr = getUnmarshaller();
+        ...
+                fo = new FileOutputStream("/tmp/export-node.xml");
+                jcrs.exportDocumentView(path,fo , false, false);
+                fi = new FileInputStream("/tmp/export-node.xml");
+                umr.unmarshal(new InputSource(fi));    
+
+But it does not work when I call it using SAX event handler:
+
+            UnmarshallerHandler ctxh = umr.getUnmarshallerHandler();
+             jcrs.exportDocumentView(path, ctxh, false, false);
+
+giving following exception:
+
+java.lang.NullPointerException
+        at org.xml.sax.helpers.AttributesImpl.getIndex(AttributesImpl.java:203)
+        at com.sun.xml.bind.v2.runtime.unmarshaller.InterningXmlVisitor$AttributesImpl.getIndex(InterningXmlVisitor.java:112)
+        at com.sun.xml.bind.v2.runtime.unmarshaller.XsiNilLoader.selectLoader(XsiNilLoader.java:62)
+        at com.sun.xml.bind.v2.runtime.unmarshaller.ProxyLoader.startElement(ProxyLoader.java:53)
+        at com.sun.xml.bind.v2.runtime.unmarshaller.UnmarshallingContext._startElement(UnmarshallingContext.java:449)
+        at com.sun.xml.bind.v2.runtime.unmarshaller.UnmarshallingContext.startElement(UnmarshallingContext.java:427)
+        at com.sun.xml.bind.v2.runtime.unmarshaller.InterningXmlVisitor.startElement(InterningXmlVisitor.java:71)
+        at com.sun.xml.bind.v2.runtime.unmarshaller.SAXConnector.startElement(SAXConnector.java:137)
+        at org.apache.jackrabbit.commons.xml.Exporter.startElement(Exporter.java:438)
+        at org.apache.jackrabbit.commons.xml.DocumentViewExporter.exportNode(DocumentViewExporter.java:76)
+        at org.apache.jackrabbit.commons.xml.Exporter.exportNode(Exporter.java:298)
+        at org.apache.jackrabbit.commons.xml.Exporter.exportNodes(Exporter.java:214)
+        at org.apache.jackrabbit.commons.xml.DocumentViewExporter.exportNode(DocumentViewExporter.java:77)
+        at org.apache.jackrabbit.commons.xml.Exporter.exportNode(Exporter.java:298)
+        at org.apache.jackrabbit.commons.xml.Exporter.exportNodes(Exporter.java:214)
+        at org.apache.jackrabbit.commons.xml.DocumentViewExporter.exportNode(DocumentViewExporter.java:77)
+        at org.apache.jackrabbit.commons.xml.Exporter.exportNode(Exporter.java:298)
+        at org.apache.jackrabbit.commons.xml.Exporter.export(Exporter.java:144)
+        at org.apache.jackrabbit.commons.AbstractSession.export(AbstractSession.java:461)
+        at org.apache.jackrabbit.commons.AbstractSession.exportDocumentView(AbstractSession.java:241)
+        at ua.org.dg.semaril.helpers.AbstractTypeResolver.getContent(AbstractTypeResolver.java:31
+
+Version 1.4. works fine.
+
+Jukka, please check your changes to  org.apache.jackrabbit.commons.xml.Exporter.
+

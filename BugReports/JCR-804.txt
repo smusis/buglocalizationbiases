@@ -1,0 +1,6 @@
+Avoid using MultiTermDocs
+
+
+
+Description:
+Similar to MatchAllQuery also RangeQuery and WildcardQuery will result in use of MultiTermDocs. Those queries should also use the MultiScorer. See also issue JCR-791.

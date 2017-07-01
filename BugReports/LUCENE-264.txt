@@ -1,0 +1,8 @@
+[PATCH] Improved javadoc for maxClauseCount
+
+
+
+Description:
+As discussed on lucene-dev before, queries with lots of terms can use 
+up a lot of unused buffer space for their TermDocs, because most terms 
+have few documents.

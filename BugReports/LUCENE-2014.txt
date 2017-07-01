@@ -1,0 +1,37 @@
+position increment bug: smartcn
+
+
+
+Description:
+If i use LUCENE_VERSION >= 2.9 with smart chinese analyzer, it will crash indexwriter with any reasonable amount of chinese text.
+
+its especially annoying because it happens in 2.9.1 RC as well.
+
+this is because the position increments for tokens after stopwords are bogus:
+
+Here's an example (from test case), where the position increment should be 2, but is instead 91975314!
+
+{code}
+  public void testChineseStopWords2() throws Exception {
+    Analyzer ca = new SmartChineseAnalyzer(Version.LUCENE_CURRENT); /* will load stopwords */
+    String sentence = "Title:San"; // : is a stopword
+    String result[] = { "titl", "san"};
+    int startOffsets[] = { 0, 6 };
+    int endOffsets[] = { 5, 9 };
+    int posIncr[] = { 1, 2 };
+    assertAnalyzesTo(ca, sentence, result, startOffsets, endOffsets, posIncr);
+  }
+{code}
+
+junit.framework.AssertionFailedError: posIncrement 1 expected:<2> but was:<91975314>
+	at junit.framework.Assert.fail(Assert.java:47)
+	at junit.framework.Assert.failNotEquals(Assert.java:280)
+	at junit.framework.Assert.assertEquals(Assert.java:64)
+	at junit.framework.Assert.assertEquals(Assert.java:198)
+	at org.apache.lucene.analysis.BaseTokenStreamTestCase.assertTokenStreamContents(BaseTokenStreamTestCase.java:83)
+	...
+
+
+
+
+

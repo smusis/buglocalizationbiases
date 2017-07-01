@@ -1,0 +1,6 @@
+Remove SessionImpl dependency from QueryObjectModelFactoryImpl
+
+
+
+Description:
+The QueryObjectModelFactoryImpl should be independent of the jackrabbit-core.

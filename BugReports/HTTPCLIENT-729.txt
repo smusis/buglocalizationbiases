@@ -1,0 +1,10 @@
+move HttpRoute and related classes to separate package
+
+
+
+Description:
+The route-related stuff in o.a.h.conn is detached from the rest of the connection management API.
+Move HttpRoute, RouteTracker, HttpRouteDirector, HttpRoutePlanner to o.a.h.conn.route or ...routing.
+Implementation classes have a dependency on Scheme and SchemeRegistry in o.a.h.conn,
+but that does not introduce a recursive dependency between packages.
+

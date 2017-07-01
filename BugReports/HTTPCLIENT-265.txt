@@ -1,0 +1,7 @@
+Error releasing chunked connections with no response body.
+
+
+
+Description:
+HttpMethodBase.releaseConnection() does not successfully release the connection
+if closing the response stream throws an exception.

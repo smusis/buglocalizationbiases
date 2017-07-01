@@ -1,0 +1,121 @@
+AttributeSource/TokenStream API improvements
+
+
+
+Description:
+This patch makes the following improvements to AttributeSource and
+TokenStream/Filter:
+
+- introduces interfaces for all Attributes. The corresponding
+  implementations have the postfix 'Impl', e.g. TermAttribute and
+  TermAttributeImpl. AttributeSource now has a factory for creating
+  the Attribute instances; the default implementation looks for
+  implementing classes with the postfix 'Impl'. Token now implements
+  all 6 TokenAttribute interfaces.
+
+- new method added to AttributeSource:
+  addAttributeImpl(AttributeImpl). Using reflection it walks up in the
+  class hierarchy of the passed in object and finds all interfaces
+  that the class or superclasses implement and that extend the
+  Attribute interface. It then adds the interface->instance mappings
+  to the attribute map for each of the found interfaces.
+
+- removes the set/getUseNewAPI() methods (including the standard
+  ones). Instead it is now enough to only implement the new API,
+  if one old TokenStream implements still the old API (next()/next(Token)),
+  it is wrapped automatically. The delegation path is determined via
+  reflection (the patch determines, which of the three methods was
+  overridden).
+
+- Token is no longer deprecated, instead it implements all 6 standard
+  token interfaces (see above). The wrapper for next() and next(Token)
+  uses this, to automatically map all attribute interfaces to one
+  TokenWrapper instance (implementing all 6 interfaces), that contains
+  a Token instance. next() and next(Token) exchange the inner Token
+  instance as needed. For the new incrementToken(), only one
+  TokenWrapper instance is visible, delegating to the currect reusable
+  Token. This API also preserves custom Token subclasses, that maybe
+  created by very special token streams (see example in Backwards-Test).
+
+- AttributeImpl now has a default implementation of toString that uses
+  reflection to print out the values of the attributes in a default
+  formatting. This makes it a bit easier to implement AttributeImpl,
+  because toString() was declared abstract before.
+
+- Cloning is now done much more efficiently in
+  captureState. The method figures out which unique AttributeImpl
+  instances are contained as values in the attributes map, because
+  those are the ones that need to be cloned. It creates a single
+  linked list that supports deep cloning (in the inner class
+  AttributeSource.State). AttributeSource keeps track of when this
+  state changes, i.e. whenever new attributes are added to the
+  AttributeSource. Only in that case will captureState recompute the
+  state, otherwise it will simply clone the precomputed state and
+  return the clone. restoreState(AttributeSource.State) walks the
+  linked list and uses the copyTo() method of AttributeImpl to copy
+  all values over into the attribute that the source stream
+  (e.g. SinkTokenizer) uses. 
+
+- Tee- and SinkTokenizer were deprecated, because they use
+Token instances for caching. This is not compatible to the new API
+using AttributeSource.State objects. You can still use the old
+deprecated ones, but new features provided by new Attribute types
+may get lost in the chain. A replacement is a new TeeSinkTokenFilter,
+which has a factory to create new Sink instances, that have compatible
+attributes. Sink instances created by one Tee can also be added to
+another Tee, as long as the attribute implementations are compatible
+(it is not possible to add a sink from a tee using one Token instance
+to a tee using the six separate attribute impls). In this case UOE is thrown.
+
+The cloning performance can be greatly improved if not multiple
+AttributeImpl instances are used in one TokenStream. A user can
+e.g. simply add a Token instance to the stream instead of the individual
+attributes. Or the user could implement a subclass of AttributeImpl that
+implements exactly the Attribute interfaces needed. I think this
+should be considered an expert API (addAttributeImpl), as this manual
+optimization is only needed if cloning performance is crucial. I ran
+some quick performance tests using Tee/Sink tokenizers (which do
+cloning) and the performance was roughly 20% faster with the new
+API. I'll run some more performance tests and post more numbers then.
+
+Note also that when we add serialization to the Attributes, e.g. for
+supporting storing serialized TokenStreams in the index, then the
+serialization should benefit even significantly more from the new API
+than cloning. 
+
+This issue contains one backwards-compatibility break:
+TokenStreams/Filters/Tokenizers should normally be final
+(see LUCENE-1753 for the explaination). Some of these core classes are 
+not final and so one could override the next() or next(Token) methods.
+In this case, the backwards-wrapper would automatically use
+incrementToken(), because it is implemented, so the overridden
+method is never called. To prevent users from errors not visible
+during compilation or testing (the streams just behave wrong),
+this patch makes all implementation methods final
+(next(), next(Token), incrementToken()), whenever the class
+itsself is not final. This is a BW break, but users will clearly see,
+that they have done something unsupoorted and should better
+create a custom TokenFilter with their additional implementation
+(instead of extending a core implementation).
+
+For further changing contrib token streams the following procedere should be used:
+
+    *  rewrite and replace next(Token)/next() implementations by new API
+    * if the class is final, no next(Token)/next() methods needed (must be removed!!!)
+    * if the class is non-final add the following methods to the class:
+{code:java}
+      /** @deprecated Will be removed in Lucene 3.0. This method is final, as it should
+       * not be overridden. Delegates to the backwards compatibility layer. */
+      public final Token next(final Token reusableToken) throws java.io.IOException {
+        return super.next(reusableToken);
+      }
+
+      /** @deprecated Will be removed in Lucene 3.0. This method is final, as it should
+       * not be overridden. Delegates to the backwards compatibility layer. */
+      public final Token next() throws java.io.IOException {
+        return super.next();
+      }
+{code}
+Also the incrementToken() method must be final in this case
+(and the new method end() of LUCENE-1448)
+

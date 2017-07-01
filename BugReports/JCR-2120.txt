@@ -1,0 +1,6 @@
+java.lang.Iterable support for RangeIterators
+
+
+
+Description:
+Make javax.jcr.RangeIterator extend java.lang.Iterable in order to enable foreach loops on implementations of RangeIterator.

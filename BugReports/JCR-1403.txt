@@ -1,0 +1,12 @@
+SPI: Describe equality requirements of ItemIds
+
+
+
+Description:
+Michael Duerig asked for clarification regarding the equality of  ItemIds.
+
+While discussing this we came to the following conclusion:
+
+Two ItemIds should be considered equal if both the unique part and the path part are equal AND if they denote the same type of id (see #denotesNode).
+
+If nobody objects i would adjust the javadoc of ItemId accordingly.

@@ -1,0 +1,12 @@
+JSR 283: new methods on NodeType
+
+
+
+Description:
+JSR 283 adds the methods
+
+  NodeType.getSubtypes
+
+and
+
+  NodeType.getDeclaredSubtypes

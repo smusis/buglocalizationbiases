@@ -1,0 +1,9 @@
+Summer of Code GDATA Server  --Project structure and simple version to start with--
+
+
+
+Description:
+This is the initial issue for the GDATA - Server project (Google Summer of Code). 
+The purpose of the issue is to create the project structure in the svn repository to kick off the project. The source e.g. the project will be located at URL: http://svn.apache.org/repos/asf/lucene/java/trunk/contrib
+The attachment includes the diff text file and the jar files included in the lib directory as a tar.gz file.
+To get some information about the project see http://wiki.apache.org/general/SimonWillnauer/SummerOfCode2006

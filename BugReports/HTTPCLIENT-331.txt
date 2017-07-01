@@ -1,0 +1,9 @@
+[PATCH] HttpClient#getHost & HttpClient#getPort methods are misleading
+
+
+
+Description:
+HttpClient#getHost & HttpClient#getPort methods are misleading, accompanied by
+obsolete, factually wrong javadocs and as such should be deprecated.
+
+Oleg

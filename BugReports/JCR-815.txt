@@ -1,0 +1,11 @@
+SQLException with OracleBundle PM in name index
+
+
+
+Description:
+The oracle bundle pm shows errors like:
+
+java.lang.IllegalStateException: Unable to insert index: java.sql.SQLException:  
+  ORA-01400: cannot insert NULL into  ("MARTIJNH"."WM9_VERSIONING_PM_NAMES"."ID")
+
+this is due to the fact that oracle treats empty strings as NULL values which does the schema not allow.

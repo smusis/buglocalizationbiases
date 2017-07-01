@@ -1,0 +1,6 @@
+SpanScorer fails when sloppyFreq() returns 0
+
+
+
+Description:
+I think we should fix this for 2.4 (now back to 10)?

@@ -1,0 +1,8 @@
+Term's equals() throws ClassCastException if passed something other than a Term
+
+
+
+Description:
+Term.equals(Object) does a cast to Term without checking if the other object is a Term.
+
+It's unlikely that this would ever crop up but it violates the implied contract of Object.equals().

@@ -1,0 +1,6 @@
+[patch] javadoc and comment updates for BooleanClause.
+
+
+
+Description:
+Javadoc and comment updates for BooleanClause, one minor code simplification.

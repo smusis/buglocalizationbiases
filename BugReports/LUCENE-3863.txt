@@ -1,0 +1,9 @@
+DocValues.type() -> DocValues.getType()
+
+
+
+Description:
+This makes the method easier to find and more clear that it has no side effects... on a
+few occasions I've looked for this getter and missed it because of the name.
+
+

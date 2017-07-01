@@ -1,0 +1,29 @@
+NullPointerException during indexing in DocumentsWriter$ThreadState$FieldData.addPosition
+
+
+
+Description:
+In my case during indexing sometimes appear documents with unusually large "words" - text-encoded images in fact.
+Attempt to add document that contains field with such token produces java.lang.IllegalArgumentException:
+java.lang.IllegalArgumentException: term length 37944 exceeds max term length 16383
+        at org.apache.lucene.index.DocumentsWriter$ThreadState$FieldData.addPosition(DocumentsWriter.java:1492)
+        at org.apache.lucene.index.DocumentsWriter$ThreadState$FieldData.invertField(DocumentsWriter.java:1321)
+        at org.apache.lucene.index.DocumentsWriter$ThreadState$FieldData.processField(DocumentsWriter.java:1247)
+        at org.apache.lucene.index.DocumentsWriter$ThreadState.processDocument(DocumentsWriter.java:972)
+        at org.apache.lucene.index.DocumentsWriter.updateDocument(DocumentsWriter.java:2202)
+        at org.apache.lucene.index.DocumentsWriter.addDocument(DocumentsWriter.java:2186)
+        at org.apache.lucene.index.IndexWriter.addDocument(IndexWriter.java:1432)
+        at org.apache.lucene.index.IndexWriter.addDocument(IndexWriter.java:1411)
+
+This is expected, exception is caught and ignored. The problem is that after this IndexWriter becomes somewhat corrupted and subsequent attempts to add documents to the index fail as well, this time with NPE:
+java.lang.NullPointerException
+        at org.apache.lucene.index.DocumentsWriter$ThreadState$FieldData.addPosition(DocumentsWriter.java:1497)
+        at org.apache.lucene.index.DocumentsWriter$ThreadState$FieldData.invertField(DocumentsWriter.java:1321)
+        at org.apache.lucene.index.DocumentsWriter$ThreadState$FieldData.processField(DocumentsWriter.java:1247)
+        at org.apache.lucene.index.DocumentsWriter$ThreadState.processDocument(DocumentsWriter.java:972)
+        at org.apache.lucene.index.DocumentsWriter.updateDocument(DocumentsWriter.java:2202)
+        at org.apache.lucene.index.DocumentsWriter.addDocument(DocumentsWriter.java:2186)
+        at org.apache.lucene.index.IndexWriter.addDocument(IndexWriter.java:1432)
+        at org.apache.lucene.index.IndexWriter.addDocument(IndexWriter.java:1411)
+
+This is 100% reproducible.

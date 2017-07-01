@@ -1,0 +1,6 @@
+Upload Lucene 2.0 artifacts in the Maven 1 repository
+
+
+
+Description:
+The Lucene 2.0 artifacts can be found in the Maven 2 repository, but not in the Maven 1 repository. There are still projects using Maven 1 who might be interested in upgrading to Lucene 2, so having the artifacts also in the Maven 1 repository would be very helpful.

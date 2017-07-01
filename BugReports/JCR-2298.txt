@@ -1,0 +1,18 @@
+NPE in EventStateCollection
+
+
+
+Description:
+When removing a Version with a versionlabel and restoring an other Version from the same containing history within 1 transaction, a NPE occured. When debugging I noticed the method createEventStates was entered with an UUID from a versionLabel. The ChangeLog.get(id) returned null.
+
+Caused by: java.lang.NullPointerException
+	at org.apache.jackrabbit.core.observation.EventStateCollection.getNodeType(EventStateCollection.java:614)
+	at org.apache.jackrabbit.core.observation.EventStateCollection.createEventStates(EventStateCollection.java:381)
+	at org.apache.jackrabbit.core.state.SharedItemStateManager$Update.begin(SharedItemStateManager.java:697)
+	at org.apache.jackrabbit.core.state.SharedItemStateManager.beginUpdate(SharedItemStateManager.java:1085)
+	at org.apache.jackrabbit.core.state.XAItemStateManager.prepare(XAItemStateManager.java:163)
+	at org.apache.jackrabbit.core.version.XAVersionManager.prepare(XAVersionManager.java:509)
+	at org.apache.jackrabbit.core.TransactionContext.prepare(TransactionContext.java:154)
+	at org.apache.jackrabbit.core.XASessionImpl.prepare(XASessionImpl.java:331)
+	at org.springmodules.jcr.jackrabbit.support.JackRabbitUserTransaction.commit(JackRabbitUserTransaction.java:100)
+	at org.springmodules.jcr.jackrabbit.LocalTransactionManager.doCommit(LocalTransactionManager.java:192)

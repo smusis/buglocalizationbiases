@@ -1,0 +1,13 @@
+improve arabic analyzer: light8 -> light10
+
+
+
+Description:
+Someone mentioned on the java user list that the arabic analysis was not as good as they would like.
+
+This patch adds the لل- prefix (light10 algorithm versus light8 algorithm).
+In the light10 paper, this improves precision from .390 to .413
+They mention this is not statistically significant, but it makes linguistic sense and at least has been shown not to hurt.
+
+In the future, I hope openrelevance will allow us to try some more approaches. 
+

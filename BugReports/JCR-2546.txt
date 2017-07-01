@@ -1,0 +1,6 @@
+SISM blocks the item state cache when loading a new item
+
+
+
+Description:
+The SharedItemStateManager.getNonVirtualItemState() method contains a loadItemState() call within a "synchronized (cache)" block. This prevents all item state cache access while a new item is being loaded from the persistence manager. I have at least one case where this has caused a serious performance drop, essentially synchronizing repository access for all readers.

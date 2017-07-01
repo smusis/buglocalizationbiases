@@ -1,0 +1,14 @@
+Restoring a deleted version does not work (throws Exception)
+
+
+
+Description:
+java.lang.IllegalStateException: Not in edit mode
+	at org.apache.jackrabbit.core.state.LocalItemStateManager.createNew(LocalItemStateManager.java:258)
+	at org.apache.jackrabbit.core.version.NodeStateEx.createChildNode(NodeStateEx.java:561)
+	at org.apache.jackrabbit.core.version.NodeStateEx.addNode(NodeStateEx.java:525)
+	at org.apache.jackrabbit.core.version.NodeStateEx.addNode(NodeStateEx.java:505)
+	at org.apache.jackrabbit.core.version.VersionManagerImplRestore.restore(VersionManagerImplRestore.java:201)
+	at org.apache.jackrabbit.core.VersionManagerImpl.restore(VersionManagerImpl.java:240)
+	at org.apache.jackrabbit.core.NodeImpl.restore(NodeImpl.java:3379)
+	at org.apache.jackrabbit.test.api.version.RestoreTest.testRestoreRemoved(RestoreTest.java:812)

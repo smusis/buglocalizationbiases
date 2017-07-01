@@ -1,0 +1,27 @@
+Test compilation error
+
+
+
+Description:
+The Lucence test fails with the following error: (latest revision from SVN)
+
+compile-test:
+   [mkdir] Created dir: /opt/lucene/lucene/build/classes/test
+   [javac] Compiling 79 source files to /opt/lucene/lucene/build/classes/test
+   [javac]
+/opt/lucene/lucene/src/test/org/apache/lucene/index/TermInfosTest.java:89:
+cannot resolve symbol
+   [javac] symbol  : constructor TermInfosWriter
+(org.apache.lucene.store.Directory,java.lang.String,org.apache.lucene.index.FieldInfos)
+   [javac] location: class org.apache.lucene.index.TermInfosWriter
+   [javac]     TermInfosWriter writer = new TermInfosWriter(store,
+"words", fis);
+
+I see that TermInfosWriter was changed two days back to add another
+argument (interval) to its constructor.
+
+Mailing lists for Lucene do not seem to be responding (sending emails to
+subscribe bounces back and also I do not see any mails after March 2nd being
+archived in either the user or dev lists). So I am using the bug database to
+inform the test failure and submit a simple patch that uses the value of 128
+(the default in the TermInfosWriter class) as interval in the test case.

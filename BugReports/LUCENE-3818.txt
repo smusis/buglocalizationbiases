@@ -1,0 +1,81 @@
+TestIndexWriterNRTIsCurrent failure
+
+
+
+Description:
+found by jenkins: 
+
+https://builds.apache.org/job/Lucene-Solr-tests-only-trunk/12492/
+
+make your computer busy (e.g. run tests in another checkout) then,
+
+ant test-core -Dtests.iter=100 -Dtestcase=TestIndexWriterNRTIsCurrent -Dtestmethod=testIsCurrentWithThreads -Dtests.seed=-78f6fa16b849cf27:382126da79c1e146:-d2cdec79e86e1b3 -Dtests.multiplier=3 -Dargs="-Dfile.encoding=ISO8859-1"
+
+takes a few tries till it pops...
+
+{noformat}
+junit-sequential:
+    [junit] Testsuite: org.apache.lucene.index.TestIndexWriterNRTIsCurrent
+    [junit] Tests run: 100, Failures: 1, Errors: 1, Time elapsed: 277.818 sec
+    [junit] 
+    [junit] ------------- Standard Output ---------------
+    [junit] WARNING: you are using -Dtests.iter=n where n > 1, not all tests support this option.
+    [junit] Some may crash or fail: this is not a bug.
+    [junit] ------------- ---------------- ---------------
+    [junit] ------------- Standard Error -----------------
+    [junit] NOTE: reproduce with: ant test -Dtestcase=TestIndexWriterNRTIsCurrent -Dtestmethod=testIsCurrentWithThreads -Dtests.seed=-78f6fa16b849cf27:382126da79c1e146:-d2cdec79e86e1b3 -Dtests.multiplier=3 -Dargs="-Dfile.encoding=ISO8859-1"
+    [junit] The following exceptions were thrown by threads:
+    [junit] *** Thread: Lucene Merge Thread #17 ***
+    [junit] org.apache.lucene.index.MergePolicy$MergeException: java.lang.AssertionError
+    [junit] 	at org.apache.lucene.index.ConcurrentMergeScheduler.handleMergeException(ConcurrentMergeScheduler.java:520)
+    [junit] 	at org.apache.lucene.index.ConcurrentMergeScheduler$MergeThread.run(ConcurrentMergeScheduler.java:480)
+    [junit] Caused by: java.lang.AssertionError
+    [junit] 	at org.apache.lucene.index.IndexWriter$ReadersAndLiveDocs.initWritableLiveDocs(IndexWriter.java:580)
+    [junit] 	at org.apache.lucene.index.IndexWriter.commitMergedDeletes(IndexWriter.java:3061)
+    [junit] 	at org.apache.lucene.index.IndexWriter.commitMerge(IndexWriter.java:3137)
+    [junit] 	at org.apache.lucene.index.IndexWriter.mergeMiddle(IndexWriter.java:3718)
+    [junit] 	at org.apache.lucene.index.IndexWriter.merge(IndexWriter.java:3257)
+    [junit] 	at org.apache.lucene.index.ConcurrentMergeScheduler.doMerge(ConcurrentMergeScheduler.java:382)
+    [junit] 	at org.apache.lucene.index.ConcurrentMergeScheduler$MergeThread.run(ConcurrentMergeScheduler.java:451)
+    [junit] NOTE: reproduce with: ant test -Dtestcase=TestIndexWriterNRTIsCurrent -Dtestmethod=testIsCurrentWithThreads -Dtests.seed=-78f6fa16b849cf27:382126da79c1e146:-d2cdec79e86e1b3 -Dtests.multiplier=3 -Dargs="-Dfile.encoding=ISO8859-1"
+    [junit] NOTE: reproduce with: ant test -Dtestcase=TestIndexWriterNRTIsCurrent -Dtestmethod=testIsCurrentWithThreads -Dtests.seed=-78f6fa16b849cf27:382126da79c1e146:-d2cdec79e86e1b3 -Dtests.multiplier=3 -Dargs="-Dfile.encoding=ISO8859-1"
+    [junit] NOTE: test params are: codec=Lucene40: {id=MockFixedIntBlock(blockSize=525)}, sim=DefaultSimilarity, locale=es_PY, timezone=Africa/Luanda
+    [junit] NOTE: all tests run in this JVM:
+    [junit] [TestIndexWriterNRTIsCurrent]
+    [junit] NOTE: Linux 3.0.0-14-generic amd64/Sun Microsystems Inc. 1.6.0_24 (64-bit)/cpus=8,threads=1,free=74907448,total=255787008
+    [junit] ------------- ---------------- ---------------
+    [junit] Testcase: testIsCurrentWithThreads(org.apache.lucene.index.TestIndexWriterNRTIsCurrent):	FAILED
+    [junit] info=_qx(4.0):C1/1 isn't live
+    [junit] junit.framework.AssertionFailedError: info=_qx(4.0):C1/1 isn't live
+    [junit] 	at org.apache.lucene.util.LuceneTestCaseRunner.runChild(LuceneTestCaseRunner.java:165)
+    [junit] 	at org.apache.lucene.util.LuceneTestCaseRunner.runChild(LuceneTestCaseRunner.java:57)
+    [junit] 	at org.apache.lucene.index.IndexWriter$ReaderPool.infoIsLive(IndexWriter.java:663)
+    [junit] 	at org.apache.lucene.index.IndexWriter$ReaderPool.dropAll(IndexWriter.java:717)
+    [junit] 	at org.apache.lucene.index.IndexWriter.closeInternal(IndexWriter.java:1136)
+    [junit] 	at org.apache.lucene.index.IndexWriter.close(IndexWriter.java:1069)
+    [junit] 	at org.apache.lucene.index.IndexWriter.close(IndexWriter.java:1033)
+    [junit] 	at org.apache.lucene.index.TestIndexWriterNRTIsCurrent.testIsCurrentWithThreads(TestIndexWriterNRTIsCurrent.java:68)
+    [junit] 	at org.apache.lucene.util.LuceneTestCase$SubclassSetupTeardownRule$1.evaluate(LuceneTestCase.java:707)
+    [junit] 	at org.apache.lucene.util.LuceneTestCase$InternalSetupTeardownRule$1.evaluate(LuceneTestCase.java:606)
+    [junit] 	at org.apache.lucene.util.LuceneTestCase$TestResultInterceptorRule$1.evaluate(LuceneTestCase.java:511)
+    [junit] 	at org.apache.lucene.util.LuceneTestCase$RememberThreadRule$1.evaluate(LuceneTestCase.java:569)
+    [junit] 
+    [junit] 
+    [junit] Testcase: testIsCurrentWithThreads(org.apache.lucene.index.TestIndexWriterNRTIsCurrent):	Caused an ERROR
+    [junit] java.lang.AssertionError: Some threads threw uncaught exceptions!
+    [junit] java.lang.RuntimeException: java.lang.AssertionError: Some threads threw uncaught exceptions!
+    [junit] 	at org.apache.lucene.util.LuceneTestCase.tearDownInternal(LuceneTestCase.java:780)
+    [junit] 	at org.apache.lucene.util.LuceneTestCase.access$1000(LuceneTestCase.java:138)
+    [junit] 	at org.apache.lucene.util.LuceneTestCase$InternalSetupTeardownRule$1.evaluate(LuceneTestCase.java:607)
+    [junit] 	at org.apache.lucene.util.LuceneTestCase$TestResultInterceptorRule$1.evaluate(LuceneTestCase.java:511)
+    [junit] 	at org.apache.lucene.util.LuceneTestCase$RememberThreadRule$1.evaluate(LuceneTestCase.java:569)
+    [junit] 	at org.apache.lucene.util.LuceneTestCaseRunner.runChild(LuceneTestCaseRunner.java:165)
+    [junit] 	at org.apache.lucene.util.LuceneTestCaseRunner.runChild(LuceneTestCaseRunner.java:57)
+    [junit] 	at org.apache.lucene.util.LuceneTestCase.checkUncaughtExceptionsAfter(LuceneTestCase.java:808)
+    [junit] 	at org.apache.lucene.util.LuceneTestCase.tearDownInternal(LuceneTestCase.java:752)
+    [junit] 
+    [junit] 
+    [junit] Test org.apache.lucene.index.TestIndexWriterNRTIsCurrent FAILED
+
+BUILD FAILED
+{noformat}

@@ -1,0 +1,8 @@
+variables should be accessed through getters
+
+
+
+Description:
+Some attention should be placed on classes who shared their variables directly (as opposed to through a getter). This is sometimes OK for subclasses, but rarely good for other classes that use the objects. There's a small number of classes that have non-private variables, especially in the impl.conn & impl.conn.tsccm packages.
+
+See HTTPCLIENT-745 .

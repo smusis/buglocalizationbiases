@@ -1,0 +1,16 @@
+TopTermsScoringBooleanQueryRewrite minscore
+
+
+
+Description:
+when using the TopTermsScoringBooleanQueryRewrite (LUCENE-2123), it would be nice if MultiTermQuery could set an attribute specifying the minimum required score once the Priority Queue is filled. 
+
+This way, FilteredTermsEnums could adjust their behavior accordingly based on the minimal score needed to actually be a useful term (i.e. not just pass thru the pq)
+
+An example is FuzzyTermsEnum: at some point the bottom of the priority queue contains words with edit distance of 1 and enumerating any further terms is simply a waste of time.
+This is because terms are compared by score, then termtext. So in this case FuzzyTermsEnum could simply seek to the exact match, then end.
+
+This behavior could be also generalized for all n, for a different impl of fuzzyquery where it is only looking in the term dictionary for words within edit distance of n' which is the lowest scoring term in the pq (they adjust their behavior during enumeration of the terms depending upon this attribute).
+
+Other FilteredTermsEnums could make use of this minimal score in their own way, to drive the most efficient behavior so that they do not waste time enumerating useless terms.
+

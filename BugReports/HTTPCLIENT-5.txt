@@ -1,0 +1,13 @@
+Cookie.parse exception when parsing expiry date in single quotes
+
+
+
+Description:
+A Netscape-Enterprise/3.6 SP3 server sends a cookie where the parameter expires='Thu, 05-Dec-
+2002 12:07:45 GMT'. 
+Cookie.parse throws an exception because none of the four built-in formats 
+matches - I have tested that the parse code works OK if the single quotes are omitted from the value 
+being parsed.
+
+Resolution: If the value of the 'expires' parameter starts and ends with a 
+single quote then strip the first and last character before parsing.

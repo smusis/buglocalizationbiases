@@ -1,0 +1,10 @@
+AttributeSource can have an invalid computed state
+
+
+
+Description:
+If you work a tokenstream, consume it, then reuse it and add an attribute to it, the computed state is wrong.
+thus for example, clearAttributes() will not actually clear the attribute added.
+
+So in some situations, addAttribute is not actually clearing the computed state when it should.
+

@@ -1,0 +1,72 @@
+Persian Analyzer
+
+
+
+Description:
+A simple persian analyzer.
+
+i measured trec scores with the benchmark package below against http://ece.ut.ac.ir/DBRG/Hamshahri/ :
+
+SimpleAnalyzer:
+SUMMARY
+  Search Seconds:         0.012
+  DocName Seconds:        0.020
+  Num Points:           981.015
+  Num Good Points:       33.738
+  Max Good Points:       36.185
+  Average Precision:      0.374
+  MRR:                    0.667
+  Recall:                 0.905
+  Precision At 1:         0.585
+  Precision At 2:         0.531
+  Precision At 3:         0.513
+  Precision At 4:         0.496
+  Precision At 5:         0.486
+  Precision At 6:         0.487
+  Precision At 7:         0.479
+  Precision At 8:         0.465
+  Precision At 9:         0.458
+  Precision At 10:        0.460
+  Precision At 11:        0.453
+  Precision At 12:        0.453
+  Precision At 13:        0.445
+  Precision At 14:        0.438
+  Precision At 15:        0.438
+  Precision At 16:        0.438
+  Precision At 17:        0.429
+  Precision At 18:        0.429
+  Precision At 19:        0.419
+  Precision At 20:        0.415
+
+PersianAnalyzer:
+SUMMARY
+  Search Seconds:         0.004
+  DocName Seconds:        0.011
+  Num Points:           987.692
+  Num Good Points:       36.123
+  Max Good Points:       36.185
+  Average Precision:      0.481
+  MRR:                    0.833
+  Recall:                 0.998
+  Precision At 1:         0.754
+  Precision At 2:         0.715
+  Precision At 3:         0.646
+  Precision At 4:         0.646
+  Precision At 5:         0.631
+  Precision At 6:         0.621
+  Precision At 7:         0.593
+  Precision At 8:         0.577
+  Precision At 9:         0.573
+  Precision At 10:        0.566
+  Precision At 11:        0.572
+  Precision At 12:        0.562
+  Precision At 13:        0.554
+  Precision At 14:        0.549
+  Precision At 15:        0.542
+  Precision At 16:        0.538
+  Precision At 17:        0.533
+  Precision At 18:        0.527
+  Precision At 19:        0.525
+  Precision At 20:        0.518
+
+

@@ -1,0 +1,8 @@
+TokenStream.next(Token) reuse 'policy': calling Token.clear() should be responsibility of producer.
+
+
+
+Description:
+Tokenizers which implement the reuse form of the next method:
+    next(Token result) 
+should reset the postionIncrement of the returned token to 1.

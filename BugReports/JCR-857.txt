@@ -1,0 +1,6 @@
+Basic support for fn:name()
+
+
+
+Description:
+Add basic support for fn:name() in XPath queries. Jackrabbit should at least support the the fn:name() function within an equals expression.

@@ -1,0 +1,11 @@
+NTLM class registers Sun JCE implementation by default
+
+
+
+Description:
+Currently the NTLM class attempts to load and register the Sun JCE implementation unless a 
+System property is set to indicate a different JCE to use.  We should remove this entirely and leave 
+the installation and configuration of the JCE to the application rather than trying to do it ourselves 
+as this could cause problems with other implementations of JCE.  I'll attach an initial patch for this 
+in a moment, with a patch for the documentation in the morning.  (Writing docs at 1am is never a 
+good idea.)

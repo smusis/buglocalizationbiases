@@ -1,0 +1,6 @@
+[PATCH] Comment corrections in MMapDirectory.java
+
+
+
+Description:
+These comments ended up on the wrong lines after the last changes

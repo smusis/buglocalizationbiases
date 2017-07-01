@@ -1,0 +1,6 @@
+Each TransactionContext creates new thread
+
+
+
+Description:
+The rollback threads are not stopped when the transaction commits, but only when the timeout occurs. This has the effect that lots of threads are created and sleeping when many transactions are committed in a short time frame. The rollback thread should be signaled when the transaction is committed or even better a Timer should be used with a single thread for all transaction contexts.

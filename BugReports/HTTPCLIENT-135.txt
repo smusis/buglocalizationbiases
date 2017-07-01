@@ -1,0 +1,49 @@
+Possible HttpClient codepage issue (ascii/ebcdic) on WebSphere z/OS
+
+
+
+Description:
+I am working with Cactus 1.4.1 on WebSphere NT and also WebSphere z/OS
+(mainframe). The problem seems to be with HTTPClient. I have tried with the
+nuild on the 7th December.
+
+I am trying to get basic cactus servlet tests working on WebSphere z/OS.
+Everything works fine through WebSphere NT, however, when the same application
+is deployed to WebSphere z/OS then we get the following error:
+
+<?xml version="1.0" encoding="UTF-8" ?><?xml-stylesheet type="text/xsl"
+href="junit-noframes.xsl"?><testsuites><testsuite name="TestCactusServlet"
+tests="1" failures="0" errors="1" time="10.184"><testcase name="testNeal"
+time="10.182"><error message="Error in parsing the status  line from the
+response: unable to find line starting with &quot;HTTP/&quot;"
+type="org.apache.commons.httpclient.HttpRecoverableException">org.apache.commons.httpclient.HttpRecoverableException:
+Error in parsing the status  line from the response: unable to find line
+starting with &quot;HTTP/&quot;
+	at
+org.apache.commons.httpclient.HttpMethodBase.readStatusLine(HttpMethodBase.java:1791)
+	at
+org.apache.commons.httpclient.HttpMethodBase.readResponse(HttpMethodBase.java:1559)
+	at
+org.apache.commons.httpclient.HttpMethodBase.processRequest(HttpMethodBase.java:2219)
+	... etc ...
+
+I have verified that the Application Server on WebSPhere z/OS is working fine. I
+set the logging on the cactus to DEBUG and noticed that the data that the
+HTTPClient is retrieving from the connection is scrambled in some way. For example:
+
+16:06:20,213 [WebSphere t=009d7920] DEBUG ent.HttpClientConnectionHelper  -
+>getCookieString = [null] 
+16:06:20,317 [WebSphere t=009d7920] DEBUG httpclient.wire                 - >> "ÇÅã@aã?¢£Ã?? etc...
+
+On WebSphere NT the data at this point looks OK.
+
+What springs to mind is maybe ascii/ebcdic conversion problem. z/OS uses unicode
+ for java, as it should. However, the HTTPClient creates it own socket
+connection to the app server and therefore it is connecting to non java code. In
+such a situation codepage conversion is necessary.
+
+Could anybody adsvise on how to get this to work?
+
+Regards,
+
+Neal Johnston-Ward

@@ -1,0 +1,20 @@
+NullPointerException on removing a node acquired from search result
+
+
+
+Description:
+with a code snipped like the following, i get a NullPointerException in ItemState:
+
+Session s = repo.login(sc,workspace);
+QueryManager qm = s.getWorkspace().getQueryManager();
+Query q = qm.createQuery("SELECT * FROM [nt:unstructured]", Query.JCR_SQL2);
+QueryResult r = q.execute();
+NodeIterator i = r.getNodes();
+
+Node n = i.nextNode();
+n.remove(); // breaks here with NullPointerException
+
+Exception in thread "main" java.lang.NullPointerException                                                                                                                                                                                   
+        at org.apache.jackrabbit.jcr2spi.state.ItemState.getParent(ItemState.java:210)                                                                                                                                                      
+        at org.apache.jackrabbit.jcr2spi.operation.Remove.create(Remove.java:98)                                                                                                                                                            
+        at org.apache.jackrabbit.jcr2spi.ItemImpl.remove(ItemImpl.java:306) 

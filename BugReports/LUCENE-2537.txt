@@ -1,0 +1,35 @@
+FSDirectory.copy() impl is unsafe
+
+
+
+Description:
+There are a couple of issues with it:
+
+# FileChannel.transferFrom documents that it may not copy the number of bytes requested, however we don't check the return value. So need to fix the code to read in a loop until all bytes were copied..
+# When calling addIndexes() w/ very large segments (few hundred MBs in size), I ran into the following exception (Java 1.6 -- Java 1.5's exception was cryptic):
+{code}
+Exception in thread "main" java.io.IOException: Map failed
+    at sun.nio.ch.FileChannelImpl.map(FileChannelImpl.java:770)
+    at sun.nio.ch.FileChannelImpl.transferToTrustedChannel(FileChannelImpl.java:450)
+    at sun.nio.ch.FileChannelImpl.transferTo(FileChannelImpl.java:523)
+    at org.apache.lucene.store.FSDirectory.copy(FSDirectory.java:450)
+    at org.apache.lucene.index.IndexWriter.addIndexes(IndexWriter.java:3019)
+Caused by: java.lang.OutOfMemoryError: Map failed
+    at sun.nio.ch.FileChannelImpl.map0(Native Method)
+    at sun.nio.ch.FileChannelImpl.map(FileChannelImpl.java:767)
+    ... 7 more
+{code}
+
+I changed the impl to something like this:
+{code}
+long numWritten = 0;
+long numToWrite = input.size();
+long bufSize = 1 << 26;
+while (numWritten < numToWrite) {
+  numWritten += output.transferFrom(input, numWritten, bufSize);
+}
+{code}
+
+And the code successfully adds the indexes. This code uses chunks of 64MB, however that might be too large for some applications, so we definitely need a smaller one. The question is how small so that performance won't be affected, and it'd be great if we can let it be configurable, however since that API is called by other API, such as addIndexes, not sure it's easily controllable.
+
+Also, I read somewhere (can't remember now where) that on Linux the native impl is better and does copy in chunks. So perhaps we should make a Linux specific impl?

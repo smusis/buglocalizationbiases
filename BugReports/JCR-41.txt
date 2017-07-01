@@ -1,0 +1,8 @@
+ItemManager issues WARN message on Node.checkIn and Node.checkOut
+
+
+
+Description:
+Wenn checking in or checking out a node, the ItemManager.cacheItem method issues a WARN message because a cache entry is being replaced.
+
+While this message might be valuable in certain contexts, in the contetx of checking in or out a node, this is not valuable and harms confidence :-)

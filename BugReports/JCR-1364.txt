@@ -1,0 +1,12 @@
+DirListingExportHandler: Should not implement PropertyHandler
+
+
+
+Description:
+issue found by Roland Porath:
+
+if the DirListingExportHandler is used with some other collection nodetype that nt:folder (that may allow other properties) the list of dav properties obtained upon PROPFIND (being delegated to PropertyHandler) results in an imcomplete list.
+
+since the only benefit of the DirListingExportHandler is to display something nice(?) upon a GET to a folder, i'd suggest to remove the implementation of PropertyHandler from the DirListingExportHandler.
+
+angela

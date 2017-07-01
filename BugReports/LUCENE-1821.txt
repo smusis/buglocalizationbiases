@@ -1,0 +1,49 @@
+Weight.scorer() not passed doc offset for "sub reader"
+
+
+
+Description:
+Now that searching is done on a per segment basis, there is no way for a Scorer to know the "actual" doc id for the document's it matches (only the relative doc offset into the segment)
+
+If using caches in your scorer that are based on the "entire" index (all segments), there is now no way to index into them properly from inside a Scorer because the scorer is not passed the needed offset to calculate the "real" docid
+
+suggest having Weight.scorer() method also take a integer for the doc offset
+
+Abstract Weight class should have a constructor that takes this offset as well as a method to get the offset
+All Weights that have "sub" weights must pass this offset down to created "sub" weights
+
+
+Details on workaround:
+In order to work around this, you must do the following:
+* Subclass IndexSearcher
+* Add "int getIndexReaderBase(IndexReader)" method to your subclass
+* during Weight creation, the Weight must hold onto a reference to the passed in Searcher (casted to your sub class)
+* during Scorer creation, the Scorer must be passed the result of YourSearcher.getIndexReaderBase(reader)
+* Scorer can now rebase any collected docids using this offset
+
+Example implementation of getIndexReaderBase():
+{code}
+// NOTE: more efficient implementation can be done if you cache the result if gatherSubReaders in your constructor
+public int getIndexReaderBase(IndexReader reader) {
+  if (reader == getReader()) {
+    return 0;
+  } else {
+    List readers = new ArrayList();
+    gatherSubReaders(readers);
+    Iterator iter = readers.iterator();
+    int maxDoc = 0;
+    while (iter.hasNext()) {
+      IndexReader r = (IndexReader)iter.next();
+      if (r == reader) {
+        return maxDoc;
+      } 
+      maxDoc += r.maxDoc();
+    } 
+  }
+  return -1; // reader not in searcher
+}
+{code}
+
+Notes:
+* This workaround makes it so you cannot serialize your custom Weight implementation
+

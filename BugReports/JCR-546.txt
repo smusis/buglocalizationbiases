@@ -1,0 +1,19 @@
+Deadlock during checkin
+
+
+
+Description:
+Under a load of 3 threads performing checkin and restore operations it's possible for all to become deadlocked in AbstractVersionManager.checkin(). This method attempts to upgrade a read lock to a write lock with the following code
+
+    aquireReadLock();
+    ....
+
+    try {
+        aquireWriteLock();
+        releaseReadLock();
+        ...
+
+If 2 or more threads acquire the read lock then neither can acquire the write lock resulting in the deadlock, and after that any other thread that calls this method will block waiting for the write lock. The release of the read lock needs to be done before acquiring the write lock, this is documented Concurrent library javadoc.
+
+There is another area where there is an attempt to upgrade a read lock to write lock, RepositoryImpl.WorkspaceInfo.disposeIfIdle() acquires a read lock and calls dispose() which then acquires a write lock, this maybe ok, as I assume there is only 1 thread that will attempt to dispose of idle workspaces.
+

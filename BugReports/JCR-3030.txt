@@ -1,0 +1,6 @@
+Permit using different tablespaces for tables and indexes with Oracle
+
+
+
+Description:
+OracleFileSystem, OraclePersistenceManager and OracleDatabaseJournal already provide a tableSpace parameter to customize the DDL, but the same tablespace is used for both tables and indexes. It is common place to use distinct tablespaces for these. Jackrabbit could provide support for this.

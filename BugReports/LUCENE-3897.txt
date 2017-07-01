@@ -1,0 +1,18 @@
+KuromojiTokenizer fails with large docs
+
+
+
+Description:
+just shoving largeish random docs triggers asserts like:
+
+{noformat}
+    [junit] Caused by: java.lang.AssertionError: backPos=4100 vs lastBackTracePos=5120
+    [junit] 	at org.apache.lucene.analysis.kuromoji.KuromojiTokenizer.backtrace(KuromojiTokenizer.java:907)
+    [junit] 	at org.apache.lucene.analysis.kuromoji.KuromojiTokenizer.parse(KuromojiTokenizer.java:756)
+    [junit] 	at org.apache.lucene.analysis.kuromoji.KuromojiTokenizer.incrementToken(KuromojiTokenizer.java:403)
+    [junit] 	at org.apache.lucene.analysis.BaseTokenStreamTestCase.checkRandomData(BaseTokenStreamTestCase.java:404)
+{noformat}
+
+But, you get no seed...
+
+I'll commit the test case and @Ignore it.

@@ -1,0 +1,6 @@
+All spatial contrib shape classes implement equals but not hashCode
+
+
+
+Description:
+violates contract - at a min, need to implement return constant.

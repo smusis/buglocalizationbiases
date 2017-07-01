@@ -1,0 +1,11 @@
+JCR2SPI: error level logging when cleaning up session locks 
+
+
+
+Description:
+LockManagerImpl.loggingOut() tries to unlock nodes that have a session lock. If, while doing so, a RepositoryException is thrown, this gets locked on error level.
+
+The TCK tests tearDown code removes test nodes using a separate session; thus we see RepositoryExceptions for the simple reason that the nodes have already been removed by somebody else.
+
+Proposal: handle ItemNotFoundExc and PathNotFoundExc separately, not logging them.
+

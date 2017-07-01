@@ -1,0 +1,34 @@
+Header Connection Close - Closes the Connection
+
+
+
+Description:
+If the connectionHeader equals Close the conection imediateley closes, without 
+waiting for the responce back from the server. 
+
+If the client is pulling data from a CGI script which has not sent the Content 
+Length - most servers will send a Connection Close header. For example 
+
+-----------------------------------------
+HTTP/1.1 200 OK
+Date: Fri, 21 Jun 2002 17:08:46 GMT
+Server: Apache/1.3.14 (Unix)
+Connection: close
+Content-Type: text/html
+ 
+<html>
+      <head>
+            <title>thegumtree.com - London's online community for Aussies, Kiwis
+ and South Africans</title>
+                           <meta http-equiv="Content-Type" content="text/html; c
+harset=iso-8859-1">
+                   </head>
+
+--------------------------------
+
+I do not yet have a work arround apart from commenting out the the following 
+code in 
+
+Header connectionHeader = getResponseHeader("connection"); etc
+
+in HttpMethodBase

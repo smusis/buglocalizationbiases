@@ -1,0 +1,16 @@
+avoid converting property values to strings
+
+
+
+Description:
+QValues currently can not expose properties of types LONG and DOUBLE in a parsed format. Thus, setting/retrieving properties of these types requires roundtripping through Strings, which we should avoid.
+
+Proposal:
+
+1) Add "long getLong()" and "double getDouble()" to QValue.
+
+2) Add matching create methods to QValueFactory.
+
+3) Take advantage of the new methods in JCR2SPI, for instance by allowing it's own Value implementation to internally just hold the QValue.
+
+

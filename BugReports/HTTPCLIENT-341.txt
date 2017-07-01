@@ -1,0 +1,17 @@
+HttpUrl does not accept unescaped passwords
+
+
+
+Description:
+- Taken from an email from Gustav Munkby posted to the HttpClient dev mailing list -
+
+If I do:
+
+HTTPUrl url = new HTTPUrl("kurt", "nicepass#", hostname, 80, path);
+
+throws a URIException with message "port number invalid".
+
+First of all the message is wrong...
+
+Next attempt was to urlencode the password, which resulted in the above line working, but the 
+password was sent url-encoded to the destination, which can hardly be the desired behaviour?

@@ -1,0 +1,10 @@
+Add support for tablespaces to Oracle related classes
+
+
+
+Description:
+When a user account for an Oracle database has no or a temporary default tablespace, then the appropriate database schemas cannot be created. This is an issue for at least the following packages:
+- o.a.j.core.persistence.bundle
+- o.a.j.core.persistence.db
+- o.a.j.core.fs.db
+

@@ -1,0 +1,10 @@
+Add workaround for ICU bug in combination with Java7 to LuceneTestCase
+
+
+
+Description:
+There is a bug in ICU that makes it fail to load it ULocale class in Java7: http://bugs.icu-project.org/trac/ticket/8734
+
+The problem is caused by some new locales in Java 7, that lead to a chicken-and-egg problem in the static initializer of ULocale. It initializes its default locale from the JDK locale in a static ctor. Until the default ULocale instance is created, the default is not set in ULocale. But ULocales ctor itsself needs the default locale to fetch some ressource bundles and throws NPE.
+
+The code in LuceneTestCase that randomizes the default locale should classload ULocale before it tries to set another random locale, using a defined, safe locale (Locale.US). Patch is easy.

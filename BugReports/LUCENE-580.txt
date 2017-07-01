@@ -1,0 +1,8 @@
+Pre-analyzed fields
+
+
+
+Description:
+Adds the possibility to set a TokenStream at Field constrution time, available as tokenStreamValue in addition to stringValue, readerValue and binaryValue.
+
+There might be some problems with mixing stored fields with the same name as a field with tokenStreamValue.

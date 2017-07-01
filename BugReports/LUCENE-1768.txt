@@ -1,0 +1,12 @@
+NumericRange support for new query parser
+
+
+
+Description:
+It would be good to specify some type of "schema" for the query parser in future, to automatically create NumericRangeQuery for different numeric types? It would then be possible to index a numeric value (double,float,long,int) using NumericField and then the query parser knows, which type of field this is and so it correctly creates a NumericRangeQuery for strings like "[1.567..*]" or "(1.787..19.5]".
+
+There is currently no way to extract if a field is numeric from the index, so the user will have to configure the FieldConfig objects in the ConfigHandler. But if this is done, it will not be that difficult to implement the rest.
+
+The only difference between the current handling of RangeQuery is then the instantiation of the correct Query type and conversion of the entered numeric values (simple Number.valueOf(...) cast of the user entered numbers). Evenerything else is identical, NumericRangeQuery also supports the MTQ rewrite modes (as it is a MTQ).
+
+Another thing is a change in Date semantics. There are some strange flags in the current parser that tells it how to handle dates.

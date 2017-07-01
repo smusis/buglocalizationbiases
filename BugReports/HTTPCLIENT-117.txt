@@ -1,0 +1,7 @@
+Move to the new URIUtil class
+
+
+
+Description:
+Depricate httpclient.URIUtil class and methods
+Move all URIUtil calls to httpclient.util.URIUtil

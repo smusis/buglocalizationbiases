@@ -1,0 +1,8 @@
+Unclosed files when aggregated property states are indexed
+
+
+
+Description:
+This is a regression caused by JCR-1990.
+
+The lucene document for the node that contains the aggregated property may contain an extractor job that has an open file handle to the jcr:data binary property. The document must be disposed after the properties are transferred.

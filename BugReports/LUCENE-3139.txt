@@ -1,0 +1,11 @@
+LuceneTestCase.afterClass does not print enough information if a temp-test-dir fails to delete
+
+
+
+Description:
+I've hit an exception from LTC.afterClass when _TestUtil.rmDir failed (on write.lock, as if some test did not release resources). However, I had no idea which test caused that (i.e. opened the temp directory and did not release resources).
+
+I think we should do the following:
+* Track in LTC a map from dirName -> StackTraceElement
+* In afterClass if _TestUtil.rmDir fails, print the STE of that particular dir, so we know where was this directory created from
+* Make tempDirs private and create accessor method, so that we control the inserts to this map (today the Set is updated by LTC, _TestUtils and TestBackwards !)

@@ -1,0 +1,10 @@
+Add a serializing content handler
+
+
+
+Description:
+Both JCR-1310 and JCR-1343 need XML serialization functionality and we've also previously (JCR-367, JCR-1086) implemented something similar.
+
+It would be good to centralize such code, and so I'd like to use the already referenced code from Cocoon [1] as the basis for a SerializingContentHandler class in jackrabbit-jcr-commons.
+
+[1] https://svn.apache.org/repos/asf/cocoon/trunk/core/cocoon-pipeline/cocoon-pipeline-impl/src/main/java/org/apache/cocoon/serialization/AbstractTextSerializer.java

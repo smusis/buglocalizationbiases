@@ -1,0 +1,8 @@
+dependencies for route planner implementations
+
+
+
+Description:
+The implementations of HttpRoutePlanner that we have depend on the ConnectionManager, but use it only to look up the SchemeRegistry. Consider to depend only on the SchemeRegistry.
+
+

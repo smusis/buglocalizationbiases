@@ -1,0 +1,16 @@
+Some tests try to add new nodes without specifying the node type
+
+
+
+Description:
+Some tests try to add new nodes without specifying the node type, which may not be supported by a repository.
+
+In particular:
+
+- NodeAddMixinTest.testAddNonExisting
+- NodeCanAddMixinTest.testNonExisting
+- ValueFactoryTest.testValueType
+- ValueFactoryTest.testValueFormatException
+
+Proposal: update test cases to obtain the node type from the test config.
+

@@ -1,0 +1,21 @@
+Problems mapping custom collections
+
+
+
+Description:
+When using a custom list that extends from java.util.AbstractList, ManageableCollectionUtil.getManageableCollection raises a JcrMappingException because it does not consider the custom list to be a java.util.List. This is because it uses "if (object.getClass().equals(List.class))" instead of "if (object instanceof List)". The same thing will probably happen when using a custom Collection, a custom ArrayList, etc. This is the stack trace:
+
+org.apache.jackrabbit.ocm.exception.JcrMappingException: Unsupported collection 
+type : *********** (MyCustomList class) 
+        at org.apache.jackrabbit.ocm.manager.collectionconverter.ManageableColle 
+ctionUtil.getManageableCollection(ManageableCollectionUtil.java:153) 
+        at org.apache.jackrabbit.ocm.manager.objectconverter.impl.ObjectConverte 
+rImpl.insertCollectionFields(ObjectConverterImpl.java:780) 
+        at org.apache.jackrabbit.ocm.manager.objectconverter.impl.ObjectConverte 
+rImpl.insert(ObjectConverterImpl.java:221) 
+        at org.apache.jackrabbit.ocm.manager.objectconverter.impl.ObjectConverte 
+rImpl.insert(ObjectConverterImpl.java:146) 
+        at org.apache.jackrabbit.ocm.manager.impl.ObjectContentManagerImpl.inser 
+t(ObjectContentManagerImpl.java:407) 
+
+I have come up to this bug using a MyCustomList<MyClass>, with MyCustomList extending java.util.AbstractList<MyClass>.

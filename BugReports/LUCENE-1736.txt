@@ -1,0 +1,14 @@
+DateTools.java general improvements
+
+
+
+Description:
+Applying the attached patch shows the improvements to DateTools.java that I think should be done. All logic that does anything at all is moved to instance methods of the inner class Resolution. I argue this is more object-oriented.
+
+1. In cases where Resolution is an argument to the method, I can simply invoke the appropriate call on the Resolution object. Formerly there was a big branch if/else.
+2. Instead of "synchronized" being used seemingly everywhere, synchronized is used to sync on the object that is not threadsafe, be it a DateFormat or Calendar instance.
+3. Since different DateFormat and Calendar instances are created per-Resolution, there is now less lock contention since threads using different resolutions will not use the same locks.
+4. The old implementation of timeToString rounded the time before formatting it. That's unnecessary since the format only includes the resolution desired.
+5. round() now uses a switch statement that benefits from fall-through (no break).
+
+Another debatable improvement that could be made is putting the resolution instances into an array indexed by format length. This would mean I could remove the switch in lookupResolutionByLength() and avoid the length constants there. Maybe that would be a bit too over-engineered when the switch is fine.

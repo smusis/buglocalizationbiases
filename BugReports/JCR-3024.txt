@@ -1,0 +1,9 @@
+[SPI] Node.setProperty with null value throws ItemNotFoundException
+
+
+
+Description:
+Node.setProperty with a null value should not throw a ItemNotFoundException in the case a property with the given name does not exist. Rather should it return a stale property which throws an InvalidItemStateException when its methods are accessed. 
+
+This behavior is also consistent with jackrabbit-core.
+

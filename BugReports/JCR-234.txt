@@ -1,0 +1,6 @@
+VersionTest.testGetUUID() fails
+
+
+
+Description:
+VersionTest.testGetUUID() fails due to inproper invlaidation of the successor properties after checkin.

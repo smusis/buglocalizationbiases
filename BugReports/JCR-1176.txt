@@ -1,0 +1,6 @@
+MemoryFileSystem is different from other FileSystems
+
+
+
+Description:
+JCR-1175 uncovered inconsistencies in how the deleteFolder() and list() methods are implemented. The MemoryFileSystem class acts differently from the LocalFileSystem and DatabaseFileSystem classes. MemoryFileSystem and the related incorrect test cases should be fixed.

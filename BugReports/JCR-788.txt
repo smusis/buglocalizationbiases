@@ -1,0 +1,9 @@
+Upgrade to Lucene 2.2
+
+
+
+Description:
+Lucene 2.1 contains a number of useful enhancements, which could be benefical to jackrabbit:
+
+- less locking on index updates -> less IO calls
+- introduces FieldSelector -> allows jackrabbit to only load required fields

@@ -1,0 +1,6 @@
+search vs explain - score discrepancies
+
+
+
+Description:
+I'm on a mission to demonstrate (and then hopefully fix) any inconsistencies between the score you get for a doc when executing a search, and the score you get when asking for an explanation of the query for that doc.

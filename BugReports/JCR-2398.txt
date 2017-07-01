@@ -1,0 +1,23 @@
+AdministratorTest.testAdminNodeCollidingWithRandomNode failure
+
+
+
+Description:
+I see the following test failure with the latest trunk. It seems to affect also Sébastien as commented in JCR-2389. However, it doesn't break the Hudson build or Angela's checkout.
+
+I'm filing this as a bug and will disable the test for now to be able to cut the 2.0-beta3 release. We can look at this later in more detail.
+
+The detailed failure message is:
+
+-------------------------------------------------------------------------------
+Test set: org.apache.jackrabbit.core.security.user.TestAll
+-------------------------------------------------------------------------------
+Tests run: 144, Failures: 1, Errors: 0, Skipped: 0, Time elapsed: 4.078 sec <<< FAILURE!
+testAdminNodeCollidingWithRandomNode(org.apache.jackrabbit.core.security.user.AdministratorTest)  Time elapsed: 0.072 sec  <<< FAILURE!
+junit.framework.AssertionFailedError
+        at junit.framework.Assert.fail(Assert.java:47)
+        at junit.framework.Assert.assertTrue(Assert.java:20)
+        at junit.framework.Assert.assertFalse(Assert.java:34)
+        at junit.framework.Assert.assertFalse(Assert.java:41)
+        at org.apache.jackrabbit.core.security.user.AdministratorTest.testAdminNodeCollidingWithRandomNode(AdministratorTest.java:205)
+

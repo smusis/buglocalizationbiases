@@ -1,0 +1,17 @@
+JCR-SQL2 : no count when WHERE clause is provided
+
+
+
+Description:
+whenever you provide a where-clause to a sql2 select, jcr/jackrabbit does not provide the hit count.
+
+E.g.:
+   select * from [nt:unstructured]
+   order by [jcr:score]
+returns the hit count (query.execute().getRows().getSize()), 
+whereas
+  select * from [nt:unstructured]
+  where entity = "customer"
+  order by [jcr:score]
+doesn't.
+

@@ -1,0 +1,8 @@
+When thread is interrupted we should throw a clear exception
+
+
+
+Description:
+This is the 3.0 followon from LUCENE-1573.  We should throw a dedicated exception, not just RuntimeException.
+
+Recent discussion from java-dev "Thread.interrupt()" subject: http://www.lucidimagination.com/search/document/8423f9f0b085034e/thread_interrupt

@@ -1,0 +1,47 @@
+XMLparser drops user boosting
+
+
+
+Description:
+The lucene XML parser seems to convert user defined boosting back to default 1.0 and thus boosting value is dropped from the query...
+
+e.g.
+
+{code:xml}
+<BooleanQuery>
+	<Clause occurs="must">
+		<BooleanQuery>
+			<Clause occurs="should">
+				<UserQuery fieldName="Vehicle.Colour">red^66 blue~^8</UserQuery>
+			</Clause>
+		</BooleanQuery>
+	</Clause>
+	<Clause occurs="should">
+		<BooleanQuery>
+			<Clause occurs="should">
+				<UserQuery fieldName="Vehicle.Colour">black^0.01</UserQuery>
+			</Clause>
+		</BooleanQuery>
+	</Clause>
+</BooleanQuery>
+{code}
+
+produces a lucene query: +( ( Vehicle.Colour:red^66 Vehicle.Colour:blue~0.5^8 ) ) ( Vehicle.Colour:black )
+
+The expected query : +( ( Vehicle.Colour:red^66 Vehicle.Colour:blue~0.5^8 ) ) ( Vehicle.Colour:black^0.01 )
+
+I have developed a work around by modifying line 77 of UserInputQueryBuilder.java 
+
+from:
+
+{code:java}
+q.setBoost(DOMUtils.getAttribute(e,"boost",1.0f));
+{code}
+
+to:
+
+{code:java}
+q.setBoost( DOMUtils.getAttribute( e, "boost", q.getBoost() ) );
+{code}
+
+

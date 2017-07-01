@@ -1,0 +1,10 @@
+TestScoredDocIDsUtils.testWithDeletions test failure
+
+
+
+Description:
+ant test -Dtestcase=TestScoredDocIDsUtils -Dtestmethod=testWithDeletions -Dtests.seed=-2216133137948616963:2693740419732273624 -Dtests.multiplier=5
+
+In general, on both 3.x and trunk, if you run this test with -Dtests.iter=100 it tends to fail 2% of the time.
+
+

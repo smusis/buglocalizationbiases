@@ -1,0 +1,9 @@
+Set omit term freq positions flag on parent field in the index
+
+
+
+Description:
+The flag to omit term frequencies is set to true by default and it is not changed by any of the constructors on the Field class.
+We don't use this info in the index anyway, so it is safe to remove it.
+
+The index size gain for 130K nodes (3 leves, ~50 nodes per level) is around 150kb for a 30mb index.

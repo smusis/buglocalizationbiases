@@ -1,0 +1,8 @@
+Rename GenericRepositoryFactory to JndiRepositoryFactory
+
+
+
+Description:
+The GenericRepositoryFactory class introduced in JCR-2360 has since been refactored so that most of its functionality is now distributed among the more implementation-specific RepositoryFactory classes. Now the GenericRepositoryFactory only contains support for looking the repository up in JNDI, so it would be better to rename the class to JndiRepositoryFactory.
+
+The only troublesome part of the rename is the GenericRepositoryFactory.URI constant that was for a while documented on our wiki as a part of the canonical code snippet for accessing a remote repository based on the repository URI. The latest recommendation is to use the JcrUtils.getRepository(String uri) method so the constant is no longer needed in client code, but for backwards compatibility with earlier Jackrabbit 2.0 betas it may be good to keep the deprecated constant for at least the next beta release.

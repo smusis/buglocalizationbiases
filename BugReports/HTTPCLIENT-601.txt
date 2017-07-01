@@ -1,0 +1,10 @@
+SecureProtocolFactoryWrapper class for using the socket factory created by Java Web Start
+
+
+
+Description:
+As smartcards and SSL are becoming more and more prevelant, Java Web Start has started to become better equiped to handle these situations.  When running an app within webstart, it can access the browser's keystore, which (at least in our case) accessed the users smartcard to make the SSL connection.
+
+I wanted to start using HttpClient, but needed a way to do so while still mainaining access to the browser's keystore.
+
+My initial tests show that getting the default socket factory from the java.net.HttpURLConnection and wrapping it in a class that implements org.apache.commons.httpclient.protocol.SecureProtocolSocketFactory is sufficient.

@@ -1,0 +1,31 @@
+Restructure codec hierarchy
+
+
+
+Description:
+Spinoff of LUCENE-2621. (Hoping we can do some of the renaming etc here in a rote way to make progress).
+
+Currently Codec.java only represents a portion of the index, but there are other parts of the index 
+(stored fields, term vectors, fieldinfos, ...) that we want under codec control. There is also some 
+inconsistency about what a Codec is currently, for example Memory and Pulsing are really just 
+PostingsFormats, you might just apply them to a specific field. On the other hand, PreFlex actually
+is a Codec: it represents the Lucene 3.x index format (just not all parts yet). I imagine we would
+like SimpleText to be the same way.
+
+So, I propose restructuring the classes so that we have something like:
+* CodecProvider <-- dead, replaced by java ServiceProvider mechanism. All indexes are 'readable' if codecs are in classpath.
+* Codec <-- represents the index format (PostingsFormat + FieldsFormat + ...)
+* PostingsFormat: this is what Codec controls today, and Codec will return one of these for a field.
+* FieldsFormat: Stored Fields + Term Vectors + FieldInfos?
+
+I think for PreFlex, it doesnt make sense to expose its PostingsFormat as a 'public' class, because preflex
+can never be per-field so there is no use in allowing you to configure PreFlex for a specific field.
+Similarly, I think in the future we should do the same thing for SimpleText. Nobody needs SimpleText for production, it should
+just be a Codec where we try to make as much of the index as plain text and simple as possible for debugging/learning/etc.
+So we don't need to expose its PostingsFormat. On the other hand, I don't think we need Pulsing or Memory codecs,
+because its pretty silly to make your entire index use one of their PostingsFormats. To parallel with analysis:
+PostingsFormat is like Tokenizer and Codec is like Analyzer, and we don't need Analyzers to "show off" every Tokenizer.
+
+we can also move the baked in PerFieldCodecWrapper out (it would basically be PerFieldPostingsFormat). Privately it would
+write the ids to the file like it does today. in the future, all 3.x hairy backwards code would move to PreflexCodec. 
+SimpleTextCodec would get a plain text fieldinfos impl, etc.

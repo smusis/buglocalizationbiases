@@ -1,0 +1,7 @@
+BoostingTermQuery's BoostingSpanScorer class should be protected instead of package access
+
+
+
+Description:
+Currently, BoostingTermScorer, an inner class of BoostingTermQuery is not accessible from outside the search.payloads
+making it difficult to write an extension of BoostingTermQuery. The other inner classes are protected already, as they should be.

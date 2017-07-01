@@ -1,0 +1,17 @@
+Support more queries (other than just title) in Trec quality pkg
+
+
+
+Description:
+Now that we can properly parse descriptions and narratives from TREC queries (LUCENE-2210), it would be nice to allow the user to easily run quality evaluations on more than just "Title"
+
+This patch adds an optional commandline argument to QueryDriver (the default is Title as before), where you can specify something like:
+T: Title-only
+D: Description-only
+N: Narrative-only
+TD: Title + Description,
+TDN: Title+Description+Narrative,
+DN: Description+Narrative
+
+The SimpleQQParser has an additional constructor that simply accepts a String[] of these fields, forming a booleanquery across all of them.
+

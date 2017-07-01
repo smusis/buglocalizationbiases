@@ -1,0 +1,8 @@
+WebDAV: drop dependency on commons-collections
+
+
+
+Description:
+the webdav library brings in a dependency on commons-collections solely for one reference to LinkedMap. Since none of the additional features of this class are used, and as I understand it Jackrabbit requires JDK 1.4+, this can be replaced with LinkedHashMap.
+
+jcr-commons still brings in the commons-collections dependency, but I believe it can be safely excluded by users that don't need to use the predicates (Which is true of the webdav client)

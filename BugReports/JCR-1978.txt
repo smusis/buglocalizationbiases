@@ -1,0 +1,8 @@
+Clean up spi-commons pom.xml
+
+
+
+Description:
+The pom.xml contains lines that were copied from the jackrabbit-core but are not actually needed. A log4j.properties is also missing in test resources.
+
+See attached patch.

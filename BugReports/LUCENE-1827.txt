@@ -1,0 +1,8 @@
+Make the Payload Boosting Queries consistent
+
+
+
+Description:
+BoostingFunctionTermQuery should be consistent with BoostingNearQuery -
+
+Renaming to PayloadNearQuery and PayloadTermQuery

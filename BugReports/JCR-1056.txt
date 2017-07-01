@@ -1,0 +1,11 @@
+JCR2SPI: improve ItemDefinitionProviderImpl.getMatchingPropdef to better handle multiple residuals
+
+
+
+Description:
+When a new property is set with unknown type (missing PropertyType parameter), ItemDefinitionProviderImpl.getMatchingPropdef() is used to find an applicable property definition.
+
+There may be cases where multiple residual property defs may match, for instance, when the repository allows only a certain set of property types on that node type.
+
+In this case, when the set of allowable types includes STRING, that propdef should be returned. After all, the client did not specify the type, so STRING is most likely the best match.
+

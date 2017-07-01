@@ -1,0 +1,6 @@
+expose PM for versioning manager so that the consistency check can be run from test cases
+
+
+
+Description:
+We need to be able to run the PM consistency checks for the versioning store as well.

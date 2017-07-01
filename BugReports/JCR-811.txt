@@ -1,0 +1,10 @@
+SetPropertyAssumeTypeTest check for non-protected string array property
+
+
+
+Description:
+SetPropertyAssumeTypeTest.testValuesConstraintViolationExceptionBecauseOfInvalidTypeParameter tries to find a property definition for a writable, multivalued string property. It consults NodeTypeUtil.locatePropertyDef() for that purpose.
+
+In my setup, the property definition being returned is for jcr:valueConstraints, defined on nt:propertyDefinition. Nodes of that type in turn can not be created on the test node, thus the test fails already when trying to create the node.
+
+It seems the test suite tries to be too smart here. Can we change this so that the node type and the property name are configuration parameters?

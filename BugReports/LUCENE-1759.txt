@@ -1,0 +1,8 @@
+Implement TokenStream.end() in contrib TokenStreams
+
+
+
+Description:
+See LUCENE-1448. Mike's patch there already contains the necessary fixes.
+
+I'll attach a patch here as soon as LUCENE-1460 is committed.

@@ -1,0 +1,8 @@
+Allow reuse of Q*DefinitionBuilder in QItemDefinitionsBuilder
+
+
+
+Description:
+It would be nice to reuse the builder implementations in QItemDefinitionsBuilder elsewhere when Q*Definitions need to be built.
+
+I will extract the relevant classes so they can be used independently and make QItemDefinitionsBuilder use them.

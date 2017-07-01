@@ -1,0 +1,14 @@
+StringRequestEntity.getContentLength wrong for multibyte chars
+
+
+
+Description:
+When setting up a PostMethod containing a StringRequestEntity with umlauts and
+charset UTF-8 the content-length header is wrong. It should be the number
+of bytes, but is the number of chars by now.
+
+(e.g.
+Content-Type: text/xml; charset=UTF-8
+body='Ã¤Ã¶Ã¼ÃÃÃÃ')
+
+Bug-location: org.apache.commons.httpclient.methods.StringRequestEntity

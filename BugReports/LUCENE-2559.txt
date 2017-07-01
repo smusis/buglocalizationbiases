@@ -1,0 +1,19 @@
+reopen support for SegmentReader
+
+
+
+Description:
+Reopen for SegmentReader can be supported simply as the following:
+
+  @Override
+  public synchronized IndexReader reopen() throws CorruptIndexException,
+		IOException {
+	return reopenSegment(this.si,false,readOnly);
+  }
+
+  @Override
+  public synchronized IndexReader reopen(boolean openReadOnly)
+		throws CorruptIndexException, IOException {
+	return reopenSegment(this.si,false,openReadOnly);
+  }
+

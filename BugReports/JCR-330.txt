@@ -1,0 +1,6 @@
+Include the README file in the generated jar files
+
+
+
+Description:
+The Incubator would prefer if we had the incubation notice included in the binary jar files we release. It should be a simple Maven configuration change to get the README.txt file included in the binary jars.

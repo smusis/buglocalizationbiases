@@ -1,0 +1,6 @@
+Allow database as backend for clustering
+
+
+
+Description:
+Currently, clustering (see JCR-623) uses a shared file system folder in order to store modifications and synchronize all nodes in the cluster. Alternatively, a database backend should be available.

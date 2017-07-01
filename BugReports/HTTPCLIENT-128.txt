@@ -1,0 +1,23 @@
+Redirection of a POST method
+
+
+
+Description:
+I execute a PostMethod to an URL which redirects me to a HTML page. If I set 
+follow redirects to true the HttpClient wants to execute once more a POST. Of 
+course a POST is not allowed to HTML pages. I think the HttpClient should 
+exectue a GET method instead. That's also what is in the RFC2616:
+
+10.3 Redirection 3xx
+
+   This class of status code indicates that further action needs to be
+   taken by the user agent in order to fulfill the request.  The action
+   required MAY be carried out by the user agent without interaction
+   with the user if and only if the method used in the second request is
+   GET or HEAD. A client SHOULD detect infinite redirection loops, since
+   such loops generate network traffic for each redirection.
+
+      Note: previous versions of this specification recommended a
+      maximum of five redirections. Content developers should be aware
+      that there might be clients that implement such a fixed
+      limitation.

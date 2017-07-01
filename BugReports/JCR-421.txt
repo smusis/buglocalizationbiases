@@ -1,0 +1,20 @@
+PROPPATCH does not send multistatus after revision 397835
+
+
+
+Description:
+After changes to use alterProperties for PROPPATCH in revision 397835, it returns a status code 200 and doesn't return a multistatus body. Patch below...
+
+Index: C:/jprojects/eclipse/jackrabbit/jcr-server/server/src/java/org/apache/jackrabbit/server/AbstractWebdavServlet.java
+===================================================================
+--- C:/jprojects/eclipse/jackrabbit/jcr-server/server/src/java/org/apache/jackrabbit/server/AbstractWebdavServlet.java	(revision 398580)
++++ C:/jprojects/eclipse/jackrabbit/jcr-server/server/src/java/org/apache/jackrabbit/server/AbstractWebdavServlet.java	(working copy)
+@@ -448,6 +448,7 @@
+         MultiStatus ms = new MultiStatus();
+         MultiStatusResponse msr = resource.alterProperties(changeList);
+         ms.addResponse(msr);
++        response.sendMultiStatus(ms);
+     }
+ 
+     /**
+

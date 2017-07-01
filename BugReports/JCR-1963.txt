@@ -1,0 +1,8 @@
+Determination of property state difference should skip binary values
+
+
+
+Description:
+o.a.j.jcr2spi.state.PropertyState.diffPropertyData, PropertyData) should alway consider two binary values to be different. The current implementation compares two binary values with equals(). An implementation will in general have to do a byte by byte comparison of both values. This is most likely always more expensive than considering the values different right from the start. 
+
+

@@ -1,0 +1,6 @@
+Implement QueryResult.getSelectorNames()
+
+
+
+Description:
+

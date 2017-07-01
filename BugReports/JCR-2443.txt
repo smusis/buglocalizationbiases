@@ -1,0 +1,6 @@
+AbstractSession should not synchronize on the session instance
+
+
+
+Description:
+The local namespace mapping methods in AbstractSession are synchronized to protect against concurrent access. That's troublesome since our observation delivery needs to be able to get those mappings even when the session is synchronized to do something else.

@@ -1,0 +1,6 @@
+Remove ItemInfo.getName() since it is redundant
+
+
+
+Description:
+I propose to remove the method getName() from org.apache.jackrabbit.spi.ItemInfo since it is redundant. The name is always the last element of the path which is available via the getPath() method.

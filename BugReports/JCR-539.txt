@@ -1,0 +1,20 @@
+Concurrent Repository.login() throws IllegalStateException
+
+
+
+Description:
+See test case: org.apache.jackrabbit.test.core.ConcurrentLoginTest
+
+java.lang.IllegalStateException: workspace 'default' not initialized
+	at org.apache.jackrabbit.core.RepositoryImpl$WorkspaceInfo.getItemStateProvider(RepositoryImpl.java:1448)
+	at org.apache.jackrabbit.core.RepositoryImpl.getWorkspaceStateManager(RepositoryImpl.java:712)
+	at org.apache.jackrabbit.core.SessionImpl.<init>(SessionImpl.java:247)
+	at org.apache.jackrabbit.core.SessionImpl.<init>(SessionImpl.java:214)
+	at org.apache.jackrabbit.core.XASessionImpl.<init>(XASessionImpl.java:98)
+	at org.apache.jackrabbit.core.RepositoryImpl.createSessionInstance(RepositoryImpl.java:1233)
+	at org.apache.jackrabbit.core.RepositoryImpl.createSession(RepositoryImpl.java:800)
+	at org.apache.jackrabbit.core.RepositoryImpl.login(RepositoryImpl.java:1119)
+	at org.apache.jackrabbit.core.RepositoryImpl.login(RepositoryImpl.java:1146)
+	at org.apache.jackrabbit.core.jndi.BindableRepository.login(BindableRepository.java:181)
+	at org.apache.jackrabbit.core.ConcurrentLoginTest$1.run(ConcurrentLoginTest.java:56)
+	at java.lang.Thread.run(Thread.java:534)

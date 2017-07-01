@@ -1,0 +1,18 @@
+basetokenstreamtestcase should fail if tokenstream starts with posinc=0
+
+
+
+Description:
+This is meaningless for a tokenstream to start with posinc=0,
+
+Its also caused problems and hairiness in the indexer (LUCENE-1255, LUCENE-1542),
+and it makes senseless tokenstreams. We should add a check and fix any that do this.
+
+Furthermore the same bug can exist in removing-filters if they have enablePositionIncrements=false.
+I think this option is useful: but it shouldnt mean 'allow broken tokenstream', it just means we
+don't add gaps. 
+
+If you remove tokens with enablePositionIncrements=false it should not cause the TS to start with
+positionincrement=0, and it shouldnt 'restructure' the tokenstream (e.g. moving synonyms on top of a different word).
+It should just not add any 'holes'.
+

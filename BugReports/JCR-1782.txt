@@ -1,0 +1,13 @@
+Destination header not containing URI scheme causes NPE
+
+
+
+Description:
+In WebDAVRequestImpl. getDestinationLocator assumes that URI.getAuthority is always non-null.
+
+In RFC2518, a full URI is indeed required, but the NPE causes a status of 500, instead of 400 as expected.
+
+In RFC4918, an absolute path is allowed.
+
+Proposal: delegate to gethrefLocator, which already does the right thing.
+

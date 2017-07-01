@@ -1,0 +1,19 @@
+PathFactoryImpl creates illegal Path objects
+
+
+
+Description:
+it is currently possible to create illegal/inconsistent paths using the default path factory.
+Path objects are expected to represent syntactically correct paths.
+
+some examples:
+
+            PathFactory pf = PathFactoryImpl.getInstance();
+            Path.Element re = pf.getRootElement();
+            Path illegalPath = pf.create(new Path.Element[]{re, re});
+            
+            Path.Element pe = pf.getParentElement();
+            Path nonNormalizedPath = pf.create(new Path.Element[]{pe, pe});    // "../.."
+            assertFalse(nonNormalizedPath.isNormalized());
+
+

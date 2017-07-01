@@ -1,0 +1,9 @@
+Jcr-Server: ValuesProperty missing property type information
+
+
+
+Description:
+JCR specific dav-property ValuesProperty does not reveal the PropertyType of the value, which is therefore lost during (de)serialization. 
+
+Solution: 
+- Pass type of the JCR-value as attribute to the xml-element containing the value.

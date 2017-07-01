@@ -1,0 +1,14 @@
+Unreferenced sessions should get garbage collected
+
+
+
+Description:
+If an application opens many sessions and doesn't close them, they are never garbage collected. After some time, the virtual machine will run out of memory. This code will run out of memory after a few thousand logins:
+
+Repository rep = new TransientRepository();
+for (int i = 0; ; i++) {
+  rep.login(new SimpleCredentials("", new char[0]));
+}
+
+Using a finalizer to close SessionImpl doesn't work, because it seems there are references from the (hard referenced part of the cache) to the SessionImpl objects. Maybe it is possible to remove those references, or change them to weak references.
+

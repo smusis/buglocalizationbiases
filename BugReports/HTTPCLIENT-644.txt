@@ -1,0 +1,35 @@
+Bad request vulnerability 
+
+
+
+Description:
+The HttpParser.readRawLine() method below has no guard code against a post without a end-of-line.  A large post of data without "\n" will be read into the ByteArray.  If this post is large enough, it will deplete the system of free memory.  A DOS attack could easily be played out by submitting several of these post at once.   readRawLine should decide that its not reading character data (basically because character data should never show up over something like a megabyte a line) and report an error.  
+
+   /**
+     * Return byte array from an (unchunked) input stream.
+     * Stop reading when <tt>"\n"</tt> terminator encountered 
+     * If the stream ends before the line terminator is found,
+     * the last part of the string will still be returned. 
+     * If no input data available, <code>null</code> is returned.
+     *
+     * @param inputStream the stream to read from
+     *
+     * @throws IOException if an I/O problem occurs
+     * @return a byte array from the stream
+     */
+    public static byte[] readRawLine(InputStream inputStream) throws IOException {
+        LOG.trace("enter HttpParser.readRawLine()");
+
+        ByteArrayOutputStream buf = new ByteArrayOutputStream();
+        int ch;
+        while ((ch = inputStream.read()) >= 0) {
+            buf.write(ch);
+            if (ch == '\n') { // be tolerant (RFC-2616 Section 19.3)
+                break;
+            }
+        }
+        if (buf.size() == 0) {
+            return null;
+        }
+        return buf.toByteArray();
+    }

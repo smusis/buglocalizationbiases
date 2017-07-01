@@ -1,0 +1,10 @@
+exception consistency in o.a.l.store
+
+
+
+Description:
+just some minor improvements:
+* always use EOFException when its eof
+* always include the inputstream too so we know filename etc
+* use FileNotFoundException consistently in CFS when a sub-file is not found
+

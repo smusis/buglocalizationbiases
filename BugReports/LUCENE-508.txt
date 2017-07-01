@@ -1,0 +1,20 @@
+SegmentTermEnum.next() doesn't maintain prevBuffer at end
+
+
+
+Description:
+When you're iterating a SegmentTermEnum and you go past the end of the docs, you end up with a state where the nextBuffer = null and the prevBuffer is the penultimate term, not the last term.  This patch fixes it.  (It's also required for my Prefetching bug [LUCENE-506])
+
+Index: java/org/apache/lucene/index/SegmentTermEnum.java
+===================================================================
+--- java/org/apache/lucene/index/SegmentTermEnum.java	(revision 382121)
++++ java/org/apache/lucene/index/SegmentTermEnum.java	(working copy)
+@@ -109,6 +109,7 @@
+   /** Increments the enumeration to the next element.  True if one exists.*/
+   public final boolean next() throws IOException {
+     if (position++ >= size - 1) {
++      prevBuffer.set(termBuffer);
+       termBuffer.reset();
+       return false;
+     }
+

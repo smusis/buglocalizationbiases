@@ -1,0 +1,14 @@
+Possible NPE in HttpHost
+
+
+
+Description:
+HttpHost line 167 says:
+        if (this.port != this.protocol.getDefaultPort()) {
+
+However, a few lines above, protocol is checked for null.
+
+Line 167 should probably read:
+
+        if (this.protocol != null && this.port != this.protocol.getDefaultPort()) {
+

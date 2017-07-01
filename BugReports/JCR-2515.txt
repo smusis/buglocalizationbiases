@@ -1,0 +1,24 @@
+ISO8601 uses default DecimalFormat constructor using locale specific digits
+
+
+
+Description:
+ISO8601.java uses the default DecimalFormat constructor which uses locale specific DecimalFormatSymbols. Runnning Jackrabbit in an Indian locale the format() produces a date using DEVANAGARI numeric digits. The saved version (UTF-8) encoded is much longer than usual and is not transportable. On parsing, DecimalFormat works, but TimeZone.getTimeZone("GMT+09:30") (with Indian numeric digits) fails and null is returned from ISO8601. Later this traceback occurs.
+
+2010-02-22 15:14:04,059[http-0.0.0.0-8080-16] ERROR org.apache.jackrabbit.core.persistence.bundle.BundleFsPersistenceManager - failed to write bundle: ff629488-ebb9-4300-a63b-341553cc1140
+java.lang.IllegalArgumentException: argument can not be null
+	at org.apache.jackrabbit.util.ISO8601.format(ISO8601.java:217)
+	at org.apache.jackrabbit.core.value.InternalValue.toString(InternalValue.java:531)
+	at org.apache.jackrabbit.core.persistence.bundle.util.BundleBinding.writeState(BundleBinding.java:689)
+	at org.apache.jackrabbit.core.persistence.bundle.util.BundleBinding.writeBundle(BundleBinding.java:273)
+	at org.apache.jackrabbit.core.persistence.bundle.BundleFsPersistenceManager.storeBundle(BundleFsPersistenceManager.java:664)
+	at org.apache.jackrabbit.core.persistence.bundle.AbstractBundlePersistenceManager.putBundle(AbstractBundlePersistenceManager.java:703)
+	at org.apache.jackrabbit.core.persistence.bundle.AbstractBundlePersistenceManager.store(AbstractBundlePersistenceManager.java:643)
+
+
+ISO8601 probably meant the chars to be ASCII, and so the constructor with a fixed locale is more appropriate (and this doesn't encounter the TimeZone issue either).
+
+    private static final DecimalFormat XX_FORMAT = new DecimalFormat("00", new DecimalFormatSymbols(Locale.US));
+    private static final DecimalFormat XXX_FORMAT = new DecimalFormat("000", new DecimalFormatSymbols(Locale.US));
+    private static final DecimalFormat XXXX_FORMAT = new DecimalFormat("0000", new DecimalFormatSymbols(Locale.US));
+ 

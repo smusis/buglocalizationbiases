@@ -1,0 +1,10 @@
+reusing connections is unreliable
+
+
+
+Description:
+HttpConnection reuse is unreliable. Because of the following:
+
+1) There is currently no way to determine if a connection is still open on the
+server side.
+2) If an IOException occurs while writing to a connection it cannot be reused.

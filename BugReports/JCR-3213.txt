@@ -1,0 +1,6 @@
+Speed up NodeIndexer.isIndexed() check
+
+
+
+Description:
+The isIndexed() method is called for every value in a multi-valued property. This may be quite expensive when there are a lot of values.

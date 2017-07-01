@@ -1,0 +1,50 @@
+ConjunctionScorer - more tuneup
+
+
+
+Description:
+(See also: #LUCENE-443)
+I did some profile testing with the new ConjuctionScorer in 2.1 and discovered a new bottleneck in ConjunctionScorer.sortScorers. The java.utils.Arrays.sort method is cloning the Scorers array on every sort, which is quite expensive on large indexes because of the size of the 'norms' array within, and isn't necessary. 
+
+Here is one possible solution:
+
+  private void sortScorers() {
+// squeeze the array down for the sort
+//    if (length != scorers.length) {
+//      Scorer[] temps = new Scorer[length];
+//      System.arraycopy(scorers, 0, temps, 0, length);
+//      scorers = temps;
+//    }
+    insertionSort( scorers,length );
+    // note that this comparator is not consistent with equals!
+//    Arrays.sort(scorers, new Comparator() {         // sort the array
+//        public int compare(Object o1, Object o2) {
+//          return ((Scorer)o1).doc() - ((Scorer)o2).doc();
+//        }
+//      });
+  
+    first = 0;
+    last = length - 1;
+  }
+  private void insertionSort( Scorer[] scores, int len)
+  {
+      for (int i=0; i<len; i++) {
+          for (int j=i; j>0 && scores[j-1].doc() > scores[j].doc();j-- ) {
+              swap (scores, j, j-1);
+          }
+      }
+      return;
+  }
+  private void swap(Object[] x, int a, int b) {
+    Object t = x[a];
+    x[a] = x[b];
+    x[b] = t;
+  }
+ 
+The squeezing of the array is no longer needed. 
+We also initialized the Scorers array to 8 (instead of 2) to avoid having to grow the array for common queries, although this probably has less performance impact.
+
+This change added about 3% to query throughput in my testing.
+
+Peter
+

@@ -1,0 +1,12 @@
+Code cleanup from all sorts of (trivial) warnings
+
+
+
+Description:
+I would like to do some code cleanup and remove all sorts of trivial warnings, like unnecessary casts, problems w/ javadocs, unused variables, redundant null checks, unnecessary semicolon etc. These are all very trivial and should not pose any problem.
+
+I'll create another issue for getting rid of deprecated code usage, like LuceneTestCase and all sorts of deprecated constructors. That's also trivial because it only affects Lucene code, but it's a different type of change.
+
+Another issue I'd like to create is about introducing more generics in the code, where it's missing today - not changing existing API. There are many places in the code like that.
+
+So, with you permission, I'll start with the trivial ones first, and then move on to the others.

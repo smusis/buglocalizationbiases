@@ -1,0 +1,59 @@
+First cut at column-stride fields (index values storage)
+
+
+
+Description:
+I created an initial basic impl for storing "index values" (ie
+column-stride value storage).  This is still a work in progress... but
+the approach looks compelling.  I'm posting my current status/patch
+here to get feedback/iterate, etc.
+
+The code is standalone now, and lives under new package
+oal.index.values (plus some util changes, refactorings) -- I have yet
+to integrate into Lucene so eg you can mark that a given Field's value
+should be stored into the index values, sorting will use these values
+instead of field cache, etc.
+
+It handles 3 types of values:
+
+  * Six variants of byte[] per doc, all combinations of fixed vs
+    variable length, and stored either "straight" (good for eg a
+    "title" field), "deref" (good when many docs share the same value,
+    but you won't do any sorting) or "sorted".
+
+  * Integers (variable bit precision used as necessary, ie this can
+    store byte/short/int/long, and all precisions in between)
+
+  * Floats (4 or 8 byte precision)
+
+String fields are stored as the UTF8 byte[].  This patch adds a
+BytesRef, which does the same thing as flex's TermRef (we should merge
+them).
+
+This patch also adds basic initial impl of PackedInts (LUCENE-1990);
+we can swap that out if/when we get a better impl.
+
+This storage is dense (like field cache), so it's appropriate when the
+field occurs in all/most docs.  It's just like field cache, except the
+reading API is a get() method invocation, per document.
+
+Next step is to do basic integration with Lucene, and then compare
+sort performance of this vs field cache.
+
+For the "sort by String value" case, I think RAM usage & GC load of
+this index values API should be much better than field caache, since
+it does not create object per document (instead shares big long[] and
+byte[] across all docs), and because the values are stored in RAM as
+their UTF8 bytes.
+
+There are abstract Writer/Reader classes.  The current reader impls
+are entirely RAM resident (like field cache), but the API is (I think)
+agnostic, ie, one could make an MMAP impl instead.
+
+I think this is the first baby step towards LUCENE-1231.  Ie, it
+cannot yet update values, and the reading API is fully random-access
+by docID (like field cache), not like a posting list, though I
+do think we should add an iterator() api (to return flex's DocsEnum)
+-- eg I think this would be a good way to track avg doc/field length
+for BM25/lnu.ltc scoring.
+

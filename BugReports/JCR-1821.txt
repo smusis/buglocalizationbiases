@@ -1,0 +1,50 @@
+jcr2spi: Item.isSame may return wrong result if any ancestor is invalidated
+
+
+
+Description:
+julian detected an issue with jcr2spi that was previously shadowed due to heavy reloading of items upon save.
+with the most recent changes however reloading of items is postponed until the next access. this will cause the following test to fail:
+
+        Node n = testRootNode.addNode("aFile", "nt:file");
+        n = n.addNode("jcr:content", "nt:resource");
+        n.setProperty("jcr:lastModified", Calendar.getInstance());
+        n.setProperty("jcr:mimeType", "text/plain");
+        Property jcrData = n.setProperty("jcr:data", "abc", PropertyType.BINARY);
+        testRootNode.save();
+
+        // access same property through different session
+        Session otherSession = helper.getReadOnlySession();
+        try {
+            Property otherProperty = (Property) otherSession.getItem(jcrData.getPath());
+            assertTrue(jcrData.isSame(otherProperty));
+        } finally {
+            otherSession.logout();
+        }
+
+while 
+     
+       assertTrue(n.isSame(otherSession.getItem(n.getPath()));
+
+would be successful.
+
+the reason: the jcrData property is not reloaded and it's parent is still _invalidated_. consequently the property isn't aware of it's id having changed due to the fact that nt:resource is a node type extending from mix:referenceable.
+
+possible fixes:
+
+1) mark all items _invalid_ after save 
+    instead of setting status non-protected/autocreated properties to EXISTING.
+    -> forcing jcrData to be reloaded before isSame can be called.
+    -> drawback: much more round trip(s) to the server just to make sure the id is up to date.
+
+2) change Item#isSame to make sure the workspaceId is up to date (walking up the
+     hierarchy and force reloading of the first invalidated ancestor).
+     -> drawback: if referenceable nodes are rare or missing at all, this causes some
+          extra round trips.
+ 
+3) change Item.isSame to compare the 'workspacePath' instead of the 'workspaceId'.
+     -> drawback: upon persisted move of a referenceable node Item#isSame will return false
+
+
+after taking a closer look at the code and at some additional tests i would opt for 2).
+

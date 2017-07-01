@@ -1,0 +1,11 @@
+SQL2 query: QOMFormatter create incorrect NOT conditions
+
+
+
+Description:
+Then the following query is parsed:
+SELECT test.* FROM test WHERE (NOT test.name = 'Hello') AND test.id = 3
+then the SQL statement generated, it becomes:
+SELECT test.* FROM test WHERE NOT test.name = 'Hello' AND test.id = 3
+which is parsed differently and becomes:
+SELECT test.* FROM test WHERE NOT (test.name = 'Hello' AND test.id = 3)

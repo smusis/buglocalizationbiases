@@ -1,0 +1,15 @@
+FieldCache rewrite method for MultiTermQueries
+
+
+
+Description:
+For some MultiTermQueries, like RangeQuery we have a FieldCacheRangeFilter etc (in this case its particularly optimized).
+
+But in the general case, since LUCENE-2784 we can now have a rewrite method to rewrite any MultiTermQuery 
+using the FieldCache, because MultiTermQuery's getEnum no longer takes IndexReader but Terms, and all the 
+FilteredTermsEnums are now just real TermsEnum decorators.
+
+In cases like low frequency queries this is actually slower (I think this has been shown for numeric ranges before too),
+but for the really high-frequency cases like especially ugly wildcards, regexes, fuzzies, etc, this can be several times faster 
+using the FieldCache instead, since all the terms are in RAM and automaton can blast through them quicker.
+

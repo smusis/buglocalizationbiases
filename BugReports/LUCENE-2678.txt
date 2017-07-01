@@ -1,0 +1,42 @@
+TestCachingSpanFilter sometimes fails
+
+
+
+Description:
+if I run 
+{noformat} 
+ant test -Dtestcase=TestCachingSpanFilter -Dtestmethod=testEnforceDeletions -Dtests.seed=5015158121350221714:-3342860915127740146 -Dtests.iter=100
+{noformat} 
+
+I get two failures on my machine against current trunk
+{noformat} 
+
+junit-sequential:
+    [junit] Testsuite: org.apache.lucene.search.TestCachingSpanFilter
+    [junit] Testcase: testEnforceDeletions(org.apache.lucene.search.TestCachingSpanFilter):	FAILED
+    [junit] expected:<2> but was:<3>
+    [junit] junit.framework.AssertionFailedError: expected:<2> but was:<3>
+    [junit] 	at org.apache.lucene.util.LuceneTestCase$LuceneTestCaseRunner.runChild(LuceneTestCase.java:795)
+    [junit] 	at org.apache.lucene.util.LuceneTestCase$LuceneTestCaseRunner.runChild(LuceneTestCase.java:768)
+    [junit] 	at org.apache.lucene.search.TestCachingSpanFilter.testEnforceDeletions(TestCachingSpanFilter.java:101)
+    [junit] 
+    [junit] 
+    [junit] Testcase: testEnforceDeletions(org.apache.lucene.search.TestCachingSpanFilter):	FAILED
+    [junit] expected:<2> but was:<3>
+    [junit] junit.framework.AssertionFailedError: expected:<2> but was:<3>
+    [junit] 	at org.apache.lucene.util.LuceneTestCase$LuceneTestCaseRunner.runChild(LuceneTestCase.java:795)
+    [junit] 	at org.apache.lucene.util.LuceneTestCase$LuceneTestCaseRunner.runChild(LuceneTestCase.java:768)
+    [junit] 	at org.apache.lucene.search.TestCachingSpanFilter.testEnforceDeletions(TestCachingSpanFilter.java:101)
+    [junit] 
+    [junit] 
+    [junit] Tests run: 100, Failures: 2, Errors: 0, Time elapsed: 2.297 sec
+    [junit] 
+    [junit] ------------- Standard Output ---------------
+    [junit] NOTE: reproduce with: ant test -Dtestcase=TestCachingSpanFilter -Dtestmethod=testEnforceDeletions -Dtests.seed=5015158121350221714:-3342860915127740146
+    [junit] NOTE: reproduce with: ant test -Dtestcase=TestCachingSpanFilter -Dtestmethod=testEnforceDeletions -Dtests.seed=5015158121350221714:-3342860915127740146
+    [junit] NOTE: test params are: codec=MockVariableIntBlock(baseBlockSize=43), locale=fr, timezone=Africa/Bangui
+    [junit] ------------- ---------------- ---------------
+    [junit] Test org.apache.lucene.search.TestCachingSpanFilter FAILED
+{noformat}
+
+not sure what it is but it seems likely to be a WeakRef / GC issue in the cache. 

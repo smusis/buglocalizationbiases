@@ -1,0 +1,10 @@
+Caching in QueryHandler does not scale well
+
+
+
+Description:
+Caching in class CachingIndexReader uses too much memory. It uses around 500 bytes per node and does not use any strategy to limit the cache.
+
+This improvement covers two goals:
+- lower per-node memory cost for caching
+- implement a caching strategy using e.g LRU algorithm

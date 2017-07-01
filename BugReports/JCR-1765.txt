@@ -1,0 +1,6 @@
+Config: make all elements in the security configuration optional
+
+
+
+Description:
+in order not to introduce new mandatory elements in the security configuration.

@@ -1,0 +1,43 @@
+Merging between workspaces fails
+
+
+
+Description:
+I have setup 2 workspaces in Jackrabbit.  I have a preview and a production
+workspace.  These workspaces keep a tree of menu nodes that can have content
+associated to those menus.  Each node is of type nt:unstructured and has
+mixin types of versionable, lockable, and referenceable.
+
+In our system you are only allowed to edit nodes in the preview workspace.
+So what I do is when you go to edit a node we check it out, allow for edits,
+then check it in.  This creates a new version on the node.  Then we merge
+the node up to the production workspace.  All nodes in the production
+workspace are always checked in and not locked.
+
+When I go to do a merge I run into problems when I try to merge a node that
+has children.  Lets say I have node A with children B and C.  These all have
+the same node types as stated above.  I make a change to a property in Node
+A in the preview workspace and now want to merge it into the production
+workspace (where it exists already).  Here is the code that is run:
+
+Node destNode = destSession.getNodeByUUID(getUUID());
+NodeIterator ni = destNode.merge("preview", true);
+
+Now this fails in the ItemImpl.internalRemove() method with a
+VersionException of cannot remove a child of a checked-in node.  Here is the
+trace for the error:
+at org.apache.jackrabbit.core.ItemImpl.internalRemove(ItemImpl.java:848)
+at org.apache.jackrabbit.core.NodeImpl.internalMerge(NodeImpl.java:3693)
+at org.apache.jackrabbit.core.NodeImpl.internalMerge(NodeImpl.java:3587)
+at org.apache.jackrabbit.core.NodeImpl.merge(NodeImpl.java:3003)
+
+Now if I understand correctly when doing a merge the node that you are
+trying to merge to needs to be older then the source node and the
+destination node cannot be checked out (NodeImpl.doMergeTest() is where I
+figured that out).  But then when I step through further in the merge in
+NodeImpl it gets all the nodes of the src node and retrieves the same
+children in the destination workspace and then tries to remove those
+destination children but it can't remove those children b/c the parent node
+(which is node A in the production workspace) is not checked out, but
+according to the mergeTest it can't be checked out or the merge won't even
+begin.

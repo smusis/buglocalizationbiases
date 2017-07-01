@@ -1,0 +1,13 @@
+LengthFilter and other TokenFilters that skip tokens ignore relative positionIncrement
+
+
+
+Description:
+See for reference:
+http://www.nabble.com/WordDelimiterFilter%2BLenghtFilter-results-in-termPosition%3D%3D-1-td16306788.html
+and http://www.nabble.com/Lucene---Java-f24284.html
+
+It seems that LengthFilter (at least) could produce a stream in which the first Token has a positionIncrement of 0, which make CheckIndex and Luke function "Reconstruct&Edit" to generate exception.
+
+Should something be done to avoid this situation, or could the error be ignored (by allowing Term with a position of -1, and relaxing CheckIndex checks?)
+

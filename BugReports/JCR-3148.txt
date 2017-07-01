@@ -1,0 +1,8 @@
+Using transactions still leads to memory leak
+
+
+
+Description:
+This is a result of the way that JCR-395 was fixed. If you look at the code, you'll see that txGlobal.remove(xid) is called as the last statement in both XASessionImpl.commit() and XASessionImpl.rollback(). However, in both methods an exception could be thrown either as a result of calling tx.commit() (or tx.prepare()) and tx.rollback(). 
+
+As a result, the transaction will not be removed from txGlobals whenever the commit or the rollback has failed for any reason. My suggestion would be to move the txGlobal.remove(xid) into a finally block.

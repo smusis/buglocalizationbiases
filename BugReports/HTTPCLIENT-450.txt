@@ -1,0 +1,20 @@
+TestExcetions never run
+
+
+
+Description:
+In one of the testcases of HttpClient, TestExcetions, it reads:
+
+    // ------------------------------------------------------------------- Main
+    public static void main(String args[]) {
+        String[] testCaseName = { TestChallengeParser.class.getName() };
+        junit.textui.TestRunner.main(testCaseName);
+    }
+
+    // ------------------------------------------------------- TestCase Methods
+
+    public static Test suite() {
+        return new TestSuite(TestChallengeParser.class);
+    }
+
+Where "TestChallengeParser" should be "TestExcetions".

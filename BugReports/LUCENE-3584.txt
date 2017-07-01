@@ -1,0 +1,31 @@
+bulk postings should be codec private
+
+
+
+Description:
+In LUCENE-2723, a lot of work was done to speed up Lucene's bulk postings read API.
+
+There were some upsides:
+* you could specify things like 'i dont care about frequency data up front'.
+  This made things like multitermquery->filter and other consumers that don't
+  care about freqs faster. But this is unrelated to 'bulkness' and we have a
+  separate patch now for this on LUCENE-2929.
+* the buffersize for standardcodec was increased to 128, increasing performance
+  for TermQueries, but this was unrelated too.
+
+But there were serious downsides/nocommits:
+* the API was hairy because it tried to be 'one-size-fits-all'. This made consumer code crazy.
+* the API could not really be specialized to your codec: e.g. could never take advantage that e.g. docs and freqs are aligned.
+* the API forced codecs to implement delta encoding for things like documents and positions. 
+  But this is totally up to the codec how it wants to encode! Some codecs might not use delta encoding.
+* using such an API for positions was only theoretical, it would have been super complicated and I doubt ever
+  performant or maintainable.
+* there was a regression with advance(), probably because the api forced you to do both a linear scan thru
+  the remaining buffer, then refill...
+
+I think a cleaner approach is to let codecs do whatever they want to implement the DISI
+contract. This lets codecs have the freedom to implement whatever compression/buffering they want
+for the best performance, and keeps consumers simple. If a codec uses delta encoding, or if it wants
+to defer this to the last possible minute or do it at decode time, thats its own business. Maybe a codec
+doesn't want to do any buffering at all.
+

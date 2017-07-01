@@ -1,0 +1,9 @@
+Add <a name=""> anchors to documentation sections
+
+
+
+Description:
+In all docs, sections are missing <a name> anchors. I see that the xdocs stylesheet in the repository is supposed to generate them, yet the site is missing them at this moment.
+
+See https://svn.apache.org/repos/asf/jakarta/site/xdocs/stylesheets/site.xsl 
+template match="section"

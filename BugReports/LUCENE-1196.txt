@@ -1,0 +1,17 @@
+RAMDirectory reports incorrect EOF on seek
+
+
+
+Description:
+If you create a file whose length is a multiple of 1024 (BUFFER_SIZE),
+and then try to seek to the very end of the file, you hit
+EOFException.
+
+But this is actually "legal" as long as you don't try to read any
+bytes at that point.
+
+I'm hitting this (rarely) with the bulk-merging logic for term vectors
+(LUCENE-1120), which can seek to the very end of the file but not read
+any bytes if conditions are right.
+
+

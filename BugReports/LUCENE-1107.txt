@@ -1,0 +1,15 @@
+Clean up old JIRA issues in component "Other"
+
+
+
+Description:
+A list of all JIRA issues in component "Other" that haven't been updated in 2007:
+
+   *	 LUCENE-746  	 Incorrect error message in AnalyzingQueryParser.getPrefixQuery   
+   *	LUCENE-644 	Contrib: another highlighter approach 
+   *	LUCENE-574 	support for vjc java compiler, also known as J# 
+   *	LUCENE-471 	gcj ant target doesn't work on windows 
+   *	LUCENE-434 	Lucene database bindings 
+   *	LUCENE-254 	[PATCH] pseudo-relevance feedback enhancement 
+   *	LUCENE-180 	[PATCH] Language guesser contribution 
+

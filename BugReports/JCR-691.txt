@@ -1,0 +1,6 @@
+Let NameException extend RepositoryException
+
+
+
+Description:
+Since the NameExceptions (IllegalNameException, UnknownPrefixException, etc.) are typically thrown when parsing or formatting JCR names at the JCR API level, it would make sense for the NameException class to extend RepositoryException instead of the internal BaseException. This idea is supported by the fact that the majority of cases where NameExceptions are encountered simply rethrow the exceptions wrapped inside RepositoryException instances. Making NameException extend RepositoryException would reduce the amount of try-catch blocks and wrapped exceptions.

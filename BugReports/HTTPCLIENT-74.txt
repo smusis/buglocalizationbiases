@@ -1,0 +1,32 @@
+J2EE FORM authentication (also affects pluggable authentication)
+
+
+
+Description:
+Add support for J2EE style FORM authentication type. 
+
+Unlike the BASIC and DIGEST types this is not handled by HTTP headers so needs
+an adjustment to the way in which the authentication is sent. As far as i can
+tell from my testing with one or two J2EE servers the way to successfully login
+requires request of a protected page which will respond with the login FORM and
+then the submission of that form. The two requests must be associated with one
+another using the jsessionid cookie.
+
+It seems to me that this 'bug' must be solved in cooperation with the recent
+discussions of pluggable authentication module. i suggestion the following
+signature: 
+
+PluggableAuthenticator.authenticate(HttpMethod method, HttpState state). 
+
+This mirrors the existing Authenticator method but also requires change to the
+state object to allow access to the connection properties (i dont know how this
+affects MultiClient). Alternately we could go for: 
+
+PluggableAuthenticator.authenticate(HttpMethod method, HttpClient client).
+
+In either case Authenticator needs a way to know which plugin to call. I suggest
+modification of HttpMethodBase to detect the 'j_security_check' form action in
+the response and automatically submit credentials if they are provided using the
+new class 
+
+J2EEFormAuthenticator implements PluggableAuthenticator.

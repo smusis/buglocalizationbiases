@@ -1,0 +1,8 @@
+Add isDeclaredMember() method to Group
+
+
+
+Description:
+I suggest to add a method for checking whether an authorizable is a declared member of a group. Currently there is only a method for checking membership (which includes indirect memberships). 
+
+

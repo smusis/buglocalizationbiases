@@ -1,0 +1,22 @@
+HttpURLConnection wrapper
+
+
+
+Description:
+Initial comments from Vincent Massol for this feature:
+
+I am moving Jakarta Cactus from using the JDK HttpURLConnection to
+Commons HttpClient. However, I have some public interface that return
+HttpURLConnection and I cannot break that contract with Cactus users.
+
+I propose to write a HttpURLConnection wrapper for HttpMethod (I have
+actually already written it but I am currently testing it on Cactus and
+will make a proper donation once I am sure it works - i.e all the Cactus
+tests pass as before ... ).
+
+I attach a preview of it for those interested.
+
+What do you think of including it in HttpClient distribution ?
+
+Thanks
+-Vincent

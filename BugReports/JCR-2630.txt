@@ -1,0 +1,13 @@
+UserAccessControlProvider handles users who dont have Jackrabbit managed Principals or User node inconsistently.
+
+
+
+Description:
+JR core 2.0.0
+In UserAccessControlProvider.compilePermissions(...), if no principal relating to a user node can be found, then a set or read only compiled permissions is provided. That set gives the session read only access to the entire security workspace regardless of path.
+
+If the user node is found, then an instance of UserAccessControlProvider.CompilePermissions is used and in UserAccessControlProvider.CompilePermissions.buildResult(...) there is a check for no user node. If there is no user node, all permissions are denied regardless of path.
+
+Although the first case will never happen for an installation of Jackrabbit where there are no custom PrincipalManagers, I suspect, based on the impl of UserAccessControlProvider.CompilePermissions.buildResult(...) was to deny all access to the security workspace where there was no corresponding user node in a set of principals.
+
+Since this does not effect JR unless there is an external Principal Manager its a bit hard to produce a compact unit test, the issue was found by looking at the code.

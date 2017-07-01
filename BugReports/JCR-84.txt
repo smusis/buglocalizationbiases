@@ -1,0 +1,25 @@
+WebDAV LocatorFactoryImpl$Locator.getHref() constructs root resource URLs incorrectly
+
+
+
+Description:
+cadaver was reporting an error when i tried to open / in my repository's default workspace at <https://localhost:8443/webdav/).
+
+in tracking down the problem, i saw something strange - the multistatus response's href had an extra "/" tacked onto the end:
+
+  <D:multistatus xmlns:D="DAV:">
+    <D:response>
+      <D:href>https://localhost:8443/webdav//</D:href>
+
+WebdavServlet (rather, my subclass of it) is mapped as the default servlet of a webapp mounted at /webdav. i've configured the WebdavServlet with a resource path prefix of "" (incidentally, i'm not sure what that's meant to be used for - i see that when the value is not empty, it's appended to the response's href, but i don't know in what circumstance that would be useful).
+
+when i requested a child node such as <https://localhost:8443/webdav/bcm>, the response's href was formed as expected:
+
+  <D:multistatus xmlns:D="DAV:">
+    <D:response>
+      <D:href>https://localhost:8443/webdav/bcm/</D:href>
+
+i found that LocatorFactoryImpl$Locator.getHref() was adding the extra "/" since the requested resource was a collection. i patched the method to not add the character when itemPath == "/", and cadaver stopped complaining. all is well.
+
+i also patched WebdavServlet to default to an empty resource path prefix if one is not specified as a servlet init parameter.
+

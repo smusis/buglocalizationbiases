@@ -1,0 +1,10 @@
+Set source and output encoding in POMs
+
+
+
+Description:
+Modification to POM files to explicitly set the source and report encoding. I've set everything to UTF-8, but this may not be appropriate. However, the encoding properties should be set to ensure that source files are compiled correctly, resources are filtered appropriately and that the reports are using a consistent encoding.
+
+Related info
+http://docs.codehaus.org/display/MAVENUSER/POM+Element+for+Source+File+Encoding
+http://docs.codehaus.org/display/MAVEN/Reporting+Encoding+Configuration

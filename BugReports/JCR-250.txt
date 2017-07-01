@@ -1,0 +1,8 @@
+Access to VirtualNodeTypeStateManager.virtualProvider should be guarded
+
+
+
+Description:
+The virtualProvider field of the VirtualNodeTypeStateManager class is dynamically created by the getter method. Two methods of the class access that field directly though risking NullPointerException.
+
+Access should be guarded against the field being not assigned yet.

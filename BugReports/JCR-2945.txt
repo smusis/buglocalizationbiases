@@ -1,0 +1,7 @@
+Token authentication parameters are not loaded from JAAS configuration.
+
+
+
+Description:
+token based authentication can be disabled and expiration time set in the login module config.
+however, this only works with local auth context but  not when using a jaas configuration.

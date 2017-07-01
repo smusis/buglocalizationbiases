@@ -1,0 +1,6 @@
+ShingleFilter improvements
+
+
+
+Description:
+ShingleFilter should allow configuration of minimum shingle size (in addition to maximum shingle size), so that it's possible to (e.g.) output only trigrams instead of bigrams mixed with trigrams.  The token separator used in composing shingles should be configurable too.

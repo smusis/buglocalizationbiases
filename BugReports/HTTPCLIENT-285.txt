@@ -1,0 +1,8 @@
+Ability to ignore (reject) cookies altogether
+
+
+
+Description:
+I was looking for a way to ignore cookies altogether, but there doesn't appear
+to be one.  I could definitely use this capability right now, and I can see
+others making use of it at times.

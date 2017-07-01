@@ -1,0 +1,6 @@
+BoostingNearQuery doesn't have hashCode/equals
+
+
+
+Description:
+

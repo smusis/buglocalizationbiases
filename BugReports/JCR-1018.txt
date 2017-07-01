@@ -1,0 +1,7 @@
+introduce QValue.getCalendar()
+
+
+
+Description:
+Introduce QValue.getCalendar() in order to avoid unnecessary conversions from/to string format.
+

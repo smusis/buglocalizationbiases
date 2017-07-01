@@ -1,0 +1,6 @@
+TestUTF32ToUTF8 can run forever
+
+
+
+Description:
+Stress testing this particular test uncovered that the testRandomRanges testcase can run forever, depending on the random numbers picked...

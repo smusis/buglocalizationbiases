@@ -1,0 +1,26 @@
+Scorer.explain is deprecated but abstract, should have impl that throws UnsupportedOperationException
+
+
+
+Description:
+Suggest having Scorer implement explain to throw UnsupportedOperationException
+
+right now, i have to implement this method (because its abstract), and javac yells at me for overriding a deprecated method
+
+if the following implementation is in Scorer, i can remove my "empty" implementations of explain from my Scorers
+{code}
+  /** Returns an explanation of the score for a document.
+   * <br>When this method is used, the {@link #next()}, {@link #skipTo(int)} and
+   * {@link #score(HitCollector)} methods should not be used.
+   * @param doc The document number for the explanation.
+   *
+   * @deprecated Please use {@link IndexSearcher#explain}
+   * or {@link Weight#explain} instead.
+   */
+  public Explanation explain(int doc) throws IOException {
+    throw new UnsupportedOperationException();
+  }
+{code}
+
+best i figure, this shouldn't break back compat (people already have to recompile anyway) (2.9 definitely not binary compatible with 2.4)
+

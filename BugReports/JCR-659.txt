@@ -1,0 +1,15 @@
+import of multivalue properties with single value results in incorrect property creation
+
+
+
+Description:
+When importing a file exported with system view, a value of a multivalued property is stored as a singlevalue property. The bug seems to be that for some reason, even if PropDef.isMultiple() is true for a given property, no ValueFormatException is thrown when setting the property as single value.
+
+Workaround:
+
+It works if I change PropInfo.apply() line 136 to 
+
+if (va.length == 1 && !def.isMultiple()) {
+...
+
+

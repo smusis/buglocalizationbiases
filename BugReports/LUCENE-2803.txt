@@ -1,0 +1,6 @@
+FieldCache should not pay attention to deleted docs when creating entries
+
+
+
+Description:
+The FieldCache uses a key that ignores deleted docs, so it's actually a bug to use deleted docs when creating an entry.  It can lead to incorrect values when the same entry is used with a different reader.

@@ -1,0 +1,6 @@
+Make PKIndexSplitter and MultiPassIndexSplitter work per segment
+
+
+
+Description:
+Spinoff from LUCENE-3624: DocValuesw merger throws exception on IW.addIndexes(SlowMultiReaderWrapper) as string-index like docvalues cannot provide asSortedSource.

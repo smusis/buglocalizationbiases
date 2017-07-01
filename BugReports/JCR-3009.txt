@@ -1,0 +1,6 @@
+Prefix fulltext queries with Japanese or Chinese characters fail to match
+
+
+
+Description:
+Prefix fulltext queries with Japanese or Chinese characters do not match because the prefix part is not tokenized. This means, when the prefix length is >1 the sequence of characters is taken as one term to do the index lookup. This will not match anything because on indexing time such characters are always broken into individual tokens.

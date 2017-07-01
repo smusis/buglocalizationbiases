@@ -1,0 +1,6 @@
+TokenSources.getTokenStream(Document...) 
+
+
+
+Description:
+Sometimes, one already has the Document, and just needs to generate a TokenStream from it, so I am going to add a convenience method to TokenSources.  Sometimes, you also already have just the string, so I will add a convenience method for that.

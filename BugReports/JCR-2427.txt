@@ -1,0 +1,6 @@
+UUIDDocId.getDocumentNumbers() may return illegal value
+
+
+
+Description:
+Happens when the node with the given UUID is not present in the index. The method then returns -1, which is illegal. Document numbers must be >= 0. The method must returns an empty array when the id is invalid, as documented in DocId.getDocumentNumbers().

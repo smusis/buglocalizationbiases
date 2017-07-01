@@ -1,0 +1,6 @@
+Demo targets for running the demo
+
+
+
+Description:
+Now that the demo build targets are working and build the jar/war, it may be useful for users to also be able to run the demo with something like 'ant run-demo'. This complements existing docs/demo.html.

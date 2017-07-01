@@ -1,0 +1,22 @@
+CookieSpec.formatCookie(Cookie) produces an incorrect cookie header value
+
+
+
+Description:
+Consider the following:
+----------------------------------------------------------------------
+Cookie cookie = new Cookie(".foo.com", "name", "value");
+cookie.setVersion(1);
+cookie.setPath("/");
+CookieSpec spec = CookiePolicy.getSpecByPolicy(CookiePolicy.RFC2109);
+System.out.println(spec.formatCookie(cookie));                
+----------------------------------------------------------------------
+
+When calling CookieSpec.formatCookie(Cookie) the resulting output is:
+
+   name="value"
+
+The Version attribute is not present as required by RFC2109, nor is the path or
+domain information included.
+
+It seems that in this case, only Cookie type 0 output is produced.

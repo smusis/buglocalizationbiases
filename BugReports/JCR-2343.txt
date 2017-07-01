@@ -1,0 +1,12 @@
+Utility class to tranform JCR-SQL2 to/from JCR-JQOM
+
+
+
+Description:
+The JCR2 doc specify that both contain the same thing and can be translated from one to another
+in a straightforward manner. The jackrabbit-jcr-commons module should offer a utility class to transform
+from one language to another in a generic way, 
+
+for exemple :
+- String toSQL2(QueryObjectModel qom)
+- QueryObjectModel toJQOM(QueryObjectModelFactory factory, String query)

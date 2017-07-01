@@ -1,0 +1,7 @@
+Add method to remove mappings from NamespaceMapping
+
+
+
+Description:
+o.a.j.spi.commons.namespace.NamespaceMapping has currently no means to remove a mapping. I suggest to add a method
+public String removeMapping(String uri) 

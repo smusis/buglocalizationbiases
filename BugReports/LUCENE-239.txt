@@ -1,0 +1,14 @@
+[PATCH] cleaner API for Field.Text
+
+
+
+Description:
+Currently there are four methods named Field.Text(). As those methods have 
+the same name and a very similar method signature, everyone will think these 
+are just convenience methods that do the same thing. But they behave 
+differently: the one that takes a Reader doesn't store the data, the one that 
+takes a String does. I know that this is documented, but it's still not a nice 
+API. Methods that behave differently should have diffent names. The attached 
+patch deprecates two of the old methods and adds two new ones named 
+Field.StoredText(). I think this is much easier to understand from the 
+programmer's point-of-view and will help avoid bugs.

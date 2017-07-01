@@ -1,0 +1,13 @@
+JCR2SPI: updating events swallowed (CacheBehavior.OBSERVATION)
+
+
+
+Description:
+with CacheBehavior.OBSERVATION the hierarchy held within jcr2spi is updated based on events.
+
+if Session-A persistently adds a mix:referenceable to a Node that is already loaded in Session-B, the latter will not be informed about this change.
+
+Reason: upon processing the SPI Event (-> HierarchyEventListener#onEvent) the parent is retrieved by the Event ItemId, which in the former case contains a uniqueID part, which is not known yet to the listening Session-B.
+Consequently the NodeEntry affected by the event is not updated.
+
+Possible fix: If looking up the parent entry of the event doesn't succeed, a 2nd lookup using the Event path should be performed.

@@ -1,0 +1,17 @@
+URLEncodedUtils fails to parse form-url-encoded entities that specify a charset
+
+
+
+Description:
+If a form-url-encoded HTTP entity specifies a charset in its Content-Type header, then URLEncodedUtils.parse(HttpEntity) fails to parse it.
+
+An entity with content type "application/x-www-form-urlencoded; charset=UTF-8" should be detected as form-url-encoded and parsed as such, honoring the specified character set. Currently the code requires an exact, case-insensitive match with "application/x-www-form-urlencoded" for an entity to be detected as form-url-encoded.
+
+It appears that the author of URLEncodedUtils.parse(HttpEntity) tried to take character sets into account, but expected to find them in the Content-Encoding header instead of as a parameter in the Content-Length header. The HTTP 1.1 spec makes it clear that the Content-Encoding header is for specifying transformations like gzip compression or the identity transformation -- not for specifying the entity's character set.
+
+Here are some helpful links.
+http://www.w3.org/Protocols/rfc2616/rfc2616-sec3.html#sec3.4
+http://www.w3.org/Protocols/rfc2616/rfc2616-sec3.html#sec3.5
+http://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.11
+
+This is related to: https://issues.apache.org/jira/browse/HTTPCLIENT-884

@@ -1,0 +1,20 @@
+Disable SearchManager
+
+
+
+Description:
+In previous versions (e.g. SVN tag 0.1-spec0.14) it was possible to disable the SearchManagers by not configuring a search index path. In the current revision, a NullPointerException is thrown, if the search index configuration is missing, tough the rest of the system would support missing search index configuration as before.
+
+I suggest to extend search index configuration interpretation in WorkspaceCfg.init as follows:
+
+        Element srchConfig = wspElem.getChild(SEARCH_INDEX_ELEMENT);
+        if (srchConfig != null) {
+            String pathAttr = srchConfig.getAttributeValue(PATH_ATTRIB);
+            if (pathAttr != null && pathAttr.length() > 0) {
+                searchIndexDir = replaceVars(pathAttr, vars);
+            }
+        }
+
+This only reads search index configuration if available.
+
+The reason to switch of the SearchManager is, that in my use case enabling the SearchManager yields a performance degradation of a factor of 10 ! Instead of taking around 500ms (which is still too long :-) to save 3 nodes and 15 properties, it would take around 5 seconds to save the same amount of data. And I do not need the SearchManager in my use case.

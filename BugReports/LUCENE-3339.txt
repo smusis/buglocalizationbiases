@@ -1,0 +1,8 @@
+TestNRTThreads hangs in nightly 3.x builds
+
+
+
+Description:
+Maybe we have a problem, maybe its a bug in the test.
+
+But its strange that lately the 3.x nightlies have been hanging here.

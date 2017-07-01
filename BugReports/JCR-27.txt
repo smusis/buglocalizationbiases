@@ -1,0 +1,24 @@
+ArrayIndexOutofBoundException while setting a reference property
+
+
+
+Description:
+I have a node whith a multivalued reference property.
+I try to add a reference as follows (the spec is outdated at this point, so I'm not sure if I use the right approach to add a reference):
+
+  ReferenceValue rv = new ReferenceValue(rn.getNode("pages/mjo:page"));
+  Value[] values = {rv};
+  tstN.setProperty("mjo:testCon",values);
+  session.save();
+
+This results in a 
+
+2004-12-09 16:11:43,614 WARN org.apache.jackrabbit.core.ItemManager - node at /pages/mjo:page has invalid definitionId (1512950840)
+java.lang.ArrayIndexOutOfBoundsException: 0
+	at org.apache.jackrabbit.core.ItemImpl.validateTransientItems(ItemImpl.java:626)
+	at org.apache.jackrabbit.core.ItemImpl.save(ItemImpl.java:1148)
+	at org.apache.jackrabbit.core.SessionImpl.save(SessionImpl.java:633)
+	at de.freaquac.test.JCRTest.main(JCRTest.java:174)
+
+ArrayIndexOutOfBoundsException is never a good sign, so I assume it's a bug. I should say that crx throws the same exception if I try it there.
+

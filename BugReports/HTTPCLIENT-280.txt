@@ -1,0 +1,32 @@
+Freezes w/ MultiThreadedHttpConnectionManager
+
+
+
+Description:
+My single threaded user of VFS (an HttpClient user, that uses
+MultiThreadedHttpConnectionManager) hangs [I suspect indefinitely] on minor
+activity.
+
+I've turned on HttpClient debug and I see this, the last line
+being the last thing I get...
+
+2003/10/09 09:34:26:482 MDT [DEBUG] wire - -<< "Content-Type:
+text/html[\r][\n]"
+2003/10/09 09:34:26:482 MDT [DEBUG] HttpMethodBase - -Resorting to protocol
+version default close co
+nnection policy
+2003/10/09 09:34:26:492 MDT [DEBUG] HttpMethodBase - -Should NOT close
+connection, using HTTP/1.1
+2003/10/09 09:34:26:502 MDT [DEBUG] HttpMethodDirector - -Execute loop try 1
+2003/10/09 09:34:26:512 MDT [DEBUG]
+MultiThreadedHttpConnectionManager - -HttpConnectionManager.getC
+onnection:  config = HostConfiguration[host=www.ibiblio.org,
+protocol=http:80, port=80], timeout = 0
+
+2003/10/09 09:34:26:522 MDT [DEBUG]
+MultiThreadedHttpConnectionManager - -Unable to get a connection
+, waiting..., hostConfig=HostConfiguration[host=www.ibiblio.org,
+protocol=http:80, port=80]
+
+This is pretty reproducible. When I hack VFS not to use the
+MultiThreadedHttpConnectionManager I don't get the problem.

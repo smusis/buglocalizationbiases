@@ -1,0 +1,13 @@
+spi2dav: ItemInfoCache causes failure of (Workspace)RestoreTest#testRestoreWithUUIDConflict and variants
+
+
+
+Description:
+while running the API version tests i found the (Workspace)RestoreTest.testRestoreWithUUIDConfict and variants failing. to be precise the test passes but
+transiently removing the versionableNode2 in the teardown fails upon removal of the jcr:uuid property of the moved childnode.
+
+having a closer look at it revealed that the problem is caused in the WorkspaceItemStateFactory where the property entry is retrieved from the
+cache and subsequently checking if the path really matches fails. for test purposes i prevented the usage of the cached entry by returning false in WorkspaceItemStateFactory.isUpToDate  => the tests passed. 
+
+as far as i know the same tests pass with spi2jcr.
+michael, could it be that this is caused by a flaw in the iteminfo-cache logic? or is there something specific that needs to be adjusted in spi2dav?

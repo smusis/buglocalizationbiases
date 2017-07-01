@@ -1,0 +1,34 @@
+Invalid Journal Record appearing when read during sync operation
+
+
+
+Description:
+ERROR: Error while processing revision 3161: Unknown entry type: 
+(a) (2007-05-13 19:57:02,258 main_org.apache.jackrabbit.core.cluster.ClusterNode)
+ERROR: Unable to start clustered node, forcing shutdown... (2007-05-13 19:57:02,259 main_org.apache.jackrabbit.core.RepositoryImpl)
+org.apache.jackrabbit.core.cluster.ClusterException: Unable to read record with revision: 3161
+        at org.apache.jackrabbit.core.cluster.ClusterNode.sync(ClusterNode.java:285)
+        at org.apache.jackrabbit.core.cluster.ClusterNode.start(ClusterNode.java:229)
+        at org.apache.jackrabbit.core.RepositoryImpl.<init>(RepositoryImpl.java:308)
+        at org.apache.jackrabbit.core.RepositoryImpl.create(RepositoryImpl.java:584)
+        at org.sakaiproject.jcr.jackrabbit.RepositoryBuilder.init(RepositoryBuilder.java:213)
+        at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+        at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:39)
+        at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:25)
+        at java.lang.reflect.Method.invoke(Method.java:585)
+
+
+This is a 2 node cluster, with persistance managers in the DB and journal on the shared filesystem.
+
+Start the first node in the cluster up from a completely clean and empty repo.
+
+Let it add some note types, and create a since workspace (called sakai) and then connect via webdav (using OSX Finder) which creates some Journal Records (due to the finder putting some .xxxx files in)
+
+Dont add any files.
+
+Then start the second node in the cluster up,
+
+It runs through the first 15 or so journal entries and then hits a one where the entry is unknown (stack trace above)
+
+Some analysis to follow
+

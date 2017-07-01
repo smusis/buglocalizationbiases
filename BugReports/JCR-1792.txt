@@ -1,0 +1,145 @@
+jcr:frozenUuid does not contain jcr:content
+
+
+
+Description:
+When I store versionable files, I get problems retrieving the jcr:data from a custom node type.
+
+I am storing a node type:
+
+xrc:learningContent
+        pd: xrc:Keywords
+        pd: xrc:MimeType
+        pd: jcr:mixinTypes
+        pd: xrc:Description
+        pd: xrc:Language
+        pd: xrc:Creator
+        pd: jcr:created
+        pd: xrc:Title
+        pd: jcr:primaryType
+Extends: nt:resource
+        pd: jcr:uuid
+        pd: jcr:mixinTypes
+        pd: jcr:data
+        pd: jcr:encoding
+        pd: jcr:mimeType
+        pd: jcr:lastModified
+        pd: jcr:primaryType
+
+So I commit the changes, then later pull up the version and get it's frozenNode.
+
+Node frozenNode = v.getNode(JcrConstants.JCR_FROZENNODE);
+
+And then I return all of the properties contained within:
+
+PropertyIterator pi = frozenNode.getProperties();
+                while (pi.hasNext()) {
+                    System.out.println(pi.nextProperty().getName());
+}
+
+
+All that are returned are:
+
+jcr:frozenUuid
+jcr:uuid
+jcr:frozenPrimaryType
+jcr:frozenMixinTypes
+jcr:primaryType
+
+Here is the frozen node type:
+
+nt:frozenNode
+        pd: *
+        pd: *
+        pd: jcr:frozenUuid
+        pd: jcr:uuid
+        pd: jcr:mixinTypes
+        pd: jcr:frozenPrimaryType
+        pd: jcr:frozenMixinTypes
+        pd: jcr:primaryType
+
+
+
+So basically it would seem that the recursive copy inside the InternalFrozenNodeImpl is not working. But it seems that is not the case from the code trace I did. Add this to line 368 of InternalFrozenNodeImpl.java
+
+System.out.println("New node created. Props: ");
+        try {
+            PropertyState [] ps = node.getProperties();
+            for (PropertyState p : ps) {
+                System.out.println(p.getName());
+                System.out.println(p.toString());
+            }
+            NodeStateEx [] ns = node.getChildNodes();
+            for (NodeStateEx n : ns) {
+                System.out.println(n.getName());
+                System.out.println(n.toString());
+            }
+        } catch (ItemStateException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+
+
+And you will get the result:
+
+
+New node created. Props:
+{http://www.jcp.org/jcr/1.0}uuid
+org.apache.jackrabbit.core.state.PropertyState@10dd791
+{http://www.jcp.org/jcr/1.0}frozenPrimaryType
+org.apache.jackrabbit.core.state.PropertyState@1c38291
+{http://www.jcp.org/jcr/1.0}frozenMixinTypes
+org.apache.jackrabbit.core.state.PropertyState@b12fbb
+{http://www.jcp.org/jcr/1.0}baseVersion
+org.apache.jackrabbit.core.state.PropertyState@b4d4b6
+{http://www.jcp.org/jcr/1.0}primaryType
+org.apache.jackrabbit.core.state.PropertyState@1f9045f
+{http://www.jcp.org/jcr/1.0}isCheckedOut
+org.apache.jackrabbit.core.state.PropertyState@18e16b5
+{http://www.jcp.org/jcr/1.0}frozenUuid
+org.apache.jackrabbit.core.state.PropertyState@174cb00
+{http://www.jcp.org/jcr/1.0}predecessors
+org.apache.jackrabbit.core.state.PropertyState@bb7c1b
+{http://www.jcp.org/jcr/1.0}data
+org.apache.jackrabbit.core.state.PropertyState@d10133
+{http://www.jcp.org/jcr/1.0}versionHistory
+org.apache.jackrabbit.core.state.PropertyState@1a5f001
+{http://www.jcp.org/jcr/1.0}encoding
+org.apache.jackrabbit.core.state.PropertyState@12fe3ef
+{http://www.jcp.org/jcr/1.0}mimeType
+org.apache.jackrabbit.core.state.PropertyState@11d92c8
+{http://www.jcp.org/jcr/1.0}lastModified
+org.apache.jackrabbit.core.state.PropertyState@8fb83a
+New node created. Props:
+{http://www.xerceo.com/learn/jcr-1.0}Keywords
+org.apache.jackrabbit.core.state.PropertyState@18808f3
+{http://www.jcp.org/jcr/1.0}uuid
+org.apache.jackrabbit.core.state.PropertyState@397a4
+{http://www.jcp.org/jcr/1.0}frozenPrimaryType
+org.apache.jackrabbit.core.state.PropertyState@1d88ffd
+{http://www.xerceo.com/learn/jcr-1.0}Creator
+org.apache.jackrabbit.core.state.PropertyState@d5625b
+{http://www.xerceo.com/learn/jcr-1.0}Language
+org.apache.jackrabbit.core.state.PropertyState@12c70e6
+{http://www.xerceo.com/learn/jcr-1.0}Title
+org.apache.jackrabbit.core.state.PropertyState@a836b3
+{http://www.jcp.org/jcr/1.0}frozenMixinTypes
+org.apache.jackrabbit.core.state.PropertyState@19f273c
+{http://www.jcp.org/jcr/1.0}primaryType
+org.apache.jackrabbit.core.state.PropertyState@1c8e97d
+{http://www.jcp.org/jcr/1.0}frozenUuid
+org.apache.jackrabbit.core.state.PropertyState@15915a3
+{http://www.jcp.org/jcr/1.0}predecessors
+org.apache.jackrabbit.core.state.PropertyState@19ba907
+{http://www.xerceo.com/learn/jcr-1.0}MimeType
+org.apache.jackrabbit.core.state.PropertyState@763ca1
+{http://www.xerceo.com/learn/jcr-1.0}Description
+org.apache.jackrabbit.core.state.PropertyState@8687e8
+{http://www.jcp.org/jcr/1.0}versionHistory
+org.apache.jackrabbit.core.state.PropertyState@44ca0f
+{http://www.jcp.org/jcr/1.0}content
+org.apache.jackrabbit.core.version.NodeStateEx@2da721
+
+So the new Node definately has these new properties.
+
+Do I have to somehow extend my frozenNode to work with this? Can anyone help me?

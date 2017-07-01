@@ -1,0 +1,8 @@
+Document order of result nodes should be configurable
+
+
+
+Description:
+Queries without an order by clause are performed with document order for the result nodes. This is a quite expensive operation, because the document order is available in the search index itself. The document order is calculated with the help of the ItemStateManager and requires loading of all result node states including their ancestors.
+
+Queries with a lot of result nodes become quite expensive, even though the actual query execution is fast. Because most use cases will not care for the document order, this feature should be made configurable. Some parameter for the QueryHandler that disables the document order on result nodes.

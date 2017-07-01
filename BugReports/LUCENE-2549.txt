@@ -1,0 +1,8 @@
+TimeLimitingCollector's TimeExceededException contains useless relative docid
+
+
+
+Description:
+We found another bug with the RandomIndexWriter: When TimeLimitingCollector breaks collection after timeout, it records the last/next collected docid. It does this without rebasing, so the docid is useless. TestTimeLimitingCollector checks the docid, but correctly rebases it (as only this makes sense). Because the RandomIndexWriter uses different merge settings, the index is now sometimes not optimized and so the test fails (which is correct, as the docid is useless for non-optimized index).
+
+Attached is a patch that fixes this. Please tell me if I should backport to 2.9 and 3.0!

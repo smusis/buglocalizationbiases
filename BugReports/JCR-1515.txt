@@ -1,0 +1,6 @@
+CompactNodeTypeDefWriter uses bad format for residual properties 
+
+
+
+Description:
+CompactNodeTypeDefWriter writes {}* instead of * for residual properties. 

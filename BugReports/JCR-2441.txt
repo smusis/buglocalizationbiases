@@ -1,0 +1,6 @@
+Jcr2spiRepositoryFactory: make class loading more robust
+
+
+
+Description:
+Currently Jcr2spiRepositoryFactory loads a RepositoryServiceFactory from the context class loader. In an OSGi environment this fails with a ClassNotFoundException. I suggest to fall back to the class loader of a the class (Jcr2spiRepositoryFactory) in this case. 

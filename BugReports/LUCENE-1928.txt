@@ -1,0 +1,13 @@
+PayloadTermQuery refers to a deprecated documentation for redirection 
+
+
+
+Description:
+When PayloadTermQuery refers to the function for scoring Similarity - it refers to override the deprecated method - 
+
+Similarity#scorePayload(String, byte[],int,int) . 
+
+That method has been deprecated by  Similarity#scorePayload(int, String, int, int, byte[],int,int) . 
+
+
+This javadoc patch addresses the class level javadoc for the class to provide the right signature in Similarity to be overridden. 

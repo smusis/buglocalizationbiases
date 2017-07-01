@@ -1,0 +1,6 @@
+Provide change log consolidator
+
+
+
+Description:
+spi-commons should provide base implementations for consolidating change logs (Batch). 

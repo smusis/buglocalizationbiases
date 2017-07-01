@@ -1,0 +1,6 @@
+BundleDbPersistenceManager does not work with MySQL
+
+
+
+Description:
+It seems that the bundle persistence manager base does not work with MySQL. A SQLException is thrown on the line "con.commit();" in BundleDbPersistenceManager.checkSchema() because autoCommit is set to true in the init method. For some reason, this is ignored by the Oracle and MSSQL drivers. Anyway, commenting out the line fixes the issue, I think.

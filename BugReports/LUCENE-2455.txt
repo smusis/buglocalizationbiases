@@ -1,0 +1,43 @@
+Some house cleaning in addIndexes*
+
+
+
+Description:
+Today, the use of addIndexes and addIndexesNoOptimize is confusing - 
+especially on when to invoke each. Also, addIndexes calls optimize() in 
+the beginning, but only on the target index. It also includes the 
+following jdoc statement, which from how I understand the code, is 
+wrong: _After this completes, the index is optimized._ -- optimize() is 
+called in the beginning and not in the end. 
+
+On the other hand, addIndexesNoOptimize does not call optimize(), and 
+relies on the MergeScheduler and MergePolicy to handle the merges. 
+
+After a short discussion about that on the list (Thanks Mike for the 
+clarifications!) I understand that there are really two core differences 
+between the two: 
+* addIndexes supports IndexReader extensions
+* addIndexesNoOptimize performs better
+
+This issue proposes the following:
+# Clear up the documentation of each, spelling out the pros/cons of 
+  calling them clearly in the javadocs.
+# Rename addIndexesNoOptimize to addIndexes
+# Remove optimize() call from addIndexes(IndexReader...)
+# Document that clearly in both, w/ a recommendation to call optimize() 
+  before on any of the Directories/Indexes if it's a concern. 
+
+That way, we maintain all the flexibility in the API - 
+addIndexes(IndexReader...) allows for using IR extensions, 
+addIndexes(Directory...) is considered more efficient, by allowing the 
+merges to happen concurrently (depending on MS) and also factors in the 
+MP. So unless you have an IR extension, addDirectories is really the one 
+you should be using. And you have the freedom to call optimize() before 
+each if you care about it, or don't if you don't care. Either way, 
+incurring the cost of optimize() is entirely in the user's hands. 
+
+BTW, addIndexes(IndexReader...) does not use neither the MergeScheduler 
+nor MergePolicy, but rather call SegmentMerger directly. This might be 
+another place for improvement. I'll look into it, and if it's not too 
+complicated, I may cover it by this issue as well. If you have any hints 
+that can give me a good head start on that, please don't be shy :). 

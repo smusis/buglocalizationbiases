@@ -1,0 +1,6 @@
+Add a link to the release archive
+
+
+
+Description:
+It would be nice if the [Releases page|http://lucene.apache.org/java/docs/releases.html] contained a link to the release archive at http://archive.apache.org/dist/lucene/java/.

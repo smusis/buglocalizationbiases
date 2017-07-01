@@ -1,0 +1,10 @@
+SegmentReader.hasSeparateNorms always returns false
+
+
+
+Description:
+The loop in that method looks like this: 
+ 
+for(int i = 0; i < 0; i++){ 
+ 
+I guess "i < 0" should be replaced by "i < result.length"?

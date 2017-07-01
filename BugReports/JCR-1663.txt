@@ -1,0 +1,12 @@
+REFERENCE properties produce duplicate strings in memory
+
+
+
+Description:
+When reference property is loaded from PM, Serializer.deserialize(NodeReferences, InputStream) is called, which calls PropertyId.valueOf(String), which in turn calls NameFactoryImpl.create(String) which finally splits a full property name to namespace and local name. Namespace is internalized, but local name is not (comments say that this is done to avoid perm space overfilling).
+So, in the end, a new String instance is created for local name. This leads to considerable memory waste when repository has a lot of nodes with REFERENCE properties.
+It seems that local name part could be internalized here too because in the most repositories it's not allowed to create properties with arbitrary names, so the danger of perm space exhaust does not seem to be an argument.
+
+As for ways to resolve this, maybe a new NameFactory implementation could be created which would be used for properties only (and, possibly, mainly in the PropertyId.valueOf(String)) which would extend an existing NameFactoryImpl overriding its create(String) method.
+
+What do you think about all this?

@@ -1,0 +1,37 @@
+client cache may be a shared cache but is caching responses to requests with Authorization headers
+
+
+
+Description:
+"      When a shared cache (see section 13.7) receives a request
+      containing an Authorization field, it MUST NOT return the
+      corresponding response as a reply to any other request, unless one
+      of the following specific exceptions holds:
+
+      1. If the response includes the "s-maxage" cache-control
+         directive, the cache MAY use that response in replying to a
+         subsequent request. But (if the specified maximum age has
+         passed) a proxy cache MUST first revalidate it with the origin
+         server, using the request-headers from the new request to allow
+         the origin server to authenticate the new request. (This is the
+         defined behavior for s-maxage.) If the response includes "s-
+         maxage=0", the proxy MUST always revalidate it before re-using
+         it.
+
+      2. If the response includes the "must-revalidate" cache-control
+         directive, the cache MAY use that response in replying to a
+         subsequent request. But if the response is stale, all caches
+         MUST first revalidate it with the origin server, using the
+         request-headers from the new request to allow the origin server
+         to authenticate the new request.
+
+      3. If the response includes the "public" cache-control directive,
+         it MAY be returned in reply to any subsequent request."
+
+http://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.8
+
+It isn't clear whether the CachingHttpClient is a shared cache or not (it depends on where it gets used), so the conservative compliant behavior is to assume we are a shared cache. The current implementation is caching responses regardless of whether the original requests had Authorization headers or not.
+
+Patch and discussion forthcoming.
+
+

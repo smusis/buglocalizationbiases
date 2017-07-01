@@ -1,0 +1,16 @@
+Provider org.apache.xalan.processor.TransformerFactoryImpl not found
+
+
+
+Description:
+"maven jar" fails with the following error message on a fresh Jackrabbit source tree:
+
+BUILD FAILED
+File...... /home/hukka/tmp/jackrabbit/maven.xml
+Element... ant:xslt
+Line...... 146
+Column.... 25
+Provider org.apache.xalan.processor.TransformerFactoryImpl not found
+Total time: 4 seconds
+Finished at: Sun Feb 13 10:09:03 EET 2005
+

@@ -1,0 +1,6 @@
+jcr:encoding not respected in NodeIndexer
+
+
+
+Description:
+The value of the jcr:encoding property is not passed to the TextFilter instances.

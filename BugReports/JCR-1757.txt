@@ -1,0 +1,8 @@
+OCM: translate-project goal not found
+
+
+
+Description:
+The jackrabbit-ocm POM doesn't specify the required version of the Retrotranslator plugin it uses. In some cases this causes the build to use an older version of the plugin that doesn't come with the translate-plugin goal.
+
+The goal is included in the latest version (1.0-alpha-4) of the plugin.

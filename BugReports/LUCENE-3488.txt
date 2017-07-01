@@ -1,0 +1,6 @@
+Factor out SearcherManager from NRTManager
+
+
+
+Description:
+Currently we have NRTManager and SearcherManager while NRTManager contains a big piece of the code that is already in SearcherManager. Users are kind of forced to use NRTManager if they want to have SearcherManager goodness with NRT. The integration into NRTManager also forces you to maintain two instances even if you know you always want deletes. To me NRTManager tries to do more than necessary and mixes lots of responsibilities ie. handling searchers and handling indexing generations. NRTManager should use a SearcherManager by aggregation rather than duplicate a lot of logic. SearcherManager should have a NRT and Directory based implementation users can simply choose from.

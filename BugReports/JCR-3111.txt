@@ -1,0 +1,6 @@
+InternalVersionManagerBase; missing null check after getNode()
+
+
+
+Description:
+There are at least two instances where we check for a node with hasNode(), and then call getNode() without checking for null.

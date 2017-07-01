@@ -1,0 +1,8 @@
+If you hit the "max term prefix" warning when indexing, it never goes away
+
+
+
+Description:
+Silly bug.
+
+If IW's infoStream is on, we warn whenever we hit a ridiculously long term (> 16 KB in length).  The problem is, we never reset this warning, so, once one doc contains such a massive term, we then keep warning over and over about that same term for future docs.

@@ -1,0 +1,15 @@
+DataStore: garbage collection fails if a workspace is not initialized
+
+
+
+Description:
+The test case GCEventListenerTest fails with the following exception:
+
+testEventListener(org.apache.jackrabbit.core.data.GCEventListenerTest)  Time elapsed: 10.235 sec  <<< ERROR!
+java.lang.IllegalStateException: workspace 'test' not initialized
+	at org.apache.jackrabbit.core.RepositoryImpl$WorkspaceInfo.getPersistenceManager(RepositoryImpl.java:1703)
+	at org.apache.jackrabbit.core.SessionImpl.createDataStoreGarbageCollector(SessionImpl.java:694)
+	at org.apache.jackrabbit.core.data.GCEventListenerTest.doTestEventListener(GCEventListenerTest.java:75)
+	at org.apache.jackrabbit.core.data.GCEventListenerTest.testEventListener(GCEventListenerTest.java:49)
+
+

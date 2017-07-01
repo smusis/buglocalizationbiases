@@ -1,0 +1,57 @@
+Improve contrib/benchmark for testing near-real-time search performance
+
+
+
+Description:
+It's not easy to test NRT performance right now w/ contrib/benchmark.
+I've made some initial fixes to improve this:
+
+  * Added new '&', that can follow any task within a serial sequence,
+    to "background" the task (just like a shell).  The test runs in
+    the BG, and then at the end of all serial tasks, any still running
+    BG tasks are stopped & joined.
+
+  * Added WaitTask that simply waits; useful for controlling how long
+    the BG'd tasks get to run.
+
+  * Added RollbackIndex task, which is real handy for using a given
+    index for an NRT test, doing a bunch of updates, then reverting it
+    all so your next run uses the same starting index
+
+  * Fixed the existing NearRealTimeReaderTask to simply periodically
+    open the new reader (previously it was also running a fixed
+    search), and removed its own threading (since & can do that
+    now). It periodically wakes up, opens the new reader, and swaps it
+    into the PerfRunData, at the schedule you specify.  I switched all
+    usage of PerfRunData's get/setIndexReader APIs to use ref
+    counting.
+
+With these changes you can now make some very simple but powerful
+algs, eg:
+
+{code}
+OpenIndex
+{
+  NearRealtimeReader(0.5) &
+  # Warm
+  Search
+  { "Index1" AddDoc > : * : 100/sec &
+  [ { "Search" Search > : * ] : 4 &
+  Wait(30.0)
+}
+CloseReader
+RollbackIndex
+RepSumByName
+{code}
+
+This alg first opens the IndexWriter, then spawns the BG thread to
+reopen the NRT reader twice per second, does one warming Search (in
+the FG), spans a new thread to index documents at the rate of 100 per
+second, then spawns 4 search threads that do as many searches as they
+can.  We then wait for 30 seconds, then stop all the threads, revert
+the index, and report.
+
+The patch is a work in progress -- it generally works, but there're a
+few nocommits, and, we may want to improve reporting (though I think
+that's a separate issue).
+

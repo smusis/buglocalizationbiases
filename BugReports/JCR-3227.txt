@@ -1,0 +1,6 @@
+VolatileIndex not closed properly
+
+
+
+Description:
+The MultiIndex.resetVolatileIndex() method doesn't properly close the existing VolatileIndex instance before creating a new one. This can confuse the DynamicPooledExecutor reference count added in JCR-2836, leading to a background thread leak.

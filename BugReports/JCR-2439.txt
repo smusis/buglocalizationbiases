@@ -1,0 +1,45 @@
+More utility methods in JcrUtils
+
+
+
+Description:
+I'd like to add at least the following utility methods to JcrUtils:
+
+For logging:
+
+    // Utility method to simplify log messages and debug prints:
+    // Node -> "name [type]"
+    // Property -> "@name = value(s)"
+    String toString(Item item)
+
+For making sure that a node exists:
+
+    // Returns the identified child node. If the child does not already exist,
+    // it is added using the default node type from the parent.
+    Node setNode(Node parent, String name)
+
+    // Same as above, but ensures that isNodeType(type) is true for the
+    // returned node, using addNode(name, type) or setPrimaryType(type)
+    // if needed.
+    Node setNode(Node parent, String name, String type)
+
+For adding (or setting, see above) nt:folder nodes:
+
+    // Adds a new nt:folder node with the given name
+    Node addFolder(Node parent, String name)
+
+    // Ensures that an nt:folder node with the given name exists
+    Node setFolder(Node parent, String name)
+
+For adding (or setting) nt:file nodes:
+
+    // Adds a new nt:file/nt:resource structure
+    // If the mime type contains a charset parameter, then the jcr:encoding property is also set
+    Node addFile(Node parent, String name, String mime, InputStream data)
+    Node addFile(Node parent, String name, String mime, Calendar date, InputStream data)
+
+    // Ensures that an nt:file/nt:resource structure exists with the given data.
+    // Note that the type of a potential existing jcr:content node is not modified
+    Node setFile(Node parent, String name, String mime, InputStream data)
+    Node setFile(Node parent, String name, String mime, Calendar date, InputStream data)
+

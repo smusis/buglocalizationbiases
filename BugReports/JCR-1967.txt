@@ -1,0 +1,19 @@
+Impossible comparison in NodeTypeImpl
+
+
+
+Description:
+org.apache.jackrabbit.jcr2spi.nodetype.NodeTypeImpl does
+
+    public boolean isNodeType(Name nodeTypeName) {
+        return getName().equals(nodeTypeName) ||  ent.includesNodeType(nodeTypeName);
+    }
+
+
+as getName() is a string and nodeTypeName is a Name this will always be false. Perhaps you meant
+
+    public boolean isNodeType(Name nodeTypeName) {
+        return getName().equals(nodeTypeName.getLocalName()) ||  ent.includesNodeType(nodeTypeName);
+    }
+
+

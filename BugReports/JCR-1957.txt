@@ -1,0 +1,9 @@
+Move common validation checks to a single place
+
+
+
+Description:
+check for effective locks, nodes being checked-in, protection of item definitions etc. are abundant throughout jackrabbit-core. now that in addition retention and holds will be added and need to be checked as well, i suggest to move those checks to a common utility class and pass item and a list of checks to be performed.
+
+batcheditemoperations already provides a similar pattern for the operations on item states.
+i therefore suggest to move the flags to its base (ItemValidator) and add the utility methods needed.

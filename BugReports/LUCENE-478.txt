@@ -1,0 +1,23 @@
+CJK char list
+
+
+
+Description:
+Seems the character list in the CJK section of the StandardTokenizer.jj is not quite complete. Following is a more complete list:
+
+< CJK:                                          // non-alphabets
+      [
+	   "\u1100"-"\u11ff",
+       "\u3040"-"\u30ff",
+       "\u3130"-"\u318f",
+       "\u31f0"-"\u31ff",
+       "\u3300"-"\u337f",
+       "\u3400"-"\u4dbf",
+       "\u4e00"-"\u9fff",
+       "\uac00"-"\ud7a3",
+       "\uf900"-"\ufaff",
+       "\uff65"-"\uffdc"       
+      ]
+  >
+
+

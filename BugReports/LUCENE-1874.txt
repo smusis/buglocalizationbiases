@@ -1,0 +1,17 @@
+Further updates to the site scoring page
+
+
+
+Description:
+update the site scoring page - see Appendix:
+{quote}
+Class Diagrams
+Karl Wettin's UML on the Wiki
+{quote}
+Karl's diagrams are outdated - I think this link should be pulled for 2.9
+
+{quote}
+Sequence Diagrams
+FILL IN HERE. Volunteers?
+{quote}
+I think this should be pulled - I say put something like this as a task in JIRA - not the published site docs.

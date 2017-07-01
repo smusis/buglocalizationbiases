@@ -1,0 +1,8 @@
+Remove Hits
+
+
+
+Description:
+LUCENE-1290 removed all references to Hits from core.
+
+Most work to be done here is to remove all references from the contrib modules and some new ones that crept into core after 1290.

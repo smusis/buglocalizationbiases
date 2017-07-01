@@ -1,0 +1,6 @@
+Unnecessary parsing of Name value
+
+
+
+Description:
+InternalValue.toJCRValue(NamePathResolver) formats the Name value and constructs a NameValue using the formatted String. The implementation of NameValue.valueOf(String) again checks the format, which is quite expensive and unnecessary in this case.

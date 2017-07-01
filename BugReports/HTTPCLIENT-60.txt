@@ -1,0 +1,7 @@
+Handle virtual hosts, relative urls, multi-homing
+
+
+
+Description:
+Need to be able to open a socket to one ipaddress (or hostname) and then include
+a virtual hostname in the Host header. Use InetAddress class perhaps.

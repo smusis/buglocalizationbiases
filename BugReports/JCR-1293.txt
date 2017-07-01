@@ -1,0 +1,21 @@
+ReorderReferenceableSNSTest failure
+
+
+
+Description:
+I have checked out the Jackrabbit 1.4 branch to a new directory, and called:
+
+mvn clean install
+
+The error is:
+
+Building Jackrabbit JCR to SPI
+  task-segment: [clean, install]
+---------------------------------
+...
+testRevertReorder(org.apache.jackrabbit.jcr2spi.ReorderReferenceableSNSTest)
+junit.framework.AssertionFailedError: Reorder added a child node.
+       at junit.framework.Assert.fail(Assert.java:47)
+       at org.apache.jackrabbit.jcr2spi.ReorderTest.testOrder(ReorderTest.java:90)
+       at org.apache.jackrabbit.jcr2spi.ReorderTest.testRevertReorder(ReorderTest.java:122)
+

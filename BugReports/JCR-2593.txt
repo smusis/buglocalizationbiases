@@ -1,0 +1,6 @@
+Upgrade to Tika 0.7
+
+
+
+Description:
+Apache Tika 0.7 is now available. It's probably too late for the 2.1 release, but I'll upgrade the dependency in the trunk for Jackrabbit 2.2.

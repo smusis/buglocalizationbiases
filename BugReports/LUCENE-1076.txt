@@ -1,0 +1,21 @@
+Allow MergePolicy to select non-contiguous merges
+
+
+
+Description:
+I started work on this but with LUCENE-1044 I won't make much progress
+on it for a while, so I want to checkpoint my current state/patch.
+
+For backwards compatibility we must leave the default MergePolicy as
+selecting contiguous merges.  This is necessary because some
+applications rely on "temporal monotonicity" of doc IDs, which means
+even though merges can re-number documents, the renumbering will
+always reflect the order in which the documents were added to the
+index.
+
+Still, for those apps that do not rely on this, we should offer a
+MergePolicy that is free to select the best merges regardless of
+whether they are continuguous.  This requires fixing IndexWriter to
+accept such a merge, and, fixing LogMergePolicy to optionally allow
+it the freedom to do so.
+

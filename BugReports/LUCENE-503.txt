@@ -1,0 +1,10 @@
+Contrib: ThaiAnalyzer to enable Thai full-text search in Lucene
+
+
+
+Description:
+Thai text don't have space between words. Usually, a dictionary-based algorithm is used to break string into words. For Lucene to be usable for Thai, an Analyzer that know how to break Thai words is needed.
+
+I've implemented such Analyzer, ThaiAnalyzer, using ICU4j DictionaryBasedBreakIterator for word breaking. I'll upload the code later.
+
+I'm normally a C++ programmer and very new to Java. Please review the code for any problem. One possible problem is that it requires ICU4j. I don't know whether this is OK.

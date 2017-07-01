@@ -1,0 +1,14 @@
+Cleanup MMapDirectory to use only one MMapIndexInput impl with mapping sized of powers of 2
+
+
+
+Description:
+Robert and me discussed a little bit after Mike's investigations, that using SingleMMapIndexinput together with MultiMMapIndexInput leads to hotspot slowdowns sometimes.
+
+We had the following ideas:
+- MultiMMapIndexInput is almost as fast as SingleMMapIndexInput, as the switching between buffer boundaries is done in exception catch blocks. So normal code path is always the same like for Single*
+- Only the seek method uses strange calculations (the modulo is totally bogus, it could be simply: int bufOffset = (int) (pos % maxBufSize); - very strange way of calculating modulo in the original code)
+- Because of speed we suggest to no longer use arbitrary buffer sizes. We should pass only the power of 2 to the indexinput as size. All calculations in seek and anywhere else would be simple bit shifts and AND operations (the and masks for the modulo can be calculated in the ctor like NumericUtils does when calculating precisionSteps).
+- the maximum buffer size will now be 2^30, not 2^31-1. But thats not an issue at all. In my opinion, a buffer size of 2^31-1 is stupid in all cases, as it will no longer fit page boundaries and mmapping gets harder for the O/S.
+
+We will provide a patch with those cleanups.

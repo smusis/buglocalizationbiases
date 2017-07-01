@@ -1,0 +1,8 @@
+move DocumentStoredFieldsVisitor to o.a.l.document
+
+
+
+Description:
+when examining the changes to the field/document API, i noticed this class was in o.a.l.index
+
+I think it should be in o.a.l.document, its more intuitive packaging

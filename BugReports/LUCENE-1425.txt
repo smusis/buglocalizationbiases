@@ -1,0 +1,6 @@
+Add ConstantScore highlighting support to SpanScorer
+
+
+
+Description:
+Its actually easy enough to support the family of constantscore queries with the new SpanScorer. This will also remove the requirement that you rewrite queries against the main index before highlighting (in fact, if you do, the constantscore queries will not highlight).

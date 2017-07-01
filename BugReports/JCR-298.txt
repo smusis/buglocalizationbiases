@@ -1,0 +1,11 @@
+missing blob.remove in Berkeley DB persistance manager
+
+
+
+Description:
+org/apache/jackrabbit/core/state/bdb/BerkeleyDBPersistenceManager.destroy(PropertyState state) does not remove binary file from
+the BLOBStore (filesystem impl)
+
+
+
+

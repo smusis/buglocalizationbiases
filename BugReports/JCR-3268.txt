@@ -1,0 +1,6 @@
+Re-index fails on corrupt bundle
+
+
+
+Description:
+The re-indexing process should be more resilient, log an error and simply continue with the next node. It doesn't seem useful to refuse repository startup in this case.

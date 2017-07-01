@@ -1,0 +1,10 @@
+Exception messages in AuthorizableImpl include full tracebacks at warn level.
+
+
+
+Description:
+In a number of places in AuthourizableImpl there are log.warn with tracebacks.
+This would be fine, however in production with Sling its quite easy to attempt to set a property on the Authorizable and generate the traceback in the logs, which soon fill up. 
+
+We could block all logging from the user manager, but that feels wrong.
+Would it be possible to have the log message at warn level put out a single log line and at debug level put out the full traceback ?

@@ -1,0 +1,8 @@
+UserManagement: membership cache default size too small
+
+
+
+Description:
+The membership cache that has been introduced in JCR-2703 is making use of an LRUMap to cache group memberships (authorizable nodeId -> group nodeIds). In environments where users belong to more than 100 groups, the cache quickly becomes ineffective due to the default maximum size of the LRUMap.
+
+Once the cache limit is hit, the rather expensive Node#getWeakReferences API calls resulting in search queries are executed again, leading to quite noticeable performance drops. Thus I'd suggest to either make the membership cache configurable or introduce some logic to let the cache grow dynamically as needed (still having some kind of hard limit to avoid memory issues).

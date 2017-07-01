@@ -1,0 +1,6 @@
+WorkspaceInfo.dispose() does not deregister from obs dispatcher
+
+
+
+Description:
+JCR-305 introduces an automatic disposing of idle workspaces. this can lead to memory leaks because the observation factory is not deregistered from the delegating one.

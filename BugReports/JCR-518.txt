@@ -1,0 +1,10 @@
+TCK: XPath order by test uses non-standard column specifier mechanism
+
+
+
+Description:
+org.apache.jackrabbit.test.api.QueryXPathOrderByTest generates a queries of the following form: /jcr:root/*[@proname]/@propname order by @propname
+
+This syntax for column specifiers is not mandated by the JCR specification and will fail on any implementation that does not support it.
+
+Instead the tests should use the following query: /jcr:root/*[@proname] order by @propname and then read the results using QueryResults.getNodes and not QueryResults.getRows.

@@ -1,0 +1,9 @@
+Callback for intercepting merging segments in IndexWriter
+
+
+
+Description:
+For things like merging field caches or bitsets, it's useful to
+know which segments were merged to create a new segment.
+
+

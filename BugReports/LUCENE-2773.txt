@@ -1,0 +1,18 @@
+Don't create compound file for large segments by default
+
+
+
+Description:
+Spinoff from LUCENE-2762.
+
+CFS is useful for keeping the open file count down.  But, it costs
+some added time during indexing to build, and also ties up temporary
+disk space, causing eg a large spike on the final merge of an
+optimize.
+
+Since MergePolicy dictates which segments should be CFS, we can
+change it to only build CFS for "smallish" merges.
+
+I think we should also set a maxMergeMB by default so that very large
+merges aren't done.
+

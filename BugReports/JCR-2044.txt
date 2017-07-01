@@ -1,0 +1,6 @@
+Pass resultFetchSize/limit hint to SortedLuceneQueryHits
+
+
+
+Description:
+The SortedLuceneQueryHits currently uses a default value of 100 (taken from lucene) for initially retrieved and sorted results. For larger result sets this is not optimal because it will cause re-execution of the underlying query with values 200, 400, 800, 1600, 3200, 6400, etc. Instead the query hits should get the limit that is set on the query or the resultFetchSize configured for the SearchIndex.

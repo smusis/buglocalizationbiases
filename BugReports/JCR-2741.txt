@@ -1,0 +1,12 @@
+Improved logging for session operations
+
+
+
+Description:
+I'd like to add the following logging features to SessionOperations:
+
+* Use MDC [1] to make it possible to filter and redirect logs based on which session is being used
+* Add simple debug-level timing information for executed SessionOperations to help pinpoint performance issues
+* Classify SessionOperations as read or write operations, and log warnings (instead of the current debug messages) for concurrent writes on a session
+
+[1] http://logback.qos.ch/manual/mdc.html

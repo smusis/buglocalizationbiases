@@ -1,0 +1,18 @@
+StandardBenchmarker#makeDocument does not explicitly close opened files
+
+
+
+Description:
+StandardBenchmarker#makeDocument(File in, String[] tags, boolean stored, boolean tokenized, boolean tfv)
+
+        BufferedReader reader = new BufferedReader(new FileReader(in));
+
+Above reader is not closed until GC hits it. Can cause problems in cases where ulimit is set too low.
+
+I did this:
+
+        while ((line = reader.readLine()) != null)
+        {
+            body.append(line).append(' ');
+        }
++        reader.close();

@@ -1,0 +1,8 @@
+TestAddIndexes fails (norms file not found)
+
+
+
+Description:
+ant test-core -Dtestcase=TestAddIndexes -Dtestmethod=testAddIndexesWithRollback -Dtests.seed=2f55291b308dc34b:-4d72bfad34f3f357:4bc5ec894269c041 -Dargs="-Dfile.encoding=UTF-8" -Dtests.iter=100
+
+fails about 4 or 5 times out of 100.

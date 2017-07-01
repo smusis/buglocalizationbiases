@@ -1,0 +1,91 @@
+Deadlock in acl.EntryCollector / ItemManager
+
+
+
+Description:
+Here's another three-way deadlock that we've encountered:
+
+* Thread A holds a downgraded SISM write lock and is about to start delivering observation events to synchronous listeners
+* Thread B wants to write something and blocks waiting for the SISM write lock (since A holds the lock)
+* Thread C wants to read something and blocks waiting for the SISM read lock (since B waits for the lock)
+
+Normally such a scenario is handled without any problems, but there's a problem if the session used by thread C has a synchronous observation listener that attempts to read something from the repository during event delivery. In this case the following can happen:
+
+* Thread C holds the ItemManager synchronization lock higher up in the call chain
+* Observation listener code called by thread A attempts to read something from the repository, and blocks trying to acquire the ItemManager synchronization lock (since C holds it)
+
+In principle such a scenario should never happen as an observation listener (much less a synchronous one) should never try to use the session that might already be in use by another thread.
+
+Unfortunately the EntryCollector class in o.a.j.core.security.authorization.acl does not follow this guideline, which leads to the deadlock as shown below:
+
+Thread A:
+"127.0.0.1 [1297191119365] POST /bin/wcmcommand HTTP/1.0" nid=1179 state=BLOCKED
+    - waiting on <0x11c329fd> (a org.apache.jackrabbit.core.ItemManager)
+    - locked <0x11c329fd> (a org.apache.jackrabbit.core.ItemManager)
+     owned by 127.0.0.1 [1297191138443] POST /bin/wcmcommand HTTP/1.0 id=67
+    at org.apache.jackrabbit.core.ItemManager.getNode(ItemManager.java:653)
+    at org.apache.jackrabbit.core.ItemManager.getNode(ItemManager.java:605)
+    at org.apache.jackrabbit.core.SessionImpl.getNode(SessionImpl.java:1406)
+    at org.apache.jackrabbit.core.security.authorization.acl.EntryCollector.onEvent(EntryCollector.java:253)
+    at org.apache.jackrabbit.core.observation.EventConsumer.consumeEvents(EventConsumer.java:246)
+    at org.apache.jackrabbit.core.observation.ObservationDispatcher.dispatchEvents(ObservationDispatcher.java:214)
+    at org.apache.jackrabbit.core.observation.EventStateCollection.dispatch(EventStateCollection.java:475)
+    at org.apache.jackrabbit.core.state.SharedItemStateManager$Update.end(SharedItemStateManager.java:786)
+    at org.apache.jackrabbit.core.state.SharedItemStateManager.update(SharedItemStateManager.java:1488)
+    at org.apache.jackrabbit.core.state.LocalItemStateManager.update(LocalItemStateManager.java:349)
+    at org.apache.jackrabbit.core.state.XAItemStateManager.update(XAItemStateManager.java:354)
+    at org.apache.jackrabbit.core.state.LocalItemStateManager.update(LocalItemStateManager.java:324)
+    at org.apache.jackrabbit.core.state.SessionItemStateManager.update(SessionItemStateManager.java:328)
+    at org.apache.jackrabbit.core.ItemImpl.save(ItemImpl.java:1141)
+    at org.apache.jackrabbit.core.SessionImpl.save(SessionImpl.java:920)
+
+Thread B:
+"Thread-2438" nid=2582 state=WAITING
+    - waiting on <0x166e790e> (a EDU.oswego.cs.dl.util.concurrent.WriterPreferenceReadWriteLock$WriterLock)
+    - locked <0x166e790e> (a EDU.oswego.cs.dl.util.concurrent.WriterPreferenceReadWriteLock$WriterLock)
+    at java.lang.Object.wait(Native Method)
+    at java.lang.Object.wait(Object.java:485)
+    at EDU.oswego.cs.dl.util.concurrent.WriterPreferenceReadWriteLock$WriterLock.acquire(Unknown Source)
+    at org.apache.jackrabbit.core.state.DefaultISMLocking$WriteLockImpl.<init>(DefaultISMLocking.java:76)
+    at org.apache.jackrabbit.core.state.DefaultISMLocking$WriteLockImpl.<init>(DefaultISMLocking.java:70)
+    at org.apache.jackrabbit.core.state.DefaultISMLocking.acquireWriteLock(DefaultISMLocking.java:64)
+    at org.apache.jackrabbit.core.state.SharedItemStateManager.acquireWriteLock(SharedItemStateManager.java:1808)
+    at org.apache.jackrabbit.core.state.SharedItemStateManager.access$200(SharedItemStateManager.java:112)
+    at org.apache.jackrabbit.core.state.SharedItemStateManager$Update.begin(SharedItemStateManager.java:565)
+    at org.apache.jackrabbit.core.state.SharedItemStateManager.beginUpdate(SharedItemStateManager.java:1458)
+    at org.apache.jackrabbit.core.state.SharedItemStateManager.update(SharedItemStateManager.java:1488)
+    at org.apache.jackrabbit.core.state.LocalItemStateManager.update(LocalItemStateManager.java:349)
+    at org.apache.jackrabbit.core.state.XAItemStateManager.update(XAItemStateManager.java:354)
+    at org.apache.jackrabbit.core.state.LocalItemStateManager.update(LocalItemStateManager.java:324)
+    at org.apache.jackrabbit.core.state.SessionItemStateManager.update(SessionItemStateManager.java:328)
+    at org.apache.jackrabbit.core.ItemImpl.save(ItemImpl.java:1141)
+    at org.apache.jackrabbit.core.SessionImpl.save(SessionImpl.java:920)
+
+Thread C:
+"127.0.0.1 [1297191138443] POST /bin/wcmcommand HTTP/1.0" nid=67 state=WAITING
+    - waiting on <0xf820edb> (a EDU.oswego.cs.dl.util.concurrent.WriterPreferenceReadWriteLock$ReaderLock)
+    - locked <0xf820edb> (a EDU.oswego.cs.dl.util.concurrent.WriterPreferenceReadWriteLock$ReaderLock)
+    at java.lang.Object.wait(Native Method)
+    at java.lang.Object.wait(Object.java:485)
+    at EDU.oswego.cs.dl.util.concurrent.WriterPreferenceReadWriteLock$ReaderLock.acquire(Unknown Source)
+    at org.apache.jackrabbit.core.state.DefaultISMLocking$ReadLockImpl.<init>(DefaultISMLocking.java:102)
+    at org.apache.jackrabbit.core.state.DefaultISMLocking$ReadLockImpl.<init>(DefaultISMLocking.java:96)
+    at org.apache.jackrabbit.core.state.DefaultISMLocking.acquireReadLock(DefaultISMLocking.java:53)
+    at org.apache.jackrabbit.core.state.SharedItemStateManager.acquireReadLock(SharedItemStateManager.java:1794)
+    at org.apache.jackrabbit.core.state.SharedItemStateManager.getItemState(SharedItemStateManager.java:257)
+    at org.apache.jackrabbit.core.state.LocalItemStateManager.getNodeState(LocalItemStateManager.java:107)
+    at org.apache.jackrabbit.core.state.LocalItemStateManager.getItemState(LocalItemStateManager.java:171)
+    at org.apache.jackrabbit.core.state.SessionItemStateManager.getItemState(SessionItemStateManager.java:200)
+    at org.apache.jackrabbit.core.ItemManager.getItemData(ItemManager.java:391)
+    at org.apache.jackrabbit.core.ItemManager.getItem(ItemManager.java:337)
+    at org.apache.jackrabbit.core.ItemManager.getItem(ItemManager.java:638)
+    at org.apache.jackrabbit.core.security.authorization.acl.ACLProvider$AclPermissions.canRead(ACLProvider.java:507)
+      - locked java.lang.Object@6ad9b475
+    at org.apache.jackrabbit.core.security.DefaultAccessManager.canRead(DefaultAccessManager.java:251)
+    at org.apache.jackrabbit.core.query.lucene.QueryResultImpl.isAccessGranted(QueryResultImpl.java:374)
+    at org.apache.jackrabbit.core.query.lucene.QueryResultImpl.collectScoreNodes(QueryResultImpl.java:353)
+    at org.apache.jackrabbit.core.query.lucene.QueryResultImpl.getResults(QueryResultImpl.java:310)
+    at org.apache.jackrabbit.core.query.lucene.SingleColumnQueryResult.<init>(SingleColumnQueryResult.java:70)
+    at org.apache.jackrabbit.core.query.lucene.QueryImpl.execute(QueryImpl.java:133)
+    at org.apache.jackrabbit.core.query.QueryImpl.execute(QueryImpl.java:127)
+

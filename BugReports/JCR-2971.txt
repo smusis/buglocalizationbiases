@@ -1,0 +1,9 @@
+Revert subsequent token-node updates (tentatively introduced)
+
+
+
+Description:
+i would like to revert this improvement has been tentatively introduced based on the following
+thread on the dev list: http://www.mail-archive.com/dev@jackrabbit.apache.org/msg24437.html
+as i am still concerned about undesired effects. in addition i still feel that this somehow
+violates the basic contract.

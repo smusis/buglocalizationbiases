@@ -1,0 +1,6 @@
+Fails to remove a previously assigned mixin
+
+
+
+Description:
+Jackrabbit fails to remove a previously assigned mixin. Works fine on version 1.6.1

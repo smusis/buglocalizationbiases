@@ -1,0 +1,18 @@
+Deprecate XASession
+
+
+
+Description:
+The XASession interface in jackrabbit-api extends Session with a single getXAResource() method. The idea is that a transactional client (or a transaction manager) will test whether a session implements XASession and can then get the XAResource instance that can be used to bind the session to a distributed transaction. The essential code is:
+
+    if (session instanceof XASession) {
+        return ((XASession) session).getXAResource();
+    }
+
+This works fine except for the extra dependency to jackrabbit-api that it introduces in code that otherwise would only need the JCR API. Since the link between a transaction-enabled session and the related XAResource instance is always one-to-one, we could avoid this dependency by making the session directly implement XAResource, leading to code like this:
+
+    if (session instanceof XAResource) {
+        return (XAResource) session;
+    }
+
+This is essentially what jackrabbit-jcr-rmi did in 2.0.0 to avoid the jackrabbit-api dependency while maintaining XA transaction support, and I'd like to extend this solution also to other parts of Jackrabbit.

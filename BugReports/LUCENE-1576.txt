@@ -1,0 +1,15 @@
+Brazilian Analyzer doesn't remove stopwords when uppercase is given
+
+
+
+Description:
+The order of filters matter here, just need to apply lowercase token filter before removing stopwords
+
+	result = new StopFilter( result, stoptable );
+		result = new BrazilianStemFilter( result, excltable );
+		// Convert to lowercase after stemming!
+		result = new LowerCaseFilter( result );
+
+Lowercase must come before BrazilianStemFilter
+
+At the end of day I'll attach a patch, it's straightforward

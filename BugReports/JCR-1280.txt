@@ -1,0 +1,6 @@
+Path.equals does not work for other Path implementations
+
+
+
+Description:
+PathImpl.equals does not take other path implementations into account (likely a typo).

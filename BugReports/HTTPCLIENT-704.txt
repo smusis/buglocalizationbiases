@@ -1,0 +1,6 @@
+Exception not caugh in DefaultResponseParser
+
+
+
+Description:
+The method hasProtocolVersion in o.a.h.message.BaseLineParser (httpcore-alpha6) throws an IndexOutOfBoundsException which is not caught by the parseHead method in the o.a.h.impl.conn.DefaultResponseParser.

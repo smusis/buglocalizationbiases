@@ -1,0 +1,15 @@
+DocValues merging is not associative, leading to different results depending upon how merges execute
+
+
+
+Description:
+recently I cranked up TestDuelingCodecs to actually test docvalues (previously it wasn't testing it at all).
+
+This test is simple, it indexes the same random content with 2 different indexwriters, it just allows them
+to use different codecs with different indexwriterconfigs.
+
+then it asserts the indexes are equal.
+
+Sometimes, always on BYTES_FIXED_DEREF type, we end out with one reader that has a zero-filled byte[] for a doc,
+but that same document in the other reader has no docvalues at all.
+

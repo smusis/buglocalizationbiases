@@ -1,0 +1,18 @@
+wrong eval order of access control entries within a single node (node-based ac)
+
+
+
+Description:
+it seems to me that with the node-based access control the ac entries within a given node are currently collected in the wrong order.
+if i remember correctly this worked before and i removed at some point (for reasons i don't recall exactly but have the vague idea that it
+was related to the allow-only for groups).
+
+anyway:
+while playing around with the permission in our CRX recently i found, that the evaluation of the following setup didn't work as I would
+have expected:
+
+- user A is member of group B and C
+- for both groups an ACE exists on a given node /a/b/c
+- the acl looks like  { deny for B, allow for C }
+
+I would have expected that the allow for C would have reverted the previous deny for B since - in the GUI - I read the ace eval order from first entry to last entry... in the order I added them.

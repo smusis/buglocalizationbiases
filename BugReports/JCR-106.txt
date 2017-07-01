@@ -1,0 +1,12 @@
+Minimize use of fields in lucene index
+
+
+
+Description:
+Currently every property name creates a field in the lucene index, bloating the size of the index because of the norm files created for each field.
+
+When values are indexed as is (not tokenized for fulltext indexing), then the property name may be part of the term text. That way lucene must only maintain one field for all property names. With this approach the search terms are always a combination of property name and literal value. e.g. instead of using TermQuery(new Term("prop", "foo")) the query must be TermQuery(new TermQuery("common-field", "prop:foo")). this works for general comparison / value comparison operators and also for the like function. the contains function uses the fulltext index which uses a different field anyway.
+
+Using the property name as part of the indexed term text, requires a custom SortComparator which is aware of the property name.
+
+This change will not be backward compatible with earlier indexes created by jackrabbit.

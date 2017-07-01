@@ -1,0 +1,12 @@
+MockCharFilter offset correction is wrong
+
+
+
+Description:
+This is a fake charfilter used in basetokenstreamtestcase.
+
+it occasionally doubles some characters, and corrects offsets.
+
+its used to find bugs where analysis components would fail otherwise with charfilters,
+but its correctOffset is actually wrong (harmless to any tests today, but still wrong).
+

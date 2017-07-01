@@ -1,0 +1,11 @@
+Support system properties in ${...} vars in XML config files
+
+
+
+Description:
+The variable replacement (${...}) in config files like repository.xml currently only allows for the special variables introduced by Jackrabbit, eg. ${wsp.name} or ${rep.home}. But it would be useful to support all java system properties here as it is some kind of a standard in Java XML config files (see Spring for an example).
+
+This makes it easier to inject variables from outside the config file, eg. by setting them on the command line or injecting them programmatically in test cases. Typical parameters for that include database connection credentials, which one wants to avoid to put into repository.xml files that are often checked into SVN.
+
+This is especially true for test cases, eg. I currently work on a persistence manager component and I want to include the repository.xml in the source tree (under applications/test) but without my specific credentials. These are applied by loading a user-specific properties file through the test case before the repository is started and the config is read.
+

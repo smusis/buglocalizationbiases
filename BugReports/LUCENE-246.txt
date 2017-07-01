@@ -1,0 +1,9 @@
+[PATCH] Make a getter for SortField[] fields in org.apache.lucene.search.Sort
+
+
+
+Description:
+I'm have my own Collector and I would like to use the Sort object within my
+collector, but SortField[] fields; is not accessible outside Lucene's package.
+Can you please consider making a public getFields() method in the Sort object so
+we can use it in our implementation?

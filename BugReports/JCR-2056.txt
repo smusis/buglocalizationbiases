@@ -1,0 +1,6 @@
+JSR 283: Binary interfaces 
+
+
+
+Description:
+The Binary interface replaces the deprecated methods for getting/setting the InputStream of a given JCR value and the method to create binary value (ValueFactory).

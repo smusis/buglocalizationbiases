@@ -1,0 +1,16 @@
+Implement various ranking models as Similarities
+
+
+
+Description:
+With [LUCENE-3174|https://issues.apache.org/jira/browse/LUCENE-3174] done, we can finally work on implementing the standard ranking models. Currently DFR, BM25 and LM are on the menu.
+
+Done:
+ * {{EasyStats}}: contains all statistics that might be relevant for a ranking algorithm
+ * {{EasySimilarity}}: the ancestor of all the other similarities. Hides the DocScorers and as much implementation detail as possible
+ * _BM25_: the current "mock" implementation might be OK
+ * _LM_
+ * _DFR_
+ * The so-called _Information-Based Models_
+
+

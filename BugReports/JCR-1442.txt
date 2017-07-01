@@ -1,0 +1,16 @@
+FSImport.java link on wiki is dead
+
+
+
+Description:
+The link for FSImport.java 
+
+http://svn.apache.org/repos/asf/jackrabbit/trunk/contrib/examples/src/java/org/apache/jackrabbit/examples/FSImport.java
+
+from wiki page
+
+
+http://wiki.apache.org/jackrabbit/ExamplesPage
+
+is dead, could it be updated please?
+

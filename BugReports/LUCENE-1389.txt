@@ -1,0 +1,11 @@
+SimpleSpanFragmenter can create very short fragments
+
+
+
+Description:
+Line 74 of SimpleSpanFragmenter returns true when the current token is the start of a hit on a span or phrase, thus starting a new fragment. Two problems occur:
+
+- The previous fragment may be very short, but if it contains a hit it will be combined with the new fragment later so this disappears.
+- If the token is close to a natural fragment boundary the new fragment will end up very short; possibly even as short as just the span or phrase itself. This is the result of creating a new fragment without incrementing currentNumFrags.
+
+To fix, remove or comment out line 74. The result is that fragments average to the fragment size unless a span or phrase hit is towards the end of the fragment - that fragment is made larger and the following fragment shorter to accommodate the hit.

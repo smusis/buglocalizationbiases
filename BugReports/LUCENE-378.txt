@@ -1,0 +1,24 @@
+GCJ makefile hardcodes compiler commands
+
+
+
+Description:
+src/gcj/Makefile hardcodes the command names for gcj, gcjh, and g++. This makes it difficult to 
+compile with a particular version of GCJ if multiple are installed with suffixes (eg, gcj-4.0)
+
+Steps to reproduce:
+1. Configure, compile, and install GCC/GCJ with something like --program-suffix=-4.0
+2. cd ~/src/lucene && ant gcj
+
+Expected results:
+Somehow be able to specify my compiler.
+
+Actual results:
+Can't find 'gcj' executable, or worse runs wrong version. :)
+
+Suggested fix: as is common with variable names like CC to force a C compiler, allow the builder to 
+override the compiler commands used by setting optional environment variables GCJ etc.
+Patch to be attached.
+
+Additional info:
+Building Lucene from SVN 2005-04-19.

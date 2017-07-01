@@ -1,0 +1,10 @@
+CachingHttpClient should have similar behavior as AbstractHttpClient when executing with ResponseHandler
+
+
+
+Description:
+When calling execute on the AbstractHttpClient with a  ResponseHandler, the AbstractHttpClient will attempt to Consume the Entity and close any open connections before returning. This behavior is not currently in the CachingHttpClient. 
+
+This can lead to connection leaks when switching to CachingHttpClient, becuase the responsibility to fully consume the entity is now on the ResponseHandler instead on the HttpClient.
+
+Here is the code that does the existing 'auto-close' behavior: "org.apache.http.impl.client.AbstractHttpClient.java" lines 1080-1111

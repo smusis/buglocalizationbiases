@@ -1,0 +1,6 @@
+Allow multiple producers to feed/consume journal
+
+
+
+Description:
+Some clustered application based on jackrabbit might want to append custom records to the central journal in order to synchronize all nodes. Therefore, journal should provide support for multiple consumers/producers.

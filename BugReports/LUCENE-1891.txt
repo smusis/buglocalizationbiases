@@ -1,0 +1,6 @@
+Spatial uses java util logging that causes needless minor work (multiple string concat, a method call) due to not checking log level
+
+
+
+Description:
+Not sure there should be logging here - just used in two spots and looks more for debug - but if its going to be there, should check for isFineEnabled.

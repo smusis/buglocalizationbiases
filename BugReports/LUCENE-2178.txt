@@ -1,0 +1,6 @@
+Benchmark contrib should allow multiple locations in ext.classpath
+
+
+
+Description:
+When {{ant run-task}} is invoked with the  {{-Dbenchmark.ext.classpath=...}} option, only a single location may be specified.  If a classpath with more than one location is specified, none of the locations is put on the classpath for the invoked JVM.

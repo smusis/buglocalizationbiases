@@ -1,0 +1,14 @@
+TermAttribute.termLength() optimization
+
+
+
+Description:
+
+   public int termLength() {
+     initTermBuffer(); // This patch removes this method call 
+     return termLength;
+   }
+
+I see no reason to initTermBuffer() in termLength()... all tests pass, but I could be wrong?
+
+

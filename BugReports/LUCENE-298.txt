@@ -1,0 +1,24 @@
+NullPointerExc. when indexing empty field with term vectors
+
+
+
+Description:
+Mark Harwood mentioned this on the user's list. Running the attached code 
+you'll get this exception: 
+ 
+Exception in thread "main" java.lang.NullPointerException 
+	at 
+org.apache.lucene.index.TermVectorsReader.clone(TermVectorsReader.java:303) 
+	at 
+org.apache.lucene.index.SegmentReader.getTermVectorsReader(SegmentReader.java:473) 
+	at 
+org.apache.lucene.index.SegmentReader.getTermFreqVectors(SegmentReader.java:507) 
+	at 
+org.apache.lucene.index.SegmentMerger.mergeVectors(SegmentMerger.java:204) 
+	at org.apache.lucene.index.SegmentMerger.merge(SegmentMerger.java:94) 
+	at 
+org.apache.lucene.index.IndexWriter.mergeSegments(IndexWriter.java:618) 
+	at 
+org.apache.lucene.index.IndexWriter.flushRamSegments(IndexWriter.java:571) 
+	at org.apache.lucene.index.IndexWriter.close(IndexWriter.java:339) 
+	at TVBug.main(TVBug.java:16)

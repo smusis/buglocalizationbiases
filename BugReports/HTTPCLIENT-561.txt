@@ -1,0 +1,14 @@
+entity returns the same stream for getContent()
+
+
+
+Description:
+BasicHttpEntity and GzipDecompressingEntity will return the same stream
+when getContent() is called multiple times. That is not allowed by the
+HttpEntity interface. They should rather throw an IllegalStateException.
+
+Some tests and EntityUtils rely on getContent to return the same stream
+for multiple calls.
+
+patch follows,
+  Roland

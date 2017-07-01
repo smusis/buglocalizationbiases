@@ -1,0 +1,7 @@
+invalid groupid for tm-extractors in textfilters project
+
+
+
+Description:
+groupid for tm-extractors should be "org.textmining" and not "textmining".
+The dependency with the correct groupid is available on ibiblio

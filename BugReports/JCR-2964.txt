@@ -1,0 +1,6 @@
+ItemSaveOperation should not swallow stacktrace
+
+
+
+Description:
+When a StaleItemStateException is thrown the stacktrace is swallowed. This makes it much harder to figure out what went wrong from the logs.

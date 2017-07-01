@@ -1,0 +1,16 @@
+HttpState cannot differentiate credentials for different hosts with same Realm names
+
+
+
+Description:
+It seems that one needs a separate HttpState per client per host: from the 
+javadocs, if (by coincidence or by design) more than one host uses the same 
+realm name, such as "Private", then there's an unresolvable conflict, as 
+HttpState can only store one set of credentials for a given name...
+
+According to Oleg Kalnichevski, it is plausible just to extend the HttpState 
+class with additional methods that would require host to be specified along the
+authentication realm when dealing with credentials.
+
+See postings on "Commons HttpClient Project" mailing list for more info (dated 
+21/03/2003).

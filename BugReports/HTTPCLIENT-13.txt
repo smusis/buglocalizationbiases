@@ -1,0 +1,15 @@
+empty path not handled correctly
+
+
+
+Description:
+When requesting for a URL which has an empty path, e.g. http://abcnews.go.com ,
+the code sends the following line:
+
+GET  HTTP/1.1
+
+which should be
+
+GET / HTTP/1.1
+
+instead

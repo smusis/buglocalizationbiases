@@ -1,0 +1,9 @@
+Handling of binary properties (streams) in QValue interface
+
+
+
+Description:
+The current SPI requires QValue to return new streams upon each call to getStream(). As far as I can tell, this essentially requires a QValue implementation to preserve the whole content of a stream, be it in memory or on disk.
+
+In particular (and unless I'm missing something), when importing large content into a repository, this causes the whole data stream to be written twice. We really should try to avoid that.
+

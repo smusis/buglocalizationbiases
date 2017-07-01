@@ -1,0 +1,6 @@
+Improve Performance of DescendantSelfAxisQuery
+
+
+
+Description:
+In DescendantSelfAxisQuery.DescendantSelfAxisScorer.isValid(int) contextHits is populated with docs that are found on the way down the axis. The current algorithm unfortunately doesn't add any new docs at all because it only adds docs already present in contextHits. This leads to more calls to HierarchyResolver.getParent(int) than necessary.

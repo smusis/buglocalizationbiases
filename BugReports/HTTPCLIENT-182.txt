@@ -1,0 +1,36 @@
+httpclient charset encooding loosing problem
+
+
+
+Description:
+file: org\apache\commons\httpclient\HttpConstants.java 
+
+
+line: near 261
+
+
+---------------------------------
+
+
+public static String getContentString(final byte[] data, String charset) {
+
+
+        return getContentString(data, 0, data.length);
+
+
+    }
+
+
+---------------------------------
+
+
+must be
+
+
+---
+
+
+        return getContentString(data, 0, data.length, charset);
+
+
+---

@@ -1,0 +1,32 @@
+SharedFieldCache can cause a memory leak
+
+
+
+Description:
+The SharedFieldCache has some problems with the way it builds the cache:
+ - as key is has the IndexReader
+ - as value it has a inner cache (another map) that has as a key a static inner class called 'Key'.
+
+This 'Key' holds a reference to the comparator used for in the queries ran.
+Assuming this comparator is of any type that extends from AbstractFieldComparator (I think all of the custom JR comparators), then it keeps a reference to all the InderReader instances in order to be able to load the values as Comparable(s).
+
+So the circle is complete and the SharedFieldCache entries never get GC'ed.
+
+One option would have been to implement a 'purge' method on the cache, similar to the lucene mechanism, and when an InderReader gets closed is could call 'purge'. But that is both ugly AND is doesn't seem to work that well :)
+
+A more radical option is to remove the cache completely. Each instance of SimpleFieldComparator (the only client of this cache) already builds an array of the available values, so the cache would only help other instances of the same type. We'll not analyze this further.
+
+The proposed solution (patch will follow shortly) is to remove the Comparator reference from the Key class. 
+It looks like it has no real purpose there, just to impact the 'equals' of the key, which makes no sense in the first place as the lucene query does not use the Comparator info at all.
+If anything, using the same field and 2 different Comparators we'll get 2 different cache entries based on the same values from the lucene index.
+
+Feedback is appreciated!
+
+
+
+
+
+
+
+
+

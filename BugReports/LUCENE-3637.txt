@@ -1,0 +1,20 @@
+Make IndexReader.decRef() call refCount.decrementAndGet instead of getAndDecrement
+
+
+
+Description:
+IndexReader.decRef() has this code:
+
+{code}
+    final int rc = refCount.getAndDecrement();
+    if (rc == 1) {
+{code}
+
+I think it will be clearer if it was written like this:
+
+{code}
+    final int rc = refCount.decrementAndGet();
+    if (rc == 0) {
+{code}
+
+It's a very simple change, which makes reading the code (at least IMO) easier. Will post a patch shortly.

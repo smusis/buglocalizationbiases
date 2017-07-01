@@ -1,0 +1,6 @@
+FastVectorHighlighter truncates words at beginning and end of fragments
+
+
+
+Description:
+FastVectorHighlighter does not take word boundaries into consideration when building fragments, so that in most cases the first and last word of a fragment are truncated.  This makes the highlights less legible than they should be.  I will attach a patch to BaseFragmentBuilder that resolves this by expanding the start and end boundaries of the fragment to the first whitespace character on either side of the fragment, or the beginning or end of the source text, whichever comes first.  This significantly improves legibility, at the cost of returning a slightly larger number of characters than specified for the fragment size.

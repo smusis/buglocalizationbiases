@@ -1,0 +1,9 @@
+tests should run checkIndex on indexes they create
+
+
+
+Description:
+I think we should add a boolean checkIndexesOnClose (default=true) to MockDirectoryWrapper.
+
+Only a very few tests need to disable this.
+

@@ -1,0 +1,12 @@
+crank up faceting module tests
+
+
+
+Description:
+The faceting module has a large set of good tests.
+
+lets switch them over to use all of our test infra (randomindexwriter, random iwconfig, mockanalyzer, newDirectory, ...)
+I don't want to address multipliers and atLeast() etc on this issue, I think we should follow up with that on a separate issue, that also looks at speed and making sure the nightly build is exhaustive.
+
+for now, lets just get the coverage in, it will be good to do before any refactoring.
+

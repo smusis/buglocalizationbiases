@@ -1,0 +1,8 @@
+bad normalization in sorted search returning TopDocs
+
+
+
+Description:
+FieldSortedHitQueue.maxscore is maintained in the lessThan method (which never gets called if a single document is added to the queue).
+
+I've checked in a test to TestSort.testTopDocsScores() with the final assertion commented out.

@@ -1,0 +1,7 @@
+Changes.html should be visible to users for closed releases
+
+
+
+Description:
+Changes.html is currently available only in the dev page, for trunk. 
+See LUCENE-1157 for discussion on where exactly to expose this.

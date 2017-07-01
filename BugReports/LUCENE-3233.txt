@@ -1,0 +1,12 @@
+HuperDuperSynonymsFilter™
+
+
+
+Description:
+The current synonymsfilter uses a lot of ram and cpu, especially at build time.
+
+I think yesterday I heard about "huge synonyms files" three times.
+
+So, I think we should use an FST-based structure, sharing the inputs and outputs.
+And we should be more efficient with the tokenStream api, e.g. using save/restoreState instead of cloneAttributes()
+

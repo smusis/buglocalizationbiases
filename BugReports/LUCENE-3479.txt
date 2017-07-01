@@ -1,0 +1,88 @@
+TestGrouping failure
+
+
+
+Description:
+{noformat}
+ant test -Dtestcase=TestGrouping -Dtestmethod=testRandom -Dtests.seed=295cdb78b4a442d4:-4c5d64ef4d698c27:-425d4c1eb87211ba
+{noformat}
+
+fails with this on current trunk:
+
+{noformat}
+
+    [junit] ------------- Standard Error -----------------
+    [junit] NOTE: reproduce with: ant test -Dtestcase=TestGrouping -Dtestmethod=testRandom -Dtests.seed=295cdb78b4a442d4:-4c5d64ef4d698c27:-425d4c1eb87211ba
+    [junit] NOTE: test params are: codec=RandomCodecProvider: {id=MockRandom, content=MockSep, sort2=SimpleText, groupend=Pulsing(freqCutoff=3 minBlockSize=65 maxBlockSize=132), sort1=Memory, group=Memory}, sim=RandomSimilarityProvider(queryNorm=true,coord=false): {id=DFR I(F)L2, content=DFR BeL3(800.0), sort2=DFR GL3(800.0), groupend=DFR G2, sort1=DFR GB3(800.0), group=LM Jelinek-Mercer(0.700000)}, locale=zh_TW, timezone=America/Indiana/Indianapolis
+    [junit] NOTE: all tests run in this JVM:
+    [junit] [TestGrouping]
+    [junit] NOTE: Linux 2.6.33.6-147.fc13.x86_64 amd64/Sun Microsystems Inc. 1.6.0_21 (64-bit)/cpus=24,threads=1,free=143246344,total=281804800
+    [junit] ------------- ---------------- ---------------
+    [junit] Testcase: testRandom(org.apache.lucene.search.grouping.TestGrouping):	FAILED
+    [junit] expected:<11> but was:<7>
+    [junit] junit.framework.AssertionFailedError: expected:<11> but was:<7>
+    [junit] 	at org.apache.lucene.util.LuceneTestCaseRunner.runChild(LuceneTestCaseRunner.java:148)
+    [junit] 	at org.apache.lucene.util.LuceneTestCaseRunner.runChild(LuceneTestCaseRunner.java:50)
+    [junit] 	at org.apache.lucene.search.grouping.TestGrouping.assertEquals(TestGrouping.java:980)
+    [junit] 	at org.apache.lucene.search.grouping.TestGrouping.testRandom(TestGrouping.java:865)
+    [junit] 	at org.apache.lucene.util.LuceneTestCase$2$1.evaluate(LuceneTestCase.java:611)
+    [junit] 
+    [junit] 
+{noformat}
+
+I dug for a while... the test is a bit sneaky because it compares sorted docs (by score) across 2 indexes.  Index #1 has no deletions; Index #2 has same docs, but organized into doc blocks by group, and has some deletions.  In theory (I think) even though the deletions will cause scores to differ across the two indices, it should not alter the sort order of the docs.  Here is the explain output of the docs that sorted differently:
+
+{noformat}
+#1: top hit in the "has deletes doc-block" index (id=239):
+
+explain: 2.394486 = (MATCH) weight(content:real1 in 292)
+[DFRSimilarity], result of:
+ 2.394486 = score(DFRSimilarity, doc=292, freq=1.0), computed from:
+   1.0 = termFreq=1
+   41.944084 = NormalizationH3, computed from:
+     1.0 = tf
+     5.3102274 = avgFieldLength
+     2.56 = len
+   102.829 = BasicModelBE, computed from:
+     41.944084 = tfn
+     880.0 = numberOfDocuments
+     239.0 = totalTermFreq
+   0.023286095 = AfterEffectL, computed from:
+     41.944084 = tfn
+
+
+#2: hit in the "no deletes normal index" (id=229)
+
+ID=229 explain=2.382285 = (MATCH) weight(content:real1 in 225)
+[DFRSimilarity], result of:
+ 2.382285 = score(DFRSimilarity, doc=225, freq=1.0), computed from:
+   1.0 = termFreq=1
+   41.765594 = NormalizationH3, computed from:
+     1.0 = tf
+     5.3218827 = avgFieldLength
+     10.24 = len
+   101.879845 = BasicModelBE, computed from:
+     41.765594 = tfn
+     786.0 = numberOfDocuments
+     215.0 = totalTermFreq
+   0.023383282 = AfterEffectL, computed from:
+     41.765594 = tfn
+
+Then I went and called explain on the "no deletes normal index" for
+the top doc (id=239):
+
+explain: 2.3822558 = (MATCH) weight(content:real1 in 17)
+[DFRSimilarity], result of:
+ 2.3822558 = score(DFRSimilarity, doc=17, freq=1.0), computed from:
+   1.0 = termFreq=1
+   42.165264 = NormalizationH3, computed from:
+     1.0 = tf
+     5.3218827 = avgFieldLength
+     2.56 = len
+   102.8307 = BasicModelBE, computed from:
+     42.165264 = tfn
+     786.0 = numberOfDocuments
+     215.0 = totalTermFreq
+   0.023166776 = AfterEffectL, computed from:
+     42.165264 = tfn
+{noformat}

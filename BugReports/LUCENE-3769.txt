@@ -1,0 +1,16 @@
+Simplify NRTManager
+
+
+
+Description:
+NRTManager is hairy now, because the applyDeletes is separately passed
+to ctor, passed to maybeReopen, passed to getSearcherManager, etc.
+
+I think, instead, you should pass it only to the ctor, and if you have
+some cases needing deletes and others not then you can make two
+NRTManagers.  This should be no less efficient than we have today,
+just simpler.
+
+I think it will also enable NRTManager to subclass ThingyManager
+(LUCENE-3761).
+

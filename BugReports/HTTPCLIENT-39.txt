@@ -1,0 +1,27 @@
+Authorization credentials should be sent pre-emptively
+
+
+
+Description:
+When a web browser receives a <i>401: Unauthorized</i> response code, the
+browser prompts for the user and password credentials for the requested
+authentication realm.  An Authorization header is then sent for this request. 
+HttpClient models this behaviour quite well.
+
+After the web browser has the authentication credentials for a given host, port
+and realm, it then sends the Authorization header for subsequent requests
+pre-emptively, whithout need for a 401 response.  HttpClient always reqires a
+401 response before it will send out the Authorization header.
+
+As <code>HttpClient.startSession()</code> will take a <code>Credentials</code>
+object as a parameter as the default credentials, the default credentials should
+be sent as part of every request in that session.  Some mechanisim for
+over-riding the default credentials should also be provided to be sent
+pre-emptively.
+
+The point of this enhancement request is to minimize the number of unnecessisary
+401 responses.
+
+It appears that the simple solution might be to modify the logic of when
+<code>Authenticator.authenticate()</code> gets called in
+<code>HttpMethodBase.addAuthorizationRequestHeader()</code>

@@ -1,0 +1,29 @@
+Request with two forward slashes for path fails
+
+
+
+Description:
+The following code demonstrates the problem:
+        DefaultHttpClient client = new DefaultHttpClient();
+        client.execute(new HttpGet("http://www.google.com//"));
+
+When a request is made, the DefaultRequestDirector invokes rewriteRequestURI(). I don't fully understand why this method does what it does. For a non-proxied request, it attempts to render the URI to a relative URI. In doing so, it tries to create a relative URI whose content is "//". Per RFC 2396 section 5 (Relative URI References), a relative URI that begins with "//" is a network-path reference, and the "//" must be immediately followed by an authority. Therefore, while "http://www.google.com//" is a valid absolute URI, "//" is not a valid relative one. The resulting exception:
+
+[...]
+Caused by: org.apache.http.ProtocolException: Invalid URI: http://www.google.com//
+	at org.apache.http.impl.client.DefaultRequestDirector.rewriteRequestURI(DefaultRequestDirector.java:339)
+	at org.apache.http.impl.client.DefaultRequestDirector.execute(DefaultRequestDirector.java:434)
+	at org.apache.http.impl.client.AbstractHttpClient.execute(AbstractHttpClient.java:641)
+	... 31 more
+Caused by: java.net.URISyntaxException: Expected authority at index 2: //
+	at java.net.URI$Parser.fail(URI.java:2809)
+	at java.net.URI$Parser.failExpecting(URI.java:2815)
+	at java.net.URI$Parser.parseHierarchical(URI.java:3063)
+	at java.net.URI$Parser.parse(URI.java:3024)
+	at java.net.URI.<init>(URI.java:578)
+	at org.apache.http.client.utils.URIUtils.createURI(URIUtils.java:106)
+	at org.apache.http.client.utils.URIUtils.rewriteURI(URIUtils.java:141)
+	at org.apache.http.client.utils.URIUtils.rewriteURI(URIUtils.java:159)
+	at org.apache.http.impl.client.DefaultRequestDirector.rewriteRequestURI(DefaultRequestDirector.java:333)
+	... 33 more
+

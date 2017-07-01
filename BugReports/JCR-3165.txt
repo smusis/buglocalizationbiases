@@ -1,0 +1,10 @@
+Consolidate compare behaviour for Value(s) and Comparable(s)
+
+
+
+Description:
+There are 2 different implementations of Value comparison (ValueComparator and Util). With the introduction of JCR-2906 which introduces arrays into the mix, I'd like to refactor all of them into one place, namely o.a.j.core.query.lucene.Util.
+
+This will also allow for a wider scope of comparison for Value[], marked as TODO in the ValueComparator class.
+
+Will attach patch shortly

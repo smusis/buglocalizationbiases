@@ -1,0 +1,24 @@
+refactoring of DavSession acquisition in jcr-server
+
+
+
+Description:
+i'm subclassing WebdavServer, and i want to use my own logic for finding credentials in the request, logging into the repository and instantiating a DavSession.
+
+unfortunately, WebdavServlet.getSession and its friend the inner class DavSessionImpl are declared private. i changed WebdavServlet.getSession to be protected so that i could override it, but even so, i have no access to DavSessionImpl, so for now, i've copied and pasted it as an inner class in my subclass. yuck.
+
+here's a proposal for making this more extensible:
+
+1) create the interface DavSessionProvider in org.apache.jackrabbit.server with these methods:
+
+  public void acquireSession(WebdavRequest request) throws DavException;
+  public void releaseSession(WebdavRequest request);
+
+2) make JCRWebdavServer implement DavSessionProvider (it already includes the above methods)
+
+3) move WebdavServlet$DavSessionImpl to DavSessionImpl in org.apache.jackrabbit.server.simple
+
+4) create a DavSessionProviderImpl in org.apache.jackrabbit.server.simple implementing DavSessionProvider which returns instances of DavSessionImpl
+
+5) change WebdavServlet to use a DavSessionProvider rather than its own getSession method, and use a DavSessionProviderImpl by default. subclasses can override with setDavSessionProvider().
+

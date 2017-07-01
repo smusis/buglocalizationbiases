@@ -1,0 +1,35 @@
+shareable nodes: wrong path returned, causes remove() to delete wrong node
+
+
+
+Description:
+It seems that for shareable nodes it can happen that getPath() returns the wrong path (one of another node in the shared set):
+
+/**
+* Verify that shared nodes return correct paths.
+*/
+public void testPath() throws Exception {
+   Node a1 = testRootNode.addNode("a1");
+   Node a2 = a1.addNode("a2");
+   Node b1 = a1.addNode("b1");
+   b1.addMixin("mix:shareable");
+   testRootNode.save();
+
+   //now we have a shareable node N with path a1/b1
+
+   Session session = testRootNode.getSession();
+   Workspace workspace = session.getWorkspace();
+   String path = a2.getPath() + "/b2";
+   workspace.clone(workspace.getName(), b1.getPath(), path, false);
+
+   //now we have another shareable node N' in the same shared set as N with path a1/a2/b2
+
+   //using the path a1/a2/b2, we should get the node N' here
+   Item item = session.getItem(path);
+   String p = item.getPath();
+   assertFalse("unexpectedly got the path from another node from the same shared set ", p.equals(b1.getPath()));
+} 
+
+Note that when this happens, a subsequent remove() deletes the wrong node.
+
+(Thanks Manfred for spotting this one).

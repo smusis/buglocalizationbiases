@@ -1,0 +1,33 @@
+Highligter fails to include non-token at end of string to be highlighted
+
+
+
+Description:
+The following code extract show the problem
+
+
+		TermQuery query= new TermQuery( new Term( "data", "help" )); 
+		Highlighter hg = new Highlighter(new SimpleHTMLFormatter(), new QueryScorer( query ));
+		hg.setTextFragmenter( new NullFragmenter() );
+		
+		String match = null;
+		try {
+			match = hg.getBestFragment( new StandardAnalyzer(), "data", "help me [54-65]" );
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		System.out.println( match );
+
+
+The sytsem outputs 
+
+<B>help</B> me [54-65
+
+
+would expect 
+
+<B>help</B> me [54-65]
+
+
+
+

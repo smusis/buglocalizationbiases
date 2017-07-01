@@ -1,0 +1,11 @@
+Integrate MockBM25Similarity and MockLMSimilarity into the framework
+
+
+
+Description:
+Steps:
+1. Decide if {{MockLMSimilarity}} is needed at all (we have {{LMDirichletSimilarity}})
+2. Move the classes to the similarities package
+3. Move the similarities package to src/
+4. Move all sims (inc. Similarity) to similarities
+5. Make MockBM25Similarity a subclass of EasySimilarity?

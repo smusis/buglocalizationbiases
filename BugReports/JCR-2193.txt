@@ -1,0 +1,22 @@
+builtin_nodetypes.cnd contains non-ascii chars and is not correctly decoded using websphere
+
+
+
+Description:
+jackrabbit can't be started within websphere with the following error:
+
+Caused by: 
+org.apache.jackrabbit.spi.commons.nodetype.compact.ParseException: IOException
+while attempting to read input stream
+(org/apache/jackrabbit/core/nodetype/builtin_nodetypes.cnd, line 272)
+.
+.
+Caused by: 
+sun.io.MalformedInputException
+	at sun.io.ByteToCharUTF8.convert(ByteToCharUTF8.java:262)
+	at sun.nio.cs.StreamDecoder$ConverterSD.convertInto(StreamDecoder.java:314)
+	at sun.nio.cs.StreamDecoder$ConverterSD.implRead(StreamDecoder.java:345)
+
+
+I quickly checked the file and it contains some non ascii-7 characters. actually it should be stored, packaged and read as utf8. somthing was list in translation.
+the simplest fix would be to remove all non-ascii7 characters from the file.

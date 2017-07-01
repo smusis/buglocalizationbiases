@@ -1,0 +1,6 @@
+Add signature and major/minor version to the journal files used for clustering
+
+
+
+Description:
+Journal files used for clustering should contain a signature, and a major/minor version that helps identifying them.

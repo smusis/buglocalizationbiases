@@ -1,0 +1,24 @@
+Preemptive Authorization parameter initialization incorrect, causes preemptive auth not to work
+
+
+
+Description:
+Preemptive authorization is defeated by an incorrect initialization. Patch 
+follows:
+--- DefaultHttpParamsFactory.java       2005-10-10 19:09:10.000000000 -0700
++++ DefaultHttpParamsFactory.java.fixed 2005-10-17 17:00:10.259174920 -0700
+@@ -118,9 +118,9 @@
+         if (preemptiveDefault != null) {
+             preemptiveDefault = preemptiveDefault.trim().toLowerCase();
+             if (preemptiveDefault.equals("true")) {
+-                params.setParameter
+(HttpClientParams.PREEMPTIVE_AUTHENTICATION, "on");
++                params.setParameter
+(HttpClientParams.PREEMPTIVE_AUTHENTICATION, Boolean.TRUE);
+             } else if (preemptiveDefault.equals("false")) {
+-                params.setParameter
+(HttpClientParams.PREEMPTIVE_AUTHENTICATION, "off");
++                params.setParameter
+(HttpClientParams.PREEMPTIVE_AUTHENTICATION, Boolean.FALSE);
+             }
+         }

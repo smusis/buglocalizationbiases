@@ -1,0 +1,18 @@
+DatabaseJournal: java.lang.IllegalStateException: already in batch mode
+
+
+
+Description:
+Using the database journal (any database) fails with the following stack trace:
+
+java.lang.IllegalStateException: already in batch mode
+	at org.apache.jackrabbit.core.util.db.ConnectionHelper.startBatch(ConnectionHelper.java:212)
+	at org.apache.jackrabbit.core.journal.DatabaseJournal.doSync(DatabaseJournal.java:449)
+	at org.apache.jackrabbit.core.journal.AbstractJournal.lockAndSync(AbstractJournal.java:254)
+	at org.apache.jackrabbit.core.journal.DefaultRecordProducer.append(DefaultRecordProducer.java:51)
+	at org.apache.jackrabbit.core.cluster.ClusterNode$WorkspaceUpdateChannel.updateCreated(ClusterNode.java:539)
+	at org.apache.jackrabbit.core.state.SharedItemStateManager$Update.begin(SharedItemStateManager.java:559)
+	at org.apache.jackrabbit.core.state.SharedItemStateManager.beginUpdate(SharedItemStateManager.java:1457)
+	at org.apache.jackrabbit.core.state.SharedItemStateManager.update(SharedItemStateManager.java:1487)
+	at org.apache.jackrabbit.core.state.LocalItemStateManager.update(LocalItemStateManager.java:351)
+	at org.apache.jackrabbit.core.state.XAItemStateManager.update(XAItemStateManager.java:354)

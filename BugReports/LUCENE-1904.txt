@@ -1,0 +1,6 @@
+move wordnet based synonym code out of contrib/memory and into contrib/wordnet (or somewhere else)
+
+
+
+Description:
+see LUCENE-387 ... some synonym related code has been living in contrib/memory for a very long time ... it should be refactored out.

@@ -1,0 +1,26 @@
+SQL2 Left Outer Join
+
+
+
+Description:
+Create this nodes.
+def n1 = root.addNode("node1", "sling:SamplePage");
+n1.setProperty("n1prop1", "page1");
+def n2 = n1.addNode("node2", "sling:SampleContent");
+n2.setProperty("n2prop1", "content1");
+
+Execute this Query:
+Select * from [sling:SamplePage] as page left outer join [sling:SampleContent] as content on ISDESCENDANTNODE(content,page) where page.n1prop1 = 'page1' and content.n2prop1 = 'content1';
+The resultset have 1 row with 2 Nodes. This OK.
+
+Then execute this:
+Select * from [sling:SamplePage] as page left outer join [sling:SampleContent] as content on ISDESCENDANTNODE(content,page) where page.n1prop1 = 'page1' and content.n2prop1 = 'XXXXX';
+
+The resultset has 1 row with 1 node.
+This wrong. The result should be 0 rows.
+
+Old Versions, prior 2.2.2 have also 0 rows as result.
+
+Also, if nodes "n2" not exists, jackrabbit reports 1 row as result.
+
+

@@ -1,0 +1,8 @@
+RegexCapabilities is not Serializable
+
+
+
+Description:
+The class RegexQuery is marked Serializable by its super class, but it contains a RegexCapabilities which is not Serializable. Thus attempting to serialize the query results in an exception. 
+
+Making RegexCapabilities serializable should be no problem since its subclasses contain only serializable classes (java.util.regex.Pattern and org.apache.regexp.RE).

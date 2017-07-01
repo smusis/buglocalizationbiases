@@ -1,0 +1,8 @@
+ItemInfoCacheImpl.getNodeInfo() and .getPropertyInfo() might not clear all relevant entries
+
+
+
+Description:
+ItemInfoCacheImpl.getNodeInfo() and .getPropertyInfo() remove the retrieved entry from the cache.
+
+since entries might be cached by id AND path, entires identified by path are not removed from the cache if they're retrieved by id.

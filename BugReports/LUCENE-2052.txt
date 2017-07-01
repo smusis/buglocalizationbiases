@@ -1,0 +1,6 @@
+Scan method signatures and add varargs where possible
+
+
+
+Description:
+I changed a lot of signatures, but there may be more. The important ones like MultiReader and MultiSearcher are already done. This applies also to contrib. Varargs are no backwards break, they stay arrays as before.

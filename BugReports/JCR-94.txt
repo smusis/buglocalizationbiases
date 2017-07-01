@@ -1,0 +1,10 @@
+Patch to JCR-RMI contribution adding Version/VersionHistory support
+
+
+
+Description:
+Hi Jukka,
+
+You contributed the famous RMI extension to Jackrabbit. Many thanks. On my way to implement an Eclipse plugin to access repositories this provides great help. Unfortunately your contribution does not include support for versioning yet.
+
+I took the freedom to add this missing piece and provide it to you to add it to your contribution. Thanks.

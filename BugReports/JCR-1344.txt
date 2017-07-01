@@ -1,0 +1,17 @@
+Unsynchronized NameFactoryImpl initialization
+
+
+
+Description:
+org.apache.jackrabbit.spi.commons.name.NameFactoryImpl uses an unsafe pattern when initializing:
+
+    private static NameFactory FACTORY;
+    private NameFactoryImpl() {};
+    public static NameFactory getInstance() {
+        if (FACTORY == null) {
+            FACTORY = new NameFactoryImpl();
+        }
+        return FACTORY;
+    }
+
+This is bad in a multi-threaded environment (see http://www.ibm.com/developerworks/library/j-dcl.html for details).

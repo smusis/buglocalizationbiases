@@ -1,0 +1,7 @@
+More Locale problems in Lucene
+
+
+
+Description:
+This is a followup to LUCENE-1836: I found some more Locale problems in Lucene with Date Formats. Even for simple date formats only consisting of numbers (like ISO dates), you should always give the US locale. Because the dates in DateTools should sort according to String.compare(), it is important, that the decimal digits are western ones. In some strange locales, this may be different. Whenever you want to format dates for internal formats you exspect to behave somehow, you should at least set the locale to US, which uses ASCII. Dates entered by users and displayed to users, should be formatted according to the default or a custom specified locale.
+I also looked for DecimalFormat (especially used for padding numbers), but found no problems.

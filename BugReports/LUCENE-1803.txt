@@ -1,0 +1,6 @@
+Wrong javadoc on LowerCaseTokenizer.normalize
+
+
+
+Description:
+The javadoc on LowerCaseTokenizer.normalize seems to be copy/paste from LetterTokenizer.isTokenChar.

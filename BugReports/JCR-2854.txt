@@ -1,0 +1,6 @@
+Add option to make sorting in user/group query case insensitive
+
+
+
+Description:
+Sorting on string properties is currently case sensitive in the user/group search. There should be a way to specify whether sorting shuld be case (in)sensitive.

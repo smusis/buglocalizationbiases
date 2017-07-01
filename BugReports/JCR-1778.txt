@@ -1,0 +1,33 @@
+BindableRepositoryFactory doesn't handle repository shutdown
+
+
+
+Description:
+The BindableRepositoryFactory class keeps a cached reference to a repository even after the repository has been shut down.
+
+This causes the following code snippet to fail with an IllegalStateException:
+
+        Hashtable environment = new Hashtable();
+        environment.put(
+                Context.INITIAL_CONTEXT_FACTORY,
+                DummyInitialContextFactory.class.getName());
+        environment.put(Context.PROVIDER_URL, "http://jackrabbit.apache.org/");
+        Context context = new InitialContext(environment);
+
+        JackrabbitRepository repository;
+        String xml = "src/test/repository/repository.xml";
+        String dir = "target/repository";
+        String key = "repository";
+
+        // Create first repository
+        RegistryHelper.registerRepository(context, key, xml, dir, true);
+        repository = (JackrabbitRepository) context.lookup(key);
+        repository.login().logout();
+        repository.shutdown();
+
+        // Create second repository with the same configuration
+        RegistryHelper.registerRepository(context, key, xml, dir, true);
+        repository = (JackrabbitRepository) context.lookup(key);
+        repository.login().logout(); // throws an IllegalStateException!
+        repository.shutdown();
+

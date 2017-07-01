@@ -1,0 +1,14 @@
+spi2dav: EventFilters not respected
+
+
+
+Description:
+i have the impression that the event filter passed to the event subscription in spi2dav is not (or not properly) respected.
+
+marcel, is there a specific reason that you always pass the static SubscriptionInfo constant (no node type filter, noLocal false) to the SubscribeMethod
+in spi2dav/RepositoryServiceImpl#createSubscription ?
+
+i guess this is the reason for the failure of
+  testNodeType(org.apache.jackrabbit.test.api.observation.AddEventListenerTest)
+  testNoLocalTrue(org.apache.jackrabbit.test.api.observation.AddEventListenerTest)
+

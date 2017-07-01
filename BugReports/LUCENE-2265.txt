@@ -1,0 +1,8 @@
+improve automaton performance by running on byte[]
+
+
+
+Description:
+Currently, when enumerating terms, automaton must convert entire terms from flex's native utf-8 byte[] to char[] first, then step each char thru the state machine.
+
+we can make this more efficient, by allowing the state machine to run on byte[], so it can return true/false faster.

@@ -1,0 +1,9 @@
+OCM:The UUID of the collection elements changes on update.
+
+
+
+Description:
+On ocm.update transaction, the  Current implementation of DefaultCollectionConverterImpl recreates the colleciton-element nodes if there is no id field specificaiton.  This is completely valid for majority of the cases.  But I came across a case where the colleciton element has a uuid field.  In this case also what is happening with the current implementation is that it drops all the elements from the old collection-elements and recreates the new ones.  The major flip side is that now I am left with brand new UUIDs.  I think we should address the uniqueness characteristics specified through UUID also while mapping colleciton elements.
+
+I have a patch and a TestCase to verify the same.  I have implemented it only for the digester.  If people feel the approach is right I will work out an annotation based testcase as well.  I do not think it is going to fail even with annotations.
+

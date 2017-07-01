@@ -1,0 +1,8 @@
+Reduce memory usage of transient nodes
+
+
+
+Description:
+When adding lots of transient nodes, most of them don't have child nodes because they are leafs. The attached patch initializes NodeState.childNodeEntries with an unmodifiable empty ChildNodeEntries instance and turns it into a modifiable one only when needed.
+
+Running a test with 100k nodes (10 children per node) the memory consumption for child node entries drops from 42MB to 12MB with this patch.

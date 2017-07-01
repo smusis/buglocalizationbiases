@@ -1,0 +1,11 @@
+NodeTypeRegistry.registerNodetypes(Collection) should not register a partial set
+
+
+
+Description:
+the javadoc says:
+
+     * Note that in the case an exception is thrown, some node types might have
+     * been nevertheless successfully registered.
+
+the problem hereby is, that it cannot be determined easily, what nodetypes could be registered, and which couldnt. i would rather prefer a all-or-nothing behaviour.

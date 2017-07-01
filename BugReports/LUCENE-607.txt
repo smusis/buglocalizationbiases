@@ -1,0 +1,13 @@
+ParallelTermEnum is BROKEN
+
+
+
+Description:
+ParallelTermEnum.next() fails to advance properly to new fields.  This is a serious bug. 
+
+Christian Kohlschuetter diagnosed this as the root problem underlying LUCENE-398 and posted a first patch there.
+
+I've addressed a couple issues in the patch (close skipped field TermEnum's, generate field iterator only once, integrated Christian's test case as a Lucene test) and packaged in all the revised patch here.
+
+All Lucene tests pass, and I've further tested in this in my app, which makes extensive use of ParallelReader.
+

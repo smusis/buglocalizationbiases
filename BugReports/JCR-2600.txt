@@ -1,0 +1,6 @@
+AbstractLoginModule logs a warning on anonymous logins
+
+
+
+Description:
+Currently a "No credentials available -> try default (anonymous) authentication" warning is logged by AbstractLoginModule whenever an anonymous login is made. Since this is a normal situation, the log message should be at debug or at most info level.

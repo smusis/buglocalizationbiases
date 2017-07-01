@@ -1,0 +1,10 @@
+Node.checkin() throws ArrayIndexOutOfBoundsException
+
+
+
+Description:
+I get an ArrayIndexOutOfBoundsException for index 0 when checking-in a node. After drilling into the code I found, that during checkin, the jcr:uuid property (defined as OPV INITIALIZE) is not copied from the node to the frozen node.
+
+After checkin though the implementation tries to access the string value of the jcr:uuid property, which is not existing, hence the internal property implementation throws the exception when accessing the first element in the empty value array.
+
+As a workaround I currently the set jcr:uuid property to OPV=COPY in the mixin:referenceable node type. But I could imagine, that this might be incorrect according to the spec, yet it works in my use case.

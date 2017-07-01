@@ -1,0 +1,13 @@
+TestFSDirectory fails on Windows
+
+
+
+Description:
+"ant test" generates the following error consistently when run on a Windows machine even when run as user with Administrator privileges
+
+    [junit] Testcase: testTmpDirIsPlainFile(org.apache.lucene.index.store.TestFSDirectory):     Caused an ERROR
+    [junit] Access is denied
+    [junit] java.io.IOException: Access is denied
+    [junit]     at java.io.WinNTFileSystem.createFileExclusively(Native Method)
+    [junit]     at java.io.File.createNewFile(File.java:828)
+    [junit]     at org.apache.lucene.index.store.TestFSDirectory.testTmpDirIsPlainFile(TestFSDirectory.java:66)

@@ -1,0 +1,6 @@
+EffectiveNodeType#getNamedNodeDefs returns array QItemDefinition instead of QNodeDefinition
+
+
+
+Description:
+... thus requires unnecessary casting...

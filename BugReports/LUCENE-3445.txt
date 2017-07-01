@@ -1,0 +1,17 @@
+Add SearcherManager, to manage IndexSearcher usage across threads and reopens
+
+
+
+Description:
+This is a simple helper class I wrote for Lucene in Action 2nd ed.
+I'd like to commit under Lucene (contrib/misc).
+
+It simplifies using & reopening an IndexSearcher across multiple
+threads, by using IndexReader's ref counts to know when it's safe
+to close the reader.
+
+In the process I also factored out a test base class for tests that
+want to make lots of simultaneous indexing and searching threads, and
+fixed TestNRTThreads (core), TestNRTManager (contrib/misc) and the new
+TestSearcherManager (contrib/misc) to use this base class.
+

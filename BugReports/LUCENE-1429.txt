@@ -1,0 +1,19 @@
+close() throws incorrect IllegalStateEx after IndexWriter hit an OOME when autoCommit is true
+
+
+
+Description:
+Spinoff from http://www.nabble.com/IllegalStateEx-thrown-when-calling-close-to20201825.html
+
+When IndexWriter hits an OOME, it records this and then if close() is
+called it calls rollback() instead.  This is a defensive measure, in
+case the OOME corrupted the internal buffered state (added/deleted
+docs).
+
+But there's a bug: if you opened IndexWriter with autoCommit true,
+close() then incorrectly throws an IllegalStatException.
+
+This fix is simple: allow rollback to be called even if autoCommit is
+true, internally during close.  (External calls to rollback with
+autoCommmit true is still not allowed).
+

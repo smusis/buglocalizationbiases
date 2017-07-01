@@ -1,0 +1,20 @@
+ArrayIndexOutOfBoundsException in HttpStatus.getStatusText(508)
+
+
+
+Description:
+Try the following:
+
+    System.out.println("Status text = " + HttpStatus.getStatusText(507));
+    try {
+      System.out.println("Status text = " + HttpStatus.getStatusText(508));
+    }
+    catch (Exception ex) {
+      System.err.println("Exception! msg = " + ex.getMessage());
+      ex.printStackTrace();
+    }
+    System.out.println("Status text = " + HttpStatus.getStatusText(509));
+
+507 -> returns a message as expected
+508 -> ArrayIndexOutOfBoundsException
+509 -> null as expected

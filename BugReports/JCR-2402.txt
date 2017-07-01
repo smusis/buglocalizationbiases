@@ -1,0 +1,10 @@
+Observation: avoid running out of memory
+
+
+
+Description:
+Jackrabbit uses an unbounded observation queue for event listeners (for asynchronous listeners, which are the default). If an observation listener is very slow, the observation queue gets larger and larger, and the JVM will eventually run out of memory.
+
+I suggest to use a maximum queue size of 100'000 by default. Adding new events to the queue will block until the observation listeners removed an item. I'm not sure if we need a way to configure this option; probably a system property is enough as a start (we can still add a better way to configure this setting if it turns out somebody actually needs a different value).
+
+A special case is observation listeners that themselves write to the repository and therefore cause new events. In this case, it doesn't make sense to block adding an event, because that would block the whole system. However a warning should be written to the log file.

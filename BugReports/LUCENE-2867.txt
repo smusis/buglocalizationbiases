@@ -1,0 +1,6 @@
+Change contrib QP API that uses CharSequence as string identifier
+
+
+
+Description:
+There are some API methods on contrib queryparser that expects CharSequence as identifier. This is wrong, since it may lead to incorrect or mislead behavior, as shown on LUCENE-2855. To avoid this problem, these APIs will be changed and enforce the use of String instead of CharSequence on version 4. This patch already deprecate the old API methods and add new substitute methods that uses only String.

@@ -1,0 +1,17 @@
+SessionImpl#getSubject() should return an unmodifiable subject
+
+
+
+Description:
+for security reasons the subject exposed by SessionImpl#getSubject() should be unmodifiable or at least changes made
+to it should not be modify the subject hold by the session.
+
+currently i see the following options to get there:
+a: set readonly flag on the subject associated with the session
+b: getSubject() returns a new instance of Subject having the same characteristics as the subject associated with the session
+c: getSubject() returns a new but readonly Subject instance
+
+my preferred solution was c as
+- it doesn't change the characteristics of the subject
+- the unmodifiable status is transparent to the caller since modifying the subject fails without forcing the api consumer
+  to read the javadoc to know why changing the subject is not reflected on the session itself (that would be a drawback of b).

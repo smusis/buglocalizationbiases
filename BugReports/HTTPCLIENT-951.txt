@@ -1,0 +1,37 @@
+Incorrect handling of InputStreams when connecting to a server that requires authentication
+
+
+
+Description:
+I'm trying to upload a file to a WebDav server (mod_dav on Apache Web Server 2.2.14) that has basic (or digest, the result is the same) authentication enabled.
+I'm using the following code:
+        String url = "http://myserver/dir/test2.gif";
+        File file = new File("d:/test2.gif");
+        DefaultHttpClient httpClient = new DefaultHttpClient();
+        HttpPut put = new HttpPut(url);
+        put.setEntity(new InputStreamEntity(new FileInputStream(file), file.length()));
+        
+        URI uri = put.getURI();
+        httpClient.getCredentialsProvider().setCredentials(new AuthScope(uri.getHost(), uri.getPort()),
+                getCredentials());
+        put.getParams().setBooleanParameter(CoreProtocolPNames.USE_EXPECT_CONTINUE, true);
+        HttpResponse response = httpClient.execute(put);
+        System.out.println(response.getStatusLine());
+
+When running the above code, I'm getting a org.apache.http.client.NonRepeatableRequestException: Cannot retry request with a non-repeatable request entity. I tested both the latest alpha & the svn head. Doing the same thing in HttpClient 3.1 worked as expected. 
+
+This could be normal, as I'm using an InputStream that is indeed not repeatable, but as I'm also using Expect: 100-Continue, the stream shouldn't have been consumed with the first connection (the one that gets a code 401 from the WebDav server), and only in the second one, when the credentials are provided.
+
+The problem is that DefaultRequestDirector.execute doesn't take this into account and assumes that if a request has been tried once, its associated entity (if any) has been consumed.
+Here's the fix that I came up with:
+Change DefaultRequestDirector.execute so that if the wrapper is an EntityEnclosingRequestWrapper, it checks if the entity has actually been consumed before throwing a NonRepeatableRequestException. I'm using the method isStreaming() from HttpEntity, as it's the closest thing to what I was looking for. Reading the JavaDoc, it could lead to the situation where an entity has started streaming but has not yet finished, and so is not in a state where it can be used. However I don't think that's a problem as the javadoc for HttpEntity.getContent() states that it can't be called two times on a non-repeatable entity, so it's just a matter of when the request will fail.
+This lead me to also modify InputStreamEntity (from the httpCore project) as it didn't comply with the javadoc. With these two modifications, The file upload completes successfully.
+
+I also modified:
+ * TestInputStreamEntity.testBasics() (from the httpCore project) test so that it complies with getContent()'s Javadoc.
+ * TestDefaultClientRequestDirector.FaultyHttpRequestExecutor because it didn't consume the entity's content.
+All the tests from both httpCore and httpClient pass.
+I tested both InputStreamEntity and BasicHttpEntity.
+ 
+Please keep in mind that I am by no means an httpClient (or http, for that matter) expert, and these modifications may have some unexpected side-effects that I did not foresee, contain plain dumb code, or whatever, so it would be great if someone could review my changes and give their opinion.
+

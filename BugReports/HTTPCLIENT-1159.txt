@@ -1,0 +1,17 @@
+HttpClientUtils  - Helper methods to release resources of HttpClient / HttpResponse after use 
+
+
+
+Description:
+Found myself writing this boiler plate code in various httpclient related projects , to release resources , and wanted to provide a simpler way to release resources similar to IOUtils.closeQuietly as opposed to maintaining the same in my code. 
+
+New class: 
+
+o.a.http.client.utils.HttpClientUtils added: 
+<pre>
+  public static void closeQuietly(final HttpResponse response); 
+  public static void closeQuietly(final HttpClient httpClient); 
+</pre>
+
+with 2 methods ( as above ) in the same, to help release resources: 
+

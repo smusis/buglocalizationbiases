@@ -1,0 +1,35 @@
+Improve BufferedIndexInput.readBytes() performance
+
+
+
+Description:
+During a profiling session, I discovered that BufferedIndexInput.readBytes(),
+the function which reads a bunch of bytes from an index, is very inefficient
+in many cases. It is efficient for one or two bytes, and also efficient
+for a very large number of bytes (e.g., when the norms are read all at once);
+But for anything in between (e.g., 100 bytes), it is a performance disaster.
+It can easily be improved, though, and below I include a patch to do that.
+
+The basic problem in the existing code was that if you ask it to read 100
+bytes, readBytes() simply calls readByte() 100 times in a loop, which means
+we check byte after byte if the buffer has another character, instead of just
+checking once how many bytes we have left, and copy them all at once.
+
+My version, attached below, copies these 100 bytes if they are available at
+bulk (using System.arraycopy), and if less than 100 are available, whatever
+is available gets copied, and then the rest. (as before, when a very large
+number of bytes is requested, it is read directly into the final buffer).
+
+In my profiling, this fix caused amazing performance
+improvement: previously, BufferedIndexInput.readBytes() took as much as 25%
+of the run time, and after the fix, this was down to 1% of the run time! However, my scenario is *not* the typical Lucene code, but rather a version of Lucene with added payloads, and these payloads average at 100 bytes, where the original readBytes() did worst. I expect that my fix will have less of an impact on "vanilla" Lucene, but it still can have an impact because it is used for things like reading fields. (I am not aware of a standard Lucene benchmark, so I can't provide benchmarks on a more typical case).
+
+In addition to the change to readBytes(), my attached patch also adds a new
+unit test to BufferedIndexInput (which previously did not have a unit test).
+This test simulates a "file" which contains a predictable series of bytes, and
+then tries to read from it with readByte() and readButes() with various
+sizes (many thousands of combinations are tried) and see that exactly the
+expected bytes are read. This test is independent of my new readBytes()
+inplementation, and can be used to check the old implementation as well.
+
+By the way, it's interesting that BufferedIndexOutput.writeBytes was already efficient, and wasn't simply a loop of writeByte(). Only the reading code was inefficient. I wonder why this happened.

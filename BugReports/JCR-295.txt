@@ -1,0 +1,10 @@
+Jcr-Server: Usage of Cache-Control header
+
+
+
+Description:
+DeltaV-methods (except for Version-Control and Report) require the Cache-Control header to be present in the response.
+In turn, RFC 2518 only requires the Cache-Control header to be present in the request  when dealing with the If header.
+
+Currently the Cache-Control header is always present in the response and not specific for DeltaV methods.
+Problems may arise with IE  and a couple of mimetypes such as zip-files

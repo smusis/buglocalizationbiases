@@ -1,0 +1,6 @@
+Database Data Store: close result sets
+
+
+
+Description:
+The database data store doesn't close one result sets. This is not a problem for most databases, but anyway should be fixed.

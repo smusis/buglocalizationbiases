@@ -1,0 +1,21 @@
+ServerQuery does not use RemoteAdapterFactory for creating ServerQueryResult
+
+
+
+Description:
+The ServerQuery sould use the Factory for creating ServerQueryResult.
+
+Siehe the method ServerQuery.execute():
+
+{code}
+public RemoteQueryResult execute() throws RepositoryException, RemoteException {
+        return new ServerQueryResult(query.execute(), getFactory());
+    }
+{code}
+
+it should be:
+{code}
+    public RemoteQueryResult execute() throws RepositoryException, RemoteException {
+        return getFactory().getRemoteQueryResult(this.query.execute());
+    }
+{code}

@@ -1,0 +1,24 @@
+Spatial checks for a string in an int,double map
+
+
+
+Description:
+{code}
+  private Map<Integer,Double> distances;
+{code}
+
+{code}
+    if (precise != null) {
+      double xLat = getPrecision(lat, precise);
+      double xLng = getPrecision(lng, precise);
+      
+      String k = new Double(xLat).toString() +","+ new Double(xLng).toString();
+    
+      Double d = (distances.get(k));
+      if (d != null){
+        return d.doubleValue();
+      }
+    }
+{code}
+
+Something is off here eh?

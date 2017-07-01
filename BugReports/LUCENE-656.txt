@@ -1,0 +1,7 @@
+FieldsInfo uses deprecated API
+
+
+
+Description:
+The class FieldsInfo.java uses deprecated API in method "public void add(Document doc)"
+I rused the replacement and created the patch -> see attachment

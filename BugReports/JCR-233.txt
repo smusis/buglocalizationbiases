@@ -1,0 +1,12 @@
+repository lock file not removed without a clean shutdown
+
+
+
+Description:
+actually when a repository is loaded a ".lock" file is created. This file is removed only after a clean shutdown but, if a jackrabbit instance has been killed, you have to manually delete the file in order to load the repository again, also if there was no live instance of jackrabbit that was using it.
+
+The problem comes from the fact that the simple presence of the .lock file is used to indicate a live instance.
+I suggest replacing this behavior using this method (used for example by eclipse when opening workspaces):
+- when an instance is loaded create a ".lock" file and open it with exclusive access
+- when a new instance is started try to delete an eventual .lock file. Only if the file can't be deleted because in use assume that another jackrabbit instance is running.
+

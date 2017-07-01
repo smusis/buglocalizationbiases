@@ -1,0 +1,9 @@
+[PATCH] BitSetQuery, FastPrefixQuery, FastWildcardQuery and FastQueryParser
+
+
+
+Description:
+FastPrefixQuery and FastWildcardQuery rewrites to BitSetQuery instead of OR'ed
+BooleanQuery's.  A BitSetQuery contains a BitSet that desginates which document
+should be included in the search result.  BitSetQuery cannot be used by itself
+with MultiSearcher as of now.

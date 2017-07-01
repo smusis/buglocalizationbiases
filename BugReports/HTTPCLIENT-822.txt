@@ -1,0 +1,23 @@
+HttpClient throws java.net.SocketException instead of org.apache.http.conn.ConnectionTimeoutException when connection timeout occurs
+
+
+
+Description:
+When sending an http request a connection timeout occurs, the HttpClient.execute method throws a java.net.SocketException instead of a org.apache.http.conn.ConnectionTimeoutException.
+
+java.net.SocketTimeoutException: connect timed out
+        at java.net.PlainSocketImpl.socketConnect(Native Method)
+        at java.net.PlainSocketImpl.doConnect(PlainSocketImpl.java:333)
+        at java.net.PlainSocketImpl.connectToAddress(PlainSocketImpl.java:195)
+        at java.net.PlainSocketImpl.connect(PlainSocketImpl.java:182)
+        at java.net.SocksSocketImpl.connect(SocksSocketImpl.java:366)
+        at java.net.Socket.connect(Socket.java:519)
+        at org.apache.http.conn.scheme.PlainSocketFactory.connectSocket(PlainSocketFactory.java:119)
+        at org.apache.http.impl.conn.DefaultClientConnectionOperator.openConnection(DefaultClientConnectionOperator.java:129)
+        at org.apache.http.impl.conn.AbstractPoolEntry.open(AbstractPoolEntry.java:164)
+        at org.apache.http.impl.conn.AbstractPooledConnAdapter.open(AbstractPooledConnAdapter.java:119)
+        at org.apache.http.impl.client.DefaultRequestDirector.execute(DefaultRequestDirector.java:349)
+        at org.apache.http.impl.client.AbstractHttpClient.execute(AbstractHttpClient.java:555)
+        at org.apache.http.impl.client.AbstractHttpClient.execute(AbstractHttpClient.java:487)
+        at org.apache.http.impl.client.AbstractHttpClient.execute(AbstractHttpClient.java:465)
+

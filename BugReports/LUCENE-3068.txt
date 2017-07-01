@@ -1,0 +1,10 @@
+The repeats mechanism in SloppyPhraseScorer is broken when doc has tokens at same position
+
+
+
+Description:
+In LUCENE-736 we made fixes to SloppyPhraseScorer, because it was
+matching docs that it shouldn't; but I think those changes caused it
+to fail to match docs that it should, specifically when the doc itself
+has tokens at the same position.
+

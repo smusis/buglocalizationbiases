@@ -1,0 +1,37 @@
+Make tests using java.util.Random reproducible on failure
+
+
+
+Description:
+This is a patch for LuceneTestCase to support logging of the Random seed used in randomized tests. The patch also includes an example implementation in TestTrieRangeQuery.
+
+It overrides the protected method runTest() and inserts a try-catch around the super.runTest() call. Two new methods newRandom() and newRandom(long) are available for the test case. As each test case is run in an own TestCase object instance (so 5 test methods in a class instantiate 5 instances each method working in separate), the random seed is saved on newRandom() and when the test fails with any Throwable, a message with the seed (if not null) is printed out. If newRandom was never called no message will be printed.
+
+This patch has only one problem: If a single test method calls newRandom() more than once, only the last seed is saved and printed out. But each test method in a Testcase should call newRandom() exactly once for usage during the execution of this test method. And it is not thread save (no sync, no volatile), but for tests it's unimportant.
+
+I forgot to mention: If a test fails, the message using the seed is printed to stdout. The developer can then change the test temporarily:
+
+{code}LuceneTestCase.newRandom() -> LuceneTestCase.newRandom(long){code}
+
+using the seed from the failed test printout.
+
+*Reference:*
+{quote}
+: By allowing Random to randomly seed itself, we effectively test a much
+: much larger space, ie every time we all run the test, it's different.  We can
+: potentially cast a much larger net than a fixed seed.
+
+i guess i'm just in favor of less randomness and more iterations.
+
+: Fixing the bug is the "easy" part; discovering a bug is present is where
+: we need all the help we can get ;)
+
+yes, but knowing a bug is there w/o having any idea what it is or how to 
+trigger it can be very frustrating.
+
+it would be enough for tests to pick a random number, log it, and then use 
+it as the seed ... that way if you get a failure you at least know what 
+seed was used and you can then hardcode it temporarily to reproduce/debug
+
+-Hoss
+{quote}

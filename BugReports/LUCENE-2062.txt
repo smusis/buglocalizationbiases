@@ -1,0 +1,12 @@
+Bulgarian Analyzer
+
+
+
+Description:
+someone asked about bulgarian analysis on solr-user today... http://www.lucidimagination.com/search/document/e1e7a5636edb1db2/non_english_languages
+I was surprised we did not have anything.
+
+This analyzer implements the algorithm specified here, http://members.unine.ch/jacques.savoy/Papers/BUIR.pdf
+
+In the measurements there, this improves MAP approx 34%
+

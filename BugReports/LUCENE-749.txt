@@ -1,0 +1,6 @@
+ChainedFilter does not work well in the event of filters in ANDNOT
+
+
+
+Description:
+First ANDNOT operation takes place against a completely false bitset and will always return zero results.  

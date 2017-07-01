@@ -1,0 +1,21 @@
+Bug in duplicate mapping check
+
+
+
+Description:
+There is a bug in the MappingDescriptor for checking if a mapping for a node type is already available. The following patch solves this problem:
+
+Index: /Users/cziegeler/Developer/workspaces/default/jackrabbit/jackrabbit-ocm/src/main/java/org/apache/jackrabbit/ocm/mapper/model/MappingDescriptor.java
+===================================================================
+--- /Users/cziegeler/Developer/workspaces/default/jackrabbit/jackrabbit-ocm/src/main/java/org/apache/jackrabbit/ocm/mapper/model/MappingDescriptor.java	(revision 614136)
++++ /Users/cziegeler/Developer/workspaces/default/jackrabbit/jackrabbit-ocm/src/main/java/org/apache/jackrabbit/ocm/mapper/model/MappingDescriptor.java	(working copy)
+@@ -75,7 +75,7 @@
+         if (null != classDescriptor.getJcrType() && !  "".equals(classDescriptor.getJcrType()) && 
+         		 ! ManagerConstant.NT_UNSTRUCTURED.equals(classDescriptor.getJcrType()))
+         {
+-        	if ((classDescriptorsByNodeType.get(classDescriptor.getClassName()) != null) &&
++        	if ((classDescriptorsByNodeType.get(classDescriptor.getJcrType()) != null) &&
+         		classDescriptor.usesNodeTypePerConcreteClassStrategy()	)
+         	{
+         	    log.warn("Duplicate classdescriptor for node type : " + classDescriptor.getJcrType());	
+

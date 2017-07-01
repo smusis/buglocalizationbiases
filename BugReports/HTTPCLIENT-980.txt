@@ -1,0 +1,12 @@
+CachingHttpClient returns a 503 response when the backend HttpClient produces an IOException
+
+
+
+Description:
+The CachingHttpClient returns an HTTP 503 response when the backend HttpClient throws an IOException.
+
+It happens for instance when the backend is DefaultHttpClient (AbstractHttpClient), issuing a request to a server not listening on the target port.
+Well, it sounds tricky, but it makes the HttpClient not having a consistant behaviour in an implementation using both caching and regular clients.
+
+If a 503 should really be returned in that case, I suggest the AbstractHttpClient to return it and the CachingHttpClient to just propagate any exception thrown by the backend.
+

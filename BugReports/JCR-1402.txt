@@ -1,0 +1,20 @@
+Path.getAncestor and Path.isAncestor are not symmetric
+
+
+
+Description:
+Although the method names refer to ancestors they operate on sub-paths. Consider:
+
+PathFactory pf = PathFactoryImpl.getInstance();
+Path.Element p = pf.getParentElement();
+
+Path path = pf.create(new Path.Element[]{p, p});
+Path ancestor = path.getAncestor(1);
+
+assertFalse(ancestor.isAncestorOf(path) )  
+
+This is not what one would expect from looking an the method signatures. 
+I suggest to rename getAncestor to getSubPath, clarify the javadoc, and deprecate getAncestorCount. 
+
+A patch follows.
+

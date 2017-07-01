@@ -1,0 +1,8 @@
+contrib/javascript is not packaged into releases
+
+
+
+Description:
+the contrib/javascript directory is (apparently) a collection of javascript utilities for lucene .. but it has not build files or any mechanism to package it, so it is excluded form releases.
+
+

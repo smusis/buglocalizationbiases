@@ -1,0 +1,12 @@
+Change DateTools to not create a Calendar in every call to dateToString or timeToString
+
+
+
+Description:
+DateTools creates a Calendar instance on every call to dateToString and timeToString. Specifically:
+
+# timeToString calls Calendar.getInstance on every call.
+# dateToString calls timeToString(date.getTime()), which then instantiates a new Date(). I think we should change the order of the calls, or not have each call the other.
+# round(), which is called from timeToString (after creating a Calendar instance) creates another (!) Calendar instance ...
+
+Seems that if we synchronize the methods and create the Calendar instance once (static), it should solve it.

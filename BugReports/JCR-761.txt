@@ -1,0 +1,6 @@
+JCA build failure with J2EE 1.3
+
+
+
+Description:
+The fix to JCR-736 introduced a similar problem as was previously reported in JCR-413. The fix in JCR-413 should apply also to this case.

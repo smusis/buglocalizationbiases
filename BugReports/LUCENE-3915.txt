@@ -1,0 +1,8 @@
+Add Japanese filter to replace term attribute with readings
+
+
+
+Description:
+Koji and Robert are working on LUCENE-3888 that allows spell-checkers to do their similarity matching using a different word than its surface form.
+
+This approach is very useful for languages such as Japanese where the surface form and the form we'd like to use for similarity matching is very different.  For Japanese, it's useful to use readings for this -- probably with some normalization.

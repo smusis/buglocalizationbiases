@@ -1,0 +1,14 @@
+IndexWriter should prune 100% deleted segs even in the NRT case
+
+
+
+Description:
+We now prune 100% deleted segs on commit from IW or IR (LUCENE-2010),
+but this isn't quite aggressive enough, because in the NRT case you
+rarely call commit.
+
+Instead, the moment we delete the last doc of a segment, it should be
+pruned from the in-memory segmentInfos.  This way, if you open an NRT
+reader, or a merge kicks off, or commit is called, the 100% deleted
+segment is already gone.
+

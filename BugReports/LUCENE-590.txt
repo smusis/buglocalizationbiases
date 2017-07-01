@@ -1,0 +1,25 @@
+Demo HTML parser gives incorrect summaries when title is repeated as a heading
+
+
+
+Description:
+If you have an html document where the title is repeated as a heading at the top of the document, the HTMLParser will return the title as the summary, ignoring everything else that was added to the summary. Instead, it should keep the rest of the summary and chop off the title part at the beginning (essentially the opposite). I don't see any benefit to repeating the title in the summary for any case.
+
+In HTMLParser.jj's getSummary():
+
+    String sum = summary.toString().trim();
+    String tit = getTitle();
+    if (sum.startsWith(tit) || sum.equals(""))
+      return tit;
+    else
+      return sum;
+
+change it to: (* denotes a line that has changed)
+
+    String sum = summary.toString().trim();
+    String tit = getTitle();
+*    if (sum.startsWith(tit))             // don't repeat title in summary
+*      return sum.substring(tit.length()).trim();
+    else
+      return sum;
+

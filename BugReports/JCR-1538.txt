@@ -1,0 +1,6 @@
+[patch] add toString for NodeImpl and PropertyImpl
+
+
+
+Description:
+add toString for NodeImpl and PropertyImpl with new format. see how it is liked, before adding more.

@@ -1,0 +1,6 @@
+Reduce memory usage of DocNumberCache
+
+
+
+Description:
+Instead of using the uuid String the a UUID instance should be used as the key in the cache.

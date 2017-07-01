@@ -1,0 +1,7 @@
+AbstractLoginModule must not call abort() in commit()
+
+
+
+Description:
+AbstractLoginModule.commit() currently may call abort() when it detects that the login did not succeed. abort() will reset any state in the login module, including state shared between multiple login modules like Principals in the Subject. When there actually are multiple module, this will delete shared state that was set by other login modules. Moreover, the method commit() is only called when the overall authentication succeeded. Thus, it seems strange to call abort() from within commit().
+

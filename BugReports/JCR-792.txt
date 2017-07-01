@@ -1,0 +1,15 @@
+after enabling access manager, I can't createNode and setProperty without a node.save in the middle
+
+
+
+Description:
+I added my own access manager. after that I can't get the following code working 
+
+Node n = createNewNode(parentNode);
+n.setProperty();
+parentNode.save();
+
+It seems that setProperty will invoke access control check, but since the new node is not in the repository yet, my access manager implementation won't be able to grant permission. I also tried to use hierachyManager to get the path of the new node, it also returned null. 
+
+
+

@@ -1,0 +1,32 @@
+CLONE -Merge error during add to index (IndexOutOfBoundsException)
+
+
+
+Description:
+I've been batch-building indexes, and I've build a couple hundred indexes with 
+a total of around 150 million records.  This only happened once, so it's 
+probably impossible to reproduce, but anyway... I was building an index with 
+around 9.6 million records, and towards the end I got this:
+
+java.lang.IndexOutOfBoundsException: Index: 54, Size: 24
+        at java.util.ArrayList.RangeCheck(ArrayList.java:547)
+        at java.util.ArrayList.get(ArrayList.java:322)
+        at org.apache.lucene.index.FieldInfos.fieldInfo(FieldInfos.java:155)
+        at org.apache.lucene.index.FieldInfos.fieldName(FieldInfos.java:151)
+        at org.apache.lucene.index.SegmentTermEnum.readTerm(SegmentTermEnum.java
+:149)
+        at org.apache.lucene.index.SegmentTermEnum.next
+(SegmentTermEnum.java:115)
+        at org.apache.lucene.index.SegmentMergeInfo.next
+(SegmentMergeInfo.java:52)
+        at org.apache.lucene.index.SegmentMerger.mergeTermInfos
+(SegmentMerger.java:294)
+        at org.apache.lucene.index.SegmentMerger.mergeTerms
+(SegmentMerger.java:254)
+        at org.apache.lucene.index.SegmentMerger.merge(SegmentMerger.java:93)
+        at org.apache.lucene.index.IndexWriter.mergeSegments
+(IndexWriter.java:487)
+        at org.apache.lucene.index.IndexWriter.maybeMergeSegments
+(IndexWriter.java:458)
+        at org.apache.lucene.index.IndexWriter.addDocument(IndexWriter.java:310)
+        at org.apache.lucene.index.IndexWriter.addDocument(IndexWriter.java:294)

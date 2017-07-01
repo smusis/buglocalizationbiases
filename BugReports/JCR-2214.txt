@@ -1,0 +1,13 @@
+Avoid string concatenation in AbstractBundlePersistenceManager
+
+
+
+Description:
+The following line:
+
+        log.debug("stored bundle " + bundle.getId());
+
+should be changed to:
+
+        log.debug("stored bundle {}", bundle.getId());
+

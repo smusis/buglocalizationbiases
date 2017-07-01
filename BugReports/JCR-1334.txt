@@ -1,0 +1,7 @@
+Deadlock due different Thread access while prepare and commit in same Transaction
+
+
+
+Description:
+Since we have configured a j2c resource adapter any modification to the repository ends
+with a deadlock.

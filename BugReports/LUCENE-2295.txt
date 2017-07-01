@@ -1,0 +1,10 @@
+Create a MaxFieldLengthAnalyzer to wrap any other Analyzer and provide the same functionality as MaxFieldLength provided on IndexWriter
+
+
+
+Description:
+A spinoff from LUCENE-2294. Instead of asking the user to specify on IndexWriter his requested MFL limit, we can get rid of this setting entirely by providing an Analyzer which will wrap any other Analyzer and its TokenStream with a TokenFilter that keeps track of the number of tokens produced and stop when the limit has reached.
+
+This will remove any count tracking in IW's indexing, which is done even if I specified UNLIMITED for MFL.
+
+Let's try to do it for 3.1.

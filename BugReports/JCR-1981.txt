@@ -1,0 +1,10 @@
+Test class in the main source tree
+
+
+
+Description:
+org.apache.jackrabbit.core.TestRepository is in the main source folder
+(src/main/java) instead of the test folder (src/test/java).
+
+The build of jackrabbit-core is successful even if I move the class
+to the test folder, so it looks like it was just a mistake.

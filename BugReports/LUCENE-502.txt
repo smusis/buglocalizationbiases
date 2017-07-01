@@ -1,0 +1,10 @@
+TermScorer caches values unnecessarily
+
+
+
+Description:
+TermScorer aggressively caches the doc and freq of 32 documents at a time for each term scored.  When querying for a lot of terms, this causes a lot of garbage to be created that's unnecessary.  The SegmentTermDocs from which it retrieves its information doesn't have any optimizations for bulk loading, and it's unnecessary.
+
+In addition, it has a SCORE_CACHE, that's of limited benefit.  It's caching the result of a sqrt that should be placed in DefaultSimilarity, and if you're only scoring a few documents that contain those terms, there's no need to precalculate the SQRT, especially on modern VMs.
+
+Enclosed is a patch that replaces TermScorer with a version that does not cache the docs or feqs.  In the case of a lot of queries, that saves 196 bytes/term, the unnecessary disk IO, and extra SQRTs which adds up.

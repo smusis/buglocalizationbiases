@@ -1,0 +1,6 @@
+UserManagement: IndexNodeResolver.findNodes(..... , nonExact) fails to find values containing backslash
+
+
+
+Description:
+

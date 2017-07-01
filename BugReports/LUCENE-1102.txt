@@ -1,0 +1,8 @@
+EnwikiDocMaker id field
+
+
+
+Description:
+The EnwikiDocMaker is fairly usable outside of the benchmarking class, but it would benefit from indexing the ID field of the docs.
+
+Patch to follow that adds an ID field.

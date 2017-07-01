@@ -1,0 +1,53 @@
+Change log level in UserManagerImpl#getAuthorizable(NodeImpl) and UserImporter#handlePropInfo
+
+
+
+Description:
+This is current implementation:
+
+Authorizable getAuthorizable(NodeImpl n) throws RepositoryException {
+        Authorizable authorz = null;
+        if (n != null) {
+            String path = n.getPath();
+            if (n.isNodeType(NT_REP_USER) && Text.isDescendant(usersPath, path)) {
+                authorz = createUser(n);
+            } else if (n.isNodeType(NT_REP_GROUP) && Text.isDescendant(groupsPath, path)) {
+                authorz = createGroup(n);
+            } else {
+                /* else some other node type or outside of the valid user/group
+                   hierarchy  -> return null. */
+                log.debug("Unexpected user nodetype " + n.getPrimaryNodeType().getName());
+            }
+        } /* else no matching node -> return null */
+        return authorz;
+    }
+
+
+It seems that 'else' branch can be improved, at least by increasing log level. But I think, that best way is to throw exception.
+Current message can also be misleading, in case when user type is correct but check Text.isDescendant fails.
+
+Above method is called from within UserImporter#handlePropInfo
+
+...
+Authorizable a = userManager.getAuthorizable(parent);
+if (a == null) {
+     log.debug("Cannot handle protected PropInfo " + protectedPropInfo + ". Node " + parent + " doesn't represent a valid Authorizable.");
+     return false;
+} 
+....
+
+Here again log level is debug. Because at this point we have return statement, property 'principalName' is not set, and if we try to save session following exception will be thrown:
+
+javax.jcr.nodetype.ConstraintViolationException: /home/public/users/b/bb2: mandatory property {internal}password does not exist
+     at org.apache.jackrabbit.core.ItemSaveOperation.validateTransientItems(ItemSaveOperation.java:537)
+     at org.apache.jackrabbit.core.ItemSaveOperation.perform(ItemSaveOperation.java:216)
+     at org.apache.jackrabbit.core.session.SessionState.perform(SessionState.java:200)
+     at org.apache.jackrabbit.core.ItemImpl.perform(ItemImpl.java:91)
+     at org.apache.jackrabbit.core.ItemImpl.save(ItemImpl.java:329)
+    ...
+ 
+
+So if the log level is not set to 'debug' it is not obvious why mentioned property is missing. Use case and root cause is that 'path' (/home/public/users/b/bb2)  is not descendant of 'usersPath' (/home/users).
+
+Regards,
+Miroslav

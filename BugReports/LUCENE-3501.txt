@@ -1,0 +1,9 @@
+random sampler is not random (and so facet SamplingWrapperTest occasionally fails)
+
+
+
+Description:
+RandomSample is not random at all:
+It does not even import java.util.Random, and its behavior is deterministic.
+
+in addition, the test testCountUsingSamping() never retries as it was supposed to (for taking care of the hoped-for randomness).

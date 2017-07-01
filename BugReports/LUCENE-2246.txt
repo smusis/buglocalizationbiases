@@ -1,0 +1,10 @@
+While indexing Turkish web pages, "Parse Aborted: Lexical error...." occurs
+
+
+
+Description:
+When I try to index Turkish page if there is a Turkish specific character in the HTML specific tag HTML parser gives "Parse Aborted: Lexical error.on ... line" error.
+For this case "<IMG SRC="../images/head.jpg" WIDTH=570 HEIGHT=47 BORDER=0 ALT="ş">" exception address "ş" character (which has 351 ascii value) as an error. OR ı character in title tag.
+<a title="(ııı)">
+
+Turkish character in the content do not create any problem.

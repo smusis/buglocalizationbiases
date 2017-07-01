@@ -1,0 +1,6 @@
+HttpClient Manual Simplified Chinese
+
+
+
+Description:
+During Nov 2010, The Chinese user Nanlei translated the Apache HttpClient manual into Chinese and contribute it to HttpClient project freely. In the future, the Chinese translation of HttpCore manual will be finished and contribute to HttpCore project freely too. 

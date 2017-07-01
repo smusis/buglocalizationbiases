@@ -1,0 +1,7 @@
+Move *.log files to target/
+
+
+
+Description:
+The jackrabbit-core component already puts the derby.log file in target/ along with other build  and test artifacts, but many other components don't do that yet. Having all generated files in target/ is good as it makes it very easy to clean things up. Also things like the RAT checks (JCR-1937) are easier when there's no need to worry about such extra files.
+

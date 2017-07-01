@@ -1,0 +1,11 @@
+TCK: LockTest.testGetLock compares Nodes with equals
+
+
+
+Description:
+i think comparison by 'isSame' would be better.
+
+-> line 545
+
+-        assertTrue("lock holding node must be parent", lock.getNode().equals(n1));
++        assertTrue("lock holding node must be parent", lock.getNode().isSame(n1));

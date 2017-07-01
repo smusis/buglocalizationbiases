@@ -1,0 +1,19 @@
+thread starving in MultiThreadedHttpConnectionManager
+
+
+
+Description:
+Hi folks,
+
+I might have found a bug in MTHCM. It has to do with removing HostConnectionPool instances that have no more connections in them. That was a fix for a memory leak we previously had. There are two cases where the pools get deleted. One is in handleLostConnection: (excerpt)
+  ...
+  if (hostPool.numConnections == 0) mapHosts.remove(config);
+  notifyWaitingThread(config);
+  ...
+
+Could this delete a pool in which there is still a thread waiting to get a connection? If so, the thread would remain in the global pool. But even if it is interrupted there, it would still use the old HostConnectionPool in which no connection will ever become available again.
+
+I suggest to change the removal check in both cases to:
+  if ((hostPool.numConnections < 1) && hostPool.waitingThreads.isEmpty)
+
+What do you think?

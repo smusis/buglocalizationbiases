@@ -1,0 +1,10 @@
+URI path resolution problems.
+
+
+
+Description:
+URI does not completely conform to RFC 2396.  In particular it does not handle the following 
+relative URIs correctly:
+
+../../../g
+../../../../g

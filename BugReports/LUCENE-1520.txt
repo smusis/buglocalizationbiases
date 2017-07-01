@@ -1,0 +1,20 @@
+OOM erros with CheckIndex with indexes containg a lot of fields with norms
+
+
+
+Description:
+All index readers have a cache of the last used norms (SegmentReader, MultiReader, MultiSegmentReader,...). This cache is never cleaned up, so if you access norms of a field, the norm's byte[maxdoc()] array is not freed until you close/reopen the index.
+
+You can see this problem, if you create an index with many fields with norms (I tested with about 4,000 fields) and many documents (half a million). If you then call CheckIndex, that calls norms() for each (!) field in the Segment and each of this calls creates a new cache entry, you get OutOfMemoryExceptions after short time (I tested with the above index: I was not able to do a CheckIndex even with "-Xmx 16GB" on 64bit Java).
+
+CheckIndex opens and then tests each segment of a index with a separate SegmentReader. The big index with the OutOfMemory problem was optimized, so consisting of one segment with about half a million docs and about 4,000 fields. Each byte[] array takes about a half MiB for this index. The CheckIndex funtion created the norm for 4000 fields and the SegmentReader cached them, which is about 2 GiB RAM. So OOMs are not unusal.
+
+In my opinion, the best would be to use a Weak- or better a SoftReference so norms.bytes gets java.lang.ref.SoftReference<byte[]> and used for caching. With proper synchronization (which is done on the norms cache in SegmentReader) you can do the best with SoftReference, as this reference is garbage collected only when an OOM may happen. If the byte[] array is freed (but it is only freed if no other references exist), a lter call to getNorms() creates a new array. When code is hard referencing the norms array, it will not be freed, so no problem. The same could be done for the other IndexReaders.
+
+Fields without norm() do not have this problem, as all these fields share a one-time allocated dummy norm array. So the same index without norms enabled for most of the fields checked perfectly.
+
+I will prepare a patch tomorrow.
+
+Mike proposed another quick fix for CheckIndex:
+bq. we could do something first specifically for CheckIndex (eg it could simply use the 3-arg non-caching bytes method instead) to prevent OOM errors when using it.
+

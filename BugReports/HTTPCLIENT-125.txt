@@ -1,0 +1,15 @@
+empty host header with ip address
+
+
+
+Description:
+file: HttpMethodBase.java method: addHostRequestHeader
+
+HttpClient writes an empty Host header if the host is referred using IP address.
+HTTP 1.1 RFC is not too clear what should be used in this case. However, other
+HTTP 1.1 implementations (e.g. Java 1.4.0) uses IP address instead of dns name
+in the header.
+
+Furthermore, some HTTP server implementations (e.g. Jetty) will return "400 bad
+request" if it encounters an empty Host header. That may be a bug in Jetty, but
+it might be a good idea to use IP address in Host header to increase compability.

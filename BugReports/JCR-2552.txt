@@ -1,0 +1,14 @@
+Creating a node of type nt:hierarchyNode (or derived) on a JCR 1.0 compliant repository fails
+
+
+
+Description:
+When creating a node of type nt:hierarchyNode (or derived) on a JCR 1.0 compliant repository, the auto-created property named jcr:created does not get a default value and an exception:
+
+javax.jcr.RepositoryException: createFromDefinition not implemented for: {http://www.jcp.org/jcr/1.0}created
+
+The code in SessionItemStateManager#computeSystemGeneratedPropertyValues handles jcr:created only when found in node type mix:created. In JCR 1.0, however, this property was declared in nt:hierarchyNode. Adding this extra case would allow interoperation with such a repository.
+
+
+
+

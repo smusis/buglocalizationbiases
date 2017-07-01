@@ -1,0 +1,19 @@
+improve BaseTokenStreamTestCase to test end()
+
+
+
+Description:
+If offsetAtt/end() is not implemented correctly, then there can be problems with highlighting: see LUCENE-2207 for an example with CJKTokenizer.
+
+In my opinion you currently have to write too much code to test this.
+
+This patch does the following:
+* adds optional Integer finalOffset (can be null for no checking) to assertTokenStreamContents
+* in assertAnalyzesTo, automatically fill this with the String length()
+
+In my opinion this is correct, for assertTokenStreamContents the behavior should be optional, it may not even have a Tokenizer. If you are using assertTokenStreamContents with a Tokenizer then simply provide the extra expected value to check it.
+
+for assertAnalyzesTo then it is implied there is a tokenizer so it should be checked.
+
+the tests pass for core but there are failures in contrib even besides CJKTokenizer (apply Koji's patch from LUCENE-2207, it is correct). Specifically ChineseTokenizer has a similar problem.
+

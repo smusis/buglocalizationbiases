@@ -1,0 +1,25 @@
+If you "flush by RAM usage" then IndexWriter may over-merge
+
+
+
+Description:
+I think a good way to maximize performance of Lucene's indexing for a
+given amount of RAM is to flush (writer.flush()) the added documents
+whenever the RAM usage (writer.ramSizeInBytes()) has crossed the max
+RAM you can afford.
+
+But, this can confuse the merge policy and cause over-merging, unless
+you set maxBufferedDocs properly.
+
+This is because the merge policy looks at the current maxBufferedDocs
+to figure out which segments are level 0 (first flushed) or level 1
+(merged from <mergeFactor> level 0 segments).
+
+I'm not sure how to fix this.  Maybe we can look at net size (bytes)
+of a segment and "infer" level from this?  Still we would have to be
+resilient to the application suddenly increasing the RAM allowed.
+
+The good news is to workaround this bug I think you just need to
+ensure that your maxBufferedDocs is less than mergeFactor *
+typical-number-of-docs-flushed.
+

@@ -1,0 +1,10 @@
+RepositoryLock does not work on NFS sometimes
+
+
+
+Description:
+The RepositoryLock mechanism currently used in Jackrabbit uses FileLock. This doesn't work on some NFS file system. It looks like only NFS version 4 and newer supports locking. Older implementations may throw a IOException "No locks available", which means the NFS does not support byte-range locking.
+
+I propose to add a second locking mechanism, and add a configuration option to use it. For example: <FileLocking class="acme" />. This second locking mechanism is a cooperative locking protocol that uses a background (watchdog) thread and only uses regular file operations.
+
+

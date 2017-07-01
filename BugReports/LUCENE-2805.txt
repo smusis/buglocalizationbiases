@@ -1,0 +1,9 @@
+SegmentInfos shouldn't blindly increment version on commit
+
+
+
+Description:
+SegmentInfos currently increments version on the assumption that there are always changes.
+
+But, both DirReader and IW are more careful about tracking whether there are changes.  DirReader has hasChanges and IW has changeCount.  I think these classes should notify the SIS when there are in fact changes; this will fix the case Simon hit on fixing LUCENE-2082 when the NRT reader thought there were changes, but in fact there weren't because IW simply committed the exact SIS it already had.
+

@@ -1,0 +1,17 @@
+[PATCH] setIndexInterval() in IndexWriter
+
+
+
+Description:
+Following a discussion with Doug (see
+http://article.gmane.org/gmane.comp.jakarta.lucene.devel/5804) here is a patch
+that add a setIndexInterval() in IndexWriter.
+
+This patch adds also a getDirectory method to IndexWriter and modifies 
+SegmentMerger, IndexWriter and TermInfosWriter.
+
+This patch passes all tests.
+
+Any comments/criticisms welcome.
+
+Julien

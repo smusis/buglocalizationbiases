@@ -1,0 +1,6 @@
+RepositoryConfig created by Jcr2spiRepositoryFactory should always return same RepositoryService instance
+
+
+
+Description:
+The Jcr2spiRepositoryFactory uses a default implementation of RepositoryConfig if none is passed to it by the user. Currently this default implementation returns a new RepositoryService instance on each call to getRepositoryService(). This is not correct since the consumer of the RepositoryConfig instance expects the same RepositoryService instance on every call. 

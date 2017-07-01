@@ -1,0 +1,6 @@
+Link javadocs of HttpClient, HttpCore and HttpMime
+
+
+
+Description:
+Presently the javadocs for HttpCore, HttpClient and HttpMime are isolated from each other.  For new users this can create a great deal of confusion and the appearance of limited functionality of HttpClient.  Please set the javadoc creation task to link the javadoc of these three projects together.  

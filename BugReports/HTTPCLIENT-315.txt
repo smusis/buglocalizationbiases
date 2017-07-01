@@ -1,0 +1,21 @@
+HttpURL creates wrong authority String when user info is changed
+
+
+
+Description:
+When changing the user info on an existing HttpURL which has additional port
+information, the new authority String contains a wrong hostname part: instead of
+getting "hostname:portnumber" the string is "hostnameportnumber", i.e. the ":"
+is missing.
+Methods which needs to be changed are:
+
+setRawPassword(...)
+setRawUser(...)
+setRawUserinfo(...)
+
+(look for the line
+String hostport = (_port == -1) ? hostname : hostname + _port;
+)
+
+Andreas FÃ¤nger
+ESIGN Software GmbH

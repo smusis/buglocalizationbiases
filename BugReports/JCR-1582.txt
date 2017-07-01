@@ -1,0 +1,10 @@
+Parameters 'idleTime' and 'queryClass' cause QueryHandler to fail
+
+
+
+Description:
+This issue does not occur in a released jackrabbit-core version. With the changes from JCR-1462 jackrabbit now fails to startup if there is an unknown parameter in a bean configuration.
+
+The parameters 'idleTime' and 'queryClass' are not used by the QueryHandler but by the SearchManager, which instantiates the QueryHandler. Therefore the parameters do not show up in the QueryHandler.
+
+I suggest we introduce them in the common base class AbstractQueryHandler.

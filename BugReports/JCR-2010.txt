@@ -1,0 +1,6 @@
+Retrieve row path via hierarchy manager instead of node
+
+
+
+Description:
+Jackrabbit currently loads the node associated with a result row to retrieve the path. Loading the node may be prevented by retrieving the path from a caching hierarchy manager.

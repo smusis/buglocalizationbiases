@@ -1,0 +1,29 @@
+jcr:baseVersion is not updated when the base version is removed from the version history
+
+
+
+Description:
+
+        Session s1 = repo.login(new SimpleCredentials("user1", "pwd1".toCharArray()));
+        Node root1 = s1.getRootNode() ;
+        Node test1 = root1.addNode("test") ;
+        test1.addMixin("mix:versionable");
+        s1.save() ;
+        System.out.println(test1.getProperty("jcr:baseVersion").getValue().getString()) ;
+        test1.checkin() ;
+        System.out.println(test1.getProperty("jcr:baseVersion").getValue().getString()) ;
+        test1.getVersionHistory().removeVersion("1.0") ;
+        // the base version wasn't updated :(
+        System.out.println(test1.getProperty("jcr:baseVersion").getValue().getString()) ;
+        // the next line throws ItemNotFoundException :(
+        test1.getBaseVersion() ;
+
+javax.jcr.ItemNotFoundException: c33bf049-c7e1-4b34-968a-63ff1b1113b0
+	at org.apache.jackrabbit.core.ItemManager.createItemInstance(ItemManager.java:498)
+	at org.apache.jackrabbit.core.ItemManager.getItem(ItemManager.java:349)
+	at org.apache.jackrabbit.core.PropertyImpl.getNode(PropertyImpl.java:642)
+	at org.apache.jackrabbit.core.NodeImpl.getBaseVersion(NodeImpl.java:2960)
+	at org.apache.jackrabbit.core.RemoveVersionTest.main(RemoveVersionTest.java:56)
+
+
+

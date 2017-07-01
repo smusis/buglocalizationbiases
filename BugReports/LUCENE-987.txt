@@ -1,0 +1,13 @@
+Deprecate IndexModifier
+
+
+
+Description:
+See discussion at http://www.gossamer-threads.com/lists/lucene/java-dev/52017?search_string=deprecating%20indexmodifier;#52017
+
+This is to deprecate IndexModifier before 3.0 and remove it in 3.0.
+
+This patch includes:
+  1 IndexModifier and TestIndexModifier are deprecated.
+  2 TestIndexWriterModify is added. It is similar to TestIndexModifer but uses IndexWriter and has a few other changes. The changes are because of the difference between IndexModifier and IndexWriter.
+  3 TestIndexWriterLockRelease and TestStressIndexing are switched to use IndexWriter instead of IndexModifier.

@@ -1,0 +1,8 @@
+TCK: SerializationTest.helpTestSaxException casts ContentHandler to DefaultHandler
+
+
+
+Description:
+the JSR170 defines import with ContentHandler (see Session.getImportContentHandler, Workspace.getImportContentHandler)
+
+the mentioned helper method within the TCK casts the ContentHandler returned by those methods to DefaultHandler without testing if the contenthandler is a DefaultHandler (line 273)

@@ -1,0 +1,18 @@
+Similarity.java javadocs and simplifications for 4.0
+
+
+
+Description:
+As part of adding additional scoring systems to lucene, we made a lower-level Similarity
+and the existing stuff became e.g. TFIDFSimilarity which extends it.
+
+However, I always feel bad about the complexity introduced here (though I do feel there
+are some "excuses", that its a difficult challenge).
+
+In order to try to mitigate this, we also exposed an easier API (SimilarityBase) on top of 
+it that makes some assumptions (and trades off some performance) to try to provide something 
+consumable for e.g. experiments.
+
+Still, we can cleanup a few things with the low-level api: fix outdated documentation and
+shoot for better/clearer naming etc.
+

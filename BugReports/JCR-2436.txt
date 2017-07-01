@@ -1,0 +1,19 @@
+webdav's PropertyDefinitionImpl's toXML doesn't seem to attach query operators element to the returned dom
+
+
+
+Description:
+PropertyDefinitionImpl.toXML does
+
+        // JCR 2.0 extension
+        Element qopElem = document.createElement(AVAILABLE_QUERY_OPERATORS_ELEMENT);
+        String[] qops = getAvailableQueryOperators();
+        for (int i = 0; i < qops.length; i++) {
+            Element opElem = document.createElement(AVAILABLE_QUERY_OPERATOR_ELEMENT);
+            DomUtil.setText(opElem, qops[i]);
+            qopElem.appendChild(opElem);
+        }
+
+        return elem;
+
+which doesn't attach the qopElem to the returned dom.

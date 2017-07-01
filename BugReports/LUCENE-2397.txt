@@ -1,0 +1,6 @@
+SnapshotDeletionPolicy.snapshot() throws NPE if no commits happened
+
+
+
+Description:
+SDP throws NPE if no commits occurred and snapshot() was called. I will replace it w/ throwing IllegalStateException. I'll also move TestSDP from o.a.l to o.a.l,index. I'll post a patch soon

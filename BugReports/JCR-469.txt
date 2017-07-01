@@ -1,0 +1,60 @@
+Problem with child order after restoring of parent
+
+
+
+Description:
+The following sequence leads to swapped child nodes in the mentioned trunk version (this worked in 1.0.1).
+Specifically:
+
+Add nodes:
+ parent
+   childA
+   childB
+
+Remove childA:
+ parent
+   childB
+
+Restore initial version:
+ parent
+   childB
+   childA
+
+The parent node is of type nt:unstructured which carries an
+OrderableChildNodes=true so I would assume that upon restoring the order
+would be preserved.
+
+Cheers,
+Tanju
+
+--------------
+
+TESTCASE used with both Derby & InMemPMs (boiled down beyond sense :)
+
+// Add parent & childA, childB
+Node parent = session.getRootNode().addNode("parent", "nt:unstructured");
+parent.addMixin("mix:versionable");
+Node c1 = parent.addNode("childA", "nt:unstructured");
+c1.addMixin("mix:versionable");
+Node c2 = parent.addNode("childB", "nt:unstructured");
+c2.addMixin("mix:versionable");
+session.save();
+c1.checkin();
+c2.checkin();
+Version v1 = parent.checkin();
+// OK : parent.getNodes() -> childA, childB
+
+// Remove childA
+parent = session.getRootNode().getNode("parent");
+parent.checkout();
+c1 = parent.getNodes().nextNode();
+c1.checkout();
+c1.remove();
+session.save();
+Version v2 = parent.checkin();
+// OK : parent.getNodes() -> childA, childB
+
+// Remove childA
+parent = session.getRootNode().getNode("parent");
+parent.restore(v1, true);
+// Not OK : parent.getNodes() -> childB, childA

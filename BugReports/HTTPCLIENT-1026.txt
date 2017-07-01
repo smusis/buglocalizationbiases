@@ -1,0 +1,6 @@
+Properly close resources
+
+
+
+Description:
+Java has exceptions so resources must always be closed on a finally clause

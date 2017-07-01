@@ -1,0 +1,6 @@
+Disallow unregistering of node types still (possibly) in use
+
+
+
+Description:
+

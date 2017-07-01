@@ -1,0 +1,6 @@
+RowIteratorImpl should make use of QueryResultRow.getValues()
+
+
+
+Description:
+Values are currently retrieved from regular nodes. Using QueryResultRow.getValues() uses less calls to the server.

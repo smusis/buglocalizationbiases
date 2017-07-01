@@ -1,0 +1,6 @@
+No support for Oracle schemas
+
+
+
+Description:
+Jackrabbit assumes that the table name (f.e.: prefix + fs_entry) is unique across all schemas  used on one oracle instance. So two Jackrabbit instances using two schemas on the same Oracle instance won't work. 

@@ -1,0 +1,43 @@
+New socket timeout value wont have effect if connection is reused
+
+
+
+Description:
+Reported by Teemu Tingander <Teemu.Tingander at tecnomen.fi> on The Jakarta
+Commons HttpClient Developer List:
+
+<snip>
+Changing read timeout ()wont affect after successful method execution using
+same connection.. 
+
+This seems to be a bug in HttpClient class method
+executeMethod(HostConfiguration ...)..
+
+The problematic section seems to be if section checking if connection is
+open
+	
+		method.setStrictMode(strictMode);
+        		        
+            if (!connection.isOpen()) {                
+                connection.setConnectionTimeout(connectionTimeout);
+-->		    connection.setSoTimeout(soTimeout);
+                connection.open();
+                if (connection.isProxied() && connection.isSecure()) {
+                    method = new ConnectMethod(method);
+                }
+            }
+ 
+Problem can be solved by moving the line out of if section
+
+		method.setStrictMode(strictMode);
+
+		connection.setSoTimeout(soTimeout);	
+        		        
+            if (!connection.isOpen()) {                
+                connection.setConnectionTimeout(connectionTimeout);
+                connection.open();
+                if (connection.isProxied() && connection.isSecure()) {
+                    method = new ConnectMethod(method);
+                }
+            }
+</snip>

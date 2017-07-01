@@ -1,0 +1,15 @@
+extend security config -> repository-1.5.dtd
+
+
+
+Description:
+along with issue #JCR-1171 i'd like to extend the configuration. 
+
+this requires a new version (repository-1.5.dtd) of the repository dtd to be present in jackrabbit-site/src/site/resources/dtd in order to have the new versions of repository.xml work properly.
+
+see attached diff that shows the difference to the most recent repository-1.4.dtd
+
+if nobody objects i would put the proposed repository-1.5.dtd to the site.
+once this is done i can properly adjust the repository.xml files (uncommenting the DOCTYPE tag) and start committing the new security functionality.
+
+angela

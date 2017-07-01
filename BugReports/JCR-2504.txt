@@ -1,0 +1,14 @@
+Allow indexingConfiguration to be loaded from the classpath
+
+
+
+Description:
+The "indexingConfiguration" attribute in the SearchIndex configuration (http://wiki.apache.org/jackrabbit/IndexingConfiguration) actually requires an absolute filesystem path.
+
+It would be nice if SearchIndex would also accept a file available in the classpath... although you can use variables like ${wsp.home} or similar there are many scenarios where a classpath resource would help (for example when creating a new workspace the directory structure is automatically created by jackrabbit and doesn't need to be already available but the indexing configuration file does).
+
+I am attaching a simple patch to SearchIndex that tries to load the file from the classpath if it has not been found. Since priority is given to the old behavior (file before classpath) so it's fully backward compatible.
+
+Diff has been generated against trunk, it would be nice to have this patch also on the 2.0 branch.
+ 
+ 

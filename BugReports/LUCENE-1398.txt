@@ -1,0 +1,6 @@
+Add ReverseStringFilter
+
+
+
+Description:
+add ReverseStringFilter and ReverseStringAnalyzer that can be used for backword much. For Example, "*ry", "*ing", "*ber".

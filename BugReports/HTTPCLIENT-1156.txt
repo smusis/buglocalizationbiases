@@ -1,0 +1,17 @@
+Kerberos Authentication Scheme
+
+
+
+Description:
+HttpClient 4.1.2 has a SPNEGO authentication that uses the Negotiate keyword.  But the MS IIS that I must connect to does not send back an WWW-Authenticate: Negotiate, but, instead, does send an WWW-Authenticate: Kerberos
+
+So I used the NegotiateScheme.java and NegotiateSchemeFactory.java as a base to create a "new" scheme, called, KerberosScheme.java and KerberosSchemeFactory.java to make it work.
+
+Essentially I replaced every "Negotiate" scheme by "Kerberos", in the KerberosScheme.java, and removed the part of the code that tried, first, SPNEGO_OID, using KERBEROS_OID directly, instead.
+
+It works fine for me, but took me a while to figure this out.
+
+That why I think it could come on the new versions.
+
+I'll attach my version but it has no package - it was made only for a test project.  It's trivial to put it in the right place/package.
+

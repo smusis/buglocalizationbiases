@@ -1,0 +1,68 @@
+Error creating DB2 table for Journaling
+
+
+
+Description:
+Hi guys,
+
+First of all, congratulations for the fantastic job.
+
+I'm deploying a Jackrattbit-JCA resource adapter to a clustered Websphere environment and using a DB2 for storing data and realized some missing code to add DB2 support.
+
+Here is:
+
+JACKRABBIT-CORE, @ org.apache.jackrabbit.core.util.db, method guessValidationQuery (the last one), I adjusted as follows to add a DB2 validation query:
+
+----------------------------------------------------------------------------------------------------------
+    private String guessValidationQuery(String url) {
+        if (url.contains("derby")) {
+            return "values(1)";
+        } else if (url.contains("mysql")) {
+            return "select 1";
+        } else if (url.contains("sqlserver") || url.contains("jtds")) {
+            return "select 1";
+        } else if (url.contains("oracle")) {
+            return "select 'validationQuery' from dual";
+        } else if (url.contains("h2")) {
+            return "select 1";
+        } else if (url.contains("db2")) {
+        	return "values(1)";
+        }
+        log.warn("Failed to guess validation query for URL " + url);
+        return null;
+----------------------------------------------------------------------------------------------------------
+
+And as a final touch, a DDL to build the tables:
+
+JACKRABBIT-CORE, @ src/main/resources/org/apache/jackrabbit/core/journal, added a file named db2.dll as follows (actually I copied this from derby.dll)
+
+----------------------------------------------------------------------------------------------------------
+#  Licensed to the Apache Software Foundation (ASF) under one or more
+#  contributor license agreements.  See the NOTICE file distributed with
+#  this work for additional information regarding copyright ownership.
+#  The ASF licenses this file to You under the Apache License, Version 2.0
+#  (the "License"); you may not use this file except in compliance with
+#  the License.  You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+#  Unless required by applicable law or agreed to in writing, software
+#  distributed under the License is distributed on an "AS IS" BASIS,
+#  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+#  See the License for the specific language governing permissions and
+#  limitations under the License.
+create table ${schemaObjectPrefix}JOURNAL (REVISION_ID BIGINT NOT NULL, JOURNAL_ID varchar(255), PRODUCER_ID varchar(255), REVISION_DATA blob)
+create unique index ${schemaObjectPrefix}JOURNAL_IDX on ${schemaObjectPrefix}JOURNAL (REVISION_ID)
+create table ${schemaObjectPrefix}GLOBAL_REVISION (REVISION_ID BIGINT NOT NULL)
+create unique index ${schemaObjectPrefix}GLOBAL_REVISION_IDX on ${schemaObjectPrefix}GLOBAL_REVISION (REVISION_ID)
+create table ${schemaObjectPrefix}LOCAL_REVISIONS (JOURNAL_ID varchar(255) NOT NULL, REVISION_ID BIGINT NOT NULL)
+
+# Inserting the one and only revision counter record now helps avoiding race conditions
+insert into ${schemaObjectPrefix}GLOBAL_REVISION VALUES(0)
+----------------------------------------------------------------------------------------------------------
+
+
+Best regards,
+
+
+J Marcos

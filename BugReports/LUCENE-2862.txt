@@ -1,0 +1,10 @@
+Track total term freq per term
+
+
+
+Description:
+Right now we track docFreq for each term (how many docs have the
+term), but the totalTermFreq (total number of occurrences of this
+term, ie sum of freq() for each doc that has the term) is also a
+useful stat (for flex scoring, PulsingCodec, etc.).
+

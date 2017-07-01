@@ -1,0 +1,149 @@
+equals and hashCode implementation in org.apache.lucene.search.* package
+
+
+
+Description:
+I would like to talk about the implementation of equals and hashCode method  in org.apache.lucene.search.* package. 
+
+Example One:
+
+org.apache.lucene.search.spans.SpanTermQuery (Super Class)
+	<- org.apache.lucene.search.payloads.BoostingTermQuery (Sub Class)
+
+Observation:
+
+* BoostingTermQuery defines equals but inherits hashCode from SpanTermQuery. Definition of equals is a code clone of SpanTermQuery with a change in class name. 
+
+Intention:
+
+I believe the intention of equals redefinition in BoostingTermQuery is not to make the objects of SpanTermQuery and BoostingTermQuery comparable. ie. spanTermQuery.equals(boostingTermQuery) == false && boostingTermQuery.equals(spanTermQuery) == false.
+
+
+Problem:
+
+With current implementation, the intention might not be respected as a result of symmetric property violation of equals contract i.e.
+spanTermQuery.equals(boostingTermQuery) == true (can be) && boostingTermQuery.equals(spanTermQuery) == false. (always)
+(Note: Provided their state variables are equal)
+
+Solution:
+
+Change implementation of equals in SpanTermQuery from:
+
+{code:title=SpanTermQuery.java|borderStyle=solid}
+  public boolean equals(Object o) {
+    if (!(o instanceof SpanTermQuery))
+      return false;
+    SpanTermQuery other = (SpanTermQuery)o;
+    return (this.getBoost() == other.getBoost())
+      && this.term.equals(other.term);
+  }
+{code}
+
+To:
+{code:title=SpanTermQuery.java|borderStyle=solid}
+  public boolean equals(Object o) {
+  	if(o == this) return true;
+  	if(o == null || o.getClass() != this.getClass()) return false;
+//    if (!(o instanceof SpanTermQuery))
+//      return false;
+    SpanTermQuery other = (SpanTermQuery)o;
+    return (this.getBoost() == other.getBoost())
+      && this.term.equals(other.term);
+  }
+{code}
+
+Advantage:
+
+* BoostingTermQuery.equals and BoostingTermQuery.hashCode is not needed while still preserving the same intention as before.
+ 
+* Any further subclassing that does not add new state variables in the extended classes of SpanTermQuery, does not have to redefine equals and hashCode. 
+
+* Even if a new state variable is added in a subclass, the symmetric property of equals contract will still be respected irrespective of implementation (i.e. instanceof / getClass) of equals and hashCode in the subclasses.
+
+
+Example Two:
+
+
+org.apache.lucene.search.CachingWrapperFilter (Super Class)
+	<- org.apache.lucene.search.CachingWrapperFilterHelper (Sub Class)
+
+Observation:
+Same as Example One.
+
+Problem:
+Same as Example one.
+
+Solution:
+Change equals in CachingWrapperFilter from:
+{code:title=CachingWrapperFilter.java|borderStyle=solid}
+  public boolean equals(Object o) {
+    if (!(o instanceof CachingWrapperFilter)) return false;
+    return this.filter.equals(((CachingWrapperFilter)o).filter);
+  }
+{code}
+
+To:
+{code:title=CachingWrapperFilter.java|borderStyle=solid}
+  public boolean equals(Object o) {
+//    if (!(o instanceof CachingWrapperFilter)) return false;
+    if(o == this) return true;
+    if(o == null || o.getClass() != this.getClass()) return false;
+    return this.filter.equals(((CachingWrapperFilter)o).filter);
+  }
+{code}
+
+Advantage:
+Same as Example One. Here, CachingWrapperFilterHelper.equals and CachingWrapperFilterHelper.hashCode is not needed.
+
+
+Example Three:
+
+org.apache.lucene.search.MultiTermQuery (Abstract Parent)
+	<- org.apache.lucene.search.FuzzyQuery (Concrete Sub)
+	<- org.apache.lucene.search.WildcardQuery (Concrete Sub)
+
+Observation (Not a problem):
+
+* WildcardQuery defines equals but inherits hashCode from MultiTermQuery.
+Definition of equals contains just super.equals invocation. 
+
+* FuzzyQuery has few state variables added that are referenced in its equals and hashCode.
+Intention:
+
+I believe the intention here is not to make objects of FuzzyQuery and WildcardQuery comparable. ie. fuzzyQuery.equals(wildCardQuery) == false && wildCardQuery.equals(fuzzyQuery) == false.
+
+Proposed Implementation:
+How about changing the implementation of equals in MultiTermQuery from:
+
+{code:title=MultiTermQuery.java|borderStyle=solid}
+    public boolean equals(Object o) {
+      if (this == o) return true;
+      if (!(o instanceof MultiTermQuery)) return false;
+
+      final MultiTermQuery multiTermQuery = (MultiTermQuery) o;
+
+      if (!term.equals(multiTermQuery.term)) return false;
+
+      return getBoost() == multiTermQuery.getBoost();
+    }
+{code}
+
+To:
+{code:title=MultiTermQuery.java|borderStyle=solid}
+    public boolean equals(Object o) {
+      if (this == o) return true;
+//      if (!(o instanceof MultiTermQuery)) return false;
+      if(o == null || o.getClass() != this.getClass()) return false;
+
+      final MultiTermQuery multiTermQuery = (MultiTermQuery) o;
+
+      if (!term.equals(multiTermQuery.term)) return false;
+
+      return getBoost() == multiTermQuery.getBoost();
+    }
+{code}
+
+Advantage:
+
+Same as above. Here, WildcardQuery.equals is not needed as it does not define any new state. (FuzzyQuery.equals is still needed because FuzzyQuery defines new state.) 
+

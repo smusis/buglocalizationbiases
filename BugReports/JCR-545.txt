@@ -1,0 +1,6 @@
+New method on NodeTypeManagerImpl to reregister nodetypes
+
+
+
+Description:
+Add a method to NodeTypeManagerImpl to allow reregistering of existing nodetypes. The method takes an inputstream in either XML or CND format and registers all new nodetypes and reregisters existing nodetypes.

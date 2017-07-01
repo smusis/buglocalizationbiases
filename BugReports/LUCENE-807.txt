@@ -1,0 +1,8 @@
+Minor improvement to JavaDoc for ScoreDocComparator
+
+
+
+Description:
+About to attach a very small patch for ScoreDocComparator which broadens the contract of compare(ScoreDoc, ScoreDoc) to follow the same semantics as java.util.Comparator.compare() -- allow any integer to be returned, rather than specifically -1/0/-1.
+
+Note that this behaviour must already be acceptable; the anonymous ScoreDocComparators returned by FieldSortedHitQueue.comparatorStringLocale() already return the result of Collator.compare(), which is not tied to this -1/0/1 restriction.

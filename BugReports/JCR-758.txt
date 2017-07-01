@@ -1,0 +1,10 @@
+QueryResult's RowIterator.getSize returned the wrong size of the results after I implemented my own AccessManager
+
+
+
+Description:
+The background is I have implemented my own AccessManager. After executing a query and get back the RowIterator from the result, if I call rowiterator.getSize, it will return the size of all nodes matching my query (without honoring the access control) . But if I iterate through the result, I find lots of duplicates in the results; and if I filter out those duplicate, the final result is quite off the original number from RowIteartor.getSize()
+
+BTW, I also disabled Doc Order sorting.
+
+ 

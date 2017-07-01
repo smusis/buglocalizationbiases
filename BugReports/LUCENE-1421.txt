@@ -1,0 +1,9 @@
+Ability to group search results by field
+
+
+
+Description:
+It would be awesome to group search results by specified field. Some functionality was provided for Apache Solr but I think it should be done in Core Lucene. There could be some useful information like total hits about collapsed data like total count and so on.
+
+Thanks,
+Artyom

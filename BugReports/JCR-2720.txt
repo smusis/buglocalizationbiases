@@ -1,0 +1,11 @@
+Changes from Session.move() to a top-level node aren't seen in a second session
+
+
+
+Description:
+I'll attach a test case, but basically...
+
+* Create two sessions
+* Create a top-level node in the first session and save it.
+* Move the top-level node using the first session
+* In the second session, try itemExists() for the path of the node. It returns true when it should be false.

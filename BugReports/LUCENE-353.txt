@@ -1,0 +1,20 @@
+Locking bug
+
+
+
+Description:
+In org.apache.lucene.store.Lock, line 57 (lucene_1_4_final branch):
+
+if (++sleepCount == maxSleepCount)
+
+is incorrect, the sleepCount is incremented before the compare causing it
+throwing the exception with out waiting for at least 1 interation.
+
+Should be changed instead to:
+if (sleepCount++ == maxSleepCount)
+
+As this is a self-contained simple fix, I am not submitting a patch.
+
+Thanks
+
+-John

@@ -1,0 +1,31 @@
+Can no longer set a Date property using a Long value
+
+
+
+Description:
+Attempting to set a Date property with a Long value throws a javax.jcr.nodetype.ConstraintViolationException. This worked in Jackrabbit 1.6.2.
+
+To reproduce:
+  Node node = session.getItem("/");
+  node = node.addNode("dummy", "nt:resource");
+  ValueFactory vf = session.getValueFactory();
+  Value = vf.createValue("1234", 3); // Create a LongValue
+  node.setProperty("jcr:lastModified", value);
+  System.out.println(node.getProperty("jcr:lastModified"));
+
+Expected result:
+- A date around 1970 is printed to System.out
+
+Actual result:
+  javax.jcr.nodetype.ConstraintViolationException: no matching property definition found for {http://www.jcp.org/jcr/1.0}lastModified
+       at org.apache.jackrabbit.core.nodetype.EffectiveNodeType.getApplicablePropertyDef(EffectiveNodeType.java:770)
+       at org.apache.jackrabbit.core.NodeImpl.getApplicablePropertyDefinition(NodeImpl.java:911)
+       at org.apache.jackrabbit.core.ItemManager.getDefinition(ItemManager.java:224)
+       at org.apache.jackrabbit.core.ItemData.getDefinition(ItemData.java:97)
+       at org.apache.jackrabbit.core.PropertyData.getPropertyDefinition(PropertyData.java:53)
+       at org.apache.jackrabbit.core.PropertyImpl.getDefinition(PropertyImpl.java:729)
+       at org.apache.jackrabbit.core.NodeImpl.setProperty(NodeImpl.java:2512)
+
+According to Jukka Zitting [1], this might be a side-effect of JCR-2170.
+
+[1] Mail thread from dev@jackrabbit.apache.org: http://markmail.org/message/hn3snufsogjvldad

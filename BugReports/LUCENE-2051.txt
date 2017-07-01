@@ -1,0 +1,8 @@
+Contrib Analyzer Setters should be deprecated and replace with ctor arguments
+
+
+
+Description:
+Some analyzers in contrib provide setters for stopword / stem exclusion sets / hashtables etc. Those setters should be deprecated as they yield unexpected behaviour. The way they work is they set the reusable token stream instance to null in a thread local cache which only affects the tokenstream in the current thread. Analyzers itself should be immutable except of the threadlocal. 
+
+will attach a patch soon.

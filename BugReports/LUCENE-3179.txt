@@ -1,0 +1,7 @@
+OpenBitSet.prevSetBit()
+
+
+
+Description:
+Find a previous set bit in an OpenBitSet.
+Useful for parent testing in nested document query execution LUCENE-2454 .

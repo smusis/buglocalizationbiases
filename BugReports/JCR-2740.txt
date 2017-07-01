@@ -1,0 +1,18 @@
+On missing child node, automatically remove the entry (when a session attribute is set)
+
+
+
+Description:
+If a node points to a non-existing child node (which is a repository inconsistency), currently this child node is silently ignored for read operations (as far as I can tell). However, when trying to add another child node with the same name, an exception is thrown with a message saying a child node with this name already exists. Also, the parent node can't be removed.
+
+One solution is to remove the bad child node entry, but only if the session attribute "org.apache.jackrabbit.autoFixCorruptions" is set (so by default the repository is not changed 'secretly'):
+
+    SimpleCredentials cred = new SimpleCredentials(...);
+    cred.setAttribute("org.apache.jackrabbit.autoFixCorruptions", "true");
+    rep.login(cred);
+
+It's not a perfect solution, but it might be better than throwing an exception and basically preventing changes.
+
+Another solution (not implemented) would be to rename the missing child node entry when trying to add a child node with the same name (for example add the current date/time, or a random digit until there is no conflict), and then continue with adding the new child node.
+
+

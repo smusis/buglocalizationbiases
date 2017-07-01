@@ -1,0 +1,20 @@
+problem with isIPv4address() for relative uri's
+
+
+
+Description:
+the following block of code:
+
+try {
+	URI uri = new URI("http://10.0.1.10:8830");
+	System.out.println("is IP="+uri. isIPv4address());
+	uri = new URI(uri, "/04-1.html");
+	System.out.println("is IP="+uri. isIPv4address());
+} catch (URIException e) { ; }
+
+returns the output:
+
+is IP=true
+is IP=false
+
+so by being created from a relative uri URI objects don't have the right setting of  isIPv4address().

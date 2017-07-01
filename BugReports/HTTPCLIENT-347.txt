@@ -1,0 +1,22 @@
+MultiThreadedConnectionManager Accounting Problems
+
+
+
+Description:
+getConnectionsInPool() is certainly a more intutive name. 
+At the same, as you already mentioned, certainly there need to be a connection killer method: 
+MultiThreadedHttpConnectionManager.destroyIdleConnections(long idleTime) 
+
+Also, I would recommend one method which could spit out connection statistics at any time for the 
+given Connection Manager. This will be great method for testing purpose as well. 
+MultiThreadedHttpConnectionManager.displayCurrentStatistics(); 
+----------------------------------
+Curent Connection Statistics
+----------------------------------
+Total connectinos in Pool = 10
+Open connectinos          = 3
+Close connections         = 5
+Stale connections         = 2 
+And, if are even more adventurous we could extend our report to: 
+Average wait time for connection = 1356 ms
+Maximum wait time for connectino = 1892 ms

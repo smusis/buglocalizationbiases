@@ -1,0 +1,14 @@
+revise Scorer visitor API
+
+
+
+Description:
+Currently there is an (expert) API in scorer to allow you to take a scorer, and visit its children etc (e.g. booleanquery).
+
+I think we should improve this, so its general to all queries.
+
+The current issues are:
+* the current api is hardcoded for booleanquery's Occurs, but we should support other types of children (e.g. disjunctionmax)
+* it can be difficult to use the API, because of the amount of generics and the visitor callback API. 
+* the current API enforces a DFS traversal when you might prefer BFS instead.
+

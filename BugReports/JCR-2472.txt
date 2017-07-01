@@ -1,0 +1,22 @@
+spi2dav: Accessing moved referenceble nodes results in PathNotFoundException
+
+
+
+Description:
+the following code fragment causes a PathNotFoundException on an existing path
+and there seems to be no way to recover the session from this incorrect state:
+
+	// assuming an existing nt:file node at path /apps/foo/bar.txt
+	Node n1 = session.getNode("/apps/foo/bar.txt");
+	Node n2 = n1.getNode("jcr:content");
+	n2.setProperty("jcr:data", new java.io.ByteArrayInputStream(((String)("blahblah")).getBytes()));
+	n2.save();
+	Workspace ws0 = session.getWorkspace();
+	ws0.move("/apps/foo", "/apps/foo1");
+	Node n3 = session.getNode("/apps/foo1/bar.txt");
+	Node n4 = n3.getNode("jcr:content");
+	n4.refresh(false);
+	Node n5 = n3.getNode("jcr:content");     // => PathNotFoundException
+
+Please note that the preceeding Node.refresh() call seems to cause the inconsistency.
+the problem doesn't occur when omitting this call.

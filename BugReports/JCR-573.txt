@@ -1,0 +1,8 @@
+Add missing license headers
+
+
+
+Description:
+There are a few source files and a number of other files with missing or incorrect license headers within the Jackrabbit source tree. See the  discusssion at http://thread.gmane.org/gmane.comp.apache.jackrabbit.devel/8698 for details. The missing license headers need to be added. 
+
+There are also W3C licensed files. This needs to be mentioned in the NOTICE file.

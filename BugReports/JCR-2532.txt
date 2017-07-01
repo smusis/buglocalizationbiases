@@ -1,0 +1,9 @@
+spi2davex: session-scoped lock tokens not included in if-header
+
+
+
+Description:
+detected while running API lock tests.
+org.apache.jackrabbit.test.api.lock.DeepLockTest#testParentChildDeepLock failed though it used to work with spi2dav.
+
+fix is simple: SessionInfoImpl.getAllLockTokens must be used to populate the if-header as it is done in spi2dav.

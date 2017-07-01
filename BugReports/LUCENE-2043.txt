@@ -1,0 +1,6 @@
+Fix CommitIndexTask to also commit IndexReader changes
+
+
+
+Description:
+I'm setting up a benchmark for LUCENE-1458, and one limitation I hit is that the CommitIndexTask doesn't commit pending changes in the IndexReader (eg via DeleteByPercent), using a named commit point.

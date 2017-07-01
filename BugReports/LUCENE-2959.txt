@@ -1,0 +1,14 @@
+[GSoC] Implementing State of the Art Ranking for Lucene
+
+
+
+Description:
+Lucene employs the Vector Space Model (VSM) to rank documents, which compares
+unfavorably to state of the art algorithms, such as BM25. Moreover, the architecture is
+tailored specically to VSM, which makes the addition of new ranking functions a non-
+trivial task.
+
+This project aims to bring state of the art ranking methods to Lucene and to implement a
+query architecture with pluggable ranking functions.
+
+The wiki page for the project can be found at http://wiki.apache.org/lucene-java/SummerOfCode2011ProjectRanking.

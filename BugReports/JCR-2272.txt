@@ -1,0 +1,41 @@
+Errors during concurrent session import of nodes with same UUIDs
+
+
+
+Description:
+21.08.2009 16:22:14 *ERROR* [Executor 0] ConnectionRecoveryManager: could not execute statement, reason: The statement was aborted because it would have caused a duplicate key value in a unique or primary key constraint or unique index identified by 'SQL090821042140130' defined on 'DEFAULT_BUNDLE'., state/code: 23505/20000 (ConnectionRecoveryManager.java, line 453)
+21.08.2009 16:22:14 *ERROR* [Executor 0] BundleDbPersistenceManager: failed to write bundle: 6c292772-349e-42b3-8255-7729615c67de (BundleDbPersistenceManager.java, line 1212)
+ERROR 23505: The statement was aborted because it would have caused a duplicate key value in a unique or primary key constraint or unique index identified by 'SQL090821042140130' defined on 'DEFAULT_BUNDLE'.
+	at org.apache.derby.iapi.error.StandardException.newException(Unknown Source)
+	at org.apache.derby.impl.sql.execute.IndexChanger.insertAndCheckDups(Unknown Source)
+	at org.apache.derby.impl.sql.execute.IndexChanger.doInsert(Unknown Source)
+	at org.apache.derby.impl.sql.execute.IndexChanger.insert(Unknown Source)
+	at org.apache.derby.impl.sql.execute.IndexSetChanger.insert(Unknown Source)
+	at org.apache.derby.impl.sql.execute.RowChangerImpl.insertRow(Unknown Source)
+	at org.apache.derby.impl.sql.execute.InsertResultSet.normalInsertCore(Unknown Source)
+	at org.apache.derby.impl.sql.execute.InsertResultSet.open(Unknown Source)
+	at org.apache.derby.impl.sql.GenericPreparedStatement.execute(Unknown Source)
+	at org.apache.derby.impl.jdbc.EmbedStatement.executeStatement(Unknown Source)
+	at org.apache.derby.impl.jdbc.EmbedPreparedStatement.executeStatement(Unknown Source)
+	at org.apache.derby.impl.jdbc.EmbedPreparedStatement.execute(Unknown Source)
+	at org.apache.jackrabbit.core.persistence.bundle.util.ConnectionRecoveryManager.executeStmtInternal(ConnectionRecoveryManager.java:371)
+	at org.apache.jackrabbit.core.persistence.bundle.util.ConnectionRecoveryManager.executeStmtInternal(ConnectionRecoveryManager.java:298)
+	at org.apache.jackrabbit.core.persistence.bundle.util.ConnectionRecoveryManager.executeStmt(ConnectionRecoveryManager.java:261)
+	at org.apache.jackrabbit.core.persistence.bundle.util.ConnectionRecoveryManager.executeStmt(ConnectionRecoveryManager.java:239)
+	at org.apache.jackrabbit.core.persistence.bundle.BundleDbPersistenceManager.storeBundle(BundleDbPersistenceManager.java:1209)
+	at org.apache.jackrabbit.core.persistence.bundle.AbstractBundlePersistenceManager.putBundle(AbstractBundlePersistenceManager.java:709)
+	at org.apache.jackrabbit.core.persistence.bundle.AbstractBundlePersistenceManager.storeInternal(AbstractBundlePersistenceManager.java:651)
+	at org.apache.jackrabbit.core.persistence.bundle.AbstractBundlePersistenceManager.store(AbstractBundlePersistenceManager.java:527)
+	at org.apache.jackrabbit.core.persistence.bundle.BundleDbPersistenceManager.store(BundleDbPersistenceManager.java:563)
+	at org.apache.jackrabbit.core.state.SharedItemStateManager$Update.end(SharedItemStateManager.java:724)
+	at org.apache.jackrabbit.core.state.SharedItemStateManager.update(SharedItemStateManager.java:1101)
+	at org.apache.jackrabbit.core.state.LocalItemStateManager.update(LocalItemStateManager.java:351)
+	at org.apache.jackrabbit.core.state.XAItemStateManager.update(XAItemStateManager.java:354)
+	at org.apache.jackrabbit.core.state.LocalItemStateManager.update(LocalItemStateManager.java:326)
+	at org.apache.jackrabbit.core.state.SessionItemStateManager.update(SessionItemStateManager.java:326)
+	at org.apache.jackrabbit.core.ItemImpl.save(ItemImpl.java:1098)
+	at org.apache.jackrabbit.core.SessionImpl.save(SessionImpl.java:925)
+	at org.apache.jackrabbit.core.ConcurrentImportTest$1.execute(ConcurrentImportTest.java:73)
+	at org.apache.jackrabbit.core.AbstractConcurrencyTest$Executor.run(AbstractConcurrencyTest.java:209)
+	at java.lang.Thread.run(Thread.java:637)
+

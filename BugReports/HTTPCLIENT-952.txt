@@ -1,0 +1,15 @@
+SSLSocketFactory.createSSLContext does not process trust store
+
+
+
+Description:
+org.apache.http.conn.ssl.SSLSocketFactory.createSSLContext() does not process a provided trust store.
+Only the default (cacerts) is processed. An additional provided trust store is ignored.
+Adding the "trusted" certificate to the keystore, the peer is authenticated.
+
+Eventually
+        tmfactory.init(keystore);
+needs to be
+        tmfactory.init(truststore);
+
+

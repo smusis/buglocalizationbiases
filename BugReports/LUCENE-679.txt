@@ -1,0 +1,55 @@
+CLONE -QueryParser is not applicable for the arguments (String, String, Analyzer) error in results.jsp when executing search in the browser (demo from Lucene 2.0)
+
+
+
+Description:
+When executing search in the browser (as described in demo3.html Lucene demo) I get error, because the demo uses the method (QueryParser with three arguments) which is deleted (it was deprecated).
+I checked the demo from Lucene 1.4-final it with Lucene 1.4-final - it works, because those time the method was there.
+But demo from Lucene 2.0 does not work with Lucene 2.0
+
+The error stack is here:
+TTP Status 500 -
+
+type Exception report
+
+message
+
+description The server encountered an internal error () that prevented it from fulfilling this request.
+
+exception
+
+org.apache.jasper.JasperException: Unable to compile class for JSP
+
+An error occurred at line: 60 in the jsp file: /results.jsp
+Generated servlet error:
+The method parse(String) in the type QueryParser is not applicable for the arguments (String, String, Analyzer)
+
+
+org.apache.jasper.servlet.JspServletWrapper.handleJspException(JspServletWrapper.java:510)
+org.apache.jasper.servlet.JspServletWrapper.service(JspServletWrapper.java:375)
+org.apache.jasper.servlet.JspServlet.serviceJspFile(JspServlet.java:314)
+org.apache.jasper.servlet.JspServlet.service(JspServlet.java:264)
+javax.servlet.http.HttpServlet.service(HttpServlet.java:802)
+
+root cause
+
+org.apache.jasper.JasperException: Unable to compile class for JSP
+
+An error occurred at line: 60 in the jsp file: /results.jsp
+Generated servlet error:
+The method parse(String) in the type QueryParser is not applicable for the arguments (String, String, Analyzer)
+
+
+org.apache.jasper.compiler.DefaultErrorHandler.javacError(DefaultErrorHandler.java:84)
+org.apache.jasper.compiler.ErrorDispatcher.javacError(ErrorDispatcher.java:328)
+org.apache.jasper.compiler.JDTCompiler.generateClass(JDTCompiler.java:409)
+org.apache.jasper.compiler.Compiler.compile(Compiler.java:297)
+org.apache.jasper.compiler.Compiler.compile(Compiler.java:276)
+org.apache.jasper.compiler.Compiler.compile(Compiler.java:264)
+org.apache.jasper.JspCompilationContext.compile(JspCompilationContext.java:563)
+org.apache.jasper.servlet.JspServletWrapper.service(JspServletWrapper.java:303)
+org.apache.jasper.servlet.JspServlet.serviceJspFile(JspServlet.java:314)
+org.apache.jasper.servlet.JspServlet.service(JspServlet.java:264)
+javax.servlet.http.HttpServlet.service(HttpServlet.java:802)
+
+note The full stack trace of the root cause is available in the Apache Tomcat/5.5.15 logs.

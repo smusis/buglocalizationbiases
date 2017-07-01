@@ -1,0 +1,41 @@
+Intermittent failure in TestIndexWriter.testCommitThreadSafety
+
+
+
+Description:
+Mark's while(1) hudson box found this failure (and I can repro it too):
+
+{noformat}
+Error Message
+
+MockRAMDirectory: cannot close: there are still open files: {_1m.cfs=1,
+_1k.cfs=1, _14.cfs=1, _1g.cfs=1, _1h.cfs=1, _1f.cfs=1, _1n.cfs=1,
+_1i.cfs=1, _1j.cfs=1, _1l.cfs=1}
+
+Stacktrace
+
+java.lang.RuntimeException: MockRAMDirectory: cannot close: there are
+still open files: {_1m.cfs=1, _1k.cfs=1, _14.cfs=1, _1g.cfs=1,
+_1h.cfs=1, _1f.cfs=1, _1n.cfs=1, _1i.cfs=1, _1j.cfs=1, _1l.cfs=1}
+       at
+org.apache.lucene.store.MockRAMDirectory.close(MockRAMDirectory.java:282)
+       at
+org.apache.lucene.index.TestIndexWriter.testCommitThreadSafety(TestIndexWriter.java:4616)
+       at org.apache.lucene.util.LuceneTestCase.runBare(LuceneTestCase.java:328)
+
+Standard Output
+
+NOTE: random codec of testcase 'testCommitThreadSafety' was: Sep
+
+Standard Error
+
+The following exceptions were thrown by threads:
+*** Thread: Thread-1784 ***
+java.lang.RuntimeException: junit.framework.AssertionFailedError: null
+       at org.apache.lucene.index.TestIndexWriter$9.run(TestIndexWriter.java:4606)
+Caused by: junit.framework.AssertionFailedError: null
+       at junit.framework.Assert.fail(Assert.java:47)
+       at junit.framework.Assert.assertTrue(Assert.java:20)
+       at junit.framework.Assert.assertTrue(Assert.java:27)
+       at org.apache.lucene.index.TestIndexWriter$9.run(TestIndexWriter.java:4597)
+{noformat}

@@ -1,0 +1,14 @@
+Compressed fields should be "externalized" (from Fields into Document)
+
+
+
+Description:
+Right now, as of 2.0 release, Lucene supports compressed stored fields.  However, after discussion on java-dev, the suggestion arose, from Robert Engels, that it would be better if this logic were moved into the Document level.  This way the indexing level just stores opaque binary fields, and then Document handles compress/uncompressing as needed.
+
+This approach would have prevented issues like LUCENE-629 because merging of segments would never need to decompress.
+
+See this thread for the recent discussion:
+
+    http://www.gossamer-threads.com/lists/lucene/java-dev/38836
+
+When we do this we should also work on related issue LUCENE-648.

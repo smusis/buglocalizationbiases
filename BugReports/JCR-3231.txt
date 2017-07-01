@@ -1,0 +1,10 @@
+Replace BundleFsPersistenceManager with DerbyPersistenceManager in the JR Core indexing tests
+
+
+
+Description:
+Running the JR Core tests yields a deprecation warning on account of workspace config being outdated for some indexing tests:
+
+  INFO  o.a.j.core.config.BeanConfig - org.apache.jackrabbit.core.persistence.pool.BundleFsPersistenceManager is deprecated. Please use org.apache.jackrabbit.core.persistence.bundle.BundleFsPersistenceManager instead
+
+This shows up 3 times in the logs because there are 3 indexing related workspaces that need this config update.

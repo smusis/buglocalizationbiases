@@ -1,0 +1,6 @@
+Interface TermFreqVector has incomplete Javadocs
+
+
+
+Description:
+We should improve the Javadocs of org.apache.lucene.index.TermFreqVector

@@ -1,0 +1,44 @@
+lucenetestcase ease of use improvements
+
+
+
+Description:
+I started working on this in LUCENE-2658, here is the finished patch.
+
+There are some problems with LuceneTestCase:
+* a tests beforeClass, or the test itself (its @befores and its method), might have some
+  random behavior, but only the latter can be reproduced with -Dtests.seed
+* if you want to do things in beforeClass, you have to use a different API: newDirectory(random)
+  instead of newDirectory, etc.
+* for a new user, the current output can be verbose, confusing and overwhelming.
+
+So, I refactored this class to address these problems. 
+A class still needs 2 seeds internally, as the beforeClass will only run once, 
+but the methods or setUp() might run many times, especially when increasing iterations.
+
+but lucenetestcase deals with this, and the "seed" is 128-bit (UUID): 
+the MSB is initialized in beforeClass, the LSB varied for each method run.
+if you provide a seed with a -D, they are both fixed to the UUID you provided.
+
+I fixed the API to be consistent, so you should be able to migrate a test from 
+setUp() to beforeClass() [junit3 to junit4] without changing parameters.
+
+The codec, locale, timezone is only printed once at the end if any tests fail, 
+as its per-class anyway (setup in beforeClass)
+
+finally, when a test fails, you get a single "reproduce with" command line you can copy and paste to reproduce.
+this way you dont have to spend time trying to figure out what the command line should be.
+
+{noformat}
+    [junit] Tests run: 2, Failures: 2, Errors: 0, Time elapsed: 0.197 sec
+    [junit]
+    [junit] ------------- Standard Output ---------------
+    [junit] NOTE: reproduce with: ant test -Dtestcase=TestExample -Dtestmethod=testMethodA 
+              -Dtests.seed=a51e707b-6550-7800-9f8c-72622d14bf5f
+    [junit] NOTE: reproduce with: ant test -Dtestcase=TestExample -Dtestmethod=testMethodB 
+              -Dtests.seed=a51e707b-6550-7800-f7eb-2efca3820738
+    [junit] NOTE: test params are: codec=PreFlex, locale=ar_LY, timezone=Etc/UCT
+    [junit] ------------- ---------------- ---------------
+    [junit] Test org.apache.lucene.util.TestExample FAILED
+{noformat}
+

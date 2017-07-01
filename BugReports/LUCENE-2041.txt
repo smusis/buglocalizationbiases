@@ -1,0 +1,10 @@
+Complete parallelizaton of ParallelMultiSearcher
+
+
+
+Description:
+ParallelMultiSearcher is parallel only for the method signatures of 'search'.
+
+Part of a query process calls the method docFreq(). There was a TODO comment to parallelize this. Parallelizing this method actually increases the performance of a query on multiple indexes, especially remotely.
+
+

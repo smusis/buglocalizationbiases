@@ -1,0 +1,8 @@
+SegmentInfo.sizeInBytes ignore includeDocStore when caching
+
+
+
+Description:
+I noticed that SegmentInfo's sizeInBytes cache is potentially buggy -- it doesn't take into account 'includeDocStores'. I.e., if you call it once w/ 'false' (sizeInBytes won't include the store files) and then with 'true' (or vice versa), you won't get the right sizeInBytes (it won't re-compute, with the store files).
+
+I'll fix and add a test case demonstrating the bug.

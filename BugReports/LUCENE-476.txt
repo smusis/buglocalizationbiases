@@ -1,0 +1,14 @@
+BooleanQuery add public method that returns number of clauses this query
+
+
+
+Description:
+BooleanQuery add public method getClausesCount() that returns number of clauses this query.
+
+current ways of getting clauses count are:
+1).
+ int clausesCount  = booleanQuery.getClauses().length;
+
+or 
+
+

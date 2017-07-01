@@ -1,0 +1,6 @@
+QueryParser should use reusable token streams
+
+
+
+Description:
+Just like indexing, the query parser should use reusable token streams

@@ -1,0 +1,6 @@
+Upgrade to commons-compress 1.2
+
+
+
+Description:
+Commons Compress bug COMPRESS-127 was fixed in 1.2, so the workaround in benchmark's StreamUtils is no longer required. Compress is also used in solr. Replace with new jar in both benchmark and solr and get rid of that workaround.

@@ -1,0 +1,43 @@
+Locking two same-name siblings and unlocking first apparently unlocks second instead.
+
+
+
+Description:
+Executing the following test that unlocks the first of two locked same-name siblings:
+
+public void testLocking() throws RepositoryException {
+       Session jcrSession = ((S1SessionImpl) session).getSession();
+       Node rootNode = jcrSession.getRootNode();
+
+       Node n1 = rootNode.addNode("path");
+       n1.addMixin("mix:lockable");
+       Node n2 = rootNode.addNode("path");
+       n2.addMixin("mix:lockable");
+
+       jcrSession.save();
+
+       n1.lock(true, true);
+       n2.lock(true, true);
+
+       System.out.println("n1.isLocked() = " + n1.isLocked());
+       System.out.println("n2.isLocked() = " + n2.isLocked());
+       assertTrue(n1.isLocked());
+       assertTrue(n2.isLocked());
+
+       n1.save();
+       n1.unlock();
+
+       System.out.println("n1.isLocked() = " + n1.isLocked());
+       System.out.println("n2.isLocked() = " + n2.isLocked());
+       assertFalse(n1.isLocked());
+       assertTrue(n2.isLocked());
+   }
+
+Results in:
+
+n1.isLocked() = true
+n2.isLocked() = true
+n1.isLocked() = true
+n2.isLocked() = false
+
+which is wrong.

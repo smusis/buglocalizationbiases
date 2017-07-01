@@ -1,0 +1,6 @@
+jackrabbit-jcr-tests should still be based on Java 1.4
+
+
+
+Description:
+The JCR 2.0 TCK needs to be runnable on Java 1.4, so even though we've upgraded to Java 5 as the base platform for Jackrabbit 2.0, the jackrabbit-jcr-tests component needs to still be based on Java 1.4.

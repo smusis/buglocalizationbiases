@@ -1,0 +1,8 @@
+Unnecessary parameter in NodeTypeRegistry.persistCustomNodeTypeDefs(NodeTypeDefStore store)
+
+
+
+Description:
+The parameter "store" is not used within this method. I suggest to delete the parameter to make the code more readable.
+
+

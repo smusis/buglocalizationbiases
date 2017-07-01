@@ -1,0 +1,12 @@
+Make SlowMultiReaderWrapper wrap always so close() is safe
+
+
+
+Description:
+The overhead when wrapping an atomic reader using SlowMultiReaderWrapper is very low, the work done in the static wrap method is much higher (instantiate ArrayList, recusively went through all subreaders), just to check the number of readers than simply always wrapping.
+
+MultiFields already is optimized when called by one-segment or atomic readers, so there is no overhead at all. So this patch removes the static wrap method and you simply wrap like a TokenFilter with ctor: new SlowMultiReaderWrapper(reader)
+
+When this is done, there is also no risk to close a SegmentReader (which you should not do), when wrap() returns a single SegmentReader. This help in parent issue with cleaning up the case in close().
+
+The patch aölso removes the now useless mainReader/reader variables and simply closes the wrapper.

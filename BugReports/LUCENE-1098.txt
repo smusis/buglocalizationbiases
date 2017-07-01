@@ -1,0 +1,6 @@
+Small performance enhancement for StandardAnalyzer
+
+
+
+Description:
+The class StandardAnalyzer has an inner class, SavedStreams, which is used internally for maintaining some state. This class doesn't use the implicit reference to the enclosing class, so it can be made static and reduce some memory requirements. A patch will be attached shortly.

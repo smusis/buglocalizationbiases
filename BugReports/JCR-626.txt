@@ -1,0 +1,12 @@
+Move document type definition out of repository.xml
+
+
+
+Description:
+Hello!
+
+Here at Cognifide, Przemo and I we got a bit confused while trying to solve JCR-202. There was a need to modify repository.xml configuration file and it's DTD, and we have found that there are different repository.xml files within trunk that differs this definition. I think that it is a good idea to extract this definition to a one separate file (and maybe .xsd instead of .dtd) and then link it in other files. It would be also nice to put this file somewhere on the Web and reference it via URL.
+
+I am waiting for your comments.
+
+Regards, Jan

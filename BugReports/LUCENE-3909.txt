@@ -1,0 +1,13 @@
+Move Kuromoji to analysis.ja and introduce Japanese* naming
+
+
+
+Description:
+Lucene/Solr 3.6 and 4.0 will get out-of-the-box Japanese language support through {{KuromojiAnalyzer}}, {{KuromojiTokenizer}} and various other filters.  These filters currently live in {{org.apache.lucene.analysis.kuromoji}}.
+
+I'm proposing that we move Kuromoji to a new Japanese package {{org.apache.lucene.analysis.ja}} in line with how other languages are organized.  As part of this, I also think we should rename {{KuromojiAnalyzer}} to {{JapaneseAnalyzer}}, etc. to further align naming to our conventions by making it very clear that these analyzers are for Japanese.  (As much as I like the name "Kuromoji", I think "Japanese" is more fitting.)
+
+A potential issue I see with this that I'd like to raise and get feedback on, is that end-users in Japan and elsewhere who use lucene-gosen could have issues after an upgrade since lucene-gosen is in fact releasing its analyzers under the {{org.apache.lucene.analysis.ja}} namespace (and we'd have a name clash).
+
+I believe users should have the freedom to choose whichever Japanese analyzer, filter, etc. they'd like to use, and I don't want to propose a name change that just creates unnecessary problems for users, but I think the naming proposed above is most fitting for a Lucene/Solr release.
+

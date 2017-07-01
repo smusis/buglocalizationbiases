@@ -1,0 +1,17 @@
+Deleting docs of all returned Hits during search causes ArrayIndexOutOfBoundsException
+
+
+
+Description:
+For background user discussion:
+http://www.nabble.com/document-deletion-problem-to14414351.html
+
+{code}
+Hits h = m_indexSearcher.search(q); // Returns 11475 documents 
+for(int i = 0; i < h.length(); i++) 
+{ 
+  int doc = h.id(i); 
+  m_indexSearcher.getIndexReader().deleteDocument(doc);  <-- causes ArrayIndexOutOfBoundsException when i = 6400
+} 
+{code}
+

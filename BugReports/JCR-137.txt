@@ -1,0 +1,10 @@
+Open-scoped locks may be lost on restart and might not be transferrable
+
+
+
+Description:
+Two issues with open-scoped locks were reported by Cédric Damioli:
+
+(1) When open-scoped locks are being reapplied on repository startup, locks on non-referenceable nodes are lost.
+(2) When a session holding an open-scoped lock logs out, the lock token is not automatically removed from the session and other sessions are not able to take responsibility for the lock, even when having the correct lock token.
+

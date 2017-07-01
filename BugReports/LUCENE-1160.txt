@@ -1,0 +1,27 @@
+MergeException from CMS threads should record the Directory
+
+
+
+Description:
+When you hit an unhandled exception in ConcurrentMergeScheduler, it
+throws a MergePolicy.MergeException, but there's no easy way to figure
+out which index caused this (if you have more than one).
+
+I plan to add the Directory to the MergeException.  I also made a few
+other small changes to ConcurrentMergeScheduler:
+
+  * Added handleMergeException method, which is called on exception,
+    so that you can subclass ConcurrentMergeScheduler to do something
+    when an exception occurs.
+
+  * Added getMergeThread() method so you can override how the threads
+    are created (eg, if you want to make them in a different thread
+    group, use a pool, change priorities, etc.).
+
+  * Added doMerge(...) to actually do this merge, so you can do
+    something before starting and after finishing a merge.
+
+  * Changed private -> protected on a few attrs
+
+I plan to commit in a day or two.
+

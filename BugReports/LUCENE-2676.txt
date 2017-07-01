@@ -1,0 +1,29 @@
+TestIndexWriter failes for SimpleTextCodec
+
+
+
+Description:
+I just ran into this failure since SimpleText obviously takes a lot of disk space though.
+
+{noformat}
+    [junit] Testsuite: org.apache.lucene.index.TestIndexWriter
+    [junit] Testcase: testCommitOnCloseDiskUsage(org.apache.lucene.index.TestIndexWriter):	FAILED
+    [junit] writer used too much space while adding documents: mid=608162 start=5293 end=634214
+    [junit] junit.framework.AssertionFailedError: writer used too much space while adding documents: mid=608162 start=5293 end=634214
+    [junit] 	at org.apache.lucene.util.LuceneTestCase$LuceneTestCaseRunner.runChild(LuceneTestCase.java:795)
+    [junit] 	at org.apache.lucene.util.LuceneTestCase$LuceneTestCaseRunner.runChild(LuceneTestCase.java:768)
+    [junit] 	at org.apache.lucene.index.TestIndexWriter.testCommitOnCloseDiskUsage(TestIndexWriter.java:1047)
+    [junit] 
+    [junit] 
+    [junit] Tests run: 1, Failures: 1, Errors: 0, Time elapsed: 3.281 sec
+    [junit] 
+    [junit] ------------- Standard Output ---------------
+    [junit] NOTE: reproduce with: ant test -Dtestcase=TestIndexWriter -Dtestmethod=testCommitOnCloseDiskUsage -Dtests.seed=-7526585723238322940:-1609544650150801239
+    [junit] NOTE: test params are: codec=SimpleText, locale=th_TH, timezone=UCT
+    [junit] ------------- ---------------- ---------------
+    [junit] Test org.apache.lucene.index.TestIndexWriter FAILED
+{noformat}
+
+I did not look into SimpleText but I guess we need either change the threshold for this test or exclude SimpleText from it.
+
+any ideas?

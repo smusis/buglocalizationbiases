@@ -1,0 +1,57 @@
+Some concurrency improvements for NRT
+
+
+
+Description:
+Some concurrency improvements for NRT
+
+I found & fixed some silly thread bottlenecks that affect NRT:
+
+  * Multi/DirectoryReader.numDocs is synchronized, I think so only 1
+    thread computes numDocs if it's -1.  I removed this sync, and made
+    numDocs volatile, instead.  Yes, multiple threads may compute the
+    numDocs for the first time, but I think that's harmless?
+
+  * Fixed BitVector's ctor to set count to 0 on creating a new BV, and
+    clone to copy the count over; this saves CPU computing the count
+    unecessarily.
+
+  * Also strengthened assertions done in SR, testing the delete docs
+    count.
+
+I also found an annoying thread bottleneck that happens, due to CMS.
+Whenever CMS hits the max running merges (default changed from 3 to 1
+recently), and the merge policy now wants to launch another merge, it
+forces the incoming thread to wait until one of the BG threads
+finishes.
+
+This is a basic crude throttling mechanism -- you force the mutators
+(whoever is causing new segments to appear) to stop, so that merging
+can catch up.
+
+Unfortunately, when stressing NRT, that thread is the one that's
+opening a new NRT reader.
+
+So, the first serious problem happens when you call .reopen() on your
+NRT reader -- this call simply forwards to IW.getReader if the reader
+was an NRT reader.  But, because DirectoryReader.doReopen is
+synchronized, this had the horrible effect of holding the monitor lock
+on your main IR.  In my test, this blocked all searches (since each
+search uses incRef/decRef, still sync'd until LUCENE-2156, at least).
+I fixed this by making doReopen only sync'd on this if it's not simply
+forwarding to getWriter.  So that's a good step forward.
+
+This prevents searches from being blocked while trying to reopen to a
+new NRT.
+
+However... it doesn't fix the problem that when an immense merge is
+off and running, opening an NRT reader could hit a tremendous delay
+because CMS blocks it.  The BalancedSegmentMergePolicy should help
+here... by avoiding such immense merges.
+
+But, I think we should also pursue an improvement to CMS.  EG, if it
+has 2 merges running, where one is huge and one is tiny, it ought to
+increase thread priority of the tiny one.  I think with such a change
+we could increase the max thread count again, to prevent this
+starvation.  I'll open a separate issue....
+

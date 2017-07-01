@@ -1,0 +1,10 @@
+Remove commons-collections and slf4j-api dependencies from jcr-commons
+
+
+
+Description:
+As noted in JCR-1615 and discussed on the mailing list [1] it would be good if jackrabbit-jcr-commons didn't come with extra dependencies beyond the standard Java class libraries and the JCR API.
+
+Currently jackrabbit-jcr-commons depends on both commons-collections and slf4j-api, but both dependencies are relatively isolated and could be dropped with relatively little effort. Both dependency changes may be backwards incompatible with existing clients, but since the impact is reasonably small and easy to resolve I'd be OK doing this in 1.5.
+
+[1] http://markmail.org/message/724ruk4l7b5rjtan

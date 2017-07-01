@@ -1,0 +1,50 @@
+Check for boundary conditions in FieldInfos
+
+
+
+Description:
+In FieldInfos there are three methods in which we don't check for
+boundary conditions but catch e. g. an IndexOutOfBoundsException
+or a NPE. I think this isn't good code style and is probably not
+even faster than checking explicitly.
+
+"Exceptions should not be used to alter the flow of a program as 
+part of normal execution."
+
+Also this can be irritating when you're trying to debug an 
+IndexOutOfBoundsException that is thrown somewhere else in your
+program and you place a breakpoint on that exception.
+
+The three methods are:
+
+  public int fieldNumber(String fieldName) {
+    try {
+      FieldInfo fi = fieldInfo(fieldName);
+      if (fi != null)
+        return fi.number;
+    }
+    catch (IndexOutOfBoundsException ioobe) {
+      return -1;
+    }
+    return -1;
+  }
+  
+
+  public String fieldName(int fieldNumber) {
+    try {
+      return fieldInfo(fieldNumber).name;
+    }
+    catch (NullPointerException npe) {
+      return "";
+    }
+  }
+  
+  
+  public FieldInfo fieldInfo(int fieldNumber) {
+    try {
+      return (FieldInfo) byNumber.get(fieldNumber);
+    }
+    catch (IndexOutOfBoundsException ioobe) {
+      return null;
+    }
+  }

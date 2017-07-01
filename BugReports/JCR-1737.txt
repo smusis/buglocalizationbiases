@@ -1,0 +1,11 @@
+JSP page compilation errors when depoyed using oc4j
+
+
+
+Description:
+An error in the Welcome.jsp was produced as follows:
+
+cannot find symbol symbol : method log(java.lang.String,java.lang.Throwable)
+
+In a response from the user group it was determined that there should be no expectation in Jackrabbit that the JspPage implementation will inherit from the GeneralServlet base class.
+

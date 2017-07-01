@@ -1,0 +1,56 @@
+Jenkins builds hang quite often in TestIndexWriterWithThreads.testCloseWithThreads
+
+
+
+Description:
+Last hung test run: [https://builds.apache.org/job/Lucene-Solr-tests-only-trunk/10638/console]
+
+{noformat}
+[junit] "main" prio=5 tid=0x0000000801ef3800 nid=0x1965c waiting on condition [0x00007fffffbfd000]
+[junit]    java.lang.Thread.State: WAITING (parking)
+[junit] 	at sun.misc.Unsafe.park(Native Method)
+[junit] 	- parking to wait for  <0x0000000825d853a8> (a java.util.concurrent.locks.ReentrantLock$NonfairSync)
+[junit] 	at java.util.concurrent.locks.LockSupport.park(LockSupport.java:186)
+[junit] 	at java.util.concurrent.locks.AbstractQueuedSynchronizer.parkAndCheckInterrupt(AbstractQueuedSynchronizer.java:838)
+[junit] 	at java.util.concurrent.locks.AbstractQueuedSynchronizer.acquireQueued(AbstractQueuedSynchronizer.java:871)
+[junit] 	at java.util.concurrent.locks.AbstractQueuedSynchronizer.acquire(AbstractQueuedSynchronizer.java:1201)
+[junit] 	at java.util.concurrent.locks.ReentrantLock$NonfairSync.lock(ReentrantLock.java:214)
+[junit] 	at java.util.concurrent.locks.ReentrantLock.lock(ReentrantLock.java:290)
+[junit] 	at org.apache.lucene.index.DocumentsWriterFlushControl.markForFullFlush(DocumentsWriterFlushControl.java:403)
+[junit] 	at org.apache.lucene.index.DocumentsWriter.flushAllThreads(DocumentsWriter.java:557)
+[junit] 	- locked <0x0000000825d81998> (a org.apache.lucene.index.DocumentsWriter)
+[junit] 	at org.apache.lucene.index.IndexWriter.prepareCommit(IndexWriter.java:2776)
+[junit] 	- locked <0x0000000825d7d840> (a java.lang.Object)
+[junit] 	at org.apache.lucene.index.IndexWriter.commitInternal(IndexWriter.java:2904)
+[junit] 	- locked <0x0000000825d7d830> (a java.lang.Object)
+[junit] 	at org.apache.lucene.index.IndexWriter.closeInternal(IndexWriter.java:1156)
+[junit] 	at org.apache.lucene.index.IndexWriter.close(IndexWriter.java:1099)
+[junit] 	at org.apache.lucene.index.TestIndexWriterWithThreads.testCloseWithThreads(TestIndexWriterWithThreads.java:200)
+[junit] 	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+[junit] 	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:57)
+[junit] 	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+[junit] 	at java.lang.reflect.Method.invoke(Method.java:616)
+[junit] 	at org.junit.runners.model.FrameworkMethod$1.runReflectiveCall(FrameworkMethod.java:44)
+[junit] 	at org.junit.internal.runners.model.ReflectiveCallable.run(ReflectiveCallable.java:15)
+[junit] 	at org.junit.runners.model.FrameworkMethod.invokeExplosively(FrameworkMethod.java:41)
+[junit] 	at org.junit.internal.runners.statements.InvokeMethod.evaluate(InvokeMethod.java:20)
+[junit] 	at org.junit.rules.TestWatchman$1.evaluate(TestWatchman.java:48)
+[junit] 	at org.apache.lucene.util.LuceneTestCase$2$1.evaluate(LuceneTestCase.java:611)
+[junit] 	at org.junit.internal.runners.statements.RunBefores.evaluate(RunBefores.java:28)
+[junit] 	at org.junit.internal.runners.statements.RunAfters.evaluate(RunAfters.java:31)
+[junit] 	at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:76)
+[junit] 	at org.apache.lucene.util.LuceneTestCaseRunner.runChild(LuceneTestCaseRunner.java:148)
+[junit] 	at org.apache.lucene.util.LuceneTestCaseRunner.runChild(LuceneTestCaseRunner.java:50)
+[junit] 	at org.junit.runners.ParentRunner$3.run(ParentRunner.java:193)
+[junit] 	at org.junit.runners.ParentRunner$1.schedule(ParentRunner.java:52)
+[junit] 	at org.junit.runners.ParentRunner.runChildren(ParentRunner.java:191)
+[junit] 	at org.junit.runners.ParentRunner.access$000(ParentRunner.java:42)
+[junit] 	at org.junit.runners.ParentRunner$2.evaluate(ParentRunner.java:184)
+[junit] 	at org.junit.internal.runners.statements.RunBefores.evaluate(RunBefores.java:28)
+[junit] 	at org.junit.internal.runners.statements.RunAfters.evaluate(RunAfters.java:31)
+[junit] 	at org.junit.runners.ParentRunner.run(ParentRunner.java:236)
+[junit] 	at junit.framework.JUnit4TestAdapter.run(JUnit4TestAdapter.java:39)
+[junit] 	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.run(JUnitTestRunner.java:420)
+[junit] 	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.launch(JUnitTestRunner.java:911)
+[junit] 	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.main(JUnitTestRunner.java:743)
+{noformat}

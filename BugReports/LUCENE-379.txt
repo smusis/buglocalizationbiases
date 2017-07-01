@@ -1,0 +1,21 @@
+Contribution: Efficient Sorting of DateField/DateTools Encoded Timestamp Long Values
+
+
+
+Description:
+Hello Tim,
+
+As promised, the sort functionality for "long" values is included in the
+attached files.
+
+patchTestSort.txt contains the diff info. for my modifications to the
+TestSort.java class
+
+org.apache.lucene.search.ZIP contains the three new class files for
+efficient sorting of "long" field values and of encoded timestamp
+field values as "long" values.
+
+Let me know if you have any questions.
+
+Regards,
+Rus

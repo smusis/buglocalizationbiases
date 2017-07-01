@@ -1,0 +1,8 @@
+Rename package core.search to core.query
+
+
+
+Description:
+The package org.apache.jackrabbit.core.search should be renamed to org.apache.jackrabbit.core.query for consistency with the JCR api. All other packages in Jackrabbit already use the package names as suggested by the JCR api (javax.jcr.<subpackage>).
+
+If there are other implementations than the Jackrabbit one of the org.apache.jackrabbit.core.search.QueryHandler interface they need to be adapted to use the new package name!

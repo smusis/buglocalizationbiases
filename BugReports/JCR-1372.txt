@@ -1,0 +1,6 @@
+[PATCH] Fix possible Null Ptr exception in ConnectionFactory
+
+
+
+Description:
+code will throw npe if driver string is null - patch fixes this.

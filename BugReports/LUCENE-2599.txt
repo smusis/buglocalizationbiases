@@ -1,0 +1,11 @@
+Deprecate Spatial Contrib
+
+
+
+Description:
+The spatial contrib is blighted by bugs.  The latest series, found by Grant and discussed [here|http://search.lucidimagination.com/search/document/c32e81783642df47/spatial_rethinking_cartesian_tiers_implementation] shows that we need to re-think the cartesian tier implementation.
+
+Given the need to create a spatial module containing code taken from both lucene and Solr, it makes sense to deprecate the spatial contrib, and start from scratch in the new module.
+
+
+

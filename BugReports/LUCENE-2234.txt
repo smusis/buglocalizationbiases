@@ -1,0 +1,18 @@
+Hindi Analyzer
+
+
+
+Description:
+An analyzer for hindi.
+
+below are MAP values on the FIRE 2008 test collection.
+QE means expansion with morelikethis, all defaults, on top 5 docs.
+
+||setup||T||T(QE)||TD||TD(QE)||TDN||TDN(QE)||
+|words only|0.1646|0.1979|0.2241|0.2513|0.2468|0.2735|
+|HindiAnalyzer|0.2875|0.3071|0.3387|*0.3791**|0.3837|0.3810|
+|improvement|74.67%|55.18%|51.14%|50.86%|55.47%|39.31%|
+
+* TD was the official measurement, highest score for this collection in FIRE 2008 was 0.3487: http://www.isical.ac.in/~fire/paper/mcnamee-jhu-fire2008.pdf
+
+needs a bit of cleanup and more tests

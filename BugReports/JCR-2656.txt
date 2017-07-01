@@ -1,0 +1,8 @@
+Embedded Derby fails under JBoss because of JMX-related conflicts
+
+
+
+Description:
+JBoss fails to start due to a bug in Derby-10.4.2.0. The dependency should be agains derby-10.4.2.1 which seems to has this bug fixed. More info at https://issues.apache.org/jira/browse/DERBY-3887
+
+Please, include this fix in the upcoming 1.6.3

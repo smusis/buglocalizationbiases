@@ -1,0 +1,6 @@
+Change project names to start with jackrabbit
+
+
+
+Description:
+All the released projects should have artifactId's starting with "jackrabbit".

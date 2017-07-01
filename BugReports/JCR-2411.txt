@@ -1,0 +1,8 @@
+Replace commons-logging with jcl-over-slf4j in jackrabbit-webdav
+
+
+
+Description:
+In JCR-1631 we moved the exclusion rule against the transitive commons-logging dependency from commons-httpclient to higher level components like jackrabbit-jca and jackrabbit-webapp.
+
+However, I'm having some trouble with commons-logging showing up in other downstream projects that depend directly on jackrabbit-webapp or jackrabbit-jcr-server. Thus I'd like to revert the JCR-1631 solution and push the exclusion rule back to jackrabbit-webapp and replace the commons-logging dependency with jcl-over-slf4j. Downstream projects that already use commons-logging can still exclude the jcl-over-slf4j dependency.

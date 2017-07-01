@@ -1,0 +1,9 @@
+Jcr-Remoting: PathNotFoundException if item name ends with .json
+
+
+
+Description:
+the jcr-remoting-servlet contains the following commented issue:
+
+    * TODO: TOBEFIXED will not behave properly if resource path (i.e. item name)
+    * TODO  ends with .json extension and/or contains a depth-selector pattern.

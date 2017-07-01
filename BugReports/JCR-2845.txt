@@ -1,0 +1,6 @@
+NodeBasedGroup#isMember(Principal) should have shortcut for the everyone group.
+
+
+
+Description:
+

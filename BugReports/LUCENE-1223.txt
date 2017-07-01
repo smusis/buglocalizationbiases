@@ -1,0 +1,8 @@
+lazy fields don't enforce binary vs string value
+
+
+
+Description:
+If you have a binary field, and load it lazy, and then ask that field
+for its stringValue, it will incorrectly give you a String back (and
+then will refuse to give a binaryValue).  And, vice-versa.

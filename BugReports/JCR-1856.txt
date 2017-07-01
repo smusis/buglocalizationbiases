@@ -1,0 +1,8 @@
+Change value for SearchIndex#DEFAULT_EXTRACTOR_BACK_LOG
+
+
+
+Description:
+The value is currently 100. This means that once 100 extractor jobs are pending in the indexing queue additional extractor jobs are executed with the current thread. I think it would be more useful to change this value to Integer.MAX_VALUE (or in other words: unbounded).
+
+If the backlog is filled up then this indicates that the repository is very busy and we should not put additional burden on the current thread in that case.

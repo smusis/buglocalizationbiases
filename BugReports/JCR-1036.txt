@@ -1,0 +1,31 @@
+JCR2SPI; setProperty(name, date-string) fails when property is added and property type is PropertyType.DATE.
+
+
+
+Description:
+Example code:
+
+        Node l_parent = (Node)session.getItem(this.m_path);
+        
+        Node l_test = l_parent.addNode("createcontenttest", "nt:file");
+        Node l_content = l_test.addNode("jcr:content", "nt:resource");
+        
+        l_content.setProperty("jcr:encoding", "UTF-8");
+        l_content.setProperty("jcr:mimeType", "text/plain");
+        l_content.setProperty("jcr:data", new ByteArrayInputStream("foobar".getBytes()));
+        l_content.setProperty("jcr:lastModified", "2007-07-25T17:04:00.000Z"); // TODO: this should work as well, bug in JCR2SPI?
+        session.save();
+
+This will fail when the property is defined as DATE, what should happen is that a value comparison is attempted (note that it works when the property already exists and just is overwritten).
+
+The exception is:
+
+javax.jcr.nodetype.ConstraintViolationException: no matching property definition found for {http://www.jcp.org/jcr/1.0}lastModified
+        at org.apache.jackrabbit.jcr2spi.nodetype.ItemDefinitionProviderImpl.getQPropertyDefinition(ItemDefinitionProviderImpl.java:269)
+        at org.apache.jackrabbit.jcr2spi.nodetype.ItemDefinitionProviderImpl.getQPropertyDefinition(ItemDefinitionProviderImpl.java:159)
+        at org.apache.jackrabbit.jcr2spi.NodeImpl.getApplicablePropertyDefinition(NodeImpl.java:1672)
+        at org.apache.jackrabbit.jcr2spi.NodeImpl.createProperty(NodeImpl.java:1369)
+        at org.apache.jackrabbit.jcr2spi.NodeImpl.setProperty(NodeImpl.java:264)
+        at org.apache.jackrabbit.jcr2spi.NodeImpl.setProperty(NodeImpl.java:345)
+        at org.apache.jackrabbit.jcr2spi.NodeImpl.setProperty(NodeImpl.java:336)
+

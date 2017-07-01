@@ -1,0 +1,8 @@
+In DatabasePersistenceManager.store(), if the exception is null or its cause is not an SQLException, then the PM keeps looping forever
+
+
+
+Description:
+In the line
+if (ise != null && ise.getCause() instanceof SQLException && --trials > 0) {
+if one of the first two checks fails, the shortcircuit doesn't decrement trials.

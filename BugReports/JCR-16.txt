@@ -1,0 +1,8 @@
+Observation tests fail
+
+
+
+Description:
+Path returned by Event.getPath() is wrong. It always returns the path to the parent node connected to the event. That is, if e.g. a node /foo/bar is created the path /foo is returned instead of /foo/bar.
+
+This issue had been introduced with changed from api version 0.14 to 0.15.

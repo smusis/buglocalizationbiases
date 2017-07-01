@@ -1,0 +1,21 @@
+PROPPATCH on collection gets 403 Forbidden
+
+
+
+Description:
+DefaultHandler.canImport(PropertyImportContext, boolean) prevents setting properties (PROPPATCH) on collections through WebDAV ... returns 403 Forbidden. It checks to see whether the contextItem is not a collection, or has a jcr:content node. This test fails for a collection and should probably allow collections or nodes that have a jcr:content subnode. Here is a patch for the change
+
+Index: jackrabbit-jcr-server/src/main/java/org/apache/jackrabbit/server/io/DefaultHandler.java
+===================================================================
+--- jackrabbit-jcr-server/src/main/java/org/apache/jackrabbit/server/io/DefaultHandler.java	(revision 567695)
++++ jackrabbit-jcr-server/src/main/java/org/apache/jackrabbit/server/io/DefaultHandler.java	(working copy)
+@@ -570,7 +570,7 @@
+         }
+         Item contextItem = context.getImportRoot();
+         try {
+-            return contextItem != null && contextItem.isNode() && (!isCollection || ((Node)contextItem).hasNode(JcrConstants.JCR_CONTENT));
++            return contextItem != null && contextItem.isNode() && (isCollection || ((Node)contextItem).hasNode(JcrConstants.JCR_CONTENT));
+         } catch (RepositoryException e) {
+             log.error("Unexpected error: " + e.getMessage());
+             return false;
+

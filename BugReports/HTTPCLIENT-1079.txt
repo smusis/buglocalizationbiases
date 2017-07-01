@@ -1,0 +1,7 @@
+Kerberos cross-realm support is broken
+
+
+
+Description:
+This issue is basically based on the same facts as this issue https://issues.sonatype.org/browse/AHC-71?focusedCommentId=129559#action_129559 
+Since the Kerberos code looks the same, I assume that AHC used your code. The same patch can be applied to fix [this http://hc.apache.org/httpcomponents-client-ga/httpclient/xref/org/apache/http/impl/auth/NegotiateScheme.html#200] defective code.

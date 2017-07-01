@@ -1,0 +1,9 @@
+leading wildcard's don't work with trailing wildcard
+
+
+
+Description:
+As reported by Antony Bowesman, leading wildcards don't work when there is a trailing wildcard character -- instead a PrefixQuery is constructed.
+
+
+http://www.nabble.com/QueryParser-bug--tf3270956.html

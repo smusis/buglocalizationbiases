@@ -1,0 +1,20 @@
+Split DocMaker into ContentSource and DocMaker
+
+
+
+Description:
+This issue proposes some refactoring to the benchmark package. Today, DocMaker has two roles: collecting documents from a collection and preparing a Document object. These two should actually be split up to ContentSource and DocMaker, which will use a ContentSource instance.
+
+ContentSource will implement all the methods of DocMaker, like getNextDocData, raw size in bytes tracking etc. This can actually fit well w/ 1591, by having a basic ContentSource that offers input stream services, and wraps a file (for example) with a bzip or gzip streams etc.
+
+DocMaker will implement the makeDocument methods, reusing DocState etc.
+
+The idea is that collecting the Enwiki documents, for example, should be the same whether I create documents using DocState, add payloads or index additional metadata. Same goes for Trec and Reuters collections, as well as LineDocMaker.
+In fact, if one inspects EnwikiDocMaker and LineDocMaker closely, they are 99% the same and 99% different. Most of their differences lie in the way they read the data, while most of the similarity lies in the way they create documents (using DocState).
+That led to a somehwat bizzare extension of LineDocMaker by EnwikiDocMaker (just the reuse of DocState). Also, other DocMakers do not use that DocState today, something they could have gotten for free with this refactoring proposed.
+
+So by having a EnwikiContentSource, ReutersContentSource and others (TREC, Line, Simple), I can write several DocMakers, such as DocStateMaker, ConfigurableDocMaker (one which accpets all kinds of config options) and custom DocMakers (payload, facets, sorting), passing to them a ContentSource instance and reuse the same DocMaking algorithm with many content sources, as well as the same ContentSource algorithm with many DocMaker implementations.
+
+This will also give us the opportunity to perf test content sources alone (i.e., compare bzip, gzip and regular input streams), w/o the overhead of creating a Document object.
+
+I've already done so in my code environment (I extend the benchmark package for my application's purposes) and I like the flexibility I have. I think this can be a nice contribution to the benchmark package, which can result in some code cleanup as well.

@@ -1,0 +1,21 @@
+IndexWriter applies wrong deletes during concurrent flush-all
+
+
+
+Description:
+Yonik uncovered this with the TestRealTimeGet test: if a flush-all is
+underway, it is possible for an incoming update to pick a DWPT that is
+stale, ie, not yet pulled/marked for flushing, yet the DW has cutover
+to a new deletes queue.  If this happens, and the deleted term was
+also updated in one of the non-stale DWPTs, then the wrong document is
+deleted and the test fails by detecting the wrong value.
+
+There's a 2nd failure mode that I haven't figured out yet, whereby 2
+docs are returned when searching by id (there should only ever be 1
+doc since the test uses updateDocument which is atomic wrt
+commit/reopen).
+
+Yonik verified the test passes pre-DWPT, so my guess is (but I
+have yet to verify) this test also passes on 3.x.  I'll backport
+the test to 3.x to be sure.
+

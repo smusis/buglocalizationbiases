@@ -1,0 +1,24 @@
+FrenchAnalyzer's tokenStream method does not honour the contract of Analyzer
+
+
+
+Description:
+In {{Analyzer}} :
+{code}
+/** Creates a TokenStream which tokenizes all the text in the provided
+    Reader.  Default implementation forwards to tokenStream(Reader) for 
+    compatibility with older version.  Override to allow Analyzer to choose 
+    strategy based on document and/or field.  Must be able to handle null
+    field name for backward compatibility. */
+  public abstract TokenStream tokenStream(String fieldName, Reader reader);
+{code}
+
+
+and in {{FrenchAnalyzer}}
+
+{code}
+public final TokenStream tokenStream(String fieldName, Reader reader) {
+
+    if (fieldName == null) throw new IllegalArgumentException("fieldName must not be null");
+    if (reader == null) throw new IllegalArgumentException("reader must not be null");
+{code}

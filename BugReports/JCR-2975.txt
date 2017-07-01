@@ -1,0 +1,6 @@
+Make ItemInfoBuilder name space aware
+
+
+
+Description:
+Currently there is no way to to have NodeInfoBuilder/PropertyInfoBuilder build NodeInfos/ItemInfos on a name space other than the default one. I suggest to add appropriate methods to NodeInfoBuilder/PropertyInfoBuilder to set the name space.

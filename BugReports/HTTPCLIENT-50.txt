@@ -1,0 +1,7 @@
+User configurable cookie policy
+
+
+
+Description:
+Some user configurable how cookies are handled.  Emulate cookie options in web
+browsers.

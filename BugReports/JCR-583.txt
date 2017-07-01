@@ -1,0 +1,15 @@
+TCK: NodeReadMethodsTest.testGetName fails with NPE if  'testroot' has no child node
+
+
+
+Description:
+The 'testGetName' does not assert, that  the childnode field has been populated during setup.
+if  for whatever reason  the test data don't provide a single childnode below the test root, this test will fail with nullpointer
+exception.
+
+i would like to suggest to use the same assertion as in testGetPath and throw a NotExecutableException in case of
+missing child node.
+
+patch attached.
+
+

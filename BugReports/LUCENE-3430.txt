@@ -1,0 +1,24 @@
+TestParser.testSpanTermXML fails with some sims
+
+
+
+Description:
+here is why this test sometimes fails (my explanation in the test i wrote):
+
+{noformat}
+  /** make sure all sims work with spanOR(termX, termY) where termY does not exist */
+  public void testCrazySpans() throws Exception {
+    // The problem: "normal" lucene queries create scorers, returning null if terms dont exist
+    // This means they never score a term that does not exist.
+    // however with spans, there is only one scorer for the whole hierarchy:
+    // inner queries are not real queries, their boosts are ignored, etc.
+{noformat}
+
+Basically, SpanQueries aren't really queries, you just get one scorer. it calls extractTerms on the whole hierarchy and computes weights (e.g. IDF) on
+the whole bag of terms, even if they don't exist.
+
+This is fine, we already have tests that sim's won't bug-out in computeStats() here: however they don't expect to actually score documents based on
+these terms that don't exist... however this is exactly what happens in Spans because it doesn't use sub-scorers.
+
+Lucene's sim avoids this with the (docFreq + 1)
+

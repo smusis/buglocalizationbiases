@@ -1,0 +1,8 @@
+Make QValueFactoryImpl extensible
+
+
+
+Description:
+The class is currently final and other modules therefore copied code. This kind of duplication it hard to maintain and should be avoided.
+
+If QValueFactoryImpl would be designed to be extensible then other classes could reuse much of the code.

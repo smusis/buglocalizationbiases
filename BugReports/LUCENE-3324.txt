@@ -1,0 +1,6 @@
+checkindex fails if docfreq >= skipInterval and term is indexed more than once at same position
+
+
+
+Description:
+This is a bad check in the skipping verification logic

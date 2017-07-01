@@ -1,0 +1,41 @@
+When node is created and locked in same transaction, exception is thrown
+
+
+
+Description:
+Following code fails when executed inside an XA transaction:
+
+Node n = session.getRootNode().addNode("n");
+n.addMixin("mix:lockable");
+session.save();
+Lock lock = n.lock(false, false);
+
+Stacktrace is
+
+Caused by: javax.transaction.xa.XAException
+	at org.apache.jackrabbit.core.TransactionContext.prepare(TransactionContext.java:155)
+	at org.apache.jackrabbit.core.XASessionImpl.commit(XASessionImpl.java:337)
+	at org.apache.jackrabbit.jca.TransactionBoundXAResource.commit(TransactionBoundXAResource.java:39)
+	at org.apache.geronimo.transaction.manager.WrapperNamedXAResource.commit(WrapperNamedXAResource.java:47)
+	at org.apache.geronimo.transaction.manager.TransactionImpl.commit(TransactionImpl.java:301)
+	... 32 more
+Caused by: org.apache.jackrabbit.core.TransactionException: Unable to update.
+	at org.apache.jackrabbit.core.lock.XAEnvironment.prepare(XAEnvironment.java:275)
+	at org.apache.jackrabbit.core.lock.XALockManager.prepare(XALockManager.java:245)
+	at org.apache.jackrabbit.core.TransactionContext.prepare(TransactionContext.java:138)
+	... 36 more
+Caused by: javax.jcr.ItemNotFoundException: failed to build path of 48fb59d8-ac77-4b9f-8b53-9f2492dca5e5: 48fb59d8-ac77-4b9f-8b53-9f2492dca5e5: 48fb59d8-ac77-4b9f-8b53-9f2492dca5e5
+	at org.apache.jackrabbit.core.HierarchyManagerImpl.getPath(HierarchyManagerImpl.java:407)
+	at org.apache.jackrabbit.core.CachingHierarchyManager.getPath(CachingHierarchyManager.java:272)
+	at org.apache.jackrabbit.core.lock.LockManagerImpl.getPath(LockManagerImpl.java:651)
+	at org.apache.jackrabbit.core.lock.LockManagerImpl.internalLock(LockManagerImpl.java:276)
+	at org.apache.jackrabbit.core.lock.XAEnvironment$LockInfo.update(XAEnvironment.java:409)
+	at org.apache.jackrabbit.core.lock.XAEnvironment.prepare(XAEnvironment.java:273)
+	... 38 more
+Caused by: org.apache.jackrabbit.core.state.NoSuchItemStateException: 48fb59d8-ac77-4b9f-8b53-9f2492dca5e5
+	at org.apache.jackrabbit.core.state.SessionItemStateManager.getItemState(SessionItemStateManager.java:189)
+	at org.apache.jackrabbit.core.HierarchyManagerImpl.getItemState(HierarchyManagerImpl.java:188)
+	at org.apache.jackrabbit.core.HierarchyManagerImpl.getPath(HierarchyManagerImpl.java:402)
+	... 43 more
+
+

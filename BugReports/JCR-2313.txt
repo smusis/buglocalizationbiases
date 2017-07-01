@@ -1,0 +1,6 @@
+Improvements to user management (2)
+
+
+
+Description:
+follow up issue as JCR-2199 is already closed.

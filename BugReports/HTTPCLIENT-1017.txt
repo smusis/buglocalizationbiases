@@ -1,0 +1,24 @@
+Checksum Wrong for HttpComponent project pom v4.1 on central
+
+
+
+Description:
+As evidenced on the log here: http://vmgump.apache.org/gump/public/httpcomponents/httpcomponents-core/gump_work/build_httpcomponents_httpcomponents-core.html
+
+The checksum in central for httpcomponents-project-4.1.pom is incorrect in maven central.
+
+---------------------------8<--------------------------------
+
+Downloading: http://localhost:8192/maven2/org/apache/httpcomponents/project/4.1/project-4.1.pom
+
+[WARNING] *** CHECKSUM FAILED - Checksum failed on download: local = 'b63ff67e6ffc1940041319e0e06d7c6b1d671fd2'; remote = '8edff11652ca51b9d110ebfb321daac24f031c07' - RETRYING
+Downloading: http://localhost:8192/maven2/org/apache/httpcomponents/project/4.1/project-4.1.pom
+
+[WARNING] *** CHECKSUM FAILED - Checksum failed on download: local = 'b63ff67e6ffc1940041319e0e06d7c6b1d671fd2'; remote = '8edff11652ca51b9d110ebfb321daac24f031c07' - IGNORING
+This pom appears to be a dependency for httpcomponents 4.0.3
+
+---------------------------8<--------------------------------
+
+This checksum failure causes configurations that reject such artifacts (such as many maven proxy configurations) to result in build failures due to unsatisfied dependencies. 
+
+

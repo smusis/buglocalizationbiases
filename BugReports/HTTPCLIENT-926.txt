@@ -1,0 +1,6 @@
+Add Amazon S3 authentication support
+
+
+
+Description:
+Add support for the the Amazon S3 authentication scheme as defined by the online document: http://docs.amazonwebservices.com/AmazonS3/latest/index.html?RESTAuthentication.html

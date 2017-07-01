@@ -1,0 +1,9 @@
+BLOB Store: only open a stream when really necessary
+
+
+
+Description:
+Currently, PropertyImpl.getValue() opens a FileInputStream if the BLOBStore is used.
+If the application doesn't use the value, this stream is never closed. 
+
+See also JCR-2067 (FileDataStore)

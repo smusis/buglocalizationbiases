@@ -1,0 +1,11 @@
+nuke IndexSearcher(directory)
+
+
+
+Description:
+IndexSearcher is supposed to be a cheap wrapper around a reader,
+but sometimes it is, sometimes it isn't.
+
+I think its confusing tangling of a heavyweight and lightweight
+object that it sometimes 'houses' a reader and must close it in that case.
+

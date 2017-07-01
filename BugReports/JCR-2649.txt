@@ -1,0 +1,14 @@
+Provide means to display the effective policies for a given set of principals
+
+
+
+Description:
+JSR 283 currently defines AccessControlManager#getEffectivePolicies(String nodePath) that would allow any Permission related UI to
+display what policies contribute to a particular set of privileges. In addition the API defines AccessControlManager#getPrivileges(String nodePath) which
+returns the privileges the editing session has at the specified path.
+
+In order to have additional flexibility we started to add custom extensions (-> JackrabbitAccessControlManager) that allows e.g. to retrieve the privileges any set
+of principals has hat a specified path. I would like to extend this and in addition provide a method that allows to retrieve the effective policies for a set of principals.
+Currently this can only be achieved by relying on a specific access control model and making assumptions about it's implementation, which obviously isn't
+the desired effect.
+I

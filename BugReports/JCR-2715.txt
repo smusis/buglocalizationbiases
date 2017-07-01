@@ -1,0 +1,6 @@
+Improved join query performance
+
+
+
+Description:
+Our current implementation of SQL2 join queries does not perform very well on pretty much any non-trivial data set.

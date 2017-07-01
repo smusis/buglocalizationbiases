@@ -1,0 +1,26 @@
+MsExcelTextFilter throws Exception. Repository is not startable
+
+
+
+Description:
+If i try to add a Excel File (see attachment) i get this Exception
+
+Caused by: java.lang.NumberFormatException: You cannot get a string value from a numeric cell
+	at org.apache.poi.hssf.usermodel.HSSFCell.getStringCellValue(HSSFCell.java:800)
+	at org.apache.jackrabbit.core.query.MsExcelTextFilter$1.initializeReader(MsExcelTextFilter.java:97)
+	at org.apache.jackrabbit.core.query.LazyReader.read(LazyReader.java:79)
+
+The bad news is that if you add this file the repository is not startabel anymore because the file is in the redo.log and you
+get a blocker !
+
+The stack from the restart after NumberFormatException
+
+19.09.2006 08:47:23 *ERROR* RepositoryImpl: Unable to start repository, forcing shutdown... 
+19.09.2006 08:47:23 *INFO * RepositoryImpl: Shutting down repository... 
+19.09.2006 08:47:23 *INFO * RepositoryImpl: shutting down workspace 'default'... 
+19.09.2006 08:47:23 *INFO * ObservationManagerFactory: Notification of EventListeners stopped. 
+19.09.2006 08:47:23 *INFO * RepositoryImpl: workspace 'default' has been shutdown 
+
+I think its very important that you can not block a whole repository if the indexer throws a exception.
+thanks
+claus

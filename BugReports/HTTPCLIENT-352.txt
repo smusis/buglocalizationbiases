@@ -1,0 +1,25 @@
+Allow polymorphic use of addParameter
+
+
+
+Description:
+I have some common code (in a reverse proxy server) that uses addParameter on 
+instances of both PostMethod and MultipartPostMethod
+
+It would be great if either addParameter were made an abstract method on 
+ExpectContinueMethod or both were made to implement a common base class. Here's 
+my workaround:
+
+    private void addPostParameter(ExpectContinueMethod method, String name, 
+String value) {
+        if (method instanceof PostMethod) {
+            ((PostMethod)method).addParameter(name, value);
+        } else if (method instanceof MultipartPostMethod) {
+            ((MultipartPostMethod)method).addParameter(name, value);
+        } else {
+            throw new IllegalArgumentException("addPostParameter is only 
+defined for PostMethod and MultipartPostMethod");
+        }
+        
+    }
+    // whoa - smells pretty bad

@@ -1,0 +1,12 @@
+drop java 5 "support"
+
+
+
+Description:
+its been discussed here and there, but I think we need to drop java 5 "support", for these reasons:
+* its totally untested by any continual build process. Testing java5 only when there is a release candidate ready is not enough. If we are to claim "support" then we need a hudson actually running the tests with java 5.
+* its now unmaintained, so bugs have to either be hacked around, tests disabled, warnings placed, but some things simply cannot be fixed... we cannot actually "support" something that is no longer maintained: we do find JRE bugs (http://wiki.apache.org/lucene-java/SunJavaBugs) and its important that bugs actually get fixed: cannot do everything with hacks.
+* because of its limitations, we do things like allow 20% slower grouping speed. I find it hard to believe we are sacrificing performance for this.
+
+So, in summary: because we don't test it at all, because its buggy and unmaintained, and because we are sacrificing performance, I think we need to cutover the build system for the next release to require java 6.
+

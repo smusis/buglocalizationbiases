@@ -1,0 +1,6 @@
+FVH: uncontrollable color tags
+
+
+
+Description:
+The multi-colored tags is a feature of FVH. But it is uncontrollable (or more precisely, unexpected by users) that which color is used for each terms.

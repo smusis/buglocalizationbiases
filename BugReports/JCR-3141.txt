@@ -1,0 +1,6 @@
+Upgrade to Tika 1.0
+
+
+
+Description:
+Tika 1.0 was released today and has many improvements over the earlier 0.10 release. We should upgrade.

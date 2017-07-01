@@ -1,0 +1,13 @@
+cache should use both Last-Modified and ETag for validations when available
+
+
+
+Description:
+This is a protocol recommendation:
+
+"[HTTP/1.1 clients], if both an entity tag and a Last-Modified value have been provided by the origin server, SHOULD use both validators in cache-conditional requests. This allows both HTTP/1.0 and HTTP/1.1 caches to respond appropriately."
+
+http://www.w3.org/Protocols/rfc2616/rfc2616-sec13.html#sec13.3.4
+
+The current implementation only uses the ETag when conditionally validating an entry, so HTTP/1.0 caches can't currently reply to us with a 304 (Not Modified), even if that would be appropriate.
+

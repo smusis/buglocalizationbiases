@@ -1,0 +1,25 @@
+FST should allow controlling how hard builder tries to share suffixes
+
+
+
+Description:
+Today we have a boolean option to the FST builder telling it whether
+it should share suffixes.
+
+If you turn this off, building is much faster, uses much less RAM, and
+the resulting FST is a prefix trie.  But, the FST is larger than it
+needs to be.  When it's on, the builder maintains a node hash holding
+every node seen so far in the FST -- this uses up RAM and slows things
+down.
+
+On a dataset that Elmer (see java-user thread "Autocompletion on large
+index" on Jul 6 2011) provided (thank you!), which is 1.32 M titles
+avg 67.3 chars per title, building with suffix sharing on took 22.5
+seconds, required 1.25 GB heap, and produced 91.6 MB FST.  With suffix
+sharing off, it was 8.2 seconds, 450 MB heap and 129 MB FST.
+
+I think we should allow this boolean to be shade-of-gray instead:
+usually, how well suffixes can share is a function of how far they are
+from the end of the string, so, by adding a tunable N to only share
+when suffix length < N, we can let caller make reasonable tradeoffs. 
+

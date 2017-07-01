@@ -1,0 +1,46 @@
+JCR2SPI NodeEntryImpl throws NPE during reorderNodes
+
+
+
+Description:
+Two folder nodes are created below root. From the root node, the 2nd folder is ordered before the first node. The request is batched up correctly, but upon save, NodeEntryImpl throws a NullPointerException in the first line of the completeTransientChanges method, because revertInfo.oldParent is null.
+
+Test code:
+
+		final String FOLDER1 = "folder1", FOLDER2 = "folder2";
+		
+		// Create folder 1 on server in root
+		Session serverSession = login(repository, creds);
+		Node serverRootNode = serverSession.getRootNode();
+		Node serverFolder1 = serverRootNode.addNode(FOLDER1, "nt:folder");
+		
+		// Create folder 2 on server in root
+		Node serverFolder2 = serverRootNode.addNode(FOLDER2, "nt:folder");
+		serverSession.save();
+		
+		// Validate order (TODO)
+		
+		// Perform reorder via client
+		Session clientSession = login(clientRepository, creds);
+		Node clientRootNode = clientSession.getRootNode();
+		clientRootNode.orderBefore(FOLDER2, FOLDER1);
+		clientSession.save(); <== Throws NPE
+
+Call Stack:
+
+    [junit] java.lang.NullPointerException
+    [junit]     at org.apache.jackrabbit.jcr2spi.hierarchy.NodeEntryImpl.completeTransientChanges(NodeEntryImpl.java:1354)
+    [junit]     at org.apache.jackrabbit.jcr2spi.hierarchy.NodeEntryImpl.access$1100(NodeEntryImpl.java:60)
+    [junit]     at org.apache.jackrabbit.jcr2spi.hierarchy.NodeEntryImpl$RevertInfo.statusChanged(NodeEntryImpl.java:1465)
+    [junit]     at org.apache.jackrabbit.jcr2spi.state.ItemState.setStatus(ItemState.java:257)
+    [junit]     at org.apache.jackrabbit.jcr2spi.state.NodeState.adjustNodeState(NodeState.java:554)
+    [junit]     at org.apache.jackrabbit.jcr2spi.state.NodeState.persisted(NodeState.java:276)
+    [junit]     at org.apache.jackrabbit.jcr2spi.state.ChangeLog.persisted(ChangeLog.java:135)
+    [junit]     at org.apache.jackrabbit.jcr2spi.WorkspaceManager.execute(WorkspaceManager.java:479)
+    [junit]     at org.apache.jackrabbit.jcr2spi.state.SessionItemStateManager.save(SessionItemStateManager.java:149)
+    [junit]     at org.apache.jackrabbit.jcr2spi.ItemImpl.save(ItemImpl.java:239)
+    [junit]     at org.apache.jackrabbit.jcr2spi.SessionImpl.save(SessionImpl.java:317)
+    [junit]     at TestWsNodeReorder.testReorderNodes(TestWsNodeReorder.java:72)
+
+
+I'm using an SPI I implemented, in conjunction with the jcr2spi and spi2jcr bridges, coupled with a back-end Jackrabbit in-memory filesystem. So there's always the possibility that node or property SPI calls inject errors and cause this downstream problem.

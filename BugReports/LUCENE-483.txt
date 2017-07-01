@@ -1,0 +1,21 @@
+QueryParser.getFieldQuery(String,String) doesn't set default slop on MultiPhraseQuery
+
+
+
+Description:
+there seems to have been an oversight in calling mph.setSlop(phraseSlop) in QueryParser.getFieldQuery(String,String).  The result being that in some cases, the "default slop" value doesnt' get set right (sometimes, ... see below).
+
+when i tried amending TestMultiAnalyzer to demonstrate the problem, I discovered that the grammer aparently always calls getFieldQuery(String,String,int) -- even if no "~slop" was specified in the text being parsed, in which case it passes the default as if it were specified.
+(just to clarify: i haven't comfirmed this from a detailed reading of the grammer/code, it's just what i've deduced based on observation of the test)
+
+The problem isn't entirely obvious unless you have a subclasses of QueryParser and try to call getFieldQuery(String,String) directly.   
+
+In my case, I had overridden getFieldQuery(String,String) to call super.getFieldQuery(String,String) and wrap the result in a DisjunctionMaxQuery ... I don't care about supporting the ~slop syntax, but i do care about the default slop and i wasn't getting lucky the way QueryParser does, because getFieldQuery(String,String,int) wasn't getting back something it could call setSlop() with the (default) value it got from the javacc generated code.
+
+My description may not make much sense, but hopefull the test patch i'm about to attach will.  The fix is also in the patch, and is fairly trivial.
+
+(disclaimer: i don't have javacc installed, so I tested this patch by manually making the change to both QueryParser.java ... it should only be commited by someone with javacc who can regen the java file and confirm that my jj change doesn't have some weird bug in it)
+
+
+
+

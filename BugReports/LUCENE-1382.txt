@@ -1,0 +1,12 @@
+Allow storing user data when IndexWriter.commit() is called
+
+
+
+Description:
+Spinoff from here:
+
+    http://www.mail-archive.com/java-user@lucene.apache.org/msg22303.html
+
+The idea is to allow optionally passing an opaque String commitUserData to the IndexWriter.commit method.  This String would be stored in the segments_N file, and would be retrievable by an IndexReader.  Applications could then use this to assign meaning to each commit.
+
+It would be nice to get this done for 2.4, but I don't think we should hold the release for it.

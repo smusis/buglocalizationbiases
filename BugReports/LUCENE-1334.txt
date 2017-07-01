@@ -1,0 +1,15 @@
+Term improvement
+
+
+
+Description:
+Term is designed for reuse of the supplied filter, to minimize intern().
+
+One of the common use patterns is to create a Term with the txt field being an empty string.
+
+To simplify this pattern and to document it's usefulness, I suggest adding a constructor:
+public Term(String fld)
+with the obvious implementation
+and use it throughout core and contrib as a replacement.
+
+

@@ -1,0 +1,6 @@
+Package names for spring project do not match update ocm packages
+
+
+
+Description:
+The spring package and tests reference the old graffitto package naming scheme.

@@ -1,0 +1,15 @@
+introduce HttpRoutePlanner interface
+
+
+
+Description:
+Define an interface to determine a route for a given target host.
+Create default implementation replacing DefaultHttpClient.determineRoute(...);
+Implementations will need access to params and/or request.
+
+The interface fits into HttpConn, but DHC.dR(...) uses client parameters.
+Either move parameters to HttpConn, or keep default implementation in HttpClient.
+
+Alternative implementations could evaluate Java system properties related to proxy settings.
+
+

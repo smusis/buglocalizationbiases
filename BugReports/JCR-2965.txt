@@ -1,0 +1,6 @@
+Show referencing nodes in debug log when trying to delete a node with references
+
+
+
+Description:
+This can be very useful when trying to analyze errors from non-interactive applications in a production environment.

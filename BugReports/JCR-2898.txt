@@ -1,0 +1,6 @@
+[patch] remove bogus test
+
+
+
+Description:
+code checks an int to see if it's bigger than MAX_VALUE which is impossible -- removed.

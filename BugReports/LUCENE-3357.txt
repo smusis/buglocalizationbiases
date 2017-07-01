@@ -1,0 +1,10 @@
+Unit and integration test cases for the new Similarities
+
+
+
+Description:
+Write test cases to test the new Similarities added in [LUCENE-3220|https://issues.apache.org/jira/browse/LUCENE-3220]. Two types of test cases will be created:
+ * unit tests, in which mock statistics are provided to the Similarities and the score is validated against hand calculations;
+ * integration tests, in which a small collection is indexed and then searched using the Similarities.
+
+Performance tests will be performed in a separate issue.

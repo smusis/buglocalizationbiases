@@ -1,0 +1,23 @@
+Move to jackrabbit.apache.org
+
+
+
+Description:
+Jackrabbit will be moving to
+
+   http://jackrabbit.apache.org/
+
+There are a number of infrastructure tasks that will need to be done by Roy.
+
+There will also be a need to change our documentation and site to point to the new URL
+and mailing list addresses, which can be done by anyone.
+
+The existing mailing lists will be moved
+
+    jackrabbit-dev at incubator  -->  dev at jackrabbit.apache.org
+    jackrabbit-commits at incubator  -->  commits at jackrabbit.apache.org
+
+and I will add
+
+   users at jackrabbit.apache.org
+

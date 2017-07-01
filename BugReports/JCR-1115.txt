@@ -1,0 +1,10 @@
+Remove dependency on Jackrabbit-core
+
+
+
+Description:
+We should remove the dependency on Jackrabit core in the OCM subprojects "jcr-mapping" and "annotation". We can use Jackrabbit core only for the unit tests. 
+
+We can also split the jcr-nodemanagement into several subprojects (one per JCR repo impl).  We will have only one subproject for Jackrabbit but contributions for other JCR repo impl are welcome.  A specific jcr-nodemanagement jar can be produce for each JCR repo impl. When the JCR will support the node creation, we can refactor the jcr-nodemanagement. 
+
+

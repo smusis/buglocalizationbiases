@@ -1,0 +1,31 @@
+JSR 283: JCR Path
+
+
+
+Description:
+with jsr 283 the jcr path is defined to consist of a combination of the following segments
+
+•	a name segment, (J, I), where J is a JCR name and I is an integer index (I ≥ 1).
+•	an identifier segment, U, where U is a JCR identifier.
+•	the root segment.
+•	the self segment.
+•	the parent segment.
+
+-> the name segment can be in extended or qualified form -> see issue JCR-1712
+-> the identifier segment is new for jsr283 and always identifies a node (-> see new method Node.getIdentifier())
+
+Non-standard parts always need to be standardized. Any of the following makes a path non-standard:
+- expanded name segments
+- trailing /
+- index [1]
+
+Identifier-segments
+- get resolved upon being passed to any API calls that take path to an existing Node
+- don't get resolved when being used to create a PATH value object.
+
+Except for PATH values, all jcr paths returned by the API are normalized and standard, thus never identifier-based.
+
+PATH values in contrast:
+- must be converted to standard form
+- must NOT be normalized. i.e. redundant segments and identifiers must be preserved.
+

@@ -1,0 +1,6 @@
+Change SortField types to an Enum
+
+
+
+Description:
+When updating my SOLR-2533 patch, one issue was that the int value I had given my new type had been used by another change in the mean time.  Since we don't use these fields in a bitset kind of way, we can convert them to an enum.

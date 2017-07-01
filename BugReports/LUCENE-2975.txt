@@ -1,0 +1,10 @@
+hotspot bug in readvint gives wrong results
+
+
+
+Description:
+When testing the 3.1-RC1 made by Yonik on the PANGAEA (www.pangaea.de) productive system I figured out that suddenly on a large segment (about 5 GiB) some stored fiels suddenly produce a strange deflate decompression problem (CompressionTools) although the stored fields are no longer pre-3.0 compressed. It seems that the header of the stored field is read incorrectly at the buffer boundary in MultiMMapDir and then FieldsReader just incorrectly detects a deflate-compressed field (CompressionTools).
+
+The error occurs reproducible on CheckIndex with MMapDirectory, but not with NIODir or SimpleDir. The FDT file of that segment is 2.6 GiB, on Solaris the chunk size is Integer.MAX_VALUE, so we have 2 MultiMMap IndexInputs.
+
+Robert and me have the index ready as a tar file, we will do tests on our local machines and hopefully solve the bug, maybe introduced by Robert's recent changes to MMap.

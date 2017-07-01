@@ -1,0 +1,32 @@
+QueryObjectModel does not generate the corresponding SQL2 Query when dealing with spaces in the path
+
+
+
+Description:
+This is the original issue:
+----------
+I tried to get the childnodes of a node names "/a b" using the following code
+  QueryManager queryManager=session.getWorkspace().getQueryManager();
+  QueryObjectModelFactory qomf=queryManager.getQOMFactory();
+  Source source1=qomf.selector(NodeType.NT_BASE, "selector_0");
+  Column[] columns = new Column[]{qomf.column("selector_0", null, null)};
+  Constraint constraint2 = qomf.childNode("selector_0", "/a b");
+  QueryObjectModel qom = qomf.createQuery(source1, constraint2 , null, columns);
+
+This is not giving any result when the session is acquired through webdav. But when connected using JNDI it is giving the child nodes. 
+
+The sql statement getting created is 
+SELECT selector_0.* FROM [nt:base] AS selector_0 WHERE ISCHILDNODE(selector_0, 
+[/a b]).
+
+When using webdav If i give this SQL2 query directly along with quotes around 
+the path i.e. ['/a b'] then it is working as expected.
+----------
+
+this doesn't have anything to do with webdav. the problem is the QueryObjectModel generates an SQL2 query that is not 100% equivalent, it fails to escape paths that have spaces in them.
+this way, in the case of davex remoting, the jr client will use the statement generated instead, which is not escaped, and will fail to return the expected nodes. 
+
+This can be seen easily if we do a System.out.println(qom.getStatement())
+
+
+

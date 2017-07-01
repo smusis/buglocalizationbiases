@@ -1,0 +1,11 @@
+Remove rest of analysis deprecations (Token, CharacterCache)
+
+
+
+Description:
+These removes the rest of the deprecations in the analysis package:
+- -Token's termText field-- (DONE)
+- -eventually un-deprecate ctors of Token taking Strings (they are still useful) -> if yes remove deprec in 2.9.1- (DONE)
+- -remove CharacterCache and use Character.valueOf() from Java5- (DONE)
+- Stopwords lists
+- Remove the backwards settings from analyzers (acronym, posIncr,...). They are deprecated, but we still have the VERSION constants. Do not know, how to proceed. Keep the settings alive for index compatibility? Or remove it together with the version constants (which were undeprecated).

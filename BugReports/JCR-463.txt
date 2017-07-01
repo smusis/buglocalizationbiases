@@ -1,0 +1,6 @@
+Uncommitted changes or connection leak with Container Managed Transactions
+
+
+
+Description:
+Apparently the connector doesn't support CMT (container managed transactions). if the jcr session is closed inside a CMT the AS (application server) throws an exception on commit. And if the jcr session is leaved open, the AS commits the TX successfully but it causes a connection leak by leaving the session open.

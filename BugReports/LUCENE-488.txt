@@ -1,0 +1,31 @@
+adding docs with large (binary) fields of 5mb causes OOM regardless of heap size
+
+
+
+Description:
+as reported by George Washington in a message to java-user@lucene.apache.org with subect "Storing large text or binary source documents in the index and memory usage" arround 2006-01-21 there seems to be a problem with adding docs containing really large fields.
+
+I'll attach a test case in a moment, note that (for me) regardless of how big i make my heap size, and regardless of what value I set  MIN_MB to, once it starts trying to make documents of containing 5mb of data, it can only add 9 before it rolls over and dies.
+
+here's the output from the code as i will attach in a moment...
+
+    [junit] Testsuite: org.apache.lucene.document.TestBigBinary
+    [junit] Tests run: 1, Failures: 0, Errors: 1, Time elapsed: 78.656 sec
+
+    [junit] ------------- Standard Output ---------------
+    [junit] NOTE: directory will not be cleaned up automatically...
+    [junit] Dir: /tmp/org.apache.lucene.document.TestBigBinary.97856146.100iters.4mb
+    [junit] iters completed: 100
+    [junit] totalBytes Allocated: 419430400
+    [junit] NOTE: directory will not be cleaned up automatically...
+    [junit] Dir: /tmp/org.apache.lucene.document.TestBigBinary.97856146.100iters.5mb
+    [junit] iters completed: 9
+    [junit] totalBytes Allocated: 52428800
+    [junit] ------------- ---------------- ---------------
+    [junit] Testcase: testBigBinaryFields(org.apache.lucene.document.TestBigBinary):    Caused an ERROR
+    [junit] Java heap space
+    [junit] java.lang.OutOfMemoryError: Java heap space
+
+
+    [junit] Test org.apache.lucene.document.TestBigBinary FAILED
+

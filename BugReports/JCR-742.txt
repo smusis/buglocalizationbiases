@@ -1,0 +1,8 @@
+Abstract JCR base classes
+
+
+
+Description:
+Implement and use a set of abstract AbstractSession, AbstractItem, etc. classes that implement as much of the respective JCR interfaces using nothing else but calls to other JCR methods. These would be just like the AbstractMap, etc. classes in java.util.
+
+(See the related discussion at http://thread.gmane.org/gmane.comp.apache.jackrabbit.devel/10583)

@@ -1,0 +1,6 @@
+IndexReader's add/removeCloseListener should not use ConcurrentHashMap, just a synchronized set
+
+
+
+Description:
+The use-case for ConcurrentHashMap is when many threads are reading and less writing to the structure. Here this is just funny: The only reader is close(). Here you can just use a synchronized HashSet. The complexity of CHM is making this just a joke :-)

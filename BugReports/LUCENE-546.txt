@@ -1,0 +1,6 @@
+Index corruption when using RAMDirectory( Directory) constructor
+
+
+
+Description:
+LUCENE-475 introduced a bug in creating RAMDirectories for large indexes. It truncates the length of the file to an int, from its original long value. Any files that are larger than an int are truncated. Patch to fix is attached.

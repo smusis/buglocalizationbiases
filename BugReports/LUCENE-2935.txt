@@ -1,0 +1,11 @@
+Let Codec consume entire document
+
+
+
+Description:
+Currently the codec API is limited to consume Terms & Postings upon a segment flush. To enable stored fields & DocValues to make use of the Codec abstraction codecs should allow to pull a consumer ahead of flush time and consume all values from a document's field though a consumer API. An alternative to consuming the entire document would be extending FieldsConsumer to return a StoredValueConsumer / DocValuesConsumer like it is done in DocValues - Branch right now side by side to the TermsConsumer. Yet, extending this has proven to be very tricky and error prone for several reasons:
+* FieldsConsumer requires SegmentWriteState which might be different upon flush compared to when the document is consumed. SegmentWriteState must therefor be created twice 1. when the first docvalues field is indexed 2. when flushed. 
+* FieldsConsumer are current pulled for each indexed field no matter if there are terms to be indexed or not. Yet, if we use something like DocValuesCodec which essentially wraps another codec and creates FieldConsumer on demand the wrapped codecs consumer might not be initialized even if the field is indexed. This causes problems once such a field is opened but missing the required files for that codec. I added some harsh logic to work around this which should be prevented.
+* SegmentCodecs are created for each SegmentWriteState which might yield wrong codec IDs depending on how fields numbers are assigned. We currently depend on the fact that all fields for a segment and therefore their codecs are known when SegmentCodecs are build. To enable consuming perDoc values in codecs we need to do that incrementally
+
+Codecs should instead provide a DocumentConsumer side by side with the FieldsConsumer created prior to flush. This is also a prerequisite for LUCENE-2621

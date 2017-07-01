@@ -1,0 +1,6 @@
+SimpleText is too slow
+
+
+
+Description:
+If you are unlucky enough to get SimpleText codec on the TestBasics (span query) test then it runs very slowly...

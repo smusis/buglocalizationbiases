@@ -1,0 +1,22 @@
+default behaviour of useExpectHeader
+
+
+
+Description:
+I suggest to set the ExpectContinueMethod.setUseExpectHeader per default to
+false or to arrange that per default it is not used. We lost an awfull lot of
+time in a project in which we used MultipartPostMethod via a proxy. Everthing
+worked fine in dev, however as soon as we started to use the proxy in production
+or testing environment we had severe problems. We lost several manday looking
+for the problem, including sniffing and logging op the proxy. It ended up to be
+the useexpectheader which was true per default. Putting in on false ended our
+problems...
+
+In my opinion it is a bit hard to make something default behaviour if the
+javadoc warns : <snip>
+handshake should be used with caution, as it may cause problems with HTTP
+servers and proxies that do not support HTTP/1.1 protocol.
+</snip>
+
+regards
+dirkp

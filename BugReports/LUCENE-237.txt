@@ -1,0 +1,13 @@
+[PATCH] fix compile errors in sandbox
+
+
+
+Description:
+Here's a patch that fixes the compile problems in sandbox/analyzers starting 
+shortly before the 1.4 release. The deprecation warnings are also fixed. I 
+have not tested the changes (I don't use those analyzers) but the changes 
+should be trivial enough so they don't break anything. 
+ 
+Could someone apply the patch and also fix FrenchAnalyzer? It's the same 
+change as for the other files, but I didn't manage to make a clean diff 
+because of encoding problems.

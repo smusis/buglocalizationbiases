@@ -1,0 +1,19 @@
+HttpClient incorrectly handles Transfer-Encoding header
+
+
+
+Description:
+RFC2616, section 4.4 item 3 states:
+     If a Content-Length header field (section 14.13) is present, its
+     decimal value in OCTETs represents both the entity-length and the
+     transfer-length. The Content-Length header field MUST NOT be sent
+     if these two lengths are different (i.e., if a Transfer-Encoding
+     header field is present). If a message is received with both a
+     Transfer-Encoding header field and a Content-Length header field,
+     the latter MUST be ignored.
+
+This is not handled correctly in the case that a noncompliant HTTP server
+returns both a Transfer-Encoding header and a Content-Length header.
+
+I gave up on writing a TestCase for this as it would require a reliably
+noncompliant HTTP Server.

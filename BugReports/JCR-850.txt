@@ -1,0 +1,6 @@
+Promote the classloader component from contrib
+
+
+
+Description:
+This is a dummy issue for a change I already made (revisions 529068 and 529137) to promote the classloader component from contrib. I'm including this here in the issue tracker to complete the release notes for Jackrabbit 1.3.

@@ -1,0 +1,8 @@
+Data Store: remove kill switch "InternalValue.USE_DATA_STORE"
+
+
+
+Description:
+There is still a "kill switch" (public static final boolean USE_DATA_STORE) in the class org.apache.jackrabbit.core.value.InternalValue. In version 2.0 this constant should be removed. Also, the system property "org.jackrabbit.useDataStore" will no longer be used. 
+
+It is still possible to disable the DataStore (don't include a DataStore configuration in repository.xml).

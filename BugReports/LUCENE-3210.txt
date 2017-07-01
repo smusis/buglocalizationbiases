@@ -1,0 +1,6 @@
+TieredMergePolicy should expose control over how aggressively segments with deletions are targeted 
+
+
+
+Description:
+TMP today always does a linear pro-rating of a merge's score according to what pctg of the documents are deleted; I'd like to 1) put a power factor in (score is multiplicative), and 2) default it to stronger favoring of merging away deletions.

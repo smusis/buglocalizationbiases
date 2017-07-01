@@ -1,0 +1,11 @@
+Missing 'node removed' event when removing a version
+
+
+
+Description:
+When a version is removed only one 'node removed' event is triggered for the version node. Even though the frozen node under that version also gets removed there is no event for the frozen node.
+
+See failing test cases:
+org.apache.jackrabbit.core.observation.VersionEventsTest#testRemoveVersion()
+org.apache.jackrabbit.core.observation.VersionEventsTest#testXARemoveVersion()
+

@@ -1,0 +1,15 @@
+no-cache directives with field names are transmitted downstream
+
+
+
+Description:
+"Field names MUST NOT be included with the no-cache directive in a request."
+
+http://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.9.4
+
+Currently, the cache implementation allows a request containing something like:
+    Cache-Control: no-cache="Content-Location"
+to be passed downstream towards the origin.
+
+This is another one of those tricky situations where our client has passed us a non-compliant request.
+

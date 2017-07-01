@@ -1,0 +1,22 @@
+DatabaseJournal assigns same revision id to different revisions
+
+
+
+Description:
+Running a transaction that updates multiple workspaces (e.g. a versioning operation) will fail in DatabaseJournal, because every individual update will ultimately be assigned the same revision id. An indication of this failure when e.g. using Oracle as backend for journaling will look as follows::
+
+java.sql.SQLException: ORA-00001: unique constraint (JOURNAL_IDX) violated
+ at oracle.jdbc.dbaccess.DBError.throwSqlException(DBError.java:134)
+ at oracle.jdbc.ttc7.TTIoer.processError(TTIoer.java:289)
+ at oracle.jdbc.ttc7.Oall7.receive(Oall7.java:590)
+ at oracle.jdbc.ttc7.TTC7Protocol.doOall7(TTC7Protocol.java:1973)
+ at oracle.jdbc.ttc7.TTC7Protocol.executeFetch(TTC7Protocol.java:977)
+ at oracle.jdbc.driver.OracleStatement.executeNonQuery(OracleStatement.java:2205)
+ at oracle.jdbc.driver.OracleStatement.doExecuteOther(OracleStatement.java:2064)
+ at oracle.jdbc.driver.OracleStatement.doExecuteWithTimeout(OracleStatement.java:2989)
+ at oracle.jdbc.driver.OraclePreparedStatement.executeUpdate(OraclePreparedStatement.java:658)
+ at oracle.jdbc.driver.OraclePreparedStatement.execute(OraclePreparedStatement.java:736)
+ at org.apache.jackrabbit.core.journal.DatabaseJournal.append(DatabaseJournal.java:293)
+ ... 24 more
+
+This bug has been reported by Rafał Kwiecień.

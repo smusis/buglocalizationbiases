@@ -1,0 +1,13 @@
+Add a NamespaceHelper in jcr-commons
+
+
+
+Description:
+We have a number of code snippets in jackrabbit-core and many JCR clients that do something like the following:
+
+* get the prefix/URI for a given namespace URI/prefix without throwing an exception if the namespace is not found (return null instead)
+* get a Map containing all current namespace prefix->URI mappings
+* get the prefixed name for a given URI + local name pair in a given session (without a dependency to the SPI)
+* safely register a given namespace (don't throw if the namespace is already registered, automatically select an unused prefix if needed, etc.)
+
+I'd like to introduce a NamespaceHelper class in jcr-commons to cover such common code.

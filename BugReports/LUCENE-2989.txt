@@ -1,0 +1,7 @@
+TestCollectionUtil fails on IBM JRE
+
+
+
+Description:
+    [junit] Testcase: testEmptyArraySort(org.apache.lucene.util.TestCollectionUtil):    Caused an ERROR
+    [junit] CollectionUtil can only sort random access lists in-place.

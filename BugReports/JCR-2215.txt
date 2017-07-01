@@ -1,0 +1,7 @@
+SPI2DAVex: HttpClient StringPart uses charset US-ASCII by default
+
+
+
+Description:
+if the diff is sent as multipart instead of a urlencoded post string properties may be garbeled.
+reason: instances of httpclient StringPart are created without specifying the charset in which case US-ASCII is used by default.

@@ -1,0 +1,7 @@
+NodeAddMixinTest assumptions on addMixin behaviour
+
+
+
+Description:
+NodeAddMixinTest.testAddMixinReferencable() assumes that mix:referenceable can be added to the test node type. In practice, the node type may already inherit mix:referenceable, but it may not be active until the node is saved. Thus, a ConstraintViolationException upon addMixin should be catched, and the mixin should be checked after save() again.
+

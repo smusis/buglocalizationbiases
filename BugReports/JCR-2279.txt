@@ -1,0 +1,6 @@
+Improve reusability of AbstractRepositoryService and AbstractReadableRepositoryService
+
+
+
+Description:
+Much of the functionality in AbstractReadableRepositoryService is not specific to reading but rather applies to any implementation (node types, name spaces, descriptors). I suggest to pull this functionality up from AbstractReadableRepositoryService to AbstractRepositoryService

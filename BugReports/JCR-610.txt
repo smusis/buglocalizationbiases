@@ -1,0 +1,6 @@
+Upgrade to Derby 10.2
+
+
+
+Description:
+Apache Derby 10.2 was released recently. The release contains a number of improvements (including performance) and requires no special upgrade procedures. I suggest we upgrade to Derby 10.2 along with Lucene 2.0 (JCR-352) and Maven 2 (JCR-332).

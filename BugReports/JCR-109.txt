@@ -1,0 +1,10 @@
+Contrib RMI: NotSerializableException
+
+
+
+Description:
+org.apache.jackrabbit.rmi.client.RemoteRepositoryException:
+
+error unmarshalling return; nested exception is:.java.io.WriteAbortedException: writing aborted; java.io.NotSerializableException: javax.jcr.NameValue
+
+

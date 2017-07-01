@@ -1,0 +1,11 @@
+String.toLowerCase() / toUpperCase() should specify Locale.ENGLISH
+
+
+
+Description:
+There are quite a few instances of String.toLowerCase() - and some of toUpperCase() - method calls which don't specify the Locale.
+
+These should probably mostly/all use Locale.ENGLISH, otherwise there may be problems in some Locales.
+e.g. Turkey, where "i".toUpperCase() is not equal to "I" - and vice-versa.
+
+The isSpecialDomain() method in NetscapeDomainHandler is one instance where the code won't always work in Turkey.

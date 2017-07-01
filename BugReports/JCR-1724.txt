@@ -1,0 +1,24 @@
+Jackrabbit utilities
+
+
+
+Description:
+Attached are two utilities for Jackrabbit:
+
+The first one is a DataStore implementation that uses Amazon S3 for storage.
+This is fairly straightforward. It is configured by adding a DataStore
+section to the repository.xml file, e.g.:
+   <DataStore class="org.jcrutil.S3DataStore">
+       <param name="awsAccessKey" value="" />
+       <param name="awsSecretKey" value="" />
+       <param name="bucketName" value="" />
+       <param name="minModifiedDate" value="0" />
+       <param name="minRecordLength" value="0" />
+   </DataStore>
+
+The second utility is a JCR based Commons VFS filesystem provider. This
+allows you to access a JCR repository (nt:file and nt:folder nodes) using
+the Commons VFS API. I've also used this with MINA FTP Server and Dctm VFS
+(http://dctmvfs.sourceforge.net/) to provide FTP access to a Jackrabbit
+repository.
+

@@ -1,0 +1,15 @@
+[PATCH] new method: Document.remove()
+
+
+
+Description:
+Here's a patch that adds a remove() method to the Document class (+test case). This 
+is very useful if you have converter classes that return a Lucene Document object but 
+you need to make changes to that object. 
+ 
+In my case, I wanted to index PDF files that were saved as BLOBs in a database. The 
+files need to be saved to a temporary file and that file name is given to the PDF 
+converter class. The PDF converter then saves the name of the temporary file name 
+as the file name, which doesn't make sense. So my code needs to remove the 
+'filename' field and re-add it, this time with the columns primary ID. This is only possible 
+with the attached patch.

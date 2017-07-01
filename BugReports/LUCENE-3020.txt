@@ -1,0 +1,12 @@
+better payload testing with mockanalyzer
+
+
+
+Description:
+MockAnalyzer currently always indexes some fixed-length payloads.
+
+Instead it should decide for each field randomly (and remember it for that field):
+* if the field should index no payloads at all
+* field should index fixed length payloads
+* field should index variable length payloads.
+

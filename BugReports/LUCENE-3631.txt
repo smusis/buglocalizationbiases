@@ -1,0 +1,14 @@
+Remove write access from SegmentReader and possibly move to separate class or IndexWriter/BufferedDeletes/...
+
+
+
+Description:
+After LUCENE-3606 is finished, there are some TODOs:
+
+SegmentReader still contains (package-private) all delete logic including crazy copyOnWrite for validDocs Bits. It would be good, if SegmentReader itsself could be read-only like all other IndexReaders.
+
+There are two possibilities to do this:
+# the simple one: Subclass SegmentReader and make a RWSegmentReader that is only used by IndexWriter/BufferedDeletes/... DirectoryReader will only use the read-only SegmentReader. This would move all TODOs to a separate class. It's reopen/clone method would always create a RO-SegmentReader (for NRT).
+# Remove all write and commit stuff from SegmentReader completely and move it to IndexWriter's readerPool (it must be in readerPool as deletions need a not-changing view on an index snapshot).
+
+Unfortunately the code is so complicated and I have no real experience in those internals of IndexWriter so I did not want to do it with LUCENE-3606, I just separated the code in SegmentReader and marked with TODO. Maybe Mike McCandless can help :-)

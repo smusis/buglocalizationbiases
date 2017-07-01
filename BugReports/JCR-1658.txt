@@ -1,0 +1,6 @@
+Executing query throws UnsupportedRepositoryOperationException(LEVEL_2_SUPPORTED) for a level 1 only implementation 
+
+
+
+Description:
+Executing a query  throws UnsupportedRepositoryOperationException(LEVEL_2_SUPPORTED) it the spi implementation is not level 2. This is because org.apache.jackrabbit.jcr2spi.query.execute() calls session.getValueFactory() which - by contract - throws if level 2 is not supported. A quick fix would be to call getJcrValueFactory() (available from the ManagerProvider interface implemented by SessionImpl) instead of getValueFactory(). However, I think a better fix might be to pass the ManagerProvider to the QueryImpl constructor instead of the session, all the managers and providers separately.

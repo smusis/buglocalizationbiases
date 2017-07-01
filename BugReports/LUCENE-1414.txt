@@ -1,0 +1,20 @@
+increase maxmemory for unit tests
+
+
+
+Description:
+We have some unit tests that require a fair amount of RAM.  But, sometimes the JRE does not give itself a very large max heap size, by default.  EG on a Mac Pro with 6 GB physical RAM, I see JRE 1.6.0 defaulting to max 80 GB and it always then hits this exception during testing:
+
+    [junit] Testcase: testHugeFile(org.apache.lucene.store.TestHugeRamFile):	Caused an ERROR
+    [junit] Java heap space
+    [junit] java.lang.OutOfMemoryError: Java heap space
+    [junit] 	at java.util.Arrays.copyOf(Arrays.java:2760)
+    [junit] 	at java.util.Arrays.copyOf(Arrays.java:2734)
+    [junit] 	at java.util.ArrayList.ensureCapacity(ArrayList.java:167)
+    [junit] 	at java.util.ArrayList.add(ArrayList.java:351)
+    [junit] 	at org.apache.lucene.store.RAMFile.addBuffer(RAMFile.java:69)
+    [junit] 	at org.apache.lucene.store.RAMOutputStream.switchCurrentBuffer(RAMOutputStream.java:129)
+    [junit] 	at org.apache.lucene.store.RAMOutputStream.writeBytes(RAMOutputStream.java:115)
+    [junit] 	at org.apache.lucene.store.TestHugeRamFile.testHugeFile(TestHugeRamFile.java:68)
+
+The fix is simple: add maxmemory=512M into common-build.xml.  I'll commit shortly.

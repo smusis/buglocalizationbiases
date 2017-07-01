@@ -1,0 +1,8 @@
+Use a pre-generated version of XPath.jjt
+
+
+
+Description:
+The workaround described in JCR-46 is still causing extra steps for Java 5 users. I'd like to solve this issue by including a pre-generated version of the XPath.jjt file as a normal source file. This will avoid the need for XSL transformations during normal builds and thus remove the need for the extra steps.
+
+I'll create a patch for this and unless anyone objects, I'm planning to include it in the 1.0 branch as well as the svn trunk.

@@ -1,0 +1,6 @@
+OracleDatabaseJournal should assume Oracle defaults
+
+
+
+Description:
+OracleFileSystem and OraclePersistenceManager assumes defaults for certain properties, such as driver and databaseType.  These defaults should be extended to OracleDatabaseJournal for consistency and ease of use.

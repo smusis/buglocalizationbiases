@@ -1,0 +1,12 @@
+Small speedups to DocumentsWriter
+
+
+
+Description:
+Some small fixes that I found while profiling indexing Wikipedia,
+mainly using our own quickSort instead of Arrays.sort.
+
+Testing first 200K docs of Wikipedia shows a speedup from 274.6
+seconds to 270.2 seconds.
+
+I'll commit in a day or two.

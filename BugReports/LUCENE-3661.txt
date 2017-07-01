@@ -1,0 +1,15 @@
+move deletes under codec
+
+
+
+Description:
+After LUCENE-3631, this should be easier I think.
+
+I haven't looked at it much myself but i'll play around a bit, but at a glance:
+* SegmentReader to have Bits liveDocs instead of BitVector
+* address the TODO in the IW-using ctors so that SegmentReader doesn't take a parent but just an existing core.
+* we need some type of minimal "MutableBits" or similar subinterface of bits. BitVector and maybe Fixed/OpenBitSet could implement it
+* BitVector becomes an impl detail and moves to codec (maybe we have a shared base class and split the 3.x/4.x up rather than the conditional backwards)
+* I think the invertAll should not be used by IndexWriter, instead we define the codec interface to say "give me a new MutableBits, by default all are set" ?
+* redundant internally-consistent checks in checkLiveCounts should be done in the codec impl instead of in SegmentReader.
+* plain text impl in SimpleText.

@@ -1,0 +1,11 @@
+disable positions for spellchecker ngram fields
+
+
+
+Description:
+In LUCENE-2391 we optimized spellchecker (re)build time/ram usage by omitting frequencies/positions/norms for single-valued fields,
+among other things.
+
+Now that we can disable positions but keep freqs, we should disable them for the n-gram fields, because the spellchecker does
+not use positional queries.
+

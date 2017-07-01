@@ -1,0 +1,14 @@
+When 3.1 is released, update backwards tests in 3.x branch
+
+
+
+Description:
+When we have released the official artifacts of Lucene 3.1 (the final ones!!!), we need to do the following:
+
+- svn rm backwards/src/test
+- svn cp https://svn.apache.org/repos/asf/lucene/dev/branches/lucene_solr_3_1/lucene/src/test backwards/src/test
+- Copy the lucene-core-3.1.0.jar from the last release tarball to lucene/backwards/lib and delete old one.
+- Check that everything is correct: The backwards folder should contain a src/ folder that now contains "test". The files should be the ones from the branch.
+- Run "ant test-backwards"
+
+Uwe will take care of this!

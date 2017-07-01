@@ -1,0 +1,30 @@
+QueryParser does not correctly handle escaped characters within quoted strings
+
+
+
+Description:
+The Lucene query parser incorrectly handles escaped characters inside quoted strings; specifically, a quoted string that ends with an (escaped) backslash followed by any additional quoted string will not be properly tokenized. Consider the following example:
+
+bq. {{(name:"///mike\\\\\\") or (name:"alphonse")}}
+
+This is not a contrived example -- it derives from an actual bug we've encountered in our system. Running this query will throw an exception, but removing the second clause resolves the problem. After some digging I've found that the problem is with the way quoted strings are processed by the lexer: you'll notice that Mike's name is followed by three escaped backslashes right before the ending quote; looking at the JavaCC code for the query parser highlights the problem:
+
+{code:title=QueryParser.jj|borderStyle=solid}
+<DEFAULT> TOKEN : {
+  <AND:       ("AND" | "&&") >
+| <OR:        ("OR" | "||") >
+| <NOT:       ("NOT" | "!") >
+| <PLUS:      "+" >
+| <MINUS:     "-" >
+| <LPAREN:    "(" >
+| <RPAREN:    ")" >
+| <COLON:     ":" >
+| <STAR:      "*" >
+| <CARAT:     "^" > : Boost
+| <QUOTED:     "\"" (~["\""] | "\\\"")* "\"">
+...
+{code}
+
+Take a look at the way the QUOTED token is constructed -- there is no lexical processing of the escaped characters within the quoted string itself. In the above query the lexer matches everything from the first quote through all the backslashes, _treating the end quote as an escaped character_, thus also matching the starting quote of the second term. This causes a lexer error, because the last quote is then considered the start of a new match.
+
+I've come to understand that the Lucene query handler is supposed to be able to handle unsanitized human input; indeed the lexer above would handle a query like {{"blah\"}} without complaining, but that's a "best-guess" approach that results in bugs with legal, automatically generated queries. I've attached a patch that fixes the erroneous behavior but does not maintain leniency with malformed queries; I believe this is the correct approach because the two design goals are fundamentally at odds. I'd appreciate any comments.

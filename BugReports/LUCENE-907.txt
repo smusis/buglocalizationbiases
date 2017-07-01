@@ -1,0 +1,7 @@
+Demo and contrib jars should contain NOTICE.TXT and LICENSE.TXT
+
+
+
+Description:
+We should include NOTICE.TXT and LICENSE.TXT not only in the core jar but also
+in the demo and contrib jars.

@@ -1,0 +1,14 @@
+remove unused benchmark dependencies
+
+
+
+Description:
+Benchmark has a huge number of jar files in its lib/ (some of which even have different versions than the same libs used in e.g. solr)
+
+But the worst thing is, most of these it doesn't even use.
+* commons-collection: unused
+* commons-beanutils: unused
+* commons-logging: unused
+* commons-digetser: unused
+
+

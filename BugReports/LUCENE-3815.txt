@@ -1,0 +1,10 @@
+Correct copy-paste victim Comment
+
+
+
+Description:
+Correct the doc-comment of FieldsProducer (being a copy-paste victim of FieldsConsumer).
+"consumes" replaced with "produces".
+
+One word change to avoid confusion: safe to commit.
+

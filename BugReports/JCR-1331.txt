@@ -1,0 +1,8 @@
+Improper deprecation of Locked class
+
+
+
+Description:
+The Locked class in the jcr-commons package has been deprecated with 1.4 and moved to the spi-commons.
+However as this is a common class which does not depend on the spi, it should rather stay in jcr-commons.
+The dependencies to spi can simply be removed again.

@@ -1,0 +1,7 @@
+Creating AccessControlEntryImpl from a base entry results in wrong restrictions
+
+
+
+Description:
+during creation of a new AccessControlEntryImpl using a base entry the restrictions of the base entry are
+not copied to the new instance.

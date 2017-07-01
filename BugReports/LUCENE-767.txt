@@ -1,0 +1,10 @@
+maxDoc should be explicitly stored in the index, not derived from file length
+
+
+
+Description:
+This is a spinoff of LUCENE-140
+
+In general we should rely on "as little as possible" from the file system.  Right now, maxDoc is derived by checking the file length of the FieldsReader index file (.fdx) which makes me nervous.  I think we should explicitly store it instead.
+
+Note that there are no known cases where this is actually causing a problem. There was some speculation in the discussion of LUCENE-140 that it could be one of the possible, but in digging / discussion there were no specifically relevant JVM bugs found (yet!).  So this would be a defensive fix at this point.

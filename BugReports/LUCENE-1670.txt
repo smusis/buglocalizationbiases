@@ -1,0 +1,15 @@
+Cosmetic JavaDoc updates
+
+
+
+Description:
+I've taken the liberty of making a few cosmetic updates to various JavaDocs:
+
+* MergePolicy (minor cosmetic change)
+* LogMergePolicy (minor cosmetic change)
+* IndexWriter (major cleanup in class description, changed anchors to JavaDoc links [now works in Eclipse], no content change)
+
+Attached diff from SVN r780545.
+
+I would appreciate if whomever goes over this can let me know if my issue parameter choices were correct (yeah, blame my OCD), and if there's a more practical/convenient way to send these in, please let me know :-)
+

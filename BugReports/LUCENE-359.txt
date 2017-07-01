@@ -1,0 +1,6 @@
+[PATCH] add term index interval accessors
+
+
+
+Description:
+It should be possible for folks to set the index interval used when writing indexes.

@@ -1,0 +1,9 @@
+tm-extractors.jar blocks usage of newer poi versions
+
+
+
+Description:
+The used tm-extractors-0.4.jar (http://repo1.maven.org/maven2/org/textmining/tm-extractors/) includes various classes from poi as well as poi-2.5.1 is referenced as dependency in the pom.xml.
+It's seems not possible to use a newer version of poi (e.g. poi-3.0.1-FINAL) together with tm-extractors (and so jackrabbit).
+
+A solution could be using functions of newer poi versions (I'm not sure if they are only in scratchpad yet) or use a fixed version of tm-extractors.jar which doesn't inlude the poi classes.

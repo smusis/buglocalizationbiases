@@ -1,0 +1,27 @@
+Item states cached in UpdatableItemStateManager not discarded on logout
+
+
+
+Description:
+The SessionItemStateManager disposes only the TransientItemStateManager but not the UpdatableItemStateManager. The latter doesn't release the resources and the cached items keep listening the overlayed state events until the ReferenceMap do its magic. According to my tests in certain circumstances it slows down jackrabbit very much. 
+
+In the charts you can see the time it takes to jackrabbit to save each child node. The first test uses a single session and the second creates a new session for each added node.
+
+The patch I attach makes both tests take the same time. Opinions?
+
+05-08-16-one session.GIF
+/ login
+  / loop
+    / add node
+    / save
+/ logout
+
+
+05-08-16-one session per save.GIF
+/ loop
+  / login
+  / add node
+  / save
+  / logout
+
+

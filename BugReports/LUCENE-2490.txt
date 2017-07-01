@@ -1,0 +1,8 @@
+'ant generate-maven-artifacts' should work for lucene+solr 3.x+
+
+
+
+Description:
+The maven build scripts need to be updated so that solr uses the artifacts from lucene.
+
+For consistency, we should be able to have a different 'maven_version' then the 'version'  That is, we want to build: 3.1-SNAPSHOT with a jar file: 3.1-dev

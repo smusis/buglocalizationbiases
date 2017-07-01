@@ -1,0 +1,10 @@
+Use hash codes instead of sequence numbers for string indexes
+
+
+
+Description:
+We use index numbers instead of namespace URIs or other strings in many places. The two-way mapping between namespace URIs and index numbers is by default stored in the repository-global ns_idx.properties file, and the index numbers are allocated using a linear sequence. The problem with this approach is that two repositories will easily end up with different string index mappings, which makes it practically impossible to make low-level copies of workspace content across repositories.
+
+The ultimate solution for this problem would be to store the namespace URIs closer to the stored content, ideally as an implementation detail of a persistence manager.
+
+An easier short-term solution would be to decrease the chances of two repositories having different string index mappings. A simple (and backwards-compatible) way to do this is to use the hash code of a namespace URI as the basis of allocating a new index number. Hash collisions are fairly unlikely, and can be handled by incrementing the intial hash code until the collision is avoided. In the common case of no collisions (with a uniform hash function the chance of a collision is less than 1% even with tousands of registered namespaces) this solution allows workspaces to be copied between repositories without worrying about the namespace index mappings.

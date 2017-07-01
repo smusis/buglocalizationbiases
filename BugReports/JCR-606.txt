@@ -1,0 +1,13 @@
+RMI-DateValue does not support full ISO8601 format
+
+
+
+Description:
+as mentioned in the javadoc:
+
+ * To convert <code>Calendar</code> instances to and from strings, this class
+ * uses a <code>SimpleDateFormat</code> instance with the pattern
+ * <code>yyyy-MM-dd'T'HH:mm:ss'Z'</code>. The issue with this pattern is that
+ * the era specification as defined in the JCR specification (+/- prefix) as
+ * well as full time zone naming are not supported.
+

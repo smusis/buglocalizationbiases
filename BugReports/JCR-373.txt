@@ -1,0 +1,41 @@
+all references to incubator need to be replaced with new locations
+
+
+
+Description:
+The following files under 1.0 branch refer to incubator in one way or another.  Some of them may be benign.
+
+./contrib/bdb-persistence/project.properties
+./contrib/bdb-persistence/project.xml
+./contrib/bdb-persistence/README.txt
+./contrib/classloader/project.properties
+./contrib/classloader/project.xml
+./contrib/examples/project.xml
+./contrib/extension-framework/project.properties
+./contrib/extension-framework/project.xml
+./contrib/jcr-commands/jmeter-chain/project.properties
+./contrib/jcr-commands/project.properties
+./contrib/jcr-commands/xdocs/navigation.xml
+./contrib/jcr-ext/project.xml
+./contrib/jcrtaglib/project.properties
+./contrib/orm-persistence/project.properties
+./contrib/orm-persistence/project.xml
+./jackrabbit/applications/test/cnd-reader-test-input.cnd
+./jackrabbit/project.properties
+./jackrabbit/project.xml
+./jackrabbit/README.txt
+./jackrabbit/src/site/fml/faq.fml
+./jackrabbit/src/site/xdoc/doc/arch/overview/jcrlevels.xml
+./jackrabbit/src/site/xdoc/doc/building.xml
+./jackrabbit/src/site/xdoc/doc/config.xml
+./jackrabbit/src/site/xdoc/downloads.xml
+./jackrabbit/src/site/xdoc/index.xml
+./jackrabbit/src/site/xdoc/tasks.xml
+./jackrabbit/src/test/java/org/apache/jackrabbit/core/nodetype/compact/CompactNodeTypeDefTest.java
+./jca/project.properties
+./jca/project.xml
+./textfilters/project.properties
+./textfilters/project.xml
+
+I'd edit them myself, but I need to sleep... maybe tomorrow if nobody beats me to it.
+

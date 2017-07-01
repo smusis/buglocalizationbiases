@@ -1,0 +1,16 @@
+Add support for distributed stats
+
+
+
+Description:
+(its a bug in a way, since we broke this, temporarily).
+
+There is no way to do this now (distributed IDF, etc) with the new API.
+
+But we should do it right:
+* having the sim ask the searcher for docfreq of a term is wasteful and dangerous, 
+  usually we have already seek'd to the term and already collected the 'raw' stuff.
+* the situation is more than just docfreq, because you should be able to implement
+  distributed scoring for all of the new sim models (or your own), that use any
+  of Lucene's stats.
+

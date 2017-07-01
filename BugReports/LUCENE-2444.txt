@@ -1,0 +1,10 @@
+move contrib/analyzers to modules/analysis
+
+
+
+Description:
+This is a patch to move contrib/analyzers under modules/analyzers
+
+We can then continue consolidating (LUCENE-2413)... in truth this will sorta be 
+an ongoing thing anyway, as we try to distance indexing from analysis, etc
+

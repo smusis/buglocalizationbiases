@@ -1,0 +1,6 @@
+Improve CachingWrapperFilter to optionally also cache acceptDocs, if identical to liveDocs
+
+
+
+Description:
+Spinoff from LUCENE-1536: This issue removed the different cache modes completely and always applies the acceptDocs using BitsFilteredDocIdSet.wrap(), the cache only contains raw DocIdSet without any deletions/acceptDocs. For IndexReaders that are seldom reopened, this might not be as performant as it could be. If the acceptDocs==IR.liveDocs, those DocIdSet could also be cached with liveDocs applied.

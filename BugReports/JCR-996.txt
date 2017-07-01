@@ -1,0 +1,6 @@
+Name and Path interfaces in SPI
+
+
+
+Description:
+The SPI interface currently has a dependency to QName and Path classes in jackrabbit-jcr-commons. Architecturally it would be better to have Name and Path interfaces in the SPI package, and have the implementing classes in commons.

@@ -1,0 +1,8 @@
+TransientRepository does not shutdown if first login fails
+
+
+
+Description:
+The TransientRepository.login() method initializes the underlying repository when it is first called (initially or after the repository has previously been shut down) bug doesn't shut down the initialized repository if the login fails. If the application then decides to exit or otherwise not start another session, then the repository remains in an initialized state with no active sessions.
+
+This issue should be fixed by properly handling login failures in the TransientRepository.login() method.

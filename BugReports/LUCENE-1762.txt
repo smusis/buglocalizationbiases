@@ -1,0 +1,16 @@
+Slightly more readable code in Token/TermAttributeImpl
+
+
+
+Description:
+No big deal. 
+
+growTermBuffer(int newSize) was using correct, but slightly hard to follow code. 
+
+the method was returning null as a hint that the current termBuffer has enough space to the upstream code or reallocated buffer.
+
+this patch simplifies logic   making this method to only reallocate buffer, nothing more.  
+It reduces number of if(null) checks in a few methods and reduces amount of code. 
+all tests pass.
+
+This also adds tests for the new basic attribute impls (copies of the Token tests).

@@ -1,0 +1,6 @@
+OracleBundlePersistenceManager needs special blob handling for JDBC drivers prior to oracle 10
+
+
+
+Description:
+the new oracle bundle persistence manager (see JCR-755) needs special blob handling for oracle jdbc drivers prior to version 10. since the pm works for newer versions, i suggest to add a separate pm eg: Oracle9PersistenceManager that contains this special blob handling.

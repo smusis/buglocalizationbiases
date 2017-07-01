@@ -1,0 +1,10 @@
+commongrams filter calls incrementToken() after it returns false
+
+
+
+Description:
+In LUCENE-3064, we beefed up MockTokenizer with assertions, and I started cutting over some analysis tests to use MockTokenizer for better coverage.
+
+The commongrams tests fail, because they call incrementToken() after it already returns false. 
+
+In general its my understanding consumers should not do this (and i know of a few tokenizers that will actually throw exceptions if you do this, just like java iterators and such).

@@ -1,0 +1,41 @@
+setFlushPending fails if we concurrently hit a aborting exception
+
+
+
+Description:
+If we select a DWPT for flushing but that DWPT is currently in flight and hits an exception after we selected them for flushing the num of docs is reset to 0 and we trip that exception. So we rather check if it is > 0 than assert on it here.
+{noformat}
+[junit] Testsuite: org.apache.lucene.index.TestIndexWriterExceptions
+    [junit] Testcase: testRandomExceptionsThreads(org.apache.lucene.index.TestIndexWriterExceptions):	FAILED
+    [junit] thread Indexer 3: hit unexpected failure
+    [junit] junit.framework.AssertionFailedError: thread Indexer 3: hit unexpected failure
+    [junit] 	at org.apache.lucene.index.TestIndexWriterExceptions.testRandomExceptionsThreads(TestIndexWriterExceptions.java:227)
+    [junit] 	at org.apache.lucene.util.LuceneTestCase$LuceneTestCaseRunner.runChild(LuceneTestCase.java:1226)
+    [junit] 	at org.apache.lucene.util.LuceneTestCase$LuceneTestCaseRunner.runChild(LuceneTestCase.java:1154)
+    [junit] 
+    [junit] 
+    [junit] Tests run: 18, Failures: 1, Errors: 0, Time elapsed: 30.287 sec
+    [junit] 
+    [junit] ------------- Standard Output ---------------
+    [junit] Indexer 3: unexpected exception2
+    [junit] java.lang.AssertionError
+    [junit] 	at org.apache.lucene.index.DocumentsWriterFlushControl.setFlushPending(DocumentsWriterFlushControl.java:170)
+    [junit] 	at org.apache.lucene.index.FlushPolicy.markLargestWriterPending(FlushPolicy.java:108)
+    [junit] 	at org.apache.lucene.index.FlushByRamOrCountsPolicy.onInsert(FlushByRamOrCountsPolicy.java:61)
+    [junit] 	at org.apache.lucene.index.FlushPolicy.onUpdate(FlushPolicy.java:77)
+    [junit] 	at org.apache.lucene.index.DocumentsWriterFlushControl.doAfterDocument(DocumentsWriterFlushControl.java:115)
+    [junit] 	at org.apache.lucene.index.DocumentsWriter.updateDocument(DocumentsWriter.java:341)
+    [junit] 	at org.apache.lucene.index.IndexWriter.updateDocument(IndexWriter.java:1367)
+    [junit] 	at org.apache.lucene.index.IndexWriter.updateDocument(IndexWriter.java:1339)
+    [junit] 	at org.apache.lucene.index.TestIndexWriterExceptions$IndexerThread.run(TestIndexWriterExceptions.java:92)
+    [junit] ------------- ---------------- ---------------
+    [junit] ------------- Standard Error -----------------
+    [junit] NOTE: reproduce with: ant test -Dtestcase=TestIndexWriterExceptions -Dtestmethod=testRandomExceptionsThreads -Dtests.seed=3493970007652348212:2010109588873167237
+    [junit] WARNING: test method: 'testRandomExceptionsThreads' left thread running: merge thread: _1v(4.0):Cv2 _27(4.0):cv1 into _2h
+    [junit] WARNING: test method: 'testRandomExceptionsThreads' left thread running: merge thread: _2c(4.0):cv1 into _2m
+    [junit] RESOURCE LEAK: test method: 'testRandomExceptionsThreads' left 2 thread(s) running
+    [junit] NOTE: test params are: codec=RandomCodecProvider: {content=MockFixedIntBlock(blockSize=421), field=MockSep, id=SimpleText, other=MockSep, contents=MockRandom, content1=Pulsing(freqCutoff=11), content2=MockSep, content4=SimpleText, content5=SimpleText, content6=MockRandom, crash=MockRandom, content7=MockVariableIntBlock(baseBlockSize=109)}, locale=mk_MK, timezone=Europe/Malta
+    [junit] NOTE: all tests run in this JVM:
+    [junit] [TestToken, TestDateTools, Test2BTerms, TestAddIndexes, TestFilterIndexReader, TestIndexWriterExceptions]
+    [junit] NOTE: Linux 2.6.37-gentoo amd64/Sun Microsystems Inc. 1.6.0_24 (64-bit)/cpus=8,threads=1,free=78897400,total=195821568
+{noformat}

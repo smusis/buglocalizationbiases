@@ -1,0 +1,10 @@
+[API Doc] Compile performance optimization guide
+
+
+
+Description:
+Performance optimization guide is long overdue and badly needed. The more people
+start using HttpClient in all sorts of creative ways the more we are going to
+need it.
+
+Oleg

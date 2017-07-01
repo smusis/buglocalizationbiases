@@ -1,0 +1,15 @@
+Usage of "qualified name" in JavaDoc and Comments
+
+
+
+Description:
+Within jackrabbit the term "qualified name" is used, when the internal representation of a JCR name is referred according to the usage of "fully-qualified name" within the JSR 170 specification.
+
+Based on input by julian (Issue #449) the phrasing has been adjusted in JSR 283 to match the terminology used in XMLNS.
+
+As of JSR 283
+
+- Qualified Name -> refers to a JCR Name in the form prefix:localname
+- Expanded Name -> is used for what was formerly called "fully-qualified name".
+
+In order to avoid confusion i would suggest to fix the javadoc throughout the project and eventually add explanations in cases where method or class names are misleading.

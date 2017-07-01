@@ -1,0 +1,27 @@
+HttpConnectionParams.setConnectionTimeout(int) has no effect if host unreachable
+
+
+
+Description:
+I have just modified MultiThreadedExample.java by adding
+httpClient.getHttpConnectionManager().getParams().setConnectionTimeout(5000); in
+order to set a connection timeout on the client side. Then I have added a LAN
+url to urisToGet array. The ip of this url ("http://192.168.254.1/") is not
+assigned to any computer.
+
+After running the client, I get the expected message ( error:
+org.apache.commons.httpclient.ConnectTimeoutException: The host did not accept
+the connection within timeout of 5000 ms) but only after 20 seconds.
+
+I use java version "1.5.0_04". This is not a JVM bug since normal connection
+procedure times out after 5 seconds as expected:
+        SocketAddress addr = new InetSocketAddress("192.168.254.1", 80);
+        try {
+            
+            SocketChannel channel = SocketChannel.open();
+            channel.socket().connect(addr, 5000);            
+            System.out.println("connected");
+            
+        } catch (Exception e) {
+            e.printStackTrace();
+        }

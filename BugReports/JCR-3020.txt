@@ -1,0 +1,6 @@
+AbstractRepositoryService should be able to handle GuestCredentials
+
+
+
+Description:
+AbstractRepositoryService.createSessionInfo should handle GuestCredentials. Currently it only handle SimpleCredentials

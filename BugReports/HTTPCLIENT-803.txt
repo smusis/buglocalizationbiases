@@ -1,0 +1,6 @@
+SSL connections cannot be established using the IP address
+
+
+
+Description:
+HttpClient 4.x introduced a regression in establishing SSL connections to remote peers. The AbstractVerifier class only checks for matches in CN and SubjectAlternative->DNSName. But, when an IP (instead of a hostname) is used, the check should be done on CN and SubjectAlternative->IPAddress.

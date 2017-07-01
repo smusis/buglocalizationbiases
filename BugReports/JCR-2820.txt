@@ -1,0 +1,6 @@
+FineGrainedISMLocking problems
+
+
+
+Description:
+The FineGrainedISMLocking strategy suffers from the same deadlock issue as was reported in JCR-2753 against DefaultISMLocking. Additionally the FineGrainedISMLocking class will also fail to function properly with XA transactions since it uses the current thread instead of the current transaction id to track re-entrancy.

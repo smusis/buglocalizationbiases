@@ -1,0 +1,46 @@
+TextFilters get called three times within checkin() method
+
+
+
+Description:
+If you want to add a PDF document to a repository using a PdfTextFilter, and you do the following steps:
+
+session.save()
+node.checkin();
+
+The method PdfTextFilter.doFilter() gets called 4 times!!!
+
+session's save method calls doFilter one time. This is normal
+
+But checkin method calls doFilter three times. Is this normal? I do not see the sense.
+
+------------------
+
+		
+Marcel Reutegger 	
+<marcel.reutegger@gmx.net> to jackrabbit-dev
+	 More options	  11:43 am (13 minutes ago)
+Hi Martin,
+
+this is unfortunate and should be improved. the reason why this happens
+is the following:
+the search index implementation always indexes a node as a whole to
+improve query performance. that means even if a single property changes
+the parent node with all its properties is re-indexed.
+
+unfortunately the checkin method sets properties in three separate
+'transactions', causing the search to re-index the according node three
+times.
+
+usually this is not an issue, because the index implementation keeps a
+buffer for pending index work. that is, if you change the same property
+several times and save after each setProperty() call, it won't actually
+get re-indexed several times. but text filters behave differently here,
+because they extract the text even though the text will never be used.
+
+eventually this will improve without any change to the search index
+implementation, because as soon as versioning participates properly in
+transactions there will only be one call to index a node on checkin().
+
+as a quick fix we could improve the text filter classes to only parse
+the binary when the returned reader is acutally used.

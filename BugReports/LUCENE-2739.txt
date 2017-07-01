@@ -1,0 +1,18 @@
+Refactor TestIndexWriter
+
+
+
+Description:
+TestIndexWriter is getting a bit unwieldy:
+* 5,315 lines of code
+* 116 test methods
+* runtimes frequently between 1 and 2 minutes.
+
+It starts to be pretty scary to merge changes because its so massive.
+
+A lot of the tests arguably belong somewhere else (e.g. the addIndex* tests belong in TestAddIndexes)
+
+But here is a start:
+# Pulls out the *OnDiskFull tests into TestIndexWriterOnDiskFull
+# Pulls out the multithreaded tests into TestIndexWriterWithThreads
+

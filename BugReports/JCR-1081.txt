@@ -1,0 +1,13 @@
+bad test assumptions in org.apache.jackrabbit.test.api.lock
+
+
+
+Description:
+These tests make a lot of assumptions that may not be true for a compliant repository, such as:
+
+- ability to add nodes without specifiying the node type
+- assumption that ordering and same name siblings are supported
+- assumption that addMixin(lockable) is required on newly added nodes
+
+Furthermore, some repositories may not support shallow locks on leaf nodes. That's not compliant, but failure to do so should not abort a test that tests something else.
+

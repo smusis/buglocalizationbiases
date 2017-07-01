@@ -1,0 +1,26 @@
+it is impossible to use a custom dictionary for SmartChineseAnalyzer
+
+
+
+Description:
+it is not possible to use a custom dictionary, even though there is a lot of code and javadocs to allow this.
+
+This is because the custom dictionary is only loaded if it cannot load the built-in one (which is of course, in the jar file and should load)
+{code}
+public synchronized static WordDictionary getInstance() {
+    if (singleInstance == null) {
+      singleInstance = new WordDictionary(); // load from jar file
+      try {
+        singleInstance.load();
+      } catch (IOException e) { // loading from jar file must fail before it checks the AnalyzerProfile (where this can be configured)
+        String wordDictRoot = AnalyzerProfile.ANALYSIS_DATA_DIR;
+        singleInstance.load(wordDictRoot);
+      } catch (ClassNotFoundException e) {
+        throw new RuntimeException(e);
+      }
+    }
+    return singleInstance;
+  }
+{code}
+
+I think we should either correct this, document this, or disable custom dictionary support...

@@ -1,0 +1,8 @@
+migrate to commons-codec Base64
+
+
+
+Description:
+Commons Codec is now the authoritative source for Base64 functionality.  The
+Base64 in HttpClient is now deprecated and should be removed in 2.1.  This will
+also add a new dependancy for HttpClient on the commons-codec package.

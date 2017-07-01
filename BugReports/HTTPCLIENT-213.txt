@@ -1,0 +1,33 @@
+Authentication fails with proxied SSL Connections
+
+
+
+Description:
+When connecting through a proxy, using SSL and authentication HttpClient winds 
+up sending a GET request to the proxy after the initial auth required response, 
+the proxy then obviously responds with a not implemented response since it 
+can't handle a GET request to an SSL URL.  In essence the following is 
+happening:
+
+1. HttpClient sends Connect response.
+2. Proxy responds 200 Connect OK
+3. HttpClient uses SSL connection to send the request to the web server.
+4. Web server responds with not authorized and closes the connection.
+5. HttpClient opens a new connection to the proxy and issues a GET request for 
+the SSL URL.
+6. Proxy returns 501 not implemented.
+
+I'll attach a full log to this bug.
+
+This is likely to be hard to fix since the retry is performed in HttpMethodBase 
+but the Connect method is executed by HttpClient so a fix for this may be best 
+waiting for 2.1.  This looks very similar to HTTPCLIENT-195 except that that bug is 
+marked as fixed and this one still doesn't work, this also applies to 
+authentication schemes other than NTLM (testing NTLM and basic).
+
+My best evaluation is that the web server returns Connection: close when it 
+rejects the authorization attempt and then HttpMethodBase is incapable of 
+creating a new SSL connection through the proxy.  The only thing I can think of 
+that could be done prior to 2.1 to fix this is to send a Connection: keep-alive 
+as well as the Proxy-Connection: Keep-Alive we're already sending with the 
+original request.

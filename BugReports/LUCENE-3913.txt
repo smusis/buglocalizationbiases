@@ -1,0 +1,6 @@
+HTMLStripCharFilter produces invalid final offset
+
+
+
+Description:
+Nightly build found this... I boiled it down to a small test case that doesn't require the big line file docs.

@@ -1,0 +1,34 @@
+SQL2 query - supplying column selector fails with NPE on getColumnName()
+
+
+
+Description:
+I am preparing and executing an SQL2 query (JCR 2.0) as follows:
+
+QueryManager qm = jcrSession.getWorkspace().getQueryManager();
+String queryString = "select order.[customerAccountUUID] as cust from [atl:order] as order";
+Query query = qm.createQuery(queryString, Query.JCR_SQL2);
+QueryResult queryResult = query.execute();
+
+The following query fails:
+
+select order.[customerAccountUUID] from [atl:order] as order
+
+java.lang.NullPointerException
+        org.apache.jackrabbit.commons.query.sql2.QOMFormatter.isSimpleName(QOMFormatter.java:577)
+        org.apache.jackrabbit.commons.query.sql2.QOMFormatter.formatName(QOMFormatter.java:567)
+        org.apache.jackrabbit.commons.query.sql2.QOMFormatter.format(QOMFormatter.java:452)
+        org.apache.jackrabbit.commons.query.sql2.QOMFormatter.format(QOMFormatter.java:123)
+        org.apache.jackrabbit.commons.query.sql2.QOMFormatter.format(QOMFormatter.java:117)
+
+line 452: c.getColumnName() returns null.
+
+The following query is fine:
+
+select order.[customerAccountUUID] as cust from [atl:order] as order
+
+I have been using the test case (here: http://svn.apache.org/viewvc/jackrabbit/trunk/jackrabbit-spi-commons/src/test/resources/org/apache/jackrabbit/spi/commons/query/sql2/test.sql2.txt?view=markup) as a guideline.
+
+Cheers,
+
+James 

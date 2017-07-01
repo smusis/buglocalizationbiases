@@ -1,0 +1,17 @@
+results.jsp in luceneweb.war uses unknown parse-Method
+
+
+
+Description:
+results.jsp in luceneweb.war demo throws JasperException:
+
+org.apache.jasper.JasperException: Unable to compile class for JSP
+
+An error occurred at line: 60 in the jsp file: /results.jsp
+Generated servlet error:
+The method parse(String) in the type QueryParser is not applicable for the arguments (String, String, Analyzer)
+
+I think, the code in line 81 of results.jsp should maybe look like the following ?
+
+QueryParser qp = new QueryParser("contents", analyzer);
+query = qp.parse(queryString);

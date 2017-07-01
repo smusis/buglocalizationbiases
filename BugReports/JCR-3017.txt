@@ -1,0 +1,8 @@
+Version history recovery fails in case a version does not have a jcr:frozenNode
+
+
+
+Description:
+With JCR-2551 in place, a version recovery mode has been introduced. Problem now is that in case a version is encountered that misses a mandatory jcr:frozenNode, an InternalError is thrown by o.a.j.c.version.InternalVersionHistoryImpl#createVersionInstance. Since o.a.j.c.RepositoryChecker#checkVersionHistory only catches Exception, it fails to catch it properly which leads to a complete repository shutdown.
+
+Throwing for example a RuntimeException instead fixes the problem.

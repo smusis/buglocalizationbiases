@@ -1,0 +1,6 @@
+Stackoverflow when calling deprecated CharArraySet.copy()
+
+
+
+Description:
+Calling CharArraySet#copy(set) without the version argument (deprecated) with an instance of CharArraySet results in a stack overflow as this method checks if the given set is a CharArraySet and then calls itself again. This was accidentially introduced due to an overloaded alternative method during LUCENE-2169 which was not used in the final patch.

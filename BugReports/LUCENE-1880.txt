@@ -1,0 +1,6 @@
+Make contrib/collation/(ICU)CollationKeyAnalyzer constructors public
+
+
+
+Description:
+In contrib/collation, the constructors for CollationKeyAnalyzer and ICUCollationKeyAnalyzer are package private, and so are effectively unusable.

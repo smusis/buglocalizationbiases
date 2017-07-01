@@ -1,0 +1,10 @@
+Mixin removal exception
+
+
+
+Description:
+When trying to remove a mixin from a non nt:unstructured node (in my case nt:resource), you get the following exception:
+
+Unable to alter mixin types: javax.jcr.nodetype.ConstraintViolationException: no matching property definition found for {http://www.day.com/jcr/cq/1.0}lastRolledout
+
+lastRolledout property is defined by the mixin cq:LiveRelationship that I am trying to remove.

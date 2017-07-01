@@ -1,0 +1,6 @@
+Query path constraints like foo//*/bar do not scale
+
+
+
+Description:
+To resolve the * step the LuceneQueryBuilder currently creates a MatchAllQuery and checks every node for a foo ancestor. Instead, it should search for bar nodes and check for foo ancestors with at least one arbitrary hierarchy level in between.

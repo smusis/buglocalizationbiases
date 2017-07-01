@@ -1,0 +1,11 @@
+JCR2SPI: Remove validation check for same-named Node and Property
+
+
+
+Description:
+JSR 170 disallowed a parent node to have a property and a child node with the same name.
+
+This limitation has been removed with JSR 283 and the RI (jackrabbit-core) already removed the check.
+I would suggest to change Jcr2Spi accordingly and leave this validation to the underlying SPI impl.
+
+If I'm not mistaken this JSR 170 requirement is asserted in a single place (ItemStateValidator).

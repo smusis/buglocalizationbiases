@@ -1,0 +1,21 @@
+NullPointerException in GarbageCollector.scan() if no DataStore configured
+
+
+
+Description:
+
+I am running the garbage collector in a separate thread every 5 minutes.
+
+            GarbageCollector gc = ((SessionImpl)mSession).createDataStoreGarbageCollector();
+            gc.scan();
+            gc.stopScan();
+            int du = gc.deleteUnused();
+
+When using Jackrabbit v1.5.2 I get sometimes a null pointer exception;
+
+java.lang.NullPointerException
+        at org.apache.jackrabbit.core.data.GarbageCollector.scan(GarbageCollector.java:153)
+
+
+
+

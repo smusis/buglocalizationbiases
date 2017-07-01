@@ -1,0 +1,10 @@
+Remove/deprecate IndexReader.undeleteAll
+
+
+
+Description:
+This API is rather dangerous in that it's "best effort" since it can only un-delete docs that have not yet been merged away, or, dropped (as of LUCENE-2010).
+
+Given that it exposes impl details of how Lucene prunes deleted docs, I think we should remove this API.
+
+Are there legitimate use cases....?

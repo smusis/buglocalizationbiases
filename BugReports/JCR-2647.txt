@@ -1,0 +1,8 @@
+Reduce temporary memory usage of hierarchy cache initialization
+
+
+
+Description:
+Initializing the hierarchy cache temporarily uses memory, which is linear to the size of the index segment. This process should be split into multiple phases to limit the memory usage to a fixed amount.
+
+The temporary memory usage for an index segment current is about 170 bytes per node.

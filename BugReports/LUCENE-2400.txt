@@ -1,0 +1,8 @@
+ShingleFilter: don't output all-filler shingles/unigrams; also, convert from TermAttribute to CharTermAttribute
+
+
+
+Description:
+When the input token stream to ShingleFilter has position increments greater than one, filler tokens are inserted for each position for which there is no token in the input token stream.  As a result, unigrams (if configured) and shingles can be filler-only.  Filler-only output tokens make no sense - these should be removed.
+
+Also, because TermAttribute has been deprecated in favor of CharTermAttribute, the patch will also convert TermAttribute usages to CharTermAttribute in ShingleFilter.

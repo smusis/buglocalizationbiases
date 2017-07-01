@@ -1,0 +1,6 @@
+Make termInfosIndexDivisor configurable
+
+
+
+Description:
+Workspaces with large indexes may consume considerable heap memory. Lucene implements multi level skip lists for terms in the index. The first level of the skip list is kept in memory. This is usually not an issue, but when terms consist of long Strings the memory consumption increases drastically. Jackrabbit not just tokenizes string properties, but it also creates a single term, based on the complete string property value (needed for jcr:like function). These long terms are the reason for the increased memory consumption.

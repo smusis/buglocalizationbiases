@@ -1,0 +1,13 @@
+Field.setValue(...) doesn't properly handle switching between byte[] and other types
+
+
+
+Description:
+This came up in PyLucene testing, based on Lucene 2.4.1.  Thread here:
+
+  http://pylucene.markmail.org/message/75jzxzqi3smp2s4z
+
+The problem is that Field.setValue does not fix up the isBinary
+boolean, so if you create a String field, and then do
+setValue(byte[]), you'll get an exception when adding a document
+containing that field to the index.

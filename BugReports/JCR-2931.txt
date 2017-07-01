@@ -1,0 +1,14 @@
+Compatibility issue if admin impersonates admin session
+
+
+
+Description:
+in revision 1076596 in made some improvements in ImpersonationImpl removing the shortcut for "AdminPrincipal" which from my point of view is problematic.
+
+however, this introduced the following compatibility issue (detected by tom):
+while - according to my tests - a user is allowed to impersonate itself (jcr isn't totally clear about this but states that Session.impersonate is used to "[...] impersonate" another [...]" this was possible for the admin-user due to the shortcut mentioned above.
+
+in order not to break existing code relying on that special case, i would suggest to change the code accordingly.
+
+
+

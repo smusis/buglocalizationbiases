@@ -1,0 +1,6 @@
+Maintain the cluster revision table
+
+
+
+Description:
+The revision table in which cluster nodes write their changes can potentially become very large. If all cluster nodes are up to date to a certain revision number, then it seems unnecessary to keep the revisions with a lower number.

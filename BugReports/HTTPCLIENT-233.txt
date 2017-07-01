@@ -1,0 +1,6 @@
+HttpMethodBase Javadoc patches
+
+
+
+Description:
+Clarify that HTTP 1.1 is the default. Attaching.

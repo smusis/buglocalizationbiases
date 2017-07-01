@@ -1,0 +1,17 @@
+Overwriting a reference property with different type corrupts rep
+
+
+
+Description:
+- create node n1
+- create node n2
+- n2.setProperty("prop", n1)
+- save()
+- n2.setProperty("prop", "hello, world.")
+- save()
+- n1.remove()
+- save() --> exception
+
+see also ReferencesTest case
+
+btw: removing the property or overwriting with a different reference works.

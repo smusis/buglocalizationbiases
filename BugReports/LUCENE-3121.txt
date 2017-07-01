@@ -1,0 +1,9 @@
+FST should offer lookup-by-output API when output strictly increases
+
+
+
+Description:
+Spinoff from "FST and FieldCache" java-dev thread http://lucene.markmail.org/thread/swoawlv3fq4dntvl
+
+FST is able to associate arbitrary outputs with the sorted input keys, but in the special (and, common) case where the function is strictly monotonic (each output only "increases" vs prior outputs), such as mapping to term ords or mapping to file offsets in the terms dict, we should offer a lookup-by-output API that efficiently walks the FST and locates input key (exact or floor or ceil) matching that output.
+

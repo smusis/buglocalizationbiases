@@ -1,0 +1,31 @@
+TestPerFieldCodecSupport intermittent fail
+
+
+
+Description:
+{noformat}
+
+    [junit] Testsuite: org.apache.lucene.index.TestPerFieldCodecSupport
+    [junit] Testcase: testChangeCodecAndMerge(org.apache.lucene.index.TestPerFieldCodecSupport):	FAILED
+    [junit] expected:<4> but was:<3>
+    [junit] junit.framework.AssertionFailedError: expected:<4> but was:<3>
+    [junit] 	at org.apache.lucene.util.LuceneTestCase$LuceneTestCaseRunner.runChild(LuceneTestCase.java:881)
+    [junit] 	at org.apache.lucene.util.LuceneTestCase$LuceneTestCaseRunner.runChild(LuceneTestCase.java:847)
+    [junit] 	at org.apache.lucene.index.TestPerFieldCodecSupport.assertHybridCodecPerField(TestPerFieldCodecSupport.java:189)
+    [junit] 	at org.apache.lucene.index.TestPerFieldCodecSupport.testChangeCodecAndMerge(TestPerFieldCodecSupport.java:145)
+    [junit] 
+    [junit] 
+    [junit] Tests run: 1, Failures: 1, Errors: 0, Time elapsed: 0.416 sec
+    [junit] 
+    [junit] ------------- Standard Output ---------------
+    [junit] NOTE: reproduce with: ant test -Dtestcase=TestPerFieldCodecSupport -Dtestmethod=testChangeCodecAndMerge -Dtests.seed=1508266713336297966:-102145263724760840
+    [junit] NOTE: test params are: codec=SimpleText, locale=ms, timezone=America/Winnipeg
+    [junit] ------------- ---------------- ---------------
+    [junit] ------------- Standard Error -----------------
+    [junit] NOTE: all tests run in this JVM:
+    [junit] [TestPerFieldCodecSupport]
+    [junit] ------------- ---------------- ---------------
+    [junit] Test org.apache.lucene.index.TestPerFieldCodecSupport FAILED
+{noformat}
+
+I haven't tried to figure it out yet...

@@ -1,0 +1,15 @@
+Change QueryParser to use ConstantScoreRangeQuery in preference to RangeQuery by default
+
+
+
+Description:
+Change to QueryParser to default to using new ConstantScoreRangeQuery in preference to RangeQuery
+for range queries. This implementation is generally preferable because it 
+a) Runs faster 
+b) Does not have the scarcity of range terms unduly influence score 
+c) avoids any "TooManyBooleanClauses" exception.
+
+However, if applications really need to use the old-fashioned RangeQuery and the above
+points are not required then the  "useOldRangeQuery" property can be used to revert to old behaviour.
+
+The patch includes extra Junit tests for this flag and all other Junit tests pass

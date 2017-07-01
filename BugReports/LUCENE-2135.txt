@@ -1,0 +1,12 @@
+IndexReader.close should forcefully evict entries from FieldCache
+
+
+
+Description:
+Spinoff of java-user thread "heap memory issues when sorting by a string field".
+
+We rely on WeakHashMap to hold our FieldCache, keyed by reader.  But this lacks immediacy on releasing the reference, after a reader is closed.
+
+WeakHashMap can't free the key until the reader is no longer referenced by the app. And, apparently, WeakHashMap has a further impl detail that requires invoking one of its methods for it to notice that a key has just become only weakly reachable.
+
+To fix this, I think on IR.close we should evict entries from the FieldCache, as long as the sub-readers are truly closed (refCount dropped to 0).

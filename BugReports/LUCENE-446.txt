@@ -1,0 +1,10 @@
+search.function - (1) score based on field value, (2) simple score customizability
+
+
+
+Description:
+FunctionQuery can return a score based on a field's value or on it's ordinal value.
+
+FunctionFactory subclasses define the details of the function.  There is currently a LinearFloatFunction (a line specified by slope and intercept).
+
+Field values are typically obtained from FieldValueSourceFactory.  Implementations include FloatFieldSource, IntFieldSource, and OrdFieldSource.

@@ -1,0 +1,6 @@
+DescendantSelfAxisQuery creates too many object instances
+
+
+
+Description:
+In DescendantSelfAxisQuery.DescendantSelfAxisScorer.isValid() there is an ArrayList and an Integer instance created on every call. Since this method gets called really often during queries the object creation/gc affects performance.

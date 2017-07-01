@@ -1,0 +1,8 @@
+Restore of empty multivalue property always changes property type to String
+
+
+
+Description:
+When you do a restore of  empty multivalue property (OPV=COPY), restored property always has the String type (no matter of property type in frozen state). The solution is to set the property type from frozen state instead of retriving it from 'first' value. If mulitvalue does not have any values the type is set to UNDEFINED and finally changed to STRING in restore method.
+
+Attached patch with test case.

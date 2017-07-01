@@ -1,0 +1,12 @@
+Binary value may leave temp file behind
+
+
+
+Description:
+The following call leaves a temp file behind that is never deleted:
+
+InputStream in = ...
+ValueFactory vf = ....
+vf.createBinary(in).dispose();
+
+Only happens when the datastore is disabled.

@@ -1,0 +1,9 @@
+yank SegmentReader.norm out of SegmentReader.java
+
+
+
+Description:
+While working on flex scoring branch and LUCENE-3012, I noticed it was difficult to navigate 
+the norms handling in SegmentReader's code.
+
+I think we should yank this inner class out into a separate file as a start.

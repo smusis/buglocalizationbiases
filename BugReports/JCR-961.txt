@@ -1,0 +1,6 @@
+Add workspace population tool
+
+
+
+Description:
+Add a simple tool to jackrabbit-webapp to populate the workspace with content.

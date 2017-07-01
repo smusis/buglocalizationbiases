@@ -1,0 +1,33 @@
+PUT method blocks against older servers
+
+
+
+Description:
+To reproduce, attempt a PUT request against an appropriate servlet under TC3.2
+(yes I know that needs an upgrade - sigh)
+
+RFC 2616 says:
+"Because of the presence of older implementations, the protocol allows ambiguous
+situations in which a client may send "Expect: 100- continue" without receiving
+either a 417 (Expectation Failed) status or a 100 (Continue) status. Therefore,
+when a client sends this header field to an origin server (possibly via a proxy)
+from which it has never seen a 100 (Continue) status, the client SHOULD NOT wait
+for an indefinite period before sending the request body."
+
+This isn't how HttpClient behaves. After sending the headers,
+PutMethod.writeRequestBody() returns false. HttpMethodBase then calls
+readStatusCode(), which blocks waiting for a read (or I guess you could time out
+the whole request). Right now this makes it impossible to use HttpClient to PUT
+to older Http 1.1 implementations.
+
+A suggested resolution: since the spec allows for clients to avoid waiting if
+they know the 100 response will not arrive, why not simply provide a boolean
+flag to allow the 'wait for 100' behaviour in PutMethod.writeResponseBody() to
+be turned off, on a per-request basis? This solution puts the burden of knowing
+"origin server[s]...from which it has never seen a 100 (Continue) status" on the
+user of HttpClient. Less than perfect as you can only find out that this has
+happened by trial and error.
+
+A more correct solution, is to maintain a list of servers that ignore the Expect
+header in PutMethod, and override PutMethod.readStatusCode() to time out, send
+the body, remember this server is buggy, and read the status code again.

@@ -1,0 +1,24 @@
+ConcurrentScheduleManager.addMyself() has wrong inted
+
+
+
+Description:
+This method has the wrong index for the 'size' variable, I think it should b allInstances.size.
+
+{code:java}
+private void addMyself() {
+    synchronized(allInstances) {
+      final int size=0;
+      int upto = 0;
+      for(int i=0;i<size;i++) {
+        final ConcurrentMergeScheduler other = (ConcurrentMergeScheduler) allInstances.get(i);
+        if (!(other.closed && 0 == other.mergeThreadCount()))
+          // Keep this one for now: it still has threads or
+          // may spawn new threads
+          allInstances.set(upto++, other);
+      }
+      allInstances.subList(upto, allInstances.size()).clear();
+      allInstances.add(this);
+    }
+  }
+{code}

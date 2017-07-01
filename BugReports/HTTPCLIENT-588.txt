@@ -1,0 +1,28 @@
+relative URIs with internal double-slashes ('//') misparsed
+
+
+
+Description:
+URI.parseUriReference()'s heuristic for interpreting URI parts is thrown off by relative URIs which include an internal '//'. As a result, portions of the supplied relative URI (path) can be lost. 
+
+For example:
+
+URI rel = new URI("foo//bar//baz");
+rel.toString();
+(java.lang.String) //bar//baz
+
+The culprit seems to be line 1961 of URI improperly concluding that two slashes later than the beginning of 'tmp' are still indicative the URI is a 'net_path'. 
+
+A possible quick fix might be to add a '!isStartedFromPath &&' to the beginning of the line 1961 test, making the line:
+
+            if (!isStartedFromPath && at + 2 < length && tmp.charAt(at + 1) == '/') {
+
+... and thus preventing the misguided authority-parsing from happening when earlier analysis already identified the current string as a strictly path-oriented URI.
+
+(It also appears the setting of the is_net_path boolean at the end of this if's block may be wrong; this code is run for hier_path URIs that are not net_paths in the 2396 syntax. For example:
+
+URI uri = new URI("http://www.example.com/some/page");
+uri.isNetPath();
+ (boolean) true 
+
+)

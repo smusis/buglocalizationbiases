@@ -1,0 +1,12 @@
+jcr2spi: transient removal of mandatory item throws ConstraintViolationException
+
+
+
+Description:
+reported by tobi:
+
+the transient removal of a mandatory (non-protected) item immediately fails. 
+instead the check should be postponed until the save() call, since it would be perfectly legal to remove the mandatory item and then re-add it.
+
+suggested fix:
+ItemStateValidator#checkRemoveConstraints should only check for protection and ignore mandatory definitions.

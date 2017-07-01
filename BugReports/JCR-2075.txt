@@ -1,0 +1,9 @@
+JSR 283: Identifier based event filtering
+
+
+
+Description:
+JSR 283 PFD states:
+
+Only events whose associated parent node has one of the identifiers in the uuid String array will be received. If this parameter is null then no identifier-related restriction is placed on events received. Note that specifying an empty array instead of null results in no nodes being listened to. The uuid is used for backwards compatibility with JCR 1.0.
+

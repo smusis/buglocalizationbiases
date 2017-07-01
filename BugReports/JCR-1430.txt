@@ -1,0 +1,46 @@
+mvn eclipse:eclipse inconsistent
+
+
+
+Description:
+mvn eclipse:eclipse result is inconsistent, due to deprecated avacc-maven-plugin usage.
+should use piped "jjtree-javacc" goal.
+core :
+          <execution>
+            <id>fulltext-jjtree</id>
+            <configuration>
+              <sourceDirectory>${basedir}/src/main/javacc/fulltext</sourceDirectory>
+              <outputDirectory>${project.build.directory}/generated-src/main/java</outputDirectory>
+              <timestampDirectory>${project.build.directory}/generated-src/javacc-timestamp</timestampDirectory>
+              <packageName>org.apache.jackrabbit.core.query.lucene.fulltext</packageName>
+            </configuration>
+            <goals>
+              <goal>jjtree-javacc</goal>
+            </goals>
+          </execution>
+
+spi-commons:
+					<execution>
+						<id>sql-jjtree-javacc</id>
+						<configuration>
+							<sourceDirectory>${basedir}/src/main/javacc/sql</sourceDirectory>
+							<outputDirectory>${project.build.directory}/generated-src/main/java</outputDirectory>
+							<timestampDirectory>${project.build.directory}/generated-src/javacc-timestamp</timestampDirectory>
+							<packageName>org.apache.jackrabbit.spi.commons.query.sql</packageName>
+						</configuration>
+						<goals>
+							<goal>jjtree-javacc</goal>
+						</goals>
+					</execution>
+					<execution>
+						<id>xpath-jjtree-javacc</id>
+						<configuration>
+							<sourceDirectory>${basedir}/src/main/javacc/xpath</sourceDirectory>
+							<outputDirectory>${project.build.directory}/generated-src/main/java</outputDirectory>
+							<timestampDirectory>${project.build.directory}/generated-src/javacc-timestamp</timestampDirectory>
+							<packageName>org.apache.jackrabbit.spi.commons.query.xpath</packageName>
+						</configuration>
+						<goals>
+							<goal>jjtree-javacc</goal>
+						</goals>
+					</execution>

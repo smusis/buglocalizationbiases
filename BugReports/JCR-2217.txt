@@ -1,0 +1,6 @@
+Enable DataStore in default configuration
+
+
+
+Description:
+Currently the default configuration causes binary properties to be stored in the derby database. This is very inefficient. The standalone server (and the web application it contains) should run with a reasonable default configuration. 

@@ -1,0 +1,96 @@
+[PATCH] Some Field methods use Classcast check instead of instanceof which is slow
+
+
+
+Description:
+I am not sure if this is because Lucene historically needed to work with older
+JVM's but with modern JVM's, instanceof is much quicker. 
+
+The Field.stringValue(), .readerValue(), and .binaryValue() methods all use
+ClassCastException checking.
+
+Using the following test-bed class, you will see that instanceof is miles quicker:
+
+package com.aconex.index;
+
+public class ClassCastExceptionTest {
+
+    private static final long ITERATIONS = 100000;
+
+    /**
+     * @param args
+     */
+    public static void main(String[] args) {
+
+        runClassCastTest(1); // once for warm up
+        runClassCastTest(2);
+        
+        runInstanceOfCheck(1);
+        runInstanceOfCheck(2);
+
+    }
+    private static void runInstanceOfCheck(int run) {
+        long start = System.currentTimeMillis();
+
+        Object foo = new Foo();
+        for (int i = 0; i < ITERATIONS; i++) {
+            String test;
+            if(foo instanceof String) {
+                System.out.println("Is a string"); // should never print
+            }
+        }
+        long end = System.currentTimeMillis();
+        long diff = end - start;
+        System.out.println("InstanceOf checking run #" + run + ": " + diff + "ms");
+        
+    }
+
+    private static void runClassCastTest(int run) {
+        long start = System.currentTimeMillis();
+
+        Object foo = new Foo();
+        for (int i = 0; i < ITERATIONS; i++) {
+            String test;
+            try {
+                test = (String)foo;
+            } catch (ClassCastException c) {
+                // ignore
+            }
+        }
+        long end = System.currentTimeMillis();
+        long diff = end - start;
+        System.out.println("ClassCast checking run #" + run + ": " + diff + "ms");
+    }
+
+    private static final class Foo {
+    }
+
+}
+
+
+Results
+=======
+
+Run #1
+
+ClassCast checking run #1: 1660ms
+ClassCast checking run #2: 1374ms
+InstanceOf checking run #1: 8ms
+InstanceOf checking run #2: 4ms
+
+
+Run #2
+ClassCast checking run #1: 1280ms
+ClassCast checking run #2: 1344ms
+InstanceOf checking run #1: 7ms
+InstanceOf checking run #2: 2ms
+
+
+Run #3
+ClassCast checking run #1: 1347ms
+ClassCast checking run #2: 1250ms
+InstanceOf checking run #1: 7ms
+InstanceOf checking run #2: 2ms
+
+This could explain why Documents with more Fields scales worse, as in, for lots
+of Documents with lots of Fields, the effect is exacerbated.

@@ -1,0 +1,13 @@
+IndexMerger throws null pointer exception without stacktrace
+
+
+
+Description:
+I get the following errors in my log file randomly.  It seems to happen most often when creating the lucene indices, but has happened at other times as well:
+
+[IndexMerger] ERROR - Error while merging indexes: java.lang.NullPointerException
+
+The code at org.apache.jackrabbit.core.query.lucene.IndexMerger line 344 appears to be the point where the error is logged, but no other information is provided because the throwable isn't sent to the log (only the toString() version of the exception).  I haven't been able to tell if any indexes are corrupt when this happens.
+
+I suggest that the logger be changed to determine where the null pointer is coming from first, then resolve the actual issue that is occurring.
+

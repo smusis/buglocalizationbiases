@@ -1,0 +1,23 @@
+Enable IndexWriter to open an arbitrary commit point
+
+
+
+Description:
+With a 2-phase commit involving multiple resources, each resource
+first does its prepareCommit and then if all are successful they each
+commit.  If an exception or timeout/power loss is hit in any of the
+resources during prepareCommit or commit, all of the resources must
+then rollback.
+
+But, because IndexWriter always opens the most recent commit, getting
+Lucene to rollback after commit() has been called is not easy, unless
+you make Lucene the last resource to commit.  A simple workaround is
+to simply remove the segments_N files of the newer commits but that's
+sort of a hassle.
+
+To fix this, we just need to add a ctor to IndexWriter that takes an
+IndexCommit.  We recently added this for IndexReader (LUCENE-1311) as
+well.  This ctor is definitely an "expert" method, and only makes
+sense if you have a custom DeletionPolicy that preserves more than
+just the most recent commit.
+

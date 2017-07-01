@@ -1,0 +1,6 @@
+DataStore.close() is never called
+
+
+
+Description:
+I've searched through the jackrabbit-core code and never found a call to DataStore.close(), although the method exists on the DataStore interface

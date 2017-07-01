@@ -1,0 +1,10 @@
+SimpleFSLockFactory ignores error on deleting the lock file
+
+
+
+Description:
+Spinoff from here:
+
+    http://www.gossamer-threads.com/lists/lucene/java-user/54438
+
+The Lock.release for SimpleFSLockFactory ignores the return value of lockFile.delete().  I plan to throw a new LockReleaseFailedException, subclassing from IOException, when this returns false.  This is a very minor change to backwards compatibility because all methods in Lucene that release a lock already throw IOException.

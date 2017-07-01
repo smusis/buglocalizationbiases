@@ -1,0 +1,16 @@
+ClientPNames.VIRTUAL_HOST is used as is; if not provided, the port should be derived from the target URL
+
+
+
+Description:
+The parameter ClientPNames.VIRTUAL_HOST allows the default Host header to be overridden.
+
+Currently the code uses the HttpHost entry as provided, and does not automatically add the port suffix.
+This means that user code has to provide the port - but only if it's not the default for the protocol.
+
+It would be simpler for the user if the port were automatically added.
+
+If the user does not provide the port, the code should derive it from the target URL.
+
+If the user does provide a port number, then that should be used (as is done currently). 
+This allows the user to override the port (if that should ever prove necessary).

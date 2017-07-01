@@ -1,0 +1,15 @@
+lock token validity
+
+
+
+Description:
+There are several minor issues in the mapping between JCR lock tokens and WebDAV lock tokens:
+
+1) WebDAV lock tokens are supposed to use URI syntax (such as opaquelocktoken: or urn:uuid:)
+
+2) The server currently computes lock tokens for session-scoped locks based on the node id; these are not valid JCR lock tokens though and cause exceptions when they are re-added when they appear in a Lock-Token header or an If header. This will likely cause requests to fail that use both types of locks (yes, maybe academic but should be fixed anyway)
+
+Proposal:
+
+a) Map lock tokens to oqaquelocktoken URIs, using a constant UUID plus a postfix encoding the original lock token
+b) Use a syntax that allows to distinguish between tokens for open-scoped locks or session-scoped locks, so that we do not try to add the latter type to the Session (alternatively, handle exceptions doing so gracefully)

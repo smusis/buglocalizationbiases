@@ -1,0 +1,28 @@
+TestDocValuesIndexing reproducible  test failure
+
+
+
+Description:
+docvalues branch: r1131275
+
+{code}
+    [junit] Testsuite: org.apache.lucene.index.values.TestDocValuesIndexing
+    [junit] Tests run: 1, Failures: 1, Errors: 0, Time elapsed: 0.81 sec
+    [junit] 
+    [junit] ------------- Standard Error -----------------
+    [junit] NOTE: reproduce with: ant test -Dtestcase=TestDocValuesIndexing -Dtestmethod=testAddIndexes -Dtests.seed=-3253978684351194958:-8331223747763543724
+    [junit] NOTE: test params are: codec=RandomCodecProvider: {id=Standard, BYTES_VAR_STRAIGHT=Pulsing(freqCutoff=12), BYTES_FIXED_SORTED=MockRandom}, locale=es_MX, timezone=Pacific/Chatham
+    [junit] NOTE: all tests run in this JVM:
+    [junit] [TestDocValuesIndexing]
+    [junit] NOTE: Linux 2.6.39-gentoo amd64/Sun Microsystems Inc. 1.6.0_25 (64-bit)/cpus=8,threads=1,free=89168480,total=125632512
+    [junit] ------------- ---------------- ---------------
+    [junit] Testcase: testAddIndexes(org.apache.lucene.index.values.TestDocValuesIndexing):     FAILED
+    [junit] [first=BYTES_FIXED_SORTED, second=BYTES_VAR_STRAIGHT] expected:<9> but was:<10>
+    [junit] junit.framework.AssertionFailedError: [first=BYTES_FIXED_SORTED, second=BYTES_VAR_STRAIGHT] expected:<9> but was:<10>
+    [junit]     at org.apache.lucene.index.values.TestDocValuesIndexing.testAddIndexes(TestDocValuesIndexing.java:208)
+    [junit]     at org.apache.lucene.util.LuceneTestCase$LuceneTestCaseRunner.runChild(LuceneTestCase.java:1348)
+    [junit]     at org.apache.lucene.util.LuceneTestCase$LuceneTestCaseRunner.runChild(LuceneTestCase.java:1266)
+    [junit] 
+    [junit] 
+    [junit] Test org.apache.lucene.index.values.TestDocValuesIndexing FAILED
+{code}

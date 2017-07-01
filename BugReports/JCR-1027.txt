@@ -1,0 +1,14 @@
+SPI: change param order with RepositoryService.createBatch
+
+
+
+Description:
+all methods on RepositoryService that require a SessionInfo list the info as first parameter, except for 
+
+RepositoryService.createBatch(ItemId, SessionInfo) 
+
+unless someone objects i would refacter the method signature for consistency reasons.
+
+new:
+
+RepositoryService.createBatch(SessionInfo, ItemId)

@@ -1,0 +1,9 @@
+Nodes that have properties marked for async extraction should be available for querying
+
+
+
+Description:
+The problems only appears when dealing with nodes that have async extractors. In this case we return a lightweight copy of the node (without the property that will be processed in the background).
+
+The copy algorithm ignores certain field types (that have been probably introduced during the Lucene 3 upgrade, not sure) such as SingletonTokenStream(s).
+So the lightweight copy does not include all the existing properties, therefore the node will not appear in queries during the extraction time.

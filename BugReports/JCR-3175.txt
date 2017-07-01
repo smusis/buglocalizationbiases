@@ -1,0 +1,8 @@
+InputContextImpl: cannot upload file larger than 2GB
+
+
+
+Description:
+If an entity is larger than 2GB, the Content-Length cannot be obtained by using getIntHeader because of integer overflow. One needs to parse the value of the header from string to long. This issue affects InputContextImpl.getContentLength() in org.apache.jackrabbit.webdav.io from webdav/java (the current behavior is that the header is converted from string to int by the servlet API, then from int to long by Jackrabbit)
+
+Testcase: largefile from Litmus. (test 3 - large_put fails when the PUT request is received)

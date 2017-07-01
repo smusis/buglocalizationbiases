@@ -1,0 +1,10 @@
+Factor maxMergeSize into findMergesForOptimize in LogMergePolicy
+
+
+
+Description:
+LogMergePolicy allows you to specify a maxMergeSize in MB, which is taken into consideration in regular merges, yet ignored by findMergesForOptimze. I think it'd be good if we take that into consideration even when optimizing. This will allow the caller to specify two constraints: maxNumSegments and maxMergeMB. Obviously both may not be satisfied, and therefore we will guarantee that if there is any segment above the threshold, the threshold constraint takes precedence and therefore you may end up w/ <maxNumSegments (if it's not 1) after optimize. Otherwise, maxNumSegments is taken into consideration.
+
+As part of this change, I plan to change some methods to protected (from private) and members as well. I realized that if one wishes to implement his own LMP extension, he needs to either put it under o.a.l.index or copy some code over to his impl.
+
+I'll attach a patch shortly.

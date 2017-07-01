@@ -1,0 +1,6 @@
+Database connection leak with DBCP, MySQL, and Observers
+
+
+
+Description:
+When using DBCP and MySQL with an observer that modifies the content repository, we are seeing abandoned connections in our connection pool.

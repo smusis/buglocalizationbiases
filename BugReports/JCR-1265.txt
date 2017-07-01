@@ -1,0 +1,9 @@
+Lower-Case Search-Function works with Upper-Case Searchstring
+
+
+
+Description:
+if you perform a query like this
+testroot/*[jcr:like(fn:lower-case(@prop1), 'FO%')]
+you get valid results even though the value in the property has the "foo" value
+The search works with lower and upper-case search strings.

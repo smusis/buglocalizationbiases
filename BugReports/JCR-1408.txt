@@ -1,0 +1,31 @@
+Invalid query results when using jcr:like with a case transform function and a pattern not starting with a wildcard
+
+
+
+Description:
+If the repository contains nodes with the following value for the property name :
+john
+JOhn
+joe
+Joey
+
+and we run the following query :
+//element(*, document)/*[jcr:like(fn:lower-case(@name), 'joh%')]")
+then all the previous nodes will match especially the last 2 nodes.
+
+The reason is the use of two range scans from the lucene term index:
+..._name_jOH
+..................
+..._name_joh_
+
+and
+
+..._name_JOH
+..................
+..._name_Joh_
+
+The first range will contains ..._name_joe property and the second will contains ..._name_Joey.
+But the pattern 'joh%' and so the regexp '.*' because of the range scan will match
+the substring values of the properties ('' in the first range and 'y' in the second range).
+
+The solution is to use the full pattern (ie 'joh.*') for matching each properties.

@@ -1,0 +1,7 @@
+TaxonomyReader.refresh() is broken, replace its logic with reopen(), following IR.reopen pattern
+
+
+
+Description:
+When recreating the taxonomy index, TR's assumption that categories are only added does not hold anymore.
+As result, calling TR.refresh() will be incorrect at best, but usually throw an AIOOBE.

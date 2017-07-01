@@ -1,0 +1,8 @@
+TopFieldCollector throws AIOOBE if numHits is 0
+
+
+
+Description:
+See solr-user thread "ArrayIndexOutOfBoundsException for query with rows=0 and sort param".
+
+I think we should just create a null collector (only tallies up totalHits) if numHits is 0?

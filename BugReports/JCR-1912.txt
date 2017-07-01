@@ -1,0 +1,6 @@
+RMI reference not automatically bound by the standalone server
+
+
+
+Description:
+The RMI servlet in the 1.5.0 standalone server is only initialized (and the remote reference bound to the RMI registry) when the http://.../rmi URL is first accessed. The RMI binding should be made as soon as the standalone server starts.

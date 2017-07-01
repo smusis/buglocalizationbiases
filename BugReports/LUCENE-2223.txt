@@ -1,0 +1,10 @@
+ShingleFilter benchmark
+
+
+
+Description:
+Spawned from LUCENE-2218: a benchmark for ShingleFilter, along with a new task to instantiate (non-default-constructor) ShingleAnalyzerWrapper: NewShingleAnalyzerTask.
+
+The included shingle.alg runs ShingleAnalyzerWrapper, wrapping the default StandardAnalyzer, with 4 different configurations over 10,000 Reuters documents each.  To allow ShingleFilter timings to be isolated from the rest of the pipeline, StandardAnalyzer is also run over the same set of Reuters documents.  This set of 5 runs is then run 5 times.
+
+The patch includes two perl scripts, the first to output JIRA table formatted timing information, with the minimum elapsed time for each of the 4 ShingleAnalyzerWrapper runs and the StandardAnalyzer run, and the second to compare two runs' JIRA output, producing another JIRA table showing % improvement.

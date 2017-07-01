@@ -1,0 +1,32 @@
+Suggestion regarding NodeImpl and PropertyImpl in jackrabbit.core
+
+
+
+Description:
+Both NodeImpl and PropertyImpl contain in their respective setProperty/setValue (respectively) initial validation checks, that is indentical across the various
+variants of each and could possibly in either case be place in a separate method.
+
+in NodeImpl.setProperty (also: addMixin, removeMixin, orderBefore):
+
+- sanityCheck
+- is-parent-checked-out
+- is-not-protected (missing for setProperty ???)
+- is-parent-not-locked
+
+in PropertyImpl.setValue:
+
+- sanityCheck
+- is-parent-checked-out
+- is-not-protected 
+- is-value-compatible-with-multivalue-definition (NOTE: check opposite for setting single
+  or multiple values)
+- is-parent-not-locked
+
+
+Second, i'm never sure, in which case ChildNode, ChildProperty is prefered 
+over Node/Property (as present in the jcr api)...
+
+regards
+angela
+
+

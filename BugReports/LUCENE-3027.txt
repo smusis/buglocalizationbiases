@@ -1,0 +1,132 @@
+TestOmitTf.testMixedMerge random seed failure
+
+
+
+Description:
+Version: trunk r1091638
+
+ant test -Dtests.seed=-6595054217575280191:5576532348905930588
+
+
+    [junit] ------------- Standard Error -----------------
+    [junit] WARNING: test method: 'testDeMorgan' left thread running: Thread[NRT search threads-1691-thread-2,5,main]
+    [junit] RESOURCE LEAK: test method: 'testDeMorgan' left 1 thread(s) running
+    [junit] NOTE: reproduce with: ant test -Dtestcase=TestBooleanQuery -Dtestmethod=testDeMorgan -Dtests.seed=-6595054217575280191:5576532348905930588
+    [junit] ------------- ---------------- ---------------
+    [junit] Testsuite: org.apache.lucene.index.TestNorms
+    [junit] Tests run: 2, Failures: 0, Errors: 0, Time elapsed: 5.064 sec
+    [junit] 
+    [junit] Testsuite: org.apache.lucene.index.TestOmitTf
+    [junit] Testcase: testMixedMerge(org.apache.lucene.index.TestOmitTf):	Caused an ERROR
+    [junit] CheckIndex failed
+    [junit] java.lang.RuntimeException: CheckIndex failed
+    [junit] 	at org.apache.lucene.util._TestUtil.checkIndex(_TestUtil.java:152)
+    [junit] 	at org.apache.lucene.util._TestUtil.checkIndex(_TestUtil.java:138)
+    [junit] 	at org.apache.lucene.index.TestOmitTf.testMixedMerge(TestOmitTf.java:155)
+    [junit] 	at org.apache.lucene.util.LuceneTestCase$LuceneTestCaseRunner.runChild(LuceneTestCase.java:1232)
+    [junit] 	at org.apache.lucene.util.LuceneTestCase$LuceneTestCaseRunner.runChild(LuceneTestCase.java:1160)
+    [junit] 
+    [junit] 
+    [junit] Tests run: 5, Failures: 0, Errors: 1, Time elapsed: 0.851 sec
+    [junit] 
+    [junit] ------------- Standard Output ---------------
+    [junit] CheckIndex failed
+    [junit] Segments file=segments_1 numSegments=1 version=FORMAT_4_0 [Lucene 4.0]
+    [junit]   1 of 1: name=_12 docCount=60
+    [junit]     codec=SegmentCodecs [codecs=[MockRandom, MockVariableIntBlock(baseBlockSize=112)], provider=RandomCodecProvider: {f1=MockRandom, f2=MockVariableIntBlock(baseBlockSize=112)}]
+    [junit]     compound=false
+    [junit]     hasProx=false
+    [junit]     numFiles=16
+    [junit]     size (MB)=0,01
+    [junit]     diagnostics = {optimize=true, mergeFactor=2, os.version=2.6.37-gentoo, os=Linux, lucene.version=4.0-SNAPSHOT, source=merge, os.arch=amd64, java.version=1.6.0_24, java.vendor=Sun Microsystems Inc.}
+    [junit]     no deletions
+    [junit]     test: open reader.........OK
+    [junit]     test: fields..............OK [2 fields]
+    [junit]     test: field norms.........OK [2 fields]
+    [junit]     test: terms, freq, prox...ERROR: java.io.IOException: Read past EOF
+    [junit] java.io.IOException: Read past EOF
+    [junit] 	at org.apache.lucene.store.RAMInputStream.switchCurrentBuffer(RAMInputStream.java:90)
+    [junit] 	at org.apache.lucene.store.RAMInputStream.readByte(RAMInputStream.java:63)
+    [junit] 	at org.apache.lucene.store.MockIndexInputWrapper.readByte(MockIndexInputWrapper.java:105)
+    [junit] 	at org.apache.lucene.store.DataInput.readVInt(DataInput.java:94)
+    [junit] 	at org.apache.lucene.index.codecs.sep.SepSkipListReader.readSkipData(SepSkipListReader.java:188)
+    [junit] 	at org.apache.lucene.index.codecs.MultiLevelSkipListReader.loadNextSkip(MultiLevelSkipListReader.java:142)
+    [junit] 	at org.apache.lucene.index.codecs.MultiLevelSkipListReader.skipTo(MultiLevelSkipListReader.java:112)
+    [junit] 	at org.apache.lucene.index.codecs.sep.SepPostingsReaderImpl$SepDocsEnum.advance(SepPostingsReaderImpl.java:454)
+    [junit] 	at org.apache.lucene.index.CheckIndex.testTermIndex(CheckIndex.java:782)
+    [junit] 	at org.apache.lucene.index.CheckIndex.checkIndex(CheckIndex.java:495)
+    [junit] 	at org.apache.lucene.util._TestUtil.checkIndex(_TestUtil.java:148)
+    [junit] 	at org.apache.lucene.util._TestUtil.checkIndex(_TestUtil.java:138)
+    [junit] 	at org.apache.lucene.index.TestOmitTf.testMixedMerge(TestOmitTf.java:155)
+    [junit] 	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+    [junit] 	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:39)
+    [junit] 	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:25)
+    [junit] 	at java.lang.reflect.Method.invoke(Method.java:597)
+    [junit] 	at org.junit.runners.model.FrameworkMethod$1.runReflectiveCall(FrameworkMethod.java:44)
+    [junit] 	at org.junit.internal.runners.model.ReflectiveCallable.run(ReflectiveCallable.java:15)
+    [junit] 	at org.junit.runners.model.FrameworkMethod.invokeExplosively(FrameworkMethod.java:41)
+    [junit] 	at org.junit.internal.runners.statements.InvokeMethod.evaluate(InvokeMethod.java:20)
+    [junit] 	at org.junit.rules.TestWatchman$1.evaluate(TestWatchman.java:48)
+    [junit] 	at org.junit.internal.runners.statements.RunBefores.evaluate(RunBefores.java:28)
+    [junit] 	at org.junit.internal.runners.statements.RunAfters.evaluate(RunAfters.java:31)
+    [junit] 	at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:76)
+    [junit] 	at org.apache.lucene.util.LuceneTestCase$LuceneTestCaseRunner.runChild(LuceneTestCase.java:1232)
+    [junit] 	at org.apache.lucene.util.LuceneTestCase$LuceneTestCaseRunner.runChild(LuceneTestCase.java:1160)
+    [junit] 	at org.junit.runners.ParentRunner$3.run(ParentRunner.java:193)
+    [junit] 	at org.junit.runners.ParentRunner$1.schedule(ParentRunner.java:52)
+    [junit] 	at org.junit.runners.ParentRunner.runChildren(ParentRunner.java:191)
+    [junit] 	at org.junit.runners.ParentRunner.access$000(ParentRunner.java:42)
+    [junit] 	at org.junit.runners.ParentRunner$2.evaluate(ParentRunner.java:184)
+    [junit] 	at org.junit.internal.runners.statements.RunBefores.evaluate(RunBefores.java:28)
+    [junit] 	at org.junit.internal.runners.statements.RunAfters.evaluate(RunAfters.java:31)
+    [junit] 	at org.junit.runners.ParentRunner.run(ParentRunner.java:236)
+    [junit] 	at junit.framework.JUnit4TestAdapter.run(JUnit4TestAdapter.java:39)
+    [junit] 	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.run(JUnitTestRunner.java:422)
+    [junit] 	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.launch(JUnitTestRunner.java:931)
+    [junit] 	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.main(JUnitTestRunner.java:758)
+    [junit]     test: stored fields.......OK [60 total field count; avg 1 fields per doc]
+    [junit]     test: term vectors........OK [120 total vector count; avg 2 term/freq vector fields per doc]
+    [junit] FAILED
+    [junit]     WARNING: fixIndex() would remove reference to this segment; full exception:
+    [junit] java.lang.RuntimeException: Term Index test failed
+    [junit] 	at org.apache.lucene.index.CheckIndex.checkIndex(CheckIndex.java:508)
+    [junit] 	at org.apache.lucene.util._TestUtil.checkIndex(_TestUtil.java:148)
+    [junit] 	at org.apache.lucene.util._TestUtil.checkIndex(_TestUtil.java:138)
+    [junit] 	at org.apache.lucene.index.TestOmitTf.testMixedMerge(TestOmitTf.java:155)
+    [junit] 	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+    [junit] 	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:39)
+    [junit] 	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:25)
+    [junit] 	at java.lang.reflect.Method.invoke(Method.java:597)
+    [junit] 	at org.junit.runners.model.FrameworkMethod$1.runReflectiveCall(FrameworkMethod.java:44)
+    [junit] 	at org.junit.internal.runners.model.ReflectiveCallable.run(ReflectiveCallable.java:15)
+    [junit] 	at org.junit.runners.model.FrameworkMethod.invokeExplosively(FrameworkMethod.java:41)
+    [junit] 	at org.junit.internal.runners.statements.InvokeMethod.evaluate(InvokeMethod.java:20)
+    [junit] 	at org.junit.rules.TestWatchman$1.evaluate(TestWatchman.java:48)
+    [junit] 	at org.junit.internal.runners.statements.RunBefores.evaluate(RunBefores.java:28)
+    [junit] 	at org.junit.internal.runners.statements.RunAfters.evaluate(RunAfters.java:31)
+    [junit] 	at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:76)
+    [junit] 	at org.apache.lucene.util.LuceneTestCase$LuceneTestCaseRunner.runChild(LuceneTestCase.java:1232)
+    [junit] 	at org.apache.lucene.util.LuceneTestCase$LuceneTestCaseRunner.runChild(LuceneTestCase.java:1160)
+    [junit] 	at org.junit.runners.ParentRunner$3.run(ParentRunner.java:193)
+    [junit] 	at org.junit.runners.ParentRunner$1.schedule(ParentRunner.java:52)
+    [junit] 	at org.junit.runners.ParentRunner.runChildren(ParentRunner.java:191)
+    [junit] 	at org.junit.runners.ParentRunner.access$000(ParentRunner.java:42)
+    [junit] 	at org.junit.runners.ParentRunner$2.evaluate(ParentRunner.java:184)
+    [junit] 	at org.junit.internal.runners.statements.RunBefores.evaluate(RunBefores.java:28)
+    [junit] 	at org.junit.internal.runners.statements.RunAfters.evaluate(RunAfters.java:31)
+    [junit] 	at org.junit.runners.ParentRunner.run(ParentRunner.java:236)
+    [junit] 	at junit.framework.JUnit4TestAdapter.run(JUnit4TestAdapter.java:39)
+    [junit] 	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.run(JUnitTestRunner.java:422)
+    [junit] 	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.launch(JUnitTestRunner.java:931)
+    [junit] 	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.main(JUnitTestRunner.java:758)
+    [junit] 
+    [junit] WARNING: 1 broken segments (containing 60 documents) detected
+    [junit] 
+    [junit] ------------- ---------------- ---------------
+    [junit] ------------- Standard Error -----------------
+    [junit] NOTE: reproduce with: ant test -Dtestcase=TestOmitTf -Dtestmethod=testMixedMerge -Dtests.seed=-6595054217575280191:5576532348905930588
+    [junit] NOTE: test params are: codec=RandomCodecProvider: {noTf=MockSep, tf=Standard, f1=MockRandom, f2=MockVariableIntBlock(baseBlockSize=112)}, locale=cs_CZ, timezone=Chile/Continental
+    [junit] NOTE: all tests run in this JVM:
+    [junit] [TestAssertions, TestCachingTokenFilter, TestDocument, TestDirectoryReader, TestFlex, TestIndexWriterConfig, TestIndexWriterMerging, TestIndexWriterOnJRECrash, TestMultiReader, TestNewestSegment, TestNorms, TestOmitTf]
+    [junit] NOTE: Linux 2.6.37-gentoo amd64/Sun Microsystems Inc. 1.6.0_24 (64-bit)/cpus=8,threads=1,free=94021800,total=126484480
+    [junit] ------------- ---------------- ---------------

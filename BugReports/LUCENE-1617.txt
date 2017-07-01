@@ -1,0 +1,8 @@
+Add "testpackage" to common-build.xml
+
+
+
+Description:
+One can define "testcase" to execute just one test class, which is convenient. However, I didn't notice any equivalent for testing a whole package. I find it convenient to be able to test packages rather than test cases because often it is not so clear which test class to run.
+
+Following patch allows one to "ant test -Dtestpackage=search" (for example) and run all tests under the \*/search/\* packages in core, contrib and tags, or do "ant test-core -Dtestpackage=search" and execute similarly just for core, or do "ant test-core -Dtestpacakge=lucene/search/function" and run all the tests under \*/lucene/search/function/\* (just in case there is another o.a.l.something.search.function package out there which we want to exclude.

@@ -1,0 +1,7 @@
+Add CopyMoveHanlder so that the copy/move behavior can be customized (as this is the case for the IOHandler and PropertyHandler)
+
+
+
+Description:
+The IOHandler impls let you define a specific import/export behavior either for specific nodetypes/locations/etc which is just great. this works well while you create or modify a web dav resource but does not work for the copy/move use case.
+the attached patch provides a proposal for an additional CopyMoveHandler.

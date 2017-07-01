@@ -1,0 +1,14 @@
+Item.isNew() does not work correctly within a transaction
+
+
+
+Description:
+javadoc on Item.isNew() states:
+
+     * Returns <code>true</code> if this is a new item, meaning that it exists only in transient
+     * storage on the <code>Session</code> and has not yet been saved. Within a transaction,
+     * <code>isNew</code> on an <code>Item</code> may return <code>false</code> (because the item
+     * has been saved) even if that <code>Item</code> is not in persistent storage (because the
+     * transaction has not yet been committed).
+
+but currently, Item.isNew() returns "true" after beeing saved in a transaction.

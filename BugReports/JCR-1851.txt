@@ -1,0 +1,6 @@
+SPI: Helper does not properly retrieve org.apache.jackrabbit.spi.workspacename param.
+
+
+
+Description:
+consequently the Helper always obtains SessionInfo with null workspace name.

@@ -1,0 +1,6 @@
+if the build fails to download JARs for contrib/db, just skip its tests
+
+
+
+Description:
+Every so often our nightly build fails because contrib/db is unable to download the necessary BDB JARs from http://downloads.osafoundation.org.  I think in such cases we should simply skip contrib/db's tests, if it's the nightly build that's running, since it's a false positive failure.

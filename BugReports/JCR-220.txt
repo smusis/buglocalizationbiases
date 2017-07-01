@@ -1,0 +1,6 @@
+Make it possible to configure Lucene Analyzer for SearchIndex
+
+
+
+Description:
+Jackrabbit does not support the specification of a Lucene analyzer class (org.apache.lucene.analysis.Analyzer) to be used by a SearchIndex (or other Lucene based indices) declared in an XML configuration file. Custom analyzer is useful for indexing language specific content.

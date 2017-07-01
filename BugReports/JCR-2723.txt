@@ -1,0 +1,10 @@
+Exception when missing namespace in CND file should have clearer message
+
+
+
+Description:
+Using the attached CND file, when calling CndImporter.registerNodeTypes(..) the following message is in the returned exception:
+
+"Unable to parse CND Input: Error setting name of sling:resourceType to sling:resourceType (bundle://23.0:0/SLING-INF/nodetypes/types.cnd, line 24)"
+
+The issue with line 24 is that the "sling" namespace has not been included.  The message should state that a namespace is missing and what prefix is not understood.

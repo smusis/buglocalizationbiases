@@ -1,0 +1,14 @@
+Add CharArrayMap to lucene and make CharAraySet an proxy on the keySet() of it
+
+
+
+Description:
+This patch adds a CharArrayMap<V> to Lucene's analysis package as compagnon of CharArraySet. It supports fast retrieval of char[] keys like CharArraySet does. This is important for some stemmers and other places in Lucene.
+
+Stemers generally use CharArrayMap<String>, which has then get(char[]) returning String. Strings are compact and can be easily copied into termBuffer. A Map<String,String> would be slow as the termBuffer would be first converted to String, then looked up. The return value as String is perfectly legal, as it can be copied easily into termBuffer.
+
+This class borrows lots of code from Solr's pendant, but has additional features and more consistent API according to CharArraySet. The key is always <?>, because as of CharArraySet, anything that has a toString() representation can be used as key (of course with overhead). It also defines a unmodifiable map and correct iterators (returning the native char[]).
+
+CharArraySet was made consistent and now returns for matchVersion>=3.1 also an iterator on char[]. CharArraySet's code was almost completely copied to CharArrayMap and removed in the Set. CharArraySet is now a simple proxy on the keySet().
+
+In future we can think of making CharArraySet/CharArrayMap/CharArrayCollection an interface so the whole API would be more consistent to the Java collections API. But this would be a backwards break. But it would be possible to use better impl instead of hashing (like prefix trees).

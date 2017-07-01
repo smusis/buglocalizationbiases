@@ -1,0 +1,21 @@
+BooleanQuery assumes everything else implements skipTo
+
+
+
+Description:
+skipTo seems to be optional functionality on the Scorer class (BooleanScorer
+doesn't implement it).  BooleanQuery.scorer() tests all subclauses using
+"instanceof BooleanQuery" to determine if it can use a ConjunctionScorer that
+requires skipTo functionality.
+
+This means that any other new Query/Scorer that don't implement skipTo will get
+into trouble when included in a BooleanQuery.
+
+If skipTo is really optional, then there should be some way of telling by the
+Scorer or the Query in a more generic manner.
+
+Some options:
+1) have a "boolean Scorer.hasSkipTo()" method
+2) have a "boolean Query.hasSkipTo()" method
+3) remove Scorer.skipTo and have a "public interface ScorerSkipTo{boolean
+skipTo(int doc)}" that scorers may implement

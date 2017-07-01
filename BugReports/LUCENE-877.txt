@@ -1,0 +1,15 @@
+2.1 Locking documentation in "Apache Lucene - Index File Formats" section "6.2 Lock File" out dated
+
+
+
+Description:
+I am in the process to migrate from Lucene 2.0 to Lucene 2.1.
+
+From reading the Changes document I understand that the write locks are now written into the index folder instead of the java.io.tmpdir. 
+
+In the "Apache Lucene - Index File Formats" document in section "6.2 Lock File" I read that there is a write lock used to indicate that another process is writing into the index and that this file is stored in the java.io.tempdir.
+
+This is confusing to me.  I had the impression all lock files go into the index folder now.  And using the the java.io.tempdir is only local and does not support access to shared index folders.
+
+Do I miss something here or is the documentation not updated?
+

@@ -1,0 +1,6 @@
+Upgrade to Lucene 2.0
+
+
+
+Description:
+We would like to upgrade to Lucene 1.9.1. There are jar conflicts when integrating with other projects such as Liferay Portal --  which uses v 1.9.1.

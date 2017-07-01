@@ -1,0 +1,10 @@
+Cookies with names containing blanks or starting with $ should be rejected by RFC2109 spec only
+
+
+
+Description:
+Reported by John Patterson:
+
+> The Cookie class does not like names with spaces in them.  It throws an
+> IllegalArgumentException.  Unfortunately the server that my app interacts
+> with uses a space in the cookie name.  Both IE and Mozilla don't mind.

@@ -1,0 +1,25 @@
+Problematic exception handling in Jackrabbit WebApp
+
+
+
+Description:
+In this project, the cause of the exception is often ignored, and only the message of the cause is used, as in:
+
+} catch (Exception e) {
+    log.error("Error in configuration: {}", e.toString());
+    throw new ServletException("Error in configuration: " + e.toString());
+}
+
+An additional problem is that when using ServletException(String message, Throwable rootCause), the rootCause is not used in printStackTrace(), that means the cause is not logged. See also: http://closingbraces.net/2007/11/27/servletexceptionrootcause/
+
+It is therefore better to convert 
+  throw new ServletException("Unable to create RMI repository. jcr-rmi.jar might be missing.", e);
+to
+  ServletException s = new ServletException("Unable to create RMI repository. jcr-rmi.jar might be missing.");
+  s.initCause(e);
+  throw s;
+
+
+
+
+

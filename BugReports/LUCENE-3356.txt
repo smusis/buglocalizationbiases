@@ -1,0 +1,33 @@
+trunk TestRollingUpdates.testRollingUpdates seed failure
+
+
+
+Description:
+trunk r1152892
+reproducable: always
+
+{code}
+junit-sequential:
+    [junit] Testsuite: org.apache.lucene.index.TestRollingUpdates
+    [junit] Tests run: 1, Failures: 1, Errors: 0, Time elapsed: 1.168 sec
+    [junit] 
+    [junit] ------------- Standard Error -----------------
+    [junit] NOTE: reproduce with: ant test -Dtestcase=TestRollingUpdates -Dtestmethod=testRollingUpdates -Dtests.seed=-5322802004404580273:-4001225075726350391
+    [junit] WARNING: test method: 'testRollingUpdates' left thread running: merge thread: _c(4.0):cv3/2 _h(4.0):cv3 into _k
+    [junit] RESOURCE LEAK: test method: 'testRollingUpdates' left 1 thread(s) running
+    [junit] NOTE: test params are: codec=RandomCodecProvider: {docid=Standard, body=SimpleText, title=MockSep, titleTokenized=Pulsing(freqCutoff=20), date=MockFixedIntBlock(blockSize=1474)}, locale=lv_LV, timezone=Pacific/Fiji
+    [junit] NOTE: all tests run in this JVM:
+    [junit] [TestRollingUpdates]
+    [junit] NOTE: Linux 2.6.39-gentoo amd64/Sun Microsystems Inc. 1.6.0_26 (64-bit)/cpus=8,threads=1,free=128782656,total=158400512
+    [junit] ------------- ---------------- ---------------
+    [junit] Testcase: testRollingUpdates(org.apache.lucene.index.TestRollingUpdates):   FAILED
+    [junit] expected:<20> but was:<21>
+    [junit] junit.framework.AssertionFailedError: expected:<20> but was:<21>
+    [junit]     at org.apache.lucene.index.TestRollingUpdates.testRollingUpdates(TestRollingUpdates.java:76)
+    [junit]     at org.apache.lucene.util.LuceneTestCase$LuceneTestCaseRunner.runChild(LuceneTestCase.java:1522)
+    [junit]     at org.apache.lucene.util.LuceneTestCase$LuceneTestCaseRunner.runChild(LuceneTestCase.java:1427)
+    [junit] 
+    [junit] 
+    [junit] Test org.apache.lucene.index.TestRollingUpdates FAILED
+
+{code}

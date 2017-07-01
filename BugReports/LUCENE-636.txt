@@ -1,0 +1,12 @@
+[PATCH] Differently configured Lucene 'instances' in same JVM
+
+
+
+Description:
+Currently Lucene can be configured using system properties. When running multiple 'instances' of Lucene for different purposes in the same JVM, it is not possible to use different settings for each 'instance'.
+
+I made changes to some Lucene classes so you can pass a configuration to that class. The Lucene 'instance' will use the settings from that configuration. The changes do not effect the API and/or the current behavior so are backwards compatible.
+
+In addition to the changes above I also made the SegmentReader and SegmentTermDocs extensible outside of their package. I would appreciate the inclusion of these changes but don't mind creating a separate issue for them.
+
+

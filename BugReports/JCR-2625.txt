@@ -1,0 +1,6 @@
+spi2davex: reduce memory footprint of Node/PropertyInfoImpl
+
+
+
+Description:
+the in-memory footprint of o.a.jackrabbit.spi2davex.NodeinfoImpl & PropertyInfoImp is quite big. 

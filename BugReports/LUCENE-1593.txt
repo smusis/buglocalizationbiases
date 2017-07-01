@@ -1,0 +1,14 @@
+Optimizations to TopScoreDocCollector and TopFieldCollector
+
+
+
+Description:
+This is a spin-off of LUCENE-1575 and proposes to optimize TSDC and TFC code to remove unnecessary checks. The plan is:
+# Ensure that IndexSearcher returns segements in increasing doc Id order, instead of numDocs().
+# Change TSDC and TFC's code to not use the doc id as a tie breaker. New docs will always have larger ids and therefore cannot compete.
+# Pre-populate HitQueue with sentinel values in TSDC (score = Float.NEG_INF) and remove the check if reusableSD == null.
+# Also move to use "changing top" and then call adjustTop(), in case we update the queue.
+# some methods in Sort explicitly add SortField.FIELD_DOC as a "tie breaker" for the last SortField. But, doing so should not be necessary (since we already break ties by docID), and is in fact less efficient (once the above optimization is in).
+# Investigate PQ - can we deprecate insert() and have only insertWithOverflow()? Add a addDummyObjects method which will populate the queue without "arranging" it, just store the objects in the array (this can be used to pre-populate sentinel values)?
+
+I will post a patch as well as some perf measurements as soon as I have them.

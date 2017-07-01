@@ -1,0 +1,10 @@
+CloseableThreadLocal should allow null Objects
+
+
+
+Description:
+CloseableThreadLocal does not allow null Objects in its get() method, but does nothing to prevent them in set(Object). The comment in get() before assert v != null is irrelevant - the application might have passed null.
+
+Null is an important value for Analyzers. Since tokenStreams (a ThreadLocal private member in Analyzer) is not accessible by extending classes, the only way for an Analyzer to reset the tokenStreams is by calling setPreviousTokenStream(null).
+
+I will post a patch w/ a test

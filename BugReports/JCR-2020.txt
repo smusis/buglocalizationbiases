@@ -1,0 +1,6 @@
+Overlapping index aggregates not updated
+
+
+
+Description:
+When there are overlapping index aggregates in an indexing configuration and an item is updated that belongs to multiple aggregates, then only the first aggregate root is re-indexed.

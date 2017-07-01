@@ -1,0 +1,17 @@
+InstantiatedIndexReader does not handle #termDocs(null) correct (AllTermDocs)
+
+
+
+Description:
+This patch contains core changes so someone else needs to commit it.
+
+Due to the incompatible #termDocs(null) behaviour at least MatchAllDocsQuery, FieldCacheRangeFilter and ValueSourceQuery fails using II since 2.9.
+
+AllTermDocs now has a superclass, AbstractAllTermDocs that also InstantiatedAllTermDocs extend.
+
+Also:
+
+ * II-tests made less plausable to pass on future incompatible changes to TermDocs and TermEnum
+ * IITermDocs#skipTo and #next mimics the behaviour of document posisioning from SegmentTermDocs#dito when returning false
+ * II now uses BitVector rather than sets for deleted documents
+

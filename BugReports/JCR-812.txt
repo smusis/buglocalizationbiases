@@ -1,0 +1,19 @@
+TCK: RestoreTest.testRestoreLabel
+
+
+
+Description:
+According to tobi the jackrabbit implementation of 'Node.restoreByLabel' is an interpretation of the
+specification regarding the restore behaviour of versionable child nodes. while that interpetration might
+be legal unless the specification is violated, i would argue that the TCK should not test the interpretation.
+
+therefore i suggest to modify
+
+org.apache.jackrabbit.test.api.version.RestoreTest.testRestoreLabel
+
+by skipping line 334 - 345 in order to limit the test case to the behaviour that is defined by the specification.
+
+regards
+angela
+
+ps: the mentioned test is also executed within the scope of WorkspaceRestoreTest because the latter  extends RestoreTest.... that's misleading.

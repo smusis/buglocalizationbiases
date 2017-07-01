@@ -1,0 +1,6 @@
+Optimize queries with relative path in order by clause
+
+
+
+Description:
+This is a follow up to JCR-800 and adds a way to configure relative property paths for aggregates in the indexing configuration. Aggregated properties are handled much more efficiently when used in an order by. The implementation from JCR-800 is used as a fallback when no aggregate is configured. See attached patch for details.

@@ -1,0 +1,19 @@
+ConstantScoreRangeQuery - fixes "too many clauses" exception
+
+
+
+Description:
+ConstantScoreQuery wraps a filter (representing a set of documents) and returns
+a constant score for each document in the set.
+
+ConstantScoreRangeQuery implements a RangeQuery that works for any number of
+terms in the range.  It rewrites to a ConstantScoreQuery that wraps a RangeFilter.
+
+Still needed:
+  - unit tests (these classes have been tested and work fine in-house, but the
+current tests rely on too much application specific code)
+  - code review of Weight() implementation (I'm unsure If I got all the score
+normalization stuff right)
+  - explain() implementation
+
+NOTE: requires Java 1.4 for BitSet.nextSetBit()

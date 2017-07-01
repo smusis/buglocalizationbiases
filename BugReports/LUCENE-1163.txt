@@ -1,0 +1,30 @@
+CharArraySet.contains(char[] text, int off, int len) does not work
+
+
+
+Description:
+I try to use the CharArraySet for a filter I am writing. I heavily use char-arrays in my code to speed up things. I stumbled upon a bug in CharArraySet while doing that.
+
+The method _public boolean contains(char[] text, int off, int len)_ seems not to work.
+
+When I do 
+
+{code}
+if (set.contains(buffer,offset,length) {
+  ...
+}
+{code}
+
+my code fails.
+
+But when I do
+
+{code}
+if (set.contains(new String(buffer,offset,length)) {
+   ...
+}
+{code}
+
+everything works as expected.
+
+Both variants should behave the same. I attach a small piece of code to show the problem.

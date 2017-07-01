@@ -1,0 +1,9 @@
+CharTokenizer has bugs for large documents.
+
+
+
+Description:
+Initially found by hudson from additional testing added in LUCENE-3894, but 
+currently not reproducable (see LUCENE-3895).
+
+But its easy to reproduce for a simple single-threaded case in TestDuelingAnalyzers.

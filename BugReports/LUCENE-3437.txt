@@ -1,0 +1,10 @@
+Detect the test thread by reference, not by name.
+
+
+
+Description:
+Get rid of this:
+{code}
+      if (doFail && (Thread.currentThread().getName().equals("main") 
+          || Thread.currentThread().getName().equals("Main Thread"))) {
+{code}

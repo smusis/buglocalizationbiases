@@ -1,0 +1,8 @@
+IndexWriter.setInfoStream should percolate down to mergePolicy & mergeScheduler
+
+
+
+Description:
+Right now *MergePolicy and *MergeScheduler have their own ad-hoc means
+of being verbose about their actions.  We should unify these with
+IndexWriter's infoStream.  Thanks to Hoss for suggesting this.

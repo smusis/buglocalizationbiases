@@ -1,0 +1,19 @@
+Allow basic regexp in namespace prefix of index-rule
+
+
+
+Description:
+Currently a regular expression is limited to the local name, which makes fallback declarations that should match everything else difficult to write. I.e. you have to write a line per namespace in the node type registry, which bloats the index-rule unnecessarily.
+
+Currently:
+
+<property isRegexp="true">.*</property>
+
+will only match properties with the empty namespace URI.
+
+I propose we allow a basic regular expression in the prefix. That is the match all pattern: '.*' (dot star).
+
+The following would match any property, including any namespace:
+
+<property isRegexp="true">.*:.*</property>
+

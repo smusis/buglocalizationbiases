@@ -1,0 +1,6 @@
+While you could use a custom Sort Comparator source with remote searchable before, you can no longer do so with FieldComparatorSource
+
+
+
+Description:
+FieldComparatorSource is not serializable, but can live on a SortField

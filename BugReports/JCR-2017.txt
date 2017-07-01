@@ -1,0 +1,6 @@
+System view export truncates carriage return
+
+
+
+Description:
+If a string contains a carriage return (\r), this character was truncated on some platforms. 

@@ -1,0 +1,56 @@
+intermittent failure in TestIndexWriter. testExceptionDuringSync 
+
+
+
+Description:
+{code}
+common.test:
+
+    [mkdir] Created dir: C:\Projects\lucene\trunk-full1\build\test
+
+    [junit] Testsuite: org.apache.lucene.index.TestIndexWriter
+
+    [junit] Tests run: 102, Failures: 0, Errors: 1, Time elapsed: 100,297sec
+
+    [junit]
+
+    [junit] Testcase: testExceptionDuringSync(org.apache.lucene.index.TestIndexWriter): Caused an ERROR
+
+    [junit] _a.fnm
+
+    [junit] java.io.FileNotFoundException: _a.fnm
+
+    [junit]     at org.apache.lucene.store.MockRAMDirectory.openInput(MockRAMDirectory.java:226)
+
+    [junit]     at org.apache.lucene.index.FieldInfos.<init>(FieldInfos.java:68)
+
+    [junit]     at org.apache.lucene.index.SegmentReader$CoreReaders.<init>(SegmentReader.java:116)
+
+    [junit]     at org.apache.lucene.index.SegmentReader.get(SegmentReader.java:620)
+
+    [junit]     at org.apache.lucene.index.SegmentReader.get(SegmentReader.java:590)
+
+    [junit]     at org.apache.lucene.index.DirectoryReader.<init>(DirectoryReader.java:104)
+
+    [junit]     at org.apache.lucene.index.ReadOnlyDirectoryReader.<init>(ReadOnlyDirectoryReader.java:27)
+
+    [junit]     at org.apache.lucene.index.DirectoryReader$1.doBody(DirectoryReader.java:74)
+
+    [junit]     at org.apache.lucene.index.SegmentInfos$FindSegmentsFile.run(SegmentInfos.java:704)
+
+    [junit]     at org.apache.lucene.index.DirectoryReader.open(DirectoryReader.java:69)
+
+    [junit]     at org.apache.lucene.index.IndexReader.open(IndexReader.java:307)
+
+    [junit]     at org.apache.lucene.index.IndexReader.open(IndexReader.java:193)
+
+    [junit]     at org.apache.lucene.index.TestIndexWriter.testExceptionDuringSync(TestIndexWriter.java:2723)
+
+    [junit]     at org.apache.lucene.util.LuceneTestCase.runBare(LuceneTestCase.java:206)
+
+    [junit]
+
+    [junit]
+
+    [junit] Test org.apache.lucene.index.TestIndexWriter FAILED
+{code}

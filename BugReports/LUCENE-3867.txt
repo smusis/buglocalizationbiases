@@ -1,0 +1,29 @@
+RamUsageEstimator.NUM_BYTES_ARRAY_HEADER and other constants are incorrect
+
+
+
+Description:
+RamUsageEstimator.NUM_BYTES_ARRAY_HEADER is computed like that: NUM_BYTES_OBJECT_HEADER + NUM_BYTES_INT + NUM_BYTES_OBJECT_REF. The NUM_BYTES_OBJECT_REF part should not be included, at least not according to this page: http://www.javamex.com/tutorials/memory/array_memory_usage.shtml
+
+{quote}
+A single-dimension array is a single object. As expected, the array has the usual object header. However, this object head is 12 bytes to accommodate a four-byte array length. Then comes the actual array data which, as you might expect, consists of the number of elements multiplied by the number of bytes required for one element, depending on its type. The memory usage for one element is 4 bytes for an object reference ...
+{quote}
+
+While on it, I wrote a sizeOf(String) impl, and I wonder how do people feel about including such helper methods in RUE, as static, stateless, methods? It's not perfect, there's some room for improvement I'm sure, here it is:
+
+{code}
+	/**
+	 * Computes the approximate size of a String object. Note that if this object
+	 * is also referenced by another object, you should add
+	 * {@link RamUsageEstimator#NUM_BYTES_OBJECT_REF} to the result of this
+	 * method.
+	 */
+	public static int sizeOf(String str) {
+		return 2 * str.length() + 6 // chars + additional safeness for arrays alignment
+				+ 3 * RamUsageEstimator.NUM_BYTES_INT // String maintains 3 integers
+				+ RamUsageEstimator.NUM_BYTES_ARRAY_HEADER // char[] array
+				+ RamUsageEstimator.NUM_BYTES_OBJECT_HEADER; // String object
+	}
+{code}
+
+If people are not against it, I'd like to also add sizeOf(int[] / byte[] / long[] / double[] ... and String[]).

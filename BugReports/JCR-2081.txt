@@ -1,0 +1,26 @@
+NameSet does not implement equals(Object) and hashCode() methods
+
+
+
+Description:
+The merge context uses the NameSet.equals(NameSet) method to compare two sets; however, the NameSet class does not override the default Object.equals(Object) method, and does not inherit from AbstractSet<E>.  Therefore, the merge check fails, even though the mixin sets are the same.  Object instance equivalence is being performed as opposed to set equivalence.  Behavior is observed when more than one thread is checking the ISM at a given time.  Demonstration code available upon request.
+
+From NodeStateMerger, line 83:
+                // mixin types
+                if (!state.getMixinTypeNames().equals(overlayedState.getMixinTypeNames())) {
+                    // the mixins have been modified but by just looking at the diff we
+                    // can't determine where the change happened since the diffs of either
+                    // removing a mixin from the overlayed or adding a mixin to the
+                    // transient state would look identical...
+                    return false;
+                }
+
+Proposed solution:
+- Implement NameSet.equals(...) method:
+	public boolean equals(Object obj) {
+		if (obj != null && obj instanceof NameSet) {
+			NameSet oo = (NameSet) obj;
+			return oo.names.equals(this.names);
+		}
+		return false;
+	}

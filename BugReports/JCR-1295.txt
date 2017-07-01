@@ -1,0 +1,10 @@
+Tablespace (Filegroup) support for MS SQL Server
+
+
+
+Description:
+Tablespace support was added for Oracle database servers in this issue
+
+https://issues.apache.org/jira/browse/JCR-968
+
+We would like tablespace (or filegroup) support for MS SQL Server as well. To address this, we have created a patch using the trunk of JackRabbit that closely follows the patch in the above named issue.

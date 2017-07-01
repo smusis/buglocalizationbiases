@@ -1,0 +1,27 @@
+maxFieldLength actual limit is 1 greater than expected value.
+
+
+
+Description:
+
+// Prepare document.
+Document document = new Document();
+document.add(new Field("name",
+            "pattern oriented software architecture", Store.NO,
+            Index.TOKENIZED, TermVector.WITH_POSITIONS_OFFSETS));
+
+// Set max field length to 2.
+indexWriter.setMaxFieldLength(2);
+
+// Add document into index.
+indexWriter.addDocument(document, new StandardAnalyzer());
+
+// Create a query.
+QueryParser queryParser = new QueryParser("name", new StandardAnalyzer());
+Query query = queryParser.parse("software");
+
+// Search the 3rd term.
+Hits hits = indexSearcher.search(query);
+
+Assert.assertEquals(0, hits.length());
+// failed. Actual hits.length() == 1, but expect 0.

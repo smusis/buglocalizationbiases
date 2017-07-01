@@ -1,0 +1,6 @@
+Clustering: re-registration of nodetypes is not  synchronized
+
+
+
+Description:
+The re-registration of nodetypes is not yet synchronized between clusternodes, although re-registration is already (partially) implemented in the NodeTypeRegistry.

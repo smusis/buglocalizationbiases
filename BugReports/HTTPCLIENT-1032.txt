@@ -1,0 +1,17 @@
+cache revalidation of variants does not update original variant entry
+
+
+
+Description:
+When the cache stories multiple variant entries due to Vary headers in responses, the cache correctly sends a conditional request containing the etags of any existing variants on a "variant miss" (incoming request does not match the request variants already cached). In addition, when it receives a 304 response, it correctly returns the indicated variant to the request that causes the variant miss. However, it does not update the pre-existing variant cache entry as recommended by RFC 2616.
+
+For example:
+
+request 1, User-Agent: agent1 results in a 200 OK with Etag: etag1 and Vary: User-Agent.
+request 2, User-Agent: agent2 causes an If-None-Match to the origin; if it returns 304 Not Modified with Etag: etag1
+request 3, User-Agent: agent1 results in a 200 OK but gets the (outdated) entry that resulted from request 1
+
+in other words, the origin response from request 2 does not update the variant for "agent1".
+
+This does not cause incorrect behavior (this is a SHOULD) but does miss out on some caching opportunities here.
+

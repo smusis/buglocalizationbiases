@@ -1,0 +1,6 @@
+Protocol interceptors not called when executing CONNECT methods
+
+
+
+Description:
+When the DefaultRequestDirector tries to establish a route via a proxy to a https target, registered protocol interceptors aren't being called in the createTunnelToTarget method. 

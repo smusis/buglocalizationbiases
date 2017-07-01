@@ -1,0 +1,6 @@
+Create enwiki indexable data as line-per-article rather than file-per-article
+
+
+
+Description:
+Create a line per article rather than a file. Consume with indexLineFile task.

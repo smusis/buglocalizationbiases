@@ -1,0 +1,11 @@
+Add setters to Field to allow re-use of Field instances during indexing
+
+
+
+Description:
+If we add setters to Field it makes it possible to re-use Field
+instances during indexing which is a sizable performance gain for
+small documents.  See here for some discussion:
+
+    http://www.gossamer-threads.com/lists/lucene/java-dev/51041
+

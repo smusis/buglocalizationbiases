@@ -1,0 +1,26 @@
+GCJ build fails with JDK 1.5
+
+
+
+Description:
+The build.xml doesn't specify a target VM version. Using JDK 1.5, this means the compiled .class files 
+are automatically made for 1.5, with java.lang.StringBuilder insidiously used for string concatenation. 
+GCJ doesn't seem to include this class yet, so when it gets to the gcj build it dies trying to read the class 
+files.
+
+Steps to reproduce:
+1. Install Sun JDK 1.5 for a Java compiler
+2. Check out Lucene from svn
+3. 'ant gcj'
+
+Expected behavior:
+Should build Lucene to .class files and .jar with the JDK compiler and then compile an .a with GCJ.
+
+Actual behavior:
+The GCJ build fails, complaining of being unable to find java.lang.StringBuilder.
+
+Suggested fix:
+Adding source="1.3" target="1.3" to the <javac> tasks seems to take care of this. Patch to be attached.
+
+Additional notes:
+Using Lucene from SVN and GCJ pulled from GCC CVS circa 2005-04-19. Ant 1.6.2.

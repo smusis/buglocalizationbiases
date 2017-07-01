@@ -1,0 +1,6 @@
+Versioning operations should be done on the workspace
+
+
+
+Description:
+currently all versioning operations modify the transient states of the items where the operation is executed although all operations are workspace operations.

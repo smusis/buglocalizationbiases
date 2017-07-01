@@ -1,0 +1,6 @@
+AbstractQueryTest.evaluateResultOrder() should fail if workspace does not contain enough content
+
+
+
+Description:
+The method AbstractQueryTest.evaluateResultOrder() currently throws a NotExecutableException if the workspace contains less than two nodes that can be used for ordering. It should rather fail with an error message telling that the workspace does not contain sufficient content to run the test.

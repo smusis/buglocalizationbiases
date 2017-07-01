@@ -1,0 +1,8 @@
+Enhance Ingres persistence bundle to handle unicode
+
+
+
+Description:
+Tiny change to ingres.ddl for persistent bundles to handle unicode strings.
+
+

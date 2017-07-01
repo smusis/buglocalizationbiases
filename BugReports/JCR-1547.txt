@@ -1,0 +1,6 @@
+JCR2SPI: remove dependency to state-package within nodetype package
+
+
+
+Description:
+

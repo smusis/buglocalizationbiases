@@ -1,0 +1,10 @@
+Content-Length & Transfer-Encoding request headers should be handled by entity enclosing methods
+
+
+
+Description:
+Currently 'Content-Length' & 'Transfer-Encoding' request headers are handled by 
+the HttpMethodBase class. This is conceptually wrong and error-prone in my 
+opinion. Entity enclosing methods should control 'Content-Length' & 'Transfer-
+Encoding' request headers instead, as they provide request content and 
+encapsulate the requisite content transfer logic.

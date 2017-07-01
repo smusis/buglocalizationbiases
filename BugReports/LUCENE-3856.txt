@@ -1,0 +1,6 @@
+Create docvalues based grouped facet collector
+
+
+
+Description:
+Create docvalues based grouped facet collector. Currently only term based collectors have been implemented (LUCENE-3802).

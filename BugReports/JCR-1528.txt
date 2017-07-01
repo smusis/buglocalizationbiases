@@ -1,0 +1,15 @@
+CLONE -ManageableCollectionUtil doesn't support Maps
+
+
+
+Description:
+ManageableCollectionUtil has two getManageableCollection methods, which do not currently return a ManageableCollection which wraps Maps. 
+
+ManagedHashMap already exists in the codebase which I assume was created for this purpose, so both getManageableCollection methods could be modified so that they do something like:
+
+            if (object instanceof Map){
+                return new ManagedHashMap((Map)object);
+            }
+
+
+An alternative solution might be to modify the JCR mapping to support explicitly defining the 'ManagedXXX' class.

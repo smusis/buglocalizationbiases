@@ -1,0 +1,8 @@
+UserManagement: Don't read cached memberships if session has pending (group) changes
+
+
+
+Description:
+for backwards compatibility reasons reading group membership should not access the overall cache in case of pending (group) change.
+the current implememation (always reading from cache) caused a regression in test-case we have @day that relied on accurate group
+membership information with having unsaved group-member changes.

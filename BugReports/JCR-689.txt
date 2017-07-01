@@ -1,0 +1,12 @@
+Minimize calls to PersistenceManager
+
+
+
+Description:
+In some situations the PersistenceManager is called even though it is not necessary.
+
+E.g. when new items are created the method NodeImpl.getOrCreateProperty() will always check if there is an already existing property state. If the node is new the call will always go down the full item state stack and ask the PersistenceManager if it knows the property id. This is unnessessary because there will never exist properties in the persistence manager for a new node that has not been saved yet.
+
+I propose to add a check to the method to see if  the node is new and does not yet have a property with the given name. In that case the property can be created without further checks.
+
+With the patch applied the time to transiently create 1000 nodes with 4 properties each drops from 1485 ms to 422 ms.

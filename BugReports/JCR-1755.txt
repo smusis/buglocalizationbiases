@@ -1,0 +1,26 @@
+ClassCastException when registering custom node by XML file
+
+
+
+Description:
+When trying to register node type from XML file using following code:
+
+		JackrabbitNodeTypeManager nodeTypeManager = (JackrabbitNodeTypeManager)workspace.getNodeTypeManager();
+		for(Resource resource : nodeDefinitions){
+			System.out.println("** registering node:"+resource);
+			nodeTypeManager.registerNodeTypes(resource.getInputStream(), JackrabbitNodeTypeManager.TEXT_XML);
+		}
+
+we receive such surprise:
+
+Caused by: java.lang.ClassCastException: com.sun.org.apache.xerces.internal.dom.DeferredDocumentImpl
+	at org.apache.jackrabbit.core.util.DOMWalker.iterateElements(DOMWalker.java:215)
+	at org.apache.jackrabbit.core.nodetype.xml.NodeTypeReader.getNodeTypeDefs(NodeTypeReader.java:121)
+	at org.apache.jackrabbit.core.nodetype.NodeTypeManagerImpl.registerNodeTypes(NodeTypeManagerImpl.java:257)
+	at org.apache.jackrabbit.core.nodetype.NodeTypeManagerImpl.registerNodeTypes(NodeTypeManagerImpl.java:499)
+	at pl.codeservice.jcr.JcrCustomNodeRegister.registerNodes(JcrCustomNodeRegister.java:41)
+	at pl.codeservice.jcr.JcrCustomNodeRegister.init(JcrCustomNodeRegister.java:27)
+	...
+
+
+Registering nodes by .cnd files works fine.

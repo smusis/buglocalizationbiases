@@ -1,0 +1,6 @@
+Speedup of CharArraySet#copy if a CharArraySet instance is passed to copy.
+
+
+
+Description:
+the copy method should use the entries array itself to copy the set internally instead of iterating over all values. this would speedup copying even small set 

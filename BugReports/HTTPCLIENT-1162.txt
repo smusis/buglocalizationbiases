@@ -1,0 +1,12 @@
+Header adding in org.apache.http.client.protocol.RequestAcceptEncoding should be conditional
+
+
+
+Description:
+org.apache.http.client.protocol.RequestAcceptEncoding adds a header in any case. Any chance to do it conditional (like in RequestClientConnControl)? The code would be something like
+if (!request.containsHeader("Accept-Encoding")) {
+    request.addHeader("Accept-Encoding", "gzip,deflate");
+}
+
+In our app this header may be added before request intercepting, so would be great if this fact is checked.
+

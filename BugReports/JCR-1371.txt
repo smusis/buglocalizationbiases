@@ -1,0 +1,6 @@
+[PATCH] unnecessary synchronized collections used only in thread safe way
+
+
+
+Description:
+NodeTypeReader uses Vector in only a local variable thread safe way. Thus the synchronized value of Vector is not needed, and just slowing the code down for nothing. this patch switches the collections to ArrayLists.

@@ -1,0 +1,18 @@
+BasicClientCookie.toString() contains 'name' instead of 'value' when writing out cookie value
+
+
+
+Description:
+{noformat}
+buffer.append("[name: ");
+buffer.append(this.value);
+{noformat}
+
+should be
+
+{noformat}
+buffer.append("[value: ");
+buffer.append(this.value);
+{noformat}
+
+Will provide a patch soon.

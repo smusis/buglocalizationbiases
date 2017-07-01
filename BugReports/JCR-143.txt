@@ -1,0 +1,11 @@
+Query for string literal broken when literal can be coerced into other type
+
+
+
+Description:
+When a string literal can be coerced into another type (e.g. integer) a property of type string that matches the literal is not found.
+
+E.g. the following query will match prop if its value is the string '1234'.
+//*[@prop = '1234']
+
+The query should match properties with string value '1234' and integer value 1234.

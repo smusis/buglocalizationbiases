@@ -1,0 +1,7 @@
+ManagedConnection#cleanup doesn't refresh the session
+
+
+
+Description:
+the ManagedConnection is not cleaned up correctly. I think that the underlying jcr Session should be refreshed by calling
+Session#refresh(false) at JCAManagedConnection#cleanup. In the current implementation a new Session see the changes stored in the transient level of a closed session

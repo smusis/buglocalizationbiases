@@ -1,0 +1,9 @@
+TCK: Incorrect check of namespace mappings in System View XML export
+
+
+
+Description:
+org.apache.jackrabbit.test.api.SysViewContentHandler. In endDocument(), two issues:
+
+1. line 351: tries to go through a table of prefixes but uses a fixed index inside the loop;
+2. The mapping for the 'xml' prefix should be skipped (it must be registered in the Session but must not be registered during export since this is a built-in XML mapping.

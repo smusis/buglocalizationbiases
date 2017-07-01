@@ -1,0 +1,6 @@
+Deprecate RepositoryService.getNodeInfo method
+
+
+
+Description:
+I suggest to deprecate RepositoryService.getNodeInfo in favor of RepositoryService.getItemInfos. The former method is not called from jsr2spi anymore and thus not required. 

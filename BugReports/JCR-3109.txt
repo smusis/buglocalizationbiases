@@ -1,0 +1,6 @@
+Move PersistenceManagerTest from o.a.j.core to o.a.j.core.persistence
+
+
+
+Description:
+The subject pretty much sums it up. The PMTest should be placed together with the other PM related tests in o.a.j.core.persistence.

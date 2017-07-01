@@ -1,0 +1,17 @@
+PATCH MultiLevelSkipListReader NullPointerException
+
+
+
+Description:
+ When Reconstructing Document Using Luke Tool, received NullPointerException.
+
+java.lang.NullPointerException
+        at org.apache.lucene.index.MultiLevelSkipListReader.loadSkipLevels(MultiLevelSkipListReader.java:188)
+        at org.apache.lucene.index.MultiLevelSkipListReader.skipTo(MultiLevelSkipListReader.java:97)
+        at org.apache.lucene.index.SegmentTermDocs.skipTo(SegmentTermDocs.java:164)
+        at org.getopt.luke.Luke$2.run(Unknown Source)
+
+Luke version 0.7.1
+
+I emailed with Luke author Andrzej Bialecki and he suggested the attached patch file which fixed the problem.
+

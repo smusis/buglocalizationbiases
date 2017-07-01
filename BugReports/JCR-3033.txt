@@ -1,0 +1,6 @@
+Provide a method for writing name space declarations in CompactNodeTypeDefWriter
+
+
+
+Description:
+Currently CompactNodeTypeDefWriter includes (when configured to do so) only name space declarations from name spaces actually used in the node type definitions written. In some situations it is necessary to write additional name space declarations. I thus propose to add a method writeNamespaceDelclaration.

@@ -1,0 +1,10 @@
+Minor performance improvement to IdleConnectionHandler
+
+
+
+Description:
+The attached patch does the following changes to IdleConnectionHandler
+ - as it iterator over a map of connections, using a LinkedHashMap is a faster
+ - rather than using an iterator over the keyset and subsequently getting the values, an iterator over the entry set is used instead for efficiency (at least according to FindBugs)
+
+Note that the patch contains other changes to make variables final where possible. This was done automatically by Eclipse, and can be removed if desired. However I see no harm in them, other than they affect more of the code than intended by the patch.

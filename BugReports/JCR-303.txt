@@ -1,0 +1,6 @@
+Add JCR-RMI documentation to the Jackrabbit web site
+
+
+
+Description:
+Use the org.apache.jackrabbit.rmi.{client,server} package javadocs as a base for a JCR-RMI document page on the Jackrabbit web site.

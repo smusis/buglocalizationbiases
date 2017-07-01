@@ -1,0 +1,7 @@
+Javadoc in jackrabbit-jcr-rmi is missing an ending ">" 
+
+
+
+Description:
+The javadoc file /jackrabbit-jcr-rmi/src/main/javadoc/apache/rmi/observation/package.html is missing the final ">" from the ending body tag.
+

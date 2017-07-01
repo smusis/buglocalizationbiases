@@ -1,0 +1,12 @@
+Consolidate all (Solr's & Lucene's) analyzers into modules/analysis
+
+
+
+Description:
+We've been wanting to do this for quite some time now...  I think, now that Solr/Lucene are merged, and we're looking at opening an unstable line of development for Solr/Lucene, now is the right time to do it.
+
+A standalone module for all analyzers also empowers apps to separately version the analyzers from which version of Solr/Lucene they use, possibly enabling us to remove Version entirely from the analyzers.
+
+We should also do LUCENE-2309 (decouple, as much as possible, indexer from the analysis API), but I don't think that issue needs to block this consolidation.
+
+Once we do this, there is one place where our users can find all the analyzers that Solr/Lucene provide.

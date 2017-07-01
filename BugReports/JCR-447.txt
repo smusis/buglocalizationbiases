@@ -1,0 +1,6 @@
+deadlock on concurrent commit/locking
+
+
+
+Description:
+there can happen an iterlock between the dispatching part of the shared item state manager and the lockmanager.

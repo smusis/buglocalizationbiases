@@ -1,0 +1,35 @@
+Config incorrectly handles Windows absolute pathnames
+
+
+
+Description:
+I have no idea how no one ran into this so far, but I tried to execute an .alg file which used ReutersContentSource and referenced both docs.dir and work.dir as Windows absolute pathnames (e.g. d:\something). Surprisingly, the run reported an error of missing content under benchmark\work\something.
+
+I've traced the problem back to Config, where get(String, String) includes the following code:
+{code}
+    if (sval.indexOf(":") < 0) {
+      return sval;
+    }
+    // first time this prop is extracted by round
+    int k = sval.indexOf(":");
+    String colName = sval.substring(0, k);
+    sval = sval.substring(k + 1);
+    ...
+{code}
+
+It detects ":" in the value and so it thinks it's a per-round property, thus stripping "d:" from the value ... fix is very simple:
+{code}
+    if (sval.indexOf(":") < 0) {
+      return sval;
+    } else if (sval.indexOf(":\\") >= 0) {
+      // this previously messed up absolute path names on Windows. Assuming
+      // there is no real value that starts with \\
+      return sval;
+    }
+    // first time this prop is extracted by round
+    int k = sval.indexOf(":");
+    String colName = sval.substring(0, k);
+    sval = sval.substring(k + 1);
+{code}
+
+I'll post a patch w/ the above fix + test shortly.

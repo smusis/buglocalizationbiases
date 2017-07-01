@@ -1,0 +1,13 @@
+javadocs very very ugly if you generate with java7
+
+
+
+Description:
+Java7 changes its javadocs to look much nicer, but this involves different CSS styles.
+
+Lucene overrides the CSS with stylesheet+prettify.css which is a combination of java5/6 stylesheet + google prettify:
+but there are problems because java7 has totally different styles.
+
+So if you generate javadocs with java7, its like you have no stylesheet at all.
+
+A solution might be to make stylesheet7+prettify.css and conditionalize a property in ant based on java version.

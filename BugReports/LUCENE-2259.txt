@@ -1,0 +1,10 @@
+add IndexWriter.removeUnferencedFiles, so apps can more immediately delete index files when readers are closed
+
+
+
+Description:
+This has come up several times on the user's list.
+
+On Windows, which prevents deletion of still-open files, IndexWriter cannot remove files that are in-use by open IndexReaders.  This is fine, and IndexWriter periodically retries the delete, but it doesn't retry very often (only on open, on flushing a new segment, and on committing a merge).  So it lacks immediacy.
+
+With this expert method, apps that want faster deletion can call this method.

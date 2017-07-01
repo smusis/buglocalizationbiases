@@ -1,0 +1,7 @@
+no classes with default visibility
+
+
+
+Description:
+There should be no classes with default (package) visibility. They cause problems when classes using them are extended. All classes should either be public, or nested with protected visibility where they are used. Nesting with private visibility may be acceptable in certain cases, for example in final classes.
+

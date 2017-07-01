@@ -1,0 +1,7 @@
+[API Doc] Compile new preference architecture and HTTP parameterization guide
+
+
+
+Description:
+Document the new preference architecture based on the hierarchy of HttpParams
+collections, as well as available parameters and options

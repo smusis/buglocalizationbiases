@@ -1,0 +1,6 @@
+fix for Document.getBoost() documentation
+
+
+
+Description:
+The attached patch fixes the javadoc to make clear that getBoost() will never return a useful value in most cases. I will commit this unless someone has a better wording or a real fix.

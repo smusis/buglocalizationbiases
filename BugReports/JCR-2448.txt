@@ -1,0 +1,6 @@
+Introduce SessionInfo parameter for AbstractRepositoryService.createRootNodeDefinition()  
+
+
+
+Description:
+SPI implementations might require access to the state of the current session in order to fulfill the contract of AbstractRepositoryService.createRootNodeDefinition(). I therefore suggest to add a SessionInfo parameter to this method. 

@@ -1,0 +1,8 @@
+KeywordMarkerFilter resets keyword attribute state to false for tokens not in protwords.txt
+
+
+
+Description:
+KeywordMarkerFilter sets true or false for the KeywordAttribute on all tokens. This erases previous state established further up the filter chain, for example in the case where a custom filter wants to prevent a token from being stemmed. 
+
+If a token is already marked as a keyword (KeywordAttribute.isKeyword() == true), perhaps the KeywordMarkerFilterFactory should not re-set the state to false.

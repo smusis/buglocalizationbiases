@@ -1,0 +1,18 @@
+terms index should not store useless suffixes
+
+
+
+Description:
+This idea came up when discussing w/ Robert how to improve our terms index...
+
+The terms dict index today simply grabs whatever term was at a 0 mod 128 index (by default).
+
+But this is wasteful because you often don't need the suffix of the term at that point.
+
+EG if the 127th term is aa and the 128th (indexed) term is abcd123456789, instead of storing that full term you only need to store ab.  The suffix is useless, and uses up RAM since we load the terms index into RAM.
+
+The patch is very simple.  The optimization is particularly easy because terms are now byte[] and we sort in binary order.
+
+I tested on first 10M 1KB Wikipedia docs, and this reduces the terms index (tii) file from 3.9 MB -> 3.3 MB = 16% smaller (using StandardAnalyzer, indexing body field tokenized but title / date fields untokenized).  I expect on noisier terms dicts, especially ones w/ bad terms accidentally indexed, that the savings will be even more.
+
+In the future we could do crazier things.  EG there's no real reason why the indexed terms must be regular (every N terms), so, we could instead pick terms more carefully, say "approximately" every N, but favor terms that have a smaller net prefix.  We can also index more sparsely in regions where the net docFreq is lowish, since we can afford somewhat higher seek+scan time to these terms since enuming their docs will be much faster.

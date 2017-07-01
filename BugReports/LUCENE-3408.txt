@@ -1,0 +1,6 @@
+Remove unnecessary memory barriers in DWPT
+
+
+
+Description:
+Currently DWPT still uses AtomicLong to count the bytesUsed. Each write access issues an implicite memory barrier which is totally unnecessary since we doing everything single threaded on that level. This might be very minor but we shouldn't issue unnecessary memory barriers causing processors to lock their instruction pipeline for no reason.

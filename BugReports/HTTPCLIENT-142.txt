@@ -1,0 +1,18 @@
+Test case failure for testConnTimeout
+
+
+
+Description:
+[java] There was 1 failure:
+     [java] 1)
+testConnTimeout(org.apache.commons.httpclient.TestHttpConnection)junit.framework.AssertionFailedError:
+Should have timed out
+     [java]     at
+org.apache.commons.httpclient.TestHttpConnection.testConnTimeout(TestHttpConnection.java:118)
+     [java]     at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+     [java]     at
+sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:39)
+     [java]     at
+sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:25)
+
+This test has been failing for some time.  It is run with the test-local ant target.

@@ -1,0 +1,18 @@
+[PATCH] BooleanScorer2 ArrayIndexOutOfBoundsException + alternative NearSpans
+
+
+
+Description:
+From Erik's post at java-dev: 
+ 
+>      [java] Caused by: java.lang.ArrayIndexOutOfBoundsException: 4 
+>      [java]     at org.apache.lucene.search.BooleanScorer2  
+> $Coordinator.coordFactor(BooleanScorer2.java:54) 
+>      [java]     at org.apache.lucene.search.BooleanScorer2.score  
+> (BooleanScorer2.java:292) 
+... 
+ 
+and my answer: 
+ 
+Probably nrMatchers is increased too often in score() by calling score() 
+more than once.

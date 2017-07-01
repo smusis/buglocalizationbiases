@@ -1,0 +1,8 @@
+Jackrabbit does not allow concurrent reads to the data store if copyWhenReading=false
+
+
+
+Description:
+Jackrabbit does not allow concurrent reads to the data store if copyWhenReading=false, even if maxConnections>1.
+See JCR-1184 for a test for this problem (run it with copyWhenReading=false).
+

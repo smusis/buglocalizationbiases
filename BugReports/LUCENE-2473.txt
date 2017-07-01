@@ -1,0 +1,6 @@
+Clicking on the "More Results" link in luceneweb.war demo results in ArrayIndexOutOfBoundsException
+
+
+
+Description:
+Summary says it all.

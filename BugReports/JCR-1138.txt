@@ -1,0 +1,6 @@
+Data store garbage collection
+
+
+
+Description:
+Currently the data store garbage collection needs to be run manually. It should be simpler to use (maybe tool based), or automatic.

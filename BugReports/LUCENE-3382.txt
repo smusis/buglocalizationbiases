@@ -1,0 +1,9 @@
+fix compound-file/NoSuchDirectoryException bugs in NRTCachingDir
+
+
+
+Description:
+found some bugs over on LUCENE-3374, but we should fix these separately from whether or not we move it to core,
+and the bugs apply to 3.x too.
+
+here we can just add explicit tests for the problems.

@@ -1,0 +1,43 @@
+Test failures in jcr-rmi and jcr2dav
+
+
+
+Description:
+Integration testing currently fails for jcr-rmi:
+  testCloneNodesAccessDenied(org.apache.jackrabbit.test.api.WorkspaceCloneTest)
+  testCopyNodesAccessDenied(org.apache.jackrabbit.test.api.WorkspaceCopyBetweenWorkspacesTest)
+  testCopyNodesAccessDenied(org.apache.jackrabbit.test.api.WorkspaceCopyTest)
+  testMoveNodesAccessDenied(org.apache.jackrabbit.test.api.WorkspaceMoveTest)
+  testImpersonate(org.apache.jackrabbit.test.api.ImpersonateTest)
+  testCheckPermission(org.apache.jackrabbit.test.api.CheckPermissionTest)
+  testRemoveItem4(org.apache.jackrabbit.test.api.SessionRemoveItemTest)
+  testReadOnlyPermission(org.apache.jackrabbit.test.api.HasPermissionTest)
+  testGetPrivileges(org.apache.jackrabbit.test.api.security.RSessionAccessControlDiscoveryTest)
+  testNotHasPrivileges(org.apache.jackrabbit.test.api.security.RSessionAccessControlDiscoveryTest)
+  testGetApplicablePolicies(org.apache.jackrabbit.test.api.security.RSessionAccessControlPolicyTest)
+  testGetPolicy(org.apache.jackrabbit.test.api.security.RSessionAccessControlPolicyTest)
+  testGetEffectivePolicy(org.apache.jackrabbit.test.api.security.RSessionAccessControlPolicyTest)
+  testMoveNode(org.apache.jackrabbit.test.api.security.RSessionAccessControlTest)
+  testSetProperty(org.apache.jackrabbit.test.api.security.RSessionAccessControlTest)
+  testSetValue(org.apache.jackrabbit.test.api.security.RSessionAccessControlTest)
+  testDeleteNode(org.apache.jackrabbit.test.api.security.RSessionAccessControlTest)
+  testDeleteProperty(org.apache.jackrabbit.test.api.security.RSessionAccessControlTest)
+  testWorkspaceMoveNode(org.apache.jackrabbit.test.api.security.RSessionAccessControlTest)
+  testCopyNode(org.apache.jackrabbit.test.api.security.RSessionAccessControlTest)
+
+and jcr2dav:
+  testCloneNodesAccessDenied(org.apache.jackrabbit.test.api.WorkspaceCloneTest)
+  testCopyNodesAccessDenied(org.apache.jackrabbit.test.api.WorkspaceCopyBetweenWorkspacesTest)
+  testCopyNodesAccessDenied(org.apache.jackrabbit.test.api.WorkspaceCopyTest)
+  testMoveNodesAccessDenied(org.apache.jackrabbit.test.api.WorkspaceMoveTest)
+  testCheckPermission(org.apache.jackrabbit.test.api.CheckPermissionTest)
+  testRemoveItem4(org.apache.jackrabbit.test.api.SessionRemoveItemTest)
+  testReadOnlyPermission(org.apache.jackrabbit.test.api.HasPermissionTest)
+  testMoveNode(org.apache.jackrabbit.test.api.security.RSessionAccessControlTest)
+  testSetProperty(org.apache.jackrabbit.test.api.security.RSessionAccessControlTest)
+  testSetValue(org.apache.jackrabbit.test.api.security.RSessionAccessControlTest)
+  testDeleteNode(org.apache.jackrabbit.test.api.security.RSessionAccessControlTest)
+  testDeleteProperty(org.apache.jackrabbit.test.api.security.RSessionAccessControlTest)
+  testWorkspaceMoveNode(org.apache.jackrabbit.test.api.security.RSessionAccessControlTest)
+  testCopyNode(org.apache.jackrabbit.test.api.security.RSessionAccessControlTest)
+

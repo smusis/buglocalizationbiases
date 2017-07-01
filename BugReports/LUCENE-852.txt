@@ -1,0 +1,25 @@
+spellchecker: make hard-coded values configurable
+
+
+
+Description:
+the class org.apache.lucene.search.spell.SpellChecker uses the following hard-coded values in its method
+indexDictionary:
+        writer.setMergeFactor(300);
+        writer.setMaxBufferedDocs(150);
+this poses problems when the spellcheck index is created on systems with certain limits, i.e. in unix
+environments where the ulimit settings are restricted for the user (http://www.gossamer-threads.com/lists/lucene/java-dev/47428#47428).
+
+there are several ways to circumvent this:
+1. add another indexDictionary method with additional parameters:
+    public void indexDictionary (Dictionary dict, int mergeFactor, int maxBufferedDocs) throws IOException
+    
+2. add setter methods for mergeFactor and maxBufferedDocs 
+    (see code in http://www.gossamer-threads.com/lists/lucene/java-dev/47428#47428 )
+
+3. Make SpellChecker subclassing easier as suggested by Chris Hostetter 
+   (see reply  http://www.gossamer-threads.com/lists/lucene/java-dev/47463#47463)
+
+thanx,
+karin
+

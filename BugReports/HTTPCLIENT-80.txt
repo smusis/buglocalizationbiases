@@ -1,0 +1,12 @@
+PostMethod - Chunked requests are not supported at the moment.
+
+
+
+Description:
+For Apache Axis, we'd like send a POST request without needing to calculate the
+content-length for HTTP 1.1 based servers. Of course if the server-side does not
+support 1.1 then a fallback mechanism could calculate the total size under the
+covers. 
+
+Also see related request from "Trevor O'Reilly" <wtrevor@yahoo.com>:
+http://marc.theaimsgroup.com/?l=jakarta-commons-user&m=102719653201792&w=2

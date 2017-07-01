@@ -1,0 +1,6 @@
+OCM test are too verbose
+
+
+
+Description:
+The OCM test cases print quite a bit of stuff on standard output which makes the standard build output harder to read. It would be better if the tests either used explicit assertions to verify correct behaviour or at least redirected free-form output to a log file in the target directory.

@@ -1,0 +1,14 @@
+add Terms.docCount
+
+
+
+Description:
+spinoff from LUCENE-3290, where yonik mentioned:
+
+{noformat}
+Is there currently a way to get the number of documents that have a value in the field?
+Then one could compute the average length of a (sparse) field via sumTotalTermFreq(field)/docsWithField(field)
+docsWithField(field) would be useful in other contexts that want to know how sparse a field is (automatically selecting faceting algorithms, etc).
+{noformat}
+
+I think this is a useful stat to add, in case you have sparse fields for heuristics or scoring.

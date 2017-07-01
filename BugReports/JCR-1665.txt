@@ -1,0 +1,7 @@
+In JCAConnectionRequestInfo, equals() and hashCode() implementations are inconsistent
+
+
+
+Description:
+JCAConnectionRequestInfo behaves differently in its equals() and hashCode() methods. The former is aware about SimpleCredentials structure, so two instances of JCAConnectionRequestInfo were supplied SimpleCredentials instances with same userID, password and attributes, they are considered equal.
+But JCAConnectionRequestInfo.hashCode() just delegates to SimpleCredentials.hashCode() which is same as Object's method. This breaks session pooling.

@@ -1,0 +1,6 @@
+replace UUID strings by UUID classes in NodeId, etc..
+
+
+
+Description:
+Currently the UUIDs of the nodes are stored as Strings in the ItemIds and ItemStates and cause alot of overhead throughout jackrabbit. they should be replaced by a fast implementation of a UUID class.

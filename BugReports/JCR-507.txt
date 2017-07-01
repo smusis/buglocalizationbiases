@@ -1,0 +1,28 @@
+TCK: NodeTest#testMixinTypesProtected incorrectly fails
+
+
+
+Description:
+The test calls addMixin to add mix:referenceable to a node.  This step is not required to test that jcr:mixinTypes is protected, yet may fail if the node is already mix:referenceable or cannot be mix:referenceable.
+
+Proposal: remove the call to addMixin.
+
+The test attempts to set jcr:mixinTypes to a scalar value, but reports a failure if the implementation throws ValueFormatException instead of ConstraintViolationException.
+
+Proposal: set jcr:mixinTypes to an array of length 1.
+
+--- NodeTest.java       (revision 422074)
++++ NodeTest.java       (working copy)
+@@ -1130,10 +1142,9 @@
+         Node defaultRootNode = (Node) superuser.getItem(testRootNode.getPath());
+  
+         Node testNode = defaultRootNode.addNode(nodeName1, testNodeType);
+-        testNode.addMixin(mixReferenceable);
+  
+         try {
+-            testNode.setProperty(jcrMixinTypes,mixLockable);
++            testNode.setProperty(jcrMixinTypes, new String[] { mixLockable });
+             fail("Manually setting jcr:mixinTypes should throw a ConstraintViolationException");
+         }
+         catch (ConstraintViolationException success) {
+

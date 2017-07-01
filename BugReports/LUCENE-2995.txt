@@ -1,0 +1,14 @@
+factor out a shared spellchecking module
+
+
+
+Description:
+In lucene's contrib we have spellchecking support (index-based spellchecker, directspellchecker, etc). 
+we also have some things like pluggable comparators.
+
+In solr we have auto-suggest support (with two implementations it looks like), some good utilities like HighFrequencyDictionary, etc.
+
+I think spellchecking is really important... google has upped the ante to what users expect.
+So I propose we combine all this stuff into a shared modules/spellchecker, which will make it easier
+to refactor and improve the quality.
+

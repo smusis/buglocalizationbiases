@@ -1,0 +1,10 @@
+LogMergePolicy.findMergesToExpungeDeletes need to get deletes from the SegmentReader
+
+
+
+Description:
+With LUCENE-1516, deletes are carried over in the SegmentReaders
+which means implementations of
+MergePolicy.findMergesToExpungeDeletes (such as LogMergePolicy)
+need to obtain deletion info from the SR (instead of from the
+SegmentInfo which won't have the information).

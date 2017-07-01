@@ -1,0 +1,12 @@
+thaiwordfilter uses attributesource.copyTo incorrectly
+
+
+
+Description:
+The bug can be seen by https://builds.apache.org/hudson/job/Lucene-Solr-tests-only-3.x/7367/
+
+It looks like the issue is this lazy initialization of the cloned token: if the tokenstream is reused
+and the consumer is interested in a different set of attributes, it could be a problem.
+
+one probably-probably-not-totally-correct fix would be to add 'clonedToken = null;' to reset(), at 
+least it would solve this case?

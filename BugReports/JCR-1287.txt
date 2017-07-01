@@ -1,0 +1,6 @@
+jackrabbit-webapp facelift
+
+
+
+Description:
+Still before 1.4, I meant to make the jackrabbit-webapp look a bit nicer. I'm taking the skin from JCR-1236 and applying it to jackrabbit-webapp.

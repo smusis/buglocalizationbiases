@@ -1,0 +1,6 @@
+Index migration fails for property names that are prefixes of others
+
+
+
+Description:
+The automatic index migration (JCR-1363) introduced in Jackrabbit version 1.5.0 replaces the separator char for named term text in PROPERTIES field. Util 1.4.x '\uFFFF' was used and after migration '[' is used. This changes the overall order of  PROPERTIES terms and leads to assertion failures. See attached test.

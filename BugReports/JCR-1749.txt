@@ -1,0 +1,8 @@
+JCRUrlConnection relies on nt:file/nt:resource
+
+
+
+Description:
+The JCRUrlConnection class implementing the jcr: URL handler for the JCR class loader relies on the fact that the intended primary type of the jcr:content child node of an nt:file node is of type nt:resource. When writing files with the Jackrabbit WebDAV server this is not the case as the jcr:content child node is of type nt:unstructured.
+
+As a result the JCRUrlConnection.connect method fails with an ItemNotFoundException in the Util.getProperty(Item)  method because the primary item of the nt:unstructured node type is not defined.

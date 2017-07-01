@@ -1,0 +1,18 @@
+[PATCH] Performance improvement to DisjunctionSumScorer
+
+
+
+Description:
+A recent profile of the new BooleanScorer2 showed that 
+quite a bit of CPU time is spent in the advanceAfterCurrent method 
+of DisjunctionScorer, and in the PriorityQueue of scorers that 
+is used there. 
+ 
+This patch reduces the internal overhead of DisjunctionScorer 
+to about 70% of the current one (ie. 30% saving in cpu time). 
+It also reduces the number of calls to the subscorers, but 
+that was not measured. 
+ 
+To get this, it was necessary to specialize the PriorityQueue 
+for a Scorer and to add move some code fragments from DisjunctionScorer 
+to this specialized queue.

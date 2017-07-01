@@ -1,0 +1,14 @@
+Lock test assumes that changes in one session are immediately visible in different session
+
+
+
+Description:
+LockTest.testLogout() assumes that a change in one session (logging out, removing a session-scoped lock) is immediately visible in another session.
+
+Proposal: insert a 
+
+ n1.getSession().refresh(true);
+
+call before checking
+
+ assertFalse("node must not be locked", n1.isLocked());

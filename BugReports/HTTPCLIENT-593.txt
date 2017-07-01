@@ -1,0 +1,24 @@
+ProtocolSocketFactory equals and hashCode don't support subclassing
+
+
+
+Description:
+In the implemenation of equals and hashCode for the classes
+org.apache.commons.httpclient.protocol.DefaultProtocolSocketFactory
+org.apache.commons.httpclient.protocol.SSLProtocolSocketFactory
+
+The implementation of equals and hashCode attempts to make all instances of the classes equal.  However, the manner in which the methods are coded makes it necessary for any subclass to implement equals and hashCode themselves.  A minor change to the methods in these classes will make possible to subclass these factories without re-implementing the equals and hashCode.  The method equals should be written as
+
+        return ((obj != null) && obj.getClass().equals(getClass()));
+
+rather than
+
+        return ((obj != null) && obj.getClass().equals(DefaultProtocolSocketFactory.class));
+
+And similarly, the hashCode method should be
+
+        return getClass().hashCode();
+
+rather than
+
+        return DefaultProtocolSocketFactory.class.hashCode();

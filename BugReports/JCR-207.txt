@@ -1,0 +1,6 @@
+moving locked node removes locked state
+
+
+
+Description:
+when moving a locked node it looses it locked state.

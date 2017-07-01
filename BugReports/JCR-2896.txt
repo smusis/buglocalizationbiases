@@ -1,0 +1,34 @@
+WebdavResponseImpl should cache TransformerFactory
+
+
+
+Description:
+JackrabbitResponeImpl.sendXmlResponse creates an instance of TransformerFactory on each invocation. We see, that this TransformerFactory initialization consumes significant amount of time, because of complex logic inside:
+
+{code}
+    at java.lang.String.intern(Native Method)
+    at java.util.jar.Attributes$Name.<init>(Attributes.java:449)
+    at java.util.jar.Attributes.putValue(Attributes.java:151)
+    at java.util.jar.Attributes.read(Attributes.java:404)
+    at java.util.jar.Manifest.read(Manifest.java:234)
+    at sun.security.util.SignatureFileVerifier.processImpl(SignatureFileVerifier.java:188)
+    at sun.security.util.SignatureFileVerifier.process(SignatureFileVerifier.java:176)
+    at java.util.jar.JarVerifier.processEntry(JarVerifier.java:277)
+    at java.util.jar.JarVerifier.update(JarVerifier.java:188)
+    at java.util.jar.JarFile.initializeVerifier(JarFile.java:321)
+    at java.util.jar.JarFile.getInputStream(JarFile.java:386)
+    at sun.net.www.protocol.jar.JarURLConnection.getInputStream(JarURLConnection.java:144)
+    at java.net.URL.openStream(URL.java:1009)
+    at java.lang.ClassLoader.getResourceAsStream(ClassLoader.java:1170)
+    at javax.xml.transform.SecuritySupport$4.run(SecuritySupport.java:94)
+    at java.security.AccessController.doPrivileged(Native Method)
+    at javax.xml.transform.SecuritySupport.getResourceAsStream(SecuritySupport.java:87)
+    at javax.xml.transform.FactoryFinder.findJarServiceProvider(FactoryFinder.java:250)
+    at javax.xml.transform.FactoryFinder.find(FactoryFinder.java:223)
+    at javax.xml.transform.TransformerFactory.newInstance(TransformerFactory.java:102)
+    at org.apache.jackrabbit.webdav.WebdavResponseImpl.sendXmlResponse(WebdavResponseImpl.java:163)
+{code}
+
+TransformerFactory can be cached in static field:
+
+private static final TransofmerFactory transformerFactory = TransformerFactory.newInstance().

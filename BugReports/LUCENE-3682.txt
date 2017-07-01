@@ -1,0 +1,11 @@
+Add deprecated 'transition' api for Document/Field
+
+
+
+Description:
+I think for 4.0 we should have a deprecated transition api for Field so you can do new Field(..., Field.Store.xxx, Field.Index.yyy) like before.
+
+These combinations would just be some predefined fieldtypes that are used behind the scenes if you use these deprecated ctors
+
+Sure it wouldn't be 'totally' backwards binary compat for Field.java, but why must it be all or nothing? I think this would eliminate a big
+hurdle for people that want to check out 4.x

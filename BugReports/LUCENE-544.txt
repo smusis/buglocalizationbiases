@@ -1,0 +1,8 @@
+MultiFieldQueryParser field boost multiplier
+
+
+
+Description:
+Allows specific boosting per field, e.g. +(name:foo^1 description:foo^0.1).
+
+Went from String[] field to MultiFieldQueryParser.FieldSetting[] field in constructor. 

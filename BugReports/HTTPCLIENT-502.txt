@@ -1,0 +1,13 @@
+HttpConnection isOpen flag concurrency problem
+
+
+
+Description:
+The HttpConnection.java class contains an isOpen boolean used to track the state
+of the connection (opened or closed).  The problem is that in the
+closeSocketAndStreams(), the flag is only flipped at the end of the
+unsynchronized method (after resources have been released) which causes a
+concurrency issue in flushRequestOutputStream() where the flag is checked first
+and the the outputStream is accessed.
+
+I'm providing a patch for this problem.

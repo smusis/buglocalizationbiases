@@ -1,0 +1,25 @@
+Adding empty ParallelReader indexes to an IndexWriter may cause ArrayIndexOutOfBoundsException or NoSuchElementException
+
+
+
+Description:
+Hi,
+I recently stumbled upon this:
+
+It is possible (and perfectly legal) to add empty indexes (IndexReaders) to an IndexWriter. However, when using ParallelReaders in this context, in two situations RuntimeExceptions may occur for no good reason.
+
+Condition 1:
+The indexes within the ParallelReader are just empty.
+
+When adding them to the IndexWriter, we get a java.util.NoSuchElementException triggered by ParallelTermEnum's constructor. The reason for that is the TreeMap#firstKey() method which was assumed to return null if there is no entry (which is not true, apparently -- it only returns null if the first key in the Map is null).
+
+
+Condition 2 (Assuming the aforementioned bug is fixed):
+The indexes within the ParallelReader originally contained one or more fields with TermVectors, but all documents have been marked as deleted.
+
+When adding the indexes to the IndexWriter, we get a java.lang.ArrayIndexOutOfBoundsException triggered by TermVectorsWriter#addAllDocVectors. The reason here is that TermVectorsWriter assumes that if the index is marked to have TermVectors, at least one field actually exists for that. This unfortunately is not true, either.
+
+Patches and a testcase demonstrating the two bugs are provided.
+
+Cheers,
+Christian

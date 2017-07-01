@@ -1,0 +1,8 @@
+Improve performance of CharTermAttribute(Impl) and also fully implement Appendable
+
+
+
+Description:
+The Appendable.append(CharSequence) method in CharTermAttributes is good for general use. But like StringBuilder has for some common use cases specialized methods, this does the same and adds separate append methods for String, StringBuilder and CharTermAttribute itsself. This methods enable the compiler to directly link the specialized methods and don't use the instanceof checks. The unspecialized method only does the instanceof checks for longer CharSequences (>8 chars), else it simply iterates.
+
+This patch also fixes the required special "null" handling. append() methods are required by Appendable to append "null", if the argument is null. I dont like this, but its required. Maybe we should document, that we dont dont support it. Otherwise, JDK's formatter fails with formatting null.

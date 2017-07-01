@@ -1,0 +1,6 @@
+Add a filter returning all document without a value in a field
+
+
+
+Description:
+In some situations it would be useful to have a Filter that simply returns all document that either have at least one or no value in a certain field. We don't have something like that out of the box and adding it seems straight forward.

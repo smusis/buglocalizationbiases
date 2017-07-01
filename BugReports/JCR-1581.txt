@@ -1,0 +1,10 @@
+ClassCastException when registering new node type
+
+
+
+Description:
+java.lang.ClassCastException: org.apache.jackrabbit.core.nodetype.NodeTypeImpl
+	at org.apache.jackrabbit.core.nodetype.NodeTypeManagerImpl.registerNodeTypes(NodeTypeManagerImpl.java:708)
+	at org.apache.jackrabbit.core.nodetype.NodeTypeManagerImpl.registerNodeType(NodeTypeManagerImpl.java:637)
+
+

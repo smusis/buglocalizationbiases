@@ -1,0 +1,8 @@
+Parsing expires
+
+
+
+Description:
+Seeing this very often:
+
+ Invalid cookie header: "Set-Cookie: _asid=011e7014f5e7718e02d893335aa5a16e; path=/; expires=Wed, 16 May 2018 17:13:32 GMT". Unable to parse expires attribute: Wed, 16 May 2018 17:13:32 GMT

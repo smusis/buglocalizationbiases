@@ -1,0 +1,6 @@
+Only load item definition when required
+
+
+
+Description:
+Some item definitions are loaded when an item state is constructed. Whenever possible this should be delayed to a time when the definition is actually used.

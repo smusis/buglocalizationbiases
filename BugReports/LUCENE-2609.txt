@@ -1,0 +1,6 @@
+Generate jar containing test classes.
+
+
+
+Description:
+The test classes are useful for writing unit tests for code external to the Lucene project. It would be helpful to build a jar of these classes and publish them as a maven dependency.

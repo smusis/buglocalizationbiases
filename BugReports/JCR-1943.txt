@@ -1,0 +1,6 @@
+jcr-tests: make property value(s) and property type(s) configurable
+
+
+
+Description:
+test-cases using Node.setProperty or Property.setValue mostly hardcode the value... there should be the possibility to specify type and value in the config.

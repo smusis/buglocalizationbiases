@@ -1,0 +1,7 @@
+allow subclassing of NodeTypeReader
+
+
+
+Description:
+in working towards an offline tool to import custom namespaces and node types, i found that i needed to make some small changes to NodeTypeReader and DOMWalker so that i could subclass NodeTypeReader and access the namespaces specified in the node type definition file. see the attached patch.
+

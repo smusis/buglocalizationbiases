@@ -1,0 +1,37 @@
+[PATCH] FuzzyTermEnum optimization and refactor
+
+
+
+Description:
+I took a look at it to see if it could be improved.  I saw speed improvements of
+20% - 40% by making a couple changes.  
+
+The patch is here: http://www.hagerfamily.com/patches/FuzzyTermEnumOptimizePatch.txt
+
+The Patch is based on the HEAD of the CVS tree as of Oct 22, 2004.
+
+What Changed?
+
+Since the word was discarded if the edit distance for the word was
+above a certain threshold, I updated the distance algorithm to abort
+if at any time during the calculation it is determined that the best
+possible outcome of the edit distance algorithm is above this
+threshold.  The source code has a great explanation.
+
+I also reduced the amount of floating point math, reduced the amount
+of potential space the array takes in its first dimension, removed the
+potential divide by 0 error when one term is an empty string, and
+fixed a bug where an IllegalArgumentException was thrown if the class
+was somehow initialized wrong, instead of looking at the arguments.
+
+The behavior is almost identical.  The exception is that similarity is
+set to 0.0 when it is guaranteed to be below the minimum similarity.
+
+Results
+
+I saw the biggest improvement from longer words, which makes a sense.
+My long word was "bridgetown" and I saw a 60% improvement on this.
+The biggest improvement are for words that are farthest away from the
+median length of the words in the index.  Short words (1-3 characters)
+saw a 30% improvement.  Medium words saw a 10% improvement (5-7
+characters).  These improvements are with the prefix set to 0.

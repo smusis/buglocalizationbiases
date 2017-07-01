@@ -1,0 +1,10 @@
+remove unused code in SmartChineseAnalyzer hmm pkg
+
+
+
+Description:
+there is some unused code in the hmm package.
+
+I would like to remove it before I supply a fix for LUCENE-1817.
+
+only after this can we refactor any of this analyzer, otherwise we risk breaking custom dictionary support.

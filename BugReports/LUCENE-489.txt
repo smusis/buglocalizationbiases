@@ -1,0 +1,7 @@
+Allow QP subclasses to support Wildcard Queries with leading "*"
+
+
+
+Description:
+It would be usefull for some users if the logic that prevents QueryParser from creating WIldcardQueries with leading wildcard characters ("?" or "*") be moved from the grammer into the base implimentation of getWildcardQuery so that it may be overridden in subclasses without needing to modifiy the grammer directly.
+

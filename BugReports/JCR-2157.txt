@@ -1,0 +1,6 @@
+SQL2 parser: Support CAST
+
+
+
+Description:
+Some CAST(...) data conversions are not yet implemented, for example String to Decimal.

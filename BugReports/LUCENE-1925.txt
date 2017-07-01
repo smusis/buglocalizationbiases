@@ -1,0 +1,11 @@
+In IndexSearcher class, make subReader and docCount arrays protected so sub classes can access them
+
+
+
+Description:
+Please make these two member variables protected so subclasses can access them, e.g.:
+
+  protected IndexReader[] subReaders;
+  protected int[] docStarts;
+
+Thanks

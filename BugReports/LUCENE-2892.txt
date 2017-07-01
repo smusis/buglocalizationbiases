@@ -1,0 +1,25 @@
+Add QueryParser.newFieldQuery
+
+
+
+Description:
+Note: this patch changes no behavior, just makes QP more subclassable.
+
+Currently we have Query getFieldQuery(String field, String queryText, boolean quoted)
+This contains very hairy methods for producing a query from QP's analyzer.
+
+I propose we factor this into newFieldQuery(Analyzer analyzer, String field, String queryText, boolean quoted)
+Then getFieldQuery just calls newFieldQuery(this.analyzer, field, queryText, quoted);
+
+The reasoning is: it can be quite useful to consider the double quote as more than phrases, but a "more exact" search.
+In the case the user quoted the terms, you might want to analyze the text with an alternate analyzer that:
+doesn't produce synonyms, doesnt decompose compounds, doesn't use WordDelimiterFilter 
+(you would need to be using preserveOriginal=true at index time for the WDF one), etc etc.
+
+This is similar to the way google's double quote operator works, its not defined as phrase but "this exact wording or phrase".
+For example compare results to a query of tests versus "tests".
+
+Currently you can do this without heavy code duplication, but really only if you make a separate field (which is wasteful),
+and make your custom QP lie about its field... in the examples I listed above you can do this with a single field, yet still
+have a more exact phrase search.
+

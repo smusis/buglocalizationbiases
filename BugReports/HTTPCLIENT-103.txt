@@ -1,0 +1,15 @@
+ChunkedInputStream incorrectly handles chunksize without semicolon
+
+
+
+Description:
+ChunkedInputStream does not correctly read the chunk size when a semicolon does
+not appear in the first line of the chunk.  If whitespace exists between the
+chunk size value and the end of line and no semicolon is present, the whitespace
+is not removed before parseInt is called resulting in an IOException "Bad chunk
+size"
+
+I can not tell from RFC2616 if whitespace is legal here, but I have received it
+from at least one web server.  The relevant section is 3.6.1.
+
+A small patch repairs the problem.  I will attach it immediately.

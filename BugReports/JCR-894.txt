@@ -1,0 +1,8 @@
+rep:excerpt() not working for attribute searches
+
+
+
+Description:
+example: //element(*, nt:unstructured)[jcr:contains(@textProp, 'foobar')]/(rep:excerpt())
+
+produces empty excerpts.

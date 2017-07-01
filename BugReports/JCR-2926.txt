@@ -1,0 +1,8 @@
+DefaultProtectedPropertyImporter masks several fields from parent, causing potential derived classes to not perform correctly
+
+
+
+Description:
+The fields session, resolver, and referenceTracker are duplicated in DefaultProtectedPropertyImporter from DefaultProtectedItemImporter, and thus future derived classes will not function correctly if they attempt to use those fields, as they will be null.
+
+I Plan to remove them from DefaultProtectedPropertyImporter

@@ -1,0 +1,11 @@
+add an interface for plugable dns clients
+
+
+
+Description:
+Currently Httpclient implicitly uses InetAddress.getByName() for DNS resolution.
+This has some drawbacks. One is that the DNS cache of Java per default caches entries forever.
+
+So I'd like to be able to replace InetAddress.getByName() with another DNS client implementation.
+
+

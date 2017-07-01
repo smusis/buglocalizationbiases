@@ -1,0 +1,6 @@
+Exception may get lost in WorkspaceManager.OperationVisitorImpl.execute()
+
+
+
+Description:
+The method calls Batch.submit() in the finally block. If both the try and finally block throw exceptions, the one from the try block is ignored.

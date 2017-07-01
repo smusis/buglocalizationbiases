@@ -1,0 +1,15 @@
+LayeredSchemeSocketFactory.createLayeredSocket() should have access to HttpParams
+
+
+
+Description:
+We use a custom implementation of LayeredSchemeSocketFactory that manages a keystore location through HttpParams. That allows us to use different keystores on a per connection basis.
+
+When a proxy is used LayeredSchemeSocketFactory.createLayeredSocket() is invoked which does not have a parameter that passes the HttpParams along. In consequence certificate authentication fails in our implementation. Is there a reason why all other factory methods in the super class have an HttpParams parameter except for LayeredSchemeSocketFactory.createLayeredSocket()?
+
+The downstream bug is here:
+
+369805: certificate authentication with custom keystore fails behind proxy
+https://bugs.eclipse.org/bugs/show_bug.cgi?id=369805
+
+Any input would be greatly appreciated.

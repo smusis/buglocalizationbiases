@@ -1,0 +1,17 @@
+Add a LATENT FieldSelectorResult
+
+
+
+Description:
+I propose adding LATENT FieldSelectorResult
+
+this would be similar to LAZY_LOAD except that it would NEVER cache the stored value
+
+This will be useful for very large fields that should always go direct to disk (because they will take so much memory)
+when caching Documents returned from a Searcher, the large field may be initially requested as LAZY_LOAD, however once someone reads this field, it will then get locked into memory. if this Document (and others like it) are cached, it can start to use a very large amount of memory for these fields
+
+Contract for FieldSelectorResult.LATENT should be that it will always be pulled direct from the IndexInput and never be persisted in memory as part of a Fieldable
+
+I could prepare a patch if desired
+
+

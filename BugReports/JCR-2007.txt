@@ -1,0 +1,15 @@
+Importing strings with special characters fails
+
+
+
+Description:
+Both Session.importXML and Workspace.importXML don't work correctly in some cases.
+
+Importing very large foreign language (for example, Chinese) text property values could result in incorrect values on some platforms. The reason is, BufferedStringValue (buffers very large string to a temporary file) uses the platform default encoding to read and write the text.
+
+BufferedStringValue is relatively slow on some systems when importing large texts or binary data because of using FD().sync().
+
+If an exported string value contains a carriage return (\r), this character was truncated on some platforms.
+
+If an exported string value contains a characters with code below 32 excluding newline (\n) and tab (\t) - for example form feed (\f) - the imported string value was base64 encoded.
+

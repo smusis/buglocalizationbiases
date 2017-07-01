@@ -1,0 +1,10 @@
+Default configuration not suitable for demo web application
+
+
+
+Description:
+The default configuration is not suitable for the demo application. There are no text extractors configured, which makes the populate and search demos useless.
+
+Proposed solution: create a new repository.xml in jackrabbit-webapp with text extractors configured.
+
+I know we should actually try to reduce the number of repository.xml files, but having one dedicated to jackrabbit-webapp seems reasonable, while we should try to achieve the same for the jackrabbit-core module.

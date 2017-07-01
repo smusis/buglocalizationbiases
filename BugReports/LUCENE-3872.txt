@@ -1,0 +1,10 @@
+Index changes are lost if you call prepareCommit() then close()
+
+
+
+Description:
+You are supposed to call commit() after calling prepareCommit(), but... if you forget, and call close() after prepareCommit() without calling commit(), then any changes done after the prepareCommit() are silently lost (including adding/deleting docs, but also any completed merges).
+
+Spinoff from java-user thread "lots of .cfs (compound files) in the index directory" from Tim Bogaert.
+
+I think to fix this, IW.close should throw an IllegalStateException if prepareCommit() was called with no matching call to commit().

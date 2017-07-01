@@ -1,0 +1,7 @@
+pull CoreReaders out of SegmentReader
+
+
+
+Description:
+Similar to LUCENE-3117, I think we should pull the CoreReaders class out of SR,
+to make it easier to navigate the code.

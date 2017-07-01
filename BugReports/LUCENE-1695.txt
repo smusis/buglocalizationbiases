@@ -1,0 +1,6 @@
+Update the Highlighter to use the new TokenStream API
+
+
+
+Description:
+

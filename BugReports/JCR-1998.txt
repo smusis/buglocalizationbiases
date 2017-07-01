@@ -1,0 +1,6 @@
+Initialize hierarchy cache on startup
+
+
+
+Description:
+In some cases it may be desirable to initialize the hierarchy cache in the search index on startup. Currently this initialization is done in the background. For larger workspaces, this puts considerable load on the repository and may slow down access and queries. There should be a configuration parameter that forces the repository to initialize the hierarchy cache on startup and only return the repository instance when the initialization is completed.  The default value would be the current behaviour (using background thread).

@@ -1,0 +1,6 @@
+Evict fixed NodePropBundle from cache
+
+
+
+Description:
+The BundleDbPersistenceManager only stores back fixed NodePropBundles in checkConsistency() but does not invalidate the cache, which may potentially contain a cached version of a NodePropBundle.

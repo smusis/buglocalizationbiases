@@ -1,0 +1,6 @@
+Class DisjunctionSumScorer does not need to be public.
+
+
+
+Description:
+See title, patch follows.

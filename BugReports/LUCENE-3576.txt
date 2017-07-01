@@ -1,0 +1,9 @@
+TestBackwardsCompatibility needs terms with U+E000 to U+FFFF
+
+
+
+Description:
+we changed sort order in 4.0, and have sophisticated backwards compatibility (e.g. surrogates dance),
+but we don't test this at all in TestBackwardsCompatibility.
+
+for example, nothing handles this case for term vectors...

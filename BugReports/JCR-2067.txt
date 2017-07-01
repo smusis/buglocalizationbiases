@@ -1,0 +1,20 @@
+FileDataStore: only open a stream when really necessary
+
+
+
+Description:
+Currently, PropertyImpl.getValue() opens a FileInputStream if the FileDataStore is used.
+If the application doesn't use the value, this stream is never closed.
+
+PropertyImpl.getValue():
+  return internalGetValue().toJCRValue(session);
+InternalValue.toJCRValue(..):
+  case PropertyType.BINARY:
+    return new BinaryValue(((BLOBFileValue) val).getStream());
+BLOBInDataStore.getStream():
+  return getDataRecord().getStream();
+FileDataRecord.getStream():
+  return new FileInputStream(file);
+
+One solution is to return a 'lazy' file input stream that only opens the file when reading from the stream (and closing the file when the last byte was read). Maybe there is already a class (in Apache Commons maybe?) that can do that.
+

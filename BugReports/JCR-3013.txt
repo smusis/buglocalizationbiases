@@ -1,0 +1,122 @@
+ArrayIndexOutOfBoundsException: ConcurrentCache
+
+
+
+Description:
+ArrayIndexOutOfBoundsException after several days of uptime.
+
+I'm experiencing some strange ArrayIndexOutOfBoundsExceptions on
+ accessing the jackrabbit ConcurrentCache in 2.2.5. in Line 241 during
+ shrinkIfNeeded check.
+
+ Caused by: java.lang.ArrayIndexOutOfBoundsException: -14
+        at
+ org.apache.jackrabbit.core.cache.ConcurrentCache.shrinkIfNeeded(ConcurrentCache.java:241)
+
+
+I reviewed jackrabbit-code and I'm sure it's caused by that
+ AtomicInteger for realizing accessCounter in AbstractCache, which will
+ have become negative during increasing over the Integer.MAX_VALUE constant.
+
+         // Semi-random start index to prevent bias against the first
+ segments
+         int start = (int) getAccessCount() % segments.length;
+         for (int i = start; isTooBig(); i = (i + 1) % segments.length) {
+             synchronized (segments[i]) {
+
+ ___________________________
+
+ Uncaught Throwable java.lang.ArrayIndexOutOfBoundsException: -7
+         at
+ org.apache.jackrabbit.core.cache.ConcurrentCache.shrinkIfNeeded(ConcurrentCache.java:241)
+         at
+ org.apache.jackrabbit.core.cache.ConcurrentCache.put(ConcurrentCache.java:176)
+         at
+ org.apache.jackrabbit.core.persistence.bundle.AbstractBundlePersistenceManager.getBundle(AbstractBundlePersistenceManager.java:657)
+         at
+ org.apache.jackrabbit.core.persistence.bundle.AbstractBundlePersistenceManager.load(AbstractBundlePersistenceManager.java:400)
+         at
+ org.apache.jackrabbit.core.state.SharedItemStateManager.loadItemState(SharedItemStateManager.java:1819)
+         at
+ org.apache.jackrabbit.core.state.SharedItemStateManager.getNonVirtualItemState(SharedItemStateManager.java:1739)
+         at
+ org.apache.jackrabbit.core.state.SharedItemStateManager.getItemState(SharedItemStateManager.java:261)
+         at
+ org.apache.jackrabbit.core.state.LocalItemStateManager.getNodeState(LocalItemStateManager.java:107)
+         at
+ org.apache.jackrabbit.core.state.LocalItemStateManager.getItemState(LocalItemStateManager.java:172)
+         at
+ org.apache.jackrabbit.core.state.XAItemStateManager.getItemState(XAItemStateManager.java:260)
+         at
+ org.apache.jackrabbit.core.state.SessionItemStateManager.getItemState(SessionItemStateManager.java:161)
+         at
+ org.apache.jackrabbit.core.ItemManager.getItemData(ItemManager.java:370)
+         at
+ org.apache.jackrabbit.core.ItemManager.getItem(ItemManager.java:316)
+         at
+ org.apache.jackrabbit.core.ItemManager.getItem(ItemManager.java:610)
+         at
+ org.apache.jackrabbit.core.SessionImpl.getNodeById(SessionImpl.java:493)
+         at
+ org.apache.jackrabbit.core.SessionImpl.getNodeByIdentifier(SessionImpl.java:1045)
+         at sun.reflect.GeneratedMethodAccessor31.invoke(Unknown Source)
+         at
+ sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:25)
+         at java.lang.reflect.Method.invoke(Method.java:597)
+         at
+ org.apache.sling.jcr.base.SessionProxyHandler$SessionProxyInvocationHandler.invoke(SessionProxyHandler.java:109)
+         at $Proxy2.getNodeByIdentifier(Unknown Source)
+         at
+ de.dig.cms.frontend.servlet.helper.ResourceUtil.findResourceById(ResourceUtil.java:44)
+         at
+ de.dig.cms.frontend.servlet.CMSContentEnrichServletFilter.doFilter(CMSContentEnrichServletFilter.java:194)
+         at
+ org.apache.sling.engine.impl.filter.AbstractSlingFilterChain.doFilter(AbstractSlingFilterChain.java:60)
+         at
+ de.dig.cms.frontend.servlet.CacheControlFilter.doFilter(CacheControlFilter.java:120)
+         at
+ org.apache.sling.engine.impl.filter.AbstractSlingFilterChain.doFilter(AbstractSlingFilterChain.java:60)
+         at
+ de.dig.cms.cache.impl.WallCacheServletFilter.processCacheableRequest(WallCacheServletFilter.java:244)
+         at
+ de.dig.cms.cache.impl.WallCacheServletFilter.processCacheableRequestWithLatch(WallCacheServletFilter.java:185)
+         at
+ de.dig.cms.cache.impl.WallCacheServletFilter.doFilter(WallCacheServletFilter.java:154)
+         at
+ org.apache.sling.engine.impl.filter.AbstractSlingFilterChain.doFilter(AbstractSlingFilterChain.java:60)
+         at
+ de.dig.cms.frontend.servletapi.CMSSlingHttpServletRequestFilter.doFilter(CMSSlingHttpServletRequestFilter.java:52)
+         at
+ org.apache.sling.engine.impl.filter.AbstractSlingFilterChain.doFilter(AbstractSlingFilterChain.java:60)
+         at
+ org.apache.sling.engine.impl.SlingMainServlet.service(SlingMainServlet.java:313)
+         at
+ org.apache.sling.engine.impl.SlingMainServlet.service(SlingMainServlet.java:207)
+         at
+ org.mortbay.jetty.servlet.ServletHolder.handle(ServletHolder.java:502)
+         at
+ org.mortbay.jetty.servlet.ServletHandler.handle(ServletHandler.java:389)
+         at
+ org.ops4j.pax.web.service.internal.HttpServiceServletHandler.handle(HttpServiceServletHandler.java:64)
+         at
+ org.mortbay.jetty.servlet.SessionHandler.handle(SessionHandler.java:181)
+         at
+ org.mortbay.jetty.handler.ContextHandler.handle(ContextHandler.java:765)
+         at
+ org.ops4j.pax.web.service.internal.HttpServiceContext.handle(HttpServiceContext.java:111)
+         at
+ org.ops4j.pax.web.service.internal.JettyServerHandlerCollection.handle(JettyServerHandlerCollection.java:64)
+         at
+ org.mortbay.jetty.handler.HandlerWrapper.handle(HandlerWrapper.java:152)
+         at org.mortbay.jetty.Server.handle(Server.java:324)
+         at
+ org.mortbay.jetty.HttpConnection.handleRequest(HttpConnection.java:535)
+         at
+ org.mortbay.jetty.HttpConnection$RequestHandler.headerComplete(HttpConnection.java:865)
+         at org.mortbay.jetty.HttpParser.parseNext(HttpParser.java:539)
+         at org.mortbay.jetty.HttpParser.parseAvailable(HttpParser.java:212)
+         at org.mortbay.jetty.HttpConnection.handle(HttpConnection.java:404)
+         at
+ org.mortbay.io.nio.SelectChannelEndPoint.run(SelectChannelEndPoint.java:409)
+         at
+ org.mortbay.thread.QueuedThreadPool$PoolThread.run(QueuedThreadPool.java:520)

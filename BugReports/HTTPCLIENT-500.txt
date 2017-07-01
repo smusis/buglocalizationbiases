@@ -1,0 +1,9 @@
+Dependency URL broken for commons-logging
+
+
+
+Description:
+On http://jakarta.apache.org/commons/httpclient/dependencies.html there is a 
+typo in the href to the logging dependency, this should be
+
+http://jakarta.apache.org/commons/logging/

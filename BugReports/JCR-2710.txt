@@ -1,0 +1,11 @@
+Add support for large number of users in a group
+
+
+
+Description:
+In the current implementation there are several factors which limit the number of users in a group:
+
+- group membership is recorded in a multi valued property which does not scale well
+- members of groups are collected eagerly which does not scale well
+
+I propose to add complementary support for recording group membership in a node structure to the current solution. That node structure would - similar to users and groups - add intermediate nodes when a group reaches a certain threshold on the number of its users.

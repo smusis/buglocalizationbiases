@@ -1,0 +1,10 @@
+allow cache to be configured as a non-shared (private) cache
+
+
+
+Description:
+Currently the CachingHttpClient only behaves as a shared cache, which is a safe and conservative assumption. However, in some settings, it would be appropriate to be able to configure the CachingHttpClient as a non-shared cache, which would make more responses cacheable, including:
+* responses to requests with Authorization headers
+* responses with 'Cache-Control: private'
+* ability to serve stale responses when invalidation fails for 'Cache-Control: proxy-revalidate'
+

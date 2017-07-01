@@ -1,0 +1,7 @@
+Add Thread-Safety note to IndexWriter JavaDoc
+
+
+
+Description:
+IndexWriter Javadocs should contain a note about thread-safety. This is already mentioned on the wiki FAQ page but such an essential information should be part of the module documentation too.
+

@@ -1,0 +1,6 @@
+Implementation of Delete method
+
+
+
+Description:
+The HTTP request method, Delete, had not been implemented. I needed it and created an HttpDelete class modeled after HttpGet.

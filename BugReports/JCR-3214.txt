@@ -1,0 +1,17 @@
+[Lock] weird number for "infinite"
+
+
+
+Description:
+(this is a follow-up of JCR-3205)
+
+i am surprised by the davex reply to a lock request with infinite timeout (before and after the fix from JCR-3205):
+
+
+<D:timeout>Second-2147483</D:timeout>
+
+this number is
+2^21+50331
+
+which seems pretty random to me. coincidally, this number is exactly 2^31 - 1 (2147483647) without the last 3 digits. can it be that there are some weird string operations happening on server side?
+

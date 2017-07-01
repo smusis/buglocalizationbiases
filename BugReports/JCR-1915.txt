@@ -1,0 +1,9 @@
+Node.setPrimaryNodeType should only redefine child-definitions that are not covered by the new effective nt
+
+
+
+Description:
+NodeImpl.setPrimaryNodeType changes the primary node type of an node and resets the definition of child items if required. Currently all child items that are not part of the effective node type of the new primary type get their definition reset or are removed in case not matching definition is found.
+From my point of view this doesn't properly cope with mixin types present on the node: child items defined by any of the mixin node types present should probably not be touched (or removed).
+
+I run into this while testing the latest 283 security changes and will try to provide a fix along with those changes.

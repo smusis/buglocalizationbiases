@@ -1,0 +1,6 @@
+Add link to "Benchmarking the HttpClient Caching Module" article from Comcast Interactive Media
+
+
+
+Description:
+I'd like to add a link into the HttpClient docs detailing some benchmarking we did with the HttpClient Cache module.

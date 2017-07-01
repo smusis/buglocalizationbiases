@@ -1,0 +1,56 @@
+Exception in HttpConnection because of unchecked buffer size
+
+
+
+Description:
+From the httpclient-dev mailing list:
+
+Date: Tue, 8 Mar 2005 19:08:35 +0100
+Subject: Error with multiple connections
+
+Hello,
+
+ 
+
+I am having some problems while trying multiple connections over a
+HttpClient object with a MultiThreadedHttpConnectionManager. I am
+launching 10 threads and each thread executes some GetMethods using this
+HttpClient object.
+
+ 
+
+Some times I got an error like this:
+
+ 
+
+java.lang.IllegalArgumentException: Buffer size <= 0
+
+      at java.io.BufferedInputStream.<init>(Unknown Source)
+
+      at
+org.apache.commons.httpclient.HttpConnection.open(HttpConnection.java:70
+3)
+
+      at
+org.apache.commons.httpclient.MultiThreadedHttpConnectionManager$HttpCon
+nectionAdapter.open(MultiThreadedHttpConnectionManager.java:1170)
+
+      at
+org.apache.commons.httpclient.HttpClient.executeMethod(HttpClient.java:6
+28)
+
+      at
+org.apache.commons.httpclient.HttpClient.executeMethod(HttpClient.java:4
+97)
+
+      at Main$Hilo.run(Main.java:58)
+
+ 
+
+Does anybody have any idea? 
+
+ 
+
+Thanks in advance,
+
+Jorge

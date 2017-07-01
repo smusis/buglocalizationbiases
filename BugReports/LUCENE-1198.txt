@@ -1,0 +1,18 @@
+Exception in DocumentsWriter.ThreadState.init leads to corruption
+
+
+
+Description:
+If an exception is hit in the init method, DocumentsWriter incorrectly
+increments numDocsInRAM when in fact the document is not added.
+
+Spinoff of this thread:
+
+  http://markmail.org/message/e76hgkgldxhakuaa
+
+The root cause that led to the exception in init was actually due to
+incorrect use of Lucene's APIs (one thread still modifying the
+Document while IndexWriter.addDocument is adding it) but still we
+should protect against any exceptions coming out of init.
+
+

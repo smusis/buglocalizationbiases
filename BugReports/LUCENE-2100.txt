@@ -1,0 +1,6 @@
+Make contrib analyzers final
+
+
+
+Description:
+The analyzers in contrib/analyzers should all be marked final. None of the Analyzers should ever be subclassed - users should build their own analyzers if a different combination of filters and Tokenizers is desired.

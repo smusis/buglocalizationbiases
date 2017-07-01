@@ -1,0 +1,6 @@
+Small imprecision in Search package Javadocs
+
+
+
+Description:
+Search package Javadocs states that Scorer#score(Collector) will be abstract in Lucene 3.0, which is not accurate anymore.

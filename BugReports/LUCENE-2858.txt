@@ -1,0 +1,12 @@
+Separate SegmentReaders (and other atomic readers) from composite IndexReaders
+
+
+
+Description:
+With current trunk, whenever you open an IndexReader on a directory you get back a DirectoryReader which is a composite reader. The interface of IndexReader has now lots of methods that simply throw UOE (in fact more than 50% of all methods that are commonly used ones are unuseable now). This confuses users and makes the API hard to understand.
+
+This issue should split "atomic readers" from "reader collections" with a separate API. After that, you are no longer able, to get TermsEnum without wrapping from those composite readers. We currently have helper classes for wrapping (SlowMultiReaderWrapper - please rename, the name is really ugly; or Multi*), those should be retrofitted to implement the correct classes (SlowMultiReaderWrapper would be an atomic reader but takes a composite reader as ctor param, maybe it could also simply take a List<AtomicReader>). In my opinion, maybe composite readers could implement some collection APIs and also have the ReaderUtil method directly built in (possibly as a "view" in the util.Collection sense). In general composite readers do not really need to look like the previous IndexReaders, they could simply be a "collection" of SegmentReaders with some functionality like reopen.
+
+On the other side, atomic readers do not need reopen logic anymore? When a segment changes, you need a new atomic reader? - maybe because of deletions thats not the best idea, but we should investigate. Maybe make the whole reopen logic simplier to use (ast least on the collection reader level).
+
+We should decide about good names, i have no preference at the moment.

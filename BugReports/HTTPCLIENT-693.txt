@@ -1,0 +1,6 @@
+DEFAULT_HEADERS not added to subsequent requests
+
+
+
+Description:
+DEFAULT_HEADERS are added to the original request only, not to subsequent requests for redirects or authentication.

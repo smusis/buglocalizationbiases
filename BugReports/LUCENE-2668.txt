@@ -1,0 +1,24 @@
+offset gap should be added regardless of existence of tokens in DocInverterPerField
+
+
+
+Description:
+Problem: If a multiValued field which contains a stop word (e.g. "will" in the following sample) only value is analyzed by StopAnalyzer when indexing, the offsets of the subsequent tokens are not correct.
+
+{code:title=indexing a multiValued field}
+doc.add( new Field( F, "Mike", Store.YES, Index.ANALYZED, TermVector.WITH_OFFSETS ) );
+doc.add( new Field( F, "will", Store.YES, Index.ANALYZED, TermVector.WITH_OFFSETS ) );
+doc.add( new Field( F, "use", Store.YES, Index.ANALYZED, TermVector.WITH_OFFSETS ) );
+doc.add( new Field( F, "Lucene", Store.YES, Index.ANALYZED, TermVector.WITH_OFFSETS ) );
+{code}
+
+In this program (soon to be attached), if you use WhitespaceAnalyzer, you'll get the offset(start,end) for "use" and "Lucene" will be use(10,13) and Lucene(14,20). But if you use StopAnalyzer, the offsets will be use(9,12) and lucene(13,19). When searching, since searcher cannot know what analyzer was used at indexing time, this problem causes out of alignment of FVH.
+
+Cause of the problem: StopAnalyzer filters out "will", anyToken flag set to false then offset gap is not added in DocInverterPerField:
+
+{code:title=DocInverterPerField.java}
+if (anyToken)
+  fieldState.offset += docState.analyzer.getOffsetGap(field);
+{code}
+
+I don't understand why the condition is there... If always the gap is added, I think things are simple.

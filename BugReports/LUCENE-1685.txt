@@ -1,0 +1,12 @@
+Make the Highlighter use SpanScorer by default
+
+
+
+Description:
+I've always thought this made sense, but frankly, it took me a year to get the SpanScorer included with Lucene at all, so I was pretty much ready to move on after I it got in, rather than push for it as a default.
+
+I think it makes sense as the default in Solr as well, and I mentioned that back when it was put in, but alas, its an option there as well.
+
+The Highlighter package has no back compat req, but custom has been conservative - one reason I havn't pushed for this change before. Might be best to actually make the switch in 3? I could go either way - as is, I know a bunch of people use it, but I'm betting its the large minority. It has never been listed in a changes entry and its not in LIA 1, so you pretty much have to stumble upon it, and figure out what its for.
+
+I'll point out again that its just as fast as the standard scorer for any clause of a query that is not position sensitive. Position sensitive query clauses will obviously be somewhat slower to highlight, but that is because they will be highlighted correctly rather than ignoring position.

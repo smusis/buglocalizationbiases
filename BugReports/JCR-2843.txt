@@ -1,0 +1,19 @@
+ConstraintSplitter.getSelectorNames doesn't support FullTextSearch constraints
+
+
+
+Description:
+The constraint type FullTextSearch is missing in the tested types in org.apache.jackrabbit.core.query.lucene.join.ConstraintSplitter.getSelectorNames(Constraint) method. Submitting a QOM query with a full-text constraint throws a javax.jcr.UnsupportedRepositoryOperationException, while the repository reports supporting such queries : session.getRepository().getDescriptorValue(Repository.QUERY_FULL_TEXT_SEARCH_SUPPORTED).getBoolean() returns TRUE.
+
+Typical stack trace :
+
+javax.jcr.UnsupportedRepositoryOperationException: Unknown constraint type: CONTAINS(r.[jcr:title], 'REGA -APA')
+	org.apache.jackrabbit.core.query.lucene.join.ConstraintSplitter.getSelectorNames(ConstraintSplitter.java:177)
+	org.apache.jackrabbit.core.query.lucene.join.ConstraintSplitter.getSelectorNames(ConstraintSplitter.java:195)
+	org.apache.jackrabbit.core.query.lucene.join.ConstraintSplitter.getSelectorNames(ConstraintSplitter.java:157)
+	org.apache.jackrabbit.core.query.lucene.join.ConstraintSplitter.split(ConstraintSplitter.java:106)
+	org.apache.jackrabbit.core.query.lucene.join.ConstraintSplitter.split(ConstraintSplitter.java:104)
+	org.apache.jackrabbit.core.query.lucene.join.ConstraintSplitter.<init>(ConstraintSplitter.java:80)
+	org.apache.jackrabbit.core.query.lucene.join.QueryEngine.execute(QueryEngine.java:162)
+	org.apache.jackrabbit.core.query.lucene.join.QueryEngine.execute(QueryEngine.java:147)
+	org.apache.jackrabbit.core.query.QueryObjectModelImpl.execute(QueryObjectModelImpl.java:114)

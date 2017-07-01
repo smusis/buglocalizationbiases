@@ -1,0 +1,8 @@
+Duplicate hits and missing hits in sorted search
+
+
+
+Description:
+If using a searcher that subclasses from IndexSearcher I get different result sets (besides the ordering of course). The problem only occurrs if the searcher is wrapped by (Parallel)MultiSearcher and the index is not too small. The number of hits returned by un unsorted and a sorted search are identical but the hits are referencing different documents. A closer look at the result sets revealed that the sorted search returns duplicate hits.
+
+I created test cases for Lucene 1.4.3 as well as for the head release. The problem showed up for both, the number of duplicates beeing bigger for the head realease. The test cases are written for package org.apache.lucene.search. There are messages describing the problem written to the console. In order to see all those hints the asserts are commented out. So dont't be confused if junit reports no errors. (Sorry, beeing a novice user of the bug tracker I don't see any means to attach the test cases on this screen. Let's see.)

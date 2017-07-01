@@ -1,0 +1,22 @@
+Can not set the "Proxy-connection" header
+
+
+
+Description:
+When using a proxy the HttpClient refuses to set the "Proxy-connection" header
+to the value "close". The value will be converted to "keep-alive" when the final
+request is sent to network.
+
+The following code snippet can be used to replicate the defect. Method is GET:
+...
+method.removeRequestHeader("Proxy-Connection");
+logger.debug("Proxy-Connection header removed.");
+method.addRequestHeader("Proxy-Connection", "close");
+logger.debug("Proxy-Connection header set to: " +
+method.getRequestHeader("Proxy-Connection") );
+try {
+  	int statusCode = httpclient.executeMethod( method );
+...
+
+Now if you look at the wire log, you will notice that the actual value will be
+"keep-alive".

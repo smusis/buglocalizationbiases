@@ -1,0 +1,9 @@
+upgrade icu libraries to 4.4.2
+
+
+
+Description:
+modules/analysis uses 4.4
+solr/contrib/extraction uses 4.2.1
+
+I think we should keep them the same version, for consistency, and go to 4.4.2 since it has bugfixes.

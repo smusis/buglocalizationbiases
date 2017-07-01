@@ -1,0 +1,7 @@
+org.apache.jackrabbit.server.remoting.davex.JsonWriter: wrong value type for ::NodeIteratorSize attribute
+
+
+
+Description:
+the ::NodeIteratorSize attribute is serialized as string value whereas the client expects a long value.
+this causes unnecessery server-roundtrips since the client doesn't detect this hint.

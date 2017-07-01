@@ -1,0 +1,6 @@
+PropertyTypeRegistry should also yield if property is multi-valued
+
+
+
+Description:
+Currently only the PropertyType is available for a certain property name. In some cases it is also required to know if the property is single- or multi-valued.

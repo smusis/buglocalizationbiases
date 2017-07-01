@@ -1,0 +1,6 @@
+CompactNodeTypeDefReader does not recognise MIXIN ORDERABLE sequence
+
+
+
+Description:
+the code in 'doOptions' misses to set the setOrderableChildNodes flag if the order of the tokens is MIXIN ORDERABLE.

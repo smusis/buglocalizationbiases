@@ -1,0 +1,16 @@
+Some improvements to CMS
+
+
+
+Description:
+While running optimize on a large index, I've noticed several things that got me to read CMS code more carefully, and find these issues:
+
+* CMS may hold onto a merge if maxMergeCount is hit. That results in the MergeThreads taking merges from the IndexWriter until they are exhausted, and only then that blocked merge will run. I think it's unnecessary that that merge will be blocked.
+
+* CMS sorts merges by segments size, doc-based and not bytes-based. Since the default MP is LogByteSizeMP, and I hardly believe people care about doc-based size segments anymore, I think we should switch the default impl. There are two ways to make it extensible, if we want:
+** Have an overridable member/method in CMS that you can extend and override - easy.
+** Have OneMerge be comparable and let the MP determine the order (e.g. by bytes, docs, calibrate deletes etc.). Better, but will need to tap into several places in the code, so more risky and complicated.
+
+On the go, I'd like to add some documentation to CMS - it's not very easy to read and follow.
+
+I'll work on a patch.

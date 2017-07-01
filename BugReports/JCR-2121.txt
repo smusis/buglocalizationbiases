@@ -1,0 +1,6 @@
+Use java.util.UUID
+
+
+
+Description:
+Replace the use of org.apache.jackrabbit.uuid.UUID with the new java.util.UUID class introduced in Java 5.

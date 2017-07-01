@@ -1,0 +1,6 @@
+Move tests that require indexing configuration
+
+
+
+Description:
+Tests that require an indexing configuration should be moved to the indexing-test workspace. This allows us to remove the indexing configuration from the default workspace and speed up the JCR API tests.

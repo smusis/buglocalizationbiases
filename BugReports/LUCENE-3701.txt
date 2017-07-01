@@ -1,0 +1,10 @@
+FST apis out of sync between trunk/3.x
+
+
+
+Description:
+Looks like the offender is LUCENE-3030 :)
+
+Not sure if everything is generally useful but it does change the public API (e.g. you can specify FreezeTail to the super-scary Builder ctor among other things).
+
+Maybe we should sync up for 3.x? 

@@ -1,0 +1,6 @@
+optimize MultiTermEnum/MultiTermDocs
+
+
+
+Description:
+Optimize MultiTermEnum and MultiTermDocs to avoid seeks on TermDocs that don't match the term.

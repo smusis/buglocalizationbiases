@@ -1,0 +1,6 @@
+SQL2 ISDESCENDANTNODE BooleanQuery#TooManyClauses returns
+
+
+
+Description:
+The initial fix is not generic enough. It still fails after adding twice the max clauses count.

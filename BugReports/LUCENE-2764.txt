@@ -1,0 +1,6 @@
+Allow tests to use random codec per field
+
+
+
+Description:
+Since we now have a real per field codec support we should enable to run the tests with a random codec per field. When I change something related to codecs internally I would like to ensure that whatever combination of codecs (except of preflex) I use the code works just fine. I created a RandomCodecProvider in LuceneTestCase that randomly selects the codec for fields when it sees them the first time. I disabled the test by default to leave the old randomize codec support in as it was / is.

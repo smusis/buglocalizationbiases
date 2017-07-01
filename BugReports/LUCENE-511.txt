@@ -1,0 +1,6 @@
+New BufferedIndexOutput optimization fails to update bufferStart
+
+
+
+Description:
+New BufferIndexOutput optimization of writeBytes fails to update bufferStart under some conditions. Test case and fix attached.

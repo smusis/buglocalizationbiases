@@ -1,0 +1,6 @@
+jcr2spi: wrong status change upon conflicting removal (CacheBehaviour.OBSERVATION)
+
+
+
+Description:
+with CacheBehaviour.OBSERVATION the external removal of a transiently removed item results in wrong status change that brings it back to life.

@@ -1,0 +1,13 @@
+Log / trace wrapper for the JCR API
+
+
+
+Description:
+I have implemented the log / trace mechanism for the JCR API. A short summary:
+
+- A wrapper for a Repository. All other objects that where created directly or indirectly (Session, Node and so on) are wrapped as well. 
+- The wrappers log all JCR method calls to a file and call the underlying methods. 
+- Return values and calling method / line number can be logged as well (optional). 
+- The log file itself is mainly Java source code and can be compiled and run.
+- Included is a player to re-play log files (for example, if the log file is too big to be compiled).
+

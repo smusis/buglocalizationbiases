@@ -1,0 +1,7 @@
+CharFilters not being invoked in Solr
+
+
+
+Description:
+
+On Solr trunk, *all* CharFilters have been non-functional since LUCENE-3396 was committed in r1175297 on 25 Sept 2011, until Yonik's fix today in r1235810; Solr 3.x was not affected - CharFilters have been working there all along.

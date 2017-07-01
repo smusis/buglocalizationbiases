@@ -1,0 +1,8 @@
+Public API inconsistency
+
+
+
+Description:
+org.apache.lucene.index.SegmentInfos is public, and contains public methods (which is good for expert-level index manipulation tools such as Luke). However, SegmentInfo class has package visibility. This leads to a strange result that it's possible to read SegmentInfos, but it's not possible to access its details (SegmentInfos.info(int)) from a user application.
+
+The solution is to make SegmentInfo class public.

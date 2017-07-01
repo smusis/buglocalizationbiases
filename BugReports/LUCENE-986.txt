@@ -1,0 +1,17 @@
+Refactor segmentInfos from IndexReader into its subclasses
+
+
+
+Description:
+References to segmentInfos in IndexReader cause different kinds of problems
+for subclasses of IndexReader, like e. g. MultiReader.
+
+Only subclasses of IndexReader that own the index directory, namely 
+SegmentReader and MultiSegmentReader, should have a SegmentInfos object
+and be able to access it.
+
+Further information:
+http://www.gossamer-threads.com/lists/lucene/java-dev/51808
+http://www.gossamer-threads.com/lists/lucene/java-user/52460
+
+A part of the refactoring work was already done in LUCENE-781

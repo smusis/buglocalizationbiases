@@ -1,0 +1,10 @@
+CacheManager (Memory Management in Jackrabbit)
+
+
+
+Description:
+Jackrabbit can run out of memory because the the combined size of the various caches is not managed. The biggest problem (for me) is the combined size of the o.a.j.core.state.MLRUItemStateCache caches. Each session seems to create a few (?) of those caches, and each one is limited to 4 MB by default.
+
+I have implemented a dynamic (cache-) memory management service that distributes a fixed amount of memory dynamically to all those caches.
+
+Here is the patch

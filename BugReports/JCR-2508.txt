@@ -1,0 +1,7 @@
+JsonWriter: missing handling of new JCR 2.0 property types
+
+
+
+Description:
+the json writer sends extra type information in case it cannot be determined unambiguously from the json string.
+this needs to be adjusted for the new property types added for JCR 2.0

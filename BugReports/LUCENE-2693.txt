@@ -1,0 +1,6 @@
+Add delete term and query need to more precisely record the bytes used
+
+
+
+Description:
+DocumentsWriter's add delete query and add delete term add to the number of bytes used regardless of the query or term already existing in the respective map.

@@ -1,0 +1,7 @@
+LocalTestServer and supporting classes should be available as a separate jar
+
+
+
+Description:
+LocalTestServer and it's supporting classes are useful to anyone who wants to easily "mock"/test simple http calls without having to embed a full jetty or something.
+It would be awesome if these were available in a separate http-localtestserver.jar that could be used in projects outside of httpclient.

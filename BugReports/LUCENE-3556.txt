@@ -1,0 +1,15 @@
+Make DirectoryTaxonomyWriter's indexWriter member private
+
+
+
+Description:
+DirectoryTaxonomyWriter has a protected indexWriter member. As far as I can tell, for two reasons:
+
+# protected openIndexWriter method which lets you open your own IW (e.g. with a custom IndexWriterConfig).
+# protected closeIndexWriter which is a hook for letting you close the IW you opened in the previous one.
+
+The fixes are trivial IMO:
+# Modify the method to return IW, and have the calling code set DTW's indexWriter member
+# Eliminate closeIW. DTW already has a protected closeResources() which lets you clean other resources you've allocated, so I think that's enough.
+
+I'll post a patch shortly.

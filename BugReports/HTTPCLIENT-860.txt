@@ -1,0 +1,26 @@
+DefaultRequestDirector converts redirects of PUT/POST to GET for status codes 301, 302, 307
+
+
+
+Description:
+The DefaultRequestDirector treats redirect requests created by all redirect status codes (HttpStatus.SC_MOVED_TEMPORARILY: , HttpStatus.SC_MOVED_PERMANENTLY, HttpStatus.SC_SEE_OTHER, HttpStatus.SC_TEMPORARY_REDIRECT) the same, converting PUT/POST methods to GET.  The HttpClient Tutorial even documents this as being in accordance with the specification, but I don't believe that's true.
+
+Per the RFC (http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html), conversion of PUT/POST to GET is appropriate only for 303 (See Other).  The others do not suggest this behavior.  In fact, the following notes attached to them call it out as incorrect.
+
+301 (Moved Permanently) has this note:
+
+      Note: When automatically redirecting a POST request after
+      receiving a 301 status code, some existing HTTP/1.0 user agents
+      will erroneously change it into a GET request.
+
+And 302 (Found) say this:
+
+      Note: RFC 1945 and RFC 2068 specify that the client is not allowed
+      to change the method on the redirected request.  However, most
+      existing user agent implementations treat 302 as if it were a 303
+      response, performing a GET on the Location field-value regardless
+      of the original request method. The status codes 303 and 307 have
+      been added for servers that wish to make unambiguously clear which
+      kind of reaction is expected of the client.
+
+The currently implemented behavior is causing problems with interacting with Central Authentication Service protected resources, among other things.

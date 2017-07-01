@@ -1,0 +1,8 @@
+Use Apache Tika for text extraction
+
+
+
+Description:
+Once Apache Tika is released with a resolution to TIKA-175 (making Tika available to Java 1.4 projects), we should replace our direct parser library dependencies with Tika parsers. Ideally we'd just use the Tika AutoDetectParser that'll automatically detect the type of a binary and parse it accordingly, solving JCR-728.
+
+I guess we should keep some level of backwards compatibility with existing textFilterClasses="..." configurations, perhaps by keeping the existing TextExtractor classes as wrappers around respective Tika parsers.

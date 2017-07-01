@@ -1,0 +1,11 @@
+Large fetch sizes have potentially deleterious effects on VM memory requirements when using Oracle
+
+
+
+Description:
+Since Release 10g, Oracle JDBC drivers use the fetch size to allocate buffers for caching row data.
+cf. http://www.oracle.com/technetwork/database/enterprise-edition/memory.pdf
+
+r1060431 hard-codes the fetch size for all ResultSet-returning statements to 10,000. This value has significant, potentially deleterious, effects on the heap space required for even moderately-sized repositories. For example, the BUNDLE table (from 'oracle.ddl') has two columns -- NODE_ID raw(16) and BUNDLE_DATA blob -- which require 16 b and 4 kb of buffer space, respectively. This requires a buffer of more than 40 mb [(16+4096) * 10000 = 41120000].
+
+If the issue described in JCR-2832 is truly specific to PostgreSQL, I think its resolution should be moved to a PostgreSQL-specific ConnectionHelper subclass. Failing that, there should be a way to override this hard-coded value in OracleConnectionHelper.

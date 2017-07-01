@@ -1,0 +1,15 @@
+remove random juggling in tests, add -Dtests.seed
+
+
+
+Description:
+Since we added newIndexWriterConfig/newDirectory, etc, a lot of tests are juggling randoms around.
+
+Instead this patch:
+* changes it so LuceneTestCase[J4] manage the random.
+* allow you to set -Dtests.seed=23432432432 to reproduce a test, rather than editing the code
+* removes random arguments from newIndexWriterConfig, newDirectory.
+
+I want to do this before looking at doing things like newField so we can vary term vectors, etc.
+
+I also fixed the solr contrib builds so they arent hiding the exceptions i noted in SOLR-2002.

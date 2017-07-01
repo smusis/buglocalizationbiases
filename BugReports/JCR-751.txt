@@ -1,0 +1,6 @@
+Update Jackrabbit API JavaDoc on http://jackrabbit.apache.org
+
+
+
+Description:
+Update the JavaDoc on http://jackrabbit.apache.org to the latest release version of jackrabbit.

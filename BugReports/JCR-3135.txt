@@ -1,0 +1,8 @@
+Upgrade to Logback 1.0
+
+
+
+Description:
+Logback 1.0 was just released (see http://mailman.qos.ch/pipermail/announce/2011/000093.html). There are no big new features or other major changes, but the bump to 1.0 is still a good point for us to upgrade to get all the latest bug fixes and other improvements.
+
+At the same time we should upgrade our SLF4J depedency to the latest 1.6.4 version.

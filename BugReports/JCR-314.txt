@@ -1,0 +1,14 @@
+Fine grained locking in SharedItemStateManager
+
+
+
+Description:
+The SharedItemStateManager (SISM) currently uses a simple read-write lock to ensure data consistency. Store operations to the PersistenceManager (PM) are effectively serialized.
+
+We should think about more sophisticated locking to allow concurrent writes on the PM.
+
+One possible approach:
+
+If a transaction is currently storing data in a PM a second transaction may check if the set of changes does not intersect with the first transaction. If that is the case it can safely store its data in the PM.
+
+This fine grained locking must also be respected when reading from the SISM. A read request for an item that is currently being stored must be blocked until the store is finished.

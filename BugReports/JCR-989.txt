@@ -1,0 +1,7 @@
+Modify LazyQueryResultImpl to allow resultFetchSize to be set programmatically
+
+
+
+Description:
+In our application we have a search which only shows part of a query result. We always know which part of the result needs to be shown. This means we know in advance how many results need to be fetched. I would like to be able to programmatically set resultFetchSize to minimize the number of loaded lucene docs and therefore improve the performance.
+I know it is already possible to the set the resultFetchSize via the index configuration, but this number is fixed and doesn't work well in environments where you use paging for your results because if you set this number too low the query will be executed multiple times and if you set it too high too many lucene docs are loaded.

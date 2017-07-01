@@ -1,0 +1,6 @@
+rename jcr-browser contrib project
+
+
+
+Description:
+There's a project called jcr-browser at sourceforge, it's a desktop browser mantained by sandro boehme. I'll rename the contrib project to jcr-navigator unless someone proposes a better name :). 

@@ -1,0 +1,6 @@
+MatchAllQuery does not implement extractTerms()
+
+
+
+Description:
+This is required for rep:excerpt() functionality.

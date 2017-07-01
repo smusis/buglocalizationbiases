@@ -1,0 +1,11 @@
+Query for name literal without namespace fails
+
+
+
+Description:
+Query for a name literal without a namespace fails. 
+
+Example:
+//*[@foo = 'bla']
+
+should return nodes with foo property that contain the String value 'bla' or the Name value 'bla' (no namespace). Only nodes with String value 'bla' are returned.

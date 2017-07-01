@@ -1,0 +1,16 @@
+commons codec not documented as a dependency
+
+
+
+Description:
+Except for some entries on the jdepend-report, commons codec is not documented
+as a dependency for using HttpClient 3.0 RC1.  The only dependency documented is
+commons logging.
+
+java.lang.NoClassDefFoundError: org/apache/commons/codec/DecoderException
+	at org.apache.commons.httpclient.HttpMethodBase.<init>(HttpMethodBase.java:217)
+	at
+org.apache.commons.httpclient.methods.ExpectContinueMethod.<init>(ExpectContinueMethod.java:92)
+	at
+org.apache.commons.httpclient.methods.EntityEnclosingMethod.<init>(EntityEnclosingMethod.java:114)
+	at org.apache.commons.httpclient.methods.PostMethod.<init>(PostMethod.java:105)

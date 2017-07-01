@@ -1,0 +1,6 @@
+Nightly Builds
+
+
+
+Description:
+Nightly builds for Lucene are HUGE due to the inclusion of the contrib/benchmark temp and work directories.  These directories should be excluded.

@@ -1,0 +1,12 @@
+refactoring of docvalues params in Codec.java
+
+
+
+Description:
+While working on LUCENE-2621 I am trying to do some cleanup of the Codec APIs, currently Codec.java has a boolean for getDocValuesUseCFS()
+
+I think this is an impl detail that should not be in Codec.java: e.g. i might make a SimpleText impl that uses only 1 file and then the param
+is awkward.
+
+So, instead I created Sep impls that dont use CFS (use separate files) and placed them under the sep package, if you don't want to use
+CFS you can just use these implementations in your codec.

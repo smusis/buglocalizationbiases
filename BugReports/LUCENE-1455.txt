@@ -1,0 +1,6 @@
+org.apache.lucene.ant.HtmlDocument creates a FileInputStream in its constructor that it doesn't close
+
+
+
+Description:
+A look through the jtidy source code doesn't show a close that i can find in parse (seems to be standard that you close your own streams anyway), so this looks like a small descriptor leak to me.

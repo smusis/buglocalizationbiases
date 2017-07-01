@@ -1,0 +1,34 @@
+Separate javadocs for core and contribs
+
+
+
+Description:
+A while ago we had a discussion on java-dev about separating the javadocs
+for the contrib modules instead of having only one big javadoc containing 
+the core and contrib classes.
+
+This patch:
+* Adds new targets to build.xml: 
+  ** "javadocs-all" Generates Javadocs for the core, demo, and contrib 
+    classes
+  ** "javadocs-core" Generates Javadocs for the core classes
+  ** "javadocs-demo" Generates Javadocs for the demo classes
+  ** "javadocs-contrib" Using contrib-crawl it generates the Javadocs for 
+    all contrib modules, except "similarity" (currently empty) and gdata.
+* Adds submenues to the Javadocs link on the Lucene site with links to
+  the different javadocs
+* Includes the javadocs in the maven artifacts
+
+Remarks:
+- I removed the ant target "javadocs-internal", because I didn't want to
+  add corresponding targets for all new javadocs target. Instead I 
+  defined a new property "javadoc.access", so now  
+  "ant -Djavadoc.access=package" can be used in combination with any of
+  the javadocs targets. Is this ok?
+- I didn't include gdata (yet) because it uses build files that don't 
+  extend Lucenes standard build files.
+  
+Here's a preview:
+http://people.apache.org/~buschmi/site-preview/index.html
+
+Please let me know what you think about these changes!

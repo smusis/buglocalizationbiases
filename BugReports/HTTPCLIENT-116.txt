@@ -1,0 +1,129 @@
+Request/Response race condition when doing multiple requests on the same connection.
+
+
+
+Description:
+If one tries to do multiple request over the same socket connection a race 
+condition occurs in the input/output streams.
+eg. 
+-- Some request -->
+<- HTTP/1.1 200 OK
+<- Some: Headers
+<- 
+<- The body.
+
+-- Next request -->
+<- HTTP/1.1 200 OK
+<- More: Headers
+<- 
+<- Some data.
+
+If the second request is sent, but the second response isn't yet received 
+before the client starts to try to read it, it'll get 
+a "org.apache.commons.httpclient.HttpRecoverableException: Error in parsing the 
+status  line from the response: unable to find line starting with "HTTP/"" 
+exception (it will think "The body." is part of the second response).
+
+The following code will reproduce the problem:
+
+import java.io.*;
+import java.net.*;
+import java.util.*;
+import org.apache.commons.httpclient.*;
+import org.apache.commons.httpclient.methods.*;
+
+public class HttpClientRaceBug {
+    public static void main(String[] args) {
+        try {
+            SimpleHttpServer.listen(8987);
+            HttpClient client = new HttpClient();
+            client.startSession("localhost", 8987);
+            client.getState().setCredentials("Test Realm",  
+                new UsernamePasswordCredentials("foo", "bar"));
+            
+            for (int i = 0; i < 100; i++) {
+                GetMethod meth = new GetMethod();
+                client.executeMethod(meth);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+    
+    private static final class SimpleHttpServer implements Runnable {
+        private Socket socket;
+        public SimpleHttpServer(Socket socket) {
+            this.socket = socket;
+        }
+        public static void listen(final int port) {
+            Thread server = new Thread() {
+                public void run() {
+                    try {
+                        ServerSocket ss = new ServerSocket(port);
+                        while (true) {
+                            new Thread(new 
+                                SimpleHttpServer(ss.accept())).start();
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+            };
+            
+            server.setDaemon(true);
+            server.start();
+        }
+        public void run() {
+            try {
+                BufferedReader in = new BufferedReader(new 
+                    InputStreamReader(this.socket.getInputStream()));
+                
+                int len = 0;
+                boolean auth = false;
+                String line;
+                while ((line = in.readLine()) != null) {
+                    System.out.println("> " + line);
+                    
+                    if (line.trim().equals("")) {
+                        in.read(new char[len]);
+                        doOutput(auth);
+                        auth = false;
+                        len = 0;
+                        
+                    } else if (line.indexOf(':') > -1) {
+                        StringTokenizer tok = new StringTokenizer(line, ":");
+                        String key = tok.nextToken().toLowerCase();
+                        if (key.equals("content-length")) {
+                            len = Integer.parseInt(tok.nextToken().trim());
+                        } else if (key.equals("authorization")) {
+                            auth = true;
+                        }
+                    }
+                }
+            } catch (Exception e) {}
+        }
+        private static int count = 0;
+        public void doOutput(boolean authorized) throws IOException {
+            Writer out = new OutputStreamWriter(this.socket.getOutputStream());
+            count++;
+            
+            String id = (count < 100) ? 
+                ((count < 10) ? "00" + count : "0" + count) : "" + count;
+            if (authorized) {
+                write(out, "HTTP/1.1 200 OK\r\n");
+            } else {
+                write(out, "HTTP/1.1 401 Unauthorized\r\n");
+            }
+            write(out, "WWW-Authenticate: Basic realm=\"Test Realm\"\r\n");
+            write(out, "Response-Id: " + id + "\r\n");
+            write(out, "Content-Type: text/html; charset=iso-8859-1\r\n");
+            write(out, "Content-Length: 17\r\n\r\n");
+            write(out, "My Response (" + id + ")");
+            out.close();
+        }
+        private void write(Writer out, String text) throws IOException {
+            System.out.print("< " + text);
+            out.write(text);
+        }
+    }
+}

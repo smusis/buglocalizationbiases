@@ -1,0 +1,23 @@
+Mandatory authentication prevents webdav client connections
+
+
+
+Description:
+As seen on the mailing list:
+
+java -jar target/jackrabbit-standalone-2.3-SNAPSHOT.jar --cli http://localhost:8080
+Exception in thread "main" javax.jcr.RepositoryException: Unable to access a repository with the following settings:
+   org.apache.jackrabbit.repository.uri: http://localhost:8080
+The following RepositoryFactory classes were consulted:
+   org.apache.jackrabbit.jcr2dav.Jcr2davRepositoryFactory: declined
+   org.apache.jackrabbit.jcr2spi.Jcr2spiRepositoryFactory: declined
+   org.apache.jackrabbit.commons.JndiRepositoryFactory: declined
+   org.apache.jackrabbit.core.RepositoryFactoryImpl: declined
+   org.apache.jackrabbit.rmi.repository.RmiRepositoryFactory: failed
+       because of RepositoryException: Failed to read the resource at URL http://localhost:8080
+       because of IOException: Server returned HTTP response code: 401 for URL: http://localhost:8080
+Perhaps the repository you are trying to access is not available at the moment.
+       at org.apache.jackrabbit.commons.JcrUtils.getRepository(JcrUtils.java:216)
+       at org.apache.jackrabbit.commons.JcrUtils.getRepository(JcrUtils.java:256)
+       at org.apache.jackrabbit.standalone.Main.run(Main.java:127)
+       at org.apache.jackrabbit.standalone.Main.main(Main.java:61)

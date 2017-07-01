@@ -1,0 +1,7 @@
+smartcn HHMM doc translation
+
+
+
+Description:
+My coworker Patricia Peng translated the documentation and code comments for smartcn HHMM package.
+

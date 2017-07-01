@@ -1,0 +1,14 @@
+Position based TermVectorMapper
+
+
+
+Description:
+As part of the new TermVectorMapper approach to TermVectors, the ensuing patch loads term vectors and stores the term info by position.  This should let people directly index into a term vector given a position.  Actually, it does it through Maps, b/c the array based bookkeeping is a pain given the way positions are stored.  
+
+The map looks like:
+Map<String,   Map<Integer, TVPositionInfo>>
+
+where the String is the field name, the integer is the position, and TVPositionInfo is a storage mechanism for the terms and offsets that occur at a position.  It _should_ handle multiple terms per position (which is always my downfall! )
+
+I have not tested performance of this approach.
+

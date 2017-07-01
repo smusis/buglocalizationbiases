@@ -1,0 +1,149 @@
+HttpClient 4.1 ignores request retry handler and stops retrying when a read timeout is followed by a connection refusal
+
+
+
+Description:
+I encountered an issue while writing unit tests for the RestBackup(tm) API Client Library, https://github.com/mleonhard/restbackup-java .  HttpClient 4.1 is failing to retry when it encounters a read timeout followed by a connection refusal.  This problem occurs on Windows but not on Linux.  Below is a short program that reproduces the problem.  It performs the expected 5 request attempts on Linux but only 2 on Windows.
+
+My Windows environment is a laptop with Windows 7 Ultimate 64-bit and Oracle Java SE Development Kit Update 21 32-bit.  My Linux environment is Amazon EC2 with Ubuntu 10.04 LTS 32-bit and Oracle Java SE Development Kit Update 21 32-bit.
+
+This is my first bug report to an Apache project.  I'd like to add that I'm a big fan of the Commons libraries and Http Components.
+
+Sincerely,
+-Michael
+
+=== RetryBug.java ===
+
+import java.io.IOException;
+import java.net.ServerSocket;
+import java.util.logging.Logger;
+
+import org.apache.http.client.HttpRequestRetryHandler;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.params.CoreConnectionPNames;
+import org.apache.http.protocol.HttpContext;
+
+public class RetryBug {
+    private static final Logger _log = Logger.getLogger(RetryBug.class.getName());
+
+    public static void main(String[] args) throws IOException {
+        ServerSocket serverSocket = new ServerSocket(0, 1);
+        DefaultHttpClient httpClient = new DefaultHttpClient();
+        HttpRequestRetryHandler retryHandler = new HttpRequestRetryHandler() {
+                public boolean retryRequest(IOException e, int count, HttpContext context) {
+                    _log.info("count=" + count + " " + e.toString());
+                    return count < 5;
+                }
+            };
+        httpClient.setHttpRequestRetryHandler(retryHandler);
+        httpClient.getParams().setIntParameter(CoreConnectionPNames.SO_TIMEOUT, 100);
+        try {
+            String url = "http://127.0.0.1:" + serverSocket.getLocalPort() + "/";
+            httpClient.execute(new HttpGet(url));
+        } finally {
+            serverSocket.close();
+        }
+    }
+}
+
+
+=== Windows 7 ===
+
+C:\RetryBug>md5sum httpcomponents-client-4.1-bin.zip
+008ad15560249bcde42cfe34fdb4e858 *httpcomponents-client-4.1-bin.zip
+
+C:\RetryBug>"c:\Program Files (x86)\Java\jdk1.6.0_21\bin\java.exe" -version
+java version "1.6.0_21"
+Java(TM) SE Runtime Environment (build 1.6.0_21-b06)
+Java HotSpot(TM) Client VM (build 17.0-b16, mixed mode)
+
+C:\RetryBug>"c:\Program Files (x86)\Java\jdk1.6.0_21\bin\javac.exe" -cp httpcomponents-client-4.1\lib\commons-codec-1.4.jar;httpcomponents-client-4.1\lib\commons-logging-1.1.1.jar;httpcomponents-client-4.1\lib\httpclient-4.1.jar;httpcomponents-client-4.1\lib\httpcore-4.1.jar RetryBug.java
+
+C:\RetryBug>"c:\Program Files (x86)\Java\jdk1.6.0_21\bin\java.exe" -cp httpcomponents-client-4.1\lib\commons-codec-1.4.jar;httpcomponents-client-4.1\lib\commons-logging-1.1.1.jar;httpcomponents-client-4.1\lib\httpclient-4.1.jar;httpcomponents-client-4.1\lib\httpcore-4.1.jar;. RetryBug
+Mar 9, 2011 9:14:36 PM RetryBug$1 retryRequest
+INFO: count=1 java.net.SocketTimeoutException: Read timed out
+Mar 9, 2011 9:14:36 PM org.apache.http.impl.client.DefaultRequestDirector tryExecute
+INFO: I/O exception (java.net.SocketTimeoutException) caught when processing request: Read timed out
+Mar 9, 2011 9:14:36 PM org.apache.http.impl.client.DefaultRequestDirector tryExecute
+INFO: Retrying request
+Exception in thread "main" org.apache.http.conn.HttpHostConnectException: Connection to http://127.0.0.1:56361 refused
+        at org.apache.http.impl.conn.DefaultClientConnectionOperator.openConnection(DefaultClientConnectionOperator.java:158)
+        at org.apache.http.impl.conn.AbstractPoolEntry.open(AbstractPoolEntry.java:149)
+        at org.apache.http.impl.conn.AbstractPooledConnAdapter.open(AbstractPooledConnAdapter.java:121)
+        at org.apache.http.impl.client.DefaultRequestDirector.tryExecute(DefaultRequestDirector.java:650)
+        at org.apache.http.impl.client.DefaultRequestDirector.execute(DefaultRequestDirector.java:454)
+        at org.apache.http.impl.client.AbstractHttpClient.execute(AbstractHttpClient.java:820)
+        at org.apache.http.impl.client.AbstractHttpClient.execute(AbstractHttpClient.java:754)
+        at org.apache.http.impl.client.AbstractHttpClient.execute(AbstractHttpClient.java:732)
+        at RetryBug.main(RetryBug.java:27)
+Caused by: java.net.ConnectException: Connection refused: connect
+        at java.net.PlainSocketImpl.socketConnect(Native Method)
+        at java.net.PlainSocketImpl.doConnect(PlainSocketImpl.java:333)
+        at java.net.PlainSocketImpl.connectToAddress(PlainSocketImpl.java:195)
+        at java.net.PlainSocketImpl.connect(PlainSocketImpl.java:182)
+        at java.net.SocksSocketImpl.connect(SocksSocketImpl.java:366)
+        at java.net.Socket.connect(Socket.java:529)
+        at org.apache.http.conn.scheme.PlainSocketFactory.connectSocket(PlainSocketFactory.java:120)
+        at org.apache.http.impl.conn.DefaultClientConnectionOperator.openConnection(DefaultClientConnectionOperator.java:148)
+        ... 8 more
+
+C:\RetryBug>
+
+
+=== Ubuntu 10 ===
+
+$ md5sum httpcomponents-client-4.1-bin.tar.gz
+f043c1cc016cb3b720be9fb020bfa755  httpcomponents-client-4.1-bin.tar.gz
+$ ~/jdk1.6.0_21/bin/java -version
+java version "1.6.0_21"
+Java(TM) SE Runtime Environment (build 1.6.0_21-b06)
+Java HotSpot(TM) Client VM (build 17.0-b16, mixed mode, sharing)
+$ ~/jdk1.6.0_21/bin/javac -cp httpcomponents-client-4.1/lib/httpclient-cache-4.1.jar:httpcomponents-client-4.1/lib/commons-logging-1.1.1.jar:httpcomponents-client-4.1/lib/httpcore-4.1.jar:httpcomponents-client-4.1/lib/httpclient-4.1.jar:httpcomponents-client-4.1/lib/httpmime-4.1.jar:httpcomponents-client-4.1/lib/commons-codec-1.4.jar RetryBug.java
+$ ~/jdk1.6.0_21/bin/java -cp httpcomponents-client-4.1/lib/httpclient-cache-4.1.jar:httpcomponents-client-4.1/lib/commons-logging-1.1.1.jar:httpcomponents-client-4.1/lib/httpcore-4.1.jar:httpcomponents-client-4.1/lib/httpclient-4.1.jar:httpcomponents-client-4.1/lib/httpmime-4.1.jar:httpcomponents-client-4.1/lib/commons-codec-1.4.jar:. RetryBug
+Mar 9, 2011 1:09:42 PM RetryBug$1 retryRequest
+INFO: count=1 java.net.SocketTimeoutException: Read timed out
+Mar 9, 2011 1:09:42 PM org.apache.http.impl.client.DefaultRequestDirector tryExecute
+INFO: I/O exception (java.net.SocketTimeoutException) caught when processing request: Read timed out
+Mar 9, 2011 1:09:42 PM org.apache.http.impl.client.DefaultRequestDirector tryExecute
+INFO: Retrying request
+Mar 9, 2011 1:09:42 PM RetryBug$1 retryRequest
+INFO: count=2 java.net.SocketTimeoutException: Read timed out
+Mar 9, 2011 1:09:42 PM org.apache.http.impl.client.DefaultRequestDirector tryExecute
+INFO: I/O exception (java.net.SocketTimeoutException) caught when processing request: Read timed out
+Mar 9, 2011 1:09:42 PM org.apache.http.impl.client.DefaultRequestDirector tryExecute
+INFO: Retrying request
+Mar 9, 2011 1:09:42 PM RetryBug$1 retryRequest
+INFO: count=3 java.net.SocketTimeoutException: Read timed out
+Mar 9, 2011 1:09:42 PM org.apache.http.impl.client.DefaultRequestDirector tryExecute
+INFO: I/O exception (java.net.SocketTimeoutException) caught when processing request: Read timed out
+Mar 9, 2011 1:09:42 PM org.apache.http.impl.client.DefaultRequestDirector tryExecute
+INFO: Retrying request
+Mar 9, 2011 1:09:42 PM RetryBug$1 retryRequest
+INFO: count=4 java.net.SocketTimeoutException: Read timed out
+Mar 9, 2011 1:09:42 PM org.apache.http.impl.client.DefaultRequestDirector tryExecute
+INFO: I/O exception (java.net.SocketTimeoutException) caught when processing request: Read timed out
+Mar 9, 2011 1:09:42 PM org.apache.http.impl.client.DefaultRequestDirector tryExecute
+INFO: Retrying request
+Mar 9, 2011 1:09:51 PM RetryBug$1 retryRequest
+INFO: count=5 java.net.SocketTimeoutException: Read timed out
+Exception in thread "main" java.net.SocketTimeoutException: Read timed out
+        at java.net.SocketInputStream.socketRead0(Native Method)
+        at java.net.SocketInputStream.read(SocketInputStream.java:129)
+        at org.apache.http.impl.io.AbstractSessionInputBuffer.fillBuffer(AbstractSessionInputBuffer.java:149)
+        at org.apache.http.impl.io.SocketInputBuffer.fillBuffer(SocketInputBuffer.java:110)
+        at org.apache.http.impl.io.AbstractSessionInputBuffer.readLine(AbstractSessionInputBuffer.java:260)
+        at org.apache.http.impl.conn.DefaultResponseParser.parseHead(DefaultResponseParser.java:98)
+        at org.apache.http.impl.io.AbstractMessageParser.parse(AbstractMessageParser.java:252)
+        at org.apache.http.impl.AbstractHttpClientConnection.receiveResponseHeader(AbstractHttpClientConnection.java:281)
+        at org.apache.http.impl.conn.DefaultClientConnection.receiveResponseHeader(DefaultClientConnection.java:247)
+        at org.apache.http.impl.conn.AbstractClientConnAdapter.receiveResponseHeader(AbstractClientConnAdapter.java:219)
+        at org.apache.http.protocol.HttpRequestExecutor.doReceiveResponse(HttpRequestExecutor.java:298)
+        at org.apache.http.protocol.HttpRequestExecutor.execute(HttpRequestExecutor.java:125)
+        at org.apache.http.impl.client.DefaultRequestDirector.tryExecute(DefaultRequestDirector.java:622)
+        at org.apache.http.impl.client.DefaultRequestDirector.execute(DefaultRequestDirector.java:454)
+        at org.apache.http.impl.client.AbstractHttpClient.execute(AbstractHttpClient.java:820)
+        at org.apache.http.impl.client.AbstractHttpClient.execute(AbstractHttpClient.java:754)
+        at org.apache.http.impl.client.AbstractHttpClient.execute(AbstractHttpClient.java:732)
+        at RetryBug.main(RetryBug.java:27)
+$

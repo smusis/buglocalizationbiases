@@ -1,0 +1,24 @@
+Setting WebDAV property without value causes NPE in DAVResourceImpl
+
+
+
+Description:
+A WebDAV PROPPATCH of a property without a value <prf:SomeProperty/> causes a NPE in DAVResourceImpl when the value is retrieved and the toString() method called on it. Here is a patch that works around the problem.
+
+Index: C:/jprojects/eclipse/jackrabbit/jcr-server/server/src/java/org/apache/jackrabbit/webdav/simple/DavResourceImpl.java
+===================================================================
+--- C:/jprojects/eclipse/jackrabbit/jcr-server/server/src/java/org/apache/jackrabbit/webdav/simple/DavResourceImpl.java	(revision 388517)
++++ C:/jprojects/eclipse/jackrabbit/jcr-server/server/src/java/org/apache/jackrabbit/webdav/simple/DavResourceImpl.java	(working copy)
+@@ -930,7 +930,10 @@
+      */
+     private void setJcrProperty(DavProperty property) throws RepositoryException {
+         // retrieve value
+-        String value = property.getValue().toString();
++        String value = "";
++        if (property.getValue() != null) {
++            value = property.getValue().toString();
++        }
+         // set value; since multivalued-properties are not listed in the set
+         // of available properties, this extra validation-check is omitted.
+         node.setProperty(getJcrName(property.getName()), value);
+

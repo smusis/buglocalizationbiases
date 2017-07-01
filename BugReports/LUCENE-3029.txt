@@ -1,0 +1,48 @@
+MultiPhraseQuery assigns different scores to identical docs when using 0 pos-incr
+
+
+
+Description:
+If you have two identical docs with tokens a b c all zero pos-incr (ie
+they occur on the same position), and you run a MultiPhraseQuery with
+[a, b] and [c] (all pos incr 0)... then the two docs will get
+different scores despite being identical.
+
+Admittedly it's a strange query... but I think the scorer ought to
+count the phrase as having tf=1 for each doc.
+
+The problem is that we are missing a tie-breaker for the PhraseQuery
+used by ExactPhraseScorer, and so the PQ ends up flip/flopping such
+that every other document gets the same score.  Ie, even docIDs all
+get one score and odd docIDs all get another score.
+
+Once I added the hard tie-breaker (ord) the scores are the same.
+
+However... there's a separate bug, that can over-count the tf, such
+that if I create the MPQ like this:
+{noformat}
+  mpq.add(new Term[] {new Term("field", "a")}, 0);
+  mpq.add(new Term[] {new Term("field", "b"), new Term("field", "c")}, 0);
+{noformat}
+
+I get tf=2 per doc, but if I create it like this:
+
+{noformat}
+  mpq.add(new Term[] {new Term("field", "b"), new Term("field", "c")}, 0);
+  mpq.add(new Term[] {new Term("field", "a")}, 0);
+{noformat}
+
+I get tf=1 (which I think is correct?).
+
+This happens because MultipleTermPositions freely returns the same
+position more than once: it just unions the positions of the two
+streams, so when both have their term at pos=0, you'll get pos=0
+twice, which is not good and leads to over-counting tf.
+
+Unfortunately, I don't see a performant way to fix that... and I'm not
+sure that it really matters that much in practice.
+
+
+
+
+

@@ -1,0 +1,38 @@
+Change value of 'Expect' header in org.apache.http.client.methods.HttpPost
+
+
+
+Description:
+see original report at http://code.google.com/p/android/issues/detail?id=7208.
+
+i'm going to apply the obvious patch to Android:
+
+diff --git a/src/org/apache/http/params/CoreProtocolPNames.java b/src/org/apache/http/params/CoreProtocolPNames.java
+index a42c5de..a0a726d 100644
+--- a/src/org/apache/http/params/CoreProtocolPNames.java
++++ b/src/org/apache/http/params/CoreProtocolPNames.java
+@@ -94,8 +94,8 @@ public interface CoreProtocolPNames {
+ 
+     /**
+      * <p>
+-     * Activates 'Expect: 100-Continue' handshake for the 
+-     * entity enclosing methods. The purpose of the 'Expect: 100-Continue'
++     * Activates 'Expect: 100-continue' handshake for the
++     * entity enclosing methods. The purpose of the 'Expect: 100-continue'
+      * handshake to allow a client that is sending a request message with 
+      * a request body to determine if the origin server is willing to 
+      * accept the request (based on the request headers) before the client
+diff --git a/src/org/apache/http/protocol/HTTP.java b/src/org/apache/http/protocol/HTTP.java
+index de76ca6..9223955 100644
+--- a/src/org/apache/http/protocol/HTTP.java
++++ b/src/org/apache/http/protocol/HTTP.java
+@@ -60,7 +60,7 @@ public final class HTTP {
+     public static final String SERVER_HEADER = "Server";
+     
+     /** HTTP expectations */
+-    public static final String EXPECT_CONTINUE = "100-Continue";
++    public static final String EXPECT_CONTINUE = "100-continue";
+ 
+     /** HTTP connection control */
+     public static final String CONN_CLOSE = "Close";
+

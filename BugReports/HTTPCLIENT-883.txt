@@ -1,0 +1,13 @@
+SO_TIMEOUT is not set on a request level
+
+
+
+Description:
+The scenario is as follows: I'm doing two consecutive requests to the same host, using a multi-threaded (or thread safe) connection pool manager. The first invocation has a timeout of 10s and the second has a timeout of 30s. 
+
+In version 3.1 of HttpClient all works well, but in 4.0 I get a timeout exception in the second request, after ~10 seconds, which means the first timeout is used.
+
+Looking at the code, I see that in version 3.1, the HttpMethodDirector.executeWithRetry() method invokes a method named applyConnectionParams() that took care of setting the timeout taken from the request on the socket. 
+
+But in version 4.0, the only place I see the timeout is set on the socket is when DefaultRequestDirector.execute(HttpHost, HttpRequest, HttpContext) opens a connection using the managedConn.open() method. Since the connection is reused between the requests, the second request uses a socket with a timeout of the first request.
+

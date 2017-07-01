@@ -1,0 +1,7 @@
+Making Tokenizer.reset(Reader) public
+
+
+
+Description:
+In order to implement reusableTokenStream and be able to reset a Tokenizer, Tokenizer defines a reset(Reader) method. The problem is that this method is protected. I need to call this reset(Reader) method without having to know in advance what will be the type of the Tokenizer (I plan to have several).
+I noticed that almost all Tokenizer extensions define this method as public, and I wonder if this can be changed for Tokenizer also (I can't simply create my general Tokenizer extension and inherit from it because I want to use StandardTokenizer as well). 

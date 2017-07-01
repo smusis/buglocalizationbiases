@@ -1,0 +1,6 @@
+Move privilege reader/writer to spi-commons and use qualified names
+
+
+
+Description:
+the current privilege reader in jcr-commons uses a PrivilegeDefinition that is based on pure string rather than qualified names. suggest to move that to the spi-commons and use org.apache.jackrabbit.spi.Name for the privilege names.

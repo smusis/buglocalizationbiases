@@ -1,0 +1,61 @@
+Duplicate request headers when connect through proxies
+
+
+
+Description:
+When negotiating proxy servers or during write-failure retries, the httpClient 
+adds duplicate request headers to each retry.  The result is that each header 
+is duplicated multiple times (number of retries).  This only impact the headers 
+that allow multiple values (the others were prevented byt the code).  In  
+Particular, it affects "cookie" header.  It happens more often when going 
+through proxy server with tunnelling connections (https), but also happens on 
+http on NTLM proxy server (need multiple round trips to get authenticated).
+
+Steps to Reproduce:
+Setup a client application to go to a website that requires going through a 
+proxy server that supports tunnelling for https connections and authenticate 
+users (Basic and/or NTLM).  The website also need to support keep-alive and 
+support https. Initilize the HttpState with a cookie. Turn httpClient 
+logging "wire, debug and trace" logging on.  Set the proxy credential with 
+valid user id and password.
+
+Then run the application against any url on the website.
+
+Test Results and fixes:
+1. When connect to https through a (Netscape/Basic auth) proxy that does 
+the "tunnelling", the initial "CONNECT" adds the cookie header once.  The proxy 
+returns the 407.  Then the code will use the proxy credential to do 
+the "CONNECT" again.  After successful connection (200), the code will do the 
+proper "POST".  The httpClient code adds the same cookie one more time in here.
+
+This case was caused by the wrapper class ConnectMethod using the wrapped 
+method "addRequestHeaders" to build headers for the "CONENCT".  It can be fixed 
+by having the ConnectMethod only adds headers it needs ("addHostRequestHeader" 
+and "addProxyAuthorizationRequestHeader").
+
+2. When connect to http through proxy.  The client first sends a "POST" without 
+proxy credentials, and gets a 407 back.  The cookie header is added before that 
+happens.  Then (loop in the HttpMethodBase.execute) the client will retry 
+the "POST" with the credentials (the logic require to have a response header to 
+submit credentials).  In the retry, the cookie is added again 
+(addRequestHeaders is called inside the writeRequest).
+
+3. When using kee-alive with no-proxy on http, if the connection times out, the 
+next call of the method will get a socket error on write.  The retry loop in 
+the processRequest method will retry the request again.  It will add the cookie 
+again.  To deal with both case 2 and 3, the addRequestHeadres call need to be 
+moved up to the beginning of the HttpMethodBase.execute.  We tested this 
+approach and it worked for us.
+
+4. When negotiating NTLM proxy for https, multiple round trips are needed to 
+get user authenticated.  The same ConnectMethod instance is used.  So the 
+adding of the proxy authenticate headers need to be done with the ConnectMethod 
+instance (vs. the wrapped method for Host header).  Otherwise, the 
+Authenticator class would not be able to find the information for 
+authenticating user.
+
+
+I will send in our suggested fixes later.
+
+Build: This is based on 0307 nightly build.  We run into some other problems 
+when trying the 0410 nightly build.

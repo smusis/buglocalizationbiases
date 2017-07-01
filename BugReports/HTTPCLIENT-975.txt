@@ -1,0 +1,7 @@
+add support to caching module for RFC 5861 (stale-on-error and stale-while-revalidate)
+
+
+
+Description:
+These are Cache-Control extensions that allow an origin server to specify some additional behavior for stale cache entries. Stale-on-error configurations allow a cache to continue serving stale content for a certain period of time if a revalidation fails, and stale-while-revalidate similarly allows revalidation to occur asynchronously. Some reverse proxies such as Squid can be configured to understand these headers, which means that some origin servers are probably sending them, and that we can likewise take advantage of them.
+

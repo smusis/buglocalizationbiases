@@ -1,0 +1,11 @@
+Preserving UUID and document version history on repository migration
+
+
+
+Description:
+I have been working I an migration utility for OpenKM and I performed some changes in jackrabit-core to enable version import, preserving
+the modification date. Also modified org.apache.jackrabbit.core.NodeImpl to preserve UUID in the migration process.
+
+This migration process is needed because there are changes in repository node definition, and Jackrabbit can't deal with this actually.
+
+I've attache a PDF with the changes needed in Jackrabbit-core. It works and there was no problems with the migrated repository.

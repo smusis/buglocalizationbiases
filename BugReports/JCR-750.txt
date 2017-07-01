@@ -1,0 +1,10 @@
+[Patch] Adding history, tab completion, status info command and masked password input for jcr-commands
+
+
+
+Description:
+I have created this patch which improves the usability of the interactive jcr command line client. It uses jline (http://jline.sourceforge.net) for the input, which gives history, tab completion and masked password input. Tab completion completes on available commands and on the jcr children of the current node for command arguments.
+
+The login command now asks for the password if none is given, this uses the advanced password masking feature of jline to avoid the echoing of the password while typing (which is not possible using standard java System.in).
+
+I also changed the Maven 2 pom to version 1.3-SNAPSHOT to compile with the current jackrabbit trunk and to include a manifest file with the correct starter class.

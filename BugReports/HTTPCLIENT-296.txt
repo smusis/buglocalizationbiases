@@ -1,0 +1,6 @@
+Basic Authentification fails with non-ASCII username/password characters
+
+
+
+Description:
+http://marc.theaimsgroup.com/?t=106866959500001&r=1&w=2

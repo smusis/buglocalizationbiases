@@ -1,0 +1,18 @@
+initVersions crashes with NPE
+
+
+
+Description:
+After delete some old versions. I get serious problems accessing the version history.
+This is the stacktrace:
+java.lang.NullPointerException
+	at org.apache.jackrabbit.core.version.VersionIteratorImpl.initVersions(VersionIteratorImpl.java:169)
+	at org.apache.jackrabbit.core.version.VersionIteratorImpl.<init>(VersionIteratorImpl.java:87)
+	at org.apache.jackrabbit.core.version.VersionIteratorImpl.<init>(VersionIteratorImpl.java:72)
+	at org.apache.jackrabbit.core.version.VersionHistoryImpl.getAllVersions(VersionHistoryImpl.java:92)
+
+I stepped threw the code and see that the Method 
+    currentVersion.getSuccessors() 
+returns an empty Array.
+
+After all the VersionHistory seems to be corrupt!!

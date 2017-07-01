@@ -1,0 +1,43 @@
+Deployment of webdav servlet on Jboss problem - logging
+
+
+
+Description:
+Tested two different installs of JBoss to verify problem is not related to a specific version. There is a problem with the jackrabbit-server.war when deploying on jboss.  Here are the details during deployment:
+
+=======================
+13:20:48,654 INFO  [TomcatDeployer] deploy, ctxPath=/jackrabbit-server, warUrl=.../deploy/jackrabbit-server.war/
+13:20:48,857 INFO  [STDOUT] log4j:ERROR A "org.jboss.logging.util.OnlyOnceErrorHandler" object is not assignable to a "o rg.apache.log4j.spi.ErrorHandler" variable.
+13:20:48,857 INFO  [STDOUT] log4j:ERROR The class "org.apache.log4j.spi.ErrorHandler" was loaded by
+13:20:48,857 INFO  [STDOUT] log4j:ERROR [WebappClassLoader
+  delegate: false
+  repositories:
+    /WEB-INF/classes/
+----------> Parent Classloader:
+java.net.FactoryURLClassLoader@19d277e
+] whereas object of type
+13:20:48,857 INFO  [STDOUT] log4j:ERROR "org.jboss.logging.util.OnlyOnceErrorHandler" was loaded by [org.jboss.system.se rver.NoAnnotationURLClassLoader@ab95e6].
+13:20:48,904 INFO  [STDOUT] log4j:ERROR Could not create an Appender. Reported error follows.
+13:20:48,904 INFO  [STDOUT] java.lang.ClassCastException: org.jboss.logging.appender.DailyRollingFileAppender
+13:20:48,904 INFO  [STDOUT]     at org.apache.log4j.xml.DOMConfigurator.parseAppender(DOMConfigurator.java:165)
+13:20:48,904 INFO  [STDOUT]     at org.apache.log4j.xml.DOMConfigurator.findAppenderByName(DOMConfigurator.java:140)
+13:20:48,904 INFO  [STDOUT]     at org.apache.log4j.xml.DOMConfigurator.findAppenderByReference(DOMConfigurator.java:153
+)
+13:20:48,904 INFO  [STDOUT]     at org.apache.log4j.xml.DOMConfigurator.parseChildrenOfLoggerElement(DOMConfigurator.jav
+a:415)
+13:20:48,904 INFO  [STDOUT]     at org.apache.log4j.xml.DOMConfigurator.parseRoot(DOMConfigurator.java:384)
+13:20:48,904 INFO  [STDOUT]     at org.apache.log4j.xml.DOMConfigurator.parse(DOMConfigurator.java:783)
+13:20:48,904 INFO  [STDOUT]     at org.apache.log4j.xml.DOMConfigurator.doConfigure(DOMConfigurator.java:666)
+13:20:48,904 INFO  [STDOUT]     at org.apache.log4j.xml.DOMConfigurator.doConfigure(DOMConfigurator.java:616)
+13:20:48,904 INFO  [STDOUT]     at org.apache.log4j.xml.DOMConfigurator.doConfigure(DOMConfigurator.java:602)
+13:20:48,904 INFO  [STDOUT]     at org.apache.log4j.helpers.OptionConverter.selectAndConfigure(OptionConverter.java:460)
+
+13:20:48,904 INFO  [STDOUT]     at org.apache.log4j.LogManager.<clinit>(LogManager.java:113)
+13:20:48,904 INFO  [STDOUT]     at org.apache.log4j.xml.DOMConfigurator.configure(DOMConfigurator.java:543)
+13:20:48,904 INFO  [STDOUT]     at org.apache.jackrabbit.j2ee.LoggingServlet.configureXML(LoggingServlet.java:148)
+13:20:48,904 INFO  [STDOUT]     at org.apache.jackrabbit.j2ee.LoggingServlet.configure(LoggingServlet.java:115)
+13:20:48,904 INFO  [STDOUT]     at org.apache.jackrabbit.j2ee.LoggingServlet.init(LoggingServlet.java:86)
+======================
+ 
+Unlike most logging problems, this is having an impact during runtime - when trying to do DASL searches, will return a 500 error as the server was unable to log correctly.
+

@@ -1,0 +1,70 @@
+Multi-level skipping on posting lists
+
+
+
+Description:
+To accelerate posting list skips (TermDocs.skipTo(int)) Lucene uses skip lists. 
+The default skip interval is set to 16. If we want to skip e. g. 100 documents, 
+then it is not necessary to read 100 entries from the posting list, but only 
+100/16 = 6 skip list entries plus 100%16 = 4 entries from the posting list. This 
+speeds up conjunction (AND) and phrase queries significantly.
+
+However, the skip interval is always a compromise. If you have a very big index 
+with huge posting lists and you want to skip over lets say 100k documents, then 
+it is still necessary to read 100k/16 = 6250 entries from the skip list. For big 
+indexes the skip interval could be set to a higher value, but then after a big 
+skip a long scan to the target doc might be necessary.
+
+A solution for this compromise is to have multi-level skip lists that guarantee a 
+logarithmic amount of skips to any target in the posting list. This patch 
+implements such an approach in the following way:
+
+  Example for skipInterval = 3:
+                                                      c            (skip level 2)
+                  c                 c                 c            (skip level 1) 
+      x     x     x     x     x     x     x     x     x     x      (skip level 0)
+  d d d d d d d d d d d d d d d d d d d d d d d d d d d d d d d d  (posting list)
+      3     6     9     12    15    18    21    24    27    30     (df)
+ 
+  d - document
+  x - skip data
+  c - skip data with child pointer
+ 
+Skip level i contains every skipInterval-th entry from skip level i-1. Therefore the 
+number of entries on level i is: floor(df / ((skipInterval ^ (i + 1))).
+ 
+Each skip entry on a level i>0 contains a pointer to the corresponding skip entry in 
+list i-1. This guarantees a logarithmic amount of skips to find the target document.
+
+
+Implementations details:
+
+   * I factored the skipping code out of SegmentMerger and SegmentTermDocs to 
+     simplify those classes. The two new classes AbstractSkipListReader and 
+	 AbstractSkipListWriter implement the skipping functionality.
+   * While AbstractSkipListReader and Writer take care of writing and reading the 
+     multiple skip levels, they do not implement an actual skip data format. The two 
+	 new subclasses DefaultSkipListReader and Writer implement the skip data format 
+	 that is currently used in Lucene (with two file pointers for the freq and prox 
+	 file and with payload length information). I added this extra layer to be 
+	 prepared for flexible indexing and different posting list formats. 
+      
+   
+File format changes: 
+
+   * I added the new parameter 'maxSkipLevels' to the term dictionary and increased the
+     version of this file. If maxSkipLevels is set to one, then the format of the freq 
+	 file does not change at all, because we only have one skip level as before. For 
+	 backwards compatibility maxSkipLevels is set to one automatically if an index 
+	 without the new parameter is read. 
+   * In case maxSkipLevels > 1, then the frq file changes as follows:
+     FreqFile (.frq) --> <TermFreqs, SkipData>^TermCount
+	 SkipData        --> <<SkipLevelLength, SkipLevel>^(Min(maxSkipLevels, 
+	                       floor(log(DocFreq/log(skipInterval))) - 1)>, SkipLevel>
+	 SkipLevel       --> <SkipDatum>^DocFreq/(SkipInterval^(Level + 1))
+
+	 Remark: The length of the SkipLevel is not stored for level 0, because 1) it is not 
+	 needed, and 2) the format of this file does not change for maxSkipLevels=1 then.
+	 
+	 
+All unit tests pass with this patch.

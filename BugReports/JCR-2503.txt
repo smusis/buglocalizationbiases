@@ -1,0 +1,24 @@
+ inconsistent session and persistent state after ReferentialIntegrityException
+
+
+
+Description:
+When a ReferentialIntegrityException occurs in a session it seems that subsequent actions on that session may result in a inconsistent session state AND even inconsistent persistent state. The latter will even make jackrabbit fail to bootstrap an index from that persistent state.
+
+Typical rootcause:
+
+Caused by: org.apache.jackrabbit.core.state.NoSuchItemStateException: ddb9d3ea-59c1-4eb4-a83e-332f646d4f40
+        at org.apache.jackrabbit.core.state.SharedItemStateManager.getItemState(SharedItemStateManager.java:270)
+        at org.apache.jackrabbit.core.query.lucene.MultiIndex.createIndex(MultiIndex.java:1082)
+        at org.apache.jackrabbit.core.query.lucene.MultiIndex.createIndex(MultiIndex.java:1088)
+        at org.apache.jackrabbit.core.query.lucene.MultiIndex.createInitialIndex(MultiIndex.java:395)
+
+Bootstrap failure:
+
+java.io.IOException: Error indexing workspace
+        at org.apache.jackrabbit.core.query.lucene.MultiIndex.createInitialIndex(MultiIndex.java:402)
+        at org.apache.jackrabbit.core.query.lucene.SearchIndex.doInit(SearchIndex.java:465)
+        at org.apache.jackrabbit.core.query.AbstractQueryHandler.init(AbstractQueryHandler.java:59)
+        at org.apache.jackrabbit.core.SearchManager.initializeQueryHandler(SearchManager.java:553)
+
+

@@ -1,0 +1,6 @@
+Migrate to maven 2 the other OCM subprojects
+
+
+
+Description:
+Migrate to maven 2 the other OCM subprojects : jcr-nodemanagement & spring. 

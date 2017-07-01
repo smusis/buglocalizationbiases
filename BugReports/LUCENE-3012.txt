@@ -1,0 +1,11 @@
+if you use setNorm, lucene writes a headerless separate norms file
+
+
+
+Description:
+In this case SR.reWrite just writes the bytes with no header...
+we should write it always.
+
+we can detect in these cases (segment written <= 3.1) with a 
+sketchy length == maxDoc check.
+

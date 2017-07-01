@@ -1,0 +1,15 @@
+Add fake charfilter to BaseTokenStreamTestCase to find offsets bugs
+
+
+
+Description:
+Recently lots of issues have been fixed about broken offsets, but it would be nice to improve the
+test coverage and test that they work across the board (especially with charfilters).
+
+in BaseTokenStreamTestCase.checkRandomData, we can sometimes pass the analyzer a reader wrapped
+in a "MockCharFilter" (the one in the patch sometimes doubles characters). If the analyzer does
+not call correctOffsets or does incorrect "offset math" (LUCENE-3642, etc) then eventually
+this will create offsets and the test will fail.
+
+Other than tests bugs, this found 2 real bugs: ICUTokenizer did not call correctOffset() in its end(),
+and ThaiWordFilter did incorrect offset math.

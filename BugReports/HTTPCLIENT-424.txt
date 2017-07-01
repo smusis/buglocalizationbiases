@@ -1,0 +1,13 @@
+setAuthPreemptive restricted to BASIC AuthScheme
+
+
+
+Description:
+Pre-emptive authentication is hardcoded to be restricted to the BASIC
+authentication scheme.  To fully support custom authentication schemes,
+pre-emptive authentication should be made configurable, either globally, or on a
+per-scheme basis.  A potential compromise may be to require AuthSchemes to
+report whether they support pre-emptive capability if we wish to explicitly
+exclude certain schemes from pre-emptive authentication.
+
+(reported against 3.0 RC 1)

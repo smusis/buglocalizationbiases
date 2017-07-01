@@ -1,0 +1,6 @@
+Avoid String.intern() when indexing
+
+
+
+Description:
+Lucene 3.0 now allows to create Fields with a String name that is already interned. We should use the new constructor in NodeIndexer to avoid unnecessary String.intern() calls. The field names Jackrabbit uses are available in FieldNames and already interned.

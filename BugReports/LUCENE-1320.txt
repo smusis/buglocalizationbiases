@@ -1,0 +1,36 @@
+ShingleMatrixFilter, a three dimensional permutating shingle filter
+
+
+
+Description:
+Backed by a column focused matrix that creates all permutations of shingle tokens in three dimensions. I.e. it handles multi token synonyms.
+
+Could for instance in some cases be used to replaces 0-slop phrase queries with something speedier.
+
+{code:java}
+Token[][][]{
+  {{hello}, {greetings, and, salutations}},
+  {{world}, {earth}, {tellus}}
+}
+{code}
+
+passes the following test  with 2-3 grams:
+
+{code:java}
+assertNext(ts, "hello_world");
+assertNext(ts, "greetings_and");
+assertNext(ts, "greetings_and_salutations");
+assertNext(ts, "and_salutations");
+assertNext(ts, "and_salutations_world");
+assertNext(ts, "salutations_world");
+assertNext(ts, "hello_earth");
+assertNext(ts, "and_salutations_earth");
+assertNext(ts, "salutations_earth");
+assertNext(ts, "hello_tellus");
+assertNext(ts, "and_salutations_tellus");
+assertNext(ts, "salutations_tellus");
+{code}
+
+Contains more and less complex tests that demonstrate offsets, posincr, payload boosts calculation and construction of a matrix from a token stream.
+
+The matrix attempts to hog as little memory as possible by seeking no more than maximumShingleSize columns forward in the stream and clearing up unused resources (columns and unique token sets). Can still be optimized quite a bit though.

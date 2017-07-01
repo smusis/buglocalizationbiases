@@ -1,0 +1,8 @@
+Rename RangeQuery -> TermRangeQuery
+
+
+
+Description:
+Since we now have NumericRangeQuery (LUCENE-1701) we should rename RangeQuery to TextRangeQuery to make it clear that TextRangeQuery (TermRangeQuery?  StringRangeQuery) is based entirely on text comparison.
+
+And, existing users on upgrading to 2.9 and using RangeQuery for [slow] numeric searching would realize they now have a good option for numeric range searching.

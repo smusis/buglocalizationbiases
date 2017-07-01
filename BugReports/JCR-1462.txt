@@ -1,0 +1,14 @@
+repository.xml: throw an exception on error
+
+
+
+Description:
+Currently, unsupported parameters in repository.xml and workspace.xml are ignored.
+To find problems earlier, such problems should result in an exception,
+and starting such a repository should not be possible.
+The same should happen for unsupported values.
+
+For currently unavailable options
+(such as text extraction filter classes if the class is not in the classpath),
+at least a warning should be written to the error log, or an error should be thrown.
+

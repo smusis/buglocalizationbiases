@@ -1,0 +1,6 @@
+The cluster syncDelay attribute is milliseconds
+
+
+
+Description:
+The repository DTDs document the cluster syncDelay attribute as being the sync interval in seconds, when it really is the interval in milliseconds.

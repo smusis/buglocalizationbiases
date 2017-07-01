@@ -1,0 +1,25 @@
+SegmentInfo should explicitly track whether that segment wrote term vectors
+
+
+
+Description:
+Today SegmentInfo doesn't know if it has vectors, which means its files() method must check if the files exist.
+
+This leads to subtle bugs, because Si.files() caches the files but then we fail to invalidate that later when the term vectors files are created.
+
+It also leads to sloppy code, eg TermVectorsReader "gracefully" handles being opened when the files do not exist.  I don't like that; it should only be opened if they exist.
+
+This also fixes these intermittent failures we've been seeing:
+
+{noformat}
+junit.framework.AssertionFailedError: IndexFileDeleter doesn't know about file _1e.tvx
+       at org.apache.lucene.util.LuceneTestCase$LuceneTestCaseRunner.runChild(LuceneTestCase.java:979)
+       at org.apache.lucene.util.LuceneTestCase$LuceneTestCaseRunner.runChild(LuceneTestCase.java:917)
+       at org.apache.lucene.index.IndexWriter.filesExist(IndexWriter.java:3633)
+       at org.apache.lucene.index.IndexWriter.startCommit(IndexWriter.java:3699)
+       at org.apache.lucene.index.IndexWriter.prepareCommit(IndexWriter.java:2407)
+       at org.apache.lucene.index.IndexWriter.commitInternal(IndexWriter.java:2478)
+       at org.apache.lucene.index.IndexWriter.commit(IndexWriter.java:2460)
+       at org.apache.lucene.index.IndexWriter.commit(IndexWriter.java:2444)
+       at org.apache.lucene.index.TestIndexWriterExceptions.testRandomExceptionsThreads(TestIndexWriterExceptions.java:213)
+{noformat}

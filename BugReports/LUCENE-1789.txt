@@ -1,0 +1,11 @@
+getDocValues should provide a MultiReader DocValues abstraction
+
+
+
+Description:
+When scoring a ValueSourceQuery, the scoring code calls ValueSource.getValues(reader) on *each* leaf level subreader -- so DocValue instances are backed by the individual FieldCache entries of the subreaders -- but if Client code were to inadvertently  called getValues() on a MultiReader (or DirectoryReader) they would wind up using the "outer" FieldCache.
+
+Since getValues(IndexReader) returns DocValues, we have an advantage here that we don't have with FieldCache API (which is required to provide direct array access). getValues(IndexReader) could be implimented so that *IF* some a caller inadvertently passes in a reader with non-null subReaders, getValues could generate a DocValues instance for each of the subReaders, and then wrap them in a composite "MultiDocValues".
+
+
+

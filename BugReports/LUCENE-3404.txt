@@ -1,0 +1,6 @@
+testIWondiskfull checkindex failure
+
+
+
+Description:
+looks like charlie cron created a corrupt index on disk full.. can't reproduce with the seed on this machine, i can try on that VM with the same environment and see if i have better luck.

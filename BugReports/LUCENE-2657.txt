@@ -1,0 +1,35 @@
+Replace Maven POM templates with full POMs, and change documentation accordingly
+
+
+
+Description:
+The current Maven POM templates only contain dependency information, the bare bones necessary for uploading artifacts to the Maven repository.
+
+The full Maven POMs in the attached patch include the information necessary to run a multi-module Maven build, in addition to serving the same purpose as the current POM templates.
+
+Several dependencies are not available through public maven repositories.  A profile in the top-level POM can be activated to install these dependencies from the various {{lib/}} directories into your local repository.  From the top-level directory:
+
+{code}
+mvn -N -Pbootstrap install
+{code}
+
+Once these non-Maven dependencies have been installed, to run all Lucene/Solr tests via Maven's surefire plugin, and populate your local repository with all artifacts, from the top level directory, run:
+
+{code}
+mvn install
+{code}
+
+When one Lucene/Solr module depends on another, the dependency is declared on the *artifact(s)* produced by the other module and deposited in your local repository, rather than on the other module's un-jarred compiler output in the {{build/}} directory, so you must run {{mvn install}} on the other module before its changes are visible to the module that depends on it.
+
+To create all the artifacts without running tests:
+
+{code}
+mvn -DskipTests install
+{code}
+
+I almost always include the {{clean}} phase when I do a build, e.g.:
+
+{code}
+mvn -DskipTests clean install
+{code}
+

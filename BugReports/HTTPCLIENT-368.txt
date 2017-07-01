@@ -1,0 +1,23 @@
+[PATCH]character encoding handling is invalid at multipart
+
+
+
+Description:
+Hi,
+
+Commons-Httpclient handle character encoding incorrect at multipart. This is 
+significant problem for other than English people like me. Multipart has two 
+encoding. First is header encoding which specify header of each part. Second 
+is it's body encoding. Body encoding works well but header encoding is fixed 
+as 'asc-ii'. This problem user following situation.
+
+* upload file which file name is described by other than "asc-ii".
+* use parameter which include other than "asc-ii" character.
+
+Unfortunately , It seems RFC doesn't define header encoding for multipart but 
+a lot of people needs set header encoding for thier own laungage. I attached
+the patch. Please fix this problem.
+
+regards,
+
+Takashi Okamoto

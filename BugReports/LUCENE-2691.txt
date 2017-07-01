@@ -1,0 +1,11 @@
+Consolidate Near Real Time and Reopen API semantics
+
+
+
+Description:
+We should consolidate the IndexWriter.getReader and the IndexReader.reopen semantics, since most people are already using the IR.reopen() method, we should simply add::
+{code}
+IR.reopen(IndexWriter)
+{code}
+
+Initially, it could just call the IW.getReader(), but it probably should switch to just using package private methods for sharing the internals

@@ -1,0 +1,10 @@
+add infrastructure for longer running nightly test cases
+
+
+
+Description:
+I'm spinning this out of LUCENE-2762...
+
+The patch there adds initial infrastructure for tests to pull documents from a line file, and adds a longish running test case using that line file to test NRT.
+
+I'd like to see some tests run on more substantial indices based on real data... so this is just a start.

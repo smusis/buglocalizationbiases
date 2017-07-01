@@ -1,0 +1,6 @@
+WeightedHighlighter does not encode XML markup characters
+
+
+
+Description:
+See JCR-2611; the same problem applies to WeightedHighlighter.

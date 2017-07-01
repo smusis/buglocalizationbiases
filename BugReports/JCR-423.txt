@@ -1,0 +1,37 @@
+Node.restore() fails for existing non-versioned OPV=Version child nodes
+
+
+
+Description:
+I have a node whose definition has properties and child nodes.  The
+definitions of the nodetypes for the node and the child include
+mix:versionable.  The properties definitions have onParentVersion=COPY and
+the child nodes have onParentVersion=VERSION.  When I create a node with
+child nodes and checkin and then restore the node, I get a
+"....VersionException: Restore of root node not allowed"  This is
+occurring on the restore of the child node.
+
+According to the spec:
+
+Child Node
+On checkin of N, the node VN will get a subnode of type nt:versionedChild
+with the same name as C. The single property of this node,
+jcr:childVersionHistory is a REFERENCE to the version history of C (not to
+C or any actual version of C). This also requires that C itself be
+versionable (otherwise it would not have a version history).
+.
+.
+.
+On restore of VN, if the workspace currently has an already existing node
+corresponding to C?s version history and the removeExisting flag of the
+restore is set to true, then that instance of C becomes the child of the
+restored N. If the workspace currently has an already existing node
+corresponding to C?s version history and the removeExisting flag of the
+restore is set to false then an ItemExistsException is thrown.
+
+
+I'm restoring the node using
+
+   node.restore(version, true);
+
+Is this expected behavior?

@@ -1,0 +1,6 @@
+CND support in jackrabbit-jcr-commons
+
+
+
+Description:
+It would be nice if the CND parsing functionality in spi-commons could be made available in jcr-commons for use by JCR clients that shouldn't have to know anything about the SPI.

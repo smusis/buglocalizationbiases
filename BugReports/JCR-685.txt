@@ -1,0 +1,32 @@
+Remove some synchronization on CachingNamespaceResolver
+
+
+
+Description:
+The methods getQName() and getJCRName() are unnecessarily synchronized and cause monitor contention with concurrent calls to the methods of the NameCache interface (those are also synchronized).
+
+I propose the following change:
+
+Index: CachingNamespaceResolver.java
+===================================================================
+--- CachingNamespaceResolver.java	(revision 488245)
++++ CachingNamespaceResolver.java	(working copy)
+@@ -84,7 +84,7 @@
+     /**
+      * @deprecated use {@link NameFormat#parse(String, NamespaceResolver)}
+      */
+-    public synchronized QName getQName(String name)
++    public QName getQName(String name)
+             throws IllegalNameException, UnknownPrefixException {
+         return NameFormat.parse(name, this);
+     }
+@@ -92,7 +92,7 @@
+     /**
+      * @deprecated use {@link NameFormat#format(QName, NamespaceResolver)}
+      */
+-    public synchronized String getJCRName(QName name)
++    public String getJCRName(QName name)
+             throws NoPrefixDeclaredException {
+         return NameFormat.format(name, this);
+     }
+

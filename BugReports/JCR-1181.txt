@@ -1,0 +1,10 @@
+Use common base classes in jackrabbit-core and jcr2spi
+
+
+
+Description:
+As part of JCR-742 I've implemented a number of generic JCR base classes and adapters in org.apache.jackrabbit.commons. These classes are based on existing code in jackrabbit-core.
+
+To encourage code reuse across jackrabbit-core and jcr2spi, I'd like to make both components use these generic base classes.
+
+

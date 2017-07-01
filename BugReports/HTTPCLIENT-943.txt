@@ -1,0 +1,8 @@
+CacheClient Javadoc and Constants usage cleanup
+
+
+
+Description:
+CacheClient has some empty public java doc on methods that are not get/set.  These should have some body.  
+
+Also the HeaderConstants Class has some overlap with the existing HTTP class for header values.  These need cleaning up.

@@ -1,0 +1,6 @@
+Make CachingTokenFilter faster
+
+
+
+Description:
+The LinkedList used by CachingTokenFilter is accessed using the get() method. Direct access on a LinkedList is slow and an Iterator should be used instead. For more than a handful of tokens, the difference in speed grows exponentially.

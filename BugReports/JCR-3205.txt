@@ -1,0 +1,65 @@
+Missing support for lock timeout and ownerHint in jcr-server
+
+
+
+Description:
+trying to set the lock timeout when creating a lock seems not to work over the davex transport. the timeout is always 2147483.
+
+this was my test code:
+
+import javax.jcr.*;
+import javax.jcr.lock.*;
+
+import org.apache.jackrabbit.jcr2spi.RepositoryImpl;
+import org.apache.jackrabbit.jcr2spi.config.RepositoryConfig;
+
+
+String url = "http://localhost:8080/server/";
+String workspace = "tests";
+
+RepositoryConfig config = new RepositoryConfigImplTest(repoUrl);
+Repository repo = RepositoryImpl.create(config);
+
+Credentials sc = new SimpleCredentials("admin","admin".toCharArray());
+Session s = repo.login(sc,workspace);
+
+Node t;
+if (s.getRootNode().hasNode("test")) {
+    t = s.getRootNode().getNode("test");
+} else {
+    t = s.getRootNode().addNode("test", "nt:unstructured");
+}
+t.addMixin("mix:lockable");
+s.save();
+LockManager m = s.getWorkspace().getLockManager();
+Lock l = m.lock(t.getPath(), false, true, 10, "me");
+System.out.println(l.getSecondsRemaining());
+
+and the output is 2147483
+
+
+the relevant communication fragment is below, i attach the full trace in case i miss something.
+
+LOCK /server/tests/jcr%3aroot/test HTTP/1.1
+Timeout: Second-10
+Depth: 0
+Link: <urn:uuid0c740bb9-042a-4ef2-b019-1a6c52784c29>; rel="http://www.day.com/jcr/webdav/1.0/session-id"
+Authorization: Basic YWRtaW46YWRtaW4=
+User-Agent: Jakarta Commons-HttpClient/3.0
+Host: localhost:8080
+Content-Length: 254
+Content-Type: text/xml; charset=UTF-8
+
+<?xml version="1.0" encoding="UTF-8" standalone="no"?><D:lockinfo xmlns:D="DAV:"><D:lockscope><dcr:exclusive-session-scoped xmlns:dcr="http://www.day.com/jcr/webdav/1.0"/></D:lockscope><D:locktype><D:write/></D:locktype><D:owner>me</D:owner></D:lockinfo>
+
+HTTP/1.1 200 OK
+Content-Type: text/xml; charset=utf-8
+Content-Length: 450
+Lock-Token: <aa724c28-3c24-41e8-a3b4-9fc129adf732>
+Server: Jetty(6.1.x)
+
+<?xml version="1.0" encoding="UTF-8" standalone="no"?><D:prop xmlns:D="DAV:"><D:lockdiscovery><D:activelock><D:lockscope><dcr:exclusive-session-scoped xmlns:dcr="http://www.day.com/jcr/webdav/1.0"/></D:lockscope><D:locktype><D:write/></D:locktype><D:depth>0</D:depth><D:timeout>Second-2147483</D:timeout><D:owner>admin</D:owner><D:locktoken><D:href>aa724c28-3c24-41e8-a3b4-9fc129adf732</D:href></D:locktoken></D:activelock></D:lockdiscovery></D:prop>
+
+
+
+by the way: if i do not explicitly logout before the program exits, the lock is also not released even though it is session based. should the session not trigger a logout on destruction?

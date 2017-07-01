@@ -1,0 +1,6 @@
+Jackrabbit Utilites upgrade to Jackrabbit 2.1.0
+
+
+
+Description:
+I'm including a patch for the jcrutil project in the sandbox, for the S3 DataStore to work with 2.1.0, as well as the VFS.  Also using Tika for MIME type resolution.  Please look this over and feel free to improve, this is something I played with but didn't stress test.

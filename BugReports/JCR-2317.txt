@@ -1,0 +1,6 @@
+Lower log level for index updates from queue
+
+
+
+Description:
+The log level is currently at info and should be lowered to debug.

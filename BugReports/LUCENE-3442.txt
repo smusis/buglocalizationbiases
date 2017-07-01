@@ -1,0 +1,79 @@
+QueryWrapperFilter gets null DocIdSetIterator when wrapping TermQuery
+
+
+
+Description:
+If you try to get the iterator for the DocIdSet returned by a QueryWrapperFilter which wraps a TermQuery you get null instead of an iterator that returns the same documents as the search on the TermQuery.
+
+Code demonstrating the issue:
+
+{code:java}
+import java.io.IOException;
+import org.apache.lucene.analysis.WhitespaceAnalyzer;
+import org.apache.lucene.document.Document;
+import org.apache.lucene.document.Field;
+import org.apache.lucene.document.Field.Index;
+import org.apache.lucene.document.Field.Store;
+import org.apache.lucene.index.IndexReader;
+import org.apache.lucene.index.IndexWriter;
+import org.apache.lucene.index.IndexWriterConfig;
+import org.apache.lucene.index.Term;
+import org.apache.lucene.store.RAMDirectory;
+import org.apache.lucene.util.Version;
+import org.apache.lucene.search.DocIdSet;
+import org.apache.lucene.search.DocIdSetIterator;
+import org.apache.lucene.search.Filter;
+import org.apache.lucene.search.IndexSearcher;
+import org.apache.lucene.search.QueryWrapperFilter;
+import org.apache.lucene.search.TermQuery;
+import org.apache.lucene.search.TopDocs;
+
+public class TestQueryWrapperFilterIterator {
+   public static void main(String[] args) {
+		try {
+			IndexWriterConfig iwconfig = new IndexWriterConfig(Version.LUCENE_34, new WhitespaceAnalyzer(Version.LUCENE_34));
+			iwconfig.setOpenMode(IndexWriterConfig.OpenMode.CREATE);
+			RAMDirectory dir = new RAMDirectory();
+		
+			IndexWriter writer = new IndexWriter(dir, iwconfig);
+			Document d = new Document();
+			d.add(new Field("id", "1001", Store.YES, Index.NOT_ANALYZED));
+			d.add(new Field("text", "headline one group one", Store.YES, Index.ANALYZED));
+			d.add(new Field("group", "grp1", Store.YES, Index.NOT_ANALYZED));
+		    writer.addDocument(d);
+			writer.commit();
+			writer.close();
+			
+			IndexReader rdr = IndexReader.open(dir);
+			IndexSearcher searcher = new IndexSearcher(rdr);
+			
+			TermQuery tq = new TermQuery(new Term("text", "headline"));
+			
+			TopDocs results = searcher.search(tq, 5);
+			System.out.println("Number of search results: " + results.totalHits);
+			
+			Filter f = new QueryWrapperFilter(tq);
+			
+			DocIdSet dis = f.getDocIdSet(rdr);
+			
+			DocIdSetIterator it = dis.iterator();
+			if (it != null) {
+				int docId = it.nextDoc();
+				while (docId != DocIdSetIterator.NO_MORE_DOCS) {
+					Document doc = rdr.document(docId);
+					System.out.println("Iterator doc: " + doc.get("id"));
+					docId = it.nextDoc();
+				}
+			} else {
+				System.out.println("Iterator was null: ");
+			}
+			
+			searcher.close();
+			rdr.close();
+		} catch (IOException ioe) {
+			ioe.printStackTrace();
+		}
+
+	}
+}
+{code}

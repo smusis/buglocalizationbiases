@@ -1,0 +1,32 @@
+back-compat tests ("ant test-tag") should test JAR drop-in-ability
+
+
+
+Description:
+
+We now test back-compat with "ant test-tag", which is very useful for
+catching breaks in back compat before committing.
+
+However, that currently checks out "src/test" sources and then
+compiles them against the trunk JAR, and runs the tests.  Whereas our
+back compat policy:
+
+  http://wiki.apache.org/lucene-java/BackwardsCompatibility
+
+states that no recompilation is required on upgrading to a new JAR.
+Ie you should be able to drop in the new JAR in place of your old one
+and things should work fine.
+
+So... we should fix "ant test-tag" to:
+
+  * Do full checkout of core sources & tests from the back-compat-tag
+
+  * Compile the JAR from the back-compat sources
+
+  * Compile the tests against that back-compat JAR
+
+  * Swap in the trunk JAR
+
+  * Run the tests
+
+

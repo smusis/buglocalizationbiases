@@ -1,0 +1,6 @@
+SQL2: Implement LIKE support for node names
+
+
+
+Description:
+Doing a LIKE constraint on the local name of a node that throws javax.jcr.UnsupportedRepositoryOperationException.

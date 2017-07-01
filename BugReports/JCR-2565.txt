@@ -1,0 +1,12 @@
+spi2dav: Overwrite header T specified for MOVE and COPY causes failure if some API tests
+
+
+
+Description:
+failing tests are:
+
+org.apache.jackrabbit.test.api.WorkspaceCopySameNameSibsTest#testCopyNodesNodeExistsAtDestPath
+org.apache.jackrabbit.test.api.WorkspaceMoveSameNameSibsTest#testMoveNodesNodeExistsAtDestPath
+
+those would be fixed by setting the overwrite header to F(alse)... however, this doesn't fit those cases where same-same
+siblings would be allowed and the copy/move to a destination with existing item would succeed in JCR.

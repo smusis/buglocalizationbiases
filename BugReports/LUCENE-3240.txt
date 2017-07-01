@@ -1,0 +1,6 @@
+Move FunctionQuery, ValueSources and DocValues to Queries module
+
+
+
+Description:
+Having resolved the FunctionQuery sorting issue and moved the MutableValue classes, we can now move FunctionQuery, ValueSources and DocValues to a Queries module.

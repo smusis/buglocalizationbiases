@@ -1,0 +1,10 @@
+New node type namespaces should be automatically registered
+
+
+
+Description:
+A user currently needs to explicitly register any new namespaces used in new node types before registering the node types. See for example the problem on the mailing list:
+
+    http://mail-archives.apache.org/mod_mbox/incubator-jackrabbit-dev/200603.mbox/%3c1142091097.13136.0.camel@localhost.localdomain%3e
+
+The node type registration should be changed so that new namespaces are automatically registered.

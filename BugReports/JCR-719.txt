@@ -1,0 +1,10 @@
+XPath parser ignores parent axis
+
+
+
+Description:
+The query handler in Jackrabbit does not support the parent axis and should throw an invalid query exception in that case.
+
+Example query:
+
+//foo/..

@@ -1,0 +1,14 @@
+add ASCIIFoldingFilter and deprecate ISOLatin1AccentFilter
+
+
+
+Description:
+The ISOLatin1AccentFilter is removing accents from accented characters in the ISO Latin 1 character set.
+It does what it does and there is no bug with it.
+
+It would be nicer, though, if there was a more comprehensive version of this code that included not just ISO-Latin-1 (ISO-8859-1) but the entire Latin 1 and Latin Extended A unicode blocks.
+See: http://en.wikipedia.org/wiki/Latin-1_Supplement_unicode_block
+See: http://en.wikipedia.org/wiki/Latin_Extended-A_unicode_block
+
+That way, all languages using roman characters are covered.
+A new class, ISOLatinAccentFilter is attached. It is intended to supercede ISOLatin1AccentFilter which should get deprecated.

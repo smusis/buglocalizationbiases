@@ -1,0 +1,8 @@
+ChildNodeEntriesImpl.update logs incorrect errors
+
+
+
+Description:
+The ChildNodeEntriesImpl logs errors on a correct update.
+
+"ChildInfo iterator contains multiple entries with the same name|index or uniqueID -> ignore ChildNodeInfo."  (line 186)

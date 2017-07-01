@@ -1,0 +1,8 @@
+make frozenbuffereddeletes more efficient for terms
+
+
+
+Description:
+when looking at LUCENE-3340, I thought its also ridiculous how much ram we use for delete by term.
+
+so we can save a lot of memory, especially object overhead by being a little more efficient.

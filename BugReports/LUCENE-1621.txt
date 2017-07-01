@@ -1,0 +1,6 @@
+deprecate term and getTerm in MultiTermQuery
+
+
+
+Description:
+This means moving getTerm and term up to sub classes as appropriate and reimplementing equals, hashcode as appropriate in sub classes.

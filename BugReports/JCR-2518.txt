@@ -1,0 +1,8 @@
+Make ItemIds more stable
+
+
+
+Description:
+The ItemIds returned by spi2dav are currently not stable in the sense that they are sometimes uuid based and sometimes not: If a node is referenceable some of its properties will receive fully path based ids while others will receive ids based on the uuid of its parent node. 
+
+The efficiency of caching introduced with JCR-2498 depends on stable ids. I therefore suggest to improve spi2dav such that property ids are always uuid based if the parent's node has a uuid. 

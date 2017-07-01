@@ -1,0 +1,195 @@
+AnalyzingQueryParser can't work with leading wildcards.
+
+
+
+Description:
+The getWildcardQuery mehtod in AnalyzingQueryParser.java need the following changes to accept leading wildcards:
+
+	protected Query getWildcardQuery(String field, String termStr) throws ParseException
+	{
+		String useTermStr = termStr;
+		String leadingWildcard = null;
+		if ("*".equals(field))
+		{
+			if ("*".equals(useTermStr))
+				return new MatchAllDocsQuery();
+		}
+		boolean hasLeadingWildcard = (useTermStr.startsWith("*") || useTermStr.startsWith("?")) ? true : false;
+
+		if (!getAllowLeadingWildcard() && hasLeadingWildcard)
+			throw new ParseException("'*' or '?' not allowed as first character in WildcardQuery");
+
+		if (getLowercaseExpandedTerms())
+		{
+			useTermStr = useTermStr.toLowerCase();
+		}
+
+		if (hasLeadingWildcard)
+		{
+			leadingWildcard = useTermStr.substring(0, 1);
+			useTermStr = useTermStr.substring(1);
+		}
+
+		List tlist = new ArrayList();
+		List wlist = new ArrayList();
+		/*
+		 * somewhat a hack: find/store wildcard chars in order to put them back
+		 * after analyzing
+		 */
+		boolean isWithinToken = (!useTermStr.startsWith("?") && !useTermStr.startsWith("*"));
+		isWithinToken = true;
+		StringBuffer tmpBuffer = new StringBuffer();
+		char[] chars = useTermStr.toCharArray();
+		for (int i = 0; i < useTermStr.length(); i++)
+		{
+			if (chars[i] == '?' || chars[i] == '*')
+			{
+				if (isWithinToken)
+				{
+					tlist.add(tmpBuffer.toString());
+					tmpBuffer.setLength(0);
+				}
+				isWithinToken = false;
+			}
+			else
+			{
+				if (!isWithinToken)
+				{
+					wlist.add(tmpBuffer.toString());
+					tmpBuffer.setLength(0);
+				}
+				isWithinToken = true;
+			}
+			tmpBuffer.append(chars[i]);
+		}
+		if (isWithinToken)
+		{
+			tlist.add(tmpBuffer.toString());
+		}
+		else
+		{
+			wlist.add(tmpBuffer.toString());
+		}
+
+		// get Analyzer from superclass and tokenize the term
+		TokenStream source = getAnalyzer().tokenStream(field, new StringReader(useTermStr));
+		org.apache.lucene.analysis.Token t;
+
+		int countTokens = 0;
+		while (true)
+		{
+			try
+			{
+				t = source.next();
+			}
+			catch (IOException e)
+			{
+				t = null;
+			}
+			if (t == null)
+			{
+				break;
+			}
+			if (!"".equals(t.termText()))
+			{
+				try
+				{
+					tlist.set(countTokens++, t.termText());
+				}
+				catch (IndexOutOfBoundsException ioobe)
+				{
+					countTokens = -1;
+				}
+			}
+		}
+		try
+		{
+			source.close();
+		}
+		catch (IOException e)
+		{
+			// ignore
+		}
+
+		if (countTokens != tlist.size())
+		{
+			/*
+			 * this means that the analyzer used either added or consumed
+			 * (common for a stemmer) tokens, and we can't build a WildcardQuery
+			 */
+			throw new ParseException("Cannot build WildcardQuery with analyzer " + getAnalyzer().getClass()
+					+ " - tokens added or lost");
+		}
+
+		if (tlist.size() == 0)
+		{
+			return null;
+		}
+		else if (tlist.size() == 1)
+		{
+			if (wlist.size() == 1)
+			{
+				/*
+				 * if wlist contains one wildcard, it must be at the end,
+				 * because: 1) wildcards at 1st position of a term by
+				 * QueryParser where truncated 2) if wildcard was *not* in end,
+				 * there would be *two* or more tokens
+				 */
+				StringBuffer sb = new StringBuffer();
+				if (hasLeadingWildcard)
+				{
+					// adding leadingWildcard
+					sb.append(leadingWildcard);
+				}
+				sb.append((String) tlist.get(0));
+				sb.append(wlist.get(0).toString());
+				return super.getWildcardQuery(field, sb.toString());
+			}
+			else if (wlist.size() == 0 && hasLeadingWildcard)
+			{
+				/*
+				 * if wlist contains no wildcard, it must be at 1st position
+				 */
+				StringBuffer sb = new StringBuffer();
+				if (hasLeadingWildcard)
+				{
+					// adding leadingWildcard
+					sb.append(leadingWildcard);
+				}
+				sb.append((String) tlist.get(0));
+				sb.append(wlist.get(0).toString());
+				return super.getWildcardQuery(field, sb.toString());
+			}
+			else
+			{
+				/*
+				 * we should never get here! if so, this method was called with
+				 * a termStr containing no wildcard ...
+				 */
+				throw new IllegalArgumentException("getWildcardQuery called without wildcard");
+			}
+		}
+		else
+		{
+			/*
+			 * the term was tokenized, let's rebuild to one token with wildcards
+			 * put back in postion
+			 */
+			StringBuffer sb = new StringBuffer();
+			if (hasLeadingWildcard)
+			{
+				// adding leadingWildcard
+				sb.append(leadingWildcard);
+			}
+			for (int i = 0; i < tlist.size(); i++)
+			{
+				sb.append((String) tlist.get(i));
+				if (wlist != null && wlist.size() > i)
+				{
+					sb.append((String) wlist.get(i));
+				}
+			}
+			return super.getWildcardQuery(field, sb.toString());
+		}
+	}
+

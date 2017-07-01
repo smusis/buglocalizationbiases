@@ -1,0 +1,8 @@
+Use of java.net.URI.resolve() is buggy
+
+
+
+Description:
+The use of java.net.URI.resolve() is buggy (see <http://bugs.sun.com/bugdatabase/view_bug.do?bug_id=4708535>). Affected class: org.apache.http.impl.client.DefaultRedirectHandler.
+
+Proposed solution: Create a resolve(URI, String) method in o.a.h.client.utils.URLUtils.

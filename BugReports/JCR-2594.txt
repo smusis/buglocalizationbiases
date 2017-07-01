@@ -1,0 +1,6 @@
+Make cache limits configurable
+
+
+
+Description:
+The cache settings of the CacheManager class (JCR-619) can be adjusted programmatically (JCR-725), but it would be nice if there was also a way to set them with system properties or ideally as a part of the repository configuration.

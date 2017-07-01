@@ -1,0 +1,8 @@
+Upgrade to latest SLF4J and Logback
+
+
+
+Description:
+While fixing JCR-2836 I ran into LBCLASSIC-183 [1] that's fixed in a recent Logback release. To get this and other fixes we should upgrade Logback and SLF4J in Jackrabbit 2.3.
+
+[1] http://jira.qos.ch/browse/LBCLASSIC-183

@@ -1,0 +1,16 @@
+LuceneQueryBuilder assumes readability of root-Node to be granted in any case.
+
+
+
+Description:
+Have a User U. 
+Have the User U denied to read "/".
+Have the User U allowed to read "/home/u".
+
+Any query of User U on this workspace fails with an AccessDeniedException.
+
+The exception is caused by a call insided LuceneQueryBuilder on ln212:
+NodeId id = ((NodeImpl) session.getRootNode()).getNodeId(); 
+
+I couldn't find a specification that imposes the readability of root-node as a precondtion for query.
+Therefore I consider this behavior as a bug.

@@ -1,0 +1,8 @@
+Allow setting the IndexWriter docstore to be a different directory
+
+
+
+Description:
+Add an IndexWriter.setDocStoreDirectory method that allows doc
+stores to be placed in a different directory than the IW default
+dir.

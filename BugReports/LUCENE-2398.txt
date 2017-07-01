@@ -1,0 +1,9 @@
+Improve tests to work easier from IDEs
+
+
+
+Description:
+As reported by Paolo Castagna on the mailing lists, some tests fail when you run them from eclipse.
+
+Some of the failures he reports are actually code problems such as base test classes not being 
+abstract when they should be... we should fix things like that.

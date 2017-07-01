@@ -1,0 +1,50 @@
+method.getURI()  returns escaped URIs but it shouldn't
+
+
+
+Description:
+Hi guys,
+
+Please, consider the following imaginary and simplified code:
+
+
+URI u = new URI("http://some.host.com/%41.html", true);
+HttpClient httpClient = new HttpClient();
+GetMethod method = new GetMethod();
+method.setURI(u);
+URI u2 = method.getURI();
+
+System.out.println("1. " + u);
+System.out.println("2. " + new String(u.getRawURI()));
+System.out.println("3. " + u.getURI());
+System.out.println("4. " + u2);
+System.out.println("5. " + new String(u2.getRawURI()));
+System.out.println("6. " + u2.getURI());
+
+
+The result that you'll get is:
+
+1. http://some.host.com/%41.html
+2. http://some.host.com/%41.html
+3. http://some.host.com/A.html
+4. http://some.host.com/%2541.html
+5. http://some.host.com/%2541.html
+6. http://some.host.com/%41.html
+
+
+You can see that for lines 4, 5, and 6, the URI suddenly gets escaped (the 
+percent sign gets converted to %25).
+
+Why is that? Am I doing something wrong? Is this the desired behaviour? I would 
+have expected to get the SAME URI back, without any escaping.
+
+Besides, I have another question:
+
+After executing a method -- httpClient.executeMethod(method) -- what will 
+method.getURI() return? The URI *after* all redirections or the original URI? 
+It seems I get the URI *after* the redirections, which is fine, but the 
+documentation doesn't say that. It only explicitly says that the getPath() 
+method has that behaviour.
+
+Best regards and thanks,
+Bisser

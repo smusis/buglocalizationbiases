@@ -1,0 +1,29 @@
+Text Extractor: Image parser throws exception (jpeg)
+
+
+
+Description:
+the below exception is thrown over an over while uploading jpeg images:
+16.11.2009 17:20:42 *WARN * LazyTextExtractorField: Failed to extract text from a binary property (LazyTextExtractorField.java, line 165)
+org.apache.tika.exception.TikaException: TIKA-198: Illegal IOException from org.apache.tika.parser.image.ImageParser@c7bc3
+	at org.apache.tika.parser.CompositeParser.parse(CompositeParser.java:125)
+	at org.apache.tika.parser.AutoDetectParser.parse(AutoDetectParser.java:105)
+	at org.apache.jackrabbit.core.query.lucene.LazyTextExtractorField$ParsingTask.run(LazyTextExtractorField.java:160)
+	at java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:417)
+	at java.util.concurrent.FutureTask$Sync.innerRun(FutureTask.java:269)
+	at java.util.concurrent.FutureTask.run(FutureTask.java:123)
+	at java.util.concurrent.ScheduledThreadPoolExecutor$ScheduledFutureTask.access$301(ScheduledThreadPoolExecutor.java:65)
+	at java.util.concurrent.ScheduledThreadPoolExecutor$ScheduledFutureTask.run(ScheduledThreadPoolExecutor.java:168)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.runTask(ThreadPoolExecutor.java:650)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:675)
+	at java.lang.Thread.run(Thread.java:613)
+Caused by: javax.imageio.IIOException: Not a JPEG file: starts with 0x00 0x05
+	at com.sun.imageio.plugins.jpeg.JPEGImageReader.readImageHeader(Native Method)
+	at com.sun.imageio.plugins.jpeg.JPEGImageReader.readNativeHeader(JPEGImageReader.java:554)
+	at com.sun.imageio.plugins.jpeg.JPEGImageReader.checkTablesOnly(JPEGImageReader.java:309)
+	at com.sun.imageio.plugins.jpeg.JPEGImageReader.gotoImage(JPEGImageReader.java:431)
+	at com.sun.imageio.plugins.jpeg.JPEGImageReader.readHeader(JPEGImageReader.java:547)
+	at com.sun.imageio.plugins.jpeg.JPEGImageReader.getHeight(JPEGImageReader.java:609)
+	at org.apache.tika.parser.image.ImageParser.parse(ImageParser.java:47)
+	at org.apache.tika.parser.CompositeParser.parse(CompositeParser.java:119)
+	... 10 more

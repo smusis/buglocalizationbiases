@@ -1,0 +1,6 @@
+small improvements to DWPTThreadPool
+
+
+
+Description:
+While working on another issue I cleaned up DWTPThreadPool a little, fixed some naming issues and fixed some todos... patch is coming soon...

@@ -1,0 +1,15 @@
+CachingHttpClient returns a 411 respones when executing a POST (HttpPost) request 
+
+
+
+Description:
+The CachingHttpClient validates requests prior executing them, by calling RequestProtocolCompliance.requestIsFatallyNonCompliant(..).
+
+When executing an HttpPost, this method considers the request is invalid because it does not contain (yet) a content-length header. Indeed, I observed that this header is generated at the time the DefaultHttpClient fires the request.
+
+NB: i'm using the Cache 4.1-alpha2 plugged over the HttpClient 4.0.1-final. I can't use the latest version for both because I need to rely on a stable version if there's any. I would be curious to know if we get the same behaviour in 4.1...
+
+Anyway, I would see two fixes for that issue:
+- make HttpPost set the content-length at the time the entity is set,
+- or remove the validation step on the CachingHttpClient side.
+

@@ -1,0 +1,6 @@
+Hudson build doesn't detect Java 5 class references
+
+
+
+Description:
+Due to the fact that the Maven 2 support in Hudson only works on Java 5, our current CI build at http://hudson.zones.apache.org/hudson/job/Jackrabbit-trunk/ doesn't detect references to classes and methods that are only available in the Java 5 class library.

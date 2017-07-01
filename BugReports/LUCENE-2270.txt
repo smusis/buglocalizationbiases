@@ -1,0 +1,6 @@
+queries with zero boosts don't work
+
+
+
+Description:
+Queries consisting of only zero boosts result in incorrect results.

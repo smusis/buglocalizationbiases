@@ -1,0 +1,6 @@
+Tika configuration may use wrong class loader
+
+
+
+Description:
+The configurable Tika parser construction mechanism added in JCR-2864 constructs the parser instance lazily when the first indexing request is made. This may confuse things as the context class loader used by Tika to load all the available parser classes may not always be the class loader used to create the repository. To avoid this problem the Tika parser should be constructed already during normal repository initialization.

@@ -1,0 +1,16 @@
+Add "tokenize documents only" task to contrib/benchmark
+
+
+
+Description:
+I've been looking at performance improvements to tokenization by
+re-using Tokens, and to help benchmark my changes I've added a new
+task called ReadTokens that just steps through all fields in a
+document, gets a TokenStream, and reads all the tokens out of it.
+
+EG this alg just reads all Tokens for all docs in Reuters collection:
+
+  doc.maker=org.apache.lucene.benchmark.byTask.feeds.ReutersDocMaker
+  doc.maker.forever=false
+  {ReadTokens > : *
+

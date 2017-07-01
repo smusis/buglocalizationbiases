@@ -1,0 +1,87 @@
+Bundle persistence managers node id key store/load is not symertric on MySql causing NoSuchItemState Exceptions 
+
+
+
+Description:
+It looks like the binary values read back from MySql where the UUID contains 0's is not the same as that generated from the UUID getRawBytes() call. As result, you can store a node with the UUID that has 0's but its never found when read back. This therefore causes corruption in random places when certain UUIDs are generated.
+
+Test Case: 
+
+I've attached 2 files. One causes node corruption when imported, the other does not.
+The only difference is that I removed any 0 values from the problem UUID in the file that causes corruption.
+
+As Stefan pointed out, I had manipulated the test case to use standard nt types when in fact I should have provided the following info (sorry Stefan) e.g. the test folder types are referencable hence the jcr:uuid allocation
+
+[acme:Folder] > nt:folder, mix:referenceable
+
+If I import causes_corruption.xml and then attempt to "ls" AclObjectIdentities then loadBundle() returns null for the UUID 
+
+a55f3f6b-a909-4e8d-b65a-93002ced0920 which in bytes is [-91, 95, 63, 107, -87, 9, 78, -115, -74, 90, -109, 0, 44, -19, 9, 32]
+
+If I import works.xml then "ls" works fine for the same node as I've manually changed the UUID to replace 0s with 1s in the last section.
+
+a55f3f6b-a909-4e8d-b65a-93112ced1921 [-91, 95, 63, 107, -87, 9, 78, -115, -74, 90, -109, 17, 44, -19, 25, 33]
+
+
+Testing shows this issue highlights a problem with the Bundle persistence manager and MySqls method of handling BINARY columns.
+The solution looks to be to replace BINARY(16) with VARBINARY(16). Quoting from http://dev.mysql.com/doc/refman/5.0/en/binary-varbinary.html...
+"If the value retrieved must be the same as the value specified for storage with no padding, it might be preferable to use VARBINARY or one of the BLOB data types instead."
+A review of our logs shows that all of the corruption we've seen has related to nodes with UUIDs including 0's.
+
+* Shall I log a JIRA ticket for this?
+* Anyone see any issues with this fix?
+
+
+In the following example you can see I'm showing all bundles in the "test1" workspace.
+
+mysql> select hex(node_id) from test1_bundle;
++----------------------------------+
+| hex(node_id)                     |
++----------------------------------+
+| 28126C3E36A0471D9CDC5AC423BAC9C5 |
+| A55F3F6BA9094E8DB65A93002CED0920 |
+| CAFEBABECAFEBABECAFEBABECAFEBABE |
+| D638EACCDEB641FD8868804C8ECEFFFD |
+| DEADBEEFCAFEBABECAFEBABECAFEBABE |
++----------------------------------+
+5 rows in set (0.00 sec)
+
+...but a select using the same UUID hex value returns no rows.
+
+mysql>  select node_id from test1_bundle where 
+mysql> unhex('A55F3F6BA9094E8DB65A93002CED0920') = node_id;
+Empty set (0.00 sec)
+
+I've then created a new "test3" workspace which I modified to use varbinary instead of binary with:
+
+alter table test3_bundle modify NODE_ID varbinary(16); alter table test3_refs modify NODE_ID varbinary(16);
+
+My import test case now no longer fails and the following query proves that query operations, after a store, return rows as expected.
+
+mysql>  select node_id from test3_bundle where 
+mysql> unhex('A55F3F6BA9094E8DB65A93002CED0920') = node_id;
++------------------+
+| node_id          |
++--------¶Z ,í--  |
++------------------+
+1 row in set (0.00 sec)
+
+mysql> desc test3_bundle;
+ERROR 2006 (HY000): MySQL server has gone away No connection. Trying to reconnect...
+Connection id:    7116
+Current database: mmptest
+
++-------------+---------------+------+-----+---------+-------+
+| Field       | Type          | Null | Key | Default | Extra |
++-------------+---------------+------+-----+---------+-------+
+| NODE_ID     | varbinary(16) | YES  | UNI | NULL    |       |
+| BUNDLE_DATA | longblob      | NO   |     |         |       |
++-------------+---------------+------+-----+---------+-------+
+2 rows in set (0.00 sec)
+
+
+mysql>  alter table test3_bundle modify NODE_ID varbinary(16);
+Query OK, 2 rows affected (0.00 sec)
+Records: 2  Duplicates: 0  Warnings: 0
+
+

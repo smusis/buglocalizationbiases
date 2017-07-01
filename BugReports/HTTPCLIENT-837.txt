@@ -1,0 +1,11 @@
+Wire produces invalid log skipping zero bytes in certain cases
+
+
+
+Description:
+WireLogInputStream class line 82 check if the byte returned is not -1 meaning end of stream. But the condition is wrong in case if this byte is 0, it should look like
+
+if (l != -1) {
+//...
+}
+

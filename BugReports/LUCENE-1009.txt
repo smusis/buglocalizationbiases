@@ -1,0 +1,18 @@
+LogByteSizeMergePolicy over-merges with autoCommit=false and documents with term vectors and/or stored fields
+
+
+
+Description:
+Mark Miller noticed this slowdown (see details in LUCENE-994) in his
+app.
+
+This happens because in SegmentInfo.sizeInBytes(), we just run through
+all files associated with that segment, summing up their byte sizes.
+
+But in the case of shared doc stores (which happens when
+autoCommit=false), this is not quite correct because those files are
+shared across multiple segments.
+
+I plan to fix sizeInBytes() to not include the size of the doc stores
+when they are shared.
+

@@ -1,0 +1,34 @@
+URI.parseUriReference treats strings with leading ':' as absolute URIs with zero-length scheme
+
+
+
+Description:
+URI.parseUriReference treats strings with leading ':' as absolute URIs with a
+zero-length scheme. If you then try to derelativize such a URI against a base
+URI, you just get the same URI with leading ':'. 
+
+IE and Firefox treat URI strings with a leading ':' as relative URIs. For
+example, an HREF of ":foo" in the context of base URI
+"http://www.example.com/path/page" would derelativize as
+"http://www.example.com/path/:foo". (Only if another character comes before the
+colon is it interpreted as a URI scheme.)
+
+It'd be desirable for HTTPClient URI to do the same thing.
+
+Example code to demonstrate:
+
+import org.apache.commons.httpclient.URI;
+URI base = new URI("http://www.example.com/path/page");
+URI rel1 = new URI(":foo/boo");
+System.out.println((new URI(base,rel1)).toString()); // displays just ":foo"
+
+A potential fix would be for URI.parseUriReference() to avoid interpreting a ':'
+in the zero position as indicating a zero-length scheme:
+
+-       if (atColon < 0 || (atSlash >= 0 && atSlash < atColon)) {
++       if (atColon <= 0 || (atSlash >= 0 && atSlash < atColon)) {
+
+and
+
+-        if (at < length && tmp.charAt(at) == ':') {
++        if (at > 0 && at < length && tmp.charAt(at) == ':') {

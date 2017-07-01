@@ -1,0 +1,25 @@
+BooleanScorer should not limit number of prohibited clauses
+
+
+
+Description:
+Today it's limited to 32, because it uses a separate bit in the mask
+for each clause.
+
+But I don't understand why it does this; I think all prohibited
+clauses can share a single boolean/bit?  Any match on a prohibited
+clause sets this bit and the doc is not collected; we don't need each
+prohibited clause to have a dedicated bit?
+
+We also use the mask for required clauses, but this code is now
+commented out (we always use BS2 if there are any required clauses);
+if we re-enable this code (and I think we should, at least in certain
+cases: I suspect it'd be faster than BS2 in many cases), I think we
+can cutover to an int count instead of bit masks, and then have no
+limit on the required clauses sent to BooleanScorer also.
+
+Separately I cleaned a few things up about BooleanScorer: all of the
+embedded scorer methods (nextDoc, docID, advance, score) now throw
+UOE; pre-allocate the buckets instead of doing it lazily
+per-sub-collect.
+

@@ -1,0 +1,17 @@
+Session.checkPermission("/", "add_node") throws PathNotFoundException instead of AccessControlException
+
+
+
+Description:
+When invoking Session.checkPermission("/", "add_node"), a PathNotFoundException is thrown:
+
+Exception in thread "main" javax.jcr.PathNotFoundException: no such ancestor path of degree 1
+	at org.apache.jackrabbit.spi.commons.name.PathFactoryImpl$PathImpl.getAncestor(PathFactoryImpl.java:443)
+	at org.apache.jackrabbit.core.SessionImpl.checkPermission(SessionImpl.java:710)
+	at Test.main(Test.java:35)
+
+i assume that getAncestor(1) used to return null in an earlier version.
+
+
+
+

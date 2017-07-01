@@ -1,0 +1,15 @@
+Document.fields() only returns stored fields
+
+
+
+Description:
+Document.fields() only returns stored fields, not those which are indexed but not 
+stored. This is confusing, as there's a isStored() Method which doesn't make much 
+sense then. 
+ 
+Actually fields() returns all fields only just after Document.add(new Field(...)), even the 
+ones which are not stored. Sounds confusing? :-) I'll attach a small program that 
+demonstrates this. 
+ 
+This should either be fixed so that all fields are always returned or it should be 
+documented.

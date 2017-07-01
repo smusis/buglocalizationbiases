@@ -1,0 +1,48 @@
+TestAddIndexes#testAddIndexesWithThreads fails on Realtime
+
+
+
+Description:
+Selckin reported two failures on LUCENE-3023 which I can unfortunately not reproduce at all. here are the traces
+
+{noformat}
+  [junit] Testsuite: org.apache.lucene.index.TestAddIndexes
+    [junit] Testcase: testAddIndexesWithThreads(org.apache.lucene.index.TestAddIndexes):	FAILED
+    [junit] expected:<3160> but was:<3060>
+    [junit] junit.framework.AssertionFailedError: expected:<3160> but was:<3060>
+    [junit] 	at org.apache.lucene.index.TestAddIndexes.testAddIndexesWithThreads(TestAddIndexes.java:783)
+    [junit] 	at org.apache.lucene.util.LuceneTestCase$LuceneTestCaseRunner.runChild(LuceneTestCase.java:1226)
+    [junit] 	at org.apache.lucene.util.LuceneTestCase$LuceneTestCaseRunner.runChild(LuceneTestCase.java:1154)
+    [junit] 
+    [junit] 
+    [junit] Tests run: 18, Failures: 1, Errors: 0, Time elapsed: 14.272 sec
+    [junit] 
+    [junit] ------------- Standard Error -----------------
+    [junit] NOTE: reproduce with: ant test -Dtestcase=TestAddIndexes -Dtestmethod=testAddIndexesWithThreads -Dtests.seed=6128854208955988865:2552774338676281184
+    [junit] NOTE: test params are: codec=PreFlex, locale=no_NO_NY, timezone=America/Edmonton
+    [junit] NOTE: all tests run in this JVM:
+    [junit] [TestToken, TestDateTools, Test2BTerms, TestAddIndexes]
+    [junit] NOTE: Linux 2.6.37-gentoo amd64/Sun Microsystems Inc. 1.6.0_24 (64-bit)/cpus=8,threads=1,free=84731792,total=258080768
+    [junit] ------------- ---------------- ---------------
+{noformat}
+and 
+{noformat}
+    [junit] Testsuite: org.apache.lucene.index.TestAddIndexes
+    [junit] Testcase: testAddIndexesWithThreads(org.apache.lucene.index.TestAddIndexes):	FAILED
+    [junit] expected:<3160> but was:<3060>
+    [junit] junit.framework.AssertionFailedError: expected:<3160> but was:<3060>
+    [junit] 	at org.apache.lucene.index.TestAddIndexes.testAddIndexesWithThreads(TestAddIndexes.java:783)
+    [junit] 	at org.apache.lucene.util.LuceneTestCase$LuceneTestCaseRunner.runChild(LuceneTestCase.java:1226)
+    [junit] 	at org.apache.lucene.util.LuceneTestCase$LuceneTestCaseRunner.runChild(LuceneTestCase.java:1154)
+    [junit] 
+    [junit] 
+    [junit] Tests run: 18, Failures: 1, Errors: 0, Time elapsed: 14.841 sec
+    [junit] 
+    [junit] ------------- Standard Error -----------------
+    [junit] NOTE: reproduce with: ant test -Dtestcase=TestAddIndexes -Dtestmethod=testAddIndexesWithThreads -Dtests.seed=4502815121171887759:-6764285049309266272
+    [junit] NOTE: test params are: codec=PreFlex, locale=tr_TR, timezone=Mexico/BajaNorte
+    [junit] NOTE: all tests run in this JVM:
+    [junit] [TestToken, TestDateTools, Test2BTerms, TestAddIndexes]
+    [junit] NOTE: Linux 2.6.37-gentoo amd64/Sun Microsystems Inc. 1.6.0_24 (64-bit)/cpus=8,threads=1,free=163663416,total=243335168
+    [junit] ------------- ---------------- ---------------
+{noformat}

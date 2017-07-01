@@ -1,0 +1,15 @@
+SQL2 parser: improved error message for ambiguous properties in joins
+
+
+
+Description:
+For queries of the form:
+
+select id from parent inner join child on parent.id=child.parentid
+
+the SQL2 parser currently only returns a generic error message "This query result contains more than one selector". 
+
+The error message should point to the problematic token: 
+
+Query: select id(*)from parent inner join child on parent.id=child.parentid; expected: Need to specify the selector name for "id" because the query contains more than one selector.
+

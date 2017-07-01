@@ -1,0 +1,7 @@
+Document Vector->ArrayList
+
+
+
+Description:
+Document Vector should be changed to ArrayList.
+Document is not advertised to be thread safe, and it's doubtful that anyone modifies a Document from multiple threads.

@@ -1,0 +1,13 @@
+weird error when adding a node using an abstract/mixin nodetype
+
+
+
+Description:
+when trying to add a node "files" with an abstract nodetype, i.e. nt:base, the following error is reported:
+
+javax.jcr.nodetype.ConstraintViolationException: {}files is abstract  be used as primary node type.
+
+the correct wording could be:
+
+javax.jcr.nodetype.ConstraintViolationException: not allowed to add node {}files: {http://www.jcp.org/jcr/nt/1.0}base is abstract and cannot be used as primary node type.
+

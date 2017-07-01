@@ -1,0 +1,10 @@
+VersionHistory.removeVersion() does not throw ReferentialIntegrityException
+
+
+
+Description:
+Inside an XATransaction immediately removing a version that was created by a checkin succeeds, even though it should fail because referential integrity is violated. The reason seems to be that the created version does not return any references.
+
+In the end the transaction fails because referential integrity is checked again in the SharedItemStateManager, which is correct. But IMO removeVersion() should fail first.
+
+Added test case: org.apache.jackrabbit.core.version.CheckinRemoveVersionTest

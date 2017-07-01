@@ -1,0 +1,44 @@
+TestIndexWriterDelete fails randomly
+
+
+
+Description:
+10 out of 9 runs with that see fail on my trunk:
+
+ant test-core -Dtestcase=TestIndexWriterDelete -Dtestmethod=testErrorAfterApplyDeletes -Dtests.seed=4269712067829708991:1888184886355172227 -Dtests.codec=randomPerField
+
+
+with this result:
+
+{code}
+
+junit-sequential:
+    [junit] Testsuite: org.apache.lucene.index.TestIndexWriterDelete
+    [junit] Tests run: 1, Failures: 2, Errors: 0, Time elapsed: 1.725 sec
+    [junit] 
+    [junit] ------------- Standard Output ---------------
+    [junit] NOTE: reproduce with: ant test -Dtestcase=TestIndexWriterDelete -Dtestmethod=testErrorAfterApplyDeletes -Dtests.seed=4269712067829708991:1888184886355172227 -Dtests.codec=randomPerField
+    [junit] NOTE: test params are: codec=RandomCodecProvider: {id=Standard, contents=SimpleText, city=MockSep}, locale=ar_QA, timezone=VST
+    [junit] ------------- ---------------- ---------------
+    [junit] ------------- Standard Error -----------------
+    [junit] NOTE: all tests run in this JVM:
+    [junit] [TestIndexWriterDelete]
+    [junit] ------------- ---------------- ---------------
+    [junit] Testcase: testErrorAfterApplyDeletes(org.apache.lucene.index.TestIndexWriterDelete):	FAILED
+    [junit] 
+    [junit] junit.framework.AssertionFailedError: 
+    [junit] 	at org.apache.lucene.index.TestIndexWriterDelete.testErrorAfterApplyDeletes(TestIndexWriterDelete.java:736)
+    [junit] 	at org.apache.lucene.util.LuceneTestCase$LuceneTestCaseRunner.runChild(LuceneTestCase.java:1043)
+    [junit] 	at org.apache.lucene.util.LuceneTestCase$LuceneTestCaseRunner.runChild(LuceneTestCase.java:981)
+    [junit] 
+    [junit] 
+    [junit] Testcase: testErrorAfterApplyDeletes(org.apache.lucene.index.TestIndexWriterDelete):	FAILED
+    [junit] ConcurrentMergeScheduler hit unhandled exceptions
+    [junit] junit.framework.AssertionFailedError: ConcurrentMergeScheduler hit unhandled exceptions
+    [junit] 	at org.apache.lucene.util.LuceneTestCase.tearDown(LuceneTestCase.java:503)
+    [junit] 	at org.apache.lucene.util.LuceneTestCase$LuceneTestCaseRunner.runChild(LuceneTestCase.java:1043)
+    [junit] 	at org.apache.lucene.util.LuceneTestCase$LuceneTestCaseRunner.runChild(LuceneTestCase.java:981)
+    [junit] 
+    [junit] 
+    [junit] Test org.apache.lucene.index.TestIndexWriterDelete FAILED
+{code}

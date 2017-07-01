@@ -1,0 +1,23 @@
+unexpected session is used  in XATest.testAddNodeCommit()
+
+
+
+Description:
+In org.apache.jackrabbit.core.XATest.java:137
+
+        // assertion: node exists in this session
+        try {
+            otherSuperuser.getNodeByUUID(n.getUUID());
+        } catch (ItemNotFoundException e) {
+            fail("Committed node not visible in this session");
+        }
+
+        // assertion: node also exists in other session
+        try {
+            otherSuperuser.getNodeByUUID(n.getUUID());
+        } catch (ItemNotFoundException e) {
+            fail("Committed node not visible in other session");
+        }
+
+The session instance of 'otherSuperuser' is used two times. In the first case, I think that it is not 'otherSuperuser' but 'superuser'. 
+

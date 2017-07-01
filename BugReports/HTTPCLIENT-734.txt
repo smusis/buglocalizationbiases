@@ -1,0 +1,7 @@
+request.abort() should interrupt thread waiting for a connection
+
+
+
+Description:
+Calls to HttpRequestBase.abort() will not unblock a thread that is still waiting for a connection and therefore has no ConnectionReleaseTrigger yet.
+

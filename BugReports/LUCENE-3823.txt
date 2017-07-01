@@ -1,0 +1,8 @@
+Add a field-filtering FilterAtomicReader to 4.0 so ParallelReaders can be better tested (in LTC.maybeWrapReader)
+
+
+
+Description:
+In addition to the filters in contrib/misc for horizontally filtering (by doc-id) AtomicReader, it would be good to have the same vertically (by field). For now I will add this implementation to test-framework, as it cannot stay in contrib/misc, because LTC will need it for maybeWrapReader.
+
+LTC will use this FilterAtomicReader to construct a ParallelAtomicReader out of two (or maybe more) FieldFilterAtomicReaders.

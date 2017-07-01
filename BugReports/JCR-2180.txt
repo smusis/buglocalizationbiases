@@ -1,0 +1,8 @@
+Use the assembly plugin for packaging -tests jars
+
+
+
+Description:
+The spi and jcr2spi components have test code that currently packaged using the jar:test-jar goal and used as a test dependency by other components.
+
+The extra jar plugin invocation creates extra Maven build numbers and causes problems for snapshot dependencies from the repository.apache.org repository that we recently started using. Using the assembly plugin to create the test jars should avoid this problem.

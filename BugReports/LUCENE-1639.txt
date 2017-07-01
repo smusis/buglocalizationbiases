@@ -1,0 +1,16 @@
+intermittent failure in TestIndexWriter. testRandomIWReader
+
+
+
+Description:
+Rarely, this test (which was added with LUCENE-1516) fails in MockRAMDirectory.close because some files were not closed, eg:
+{code}
+   [junit] NOTE: random seed of testcase 'testRandomIWReader' was: -5001333286299627079
+   [junit] ------------- ---------------- ---------------
+   [junit] Testcase: testRandomIWReader(org.apache.lucene.index.TestStressIndexing2):        Caused an ERROR
+   [junit] MockRAMDirectory: cannot close: there are still open files: {_cq.tvx=3, _cq.fdx=3, _cq.tvf=3, _cq.tvd=3, _cq.fdt=3}
+   [junit] java.lang.RuntimeException: MockRAMDirectory: cannot close: there are still open files: {_cq.tvx=3, _cq.fdx=3, _cq.tvf=3, _cq.tvd=3, _cq.fdt=3}
+   [junit]     at org.apache.lucene.store.MockRAMDirectory.close(MockRAMDirectory.java:292)
+   [junit]     at org.apache.lucene.index.TestStressIndexing2.testRandomIWReader(TestStressIndexing2.java:66)
+   [junit]     at org.apache.lucene.util.LuceneTestCase.runTest(LuceneTestCase.java:88)
+{code}

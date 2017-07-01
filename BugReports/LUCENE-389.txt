@@ -1,0 +1,6 @@
+MatchAllDocsQuery to return all documents
+
+
+
+Description:
+It would be nice to have a type of query just return all documents from an index.

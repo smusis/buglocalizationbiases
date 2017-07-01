@@ -1,0 +1,12 @@
+add LuceneTestCase[J4].newField
+
+
+
+Description:
+I think it would be good to vary the different field options in tests.
+
+For example, we do this with IW settings (newIndexWriterConfig), and directories (newDirectory).
+
+This patch adds newField(), it works just like new Field(), except it will sometimes turns on extra options:
+Stored fields, term vectors, additional term vectors data, etc.
+

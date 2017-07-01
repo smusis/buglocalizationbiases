@@ -1,0 +1,12 @@
+IndexWriter should let you optionally enable reader pooling
+
+
+
+Description:
+For apps using a large index and frequently need to commit and resolve deletes, the cost of opening the SegmentReaders on demand for every commit can be prohibitive.
+
+We an already pool readers (NRT does so), but, we only turn it on if NRT readers are in use.
+
+We should allow separate control.
+
+We should do this after LUCENE-2294.

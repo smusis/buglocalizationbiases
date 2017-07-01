@@ -1,0 +1,6 @@
+Property.getLength() returns -1 for BOOLEAN, REFERENCE and DATE values
+
+
+
+Description:
+It seems those three are simply missing in PropertyImpl.getLength().

@@ -1,0 +1,9 @@
+junit dependency in pom.xml with default compile scope
+
+
+
+Description:
+The dependency set as defined in:
+http://www.ibiblio.org/maven2/commons-httpclient/commons-httpclient/3.0.1/commons-httpclient-3.0.1.pom
+includes junit, but not with a <scope>test</test>. I suppose the junit dependency should have a test scope. Could someone fix this? Because of this my application is packaged including junit 3.8.1, which adds 118KiB for nothing.
+

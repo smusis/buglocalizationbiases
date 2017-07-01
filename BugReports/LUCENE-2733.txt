@@ -1,0 +1,8 @@
+Add private ctors to static utility classes
+
+
+
+Description:
+During development in 3.x and trunk we added some new classes like IOUtils and CodecUtils that are only providing static methods, but have no ctor at all. This adds the default empty public ctor, which is wrong, the classes should never be instantiated.
+
+We should add private dummy ctors to prevent creating instances.

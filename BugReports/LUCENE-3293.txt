@@ -1,0 +1,8 @@
+Use IOContext.READONCE in VarGapTermsIndexReader to load FST
+
+
+
+Description:
+VarGapTermsIndexReader should pass READONCE context down when it
+opens/reads the FST. Yet, it should just replace the ctx passed in, ie if we are merging vs reading we want to differentiate.
+

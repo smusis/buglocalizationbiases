@@ -1,0 +1,13 @@
+ICU collator thread-safety issues
+
+
+
+Description:
+The ICU Collators (unlike the JDK ones) aren't thread safe: http://userguide.icu-project.org/collation/architecture , a little non-obvious since its not mentioned
+in the javadocs, and its not clear if the docs apply to only the C code, but i looked
+at the source and there is all kinds of internal state.
+
+So in my opinion, we should clone the icu collators (which are passed in from the outside) 
+when creating a new TokenStream/AttributeImpl to prevent problems. This shouldn't be a big
+deal since everything uses reusableTokenStream anyway.
+

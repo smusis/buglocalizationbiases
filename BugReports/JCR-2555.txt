@@ -1,0 +1,6 @@
+Improved reusability of the JCA package
+
+
+
+Description:
+The jackrabbit-jca package currently has hardcoded references to jackrabbit-core, which makes it difficult to reuse the packaging and related code with other JCR implementations. With the RepositoryFactory interface from JCR 2.0 we can avoid this hard dependency.

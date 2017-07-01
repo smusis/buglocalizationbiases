@@ -1,0 +1,69 @@
+[PATCH] LockFactory implementation based on OS native locks (java.nio.*)
+
+
+
+Description:
+The current default locking for FSDirectory is SimpleFSLockFactory.
+It uses java.io.File.createNewFile for its locking, which has this
+spooky warning in Sun's javadocs:
+
+    Note: this method should not be used for file-locking, as the
+    resulting protocol cannot be made to work reliably. The FileLock
+    facility should be used instead.
+
+So, this patch provides a LockFactory implementation based on FileLock
+(using java.nio.*).
+
+All unit tests pass with this patch, on OS X (10.4.8), Linux (Ubuntu
+6.06), and Windows XP SP2.
+
+Another benefit of native locks is the OS automatically frees them if
+the JVM exits before Lucene can free its locks.  Many people seem to
+hit this (old lock files still on disk) now.
+
+I've created this new class:
+
+  org.apache.lucene.store.NativeFSLockFactory
+
+and added a couple test cases to the existing TestLockFactory.
+
+I've left SimpleFSLockFactory as the default locking for FSDirectory
+for now.  I think we should get some usage / experience with
+NativeFSLockFactory and then later on make it the default locking
+implementation?
+
+I also tested changing FSDirectory's default locking to
+NativeFSLockFactory and all unit tests still pass (on the above
+platforms).
+
+One important note about locking over NFS: some NFS servers and/or
+clients do not support it, or, it's a configuration option or mode
+that must be explicitly enabled.  When it's misconfigured it's able to
+take a long time (35 seconds in my case) before throwing an exception.
+To handle this, I acquire & release a random test lock on creating the
+NativeFSLockFactory to verify locking is configured properly.
+
+A few other small changes in the patch:
+
+    - Added a "failure reason" to Lock.java so that in
+      obtain(lockWaitTimeout), if there is a persistent IOException
+      in trying to obtain the lock, this can be messaged & included in
+      the "Lock obtain timed out" that's raised.
+
+    - Corrected javadoc in SimpleFSLockFactory: it previously said the
+      wrong system property for overriding lock class via system
+      properties
+
+    - Fixed unhandled IOException when opening an IndexWriter for
+      create, if the locks dir does not exist (just added
+      lockDir.exists() check in clearAllLocks method of
+      SimpleFSLockFactory & NativeFSLockFactory.
+
+    - Fixed a few small unrelated issues with TestLockFactory, and
+      also fixed tests to accept NativeFSLockFactory as the default
+      locking implementation for FSDirectory.
+
+    - Fixed a typo in javadoc in FieldsReader.java
+
+    - Added some more javadoc for the LockFactory.setLockPrefix
+

@@ -1,0 +1,12 @@
+speed up core tests
+
+
+
+Description:
+Our core tests have gotten slower and slower, if you don't have a really fast computer its probably frustrating.
+
+I think we should:
+1. still have random parameters, but make the 'obscene' settings like SimpleText rarer... we can always make them happen more on NIGHTLY
+2. tests that make a lot of documents can conditionalize on NIGHTLY so that they are still doing a reasonable test on ordinary runs e.g. numdocs = (NIGHTLY ? 10000 : 1000) * multiplier
+3. refactor some of the slow huge classes with lots of tests like TestIW/TestIR, at least pull out really slow methods like TestIR.testDiskFull into its own class. this gives better parallelization.
+

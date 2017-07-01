@@ -1,0 +1,11 @@
+org.apache.lucene.analysis.cn.ChineseTokenizer missing offset decrement
+
+
+
+Description:
+Apparently, in ChineseTokenizer, offset should be decremented like bufferIndex
+when Character is OTHER_LETTER.  This directly affects startOffset and endOffset
+values.
+
+This is critical to have Highlighter working correctly because Highlighter marks
+matching text based on these offset values.

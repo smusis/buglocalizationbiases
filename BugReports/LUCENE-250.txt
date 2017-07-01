@@ -1,0 +1,27 @@
+Javadocs for Scorer.java and TermScorer.java
+
+
+
+Description:
+Javadocs for Scorer.java and TermScorer.java 
+Also changed build.xml to use package access for the 
+javadocs target. That caused some minor error javadoc messages 
+in CompoundFileReader.java and FieldInfos.java, which are also fixed. 
+ 
+The patch posted earlier for Weight.java 
+(a broken javadoc link) is also included. 
+ 
+The attached patch is for all 5 files against the CVS top directory 
+of 28 July 2004. The only dependency is that package access 
+is needed for TermScorer.java. 
+ 
+This might be changed by declaring TermScorer as a public class, 
+but I preferred to use javadoc package access in build.xml 
+over changing java code. 
+ 
+Using package access for javadocs shows some more undocumented 
+classes, eg. in the doc page of the search package. This might 
+encourage folks to write more javadocs... 
+ 
+Regards, 
+Paul

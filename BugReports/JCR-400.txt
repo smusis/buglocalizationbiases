@@ -1,0 +1,16 @@
+PROPPATCH error marshalling when the resource can't be modified in general
+
+
+
+Description:
+Litmus test case "notowner_modify" (see <http://mail-archives.apache.org/mod_mbox/jackrabbit-dev/200604.mbox/%3c4432A7CF.30008@gmx.de%3e>) complains about a 423 (Locked) status code being sent back inside a 207 Multistatus:
+
+  9. notowner_modify....... WARNING: PROPPATCH failed with 0 not 423
+     ...................... pass (with 1 warning)
+
+I think that warning is correct, as this is an error condition that doesn't need to be marshalled inside multistatus (1: it affects the resource at the Request URI and only that, 2: the operation failed completely). Let me also note that none of the other servers I tested with do return a 207 here (MS IIS, Apache/moddav, Xythos, SAP Netweaver KM),
+
+RFC2518bis will hopefully clarify error marshalling for PROPPATCH. 
+
+From the source code, the current server behaviour is fully intentional (by specifically catching the DavException and using it in MultiStatus). Removing that code seems to fix the issue.
+

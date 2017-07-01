@@ -1,0 +1,14 @@
+Changes.html generation improvements
+
+
+
+Description:
+Bug fixes for and improvements to changes2html.pl, which generates Changes.html from CHANGES.txt:
+
+# When the current location has a fragment identifier, expand parent sections, so that the linked-to section is visible.
+# Properly handle beginning-of-release comments that don't fall under a section heading (previously: some content in release "1.9 final" was invisible).
+# Auto-linkify SOLR-XXX and INFRA-XXX JIRA issues (previously: only LUCENE-XXX issues).
+# Auto-linkify Bugzilla bugs prefaced with "Issue" (previously: only "Bug" and "Patch").
+# Auto-linkify Bugzilla bugs in the form "bugs XXXXX and YYYYY".
+# Auto-linkify issues that follow attributions.
+

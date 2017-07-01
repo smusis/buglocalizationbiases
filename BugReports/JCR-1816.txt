@@ -1,0 +1,10 @@
+Provide more options for OCM CRUD API Writers to enhance the functionality
+
+
+
+Description:
+I am working on an Extension to Object Content Manager and from that angle require a few methods and variable from the base classes to be exposed with protected access.  I have modifier only the getters and these should not cause any issues to the current functionality.  Request a review and addition to the trunk.  
+
+1. added a clone implementation to FilterImpl
+2.  Exposed : 
+public CollectionConverter getCollectionConverter(Session session, CollectionDescriptor collectionDescriptor) from ObjectConverter

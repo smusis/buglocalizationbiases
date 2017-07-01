@@ -1,0 +1,20 @@
+NumericUtils.floatToSortableInt/doubleToSortableLong does not sort certain NaN ranges correctly and NumericRangeQuery produces wrong results for NaNs with half-open ranges
+
+
+
+Description:
+The current implementation of floatToSortableInt does not account for different NaN ranges which may result in NaNs sorted before -Infinity and after +Infinity. The default Java ordering is: all NaNs after Infinity.
+
+A possible fix is to make all NaNs canonic "quiet NaN" as in:
+{code}
+// Canonicalize NaN ranges. I assume this check will be faster here than 
+// (v == v) == false on the FPU? We don't distinguish between different
+// flavors of NaNs here (see http://en.wikipedia.org/wiki/NaN). I guess
+// in Java this doesn't matter much anyway.
+if ((v & 0x7fffffff) > 0x7f800000) {
+  // Apply the logic below to a canonical "quiet NaN"
+  return 0x7fc00000 ^ 0x80000000;
+}
+{code}
+
+I don't commit because I don't know how much of the existing stuff relies on this (nobody should be keeping different NaNs  in their indexes, but who knows...).

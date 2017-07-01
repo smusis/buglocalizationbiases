@@ -1,0 +1,6 @@
+Deadlock for some Query objects in the equals method (f.ex. PhraseQuery) in a concurrent environment
+
+
+
+Description:
+Some Query objects in lucene 2.3.2 (and previous versions) have internal variables using Vector.   These variables are used during the call to the equals method.   In a concurrent environment a deadlock might occur.    The attached code example shows this happening in lucene 2.3.2, but the patch in LUCENE-1346 fixes this issue (though that doesn't seem to be the intention of that patch according to the description :-)

@@ -1,0 +1,41 @@
+Deadlocks in ConcurrentVersioningWithTransactionsTest
+
+
+
+Description:
+Patch follows for a ConcurrentVersioningWithTransactionsTest, based on the existing ConcurrentVersioningTest but using transactions around the versioning operations.
+
+On my macbook, running the test with CONCURRENCY = 100 and NUM_OPERATIONS = 100 causes a deadlock after a few seconds, thread dumps follow.
+
+Note that I had to ignore StaleItemStateException (which is probably justified, due to not locking stuff IIUC) to let the threads run long enough to show the problem.
+
+Running the test a few times showed the same locking pattern several times: some threads are locked at line 87 (session.save(), no transaction) while others are at line 93 (transaction.commit()), in testConcurrentCheckinInTransaction():
+
+    80    public void testConcurrentCheckinInTransaction() throws RepositoryException {
+    81      runTask(new Task() {
+    82        public void execute(Session session, Node test) throws RepositoryException {
+    83          int i = 0;
+    84          try {
+    85            Node n = test.addNode("test");
+    86            n.addMixin(mixVersionable);
+    87            session.save();
+    88            for (i = 0; i < NUM_OPERATIONS / CONCURRENCY; i++) {
+    89              final UserTransaction utx = new UserTransactionImpl(test.getSession());
+    90              utx.begin();
+    91              n.checkout();
+    92              n.checkin();
+    93              utx.commit();
+    94            }
+    95            n.checkout();
+    96          } catch (Exception e) {
+    97            final String threadName = Thread.currentThread().getName();
+    98            final Throwable deepCause = getLevel2Cause(e);
+    99            if(deepCause!=null && deepCause instanceof StaleItemStateException) {
+   100              // ignore 
+   101            } else {
+   102              throw new RepositoryException(threadName + ", i=" + i + ":" + e.getClass().getName(), e);
+   103            }
+   104          }
+   105        }
+   106      }, CONCURRENCY);
+   107    }

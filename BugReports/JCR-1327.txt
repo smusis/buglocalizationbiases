@@ -1,0 +1,8 @@
+SPI POM improvements
+
+
+
+Description:
+While the SPI components were upgraded from the sandbox I didn't pay too much attention to the POM details and thus there still are a number of configuration entries that duplicate stuff from the Jackrabbit parent POM, etc.
+
+I plan to get rid of any such duplication, remove some unneeded dependencies (spi-commons has a compile scope dependency on junit) and generally update the POMs to be in line with the other release components.

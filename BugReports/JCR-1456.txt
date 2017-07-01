@@ -1,0 +1,6 @@
+Database connection pooling
+
+
+
+Description:
+Jackrabbit should use database connection pools instead of a single connection per persistence manager, cluster journal, or database data store.

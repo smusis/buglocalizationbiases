@@ -1,0 +1,21 @@
+New Token filter for adding payloads "in-stream"
+
+
+
+Description:
+This TokenFilter is able to split a token based on a delimiter and use one part as the token and the other part as a payload.  This allows someone to include payloads inline with tokens (presumably setup by a pipeline ahead of time).  An example is apropos.  Given a | delimiter, we could have a stream that looks like:
+{quote}The quick|JJ red|JJ fox|NN jumped|VB over the lazy|JJ brown|JJ dogs|NN{quote}
+
+In this case, this would produce tokens and payloads (assuming whitespace tokenization):
+Token: the
+Payload: null
+
+Token: quick
+Payload: JJ
+
+Token: red
+Pay: JJ.
+
+and so on.
+
+This patch will also support pluggable encoders for the payloads, so it can convert from the character array to byte arrays as appropriate.

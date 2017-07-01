@@ -1,0 +1,6 @@
+JCR mapping: Upgrade to Maven 2
+
+
+
+Description:
+Upgrade the JCR Mapping components to Maven 2 before a release.

@@ -1,0 +1,34 @@
+Change defaults in IndexWriter to maximize "out of the box" performance
+
+
+
+Description:
+This is follow-through from LUCENE-845, LUCENE-847 and LUCENE-870;
+I'll commit this once those three are committed.
+
+Out of the box performance of IndexWriter is maximized when flushing
+by RAM instead of a fixed document count (the default today) because
+documents can vary greatly in size.
+
+Likewise, merging performance should be faster when merging by net
+segment size since, to minimize the net IO cost of merging segments
+over time, you want to merge segments of equal byte size.
+
+Finally, ConcurrentMergeScheduler improves indexing speed
+substantially (25% in a simple initial test in LUCENE-870) because it
+runs the merges in the backround and doesn't block
+add/update/deleteDocument calls.  Most machines have concurrency
+between CPU and IO and so it makes sense to default to this
+MergeScheduler.
+
+Note that these changes will break users of ParallelReader because the
+parallel indices will no longer have matching docIDs.  Such users need
+to switch IndexWriter back to flushing by doc count, and switch the
+MergePolicy back to LogDocMergePolicy.  It's likely also necessary to
+switch the MergeScheduler back to SerialMergeScheduler to ensure
+deterministic docID assignment.
+
+I think the combination of these three default changes, plus other
+performance improvements for indexing (LUCENE-966, LUCENE-843,
+LUCENE-963, LUCENE-969, LUCENE-871, etc.) should make for some sizable
+performance gains Lucene 2.3!

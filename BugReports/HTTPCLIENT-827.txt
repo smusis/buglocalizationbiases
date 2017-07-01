@@ -1,0 +1,15 @@
+ServerTestBase, LocalTestServer should be redistributed
+
+
+
+Description:
+ServerTestBase and LocalTestServer should be redistributed, so that we can all benefit from these wonderful classes without having to copy / paste them.
+
+For instance, I am currently creating a REST client for some web service, and I would totally benefit from your classes to check borderline cases (404, 500, etc..)
+
+the simplest possible way to achieve this would be to add a maven-jar-plugin entry to the POM that executes the test-jar goal.
+
+regards,
+Sami Dalouche
+
+

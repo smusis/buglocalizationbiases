@@ -1,0 +1,10 @@
+NewAnalyzerTask
+
+
+
+Description:
+NewAnalyzerTask (patch to follow) allows a contrib/benchmark algorithm to change Analyzers during a run.  This is useful when comparing Analyzers
+
+{"NewAnalyzer" NewAnalyzer(WhitespaceAnalyzer, SimpleAnalyzer, StopAnalyzer, standard.StandardAnalyzer) >
+
+is a sample declaration in an algorithm file.

@@ -1,0 +1,15 @@
+Nullpointer when creating URI from scheme specific part with null fragment
+
+
+
+Description:
+in org.apache.commons.httpclient.URI class constructor:
+
+public URI(String scheme, String schemeSpecificPart, String fragment)
+        throws URIException {
+....
+_fragment = fragment.toCharArray(); 
+
+should be 
+
+_fragment = fragment==null ? null : fragment.toCharArray();

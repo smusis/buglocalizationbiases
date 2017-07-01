@@ -1,0 +1,9 @@
+SortField.AUTO doesn't work with long
+
+
+
+Description:
+This is actually the same as LUCENE-463 but I cannot find a way to re-open that issue. I'm attaching a test case by dragon-fly999 at hotmail com that shows the problem and a patch that seems to fix it.
+
+The problem is that a long (as used for dates) cannot be parsed as an integer, and the next step is then to parse it as a float, which works but which is not correct. With the patch the following parsers are used in this order: int, long, float.
+

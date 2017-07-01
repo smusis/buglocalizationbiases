@@ -1,0 +1,14 @@
+SharedItemStateManager not properly synchronized
+
+
+
+Description:
+Some time ago we removed synchronized modifiers from the methods store() hasItemState() and getItemState(). While some care has been taken to ensure the cache integrity, I think the contract for the SharedItemStateManager (SISM) is now broken. The JavaDoc does not clearly document this, but I think all relevant methods of the SISM working on ItemStates should be atomic.
+
+E.g. a call to hasItemState() should not return true for an ItemState that another thread is currently adding in store(). Similarly a getItemState() should not return an ItemState that is currenly added or modified in a store() operation.
+
+Currently I see two options:
+- Change the methods to synchronized again. This will actually serialize all calls to the SISM.
+- Implement a more sophisticated synchronisation. E.g. multiple store operations can still be allowed, as long as their ChangeLogs do not intersect. Retrieving ItemStates might still be allowed while a ChangeLog is stored, as long as the ItemState to retrieve is not part of the ChangeLog.
+
+Comments and suggestions are very welcome.

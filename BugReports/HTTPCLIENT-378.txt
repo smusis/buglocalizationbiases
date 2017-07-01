@@ -1,0 +1,9 @@
+HttpState.setCookiePolicy() is completely ignored
+
+
+
+Description:
+Though this method is deprecated, it currently has no effect and gives no warning that it does nothing.  
+A patch that fixes this problem is coming shortly.
+
+Mike

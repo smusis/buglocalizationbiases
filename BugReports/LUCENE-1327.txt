@@ -1,0 +1,23 @@
+TermSpans skipTo() doesn't always move forwards
+
+
+
+Description:
+In TermSpans (or the anonymous Spans class returned by SpansTermQuery, depending on the version), the skipTo() method is improperly implemented if the target doc is less than or equal to the current doc:
+
+  public boolean skipTo(int target) throws IOException {
+          // are we already at the correct position?
+          if (doc >= target) {
+            return true;
+          }
+
+          ...
+
+
+This violates the correct behavior (as described in the Spans interface documentation), that skipTo() should always move forwards, in other words the correct implementation would be:
+
+if (doc >= target) {
+  return next();
+}
+
+This bug causes particular problems if one wants to use the payloads feature - this is because if one loads a payload, then performs a skipTo() to the same document, then tries to load the "next" payload, the spans hasn't changed position and it attempts to load the same payload again (which is an error).

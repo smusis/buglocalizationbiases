@@ -1,0 +1,49 @@
+PerFieldCodecWrapper.loadTermsIndex concurrency problem
+
+
+
+Description:
+Selckin's while(1) testing on RT branch hit another error:
+{noformat}
+    [junit] Testsuite: org.apache.lucene.TestExternalCodecs
+    [junit] Testcase: testPerFieldCodec(org.apache.lucene.TestExternalCodecs):	Caused an ERROR
+    [junit] (null)
+    [junit] java.lang.NullPointerException
+    [junit] 	at org.apache.lucene.index.PerFieldCodecWrapper$FieldsReader.loadTermsIndex(PerFieldCodecWrapper.java:202)
+    [junit] 	at org.apache.lucene.index.SegmentReader.loadTermsIndex(SegmentReader.java:1005)
+    [junit] 	at org.apache.lucene.index.IndexWriter$ReaderPool.get(IndexWriter.java:652)
+    [junit] 	at org.apache.lucene.index.IndexWriter$ReaderPool.get(IndexWriter.java:609)
+    [junit] 	at org.apache.lucene.index.BufferedDeletesStream.applyDeletes(BufferedDeletesStream.java:276)
+    [junit] 	at org.apache.lucene.index.IndexWriter.applyAllDeletes(IndexWriter.java:2660)
+    [junit] 	at org.apache.lucene.index.IndexWriter.maybeApplyDeletes(IndexWriter.java:2651)
+    [junit] 	at org.apache.lucene.index.IndexWriter.getReader(IndexWriter.java:381)
+    [junit] 	at org.apache.lucene.index.IndexReader.open(IndexReader.java:316)
+    [junit] 	at org.apache.lucene.TestExternalCodecs.testPerFieldCodec(TestExternalCodecs.java:541)
+    [junit] 	at org.apache.lucene.util.LuceneTestCase$LuceneTestCaseRunner.runChild(LuceneTestCase.java:1246)
+    [junit] 	at org.apache.lucene.util.LuceneTestCase$LuceneTestCaseRunner.runChild(LuceneTestCase.java:1175)
+    [junit] 
+    [junit] 
+    [junit] Tests run: 1, Failures: 0, Errors: 1, Time elapsed: 0.909 sec
+    [junit] 
+    [junit] ------------- Standard Error -----------------
+    [junit] NOTE: reproduce with: ant test -Dtestcase=TestExternalCodecs -Dtestmethod=testPerFieldCodec -Dtests.seed=-7296204858082494534:5010909751437000758
+    [junit] WARNING: test method: 'testPerFieldCodec' left thread running: merge thread: _i(4.0):Cv130 _m(4.0):Cv30 _n(4.0):cv10 into _o
+    [junit] RESOURCE LEAK: test method: 'testPerFieldCodec' left 1 thread(s) running
+    [junit] NOTE: test params are: codec=PreFlex, locale=zh_TW, timezone=America/Santo_Domingo
+    [junit] NOTE: all tests run in this JVM:
+    [junit] [TestDemo, TestExternalCodecs]
+    [junit] NOTE: Linux 2.6.37-gentoo amd64/Sun Microsystems Inc. 1.6.0_25 (64-bit)/cpus=8,threads=2,free=104153512,total=125632512
+    [junit] ------------- ---------------- ---------------
+    [junit] TEST org.apache.lucene.TestExternalCodecs FAILED
+    [junit] Exception in thread "Lucene Merge Thread #5" org.apache.lucene.util.ThreadInterruptedException: java.lang.InterruptedException: sleep interrupted
+    [junit] 	at org.apache.lucene.index.ConcurrentMergeScheduler.handleMergeException(ConcurrentMergeScheduler.java:505)
+    [junit] 	at org.apache.lucene.index.ConcurrentMergeScheduler$MergeThread.run(ConcurrentMergeScheduler.java:472)
+    [junit] Caused by: java.lang.InterruptedException: sleep interrupted
+    [junit] 	at java.lang.Thread.sleep(Native Method)
+    [junit] 	at org.apache.lucene.index.ConcurrentMergeScheduler.handleMergeException(ConcurrentMergeScheduler.java:503)
+    [junit] 	... 1 more
+{noformat}
+
+I suspect this is also a trunk issue, but I can't reproduce it yet.
+
+I think this is happening because the codecs HashMap is changing (via another thread), while .loadTermsIndex is called.

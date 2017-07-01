@@ -1,0 +1,18 @@
+The PostMethod did not bring back response headers from proxy servers
+
+
+
+Description:
+Description:
+
+When doing tunnelling through proxy servers, in case of 407 response, the 
+wrapper class ConnectMethod failed to pass the response header back to the 
+wrapped method (PostMethod in our case).  As result, the response headers are 
+not passed back to the application.
+
+Proposed Fix:
+Change the ConnectMethod to use the wrapped method instance to get response 
+headers.  It will be reinitialized again if "CONNECT" is successful.
+
+Also have to modify the addProxyAuthorizationRequestHeader code to use the 
+wrapped method for the authenticator to work.

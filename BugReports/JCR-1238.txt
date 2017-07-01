@@ -1,0 +1,10 @@
+Change default value for maxMergeDocs
+
+
+
+Description:
+This is actually a left over from the time before JCR-197 was implemented. Back then index merges were performed with the client thread and would hold up execution for a long time if a large number of nodes were merged. The default value for maxMergeDocs limited this to 100'000 nodes, resulting in a couple of seconds for the merge operation.
+
+This default value does not make sense anymore because index merges are performed in a background thread and may take a long time without an effect on regular workspace operations. If a workspace grows large it may cause performance degradation because the number of index segments increases linearly when there are more than 100'000 nodes.
+
+I propose to set the new default to Integer.MAX_VALUE

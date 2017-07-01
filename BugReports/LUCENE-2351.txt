@@ -1,0 +1,18 @@
+optimize automatonquery
+
+
+
+Description:
+Mike found a few cases in flex where we have some bad behavior with automatonquery.
+The problem is similar to a database query planner, where sometimes simply doing a full table scan is faster than using an index.
+
+We can optimize automatonquery a little bit, and get better performance for fuzzy,wildcard,regex queries.
+
+Here is a list of ideas:
+* create commonSuffixRef for infinite automata, not just really-bad linear scan cases
+* do a null check rather than populating an empty commonSuffixRef
+* localize the 'linear' case to not seek, but instead scan, when ping-ponging against loops in the state machine
+* add a mechanism to enable/disable the terms dict cache, e.g. we can disable it for infinite cases, and maybe fuzzy N>1 also.
+* change the use of BitSet to OpenBitSet or long[] gen for path-tracking
+* optimize the backtracking code where it says /* String is good to go as-is */, this need not be a full run(), I think...
+

@@ -1,0 +1,6 @@
+SPI: provide batch read functionality
+
+
+
+Description:
+extend RepositoryService interface to allow for BatchRead and modify jcr2spi accordingly.

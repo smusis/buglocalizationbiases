@@ -1,0 +1,18 @@
+support protected words in Stemming TokenFilters
+
+
+
+Description:
+This is from LUCENE-1515
+
+I propose that all stemming TokenFilters have an 'exclusion set' that bypasses any stemming for words in this set.
+Some stemming tokenfilters have this, some do not.
+
+This would be one way for Karl to implement his new swedish stemmer (as a text file of ignore words).
+Additionally, it would remove duplication between lucene and solr, as they reimplement snowballfilter since it does not have this functionality.
+Finally, I think this is a pretty common use case, where people want to ignore things like proper nouns in the stemming.
+
+As an alternative design I considered a case where we generalized this to CharArrayMap (and ignoring words would mean mapping them to themselves), which would also provide a mechanism to override the stemming algorithm. But I think this is too expert, could be its own filter, and the only example of this i can find is in the Dutch stemmer.
+
+So I think we should just provide ignore with CharArraySet, but if you feel otherwise please comment.
+

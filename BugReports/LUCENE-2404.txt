@@ -1,0 +1,9 @@
+Improve speed of ThaiWordFilter by CharacterIterator, factor out LowerCasing and also fix some bugs (empty tokens stop iteration)
+
+
+
+Description:
+The ThaiWordFilter creates new Strings out of term buffer before passing to The BreakIterator., But BreakIterator can take a CharacterIterator and directly process on it without buffer copying.
+As Java itsself does not provide a CharacterIterator implementation in java.text, we can use the javax.swing.text.Segment class, that operates on a char[] and is even reuseable! This class is very strange but it works and is in JDK 1.4+ and not deprecated.
+
+The filter also had a bug: It stopped iterating tokens when an empty token occurred. Also the lowercasing for non-thai words was removed and put into the Analyzer by adding LowerCaseFilter.

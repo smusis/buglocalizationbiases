@@ -1,0 +1,8 @@
+Change default value for respectDocumentOrder
+
+
+
+Description:
+The current default value for the search index configuration parameter respectDocumentOrder is true. Almost all applications are not interested in document order, while this default adds significant overhead to query execution because document order information is present in the index but has to be calculated over the complete result set.
+
+I propose to change the default value to false and document this change in the 1.4 release notes. If an application relies on document order one can still explicitly set the parameter in the configuration to true.

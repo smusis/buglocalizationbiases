@@ -1,0 +1,6 @@
+Remove dependency on Xerces
+
+
+
+Description:
+Classloaders in certain J2EE servers do not play well with the Xerces requirement

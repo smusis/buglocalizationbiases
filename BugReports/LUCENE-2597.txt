@@ -1,0 +1,6 @@
+Query scorers should not use MultiFields
+
+
+
+Description:
+Lucene does all searching/filtering per-segment, today, but there are a number of tests that directly invoke Scorer.scorer or Filter.getDocIdSet on a composite reader.

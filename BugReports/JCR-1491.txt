@@ -1,0 +1,10 @@
+UUID check in BundleFsPersistenceManager.getListRecursive() leads to endless loop
+
+
+
+Description:
+The UUID comparison in getListRecursive() is wrong and leads to an endless loop when the test PersistenceManagerIteratorTest.getAllNodeIds() is run on a workspace using BundleFsPersistenceManager.
+
+I'm not sure this always happens, but for sure in a workspace with no content (just root and jcr:system nodes).
+
+There's also an problem with the test case. In batch mode the after NodeId is set to the last id returned by the previous get all nodes fetch. This means batch retrieval is never actually tested, because there is no NodeId after the last one.

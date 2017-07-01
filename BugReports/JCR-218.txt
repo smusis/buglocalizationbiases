@@ -1,0 +1,8 @@
+[JCR-RMI] Have ClientItem.isSame throw RepositoryException
+
+
+
+Description:
+Currently the ClientItem.isSame(Item) method wraps a RepositoryException thrown from the path comparison into a RuntimeException and omits an exception declaration on the method. This contrasts with the API specification which allows for a RepositoryExcption to be thrown.
+
+I suggest, to modify ClientItem.isSame(Item) such that the RepositoryException is declared and thrown.

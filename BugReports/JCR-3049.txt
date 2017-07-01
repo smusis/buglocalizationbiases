@@ -1,0 +1,6 @@
+NPE in ConsolidatingChangeLog for id base NodeId
+
+
+
+Description:
+ConsolidatingChangeLog does not guard guard against null in the path value of a NodeId. 

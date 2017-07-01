@@ -1,0 +1,6 @@
+Remove Searcher from Weight#explain
+
+
+
+Description:
+Explain needs to calculate corpus wide stats in a way that is consistent with MultiSearcher.

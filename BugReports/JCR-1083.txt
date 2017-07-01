@@ -1,0 +1,10 @@
+SQL parser chokes on prefixes containing a "-" character
+
+
+
+Description:
+SQL parser chokes on prefixes containing a "-" character, such as in
+
+  SELECT a-b:c FROM nt:resource
+
+

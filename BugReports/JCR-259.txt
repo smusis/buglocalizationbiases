@@ -1,0 +1,12 @@
+XPath query with negative numbers incorrect
+
+
+
+Description:
+A XPath query that contains a negative number does not return correct results.
+
+E.g. the query:
+
+//*[@number = -10]
+
+does not return nodes with number properties containing a value of -10 but will return nodes with number values equal to 10. Similarly the query returns wrong results for double values.

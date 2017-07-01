@@ -1,0 +1,12 @@
+incompatible with newers versions of xml-apis
+
+
+
+Description:
+Apparently the newer version of the xml-api does not play nice with file objects passed in via a streamresult. So to get around this, I have modified the jackrabbit code RepositoryConfig.java:311 to read:
+ 
+               transformer.transform(
+                    //new DOMSource(template), new StreamResult(xml)); COMMENTED OUT! 
+                    new DOMSource(template), new StreamResult(directory+"\\"+WORKSPACE_XML));
+
+A similar issue can be found here: http://forum.java.sun.com/thread.jspa?forumID=34&threadID=563077 and a somewhat similar issue can be found logged as a bug at sun: http://bugs.sun.com/bugdatabase/view_bug.do?bug_id=5077403

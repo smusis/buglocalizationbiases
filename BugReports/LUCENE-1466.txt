@@ -1,0 +1,10 @@
+CharFilter - normalize characters before tokenizer
+
+
+
+Description:
+This proposes to import CharFilter that has been introduced in Solr 1.4.
+
+Please see for the details:
+- SOLR-822
+- http://www.nabble.com/Proposal-for-introducing-CharFilter-to20327007.html

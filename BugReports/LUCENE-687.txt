@@ -1,0 +1,32 @@
+Performance improvement: Lazy skipping on proximity file
+
+
+
+Description:
+Hello,
+
+I'm proposing a patch here that changes org.apache.lucene.index.SegmentTermPositions to avoid unnecessary skips and reads on the proximity stream. Currently a call of next() or seek(), which causes a movement to a document in the freq file also moves the prox pointer to the posting list of that document.  But this is only necessary if actual positions have to be retrieved for that particular document. 
+
+Consider for example a phrase query with two terms: the freq pointer for term 1 has to move to document x to answer the question if the term occurs in that document. But *only* if term 2 also matches document x, the positions have to be read to figure out if term 1 and term 2 appear next to each other in document x and thus satisfy the query. 
+
+A move to the posting list of a document can be quite expensive. It has to be skipped to the last skip point before that document and then the documents between the skip point and the desired document have to be scanned, which means that the VInts of all positions of those documents have to be read and decoded. 
+
+An improvement is to move the prox pointer lazily to a document only if nextPosition() is called. This will become even more important in the future when the size of the proximity file increases (e. g. by adding payloads to the posting lists).
+
+My patch implements this lazy skipping. All unit tests pass. 
+
+
+I also attach a new unit test that works as follows:
+Using a RamDirectory an index is created and test docs are added. Then the index is optimized to make sure it only has a single segment. This is important, because IndexReader.open() returns an instance of SegmentReader if there is only one segment in the index. The proxStream instance of SegmentReader is package protected, so it is possible to set proxStream to a different object. I am using a class called SeeksCountingStream that extends IndexInput in a way that it is able to count the number of invocations of seek(). 
+
+Then the testcase searches the index using a PhraseQuery "term1 term2". It is known how many documents match that query and the testcase can verify that seek() on the proxStream is not called more often than number of search hits.
+
+Example:
+Number of docs in the index: 500
+Number of docs that match the query "term1 term2": 5
+
+Invocations of seek on prox stream (old code): 29
+Invocations of seek on prox stream (patched version): 5
+
+- Michael
+

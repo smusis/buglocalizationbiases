@@ -1,0 +1,28 @@
+HttpClient does not correctly handle escaped characters in HTTP header elements
+
+
+
+Description:
+An excerpt from Microsoft's "How Digest Authentication Works":
+http://www.microsoft.com/technet/prodtechnol/windowsserver2003/library/TechRef/717b450c-f4a0-4cc9-86f4-cc0633aae5f9.mspx
+
+<quote>
+* RFC 2617-compliant Digest Authentication challenges and responses must also
+comply with RFC 2616: Hypertext Transfer Protocol -- HTTP/1.1 quoted string
+requirements. This requirement particularly affects the use of backslash (\) and
+embedded double quotes. Both must be preceded (escaped) with a backslash.
+
+* For example, domain\username according to RFC 2616 is read as domainusername.
+This reading is important because if an application sends information in this
+format rather than as domain\\username, authentication fails.
+
+* However, because this is a known issue with domain\username , if
+authenticating with backslash encoding fails, Digest SSP attempts to
+authenticate the response and assumes that the backslash is part of the string.
+This behavior can be turned off by setting the ServerCompat registry key.
+</quote>
+
+Review and fix the ParameterParser class and classes implemeting CookieSpec or
+AuthScheme interfaces
+
+See also PR #34909

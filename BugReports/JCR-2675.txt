@@ -1,0 +1,7 @@
+Node.hasProperty() with relative path can throw ClassCastException
+
+
+
+Description:
+Calling Node.hasProperty() with a relative path that traverses higher than the root node will throw a ClassCastException because the ItemId returned by HierarchyManagerImpl.resolvePath() will be the root node id.  The blind cast in the HierarchyManagerImpl.resolvePropertyPath() will then throw the ClassCastException.  This issue is not just with hasProperty/resolvePropertyPath, but any call to resolvePath that goes higher than the root node, will wrongfully get the root node id returned as result.
+

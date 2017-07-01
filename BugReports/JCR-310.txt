@@ -1,0 +1,102 @@
+XercesImpl is missing in WebDav contrib project
+
+
+
+Description:
+$ /usr/local/maven/bin/maven
+ __  __
+|  \/  |__ _Apache__ ___
+| |\/| / _` \ V / -_) ' \  ~ intelligent projects ~
+|_|  |_\__,_|\_/\___|_||_|  v. 1.0.2
+
+build:start:
+
+multiproject:install:
+multiproject:projects-init:
+    [echo] Gathering project list
+Starting the reactor...
+Our processing order:
+JCRWebdavServer Webdav Library
+JCRWebdavServer Server Library
+JCRWebdavServer Client Library
+JCRWebdavServer WebApplication
++----------------------------------------
+| Gathering project list JCRWebdavServer Webdav Library
+| Memory: 3M/4M
++----------------------------------------
++----------------------------------------
+| Gathering project list JCRWebdavServer Server Library
+| Memory: 3M/4M
++----------------------------------------
++----------------------------------------
+| Gathering project list JCRWebdavServer Client Library
+| Memory: 3M/4M
++----------------------------------------
++----------------------------------------
+| Gathering project list JCRWebdavServer WebApplication
+| Memory: 3M/4M
++----------------------------------------
+Starting the reactor...
+Our processing order:
+JCRWebdavServer Webdav Library
+JCRWebdavServer Server Library
+JCRWebdavServer Client Library
+JCRWebdavServer WebApplication
++----------------------------------------
+| Executing multiproject:install-callback JCRWebdavServer Webdav Library
+| Memory: 3M/4M
++----------------------------------------
+Attempting to download jackrabbit-commons-1.0-SNAPSHOT.jar.
+Response content length is not known
+Artifact /org.apache.jackrabbit/jars/jackrabbit-commons-1.0-SNAPSHOT.jar doesn't exists in remote repository, but it exists locally
+
+multiproject:goal:
+build:start:
+
+multiproject:install-callback:
+    [echo] Running jar:install for JCRWebdavServer Webdav Library
+java:prepare-filesystem:
+
+java:compile:
+    [echo] Compiling to /home/jeremi/src/jackrabbit/trunk/contrib/jcr-server/webdav/target/classes
+    [javac] Compiling 109 source files to /home/jeremi/src/jackrabbit/trunk/contrib/jcr-server/webdav/target/classes
+/home/jeremi/src/jackrabbit/trunk/contrib/jcr-server/webdav/src/java/org/apache/jackrabbit/webdav/WebdavResponseImpl.java:26: package org.apache.xml.serialize does not exist
+import org.apache.xml.serialize.OutputFormat;
+                                ^
+/home/jeremi/src/jackrabbit/trunk/contrib/jcr-server/webdav/src/java/org/apache/jackrabbit/webdav/WebdavResponseImpl.java:27: package org.apache.xml.serialize does not exist
+import org.apache.xml.serialize.XMLSerializer;
+                                ^
+/home/jeremi/src/jackrabbit/trunk/contrib/jcr-server/webdav/src/java/org/apache/jackrabbit/webdav/WebdavResponseImpl.java:149: cannot resolve symbol
+symbol  : class OutputFormat 
+location: class org.apache.jackrabbit.webdav.WebdavResponseImpl
+                OutputFormat format = new OutputFormat("xml", "UTF-8", true);
+                ^
+/home/jeremi/src/jackrabbit/trunk/contrib/jcr-server/webdav/src/java/org/apache/jackrabbit/webdav/WebdavResponseImpl.java:149: cannot resolve symbol
+symbol  : class OutputFormat 
+location: class org.apache.jackrabbit.webdav.WebdavResponseImpl
+                OutputFormat format = new OutputFormat("xml", "UTF-8", true);
+                                          ^
+/home/jeremi/src/jackrabbit/trunk/contrib/jcr-server/webdav/src/java/org/apache/jackrabbit/webdav/WebdavResponseImpl.java:150: cannot resolve symbol
+symbol  : class XMLSerializer 
+location: class org.apache.jackrabbit.webdav.WebdavResponseImpl
+                XMLSerializer serializer = new XMLSerializer(out, format);
+                ^
+/home/jeremi/src/jackrabbit/trunk/contrib/jcr-server/webdav/src/java/org/apache/jackrabbit/webdav/WebdavResponseImpl.java:150: cannot resolve symbol
+symbol  : class XMLSerializer 
+location: class org.apache.jackrabbit.webdav.WebdavResponseImpl
+                XMLSerializer serializer = new XMLSerializer(out, format);
+                                               ^
+Note: Some input files use or override a deprecated API.
+Note: Recompile with -deprecation for details.
+6 errors
+
+BUILD FAILED
+File...... /home/jeremi/.maven/cache/maven-multiproject-plugin-1.3.1/plugin.jelly
+Element... maven:reactor
+Line...... 217
+Column.... -1
+Unable to obtain goal [multiproject:install-callback] -- /home/jeremi/.maven/cache/maven-java-plugin-1.5/plugin.jelly:63:-1: <ant:javac> Compile failed; see the compiler error output for details.
+Total time: 8 seconds
+Finished at: Fri Jan 27 07:14:37 CET 2006
+
+$

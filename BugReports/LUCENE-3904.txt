@@ -1,0 +1,16 @@
+Similarity javadocs look ugly if created with java7's javadoc
+
+
+
+Description:
+The captions used to illustrate the formulas are tables here:
+in jdk 5/6 the table is centered nicely.
+
+But with java7's javadocs (I think due to some css styles changes?),
+the table is not centered but instead stretched.
+
+I think we just need to center this table with a different technique?
+
+Have a look at http://people.apache.org/~rmuir/java7-style-javadocs/org/apache/lucene/search/Similarity.html to see what I mean.
+
+NOTE: these javadocs are under TFIDFSimilarity.java in trunk.

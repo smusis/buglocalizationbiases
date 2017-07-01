@@ -1,0 +1,8 @@
+Allow access to registered cookie policies
+
+
+
+Description:
+It would be useful for JMeter (and perhaps other applications) to have access to the list of registered Cookie policy names.
+
+[If this is acceptable, let me know if you want me to provide a patch.]

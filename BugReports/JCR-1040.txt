@@ -1,0 +1,49 @@
+JCR2SPI: remove node operation missing in submitted SPI batch
+
+
+
+Description:
+In JCR2SPI, the following sequence of operations seems to lead to an incorrect SPI batch being submitted:
+
+1) remove "/a"
+2) add "/a"
+3) add "/a/b"
+4) session.save()
+
+This seems to create an SPI batch where the first remove operation is missing.
+
+Note that the problem only seems to occur when step 3 is part of the sequence.
+
+Full Java source for test:
+
+    try {
+      if (session.getRepository().getDescriptor(Repository.LEVEL_2_SUPPORTED).equals("true")) {
+        Node testnode;
+        String name = "delete-test";
+          
+        Node root = session.getRootNode();
+        
+        // make sure it's there
+        if (! root.hasNode(name)) {
+          root.addNode(name, "nt:folder");
+          session.save();
+        }
+        
+        // now test remove/add in one batch
+        if (root.hasNode(name)) {
+          testnode = root.getNode(name);
+          testnode.remove();
+          // session.save(); // un-commenting this makes the test pass
+        }
+        
+        testnode = root.addNode(name, "nt:folder");
+        // add one child
+        testnode.addNode(name, "nt:folder"); // commenting this out makes the test pass
+        
+        session.save();
+      }
+    } finally {
+      session.logout();
+    }
+    
+    

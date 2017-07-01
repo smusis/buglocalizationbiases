@@ -1,0 +1,26 @@
+explore using automaton for fuzzyquery
+
+
+
+Description:
+we can optimize fuzzyquery by using AutomatonTermsEnum. The idea is to speed up the core FuzzyQuery in similar fashion to Wildcard and Regex speedups, maintaining all backwards compatibility.
+
+The advantages are:
+* we can seek to terms that are useful, instead of brute-forcing the entire terms dict
+* we can determine matches faster, as true/false from a DFA is array lookup, don't even need to run levenshtein.
+
+We build Levenshtein DFAs in linear time with respect to the length of the word: http://citeseerx.ist.psu.edu/viewdoc/summary?doi=10.1.1.16.652
+
+To implement support for 'prefix' length, we simply concatenate two DFAs, which doesn't require us to do NFA->DFA conversion, as the prefix portion is a singleton. the concatenation is also constant time with respect to the size of the fuzzy DFA, it only need examine its start state.
+
+with this algorithm, parametric tables are precomputed so that DFAs can be constructed very quickly.
+if the required number of edits is too large (we don't have a table for it), we use "dumb mode" at first (no seeking, no DFA, just brute force like now).
+
+As the priority queue fills up during enumeration, the similarity score required to be a competitive term increases, so, the enum gets faster and faster as this happens. This is because terms in core FuzzyQuery are sorted by boost value, then by term (in lexicographic order).
+
+For a large term dictionary with a low minimal similarity, you will fill the pq very quickly since you will match many terms. 
+This not only provides a mechanism to switch to more efficient DFAs (edit distance of 2 -> edit distance of 1 -> edit distance of 0) during enumeration, but also to switch from "dumb mode" to "smart mode".
+
+With this design, we can add more DFAs at any time by adding additional tables. The tradeoff is the tables get rather large, so for very high K, we would start to increase the size of Lucene's jar file. The idea is we don't have include large tables for very high K, by using the 'competitive boost' attribute of the priority queue.
+
+For more information, see http://en.wikipedia.org/wiki/Levenshtein_automaton

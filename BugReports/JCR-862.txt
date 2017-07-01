@@ -1,0 +1,20 @@
+unsynchronized access on 'itemCache' map in ItemManager 
+
+
+
+Description:
+the access 'itemCache' map in ItemManager is mostly synchronized by not via the ItemStateListener methods:
+[...]
+    public void stateCreated(ItemState created) {
+        ItemImpl item = retrieveItem(created.getId());
+        if (item != null) {
+            item.stateCreated(created);
+        }
+    }
+[...]
+    private ItemImpl retrieveItem(ItemId id) {
+        return (ItemImpl) itemCache.get(id);
+    }
+[...]
+
+this can result in a corruption of a map (eg subsequent accesses may result in a endless loop).

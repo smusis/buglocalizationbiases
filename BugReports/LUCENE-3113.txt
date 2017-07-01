@@ -1,0 +1,14 @@
+fix analyzer bugs found by MockTokenizer
+
+
+
+Description:
+In LUCENE-3064, we beefed up MockTokenizer with assertions, and I've switched over the analysis tests to use MockTokenizer for better coverage.
+
+However, this found a few bugs (one of which is LUCENE-3106):
+* incrementToken() after it returns false in CommonGramsQueryFilter, HyphenatedWordsFilter, ShingleFilter, SynonymFilter
+* missing end() implementation for PrefixAwareTokenFilter
+* double reset() in QueryAutoStopWordAnalyzer and ReusableAnalyzerBase
+* missing correctOffset()s in MockTokenizer itself.
+
+I think it would be nice to just fix all the bugs on one issue... I've fixed everything except Shingle and Synonym

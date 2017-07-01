@@ -1,0 +1,15 @@
+Back-compat break with non-ascii field names
+
+
+
+Description:
+If a field name contains non-ascii characters in a 2.3.x index, then
+on upgrade to 2.4.x unexpected problems are hit.  It's possible to hit
+a "read past EOF" IOException; it's also possible to not hit an
+exception but get an incorrect field name.
+
+This was caused by LUCENE-510, because the FieldInfos (*.fnm) file is
+not properly versioned.
+
+Spinoff from http://www.nabble.com/Read-past-EOF-td23276171.html
+

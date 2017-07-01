@@ -1,0 +1,12 @@
+LogMergePolicy should use the number of deleted docs when deciding which segments to merge
+
+
+
+Description:
+I found that IndexWriter.optimize(int) method does not pick up large segments with a lot of deletes even when most of the docs are deleted. And the existence of such segments affected the query performance significantly.
+
+I created an index with 1 million docs, then went over all docs and updated a few thousand at a time.  I ran optimize(20) occasionally. What saw were large segments with most of docs deleted. Although these segments did not have valid docs they remained in the directory for a very long time until more segments with comparable or bigger sizes were created.
+
+This is because LogMergePolicy.findMergeForOptimize uses the size of segments but does not take the number of deleted documents into consideration when it decides which segments to merge. So, a simple fix is to use the delete count to calibrate the segment size. I can create a patch for this.
+
+

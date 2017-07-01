@@ -1,0 +1,24 @@
+TestIndexModifier.testIndexWithThreads is not valid?
+
+
+
+Description:
+I recently started playing with the trunk of SVN, and noticed that intermitently, TestIndexModifier.testIndexWithThreads (revision 292010) would fail.
+
+The basic premise of the test seems to be that 3 pairs of IndexThread instances can be started in parallel, each pair using the same instance of IndexModifier to concurrently and randomly add/delete/optimize a single FSDirectory index.  
+The test is considered a success if the sum of additions-deletions recorded by each pair of threads equals the final docCount() for the IndexModifier instance used by that pair of threads.
+
+Now I freely admit that I'm not 100% familiar with the code for IndexModifier, but at a glance, the basic premise seems to be: 
+   a) If method for IndexWriter is called, open it if needed, close the IndexReader first if needed.
+   b) if method for IndexReader is called, open it if needed, close the IndexWriter first if needed.
+
+If I'm understnading that correctly, I see no reason to assume this test will pass.  
+It seems like there could be plenty of scenerios in which the number of additions-deletions != docCount(). The most trivial example I can think of is:
+   1) the first IndexThread instance which has a chance to run adds a document, and optimizes before any other IndexThreads ever open the Directory.
+   2) a subsequent pair of IndexThread instances open their IndexModifier instance before any documents are deleted.
+   3) the IndexThread instances from #2 do nothing but add documents
+...that pair of IndexThreads is now garunteed to have recorded a differnet number of additions then the docCount returned by their IndexModifier.
+
+Am I missing something, or should this test be removed?
+
+

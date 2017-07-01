@@ -1,0 +1,6 @@
+Replace xerces for serialization by JAXP
+
+
+
+Description:
+The org.apache.jackrabbit.rmi.xml.ImportContentHandler class currently uses Xerces to implement the SAX DocumentHandler and serialize XML into a byte[]. This dependency should be dropped and JAXP be used instead for this functionality.

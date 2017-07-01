@@ -1,0 +1,6 @@
+Make FieldSelector usable from Searchable 
+
+
+
+Description:
+Seems reasonable that you would want to be able to specify a FieldSelector from Searchable because many systems do not use IndexSearcher (where you can get a Reader), but instead use Searchable or Searcher so that Searchers and MultiSearchers can be used in a polymorphic manner.

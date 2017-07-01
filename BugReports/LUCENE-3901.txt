@@ -1,0 +1,12 @@
+Add katakana stem filter to better deal with certain katakana spelling variants
+
+
+
+Description:
+Many Japanese katakana words end in a long sound that is sometimes optional.
+
+For example, パーティー and パーティ are both perfectly valid for "party".  Similarly we have センター and センタ that are variants of "center" as well as サー�?ー and サー�? for "server".
+
+I'm proposing that we add a katakana stemmer that removes this long sound if the terms are longer than a configurable length.  It's also possible to add the variant as a synonym, but I think stemming is preferred from a ranking point of view.
+
+

@@ -1,0 +1,6 @@
+Add relative path parameter to rep:excerpt()
+
+
+
+Description:
+This allows one to create an excerpt not just for the node associated with a result node, but also for a node relative to the result node.

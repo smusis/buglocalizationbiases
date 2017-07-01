@@ -1,0 +1,17 @@
+o.a.j.core.integration.PrepareTestRepository fails on 2nd and every subsequent invocation
+
+
+
+Description:
+console output: 
+
+-------------------------------------------------------------------------------
+Test set: org.apache.jackrabbit.core.integration.PrepareTestRepository
+-------------------------------------------------------------------------------
+Tests run: 1, Failures: 0, Errors: 1, Skipped: 0, Time elapsed: 3.428 sec <<< FAILURE!
+testPrepareTestRepository(org.apache.jackrabbit.core.integration.PrepareTestRepository)  Time elapsed: 3.397 sec  <<< ERROR!
+javax.jcr.RepositoryException: Invalid node type definition: {http://www.apache.org/jackrabbit/test}versionable already exists: {http://www.apache.org/jackrabbit/test}versionable already exists
+	at org.apache.jackrabbit.core.nodetype.NodeTypeManagerImpl.registerNodeTypes(NodeTypeManagerImpl.java:308)
+	at org.apache.jackrabbit.core.nodetype.NodeTypeManagerImpl.registerNodeTypes(NodeTypeManagerImpl.java:488)
+	at org.apache.jackrabbit.core.integration.PrepareTestRepository.testPrepareTestRepository(PrepareTestRepository.java:49)
+

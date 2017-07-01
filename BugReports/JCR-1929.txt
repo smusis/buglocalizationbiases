@@ -1,0 +1,6 @@
+The 1.5.0 webapp points to 1.4 javadocs
+
+
+
+Description:
+There's a "Jackrabbit API" link on the Jackrabbit webapp 1.5.0 that points to http://jackrabbit.apache.org/api/1.4/. It should be updated to point to http://jackrabbit.apache.org/api/1.5/.

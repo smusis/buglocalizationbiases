@@ -1,0 +1,31 @@
+LockInfo.logginOut(SessionImpl): javadoc does not correspond to executed code
+
+
+
+Description:
+/**
+     * {@inheritDoc}
+     * <p/>
+     * When the owning session is logging out, we have to perform some
+     * operations depending on the lock type.
+     * (1) If the lock was session-scoped, we unlock the node.
+     * (2) If the lock was open-scoped, we remove the lock token
+     *     from the session.
+     */
+    public void loggingOut(SessionImpl session) {
+        if (live) {
+            if (sessionScoped) {
+                lockMgr.unlock(this);
+            } else {
+                if (session.equals(lockHolder)) {
+                    lockHolder = null;
+                }
+            }
+        }
+    } 
+
+
+if (2) is true, the lockToken is not removed from the session (at least not within the method).
+
+regards
+angela

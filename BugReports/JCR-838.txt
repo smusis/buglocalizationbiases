@@ -1,0 +1,12 @@
+bad assumptions/error handling in SetValueVersionExceptionTest:
+
+
+
+Description:
+SetValueVersionExceptionTest makes several assumptions that may not be true in all repositories:
+
+- nodes can be created without specifying a node type
+- nodes are not referenceable by default (thus addMixin fails)
+
+Also, if a repository does not allow creating a reference property, the associated test should be aborted with NotExecutableException.
+

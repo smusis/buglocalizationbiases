@@ -1,0 +1,12 @@
+Be consistent about negative vInt/vLong
+
+
+
+Description:
+Today, write/readVInt "allows" a negative int, in that it will encode and decode correctly, just horribly inefficiently (5 bytes).
+
+However, read/writeVLong fails (trips an assert).
+
+I'd prefer that both vInt/vLong trip an assert if you ever try to write a negative number... it's badly trappy today.  But, unfortunately, we sometimes rely on this... had we had this assert in 'since the beginning' we could have avoided that.
+
+So, if we can't add that assert in today, I think we should at least fix readVLong to handle negative longs... but then you quietly spend 9 bytes (even more trappy!).

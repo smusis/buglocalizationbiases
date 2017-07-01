@@ -1,0 +1,14 @@
+jira notifications
+
+
+
+Description:
+I have set up Jackrabbit's jira so that notifications will
+go to the dev mailing list.  If that gets annoying, I can easily
+switch it to a different list or turn off notifications such that
+people have to register as watchers.
+
+Let me know what is best for you.
+
+....Roy
+

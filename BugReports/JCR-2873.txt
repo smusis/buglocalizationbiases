@@ -1,0 +1,6 @@
+Add a way to locate full text extraction problems
+
+
+
+Description:
+Full text indexing of a binary document can fail for various reasons. Currently we just log a generic error message in such cases, which makes it difficult for the user to locate such problems for review and reindexing. We should improve this by making the logs more informative or by adding some other mechanism for locating troublesome documents.

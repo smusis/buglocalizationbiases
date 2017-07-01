@@ -1,0 +1,46 @@
+DavMethodBase#getResponseException fails if the body is not (valid) XML
+
+
+
+Description:
+I have a set up that uses the JCR Webdav Server from a custom remote client.
+I've noticed one thing, anytime I request a node that doesn't exist the error that comes back from the server is as follows:
+
+[Fatal Error] :1:941: The element type "HR" must be terminated by the matching end-tag "</HR>".
+javax.jcr.RepositoryException: The element type "HR" must be terminated by the matching end-tag "</HR>".: The element type "HR" must be terminated by the matching end-tag "</HR>".
+
+Doesn't really make sense, but that is OK, I can handle that.
+
+My problem:
+I have a partially populated repository that at the root has a few nodes like
+/edu/....
+/com/ibm/..
+
+So, I want to create a few nodes of type nt:folder under
+
+com/myCompany/folder1
+
+I have no problem creating them, but since "com" already exists I end up with
+com[2]/myCompany/folder1.
+
+So, I went ahead and used the parentNode.hasNode("folderName") method.
+
+This method returns true for the "com" portion, but when I test for the "myCompany" folder which should return false I get the error response shown above from the server.
+
+The webdav request looks as follows:
+PROPFIND /jackrabbit/server/default/jcr%3aroot/com/myCompany
+
+The snippet of code looks as follows:
+  private Node createFolders (Session session, Node parentNode, List <String> folders)
+	  throws RepositoryException {
+    Node folderNode = null;
+    for (String folder : folders) {
+	if (parentNode.hasNode(folder))
+	    folderNode = parentNode.getNode(folder);
+	else
+	    folderNode = parentNode.addNode(folder, "nt:folder");
+	parentNode = folderNode;
+    }
+    session.save();
+    return (folderNode);
+  }

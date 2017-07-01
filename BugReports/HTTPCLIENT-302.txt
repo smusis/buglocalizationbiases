@@ -1,0 +1,27 @@
+exception during writeRequest leaves the connection un-released
+
+
+
+Description:
+The execute method has the following (simplified) flow:
+1) get connection
+2) write request
+3) read result
+4) release connection.
+The release in step 4 happens when the input is completely read, which works fine.
+If an exception occurs between steps 1 and 2, the connection is also released
+properly.
+However, if an exception occurs during step 2, the connection is never released
+back and the connection manager eventually runs out of connections.
+
+The easiest way to test this is to make a simple subclass of PostMethod that
+overrides the writeRequest method:
+
+public class TestConnectionReleaseMethod extends PostMethod
+{
+    protected void writeRequest(HttpState state, HttpConnection conn) throws
+IOException, HttpException
+    {
+         throw new IOException("for testing");
+    }
+}

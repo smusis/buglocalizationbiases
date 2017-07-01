@@ -1,0 +1,6 @@
+Support grouping by IndexDocValues
+
+
+
+Description:
+Although IDV is not yet finalized (More particular the SortedSource). I think we already can discuss / investigate implementing grouping by IDV.

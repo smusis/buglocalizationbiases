@@ -1,0 +1,10 @@
+Registering NodeType from templates throws exception about invalid decl. node type.
+
+
+
+Description:
+when adding PropertyDefinitionTemplates to NodeTypeTemplates, the internal declaredNodeType field is not set and causes the registration fail with:
+
+org.apache.jackrabbit.api.jsr283.nodetype.InvalidNodeTypeDefinitionException: [{}foo#{}test] invalid declaring node type specified
+	at org.apache.jackrabbit.core.nodetype.NodeTypeManagerImpl.registerNodeTypes(NodeTypeManagerImpl.java:695)
+	at org.apache.jackrabbit.core.nodetype.NodeTypeManagerImpl.registerNodeType(NodeTypeManagerImpl.java:615)

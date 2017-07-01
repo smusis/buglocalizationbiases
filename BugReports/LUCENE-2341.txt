@@ -1,0 +1,10 @@
+explore morfologik integration
+
+
+
+Description:
+Dawid Weiss mentioned on LUCENE-2298 that there is another Polish stemmer available:
+http://sourceforge.net/projects/morfologik/
+
+This works differently than LUCENE-2298, and ideally would be another option for users.
+

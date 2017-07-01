@@ -1,0 +1,6 @@
+Expose directory on IndexReader
+
+
+
+Description:
+It would be really useful to expose the index directory on the IndexReader class.

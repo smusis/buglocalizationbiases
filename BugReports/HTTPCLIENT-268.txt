@@ -1,0 +1,12 @@
+Socket streams are closed in the incorrect order.
+
+
+
+Description:
+HttpConnection should close the streams/socket in the following order:
+
+OutputStream
+InputStream
+Socket
+
+<http://java.sun.com/docs/books/tutorial/networking/sockets/readingWriting.html>

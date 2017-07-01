@@ -1,0 +1,8 @@
+Spell Checker suggestSimilar throws NPE when IndexReader is not null and field is null
+
+
+
+Description:
+The SpellChecker.suggestSimilar(String word, int numSug, IndexReader ir,   String field, boolean morePopular) throws a NullPointerException when the IndexReader is not null, but the Field is.  The Javadocs say that it is fine to have the field be null, but doesn't comment on the fact that the IndexReader also needs to be null in that case.
+
+

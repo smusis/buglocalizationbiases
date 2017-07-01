@@ -1,0 +1,6 @@
+Remove unused method RedoLog.clear()
+
+
+
+Description:
+This method is not used anymore and can be removed.

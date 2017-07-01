@@ -1,0 +1,6 @@
+Optimize bundle serialization
+
+
+
+Description:
+There are a number of ways we could use to make bundle serialization more optimized. Thomas has already done some work on this in the Jackrabbit 3 sandbox, and I'd like to apply some of the optimizations also to the trunk.

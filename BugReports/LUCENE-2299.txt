@@ -1,0 +1,25 @@
+if you open an NRT reader while addIndexes* is running it may miss segments
+
+
+
+Description:
+Earwin spotted this in pending ongoing refactoring of Dir/MultiReader, but I wanted to open this separately just to make sure we fix it for 3.1...
+
+This is the fix:
+{code}
+Index: src/java/org/apache/lucene/index/DirectoryReader.java
+===================================================================
+--- src/java/org/apache/lucene/index/DirectoryReader.java	(revision 919119)
++++ src/java/org/apache/lucene/index/DirectoryReader.java	(working copy)
+@@ -145,7 +145,7 @@
+     for (int i=0;i<numSegments;i++) {
+       boolean success = false;
+       try {
+-        final SegmentInfo info = infos.info(upto);
++        final SegmentInfo info = infos.info(i);
+         if (info.dir == dir) {
+           readers[upto++] = writer.readerPool.getReadOnlyClone(info, true, termInfosIndexDivisor);
+         }
+{code}
+
+

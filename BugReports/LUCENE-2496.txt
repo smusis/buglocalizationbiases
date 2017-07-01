@@ -1,0 +1,20 @@
+NPE if you open IW with CREATE on an index with no segments file
+
+
+
+Description:
+I have a simple test case that hits this NPE:
+
+{noformat}
+    [junit] java.lang.NullPointerException
+    [junit] 	at java.io.File.<init>(File.java:305)
+    [junit] 	at org.apache.lucene.store.NIOFSDirectory.openInput(NIOFSDirectory.java:67)
+    [junit] 	at org.apache.lucene.store.FSDirectory.openInput(FSDirectory.java:333)
+    [junit] 	at org.apache.lucene.index.SegmentInfos.read(SegmentInfos.java:213)
+    [junit] 	at org.apache.lucene.index.IndexFileDeleter.<init>(IndexFileDeleter.java:218)
+    [junit] 	at org.apache.lucene.index.IndexWriter.<init>(IndexWriter.java:1113)
+    [junit] 	at org.apache.lucene.index.TestIndexWriter.testNoSegmentFile(TestIndexWriter.java:4975)
+    [junit] 	at org.apache.lucene.util.LuceneTestCase.runBare(LuceneTestCase.java:277)
+{noformat}
+
+It happens if you have an aborted index, ie, there are segment files in there (*.frq, *.tis, etc.) but no segments_N file, and then you try to open an IW with CREATE on that index.

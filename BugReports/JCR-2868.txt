@@ -1,0 +1,12 @@
+A failure to connect to a MySQL database when JackRabbit starts a session leaves a .lock file in the repository. Subsequent sessions cannot be created by the same thread.
+
+
+
+Description:
+I investigating the robustness of JackRabbit in the face of unexpected database errors, such as the database being unavailable. In my particular case, I am attempting to start a JackRabbit session using a TransientRepository while the database is not yet running. This correctly fails. However, if I attempt to create another session within the same thread after a short while, an exception occurs saying that the repository has already been locked. I would expect the repository folder not to be locked. Maybe the code meant to remove the .lock file was not triggered because of an uncaught exception.
+
+Please see the attached files:
+-a test class to reproduce the problem
+-my repository.xml config
+-the log file quantel.txt with details about the stack trace.
+

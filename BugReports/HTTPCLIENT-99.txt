@@ -1,0 +1,42 @@
+Requests are retried 3 times unconditionaly
+
+
+
+Description:
+Using the 20020811 tarball and jdk1.4.0, a get or post will retry as soon
+as it finishes sending the request. I turned on logging and verified that
+as soon as the last \r\n hits the wire, it starts on the next retry. For
+example:
+
+08-10 09:53:12 [main] httpclient.wire: >> [\r\n]
+08-10 09:53:12 [main] httpclient.methods.PostMethod: enter
+PostMethod.writeRequestBody(HttpState, HttpConnection)
+08-10 09:53:12 [main] commons.httpclient.HttpConnection: enter
+HttpConnection.write(byte[], int, int)
+08-10 09:53:12 [main] commons.httpclient.HttpMethod: Attempt number 3 to write
+request
+08-10 09:53:12 [main] commons.httpclient.HttpMethod: enter
+HttpMethodBase.writeRequest(HttpState, HttpConnection)
+08-10 09:53:12 [main] commons.httpclient.HttpMethod: enter
+HttpMethodBase.writeRequestLine(HttpState, HttpConnection)
+08-10 09:53:12 [main] commons.httpclient.HttpMethod: enter
+HttpMethodBase.generateRequestLine(HttpConnection, String, String, String,
+String)
+08-10 09:53:12 [main] commons.httpclient.HttpConnection: enter
+HttpConnection.print(String)
+08-10 09:53:12 [main] commons.httpclient.HttpConnection: enter
+HttpConnection.write(byte[])
+08-10 09:53:12 [main] httpclient.wire: >> "POST /lookup.jsp HTTP/1.1" [\r\n]
+
+The top line is the end of the second post and the last line is the start
+of the third post.
+
+To make sure the server really wasn't sending something back, I wrote a
+quick server that would listen for a request and send a 404 as soon as it
+read a post or get line (but would keep reading and dumping info). In the
+httpclient log, it still shoots off 3 requests before it receives the
+response and the server got all three requests. (client and server are
+running on the same machine)
+
+So why is httpclient sending three requests without waiting for a
+response?

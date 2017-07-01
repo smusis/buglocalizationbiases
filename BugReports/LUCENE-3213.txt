@@ -1,0 +1,6 @@
+Use AtomicReaderContext also for CustomScoreProvider
+
+
+
+Description:
+When moving to AtomicReaderContext, one place was not changed to use it: CustomScoreQuery's CustomScoreProvider. It should also take AtomicReaderContext instead of IndexReader, as this may help users to effectively implement custom scoring there absolute DocIds are needed.

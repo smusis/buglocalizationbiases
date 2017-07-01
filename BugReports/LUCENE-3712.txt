@@ -1,0 +1,12 @@
+Remove unused (and untested) methods from ReaderUtil that are also veeeeery ineffective
+
+
+
+Description:
+ReaderUtil contains two methods that are nowhere used and not even tested. Additionally those are implemented with useless List->array copying; ineffective docStart calculation for a binary search later instead directly returning the reader while scanning -- and I am not sure if they really work as expected. As ReaderUtil is @lucene.internal we should remove them in 3.x and trunk, alternatively the useless array copy / docStarts handling should be removed and tests added:
+
+{code:java}
+public static IndexReader subReader(int doc, IndexReader reader)
+public static IndexReader subReader(IndexReader reader, int subIndex)
+{code}
+

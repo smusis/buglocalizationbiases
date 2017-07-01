@@ -1,0 +1,6 @@
+add test case for recovering from broken version history hierarchy
+
+
+
+Description:
+The test should exercise recovery from a missing parent node of a VHR.

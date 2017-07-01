@@ -1,0 +1,18 @@
+autoCreate attribute of PropDef instances not serialized
+
+
+
+Description:
+When a property of custom node type is defined to be autoCreate=true, this fact is not serialized to the custom_nodetypes.xml file. Digging into the source revealse the NodeTypeDefStore.writeDef method to not write the autoCreate attribute:
+
+   // autoCreate
+   String autoCreate = elem.getAttributeValue(AUTOCREATE_ATTRIBUTE);
+   if (autoCreate != null && autoCreate.length() > 0) {
+     pd.setAutoCreate(Boolean.valueOf(autoCreate).booleanValue());
+   }
+
+This seems to be a remains of a copy-paste procedure :-) with the correct code most probably being something like
+
+   // autoCreate
+   elem.setAttribute(AUTOCREATE_ATTRIBUTE, Boolean.toString(pd.isAutoCreate()));
+

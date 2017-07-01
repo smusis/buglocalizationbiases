@@ -1,0 +1,8 @@
+Remove Serializable on ItemState classes
+
+
+
+Description:
+ItemStates are never directly serialized, which means they don't have to implement Serializable anymore.
+
+See also: http://markmail.org/message/wsqnih2lembkcrdf

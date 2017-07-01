@@ -1,0 +1,9 @@
+FSDirectory.list() is inconsistent
+
+
+
+Description:
+LUCENE-638 added a check to the FSDirectory.list() method to only return files that are Lucene related. I think this change made the FSDirectory implementation inconsistent with all other methods in Directory. E.g. you can create a file with an arbitrary name using FSDirectory, fileExists() will report that it is there, deleteFile() will remove it, but the array returned by list() will not contain the file.
+
+The actual issue that was reported in LUCENE-638 was about sub directories. Those should clearly not be listed, but IMO it is not the responsibility of a Directory implementation to decide what kind of files can be created or listed. The Directory class is an abstraction of a directory and it should't to more than that.
+

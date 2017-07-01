@@ -1,0 +1,6 @@
+Put everything in jackrabbit-spi-commons under org.apache.jackrabbit.spi.commons
+
+
+
+Description:
+To avoid confusion and naming conflicts, we should put all classes and packages in jackrabbit-spi-commons under org.apache.jackrabbit.spi.commons.

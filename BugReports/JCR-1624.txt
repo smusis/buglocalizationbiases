@@ -1,0 +1,21 @@
+Proxies improvement
+
+
+
+Description:
+1) Improvement :
+I need to be able to detect when a bean is an OCM proxy and if it has already been loaded. This kind of functionnality is for example on Hibernate with Hibernate.isInitialized(Object proxy).
+I have developped something similar : I have modified ProxyManagerImpl so it uses an InvocationHandler instead of a LazyLoader. This way, I make my proxies implement a special interface whose methods are intercepted.
+
+2) Bug :
+If a BeanConverter is specified, ObjectConverterImpl should pass it to the proxy CallBack instead letting BeanLazyLoader use the default ObjectConverter. I think this is a bug, as the behavior is different is bean property is proxified or not.
+
+3) Improvement :
+If a jcrType mapped on a java type is specified, ObjectConverterImpl should make a proxy of this type, and not use the the bean property type. This is particularly useful when the bean property type is an interface.
+
+Sorry for reporting this as a bundle instead of seperate items, but I developped my patch as a whole.  
+Let me know if you need help on the enclosing patch.
+
+Sincerely,
+
+Stéphane Landelle

@@ -1,0 +1,9 @@
+ RAMDirectory(Directory dir, boolean closeDir)  constructor uses memory inefficiently.
+
+
+
+Description:
+recently I found that  RAMDirectory(Directory dir, boolean closeDir)  constructor uses memory inefficiently.
+files from source index are read entirely intro memory as single byte array which is after all is thrown away. And if I want to load my 200M optimized, compound format index to memory for faster search I should give JVM at least 400Mb memory limit. For larger indexes this can be an issue.
+
+I've attached patch how to solve this problem.

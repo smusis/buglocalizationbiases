@@ -1,0 +1,8 @@
+cache returns cached responses even if validators not consistent with all conditional headers
+
+
+
+Description:
+This is a MUST-level requirement in the RFC, where if both ETags and Last-Modified dates are used as validators in a conditional request, a cache cannot return a cached response unless it is consistent with all the conditional headers in the request. There is a unit test for this already, but it is incorrect (it uses 'If-Unmodified-Since' instead of 'If-Modified-Since' in the test case).
+
+

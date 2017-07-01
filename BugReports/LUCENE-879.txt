@@ -1,0 +1,14 @@
+Document number integrity merge policy
+
+
+
+Description:
+This patch allows for document numbers stays the same even after merge of segments with deletions.
+
+Consumer needs to do this:
+indexWriter.setSkipMergingDeletedDocuments(false);
+
+The effect will be that deleted documents are replaced by a new Document() in the merged segment, but not marked as deleted. This should probably be some policy thingy that allows for different solutions such as keeping the old document, et c.
+
+Also see http://www.nabble.com/optimization-behaviour-tf3723327.html#a10418880
+

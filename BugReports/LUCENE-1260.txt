@@ -1,0 +1,9 @@
+Norm codec strategy in Similarity
+
+
+
+Description:
+The static span and resolution of the 8 bit norms codec might not fit with all applications. 
+
+My use case requires that 100f-250f is discretized in 60 bags instead of the default.. 10?
+

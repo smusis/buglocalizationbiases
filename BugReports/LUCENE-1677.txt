@@ -1,0 +1,8 @@
+Remove GCJ IndexReader specializations
+
+
+
+Description:
+These specializations are outdated, unsupported, most probably pointless due to the speed of modern JVMs and, I bet, nobody uses them (Mike, you said you are going to ask people on java-user, anybody replied that they need it?). While giving nothing, they make SegmentReader instantiation code look real ugly.
+
+If nobody objects, I'm going to post a patch that removes these from Lucene.

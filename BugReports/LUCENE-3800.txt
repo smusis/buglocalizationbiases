@@ -1,0 +1,22 @@
+Readers wrapping other readers don't prevent usage if any of their subreaders was closed
+
+
+
+Description:
+On recent trunk test we got this problem:
+org.apache.lucene.index.TestReaderClosed.test
+fails because the inner reader is closed but the wrapped outer ones are still open.
+
+I fixed the issue partially for SlowCompositeReaderWrapper and ParallelAtomicReader but it failed again. The cool thing with this test is the following:
+
+The test opens an DirectoryReader and then creates a searcher, closes the reader and executes a search. This is not an issue, if the reader is closed that the search is running on. This test uses LTC.newSearcher(wrap=true), which randomly wraps the passed Reader with SlowComposite or ParallelReader - or with both!!! If you then close the original inner reader, the close is not detected when excuting search. This can cause SIGSEGV when MMAP is used.
+
+The problem in (in Slow* and Parallel*) is, that both have their own Fields instances thats are kept alive until the reader itsself is closed. If the child reader is closed, the wrapping reader does not know and still uses its own Fields instance that delegates to the inner readers. On this step no more ensureOpen checks are done, causing the failures.
+
+The first fix done in Slow and Parallel was to call ensureOpen() on the subReader, too when requesting fields(). This works fine until you wrap two times: ParallelAtomicReader(SlowCompositeReaderWrapper(StandardDirectoryReader(segments_1:3:nrt _0(4.0):C42)))
+
+One solution would be to make ensureOpen also check all subreaders, but that would do the volatile checks way too often (with n is the total number of subreaders and m is the number of hierarchical levels this is n^m) - we cannot do this. Currently we only have n*m which is fine.
+
+The proposal how to solve this (closing subreaders under the hood of parent readers is to use the readerClosedListeners. Whenever a composite or slow reader wraps another readers, it registers itself as interested in readerClosed events. When a subreader is then forcefully closed (e.g by a programming error or this crazy test), we automatically close the parents, too.
+
+We should also fix this in 3.x, if we have similar problems there (needs investigation).

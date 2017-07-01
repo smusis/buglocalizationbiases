@@ -1,0 +1,8 @@
+Throw exception for "Multi-SortedSource" instead of returning null
+
+
+
+Description:
+Spinoff of LUCENE-3623: currently if you addIndexes(FIR) or similar, you get a NPE deep within codecs during merge.
+
+I think the NPE is confusing, it looks like a bug but a clearer exception would be an improvement.

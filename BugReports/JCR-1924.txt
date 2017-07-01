@@ -1,0 +1,8 @@
+ms-sql tablespace support for FileSystem and PersistenceManager
+
+
+
+Description:
+Trunk and released version 1.5.0 does not have complete support for ms-sqlserver tablespaces.  This patch was originally submitted via JCR-1295 but was not applied to the 1.4 trunk.
+
+

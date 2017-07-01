@@ -1,0 +1,19 @@
+improve windows defaults in FSDirectory
+
+
+
+Description:
+Currently windows defaults to SimpleFSDirectory, but this is a problem due to the synchronization.
+
+I have been benchmarking queries *sequentially* and was pretty surprised at how much faster
+MMapDirectory is, for example for cases that do many seeks.
+
+I think we should change the defaults for windows as such:
+
+if (WINDOWS and UNMAP_SUPPORTED and 64-bit)
+  use MMapDirectory
+else
+  use SimpleFSDirectory 
+
+I think we should just consider doing this for 4.0 only and see how it goes.
+

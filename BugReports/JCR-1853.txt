@@ -1,0 +1,12 @@
+Modified QueryImpl to enable external query builders to read and write JCR expressions in the orderBy Clause
+
+
+
+Description:
+The QueryImpl does not create the JCR expression on the fly. The OrderByExpression does the job. If an external querybuilder class needs to dynamically collect properties against which order by is required, QueryImpl does not support updating the JCR Expression. It can only return the built expression since arrayList is used for collecting the properties. The change enables one to add JCRExpression to the QueryImpl object. A test has been added.
+
+Changed files:
+Path
+src/main/java/org/apache/jackrabbit/ocm/query/impl/QueryImpl.java
+src/test/java/org/apache/jackrabbit/ocm/manager/query/DigesterSimpleQueryTest.java
+

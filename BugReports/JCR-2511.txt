@@ -1,0 +1,16 @@
+Value#getBinary() and #getStream() return internal representation for type PATH and NAME
+
+
+
+Description:
+just found a path-related spi2dav test failing that passed some time before jackrabbit 2.0 (BatchTest#testSetPathValue).
+
+i had a quick look at it and it seems to me that the reasons is the internal (Path, Name) value representation 
+being exposed when calling Value#getBinary(), Value#getStream() and the corresponding shortcuts on Property.
+
+from my understanding of the specification these methods should always return the standard JCR path (or name) representation as it
+is exposed by Value#getString() and Property#getString() as it used to be in previous versions.
+
+
+
+

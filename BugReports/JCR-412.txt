@@ -1,0 +1,25 @@
+JCA Concurrent Modification Exception when JCAManagedConnection.cleanup() called
+
+
+
+Description:
+The JCAManagedConnection.closeHandles() method causes a ConcurrentModificationException if the handles list is not empty.
+This is caused by modification of the handles list by removeHandle(), while closeHandles() is iterating over the list.
+
+Under SunOne AppServer 7 this can be caused simply by not closing the Session handle before the transaction commits.
+
+It is probably not even necessary to send connectionClosed events during cleanup().  According to the API for connectionClosed, the event indicates that an application component has closed  the connection handle.  cleanup() is a container initiated action, and so the connectionClosed event is not applicable.
+
+
+java.util.ConcurrentModificationException
+    at java.util.LinkedList$ListItr.checkForComodification(LinkedList.java:552)
+    at java.util.LinkedList$ListItr.next(LinkedList.java:488)
+    at org.apache.jackrabbit.jca.JCAManagedConnection.closeHandles(JCAManagedConnection.java:382)
+    at org.apache.jackrabbit.jca.JCAManagedConnection.cleanup(JCAManagedConnection.java:145)
+    at com.sun.enterprise.resource.IASPoolObjectImp.cleanup(IASPoolObjectImp.java:243)
+    at com.sun.enterprise.resource.IASGenericPoolObjects.transactionCompleted(IASGenericPoolObjects.java:794)
+    at com.sun.enterprise.resource.ResourcePoolManagerImpl.transactionCompleted(ResourcePoolManagerImpl.java:347)
+    at com.sun.enterprise.resource.ResourcePoolManagerImpl$SynchronizationListener.afterCompletion(ResourcePoolManagerImpl.java:644)
+    at com.sun.jts.jta.SynchronizationImpl.after_completion(SynchronizationImpl.java:70)
+
+

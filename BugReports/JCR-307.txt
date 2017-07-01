@@ -1,0 +1,6 @@
+serious performance degradation of node operations when node has a large number of child nodes (e.g. > 10k child node entries)
+
+
+
+Description:
+

@@ -1,0 +1,21 @@
+Memory is not freed up when jackrabbit-server war is redeployed in tomcat
+
+
+
+Description:
+This bug was introduced with the new CacheManager feature. See JCR-619.
+
+The CacheManager starts a new background thread which optimizes memory distribution every second accross the various caches. When a jackrabbit repository is shutdown, this background thread is still running and prevents the GC from collecting the classloader when jackrabbit is deployed in a web application.
+
+Steps to reproduce:
+1) build jackrabbit and jcr-server from trunk and deploy into a tomcat
+2) touch the web.xml file of the jcr-server web app (this will force a redeployment)
+
+After step 2 two things may happen. Either:
+- The memory consumption increases because the CacheManager thread is not shutdown
+or
+- The CacheManager thread dies unexpectedly with a NullPointerException:
+
+Exception in thread "org.apache.jackrabbit.core.state.CacheManager" java.lang.NullPointerException
+        at org.apache.jackrabbit.core.state.CacheManager.run(CacheManager.java:90)
+        at java.lang.Thread.run(Unknown Source)

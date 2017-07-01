@@ -1,0 +1,13 @@
+Redesign SPI observation
+
+
+
+Description:
+With the current SPI observation design it may happen that events are lost while the filter for an event listener is changed.
+
+See:
+- http://www.nabble.com/SPI-observation%3A-EventFilter-lifecycle-tf4732281.html
+- http://people.apache.org/~mreutegg/spi-event/problem.png
+
+My proposal is to introduce a Subscription interface. See attached patch and:
+http://people.apache.org/~mreutegg/spi-event/proposal.png

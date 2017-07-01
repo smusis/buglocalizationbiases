@@ -1,0 +1,12 @@
+highlighter problems with overlapping tokens
+
+
+
+Description:
+The lucene highlighter has problems when tokens that overlap are generated.
+
+For example, if analysis of iPod generates the tokens "i", "pod", "ipod" (with pod and ipod in the same position),
+then the highlighter will output this as iipod, regardless of if any of those tokens are highlighted.
+
+Discovered via http://issues.apache.org/jira/browse/SOLR-24
+

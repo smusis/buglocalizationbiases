@@ -1,0 +1,24 @@
+Bug with textfilters and classloaders
+
+
+
+Description:
+I'm having problems with text filter service. I built the contrib/textfilters package and I included the resulting jackrabbit-textfilters-1.0-SNAPSHOT.jar in my application classpath. The problem is that TextFilterService class is unable to find any filters, even though that a services/org...TextFilterService file is wihin the META-INF jar's directory.
+
+I think that this must to be with Eclipse RCP classloader mechanism, but the fact is that it does not work. I find a little bit strange this way to load services, and as you can see, it seems problematic in some scenarios.
+
+----
+
+Marcel Reutegger 	
+<marcel.reutegger@gmx.net> to jackrabbit-dev
+	 More options	  11:01 am (55 minutes ago)
+Hi Martin,
+
+we had a similar problem with the query languages, but I solved that one
+by telling the registry to use a specific classloader. this seemed to work.
+I'm not sure this will also work for the text filters, because the jar
+file might be in another classloader.
+
+could you please post a jira bug? I'll then change the discovery
+mechanism to use good old xml config ;)
+

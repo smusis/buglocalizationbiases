@@ -1,0 +1,31 @@
+Maintan a stable ordering of properties in xml export
+
+
+
+Description:
+When exporting to xml (system view, not tested with document view) the order of properties is not consistent.
+This is not an issue with the jcr specification, since the order of properties is undefined, but keeping the same (whatever) order in xml export could be useful.
+
+At this moment if you try running a few import->export->import->export roundtrips you will notice that the exported xml often changes. This is an example of the differences you can see:
+
+  <sv:property sv:name="jcr:uuid" sv:type="String">
+    <sv:value>59357999-b4fb-45cd-8111-59277caf14b7</sv:value>
+  </sv:property>
++  <sv:property sv:name="title" sv:type="String">
++    <sv:value>test</sv:value>
++  </sv:property>
+  <sv:property sv:name="visible" sv:type="String">
+    <sv:value>true</sv:value>
+  </sv:property>
+-  <sv:property sv:name="title" sv:type="String">
+-    <sv:value>test</sv:value>
+-  </sv:property>
+
+If you may need to diff between two exported files that could be pretty annoying, you have no clear way to understand if something has really changed or not.
+I would propose to keep ordering consistent between export: an easy way could be sorting properties alphabetically during export.
+
+This behavior has been tested on a recent jackrabbit build from trunk (1.4-SNAPSHOT)
+
+
+
+

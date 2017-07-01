@@ -1,0 +1,21 @@
+Port 3.x FieldCache.getDocsWithField() to trunk
+
+
+
+Description:
+[Spinoff from LUCENE-3390]
+
+I think the approach in 3.x for handling un-valued docs, and making it
+possible to specify how such docs are sorted, is better than the
+solution we have in trunk.
+
+I like that FC has a dedicated method to get the Bits for docs with field
+-- easy for apps to directly use.  And I like that the
+bits have their own entry in the FC.
+
+One downside is that it's 2 passes to get values and valid bits, but
+I think we can fix this by passing optional bool to FC.getXXX methods
+indicating you want the bits, and the populate the FC entry for the
+missing bits as well.  (We can do that for 3.x and trunk). Then it's
+single pass.
+

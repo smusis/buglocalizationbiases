@@ -1,0 +1,6 @@
+RAMDirectory implements Serializable
+
+
+
+Description:
+RAMDirectory is for some reason not serializable.

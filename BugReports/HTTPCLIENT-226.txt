@@ -1,0 +1,8 @@
+HttpMethod#getResponseBody throws NPE
+
+
+
+Description:
+HttpMethod#getResponseBody throws an NPE if the response from the server was 
+204.  Shouldn't getResponseBody return null by contract instead of throwing 
+NPE?

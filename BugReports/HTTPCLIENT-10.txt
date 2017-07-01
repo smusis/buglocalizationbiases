@@ -1,0 +1,70 @@
+tests-local fails on 3 tests
+
+
+
+Description:
+1)
+testMultiSendCookieGet(org.apache.commons.httpclient.TestWebappCookie)junit.framework.AssertionFailedError:
+<html>
+<head><title>ReadCookieServlet: GET</title></head>
+<body>
+<p>This is a response to an HTTP GET request.</p>
+<p><tt>Cookie:
+$Version=1;simplecookie=value;$Path=/httpclienttest/cookie;$Domain=localhost</tt></p>
+<tt>$Version=1</tt><br>
+<tt>simplecookie=value</tt><br>
+<tt>$Path=/httpclienttest/cookie</tt><br>
+<tt>$Domain=localhost</tt><br>
+</body>
+</html>
+    at
+org.apache.commons.httpclient.TestWebappCookie.testMultiSendCookieGet(TestWebappCookie.java:348)
+    at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+    at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:39)
+    at
+sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:25)
+2)
+testDeleteCookieGet(org.apache.commons.httpclient.TestWebappCookie)junit.framework.AssertionFailedError:
+<html>
+<head><title>ReadCookieServlet: GET</title></head>
+<body>
+<p>This is a response to an HTTP GET request.</p>
+<p><tt>Cookie:
+$Version=1;simplecookie=value;$Path=/httpclienttest/cookie;$Domain=localhost</tt></p>
+<tt>$Version=1</tt><br>
+<tt>simplecookie=value</tt><br>
+<tt>$Path=/httpclienttest/cookie</tt><br>
+<tt>$Domain=localhost</tt><br>
+</body>
+</html>
+    at
+org.apache.commons.httpclient.TestWebappCookie.testDeleteCookieGet(TestWebappCookie.java:389)
+    at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+    at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:39)
+    at
+sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:25)
+3)
+testDeleteCookiePut(org.apache.commons.httpclient.TestWebappCookie)junit.framework.AssertionFailedError:
+<html>
+<head><title>ReadCookieServlet: PUT</title></head>
+<body>
+<p>This is a response to an HTTP PUT request.</p>
+<p><tt>Cookie:
+$Version=1;simplecookie=value;$Path=/httpclienttest/cookie;$Domain=localhost</tt></p>
+<tt>$Version=1</tt><br>
+<tt>simplecookie=value</tt><br>
+<tt>$Path=/httpclienttest/cookie</tt><br>
+<tt>$Domain=localhost</tt><br>
+</body>
+</html>
+    at
+org.apache.commons.httpclient.TestWebappCookie.testDeleteCookiePut(TestWebappCookie.java:464)
+    at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+    at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:39)
+    at
+sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:25)
+FAILURES!!!
+Tests run: 108,  Failures: 3,  Errors: 0
+httpclient/build.xml [271] Java returned: -1
+BUILD FAILED
+Total time: 9 seconds

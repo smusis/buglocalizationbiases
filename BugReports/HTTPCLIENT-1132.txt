@@ -1,0 +1,6 @@
+porting of ProxyClient from 3.1 to 4.x API
+
+
+
+Description:
+With 3.1 version of HttpClient it was possible to establish a tunneled connection to a generic non http server through an authenticated proxy, but since 3.1 version does not support NTLMv2 and Kerberos authentication, that are supported in 4.x version, it is very useful to port the features provided by ProxyClient to 4.x API.

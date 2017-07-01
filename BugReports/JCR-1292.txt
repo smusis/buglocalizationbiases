@@ -1,0 +1,6 @@
+Deprecated classes point to wrong replacements (due to various package renamings)
+
+
+
+Description:
+classes that have been replaced by equivalents in jackrabbit-spi-commons point to wrong replacements in the @deprecated javadoc tag.

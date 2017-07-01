@@ -1,0 +1,21 @@
+Optimize BlockTermsReader.seek
+
+
+
+Description:
+When we seek, we first consult the terms index to find the right block
+of 32 (default) terms that may hold the target term.  Then, we scan
+that block looking for an exact match.
+
+The scanning just uses next() and then compares the full term, but
+this is actually rather wasteful.  First off, since all terms in the
+block share a common prefix, we should compare the target against that
+common prefix once, and then only compare the new suffix of each
+term.  Second, since the term suffixes have already been read up front
+into a byte[], we should do a no-copy comparison (vs today, where we
+first read a copy into the local BytesRef and then compare).
+
+With this opto, I removed the ability for BlockTermsWriter/Reader to
+support arbitrary term sort order -- it's now hardwired to
+BytesRef.utf8SortedAsUnicode.
+

@@ -1,0 +1,23 @@
+SpanMultiTermQueryWrapper with Prefix Query issue
+
+
+
+Description:
+If we try to do a search with SpanQuery and a PrefixQuery this message is returned:
+
+"You can only use SpanMultiTermQueryWrapper with a suitable SpanRewriteMethod."
+
+The problem is in the WildcardQuery rewrite function.
+
+If the wildcard query is a prefix, a new prefix query is created, the rewrite method is set with the SpanRewriteMethod and the prefix query is returned.
+
+But, that's the rewritten prefix query which should be returned:
+
+-      return rewritten;
++      return rewritten.rewrite(reader);
+
+I will attach a patch with a unit test included.
+
+
+
+

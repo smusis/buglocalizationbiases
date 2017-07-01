@@ -1,0 +1,6 @@
+FieldCacheSanityChecker called directly by FieldCache.get*
+
+
+
+Description:
+As suggested by McCandless in LUCENE-1749, we can make FieldCacheImpl a client of the FieldCacheSanityChecker and have it sanity check itself each time it creates a new cache entry, and log a warning if it thinks there is a problem.  (although we'd probably only want to do this if the caller has set some sort of infoStream/warningStream type property on the FieldCache object.

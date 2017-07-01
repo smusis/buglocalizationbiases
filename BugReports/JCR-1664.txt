@@ -1,0 +1,12 @@
+JNDI Referencable Issues
+
+
+
+Description:
+I'm questioning the use of Referencable in the BindableResource and BindableResourceFactory classes for the JNDI lookup process. Reason for this is because Referencable needs the Addrs to be in the EXACT order in order for it to be considered the same. (see http://java.sun.com/j2se/1.4.2/docs/api/javax/naming/Reference.html#equals(java.lang.Object) )
+
+In order for me to get the JNDI reference to be found correctly I had to change the BindableResource.getReference method to swap the order the StringReferences were added to match up what was being passed in by glassfish. This seems EXTREMELY fragile to me as I don't know what order, say JBoss, would pass the StringRefences in in the Reference object for the Factory method.
+
+Also, another problem is that getReference is binding the class name to BindableRepository class implementation and not javax.jcr.Repository. This again causes them not to match if you follow the example on the wiki on setting up the JNDI reference and use javax.jcr.Repository as the type. This can either be fixed by changing the JNDI reference to use the BindableRepository class or the change the BindableRepository class to set that to the Repository interface. Not sure which would be considered 'better'
+
+I have a patch that fixes the first issue (at least for glassfish), but not the second. Again, this seems like a really 'breakable' setup right now and not sure what would be better to make sure this is avoided.

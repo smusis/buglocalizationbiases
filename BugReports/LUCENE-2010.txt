@@ -1,0 +1,29 @@
+Remove segments with all documents deleted in commit/flush/close of IndexWriter instead of waiting until a merge occurs.
+
+
+
+Description:
+I do not know if this is a bug in 2.9.0, but it seems that segments with all documents deleted are not automatically removed:
+
+{noformat}
+4 of 14: name=_dlo docCount=5
+  compound=true
+  hasProx=true
+  numFiles=2
+  size (MB)=0.059
+  diagnostics = {java.version=1.5.0_21, lucene.version=2.9.0 817268P - 2009-09-21 10:25:09, os=SunOS,
+     os.arch=amd64, java.vendor=Sun Microsystems Inc., os.version=5.10, source=flush}
+  has deletions [delFileName=_dlo_1.del]
+  test: open reader.........OK [5 deleted docs]
+  test: fields..............OK [136 fields]
+  test: field norms.........OK [136 fields]
+  test: terms, freq, prox...OK [1698 terms; 4236 terms/docs pairs; 0 tokens]
+  test: stored fields.......OK [0 total field count; avg ? fields per doc]
+  test: term vectors........OK [0 total vector count; avg ? term/freq vector fields per doc]
+{noformat}
+
+Shouldn't such segments not be removed automatically during the next commit/close of IndexWriter?
+
+*Mike McCandless:*
+Lucene doesn't actually short-circuit this case, ie, if every single doc in a given segment has been deleted, it will still merge it [away] like normal, rather than simply dropping it immediately from the index, which I agree would be a simple optimization. Can you open a new issue? I would think IW can drop such a segment immediately (ie not wait for a merge or optimize) on flushing new deletes.
+

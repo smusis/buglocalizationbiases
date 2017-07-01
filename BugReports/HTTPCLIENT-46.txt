@@ -1,0 +1,9 @@
+Plug-in authentication modules
+
+
+
+Description:
+Currently only basic authentication is supported.  A Authentication interface
+should be provided to allow for plug-in support for other authenticaiton
+schemes, some of which may be application specific and therefore have no place
+in httpclient itself, but would be required by some users.

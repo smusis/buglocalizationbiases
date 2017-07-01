@@ -1,0 +1,36 @@
+Empty response body is not properly handled when chunked encoding is used
+
+
+
+Description:
+IIS 5.0 server, when returning no content in response to an HTTP/1.1 request,
+still includes "Transfer-Encoding: chunked" response header. As HttpClient
+always expects chunk-encoded stream to be properly terminated, an
+HttpRecoverableException exception results, when no content is sent back
+
+=====================================================================
+
+POST /someurl.aspx HTTP/1.1
+Content-Length: 1132
+Host: xxx.xxx.xxx.xxx
+User-Agent: Jakarta Commons-HttpClient/2.0alpha2
+Content-Type: multipart/form-data; boundary=----------------314159265358979323846
+
+------------------314159265358979323846
+Content-Disposition: form-data; name="nmFile"; filename="xxxxxxxxx.xml"
+Content-Type: application/octet-stream
+
+<... content removed ...>
+
+------------------314159265358979323846--
+
+HTTP/1.1 200 OK
+Server: Microsoft-IIS/5.0
+Date: Sat, 08 Feb 2003 15:22:26 GMT
+Transfer-Encoding: chunked
+Cache-Control: private
+Content-Type: text/html
+
+=====================================================================
+
+Bug reported by Jim Crossley

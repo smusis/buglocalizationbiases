@@ -1,0 +1,6 @@
+Catch exceptions in Threads created by JUnit tasks
+
+
+
+Description:
+On hudson we had several assertions failed in TestRAMDirectory, that were never caught by the error reportier in JUnit (as the test itsself did not fail). This patch adds a handler for uncaught exceptions to LuceneTestCase(J4) that let the test fail in tearDown().

@@ -1,0 +1,10 @@
+Need setURI() methods in HttpMethod interface
+
+
+
+Description:
+I'd like to have the methods setURI( URI ) and setURI( String ) methods. Also a 
+method like getRequestURI() because the uri I get now with the method getURI() 
+changes if I execute a request which will be automatically forwarded.
+
+The methods setURI can throw an exception if it has already been executed.

@@ -1,0 +1,8 @@
+problem with edgengramtokenfilter and highlighter
+
+
+
+Description:
+i ran into a problem while using the edgengramtokenfilter, it seems to report incorrect offsets when generating tokens, more specifically all the tokens have offset 0 and term length as start and end, this leads to goofy highlighting behavior when creating edge grams for tokens beyond the first one, i created a small patch that takes into account the start of the original token and adds that to the reported start/end offsets.
+
+

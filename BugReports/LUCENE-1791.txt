@@ -1,0 +1,6 @@
+Enhance QueryUtils and CheckHIts to wrap everything they check in MultiReader/MultiSearcher
+
+
+
+Description:
+methods in CheckHits & QueryUtils are in a good position to take any Searcher they are given and not only test it, but also test MultiReader & MultiSearcher constructs built around them

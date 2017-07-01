@@ -1,0 +1,41 @@
+Field specified norms in MatchAllDocumentsScorer 
+
+
+
+Description:
+This patch allows for optionally setting a field to use for norms factoring when scoring a MatchingAllDocumentsQuery.
+
+From the test case:
+{code:java}
+.
+    RAMDirectory dir = new RAMDirectory();
+    IndexWriter iw = new IndexWriter(dir, new StandardAnalyzer(), true, IndexWriter.MaxFieldLength.LIMITED);
+    iw.setMaxBufferedDocs(2);  // force multi-segment
+    addDoc("one", iw, 1f);
+    addDoc("two", iw, 20f);
+    addDoc("three four", iw, 300f);
+    iw.close();
+
+    IndexReader ir = IndexReader.open(dir);
+    IndexSearcher is = new IndexSearcher(ir);
+    ScoreDoc[] hits;
+
+    // assert with norms scoring turned off
+
+    hits = is.search(new MatchAllDocsQuery(), null, 1000).scoreDocs;
+    assertEquals(3, hits.length);
+    assertEquals("one", ir.document(hits[0].doc).get("key"));
+    assertEquals("two", ir.document(hits[1].doc).get("key"));
+    assertEquals("three four", ir.document(hits[2].doc).get("key"));
+
+    // assert with norms scoring turned on
+
+    MatchAllDocsQuery normsQuery = new MatchAllDocsQuery("key");
+    assertEquals(3, hits.length);
+//    is.explain(normsQuery, hits[0].doc);
+    hits = is.search(normsQuery, null, 1000).scoreDocs;
+
+    assertEquals("three four", ir.document(hits[0].doc).get("key"));    
+    assertEquals("two", ir.document(hits[1].doc).get("key"));
+    assertEquals("one", ir.document(hits[2].doc).get("key"));
+{code}

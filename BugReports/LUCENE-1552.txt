@@ -1,0 +1,24 @@
+IndexWriter.addIndexes(IndexReader[] readers) doesn't correctly handle exception success flag.
+
+
+
+Description:
+After this bit of code in addIndexes(IndexReader[] readers)
+
+ try {
+        flush(true, false, true);
+        optimize();					  // start with zero or 1 seg
+        success = true;
+      } finally {
+        // Take care to release the write lock if we hit an
+        // exception before starting the transaction
+        if (!success)
+          releaseWrite();
+      }
+
+The success flag should be reset to "false" because it's used again in another try/catch/finally block.  
+
+TestIndexWriter.testAddIndexOnDiskFull() sometimes will hit this bug; but it's infrequent.
+
+
+

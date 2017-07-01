@@ -1,0 +1,6 @@
+Stack traces from failed tests are messed up on ANT 1.7.x
+
+
+
+Description:
+

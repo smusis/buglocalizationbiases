@@ -1,0 +1,33 @@
+Mixin type loss
+
+
+
+Description:
+When using a bundle persistence manager, the mixin type information may be corrupted in the lucene index, causing queries like '//element(*, my:mixin)' to fail.
+
+
+
+The problem is that the 'jcr:mixinTypes' may be stored in the bundle. Here is how this could happen :
+
+
+First step: Create a node and add a mixin 'A'.
+
+Everything's fine. The query '//element(*, 'A')' works.
+
+
+Second step : Select the node and add a second mixin 'B'.
+
+When the second mixin is added, the AbstractBundlePersistenceManager#load(PropertyId) is called to get the current mixins for the node. This method will store the PropertyState for 'jcr:mixinTypes' in the bundle (containing only the mixin 'A'). Then the NodeImpl#setMixinTypesProperty() will set the PropertyState for 'jcr:mixinTypes' in the node state (containing the mixins 'A' and 'B').
+When the session is saved, the ChangeLog in AbstractBundlePersistenceManager#store() contains a modification for the 'jcr:mixinTypes' but it's being ignored, leaving the bundle with only mixin 'A'. The NodeIndexer looks into the node state to get the mixin types and indexes the node correctly. The queries '//element(*, 'A')' and '//element(*, 'B')' work.
+
+
+Thrid step : Select the node and update a property. 
+
+When the session is saved, the NodeIndexer asks again for the 'jcr:mixinTypes' property, by calling the AbstractBundlePersistenceManager#load(PropertyId) to load it. The bundle contains this property and returns only mixin 'A' (as it was stored in the second step), causing the index to use only mixin 'A'. The query '//element(*, 'A')' still works but '//element(*, 'B') doesn't work anymore.
+
+
+
+A simple solution to this would be to not store the PropertyState for the 'jcr:mixinTypes' (and 'jcr:uuid' and 'jcr:primaryType', as the class description states) in the bundle when the PropertyState is loaded. It would fix the issue but not the contents on existing repositories. One way to allow the repositories to fix themselves is to not read or write these 3 properties in the BundleBinding#readBundle and BundleBinding#writeBundle methods, but I'm not sure wether or not it would have a performance impact.
+
+
+

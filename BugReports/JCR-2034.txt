@@ -1,0 +1,7 @@
+Add an option so skip the "checkSchema" methods
+
+
+
+Description:
+Sometimes the "checkSchema" methods in the various components (DB filesystem, DB persistence manager, DB journal) fail to detect that the required tables already exist with as result that the startup  fails. (See the mail thread on the dev list: http://jackrabbit.markmail.org/message/jtq2sqis2aceh7ro).
+An option to just skip the checkSchema methods on startup would solve this issue.

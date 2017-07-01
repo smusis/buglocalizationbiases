@@ -1,0 +1,6 @@
+Test must not fail if mixin cannot be added
+
+
+
+Description:
+Nearly all mixin types are optional and a test must not fail if a mixin cannot be added. It should rather throw a NotExecutableException. Some tests still try to add a mixin without checking whether an implementation supports it.

@@ -1,0 +1,9 @@
+add Galician analyzer
+
+
+
+Description:
+Adds analyzer for Galician, based upon ["Regras do lematizador para o galego"|http://bvg.udc.es/recursos_lingua/stemming.jsp] , and a set of stopwords created in the usual fashion.
+
+This is really just an adaptation of the Portuguese [RSLP|http://www.inf.ufrgs.br/~viviane/rslp/index.htm], so I added that too, and modified our existing hand-coded RSLP-S (RSLP's plural-only step) to just be a plural-only flow of RSLP.
+

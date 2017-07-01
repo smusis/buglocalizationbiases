@@ -1,0 +1,14 @@
+refactoring of Similarity.sloppyFreq() and Similarity.scorePayload
+
+
+
+Description:
+Currently these are top-level, but they only affect the SloppyDocScorer.
+So it makes more sense to put these into the SloppyDocScorer api, this gives you additional flexibility
+(e.g. combining payloads with CSF or whatever the hell you want to do), and is cleaner.
+
+Furthermore, there are the following confusing existing issues:
+* scorePayload should take bytesref
+* PayloadTermScorer passes a *null* byte[] array to the sim if there are no payloads. I don't think it should do this, and its inconsistent with PayloadNearQuery, which does not do this. Its an undocumented conditional you need to have in the scoring algorithm which we should remove.
+* there is an unused constant for scorepayload (NO_DOC_ID_PROVIDED), which is a documented, but never used anywhere. I think we should remove this conditional too, because its not possible to have a payload without a docid, and we shouldn't be passing fake document ids (-1) to our scoring APIs anyway.
+

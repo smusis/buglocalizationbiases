@@ -1,0 +1,6 @@
+I/O exception in DocsWriter add or updateDocument may not delete unreferenced files
+
+
+
+Description:
+If an I/O exception is thrown in DocumentsWriter#addDocument or #updateDocument, the stored fields files may not be cleaned up.

@@ -1,0 +1,6 @@
+Similarity javadocs for scoring function to relate more tightly to scoring models in effect
+
+
+
+Description:
+See discussion in the related issue.

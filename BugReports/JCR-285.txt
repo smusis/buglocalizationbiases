@@ -1,0 +1,69 @@
+Line-separator differences cause PredefinedNodeTypeTest to fail on different operating systems.
+
+
+
+Description:
+In testPredefinedNodeType(), the test reads in a test file from the file system and then performs a string comparison, which may fail due to line-separator differences:
+
+    private void testPredefinedNodeType(String name)
+            throws NotExecutableException {
+        try {
+            StringBuffer spec = new StringBuffer();
+            String resource =
+                "org/apache/jackrabbit/test/api/nodetype/spec/"
+                + name.replace(':', '-') + ".txt";
+            Reader reader = new InputStreamReader(
+                    getClass().getClassLoader().getResourceAsStream(resource));
+            for (int ch = reader.read(); ch != -1; ch = reader.read()) {
+                spec.append((char) ch);
+            }
+
+            NodeType type = manager.getNodeType(name);
+
+            assertEquals(
+                    "Predefined node type " + name,
+                    spec.toString(),
+                    getNodeTypeSpec(type));
+...
+
+The above works when the file being read in has line-separators that match the operating system the test is being run on.  However, if there is a mismatch, the string comparison will fail.
+
+The fix is to replace line-separators in both strings being compared:
+
+Helper method to replace line separators
+
+    /** Standardize line separators around "\n". */
+    public String replaceLineSeparators(String stringValue) {
+        // Replace "\r\n" (Windows format) with "\n" (Unix format) 
+        stringValue = stringValue.replaceAll("\r\n", "\n");
+        // Replace "\r" (Mac format) with "\n" (Unix format)
+        stringValue = stringValue.replaceAll("\r", "\n");
+        
+        return stringValue;
+    }
+    
+Updated test method:
+
+    private void testPredefinedNodeType(String name)
+            throws NotExecutableException {
+        try {
+            StringBuffer spec = new StringBuffer();
+            String resource =
+                "org/apache/jackrabbit/test/api/nodetype/spec/"
+                + name.replace(':', '-') + ".txt";
+            Reader reader = new InputStreamReader(
+                    getClass().getClassLoader().getResourceAsStream(resource));
+            for (int ch = reader.read(); ch != -1; ch = reader.read()) {
+                spec.append((char) ch);
+            }
+
+            NodeType type = manager.getNodeType(name);
+            
+            String nodeTypeSpecValue = replaceLineSeparators(getNodeTypeSpec(type));
+            String specValue = replaceLineSeparators(spec.toString());
+            
+            assertEquals(
+                    "Predefined node type " + name,
+                    specValue,
+                    nodeTypeSpecValue);
+...

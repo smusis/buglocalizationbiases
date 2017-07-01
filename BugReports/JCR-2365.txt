@@ -1,0 +1,6 @@
+HTML Text Extractor does not extract or index numerics
+
+
+
+Description:
+Numerics such as addresses/dates/financial figures are not extracted or indexed by the current HTML Extractor.  These values are handled properly and searchable when done via the PlainTextExtractor

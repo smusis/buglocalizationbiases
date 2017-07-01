@@ -1,0 +1,10 @@
+Track FieldInfo per segment instead of per-IW-session
+
+
+
+Description:
+Currently FieldInfo is tracked per IW session to guarantee consistent global field-naming / ordering. IW carries FI instances over from previous segments which also carries over field properties like isIndexed etc. While having consistent field ordering per IW session appears to be important due to bulk merging stored fields etc. carrying over other properties might become problematic with Lucene's Codec support.  Codecs that rely on consistent properties in FI will fail if FI properties are carried over.
+
+The DocValuesCodec (DocValuesBranch) for instance writes files per segment and field (using the field id within the file name). Yet, if a segment has no DocValues indexed in a particular segment but a previous segment in the same IW session had DocValues, FieldInfo#docValues will be true  since those values are reused from previous segments. 
+
+We already work around this "limitation" in SegmentInfo with properties like hasVectors or hasProx which is really something we should manage per Codec & Segment. Ideally FieldInfo would be managed per Segment and Codec such that its properties are valid per segment. It also seems to be necessary to bind FieldInfoS to SegmentInfo logically since its really just per segment metadata.  

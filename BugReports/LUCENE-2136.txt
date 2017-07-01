@@ -1,0 +1,12 @@
+MultiReader should not use PQ for its Term/sEnum if it has only 1 reader
+
+
+
+Description:
+Related to LUCENE-2130....
+
+Even though we've switched to segment-based searching, there are still times when the Term/sEnum is used against the top-level reader.  I think Solr does this, and from LUCENE-2130, certain rewrite modes of MTQ will do this as well.
+
+Currently, on an optimized index, MTQ is still using a PQ to present the terms, which is silly because this just adds a sizable amount of overhead.  In such cases we should simply delecate to the single segment.
+
+Note that the single segment can have deletions, and we should still delegate.  Ie, the index need not be optimized, just have a single segment.

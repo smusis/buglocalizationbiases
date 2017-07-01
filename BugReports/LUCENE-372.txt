@@ -1,0 +1,13 @@
+Unmatched right parentheses truncates query
+
+
+
+Description:
+The query processor truncates a query when right parentheses are unmatched.
+E.g.:
+
+ secret AND illegal) AND access:confidential
+
+will not result in a ParseException instead will run as:
+
+ secret AND illegal

@@ -1,0 +1,27 @@
+Mating Collector and Scorer on doc Id orderness
+
+
+
+Description:
+This is a spin off of LUCENE-1593. This issue proposes to expose appropriate API on Scorer and Collector such that one can create an optimized Collector based on a given Scorer's doc-id orderness and vice versa. Copied from LUCENE-1593, here is the list of changes:
+
+# Deprecate Weight and create QueryWeight (abstract class) with a new scorer(reader, scoreDocsInOrder), replacing the current scorer(reader) method. QueryWeight implements Weight, while score(reader) calls score(reader, false /* out-of-order */) and scorer(reader, scoreDocsInOrder) is defined abstract.
+#* Also add QueryWeightWrapper to wrap a given Weight implementation. This one will also be deprecated, as well as package-private.
+#* Add to Query variants of createWeight and weight which return QueryWeight. For now, I prefer to add a default impl which wraps the Weight variant instead of overriding in all Query extensions, and in 3.0 when we remove the Weight variants - override in all extending classes.
+# Add to Scorer isOutOfOrder with a default to false, and override in BS to true.
+# Modify BooleanWeight to extend QueryWeight and implement the new scorer method to return BS2 or BS based on the number of required scorers and setAllowOutOfOrder.
+# Add to Collector an abstract _acceptsDocsOutOfOrder_ which returns true/false.
+#* Use it in IndexSearcher.search methods, that accept a Collector, in order to create the appropriate Scorer, using the new QueryWeight.
+#* Provide a static create method to TFC and TSDC which accept this as an argument and creates the proper instance.
+#* Wherever we create a Collector (TSDC or TFC), always ask for out-of-order Scorer and check on the resulting Scorer isOutOfOrder(), so that we can create the optimized Collector instance.
+# Modify IndexSearcher to use all of the above logic.
+
+The only class I'm worried about, and would like to verify with you, is Searchable. If we want to deprecate all the search methods on IndexSearcher, Searcher and Searchable which accept Weight and add new ones which accept QueryWeight, we must do the following:
+* Deprecate Searchable in favor of Searcher.
+* Add to Searcher the new QueryWeight variants. Here we have two choices: (1) break back-compat and add them as abstract (like we've done with the new Collector method) or (2) add them with a default impl to call the Weight versions, documenting these will become abstract in 3.0.
+* Have Searcher extend UnicastRemoteObject and have RemoteSearchable extend Searcher. That's the part I'm a little bit worried about - Searchable implements java.rmi.Remote, which means there could be an implementation out there which implements Searchable and extends something different than UnicastRemoteObject, like Activeable. I think there is very small chance this has actually happened, but would like to confirm with you guys first.
+* Add a deprecated, package-private, SearchableWrapper which extends Searcher and delegates all calls to the Searchable member.
+* Deprecate all uses of Searchable and add Searcher instead, defaulting the old ones to use SearchableWrapper.
+* Make all the necessary changes to IndexSearcher, MultiSearcher etc. regarding overriding these new methods.
+
+One other optimization that was discussed in LUCENE-1593 is to expose a topScorer() API (on Weight) which returns a Scorer that its score(Collector) will be called, and additionally add a start() method to DISI. That will allow Scorers to initialize either on start() or score(Collector). This was proposed mainly because of BS and BS2 which check if they are initialized in every call to next(), skipTo() and score(). Personally I prefer to see that in a separate issue, following that one (as it might add methods to QueryWeight).

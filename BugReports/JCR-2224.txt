@@ -1,0 +1,15 @@
+Change access levels in SearchIndex and NodeIndexer for better inherance
+
+
+
+Description:
+I want to change NodeIndexer#addBinaryValue logic in JR 1.5.6, therefore i needed to:
+* create a custom class extending NodeIndexer for changing binary field indexation
+* create a custom class extending SearchIndex for using this custom NodeIndexer
+
+I was obliged to:
+* override SearchIndex#createTextExtractor in order to store created TextExtractor because of private attribute
+* put both classes into package org.apache.jackrabbit.core.query.lucene because NodeIndexer#createDoc(...) is protected
+
+In trunk TextExtractor has now a getter but there are still some private attributes.
+And NodeIndexer#createDoc(...) is still protected and there are some private methods.

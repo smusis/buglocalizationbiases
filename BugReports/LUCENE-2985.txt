@@ -1,0 +1,8 @@
+Build SegmentCodecs incrementally for consistent codecIDs during indexing
+
+
+
+Description:
+currently we build the SegementCodecs during flush which is fine as long as no codec needs to know which fields it should handle. This will change with DocValues or when we expose StoredFields / TermVectors via Codec (see LUCENE-2621 or LUCENE-2935). The other downside it that we don't have a consistent view of which codec belongs to which field during indexing and all FieldInfo instances are unassigned (set to -1). Instead we should build the SegmentCodecs incrementally as fields come in so no matter when a codec needs to be selected to process a document / field we have the right codec ID assigned.
+
+

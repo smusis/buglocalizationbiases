@@ -1,0 +1,6 @@
+Typo in message logged upon startup when repository is already in use
+
+
+
+Description:
+As per subject

@@ -1,0 +1,11 @@
+Clustering is broken due to duplicated CachingPersistenceManager interface
+
+
+
+Description:
+There are now two interfaces CachingPersistenceManager in the packages org.apache.jackrabbit.core.persistence.bundle and org.apache.jackrabbit.core.persistence.pool. A persistence manager that implements the ..bundle... interface doesn't receive the onExternalUpdate events that are required for clustering to work.
+
+I will move this interface to the package org.apache.jackrabbit.core.persistence and remove the second implementation.
+
+This change has no affect to backward compatibility, because anyway there were many breaking changes in the past (NodeId / UUID for example).
+

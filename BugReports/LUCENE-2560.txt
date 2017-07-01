@@ -1,0 +1,10 @@
+random analyzer tests
+
+
+
+Description:
+we have been finding+fixing lots of bugs by randomizing lucene tests.
+in r966878 I added a variant of random unicode string that gives you a random string within the same unicode block (for other purposes)
+
+I think we should use this to test the analyzers better, for example we should pound tons of random greek strings against the greek analyzer and at least make sure there aren't exceptions.
+

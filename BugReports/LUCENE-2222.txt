@@ -1,0 +1,8 @@
+FixedIntBlockIndexInput.Reader does not initialise 'pending' int array
+
+
+
+Description:
+The FixedIntBlockIndexInput.Reader.pending int array is not initialised. As a consequence, the FixedIntBlockIndexInput.Reader#next() method returns always 0.
+
+A call to FixedIntBlockIndexInput.Reader#blockReader.readBlock() during the Reader initialisation may solve the issue (to be tested).

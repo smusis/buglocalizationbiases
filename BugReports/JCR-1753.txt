@@ -1,0 +1,10 @@
+Allow means force a Repository to synchronize with the cluster
+
+
+
+Description:
+Based on the thread on the user mailing list I'm logging this to propose adding a sync() method to force cluster synchronization using the JackrabbitRepository extension API.
+
+The purpose of the method is such that in a distributed clustered environment sometime cluster synchronization does or has not occurred such that certain repositories are in a stale state.  This method would provide a means to force a repository to update pull in possible changes made by other Jackrabbit repositories.
+
+

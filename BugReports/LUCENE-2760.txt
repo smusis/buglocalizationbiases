@@ -1,0 +1,12 @@
+optimize spanfirstquery, spanpositionrangequery
+
+
+
+Description:
+SpanFirstQuery and SpanPositionRangeQuery (SpanFirst is just a special case of this), are currently inefficient.
+
+Take this worst case example: SpanFirstQuery("the").
+Currently the code reads all the positions for the term "the".
+
+But when enumerating spans, once we have passed the allowable range we should move on to the next document (skipTo)
+ 

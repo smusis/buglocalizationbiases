@@ -1,0 +1,7 @@
+Incorrect error message in AnalyzingQueryParser.getPrefixQuery
+
+
+
+Description:
+The error message of  getPrefixQuery is incorrect when tokens were added, for example by a stemmer. The message is "token was consumed" even if tokens were added.
+Attached is a patch, which when applied gives a better description of what actually happened.

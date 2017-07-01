@@ -1,0 +1,8 @@
+Two consecutive score() calls return different scores for Boolean Queries.
+
+
+
+Description:
+Two consecutive calls to score() return different scores (no next() or skipTo() calls in between). 
+Background in LUCENE-912 .
+

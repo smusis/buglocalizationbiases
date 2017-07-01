@@ -1,0 +1,17 @@
+DocumentsWriter.abort fails to clear docStoreOffset
+
+
+
+Description:
+I hit this in working on LUCENE-1044.
+
+If you disk full event during flush, then DocumentsWriter will abort
+(clear all buffered docs).  Then, if you then add another doc or two,
+and then close your writer, and this time succeed in flushing (say
+because it's only a couple buffered docs so the resulting segment is
+smaller), you can flush a corrupt segment (that incorrectly has a
+non-zero docStoreOffset).
+
+I modified the TestConcurrentMergeScheduler test to show this bug.
+I'll attach a patch shortly.
+

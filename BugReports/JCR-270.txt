@@ -1,0 +1,25 @@
+Importer drops jcr:xmlcharacters fields after a large jcr:xmlcharacters entry
+
+
+
+Description:
+If you have an XML node as follows:
+
+<a>
+[lots and lots of data]
+</a>
+
+This should translate into
+
+Node: a
+ +- Node: jcr:xmltext
+   +- Property: jcr:xmlcharacters = [lots and lots of data]
+
+Instead, the following things happen:
+- There is no node jcr:xmltext
+- If the node a has child nodes, they also lose the jcr:xmltext node
+- Any nodes on the same level after node a also lose the jcr:xmltext node
+- Nodes that come after a, but are on a higher level, have correct jcr:xmltext 
+nodes
+
+(I've used some 100+k of data, namely a base64 encoded picture)

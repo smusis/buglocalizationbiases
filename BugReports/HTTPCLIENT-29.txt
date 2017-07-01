@@ -1,0 +1,8 @@
+shouldn't throw exception on bad cookies
+
+
+
+Description:
+Currently, HttpClient throws Exception on bad cookie. This is not expected. The 
+user will expect HttpClient to ignore such cookies, but not getting an 
+exception. Once exception is throw, user has no way to know if he can continue.

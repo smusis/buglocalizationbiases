@@ -1,0 +1,7 @@
+SPI implementations currently need to provide implementations of both ValueFactory and QValueFactory
+
+
+
+Description:
+This should be simplified so that an implementation of QValueFactory is sufficient.
+

@@ -1,0 +1,25 @@
+Avoidable synchronization bottleneck in MatchAlldocsQuery$MatchAllScorer
+
+
+
+Description:
+The isDeleted() method on IndexReader has been mentioned a number of times as a potential synchronization bottleneck. However, the reason this  bottleneck occurs is actually at a higher level that wasn't focused on (at least in the threads I read).
+
+In every case I saw where a stack trace was provided to show the lock/block, higher in the stack you see the MatchAllScorer.next() method. In Solr paricularly, this scorer is used for "NOT" queries. We saw incredibly poor performance (order of magnitude) on our load tests for NOT queries, due to this bottleneck. The problem is that every single document is run through this isDeleted() method, which is synchronized. Having an optimized index exacerbates this issues, as there is only a single SegmentReader to synchronize on, causing a major thread pileup waiting for the lock.
+
+By simply having the MatchAllScorer see if there have been any deletions in the reader, much of this can be avoided. Especially in a read-only environment for production where you have slaves doing all the high load searching.
+
+I modified line 67 in the MatchAllDocsQuery
+FROM:
+  if (!reader.isDeleted(id)) {
+TO:
+  if (!reader.hasDeletions() || !reader.isDeleted(id)) {
+
+In our micro load test for NOT queries only, this was a major performance improvement.  We also got the same query results. I don't believe this will improve the situation for indexes that have deletions. 
+
+Please consider making this adjustment for a future bug fix release.
+
+
+
+
+

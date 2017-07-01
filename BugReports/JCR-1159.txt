@@ -1,0 +1,23 @@
+SPI: improve description of locking methods on RepositoryService
+
+
+
+Description:
+in detail:
+
+1) getLockInfo
+
+- intended behavior if no lock is present?
+- intended behavior if locking is not supported?
+
+2) lock
+
+- currently InvalidItemStateException is listed. i don't think this make too much sense.
+
+3) refreshLock
+
+- intended behavior if locking is not supported?
+
+4) unlock
+
+- currently InvalidItemStateException is listed. i don't think this make too much sense.

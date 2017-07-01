@@ -1,0 +1,31 @@
+SSL verification occurs before setSoTimeout, which can lead to hangs
+
+
+
+Description:
+partial thread dump:
+
+       at java.net.SocketInputStream.socketRead0(Native Method)
+       at java.net.SocketInputStream.read(SocketInputStream.java:129)
+       at com.sun.net.ssl.internal.ssl.InputRecord.readFully(InputRecord.java:293)
+       at com.sun.net.ssl.internal.ssl.InputRecord.read(InputRecord.java:331)
+       at com.sun.net.ssl.internal.ssl.SSLSocketImpl.readRecord(SSLSocketImpl.java:723)
+       - locked <0x00002aaab87d9de0> (a java.lang.Object)
+       at com.sun.net.ssl.internal.ssl.SSLSocketImpl.performInitialHandshake(SSLSocketImpl.java:1030)
+       - locked <0x00002aaab87d9dc0> (a java.lang.Object)
+       at com.sun.net.ssl.internal.ssl.SSLSocketImpl.startHandshake(SSLSocketImpl.java:1057)
+       at com.sun.net.ssl.internal.ssl.SSLSocketImpl.getSession(SSLSocketImpl.java:1757)
+       at org.apache.http.conn.ssl.AbstractVerifier.verify(AbstractVerifier.java:87)
+       at org.apache.http.conn.ssl.SSLSocketFactory.connectSocket(SSLSocketFactory.java:295)
+       at org.apache.http.impl.conn.DefaultClientConnectionOperator.openConnection(DefaultClientConnectionOperator.java:131)
+       at org.apache.http.impl.conn.AbstractPoolEntry.open(AbstractPoolEntry.java:143)
+       at org.apache.http.impl.conn.AbstractPooledConnAdapter.open(AbstractPooledConnAdapter.java:120)
+       at org.apache.http.impl.client.DefaultClientRequestDirector.execute(DefaultClientRequestDirector.java:286)
+       at org.apache.http.impl.client.AbstractHttpClient.execute(AbstractHttpClient.java:452)
+       at org.apache.http.impl.client.AbstractHttpClient.execute(AbstractHttpClient.java:406)
+       at org.apache.http.impl.client.AbstractHttpClient.execute(AbstractHttpClient.java:365)
+
+
+... this is because in DefaultClientConnectionOperator, prepareSocket (which sets any configured timeouts) isn't called until after SocketFactory.connectSocket. When using SSLSocketFactory, the default behavior is to verify the hostname, which opens a connection, and can block indefinitely.
+
+Simple workaround is to use the AllowAllHostnameVerifier which doesn't do any verification.

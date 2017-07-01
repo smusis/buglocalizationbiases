@@ -1,0 +1,11 @@
+Typo in log output
+
+
+
+Description:
+jackrabbit/src/java/org/apache/jackrabbit/core/fs/local/LocalFileSystem.java:
+133c133
+<         log.info("LocaaFileSystem initialized on " + root.getPath());
+---
+>         log.info("LocalFileSystem initialized on " + root.getPath());
+

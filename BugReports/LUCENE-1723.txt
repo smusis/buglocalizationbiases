@@ -1,0 +1,97 @@
+KeywordTokenizer does not properly set the end offset
+
+
+
+Description:
+KeywordTokenizer sets the Token's term length attribute but appears to omit the end offset. The issue was discovered while using a highlighter with the KeywordAnalyzer. KeywordAnalyzer delegates to KeywordTokenizer propagating the bug. 
+
+Below is a JUnit test (source is also attached) that exercises various analyzers via a Highlighter instance. Every analyzer but the KeywordAnazlyzer successfully wraps the text with the highlight tags, such as "<b>thetext</b>". When using KeywordAnalyzer the tags appear before the text, for example: "<b></b>thetext". 
+
+Please note NewKeywordAnalyzer and NewKeywordTokenizer classes below. When using NewKeywordAnalyzer the tags are properly placed around the text. The NewKeywordTokenizer overrides the next method of the KeywordTokenizer setting the end offset for the returned Token. NewKeywordAnalyzer utilizes KeywordTokenizer to produce proper token.
+
+Unless there is an objection I will gladly post a patch in the very near future . 
+
+-----------------------------
+package lucene;
+
+import java.io.IOException;
+import java.io.Reader;
+
+import org.apache.lucene.analysis.Analyzer;
+import org.apache.lucene.analysis.KeywordAnalyzer;
+import org.apache.lucene.analysis.KeywordTokenizer;
+import org.apache.lucene.analysis.SimpleAnalyzer;
+import org.apache.lucene.analysis.StopAnalyzer;
+import org.apache.lucene.analysis.Token;
+import org.apache.lucene.analysis.TokenStream;
+import org.apache.lucene.analysis.Tokenizer;
+import org.apache.lucene.analysis.WhitespaceAnalyzer;
+import org.apache.lucene.analysis.standard.StandardAnalyzer;
+import org.apache.lucene.search.highlight.Highlighter;
+import org.apache.lucene.search.highlight.QueryScorer;
+import org.apache.lucene.search.highlight.SimpleHTMLFormatter;
+import org.apache.lucene.search.highlight.WeightedTerm;
+import org.junit.Test;
+import static org.junit.Assert.*;
+
+public class AnalyzerBug {
+
+	@Test
+	public void testWithHighlighting() throws IOException {
+		String text = "thetext";
+		WeightedTerm[] terms = { new WeightedTerm(1.0f, text) };
+
+		Highlighter highlighter = new Highlighter(new SimpleHTMLFormatter(
+				"<b>", "</b>"), new QueryScorer(terms));
+
+		Analyzer[] analazers = { new StandardAnalyzer(), new SimpleAnalyzer(),
+				new StopAnalyzer(), new WhitespaceAnalyzer(),
+				new NewKeywordAnalyzer(), new KeywordAnalyzer() };
+
+		// Analyzers pass except KeywordAnalyzer
+		for (Analyzer analazer : analazers) {
+			String highighted = highlighter.getBestFragment(analazer,
+					"CONTENT", text);
+			assertEquals("Failed for " + analazer.getClass().getName(), "<b>"
+					+ text + "</b>", highighted);
+			System.out.println(analazer.getClass().getName()
+					+ " passed, value highlighted: " + highighted);
+		}
+	}
+}
+
+class NewKeywordAnalyzer extends KeywordAnalyzer {
+
+	@Override
+	public TokenStream reusableTokenStream(String fieldName, Reader reader)
+			throws IOException {
+		Tokenizer tokenizer = (Tokenizer) getPreviousTokenStream();
+		if (tokenizer == null) {
+			tokenizer = new NewKeywordTokenizer(reader);
+			setPreviousTokenStream(tokenizer);
+		} else
+			tokenizer.reset(reader);
+		return tokenizer;
+	}
+
+	@Override
+	public TokenStream tokenStream(String fieldName, Reader reader) {
+		return new NewKeywordTokenizer(reader);
+	}
+}
+
+class NewKeywordTokenizer extends KeywordTokenizer {
+	public NewKeywordTokenizer(Reader input) {
+		super(input);
+	}
+
+	@Override
+	public Token next(Token t) throws IOException {
+		Token result = super.next(t);
+		if (result != null) {
+			result.setEndOffset(result.termLength());
+		}
+		return result;
+	}
+}
+

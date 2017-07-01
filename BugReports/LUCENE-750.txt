@@ -1,0 +1,8 @@
+don't use finalizers for FSIndexInput clones
+
+
+
+Description:
+finalizers are expensive, and we should avoid using them where possible.
+It looks like this helped to tickle some kind of bug (looks like a JVM bug?)
+http://www.nabble.com/15-minute-hang-in-IndexInput.clone%28%29-involving-finalizers-tf2826906.html#a7891015

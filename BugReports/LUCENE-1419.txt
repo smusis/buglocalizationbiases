@@ -1,0 +1,16 @@
+Expert API to specify indexing chain
+
+
+
+Description:
+It would be nice to add an expert API to specify an indexing chain, so that
+we can make use of Mike's nice LUCENE-1301 feature.
+
+This patch simply adds a package-protected expert API to IndexWriter and 
+DocumentsWriter. It adds a inner, abstract class to DocumentsWriter called 
+IndexingChain, and a default implementation that is the currently used one.
+
+This might not be the final solution, but a nice way to play with different
+modules in the indexing chain.
+
+Could you take a look at the patch, Mike? 

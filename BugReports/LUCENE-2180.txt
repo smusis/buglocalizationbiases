@@ -1,0 +1,6 @@
+Deprecated API called in o.a.l.store Directories
+
+
+
+Description:
+just ran into NIOFSDirectory and others still call getFile instead of getDirectory

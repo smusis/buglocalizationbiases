@@ -1,0 +1,10 @@
+javadocs creation has too many warnings/errors
+
+
+
+Description:
+Currently running 'ant javadocs' creates so many warnings that you have to grep the output to verify that new code did not add more.
+
+While most current errors might be minor, they might hide a few serious ones that we will never know abut until someone complains. 
+
+Best if we fix all of them and keep it always clean...

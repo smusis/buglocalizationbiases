@@ -1,0 +1,16 @@
+handling of expanded-form jcr names by node type *Template classes 
+
+
+
+Description:
+ItemDefinitionTemplate treats the name as opque string, instead of a JCR Name.
+
+Example: when setting the name to
+
+  "{http://example.org/}foo"
+
+then getName() needs to return
+
+  "bar:foo"
+
+which the prefix "bar" being mapped to the namesapce "http://example.org/".

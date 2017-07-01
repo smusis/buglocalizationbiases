@@ -1,0 +1,6 @@
+Architecture Diagrams needed for Lucene, Solr and Nutch
+
+
+
+Description:
+

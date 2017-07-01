@@ -1,0 +1,6 @@
+TCK: NodeReadMethodsTest#testGetPrimaryItemItemNotFoundException selects wrong test data
+
+
+
+Description:
+Method locateNodeWithoutPrimaryItem is used to locate recursively node which does not define a primary item, but this method calls internally locateNodeWithPrimaryItem instead of locateNodeWithoutPrimaryItem.

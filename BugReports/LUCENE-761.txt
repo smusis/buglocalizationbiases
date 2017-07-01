@@ -1,0 +1,8 @@
+Clone proxStream lazily in SegmentTermPositions
+
+
+
+Description:
+In SegmentTermPositions the proxStream should be cloned lazily, i. e. at the first time nextPosition() is called. Then the initialization costs of TermPositions are not higher anymore compared to TermDocs and thus there is no reason anymore for Scorers to use TermDocs instead of TermPositions. In fact, all Scorers should use TermPositions, because custom subclasses of existing scorers might want to access payloads, which is only possible via TermPositions. We could further merge SegmentTermDocs and SegmentTermPositions into one class and deprecate the interface TermDocs.
+
+I'm going to attach a patch once the payloads feature (LUCENE-755) is committed.

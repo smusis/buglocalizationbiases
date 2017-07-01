@@ -1,0 +1,6 @@
+Calls to SegmentInfos.message should be wrapped w/ infoStream != null checks
+
+
+
+Description:
+To avoid the expensive message creation (which involves the '+' operator on strings, calls to message should be wrapped w/ infoStream != null check, rather than inside message(). I'll attach a patch which does that.

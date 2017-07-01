@@ -1,0 +1,41 @@
+Flexible QueryParser fails with local different from en_US
+
+
+
+Description:
+I get the following error during the mentioned testcases on my computer, if I use the Locale de_DE (windows 32):
+
+{code}
+    [junit] Testsuite: org.apache.lucene.queryParser.standard.TestQPHelper
+    [junit] Tests run: 29, Failures: 1, Errors: 0, Time elapsed: 1,156 sec
+    [junit]
+    [junit] ------------- Standard Output ---------------
+    [junit] Result: (fieldX:xxxxx fieldy:xxxxxxxx)^2.0
+    [junit] ------------- ---------------- ---------------
+    [junit] Testcase: testLocalDateFormat(org.apache.lucene.queryParser.standard.TestQPHelper): FAILED
+    [junit] expected:<1> but was:<0>
+    [junit] junit.framework.AssertionFailedError: expected:<1> but was:<0>
+    [junit]     at org.apache.lucene.queryParser.standard.TestQPHelper.assertHits(TestQPHelper.java:1148)
+    [junit]     at org.apache.lucene.queryParser.standard.TestQPHelper.testLocalDateFormat(TestQPHelper.java:1005)
+    [junit]     at org.apache.lucene.util.LuceneTestCase.runTest(LuceneTestCase.java:201)
+    [junit]
+    [junit]
+    [junit] Test org.apache.lucene.queryParser.standard.TestQPHelper FAILED
+    [junit] Testsuite: org.apache.lucene.queryParser.standard.TestQueryParserWrapper
+    [junit] Tests run: 27, Failures: 1, Errors: 0, Time elapsed: 1,219 sec
+    [junit]
+    [junit] ------------- Standard Output ---------------
+    [junit] Result: (fieldX:xxxxx fieldy:xxxxxxxx)^2.0
+    [junit] ------------- ---------------- ---------------
+    [junit] Testcase: testLocalDateFormat(org.apache.lucene.queryParser.standard.TestQueryParserWrapper):       FAILED
+    [junit] expected:<1> but was:<0>
+    [junit] junit.framework.AssertionFailedError: expected:<1> but was:<0>
+    [junit]     at org.apache.lucene.queryParser.standard.TestQueryParserWrapper.assertHits(TestQueryParserWrapper.java:1120)
+    [junit]     at org.apache.lucene.queryParser.standard.TestQueryParserWrapper.testLocalDateFormat(TestQueryParserWrapper.java:985)
+    [junit]     at org.apache.lucene.util.LuceneTestCase.runTest(LuceneTestCase.java:201)
+    [junit]
+    [junit]
+    [junit] Test org.apache.lucene.queryParser.standard.TestQueryParserWrapper FAILED
+{code}
+
+With en_US as locale it works.

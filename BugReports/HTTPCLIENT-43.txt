@@ -1,0 +1,56 @@
+replace the PostMethod parameters HashMap with a List
+
+
+
+Description:
+Propose to change the parameters datastructure in PostMethod from its
+current HashMap to an ArrayList (or Vector) of NameValuePair objects. 
+This change would lead to simpler and more robust code in the PostMethod
+with more deterministic behaviour for the following reasons:
+
+1) HashMap looses any insertion order.  If the client wants to have the
+encoded parameters to show up in a particular order, they are unable.
+
+2) Hash map requres unique keys where there is no reason that multiple
+parameters with the same name cannot be POSTed.  The current
+implementation replaces the string value with a List if there is a
+addParameter with a repeated name key.  Every get from the HashMap then
+has to do an instanceOf to see if the value is a String or a List.
+
+3) Hash maps are no faster than a Vector for typical operations.  They
+both have O(1) insertions and both do O(n) removal operations to
+genPropose to change the parameters datastructure in PostMethod from its
+current HashMap to an ArrayList (or Vector) of NameValuePair objects. 
+This change would lead to simpler and more robust code in the PostMethod
+with more deterministic behaviour for the following reasons:
+
+1) HashMap looses any insertion order.  If the client wants to have the
+encoded parameters to show up in a particular order, they are unable.
+
+2) Hash map requres unique keys where there is no reason that multiple
+parameters with the same name cannot be POSTed.  The current
+implementation replaces the string value with a List if there is a
+addParameter with a repeated name key.  Every get from the HashMap then
+has to do an instanceOf to see if the value is a String or a List.
+
+3) Hash maps are no faster than a Vector for typical operations.  They
+both have O(1) insertions and both do O(n) removal operations to
+generate the body.  HashMap is only faster when a search is required,
+such as for getParameter(String), setParameter(String, String) and
+removeParameter(String) which should rarely be called.
+
+I would also move to depricate setParameter(String, String) as it is
+confusing in the API.  (setParameter overwrites any existing parameter
+of the same name where addParameter accumulates to the list of
+parameters).  The setParameter functionality can also be effected by
+calling removeParameter then addParameter already.
+
+erate the body.  HashMap is only faster when a search is required,
+such as for getParameter(String), setParameter(String, String) and
+removeParameter(String) which should rarely be called.
+
+I would also move to depricate setParameter(String, String) as it is
+confusing in the API.  (setParameter overwrites any existing parameter
+of the same name where addParameter accumulates to the list of
+parameters).  The setParameter functionality can also be effected by
+calling removeParameter then addParameter already.

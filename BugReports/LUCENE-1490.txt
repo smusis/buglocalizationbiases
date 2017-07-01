@@ -1,0 +1,24 @@
+CJKTokenizer convert   HALFWIDTH_AND_FULLWIDTH_FORMS wrong
+
+
+
+Description:
+CJKTokenizer have these lines..
+                if (ub == Character.UnicodeBlock.HALFWIDTH_AND_FULLWIDTH_FORMS) {
+                    /** convert  HALFWIDTH_AND_FULLWIDTH_FORMS to BASIC_LATIN */
+                    int i = (int) c;
+                    i = i - 65248;
+                    c = (char) i;
+                }
+
+This is wrong. Some character in the block (e.g. U+ff68) have no BASIC_LATIN counterparts.
+Only 65281-65374 can be converted this way.
+
+The fix is
+
+             if (ub == Character.UnicodeBlock.HALFWIDTH_AND_FULLWIDTH_FORMS && i <= 65474 && i> 65281) {
+                    /** convert  HALFWIDTH_AND_FULLWIDTH_FORMS to BASIC_LATIN */
+                    int i = (int) c;
+                    i = i - 65248;
+                    c = (char) i;
+                }

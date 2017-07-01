@@ -1,0 +1,6 @@
+Deadlock on concurrent commit/checkin operations
+
+
+
+Description:
+Running concurrently jackrabbit transactions including checkin operations leads to deadlock.

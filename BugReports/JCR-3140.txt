@@ -1,0 +1,10 @@
+Add configurable hook for password validation
+
+
+
+Description:
+it's a common use case that applications would like to enforce additional logic associated with 
+changing a user password. currently this can only be achieved by using a derived user implementation.
+by extending the functionality added with JCR-3118 it was fairly trivial to provide a hook for those
+custom password validation checks, writing password expiration date etc.etc. 
+

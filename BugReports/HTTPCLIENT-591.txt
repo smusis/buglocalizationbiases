@@ -1,0 +1,6 @@
+Apply the supplied patch. Sets 2 variable in the base class to protected
+
+
+
+Description:
+The patch attached to the main task contains minimal changes to allow the HttpMethodBase class to be overloaded by base class.

@@ -1,0 +1,33 @@
+Collapse Searcher/Searchable/IndexSearcher; remove contrib/remote; merge PMS into IndexSearcher
+
+
+
+Description:
+We've discussed cleaning up our *Searcher stack for some time... I
+think we should try to do this before releasing 4.0.
+
+So I'm attaching an initial patch which:
+
+  * Removes Searcher, Searchable, absorbing all their methods into IndexSearcher
+
+  * Removes contrib/remote
+
+  * Removes MultiSearcher
+
+  * Absorbs ParallelMultiSearcher into IndexSearcher (ie you can now
+    pass useThreads=true, or a custom ES to the ctor)
+
+The patch is rough -- I just ripped stuff out, did search/replace to
+IndexSearcher, etc.  EG nothing is directly testing using threads with
+IndexSearcher, but before committing I think we should add a
+newSearcher to LuceneTestCase, which randomly chooses whether the
+searcher uses threads, and cutover tests to use this instead of making
+their own IndexSearcher.
+
+I think MultiSearcher has a useful purpose, but as it is today it's
+too low-level, eg it shouldn't be involved in rewriting queries: the
+Query.combine method is scary.  Maybe in its place we make a higher
+level class, with limited API, that's able to federate search across
+multiple IndexSearchers?  It'd also be able to optionally use thread
+per IndexSearcher.
+

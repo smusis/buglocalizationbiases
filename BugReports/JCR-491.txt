@@ -1,0 +1,6 @@
+TCK: PredefinedNodeTypeTest does not allow additions to the predefined node types hierarchy
+
+
+
+Description:
+As explained in section 6.7.22.2 (page 147) of the JSR 170 specification, an implementation is allowed to customize a predefined noe type definition with additional supertypes. The tests in PredefinedNodeTypeTest do not account for that and expect an exact match with the predefined node types.

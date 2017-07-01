@@ -1,0 +1,16 @@
+Avoid INFINITE RECURSION when Object Model has cycles.
+
+
+
+Description:
+The default ObjectConverterImpl is restricted to acyclic graphs in the object model.
+
+Many Java object models are NOT acyclic.   For instance, I am on your Friends list.   Yoar are on my Friends list.     Java encourages such structures.   Almost any large object model in Java will have hidden cycles.
+
+Saving an Object Model that contains cycles using Graffito causes an infinite recursion.
+
+Clearly, it is important to maintain a 1-to-1 correspondence between Nodes and Objects to prevent this.   In the absence of Multiple Parent Nodes, it will be necessary to use REFERENCE or UNDEFINED Items in place of the 2nd (or greater) Node representing a given Object.   My preference si that the default ObjectConverterImpl should support REFERENCE.,    Failing this, use of UNDEFINED also solves this problem and would  acceptable (as default).  Whether or not REFERENCE is used, both insertion and retrieval must provide a reasonable result.   A custom ojbect converter should be available to switch UNDEFINED to REFERENCE, or vice versa.
+
+Also, it is probably best to keep the targeted, well-defined Nodes close to the Root Node.    This implies that the default ObjectConverterImpl should implement a Breadth-First, rather than a Depth-First, traversal of the Object Model on both insertion and retrieval.   Again, if the default is Depth-First, a custom object converter should be available that implements Breadth-First.
+
+Admittedly, support for (2 representations) X (2 traversals) implies a drastic refactoring and/or rewriting of the ObjectConverterImpl class.

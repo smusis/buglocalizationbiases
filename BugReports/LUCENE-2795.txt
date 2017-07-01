@@ -1,0 +1,10 @@
+Genericize DirectIOLinuxDir -> UnixDir
+
+
+
+Description:
+Today DirectIOLinuxDir is tricky/dangerous to use, because you only want to use it for indexWriter and not IndexReader (searching).  It's a trap.
+
+But, once we do LUCENE-2793, we can make it fully general purpose because then a single native Dir impl can be used.
+
+I'd also like to make it generic to other Unices, if we can, so that it becomes UnixDirectory.

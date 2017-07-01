@@ -1,0 +1,33 @@
+UserManager: concurrent user creation using same intermediate path fails
+
+
+
+Description:
+concurrently creating users using same intermediate path fails with "node ... has been modified externally".
+
+the problem is the intermediate path. if it doesn't exist multiple threads try to create it concurrently: 
+
+o.a.jackrabbit.core.security.user.UserManagerImpl, line 1310ff:
+
+
+            String[] segmts = defaultPath.split("/");
+            NodeImpl folder = (NodeImpl) session.getRootNode();
+            String authRoot = (isGroup) ? groupsPath : usersPath;
+
+            for (String segment : segmts) {
+                if (segment.length() < 1) {
+                    continue;
+                }
+                if (folder.hasNode(segment)) {
+                    folder = (NodeImpl) folder.getNode(segment);
+                    if (Text.isDescendantOrEqual(authRoot, folder.getPath()) &&
+                            !folder.isNodeType(NT_REP_AUTHORIZABLE_FOLDER)) {
+                        throw new ConstraintViolationException("Invalid intermediate path. Must be of type rep:AuthorizableFolder.");
+                    }
+                } else {
+                    Node parent = folder;
+                    folder = addNode(folder, session.getQName(segment), NT_REP_AUTHORIZABLE_FOLDER);
+                }
+            }
+
+the attached test case illustrates this issue/

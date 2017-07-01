@@ -1,0 +1,8 @@
+NPE in classes of OJB-PM
+
+
+
+Description:
+NPE occurs while accessing the Id of the parent of the root node which is null.
+
+Patch follows

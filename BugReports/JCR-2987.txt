@@ -1,0 +1,13 @@
+New JcrUtils utility methods
+
+
+
+Description:
+I'd like to add the following new utility methods to JcrUtils:
+
+    readFile(Node): returns an InputStream for reading file contents
+    readFile(Node, OutputStream): writes file contents to the given stream
+    getLastModified(Node): returns the jcr:lastModified value
+    setLastModified(Node, Calendar): sets the jcr:lastModified value
+    getPropertyType(String): like PropertyType.valueFromName(String), but case-insensitive
+

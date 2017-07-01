@@ -1,0 +1,12 @@
+Minor spi2dav ExceptionConverter improvements
+
+
+
+Description:
+It would be nice if the ExceptionConverter class in spi2dav returned UnsupportedRepositoryOperationExceptions instead of the undeclared UnsupportedOperationExceptions for HTTP 501 responses.
+
+Besides that, the ExceptionConverter.generate() methods should be cleaned to always return the generated exception instead of in some cases returning and in others throwing it.
+
+Finally, there's some unused code and chances for Java 5 cleanups.
+
+I'll attach a patch, and commit it unless anyone objects.

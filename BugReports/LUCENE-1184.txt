@@ -1,0 +1,20 @@
+Allow SnapshotDeletionPolicy to be reused across writer close/open
+
+
+
+Description:
+If you re-use the same instance of SnapshotDeletionPolicy across a
+close/open of your writer, and you had a snapshot open, it can still
+be removed when the 2nd writer is opened.  This is because SDP is
+comparing IndexCommitPoint instances.
+
+The fix is to instead compare segments file names.
+
+I've also changed the inner class IndexFileDeleter.CommitPoint to be
+static so an instance of SnapshotDeletionPolicy does not hold
+references to IndexFileDeleter, DocumentsWriter, etc.
+
+Spinoff from here:
+
+  http://markmail.org/message/bojgqfgyxkkv4fyb
+

@@ -1,0 +1,6 @@
+Move FilterIterator and SizedIterator from package flat to package iterator
+
+
+
+Description:
+I suggest to move said classes from package org.apache.jackrabbit.commons.flat to package org.apache.jackrabbit.commons.iterator. 

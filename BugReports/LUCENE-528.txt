@@ -1,0 +1,10 @@
+Optimization for IndexWriter.addIndexes()
+
+
+
+Description:
+One big performance problem with IndexWriter.addIndexes() is that it has to optimize the index both before and after adding the segments.  When you have a very large index, to which you are adding batches of small updates, these calls to optimize make using addIndexes() impossible.  It makes parallel updates very frustrating.
+
+Here is an optimized function that helps out by calling mergeSegments only on the newly added documents.  It will try to avoid calling mergeSegments until the end, unless you're adding a lot of documents at once.
+
+I also have an extensive unit test that verifies that this function works correctly if people are interested.  I gave it a different name because it has very different performance characteristics which can make querying take longer.

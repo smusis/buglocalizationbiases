@@ -1,0 +1,6 @@
+StopFilter should not create a new CharArraySet if the given set is already an instance of CharArraySet
+
+
+
+Description:
+With LUCENE-2094 a new CharArraySet is created no matter what type of set is passed to StopFilter. This does not behave as  documented and could introduce serious performance problems. Yet, according to the javadoc, the instance of CharArraySet should be passed to CharArraySet.copy (which is very fast for CharArraySet instances) instead of "copied" via "new CharArraySet()"

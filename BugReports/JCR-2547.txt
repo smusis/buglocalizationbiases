@@ -1,0 +1,13 @@
+Setting a property which has been transiently removed fails with a PathNotFoundException
+
+
+
+Description:
+The following tests currently all fail with a PathNotFoundException
+
+org.apache.jackrabbit.jcr2spi.AddPropertyTest#testReplacingProperty
+org.apache.jackrabbit.jcr2spi.AddPropertyTest#testReplacingProperty2
+org.apache.jackrabbit.jcr2spi.AddPropertyTest#testAddingProperty
+org.apache.jackrabbit.jcr2spi.AddPropertyTest#testAddingProperty2
+
+

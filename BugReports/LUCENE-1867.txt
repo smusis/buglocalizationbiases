@@ -1,0 +1,7 @@
+replace collation/lib/icu4j.jar with a smaller icu jar
+
+
+
+Description:
+Collation does not need all the icu data.
+we can shrink the jar file a bit by using the data customizer, and excluding things like character set conversion tables.

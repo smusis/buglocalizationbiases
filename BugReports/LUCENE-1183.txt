@@ -1,0 +1,8 @@
+TRStringDistance uses way too much memory (with patch)
+
+
+
+Description:
+The implementation of TRStringDistance is based on version 2.1 of org.apache.commons.lang.StringUtils#getLevenshteinDistance(String, String), which uses an un-optimized implementation of the Levenshtein Distance algorithm (it uses way too much memory). Please see Bug 38911 (http://issues.apache.org/bugzilla/show_bug.cgi?id=38911) for more information.
+
+The commons-lang implementation has been heavily optimized as of version 2.2 (3x speed-up). I have reported the new implementation to TRStringDistance.

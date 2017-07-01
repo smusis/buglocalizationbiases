@@ -1,0 +1,6 @@
+Indexing configuration ignored when indexing length
+
+
+
+Description:
+The NodeIndexer does not respect the indexing configuration when it adds a field for the property length. NodeIndexer.addValue(Document doc, InternalValue value, Name name) should check it the property actually needs to be indexed.

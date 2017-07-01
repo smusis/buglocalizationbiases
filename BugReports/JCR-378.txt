@@ -1,0 +1,10 @@
+jackrabbit-server.war is missing the slf4j-log4j12 library
+
+
+
+Description:
+Reported by Martin Perez:
+
+But I found a bug on the .war file. It is missing the slf4j-log4j12-1.0.jar. It's in someway tricky to detect it because if you do not include it a ClassNotFoundException will be thrown but poiting to the JCR class with the log statement. Anyways, if you include the .jar file on the WEB-INF/lib directory, then the exception goes to exception's hell.
+
+

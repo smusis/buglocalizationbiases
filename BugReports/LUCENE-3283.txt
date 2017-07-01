@@ -1,0 +1,8 @@
+Move core QueryParsers to queryparser module
+
+
+
+Description:
+Move the contents of lucene/src/java/org/apache/lucene/queryParser to the queryparser module.
+
+To differentiate these parsers from the others, they are going to be placed a 'classic' package.  We'll rename QueryParser to ClassicQueryParser as well.

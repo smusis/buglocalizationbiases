@@ -1,0 +1,13 @@
+Change Term to use bytes
+
+
+
+Description:
+in LUCENE-2426, the sort order was changed to codepoint order.
+
+unfortunately, Term is still using string internally, and more importantly its compareTo() uses the wrong order [utf-16].
+So MultiTermQuery, etc (especially its priority queues) are currently wrong.
+
+By changing Term to use bytes, we can also support terms encoded as bytes such as numerics, instead of using
+strange string encodings.
+

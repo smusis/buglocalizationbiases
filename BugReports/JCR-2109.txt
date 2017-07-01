@@ -1,0 +1,8 @@
+Remove deprecated classes in jcr-commons
+
+
+
+Description:
+There are many classes in jackrabbit-jcr-commons that we've replaced with better alternatives in spi-commons.
+
+I'd like to clean things up by removing the deprecated versions from jcr-commons now that we're upgrading to Jackrabbit 2.0

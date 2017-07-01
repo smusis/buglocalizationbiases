@@ -1,0 +1,9 @@
+Authentication Mechanism Based on Login Token
+
+
+
+Description:
+implementing an authentication mechanism that apart from simple credentials allows for credentials being built on a login token
+could rely on the fact that jackrabbit stores the user data in the repository: adding additional information (generated tokens, expiration time, 
+additional security parameters) could be stored in additional subnodes to the user and used for matching during login as alternative
+ways to authenticate against the system.

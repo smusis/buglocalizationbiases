@@ -1,0 +1,8 @@
+Deprecate and replace TestWebapp with the SimpleHttpServer based testing framework
+
+
+
+Description:
+Basically TestWebapp based testcases test functionality of Tomcat, rather than
+that of HttpClient. They tend to get broken with every major release of Tomcat
+and have proven more of a burden than any good

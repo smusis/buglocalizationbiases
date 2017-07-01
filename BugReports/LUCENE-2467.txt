@@ -1,0 +1,25 @@
+IndexWriter memory leak when large docs are indexed
+
+
+
+Description:
+Spinoff from the java-user thread "IndexWriter and memory usage"...
+
+IndexWriter has had a long standing memory leak, since LUCENE-843.
+
+When the byte/char/int blocks are recycled to the common pool, the
+per-thread DW classes incorrectly still hold a reference to them.
+
+This normally is not a problem, since these buffers will be re-used
+again.
+
+But, if you index a massive document, causing IW to allocate more than
+the RAM buffer allocated to it, then the leak happens.  So you could
+have a 16 MB RAM buffer set, but if a huge doc required allocation of
+200 MB worth of arrays, those 200 MB are never freed (well, until you
+close the IW and deref it from the app).
+
+It's even worse if you use multiple threads: if each thread has ever
+had to index a massive document, then that thread incorrectly holds
+onto the extra arrays.
+

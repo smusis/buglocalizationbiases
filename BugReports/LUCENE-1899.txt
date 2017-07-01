@@ -1,0 +1,51 @@
+Inefficient growth of OpenBitSet
+
+
+
+Description:
+Hi, I found a potentially serious efficiency problem with OpenBitSet.
+
+One typical (I think) way to build a bit set is to set() the bits one by one -
+e.g., have a HitCollector set() the bit for each matching document.
+The underlying array of longs needs to grow as more as more bits are set, of
+course.
+
+But looking at the code, it appears to me that the array grows very
+ineefficiently - in the worst case (when doc ids are sorted, as they would
+normally be in the HitCollector case for example), copying the array again
+and again for every added bit... The relevant code in OpenBitSet.java is:
+
+  public void set(long index) {
+    int wordNum = expandingWordNum(index);
+    ...
+  }
+
+  protected int expandingWordNum(long index) {
+    int wordNum = (int)(index >> 6);
+    if (wordNum>=wlen) {
+      ensureCapacity(index+1);
+    ...
+  }
+  public void ensureCapacityWords(int numWords) {
+    if (bits.length < numWords) {
+      long[] newBits = new long[numWords];
+      System.arraycopy(bits,0,newBits,0,wlen);
+      bits = newBits;
+    }
+  }
+
+As you can see, if the bits array is not long enough, a new one is
+allocated at exactly the right size - and in the worst case it can grow
+just one word every time...
+
+Shouldn't the growth be more exponential in nature, e.g., grow to the maximum
+of index+1 and twice the existing size?
+
+Alternatively, if the growth is so inefficient, this should be documented,
+and it should be recommended to use the variant of the constructor with the
+correct initial size (e.g., in the HitCollector case, the number of documents
+in the index). and the fastSet() method instead of set().
+
+Thanks,
+Nadav.
+

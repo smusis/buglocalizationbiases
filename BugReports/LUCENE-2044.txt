@@ -1,0 +1,6 @@
+Allow random seed to be set in DeleteByPercentTask
+
+
+
+Description:
+Need this to make index identical on multiple runs.  

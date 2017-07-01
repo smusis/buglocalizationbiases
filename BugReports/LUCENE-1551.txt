@@ -1,0 +1,9 @@
+Add reopen(IndexCommit) methods to IndexReader
+
+
+
+Description:
+Add reopen(IndexCommit) methods to IndexReader to be able to reopen an index on any previously saved commit points with all advantages of LUCENE-1483.
+
+Similar to open(IndexCommit) & company available in 2.4.0.
+

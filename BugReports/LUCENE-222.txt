@@ -1,0 +1,7 @@
+[PATCH] Better "lock obtain timed out" error message
+
+
+
+Description:
+The attached patch prints the complete path and name of the lock file. This 
+should simplify debugging (it's actually a wish from the Wiki).

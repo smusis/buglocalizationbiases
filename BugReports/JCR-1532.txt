@@ -1,0 +1,45 @@
+ERROR 40XD0: Container has been closed exception with Derby DB
+
+
+
+Description:
+This seems very similar to JCR-1039, only I am getting it on 1.4 using the regular DatabasePersistenceManager.
+Was the fix for JCR-1039 in 1.3.3 merged to 1.4.x?
+
+Here is the relevant part of the exception:
+
+INFO | jvm 1 | 2008/04/10 14:00:37 | Caused by: javax.jcr.RepositoryException: failed to retrieve item state of item fb648866-a236-42aa-8039-df68f26dd2ad/{http://www.jcp.org/jcr/1.0}data: failed to read property state: fb648866-a236-42aa-8039-df68f26dd2ad/{http://www.jcp.org/jcr/1.0}data: failed to read property state: fb648866-a236-42aa-8039-df68f26dd2ad/{http://www.jcp.org/jcr/1.0}data
+INFO | jvm 1 | 2008/04/10 14:00:37 | at org.apache.jackrabbit.core.ItemManager.createItemInstance(ItemManager.java:570)
+INFO | jvm 1 | 2008/04/10 14:00:37 | at org.apache.jackrabbit.core.ItemManager.getItem(ItemManager.java:395)
+INFO | jvm 1 | 2008/04/10 14:00:37 | at org.apache.jackrabbit.core.NodeImpl.getProperty(NodeImpl.java:2553)
+INFO | jvm 1 | 2008/04/10 14:00:37 | at org.artifactory.jcr.JcrFile.getStream(JcrFile.java:133)
+INFO | jvm 1 | 2008/04/10 14:00:37 | ... 55 more
+INFO | jvm 1 | 2008/04/10 14:00:37 | Caused by: org.apache.jackrabbit.core.state.ItemStateException: failed to read property state: fb648866-a236-42aa-8039-df68f26dd2ad/{http://www.jcp.org/jcr/1.0}data
+INFO | jvm 1 | 2008/04/10 14:00:37 | at org.apache.jackrabbit.core.persistence.db.DatabasePersistenceManager.load(DatabasePersistenceManager.java:406)
+INFO | jvm 1 | 2008/04/10 14:00:37 | at org.apache.jackrabbit.core.state.SharedItemStateManager.loadItemState(SharedItemStateManager.java:1161)
+INFO | jvm 1 | 2008/04/10 14:00:37 | at org.apache.jackrabbit.core.state.SharedItemStateManager.getNonVirtualItemState(SharedItemStateManager.java:1086)
+INFO | jvm 1 | 2008/04/10 14:00:37 | at org.apache.jackrabbit.core.state.SharedItemStateManager.getItemState(SharedItemStateManager.java:248)
+INFO | jvm 1 | 2008/04/10 14:00:37 | at org.apache.jackrabbit.core.state.LocalItemStateManager.getPropertyState(LocalItemStateManager.java:118)
+INFO | jvm 1 | 2008/04/10 14:00:37 | at org.apache.jackrabbit.core.state.LocalItemStateManager.getItemState(LocalItemStateManager.java:150)
+INFO | jvm 1 | 2008/04/10 14:00:37 | at org.apache.jackrabbit.core.state.XAItemStateManager.getItemState(XAItemStateManager.java:226)
+INFO | jvm 1 | 2008/04/10 14:00:37 | at org.apache.jackrabbit.core.state.SessionItemStateManager.getItemState(SessionItemStateManager.java:175)
+INFO | jvm 1 | 2008/04/10 14:00:37 | at org.apache.jackrabbit.core.ItemManager.createItemInstance(ItemManager.java:564)
+INFO | jvm 1 | 2008/04/10 14:00:37 | ... 58 more
+INFO | jvm 1 | 2008/04/10 14:00:37 | Caused by: javax.jcr.RepositoryException: Error creating temporary file: ERROR 40XD0: Container has been closed.: ERROR 40XD0: Container has been closed.
+INFO | jvm 1 | 2008/04/10 14:00:37 | at org.apache.jackrabbit.core.value.BLOBInTempFile.<init>(BLOBInTempFile.java:69)
+INFO | jvm 1 | 2008/04/10 14:00:37 | at org.apache.jackrabbit.core.value.BLOBInTempFile.getInstance(BLOBInTempFile.java:103)
+INFO | jvm 1 | 2008/04/10 14:00:37 | at org.apache.jackrabbit.core.value.InternalValue.getBLOBFileValue(InternalValue.java:630)
+INFO | jvm 1 | 2008/04/10 14:00:37 | at org.apache.jackrabbit.core.value.InternalValue.create(InternalValue.java:265)
+INFO | jvm 1 | 2008/04/10 14:00:37 | at org.apache.jackrabbit.core.persistence.util.Serializer.deserialize(Serializer.java:296)
+INFO | jvm 1 | 2008/04/10 14:00:37 | at org.apache.jackrabbit.core.persistence.db.DatabasePersistenceManager.load(DatabasePersistenceManager.java:397)
+INFO | jvm 1 | 2008/04/10 14:00:37 | ... 66 more
+INFO | jvm 1 | 2008/04/10 14:00:37 | Caused by: java.io.IOException: ERROR 40XD0: Container has been closed.
+INFO | jvm 1 | 2008/04/10 14:00:37 | at org.apache.derby.impl.store.raw.data.OverflowInputStream.fillByteHolder(Unknown Source)
+INFO | jvm 1 | 2008/04/10 14:00:37 | at org.apache.derby.impl.store.raw.data.BufferedByteHolderInputStream.read(Unknown Source)
+INFO | jvm 1 | 2008/04/10 14:00:37 | at java.io.DataInputStream.read(DataInputStream.java:132)
+INFO | jvm 1 | 2008/04/10 14:00:37 | at java.io.FilterInputStream.read(FilterInputStream.java:116)
+INFO | jvm 1 | 2008/04/10 14:00:37 | at java.io.FilterInputStream.read(FilterInputStream.java:116)
+INFO | jvm 1 | 2008/04/10 14:00:37 | at java.io.SequenceInputStream.read(SequenceInputStream.java:191)
+INFO | jvm 1 | 2008/04/10 14:00:37 | at java.io.InputStream.read(InputStream.java:85)
+INFO | jvm 1 | 2008/04/10 14:00:37 | at org.apache.jackrabbit.core.value.BLOBInTempFile.<init>(BLOBInTempFile.java:61)
+INFO | jvm 1 | 2008/04/10 14:00:37 | ... 71 more

@@ -1,0 +1,11 @@
+Maintain norms in a single file .nrm
+
+
+
+Description:
+Non-compound indexes are ~10% faster at indexing, and perform 50% IO activity comparing to compound indexes. But their file descriptors foot print is much higher. 
+
+By maintaining all field norms in a single .nrm file, we can bound the number of files used by non compound indexes, and possibly allow more applications to use this format.
+
+More details on the motivation for this in: http://www.nabble.com/potential-indexing-perormance-improvement-for-compound-index---cut-IO---have-more-files-though-tf2826909.html (in particular http://www.nabble.com/Re%3A-potential-indexing-perormance-improvement-for-compound-index---cut-IO---have-more-files-though-p7910403.html).
+

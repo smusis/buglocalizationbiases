@@ -1,0 +1,8 @@
+RangeQuery & RangeFilter used with collation seek to lowerTerm using compareTo()
+
+
+
+Description:
+The constructor for RangeTermEnum initializes a TermEnum starting with lowerTermText, but when a collator is defined, all terms in the given field need to be checked, since collation can introduce non-Unicode orderings.  Instead, the RangeTermEnum constructor should test for a non-null collator, and if there is one, point the TermEnum at the first term in the given field.
+
+LUCENE-1424 introduced this bug.

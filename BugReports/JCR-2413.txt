@@ -1,0 +1,28 @@
+AlreadyClosedException on initial index creation
+
+
+
+Description:
+Happens when the indexing queue is checked while creating an initial index. This is probably a regression caused by JCR-2035.
+
+Caused by: org.apache.lucene.store.AlreadyClosedException: this Directory is closed
+        at org.apache.lucene.store.Directory.ensureOpen(Directory.java:220)
+        at org.apache.lucene.store.FSDirectory.getFile(FSDirectory.java:533)
+        at org.apache.jackrabbit.core.query.lucene.directory.FSDirectoryManager$FSDir.list(FSDirectoryManager.java:149)
+        at org.apache.lucene.index.SegmentInfos$FindSegmentsFile.run(SegmentInfos.java:533)
+        at org.apache.lucene.index.DirectoryIndexReader.open(DirectoryIndexReader.java:115)
+        at org.apache.lucene.index.IndexReader.open(IndexReader.java:316)
+        at org.apache.lucene.index.IndexReader.open(IndexReader.java:263)
+        at org.apache.jackrabbit.core.query.lucene.AbstractIndex.getIndexReader(AbstractIndex.java:245)
+        at org.apache.jackrabbit.core.query.lucene.AbstractIndex.removeDocument(AbstractIndex.java:225)
+        at org.apache.jackrabbit.core.query.lucene.PersistentIndex.removeDocument(PersistentIndex.java:90)
+        at org.apache.jackrabbit.core.query.lucene.MultiIndex$DeleteNode.execute(MultiIndex.java:1952)
+        at org.apache.jackrabbit.core.query.lucene.MultiIndex.executeAndLog(MultiIndex.java:1085)
+        at org.apache.jackrabbit.core.query.lucene.MultiIndex.checkIndexingQueue(MultiIndex.java:1308)
+        at org.apache.jackrabbit.core.query.lucene.MultiIndex.createIndex(MultiIndex.java:1177)
+        at org.apache.jackrabbit.core.query.lucene.MultiIndex.createIndex(MultiIndex.java:1191)
+        at org.apache.jackrabbit.core.query.lucene.MultiIndex.createIndex(MultiIndex.java:1191)
+        at org.apache.jackrabbit.core.query.lucene.MultiIndex.createIndex(MultiIndex.java:1191)
+[...]
+
+I assume there is an index merge happening at the same time that closes index segments.

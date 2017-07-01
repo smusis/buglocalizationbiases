@@ -1,0 +1,45 @@
+Fix buggy stemmers and Remove duplicate analysis functionality
+
+
+
+Description:
+would like to remove stemmers in the following packages, and instead in their analyzers use a SnowballStemFilter instead.
+
+* analyzers/fr
+* analyzers/nl
+* analyzers/ru
+
+below are excerpts from this code where they proudly proclaim they use the snowball algorithm.
+I think we should delete all of this custom stemming code in favor of the actual snowball package.
+
+
+{noformat}
+/**
+ * A stemmer for French words. 
+ * <p>
+ * The algorithm is based on the work of
+ * Dr Martin Porter on his snowball project<br>
+ * refer to http://snowball.sourceforge.net/french/stemmer.html<br>
+ * (French stemming algorithm) for details
+ * </p>
+ */
+
+public class FrenchStemmer {
+
+/**
+ * A stemmer for Dutch words. 
+ * <p>
+ * The algorithm is an implementation of
+ * the <a href="http://snowball.tartarus.org/algorithms/dutch/stemmer.html">dutch stemming</a>
+ * algorithm in Martin Porter's snowball project.
+ * </p>
+ */
+public class DutchStemmer {
+
+/**
+ * Russian stemming algorithm implementation (see http://snowball.sourceforge.net for detailed description).
+ */
+class RussianStemmer
+{noformat}
+
+

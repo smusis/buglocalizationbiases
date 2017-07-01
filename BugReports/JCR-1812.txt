@@ -1,0 +1,8 @@
+WorkspaceUpdateChannel.updateCommitted logs too much
+
+
+
+Description:
+On each cluster record update, an info message is logged.
+
+I think this is too much and logging should be reduced to the DEBUG level.

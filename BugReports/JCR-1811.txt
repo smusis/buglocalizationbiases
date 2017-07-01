@@ -1,0 +1,7 @@
+Jcr2Spi: ExportSysViewTest#testExportSysView_handler_session_saveBinary_* occasionally failing
+
+
+
+Description:
+from time to time i saw ExportSysViewTest#testExportSysView_handler_session_saveBinary_* test failing. this doesn't occur consistently and i never managed to reproduce it when running the tests in the idea.
+

@@ -1,0 +1,10 @@
+ResponseContentEncoding should also handle x-gzip, compress and x-compress
+
+
+
+Description:
+ResponseContentEncoding should also handle x-gzip, compress and x-compress encodings according to specs (http://www.w3.org/Protocols/rfc2616/rfc2616-sec3.html, 3.5 Content Codings).
+
+Also RequestAcceptEncoding should set Accept-Encoding to "gzip,deflate,identity". I am not sure about x-gzip, compress and x-compress here though.
+
+Thanks

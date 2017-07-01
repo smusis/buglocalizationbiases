@@ -1,0 +1,11 @@
+Split PrivilegeRegistry in a per-session manager instance and a repository level registry
+
+
+
+Description:
+in order to resolve the privilegeregistry related TODOs within jackrabbit-core, i would like to split off those 
+methods from PrivilegeRegistry  that are used on a per-session level (including jcr-names) and add them
+to a manager class that was present with each session context. consequently the responsibility of the
+registry was then limited to read/build the privilege definitions and would be present on the repositorycontext
+deprecating those methods that would be covered by the manager).
+in addition the naming was then consistent with what we use to have for nodetypes and namespaces.

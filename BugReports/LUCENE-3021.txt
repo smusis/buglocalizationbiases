@@ -1,0 +1,6 @@
+randomize skipInterval in tests
+
+
+
+Description:
+we probably don't test the multi-level skipping very well, but skipInterval etc is now private to the codec, so for better test coverage we should parameterize it to the postings writers, and randomize it via mockrandomcodec.

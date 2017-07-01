@@ -1,0 +1,17 @@
+[contrib-bdb] initialization fails if directory doesn't exist
+
+
+
+Description:
+BerkeleyDBPersistenceManager initialization fails if the directory configured doesn't exist (this doesn't happen with other PMs).
+This can easily be fixed in the persistence manager, by making it create all the directories in the path (actually it only creates the last -db- directory).
+
+The trivial patch is to replace envDir.mkdir() to envDir.mkdirs() (note the final "s") at BerkeleyDBPersistenceManager  line 73:
+        if (!envDir.exists())
+            envDir.mkdir();
+should be:
+        if (!envDir.exists())
+            envDir.mkdirs();
+
+(I am not submitting any svn diff since the manual fix sounds so trivial, it's easier to change it manually)
+

@@ -1,0 +1,32 @@
+Improve handling of inherited mixins
+
+
+
+Description:
+If an abstract class is annotated with a mixin type, the annotation must be repeated in concrete classes.
+
+E.g.
+@Node(jcrMixinTypes="mix:referenceable", isAbstract=true)
+public abstract class Content {
+...
+...}
+
+/**
+* This class will not be referenceable
+**/
+@Node(extend=Content.class)
+public class Page extends Content {
+...
+...
+}
+
+/**
+* But this one will
+**/
+@Node(extend=Content.class, jcrMixinTypes="mix:referenceable")
+public class Folder extends Content {
+...
+...
+}
+
+It would be nice if the annotation was inherited by default.

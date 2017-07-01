@@ -1,0 +1,8 @@
+AccessControlProvider#getEffectivePolicies for a set of principals does not include repo-level ac
+
+
+
+Description:
+as of JCR-2774 the resource based ac implementation allows to edit permissions for repository level operations.
+however, ACLProvider#getEffectivePolicies(Set<Principal>, CompiledPermissions) does not include the repo level AC
+in the result set due to a missing test for regular acl OR repo-level acl.

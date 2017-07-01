@@ -1,0 +1,8 @@
+Build file for Highlighter contrib works when run in isolation, but not when core dist is run
+
+
+
+Description:
+Build.xml for Highlighter does not work when compilation is triggered by clean core dist call.
+
+Patch has changes to fix this by updating build.xml to follow xml-query-parser build.xml

@@ -1,0 +1,26 @@
+URI.getHost() generates IllegalArgumentException
+
+
+
+Description:
+Hi guys,
+
+I don't know if I'm doing something wrong or not but the following code:
+
+   URI uri = new URI("mailto:eay@cryptsoft.com", true);
+   System.out.println(uri.getHost());
+
+generates the following exception:
+
+java.lang.IllegalArgumentException: Component array of chars may not be null
+	at org.apache.commons.httpclient.URI.decode(URI.java:1722)
+	at org.apache.commons.httpclient.URI.getHost(URI.java:2780)
+
+Could you help?
+
+Also, I'm sorry I put the report under version "3.0 Final" but I couldn't find 
+an entry for "3.0-RC1" (which I'm using at the moment).
+
+Thanks a lot!
+
+Bisser

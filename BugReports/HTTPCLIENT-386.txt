@@ -1,0 +1,59 @@
+Catch SocketTimeoutException not InterruptedIOException
+
+
+
+Description:
+There are a couple of places where you're catching InterruptedIOException 
+that should catch SocketTimeoutException instead.  For example, from 
+HttpConnection:
+
+    protected boolean isStale() {
+        boolean isStale = true;
+        if (isOpen) {
+            // the connection is open, but now we have to see if we can 
+read it
+            // assume the connection is not stale.
+            isStale = false;
+            try {
+                if (inputStream.available() == 0) {
+                    try {
+                        socket.setSoTimeout(1);
+                        inputStream.mark(1);
+                        int byteRead = inputStream.read();
+                        if (byteRead == -1) {
+                            // again - if the socket is reporting all data 
+read,
+                            // probably stale
+                            isStale = true;
+                        } else {
+                            inputStream.reset();
+                        }
+                    } finally {
+                        socket.setSoTimeout(this.params.getSoTimeout());
+                    }
+                }
+            } catch (InterruptedIOException e) {
+                // aha - the connection is NOT stale - continue on!
+
+Here the catch of InterruptedIOException is intended to happen when 
+inputStream.read() terminates due to the socket.setSoTimeout() time being 
+reached.  However, it could also occur because Thread.interrupt() has been 
+called, in which case "continue on" is not what should happen, instead, the 
+request should terminate.
+
+There are legitimate reasons why someone might want to interrupt the 
+httpclient code, for example, httpclient does not provide a hard timeout on 
+the total length of time a request may take, including connecting, sending 
+the request, and receiving the complete response, so to enforce a hard 
+timeout it is necessary to run the request in a worker thread and interrupt 
+it if it hasn't completed before the timeout expires (the technique used in 
+your TimeoutController class).
+
+Note that SocketTimeoutException was added in 1.4.  For compatibility with 
+older jdk versions, the code can catch InterruptedIOException and use 
+getClass() to see whether it is a SocketTimeoutException.
+
+There are probably other places in the code where InterruptedIOException is 
+caught and interpreted as a socket timeout, and where Thread.interrupt() 
+will not have the proper effect of causing the request to terminate ASAP, 
+but I'm not familiar enough with the code to find them all.

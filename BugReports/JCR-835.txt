@@ -1,0 +1,8 @@
+Java 1.4 compile error in Eclipse
+
+
+
+Description:
+As reported by Ate Douma in JCR-804, the revision 520841 introduced code that causes the Eclipse compiler to fail in Java 1.4 compliance mode. However, the same code compiles with the Sun JDK 1.4.
+
+The problem is a enclosing class reference that an anonymous innner class instantiated in the constructor of a named inner class contains. Apparently (and understandably), in Eclipse 1.4 complier the instance references are not yet available when evaluating the super() arguments in the constructor.

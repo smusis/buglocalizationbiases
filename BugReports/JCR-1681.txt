@@ -1,0 +1,13 @@
+DbDataStore: improve error message when init fails
+
+
+
+Description:
+When initialization of the database data store fails, the error message does not
+contain enough data to analyze the problem:
+
+Driver: Oracle JDBC driver / 10.2.0.1.0
+could not execute statement, reason: ORA-00902: invalid datatype, state/code: 42000/902
+Can not init data store, driver=oracle.jdbc.OracleDriver url=jdbc:oracle:thin:@localhost:1521:orcl user=JACKRABBIT
+
+Additionally the create table statement should be logged, and the table name.

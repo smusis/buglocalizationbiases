@@ -1,0 +1,23 @@
+[PATCH] new method expungeDeleted() added to IndexWriter
+
+
+
+Description:
+We make use the docIDs in lucene. I need a way to compact the docIDs in segments
+to remove the "holes" created from doing deletes. The only way to do this is by
+calling IndexWriter.optimize(). This is a very heavy call, for the cases where
+the index is large but with very small number of deleted docs, calling optimize
+is not practical.
+
+I need a new method: expungeDeleted(), which finds all the segments that have
+delete documents and merge only those segments.
+
+I have implemented this method and have discussed with Otis about submitting a
+patch. I don't see where I can attached the patch. I will do according to the
+patch guidleine and email the lucene mailing list.
+
+Thanks
+
+-John
+
+I don't see a place where I can

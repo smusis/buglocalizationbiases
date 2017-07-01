@@ -1,0 +1,7 @@
+common interface for HttpRoute and RouteTracker
+
+
+
+Description:
+Classes HttpRoute and RouteTracker have many identical getters. There should be a common interface, for example RouteInfo, to define these getters and a toRoute() method that returns an unmodifiable representation. Some portions of the API may then accept the interface instead of the specific class HttpRoute.
+

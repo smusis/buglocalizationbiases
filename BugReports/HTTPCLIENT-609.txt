@@ -1,0 +1,26 @@
+Use TRACE logging instead of DEBUG for the absolute nitty-gritties
+
+
+
+Description:
+[This is basically a copy of the Spring improvement request SPR-2873: http://opensource.atlassian.com/projects/spring/browse/SPR-2873 )
+
+Given a developer situation: Much of the DEBUG information in the log of HttpClient is very un-interesting as long as it works. Some of these lines are however of much bigger importance than others (thus turning off DEBUG globally for HttpClient isn't good either).
+
+TRACE and DEBUG are the two developer-centric logging levels of log4j and commons logging (the rest are "production levels"). Since log4j-1.2.12, TRACE have existed. Clogging have always had trace, but before release 1.1 mapped Log.trace to log4j's DEBUG, but 1.1 (released May 9. 2006) now maps to log4j's TRACE.
+
+I think that HttpClient's logging would benefit a lot by using TRACE level extensively, in that developers could turn all of httpclient's logging down to DEBUG, but still see "major developer events" like connections being opened, the request being sent, and e.g. the response's status line, size of headers and body, keep-alive vs. closing of connection.
+
+Candidates for TRACE level include:
+  * httpclient.wire.*
+  * org.apache.commons.httpclient.params.DefaultHttpParams
+  * org.apache.commons.httpclient.HttpMethodBase
+  * .. and probably a bunch of others that doesn't bring the developer in the standard "good flow mode" any highly interesting information. 
+
+Please note that I do NOT view these lines as worthless. It is however in _normal_ developer circumstances not valuable information, and it would ease development if it was possible to turn these ultra-verbose loglines off easily. When things just aren't working out, and your exciting REST-based query doesn't work out, or your charset encodings just doesn't give what you're expecting, you'd turn on TRACE to really get down to the hard core. You'd find the problem, fix it, and set it to DEBUG again.
+
+In addition, the lines that were left on the DEBUG level should obviously be as informative as possible, and thus maybe somewhat more verbose than now, trying to "aggregate" some pieces of information that now are output over several DEBUG lines..
+
+I do realize that I could achive a lot of this with a rather extensive log configuration, that also had to include raw text filters, but I do believe that this affects more developers than me!
+
+PS: it wouldn't hurt either if all of httpclient's log-lines came from a common root, e.g. "HttpClient", or "org.apache.commons.httpclient", instead of having several roots. This would however be a somewhat "backward incompatible" change, since it now has (at least?) two roots.

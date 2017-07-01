@@ -1,0 +1,8 @@
+[Maven] Migrate checkstyle.properties to XML
+
+
+
+Description:
+Newer Checkstyle versions (used with latest Maven builds) can not use the old
+properties configuration file. They work with XML configuration files.
+checkstyle.properties must be migrated in order to use a current version of Maven.

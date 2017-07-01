@@ -1,0 +1,10 @@
+ArabicAnalyzer: Lowercase before Stopfilter
+
+
+
+Description:
+ArabicAnalyzer lowercases text in case you have some non-Arabic text around.
+It also allows you to set a custom stopword list (you might augment the Arabic list with some English ones, for example).
+
+In this case its helpful for these non-Arabic stopwords, to lowercase before stopfilter.
+

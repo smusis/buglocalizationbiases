@@ -1,0 +1,25 @@
+Land DocValues on trunk
+
+
+
+Description:
+Its time to move another feature from branch to trunk. I want to start this process now while still a couple of issues remain on the branch. Currently I am down to a single nocommit (javadocs on DocValues.java) and a couple of testing TODOs (explicit multithreaded tests and unoptimized with deletions) but I think those are not worth separate issues so we can resolve them as we go. 
+The already created issues (LUCENE-3075 and LUCENE-3074) should not block this process here IMO, we can fix them once we are on trunk. 
+
+Here is a quick feature overview of what has been implemented:
+ * DocValues implementations for Ints (based on PackedInts), Float 32 / 64, Bytes (fixed / variable size each in sorted, straight and deref variations)
+ * Integration into Flex-API, Codec provides a PerDocConsumer->DocValuesConsumer (write) / PerDocValues->DocValues (read) 
+ * By-Default enabled in all codecs except of PreFlex
+ * Follows other flex-API patterns like non-segment reader throw UOE forcing MultiPerDocValues if on DirReader etc.
+ * Integration into IndexWriter, FieldInfos etc.
+ * Random-testing enabled via RandomIW - injecting random DocValues into documents
+ * Basic checks in CheckIndex (which runs after each test)
+ * FieldComparator for int and float variants (Sorting, currently directly integrated into SortField, this might go into a separate DocValuesSortField eventually)
+ * Extended TestSort for DocValues
+ * RAM-Resident random access API plus on-disk DocValuesEnum (currently only sequential access) -> Source.java / DocValuesEnum.java
+ * Extensible Cache implementation for RAM-Resident DocValues (by-default loaded into RAM only once and freed once IR is closed) -> SourceCache.java
+ 
+PS: Currently the RAM resident API is named Source (Source.java) which seems too generic. I think we should rename it into RamDocValues or something like that, suggestion welcome!   
+
+
+Any comments, questions (rants :)) are very much appreciated.

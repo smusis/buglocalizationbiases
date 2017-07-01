@@ -1,0 +1,30 @@
+FilterIndexReader does not override all of IndexReader methods
+
+
+
+Description:
+FilterIndexReader does not override all of IndexReader methods. We've hit an error in LUCENE-3573 (and fixed it). So I thought to write a simple test which asserts that FIR overrides all methods of IR (and we can filter our methods that we don't think that it should override). The test is very simple (attached), and it currently fails over these methods:
+{code}
+getRefCount
+incRef
+tryIncRef
+decRef
+reopen
+reopen
+reopen
+reopen
+clone
+numDeletedDocs
+document
+setNorm
+setNorm
+termPositions
+deleteDocument
+deleteDocuments
+undeleteAll
+getIndexCommit
+getUniqueTermCount
+getTermInfosIndexDivisor
+{code}
+
+I didn't yet fix anything in FIR -- if you spot a method that you think we should not override and delegate, please comment.

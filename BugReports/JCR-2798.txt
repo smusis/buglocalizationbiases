@@ -1,0 +1,15 @@
+JCAManagedConnectionFactory should chain cause exception
+
+
+
+Description:
+In JCAManagedConnectionFactory, methods openSession and createRepository both throw ResourceException without setting the cause exception.  This can result in the actual error being swallowed silently, and only stepping through the running code at this point will reveal the actual error (eg: Persistent Store configuration error will appear as a pool exception).
+
+Jukka Zitting on 12-Oct-2010 said:
+
+This constructor is not available in J2EE version 1.3, so for now
+we've been using the ResourceException.setLinkedException() method for
+this (see JCR-761). To address your need we could either upgrade the
+platform requirement to J2EE 1.4 or start using the J2SE method
+Exception.initCause() instead of setLinkedException(). Can you file an
+improvement issue in Jira about this?

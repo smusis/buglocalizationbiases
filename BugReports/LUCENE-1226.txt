@@ -1,0 +1,14 @@
+IndexWriter.addIndexes(IndexReader[]) fails to create compound files
+
+
+
+Description:
+Even if no exception is thrown while writing the compound file at the end of the 
+addIndexes() call, the transaction is rolled back and the successfully written cfs 
+file deleted. The fix is simple: There is just the 
+{code:java}
+success = true;
+{code}
+statement missing at the end of the try{} clause.
+
+All tests pass. I'll commit this soon to trunk and 2.3.2.

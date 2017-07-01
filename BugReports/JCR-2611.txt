@@ -1,0 +1,6 @@
+DefaultHighlighter.java does not encode illegal XML characters
+
+
+
+Description:
+When merging excerpts (method protected String mergeFragments(...) in DefaultHighlighter.java), illegal XML characters are not encoded in all places.

@@ -1,0 +1,29 @@
+addIndexesNoOptimize intermittantly throws incorrect "segment exists in external directory..." exception
+
+
+
+Description:
+Spinoff from here:
+
+    http://mail-archives.apache.org/mod_mbox/lucene-java-user/200809.mbox/%3Cba72f77f0809111418l29cf215dnd45bf679832d7d42%40mail.gmail.com%3E
+
+Here's my response on that thread:
+
+The bug only happens when you call addIndexesNoOptimize, and one
+simple workaround would be to use SerialMergeScheduler.
+
+I think this is already fixed in trunk (soonish to be 2.4) as a side
+effect of https://issues.apache.org/jira/browse/LUCENE-1335.
+
+In 2.3, merges that involve external segments (which are segments
+folded in by addIndexesNoOptimize) are not supposed to run in a BG
+thread.  This is to prevent addIndexesNoOptimize from returning until
+after all external segments have been carried over (merged or copied)
+into the index, so that if there is an exception (eg disk full),
+addIndexesNoOptimize is able to rollback to the index to the starting
+point.
+
+The primary merge() method of CMS indeed does not BG any external
+merges, but the bug is that when a BG merge finishes it then selects a
+new merge to kick off and that selection is happy to pick an external
+segment.

@@ -1,0 +1,9 @@
+[API Doc] Improve the description of the preemptive authentication
+
+
+
+Description:
+HttpClient authentication guide does not reflect the fact that preemptive
+authentication requires default credentials to be set. It should also mention
+the security implications of preemptive authentication (default credentials sent
+with EVERY request to ANY target / proxy server)

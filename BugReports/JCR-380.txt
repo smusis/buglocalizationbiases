@@ -1,0 +1,6 @@
+Run TCK on Jackrabbit 1.0-rc3
+
+
+
+Description:
+Run TCK on Jackrabbit 1.0-rc3

@@ -1,0 +1,6 @@
+Add read acessor for user data to SessionInfoImpl
+
+
+
+Description:
+Add method SessionInfoImpl.getUserData() to retrieve the user data set through SessionInfoImpl.setUserData(String)

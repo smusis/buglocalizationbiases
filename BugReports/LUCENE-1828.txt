@@ -1,0 +1,8 @@
+MemoryIndex doesn't call TokenStream.reset() and TokenStream.end()
+
+
+
+Description:
+MemoryIndex from contrib/memory does not honor the contract for a consumer of a TokenStream
+
+will work up a patch right quick

@@ -1,0 +1,23 @@
+Build problem with StrictSSLProtocolSocketFactory
+
+
+
+Description:
+StrictSSLProtocolSocketFactory requires jcert.jar to be in compile.classpath of
+build.xml.  Here is a patch that will fix it:
+
+Index: build.xml
+===================================================================
+RCS file: /home/cvspublic/jakarta-commons/httpclient/build.xml,v
+retrieving revision 1.27
+diff -u -r1.27 build.xml
+--- build.xml   23 May 2003 02:49:01 -0000      1.27
++++ build.xml   26 May 2003 04:23:50 -0000
+@@ -98,6 +98,7 @@
+     <pathelement location="${build.home}/classes"/>
+     <pathelement location="${junit.jar}"/>
+     <pathelement location="${jsse.jar}"/>
++    <pathelement location="${jcert.jar}"/>
+     <pathelement location="${jce.jar}"/>
+     <pathelement location="${jnet.jar}"/>
+     <pathelement location="${commons-logging.jar}"/>

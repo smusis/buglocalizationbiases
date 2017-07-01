@@ -1,0 +1,13 @@
+tweak AppendingCodec to write segments_N compatible with 'normal' Lucene
+
+
+
+Description:
+Just an easy improvement from LUCENE-3490:
+
+Currently AppendingCodec writes a different segments_N format (it writes no checksum at all in commit())
+If you don't configure your codecprovider correctly in IndexReader, you will get read past EOF.
+(we have some proposed fixes for this stuff in LUCENE-3490 branch)
+
+But besides this, all it really needs to do is no-op prepareCommit(), it can still write the 'final' checksum
+which is a good thing.

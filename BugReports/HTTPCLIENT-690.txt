@@ -1,0 +1,10 @@
+Provide access to SSLSession in ManagedClientConnection
+
+
+
+Description:
+Provide access to the wrappedConnection in org.apache.http.impl.conn.AbstractClientConnAdapter via some interface in order to access the socket from within an HttpProcessor. Currently the org.apache.http.conn.OperatedClientConnection has a getSocket() method, but the connection implementation returned by
+
+  context.getAttribute(ExecutionContext.HTTP_CONNECTION) 
+
+(org.apache.http.impl.conn.tsccm.BasicPooledConnAdapter) does not provide access to the wrappedConnection.

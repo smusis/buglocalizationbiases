@@ -1,0 +1,11 @@
+RangeQuery - add equals and hashCode methods
+
+
+
+Description:
+I'm attaching a patch with an equals() and hashCode() implementation for 
+RangeQuery.java, and a new unit test for TestRangeQuery.java, as per a recent 
+message on lucene-user mailing list (subject "RangeQuery doesn't override 
+equals() or hashCode() - intentional?")
+
+patches to follow

@@ -1,0 +1,6 @@
+Use the new Jackrabbit parent POM
+
+
+
+Description:
+Now that we have an official release of the new org.apache.jackrabbit:parent:2 POM, we should start using that as the parent of all Jackrabbit builds.

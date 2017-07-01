@@ -1,0 +1,17 @@
+Fix JFlex tokenizer compiler warnings
+
+
+
+Description:
+We get lots of distracting fallthrough warnings running "ant compile"
+in modules/analysis, from the tokenizers generated from JFlex.
+
+Digging a bit, they actually do look spooky.
+
+So I managed to edit the JFlex inputs to insert a bunch of break
+statements in our rules, but I have no idea if this is
+right/dangerous, and it seems a bit weird having to do such insertions
+of "naked" breaks.
+
+But, this does fix all the warnings, and all tests pass...
+

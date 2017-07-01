@@ -1,0 +1,6 @@
+SmartChineseAnalyzer javadoc improvement
+
+
+
+Description:
+Chinese -> English, and corrections to match reality (removes several javadoc warnings)

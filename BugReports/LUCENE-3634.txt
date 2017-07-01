@@ -1,0 +1,8 @@
+remove old static main methods in core
+
+
+
+Description:
+We have a few random static main methods that I think are very rarely used... we should remove them (IndexReader, UTF32ToUTF8, English).
+
+The IndexReader main lets you list / extract the sub-files from a CFS... I think we should move this to a new tool in contrib/misc.

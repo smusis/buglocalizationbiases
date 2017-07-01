@@ -1,0 +1,8 @@
+Allow workspace creation over cluster
+
+
+
+Description:
+When workspace is created on cluster node A and then node added to that workspace, the proper event is sent to the journal, but other cluster nodes are not able to process it because they don't have the workspace.
+
+It would be nice to have a configuration option for the cluster to create such workspace automatically (instead of just logging an error)

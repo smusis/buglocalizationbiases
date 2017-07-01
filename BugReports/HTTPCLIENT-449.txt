@@ -1,0 +1,25 @@
+RequestEntity, EntityEnclosingMethod have inconsistent Javadocs, use deprecated variables
+
+
+
+Description:
+Robert Manning <Robert.Manning at collabraspace.com> reported a problem on the
+httpclient-user list regarding inconsistencies in javadoc of RequestEntity
+interface and EntityEnclosingMethod class. This prompted me to review the said
+classes. I have discovered several issues that must be dealt with before 3.0
+goes final. 
+
+(1) There's virtually no test coverage for the EntityEnclosingMethod class
+(2) The code in EntityEnclosingMethod class extensively uses deprecated methods
+and variables beyond what is required to maintain backward compatibility with
+2.0.x API
+(3) Existing code cannot gracefully handle faulty RequestEntity implementations
+if the getContentLength method returns a negative value < -2
+
+I have committed additional test cases to cover the most fundamental
+functionality of EntityEnclosingMethod:
+http://svn.apache.org/repos/asf/jakarta/commons/proper/httpclient/trunk/src/test/org/apache/commons/httpclient/TestEntityEnclosingMethod.java
+
+I will submit a patch addressing issues (2) and (3) shortly
+
+Oleg

@@ -1,0 +1,10 @@
+bugs in ByteArrayDataInput
+
+
+
+Description:
+ByteArrayDataInput has a byte[] ctor, but it doesn't actually work (some things like readVint will work, others will fail due to asserts).
+
+The problem is it doesnt set things like limit in the ctor... I think the ctor should call reset()
+Most code using this passes null to the ctor to initialize it, then uses reset(), instead they could just call ByteArrayInput(BytesRef.EMPTY_BYTES) if they want to do that.
+finally, reset()'s limit looks like it should be offset + len

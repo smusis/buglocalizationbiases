@@ -1,0 +1,11 @@
+Save fails after setting a binary property twice
+
+
+
+Description:
+Setting a binary property twice discards the blob value of the first property state but does not remove the change from the changelog, resulting in an error on save:
+
+javax.jcr.RepositoryException: this BLOBFileValue has been disposed
+	at org.apache.jackrabbit.core.value.RefCountingBLOBFileValue.copy(RefCountingBLOBFileValue.java:105)
+
+will attach patch that adds the respective test to the jcr2spi tests.

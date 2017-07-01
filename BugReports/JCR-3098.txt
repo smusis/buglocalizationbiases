@@ -1,0 +1,13 @@
+Add hit miss statistics and logging to caches
+
+
+
+Description:
+The current caches (ConcurrentCache) doesn't maintain hit and miss statistics. This makes it very hard to know if you need to increase the caches in a deployment. This functionality does exist in the 1.5 and 1.6 branches, but is missing from the 2.x branches. The patch adds these statistics and adds logging on info level. The frequency of the logging is by default configured to maximal once a minute but can be configured with the system property "org.apache.jackrabbit.cacheLogStatsInterval" (in ms). 
+
+The log lines look like:
+
+07.10.2011 09:00:39 INFO  [org.apache.jackrabbit.core.persistence.bundle.AbstractBundlePersistenceManager.logCacheStats():737] name=defaultBundleCache[ConcurrentCache@54fb02fd] num=21074 mem=34504k max=65536k hits=93352 miss=21074 puts=21135
+07.10.2011 09:00:40 INFO  [org.apache.jackrabbit.core.persistence.bundle.AbstractBundlePersistenceManager.logCacheStats():737] name=versionBundleCache[ConcurrentCache@47b1de1a] num=10637 mem=250k max=8192k hits=36352 miss=10637 puts=10637
+
+This patch will also make possible to later on expose these statistics over JMX when the initial JMX work has been settled.  

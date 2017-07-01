@@ -1,0 +1,6 @@
+Introduce spellchecker functionality based on content in the workspace
+
+
+
+Description:
+Provide a way to spell check a fulltext statement based on the content present in the workspace.

@@ -1,0 +1,18 @@
+Child Axis support in order by clause
+
+
+
+Description:
+Hi, 
+
+since child axis is supported in XPath predicates, it would be nice to support it in order by clause as well
+
+Queries of type
+
+//element(*, type) [ foo/@bar ]  order by foo/@bar asc
+
+can become very useful
+
+BR, 
+
+Savvas

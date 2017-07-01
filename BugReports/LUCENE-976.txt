@@ -1,0 +1,9 @@
+MMapDirectory is missing newly added openInput method to FSDirectory
+
+
+
+Description:
+This issue was caused by the optimizations in LUCENE-888.  The new
+openInput(String name, int bufferSize) added to FSDirectory was not
+also overridden by MMapDirectory.
+

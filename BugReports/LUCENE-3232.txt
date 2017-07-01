@@ -1,0 +1,8 @@
+Move MutableValues to Common Module
+
+
+
+Description:
+Solr makes use of the MutableValue* series of classes to improve performance of grouping by FunctionQuery (I think).  As such they are used in ValueSource implementations.  Consequently we need to move these classes in order to move the ValueSources.
+
+As Yonik pointed out, these classes have use beyond just FunctionQuerys and might be used by both Solr and other modules.  However I don't think they belong in Lucene core, since they aren't really related to search functionality.  Therefore I think we should put them into a Common module, which can serve as a dependency to Solr and any module.

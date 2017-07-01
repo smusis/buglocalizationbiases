@@ -1,0 +1,6 @@
+Respect Keep-Alive Header
+
+
+
+Description:
+HttpClient currently does not respect the 'Keep-Alive' header tokens (timeout, max, etc..) and continues to use the persistent connection beyond limits the server requests.  This leads to failure and falling back to HttpRequestRetryHandler, when it should instead just use a new connection explicitly.

@@ -1,0 +1,24 @@
+JVM bug 4949631 causes BufferOverflowException in HttpMethodBase.getResponseBodyAsString
+
+
+
+Description:
+ava.nio.BufferOverflowException
+        at java.nio.charset.CoderResult.throwException(CoderResult.java:259)
+        at java.lang.StringCoding$CharsetSD.decode(StringCoding.java:188)
+        at java.lang.StringCoding.decode(StringCoding.java:224)
+        at java.lang.String.<init>(String.java:320)
+        at
+org.apache.commons.httpclient.HttpConstants.getContentString(HttpConstants.java:199)
+        at
+org.apache.commons.httpclient.HttpConstants.getContentString(HttpConstants.java:233)
+        at
+org.apache.commons.httpclient.HttpMethodBase.getResponseBodyAsString(HttpMethodBase.java:735)
+
+
+This seems to be caused by a known JVM bug:
+http://bugs.sun.com/bugdatabase/view_bug.do?bug_id=4949631
+
+Strings over 16Mb can cause the problem.   Some workarounds are listed, the
+essence being to split the string and call getBytes on each piece and reassemble
+with a ByteBuffer.

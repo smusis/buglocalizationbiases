@@ -1,0 +1,9 @@
+NodeTest.testAddNodeConstraintViolationExceptionUndefinedNodeType relies on addNode(name, "nt:base")
+
+
+
+Description:
+NodeTest.testAddNodeConstraintViolationExceptionUndefinedNodeType() relies on the ability to create a new node of type "nt:base", which isn't something repositories are required to support.
+
+Proposal: make the node type name for this test case configurable.
+

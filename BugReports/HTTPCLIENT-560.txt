@@ -1,0 +1,12 @@
+entities and connection handling incomplete
+
+
+
+Description:
+1. entities can not be explicitly disconnected from the underlying stream
+2. entities do not tell whether they have an underlying stream
+
+patch follows
+
+cheers,
+  Roland

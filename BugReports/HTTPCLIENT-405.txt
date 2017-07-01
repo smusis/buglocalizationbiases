@@ -1,0 +1,25 @@
+HostConfiguration.setHost(String) causes NullPointerException
+
+
+
+Description:
+Calling setHost(String) on a HostConfiguration object causes a null pointer
+exception.
+
+As far as I can tell, this is due to it incorrectly calling the deprecated
+setHost(String, String, int, Protocol) method, rather than setHost(String, int,
+Protocol)
+
+So:
+
+public synchronized void setHost(final String host) {
+  Protocol defaultProtocol = Protocol.getProtocol("http"); 
+  setHost(host, null, defaultProtocol.getDefaultPort(), defaultProtocol);
+}
+
+should become :
+
+public synchronized void setHost(final String host) {
+    Protocol defaultProtocol = Protocol.getProtocol("http"); 
+    setHost(host, defaultProtocol.getDefaultPort(), defaultProtocol);
+}

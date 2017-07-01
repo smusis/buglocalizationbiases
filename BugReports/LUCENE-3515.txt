@@ -1,0 +1,6 @@
+Possible slowdown of indexing/merging on 3.x vs trunk
+
+
+
+Description:
+Opening an issue to pursue the possible slowdown Marc Sturlese uncovered.

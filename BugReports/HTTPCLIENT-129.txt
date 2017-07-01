@@ -1,0 +1,49 @@
+multipart feedback
+
+
+
+Description:
+never got a reply on this from 10/20/02 mailing to email address in "author" tag, so posting here.
+-----------------------
+Matt and Jeff,
+
+Excuse me for writing directly to the addresses found in the code as authors.  Please feel free to forward this to any list that is more appropriate.
+
+Thank you very much for your efforts in making an HTTP client for Java.  It will find great use.  Below are some aspects of the org.apache.commons.httpclient.methods.multipart package that I'd like you to consider.  
+
+First, consider making the encoding a parameter.  Currently, the content disposition and other general-purpose headers are written with a String.getBytes () call, which will use the default encoding on whatever client is being used by the customer.  Does the RFC and for HTTP post specify an encoding for these lines?  Perhaps the header information and disposition information should be a standard UTF-8 encoding, and an additional parameter could specify encoding for anything supplied by the users of the library, most notably the StringPart.
+
+Second, consider that the content length header may not be important for many contexts.  When you receive a post on the server side, can you depend on the content length header?  Some browsers do not supplied this header, and even if all of them did, would you be wise to believe it on the server side?  In fact, common libraries for handling post, most notably http://www.servlets.com/cos/index.html , ignore any content length header that is supplied by the client.  On the server side, content length is calculated from the actual bytes that are received.
+
+Why do I mention this?  Because it appears that a trade-off has been made in this alpha code such that the content length calculation was more important than polymorphism in Part.java:
+
+    /* The following 2 methods don't need to be final, but they DO need
+     * to be overridden as a pair, and the only way to make sure of that
+     * is to make sure they AREN'T overridden. 
+     */
+
+    final public void send(OutputStream out) throws IOException {
+        sendStart(out);
+        sendHeader(out);
+        sendEndOfHeader(out);
+        sendData(out);
+        sendEnd(out);
+    }
+    
+    final public long length() throws IOException {
+        return lengthOfStart() + 
+               lengthOfHeader() + 
+               lengthOfEndOfHeader() +
+               lengthOfData() + 
+               lengthOfEnd();
+    }
+
+The method send() seems like an important method to be able to override.  For example, consider a situation where the post content is zipped on-the-fly.  The content length is not known when writing the headers.  Further, it would be handy to override certain methods like send() in order to manipulate the output stream. 
+
+Basically, since your library will be very general purpose and used widely, the more you can do for easy polymorphism, the more your customers will appreciate your library. Is there a way to make the content length calculation and header writing more flexible, so that it may be avoided when it is not known a priori?
+
+Third, consider making the content type a parameter for a FilePart.  In the example above, the content type for the zipped file should be "application/x-zip-compressed" rather than "application/octet-stream".
+
+Again, I was very happy to find your excellent work on this library. Thank you for your contributions to apache jakarta.
+
+larry hamel

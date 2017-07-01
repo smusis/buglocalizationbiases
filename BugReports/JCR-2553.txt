@@ -1,0 +1,23 @@
+spi2davex: Batch fails to create/modify properties with non-ascii characters names
+
+
+
+Description:
+the spi2davex batch implementation fails upon creation/modification of all property types that have their value sent as
+separate stringpart or binarypart AND contain non-ascii characters in their property name.
+
+from what i've seen this is due to a limitation in HttpClient 3.x Part#sendDispositionHeader that always writes the part name
+as ascii-bytes. in a related discussion [1] specification compliance and usability were addressed.
+
+looking at the server-side part revealed that org.apache.commons.fileupload.FileUploadBase#FileItemIteratorImpl
+is prepared to receive non-ascii characters in a header value.
+a simple test also showed that curl is perfectly able to send utf-8 part names.
+
+based on this information and given the fact that spi2dav and the server-sided part are intended to communicate
+with one other rather than with any kind of custom clients, i suggest to add a simple fix by patching the parts used
+within spi2davex.
+
+btw: in HttpClient 4.x there seems to be a workaround for this problem [2]
+
+[1] http://www.mail-archive.com/httpclient-dev@jakarta.apache.org/msg04637.html
+[2] https://issues.apache.org/jira/browse/HTTPCLIENT-293

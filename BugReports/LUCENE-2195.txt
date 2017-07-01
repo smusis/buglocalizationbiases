@@ -1,0 +1,7 @@
+Speedup CharArraySet if set is empty
+
+
+
+Description:
+CharArraySet#contains(...) always creates a HashCode of the String, Char[] or CharSequence even if the set is empty. 
+contains should return false if set it empty

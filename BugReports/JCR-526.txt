@@ -1,0 +1,75 @@
+TCK: XPathQueryLevel2Test uses optional column specifier syntax
+
+
+
+Description:
+Test assumes the implementation uses a terminal attribute step as the column specifier.  This is allowed, but not required, by JCR.
+
+Proposal: remove column specifier and process results using getNodes instead of getRows.
+
+--- XPathQueryLevel2Test.java   (revision 422074)
++++ XPathQueryLevel2Test.java   (working copy)
+@@ -85,7 +85,7 @@
+         checkResult(result, 1);
+  
+         // evaluate result
+-        checkValue(result.getRows(), propertyName1, "b");
++        checkValue(result.getNodes(), propertyName1, "b");
+     }
+  
+     /**
+@@ -101,7 +101,7 @@
+         checkResult(result, 1);
+  
+         // evaluate result
+-        checkValue(result.getRows(), propertyName1, "existence");
++        checkValue(result.getNodes(), propertyName1, "existence");
+     }
+  
+     /**
+@@ -147,7 +147,6 @@
+         tmp.append(jcrRoot).append(testRoot);
+         tmp.append("/*[@").append(propertyName2).append(" = 'two'");
+         tmp.append(" and @").append(propertyName1).append(" = 'existence']");
+-        tmp.append("/@").append(propertyName1);
+         return new Statement(tmp.toString(), Query.XPATH);
+     }
+  
+@@ -161,7 +160,7 @@
+         tmp.append(propertyName1);
+         tmp.append(" <= 'b' and @");
+         tmp.append(propertyName1);
+-        tmp.append(" > 'a']/@").append(propertyName1);
++        tmp.append(" > 'a']");
+         return new Statement(tmp.toString(), Query.XPATH);
+     }
+ }
+
+--- AbstractQueryLevel2Test.java        (revision 422074)
++++ AbstractQueryLevel2Test.java        (working copy)
+@@ -19,6 +19,7 @@
+ import org.apache.jackrabbit.test.NotExecutableException;
+  
+ import javax.jcr.nodetype.NodeType;
++import javax.jcr.NodeIterator;
+ import javax.jcr.query.RowIterator;
+ import javax.jcr.query.Row;
+ import javax.jcr.Value;
+@@ -115,4 +116,16 @@
+                     expectedValue, value.getString());
+         }
+     }
++
++    protected void checkValue(NodeIterator itr,
++                              String propertyName,
++                              String expectedValue) throws RepositoryException {
++        while (itr.hasNext()) {
++            Node node = itr.nextNode();
++            // check fullText
++            Value value = node.getProperty(propertyName).getValue();
++            assertEquals("Value in query result row does not match expected value",
++                    expectedValue, value.getString());
++        }
++    }
+ }
+

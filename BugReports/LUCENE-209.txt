@@ -1,0 +1,12 @@
+Lucene requires ant 1.6?
+
+
+
+Description:
+The latest version in CVS as of April 3rd only builds with ant 1.6.   If this is intentional, BUILD.txt should 
+be updated.
+
+Here's the error I get with ant 1.5:
+
+BUILD FAILED
+file:/Users/skybrian/remote-cvs/jakarta-lucene/build.xml:11: Unexpected element "tstamp"

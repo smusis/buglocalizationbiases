@@ -1,0 +1,59 @@
+TCK: SetPropertyCalendarTest compares Calendar objects
+
+
+
+Description:
+SetPropertyCalendarTest# testNewCalendarPropertySession
+SetPropertyCalendarTest# testModifyCalendarPropertySession
+SetPropertyCalendarTest# testNewCalendarPropertyParent
+SetPropertyCalendarTest# testModifyCalendarPropertyParent
+
+Tests compare Calendar objects.  Calendar.equals(Object) is a stronger test than JSR-170 specifies for Value.equals(Object), leading to false failures.  For the purpose of these tests, even Value.equals(Object) is too strong an equality test, since some repositories may normalize date/time values across a save/read roundtrip (for example, converting "Z" to "+00:00", or adding/removing trailing zeros in fractional seconds).
+
+Proposal: compare the getTimeInMillis() values.
+
+--- SetPropertyCalendarTest.java        (revision 422074)
++++ SetPropertyCalendarTest.java        (working copy)
+@@ -52,8 +52,8 @@
+         testNode.setProperty(propertyName1, c1);
+         superuser.save();
+         assertEquals("Setting property with Node.setProperty(String, Calendar) and Session.save() not working",
+-                c1,
+-                testNode.getProperty(propertyName1).getDate());
++                c1.getTimeInMillis(),
++                testNode.getProperty(propertyName1).getDate().getTimeInMillis());
+     }
+  
+     /**
+@@ -66,8 +66,8 @@
+         testNode.setProperty(propertyName1, c2);
+         superuser.save();
+         assertEquals("Modifying property with Node.setProperty(String, Calendar) and Session.save() not working",
+-                c2,
+-                testNode.getProperty(propertyName1).getDate());
++                c2.getTimeInMillis(),
++                testNode.getProperty(propertyName1).getDate().getTimeInMillis());
+     }
+  
+     /**
+@@ -78,8 +78,8 @@
+         testNode.setProperty(propertyName1, c1);
+         testRootNode.save();
+         assertEquals("Setting property with Node.setProperty(String, Calendar) and parentNode.save() not working",
+-                c1,
+-                testNode.getProperty(propertyName1).getDate());
++                c1.getTimeInMillis(),
++                testNode.getProperty(propertyName1).getDate().getTimeInMillis());
+     }
+  
+     /**
+@@ -92,8 +92,8 @@
+         testNode.setProperty(propertyName1, c2);
+         testRootNode.save();
+         assertEquals("Modifying property with Node.setProperty(String, Calendar) and parentNode.save() not working",
+-                c2,
+-                testNode.getProperty(propertyName1).getDate());
++                c2.getTimeInMillis(),
++                testNode.getProperty(propertyName1).getDate().getTimeInMillis());
+     }
+

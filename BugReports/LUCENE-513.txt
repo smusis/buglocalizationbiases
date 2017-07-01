@@ -1,0 +1,6 @@
+Remove superfluous comment in MMapDirectory.java
+
+
+
+Description:
+See title, and I prefer my name to be removed from the source code.

@@ -1,0 +1,8 @@
+[PATCH] documentation typo
+
+
+
+Description:
+Just a small patch that fixes a typo and changes the first sentence, as that 
+one is used by Javadoc as a kind of summary so it should be something more 
+useful than "The Jakarta Lucene API is divided into several packages."

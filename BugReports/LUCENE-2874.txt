@@ -1,0 +1,13 @@
+Highlighting overlapping tokens outputs doubled words
+
+
+
+Description:
+If for the text "the fox did not jump" we generate following tokens :
+(the, 0, 0-3),({fox},0,0-7),(fox,1,4-7),(did,2,8-11),(not,3,12,15),(jump,4,16,18)
+
+If TermVector for field is stored WITH_OFFSETS and not WITH_POSITIONS_OFFSETS, highlighing would output
+"the<em>the fox</em> did not jump"
+
+I join a patch with 2 additive JUnit tests and a fix of TokenSources class where token ordering by offset did'nt manage well overlapping tokens.
+

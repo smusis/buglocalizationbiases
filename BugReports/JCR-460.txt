@@ -1,0 +1,6 @@
+Add RAR META-INF/ra.xml descriptor to be used with JCA1.5
+
+
+
+Description:
+I added ra.xml that lets jackrabbit jca to be used with JCA1.5 like in JBoss

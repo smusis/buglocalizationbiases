@@ -1,0 +1,6 @@
+Change access to internal maps of HttpState to protected.
+
+
+
+Description:
+To be able to serialize the conversational state of a http session access to the internal maps of HttpState is required. Currently they are all "private", so subclasses cannot access them. Changing the access to "protected" will allow any subclass to access those maps.

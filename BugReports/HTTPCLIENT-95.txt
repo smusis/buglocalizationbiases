@@ -1,0 +1,52 @@
+Proxy authentication does not handle multiple multiple authentication schemes
+
+
+
+Description:
+My proxy server returns the following header lines in the response:
+
+    Proxy-Authenticate: NTLM
+    Proxy-Authenticate: Basic realm="10.105.20.201"
+
+i.e., it returns two Proxy-Authenticate header lines. Unfortunately this does 
+not work. In line 253 of class Authenticator (method: authenticate(HttpMethod, 
+HttpState, Header, String)) I see this comment:
+
+    // FIXME: Note that this won't work if there is more than one realm within 
+the challenge
+
+so it looks like this is something that isn't yet implemented. In the log, I 
+can see that the Authenticator attempts to parse the realm, but it looks like
+this is not being done correctly:
+
+   411 DEBUG Attempting to authenticate challenge: Proxy-Authenticate: NTLM, 
+Basic realm="10.105.20.201"
+
+   411 DEBUG Parsed realm "ealm="10.105.20.201" from challenge "NTLM, Basic 
+realm="10.105.20.201"".
+   421 WARN  Exception thrown authenticating
+java.lang.UnsupportedOperationException: Authentication type "NTLM," is not 
+recognized.
+    at org.apache.commons.httpclient.Authenticator.authenticate
+(Authenticator.java:274)
+    at org.apache.commons.httpclient.Authenticator.authenticateProxy
+(Authenticator.java:178)
+    at 
+org.apache.commons.httpclient.HttpMethodBase.processAuthenticationResponse
+(HttpMethodBase.java:580)
+    at org.apache.commons.httpclient.HttpMethodBase.execute
+(HttpMethodBase.java:668)
+    at org.apache.commons.httpclient.HttpClient.executeMethod
+(HttpClient.java:355)
+    at com.cmg.httptest.Main.main(Main.java:34)
+
+It looks wrong to me that the realm name seems to be parsed as: 
+ealm="10.105.20.201
+
+I understand that Authenticator does not know what NTLM is but I would like it 
+to use Basic authentication in this case.
+
+If there are more authentication methods possible, how can I specify which one 
+I want to use?
+
+Jesper de Jong

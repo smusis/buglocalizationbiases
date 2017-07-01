@@ -1,0 +1,6 @@
+substitute for URLUtils.java
+
+
+
+Description:
+I would like to contribute a substitute for existing URLUtils.java... UrlEncodedUtils.java offer utility methods for dealing with 'urlencoded' data. Main difference with existing class is that parameters are Map <String, List <String>> instead of NameValue pairs and lack of third party dependencies...  It's partially covered with tests which I will further extend to cover all methods of this utility class.

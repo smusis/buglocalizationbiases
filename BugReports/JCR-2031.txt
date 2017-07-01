@@ -1,0 +1,6 @@
+Improved log message: include path
+
+
+
+Description:
+The cluster logs a message for each appended operation. The log message is currently the revision number. A more interesting log message would be the user name, and the path of the change (the most specific path if the change contains multiple nodes).

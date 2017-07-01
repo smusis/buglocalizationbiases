@@ -1,0 +1,6 @@
+Nuke SpanFilters and CachingSpanFilter (maybe move to sandbox)
+
+
+
+Description:
+SpanFilters are inefficient and OOM easily (they don't scale at all: Create large Lists of Objects for every match, also filtering deleted docs is a pain). Some talks with Grant on Eurocon and also the fact that caching of them is still broken in 3.x (but fixed on trunk) - I assume nobody uses them, so let's nuke them. They are also in wrong package, so standard statement: "Die, SpanFilters, die!"

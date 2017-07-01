@@ -1,0 +1,6 @@
+Remove deprecated Directory stuff and IR/IW open/ctor hell
+
+
+
+Description:
+This patch removes primarily the deprecated Directory stuff. This also removes parts of the ctor/open hell in IR and IW. IndexModifier is completely removed as deprecated, too.

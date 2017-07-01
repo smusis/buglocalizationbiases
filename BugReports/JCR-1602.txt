@@ -1,0 +1,23 @@
+DbDatastore: Problems indexing pdf file
+
+
+
+Description:
+As reported by Claus Köll:
+
+When importing a pdf file into a repository configured with a DbDataStore the following exception occurs. This happens only when using the DbDataStore with copyWhenReading=true
+
+java.io.IOException: Stream closed
+       at java.io.BufferedInputStream.getBufIfOpen(BufferedInputStream.java:156)
+       at java.io.BufferedInputStream.read(BufferedInputStream.java:315)
+       at org.apache.jackrabbit.core.data.db.TempFileInputStream.read(TempFileInputStream.java:107)
+       at java.io.BufferedInputStream.read1(BufferedInputStream.java:265)
+       at java.io.BufferedInputStream.read(BufferedInputStream.java:324)
+       at java.io.BufferedInputStream.fill(BufferedInputStream.java:229)
+       at java.io.BufferedInputStream.read(BufferedInputStream.java:246)
+       at java.io.FilterInputStream.read(FilterInputStream.java:89)
+       at java.io.PushbackInputStream.read(PushbackInputStream.java:141)
+       at org.pdfbox.io.PushBackInputStream.peek(PushBackInputStream.java:71)
+       at org.pdfbox.io.PushBackInputStream.isEOF(PushBackInputStream.java:88)
+       at org.pdfbox.pdfparser.PDFParser.parseObject(PDFParser.java:370)
+       at org.pdfbox.pdfparser.PDFParser.parse(PDFParser.java:176)

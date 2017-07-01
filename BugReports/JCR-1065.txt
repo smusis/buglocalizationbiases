@@ -1,0 +1,13 @@
+Workspace{Copy|Move}VersionableTest assumptions on versioning
+
+
+
+Description:
+These test cases assume that an ancestor of a versioned node can be made versioned. This may not be true for all JCR compliant stores.
+
+There should be a way to skip the test when it can not be executed.
+
+One obvious approach would be to throw a NotExecutableException when the attempt to enable versioning on the parent fails. However this has the drawback that it can mask configuration errors.
+
+Thoughts?
+

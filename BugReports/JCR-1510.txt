@@ -1,0 +1,6 @@
+[PATCH] more verbose exception messages (BatchedItemOperations)
+
+
+
+Description:
+added context to exception messages in BatchedItemOperations to aid debugging

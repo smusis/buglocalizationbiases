@@ -1,0 +1,9 @@
+Add LuSql project to "Apache Lucene - Contributions" wiki page
+
+
+
+Description:
+Add [LuSql|http://lab.cisti-icist.nrc-cnrc.gc.ca/cistilabswiki/index.php/LuSql] to the Apache Lucene - Contributions page [http://lucene.apache.org/java/2_9_0/contributions.html]
+I am the author of LuSql. I can supply any text needed. 
+
+Perhaps a new heading is needed to capture Database/JDBC oriented Lucene tools (there are others out there)?

@@ -1,0 +1,7 @@
+Saving a node deletion that has been modified externally throws a ConstraintViolationException
+
+
+
+Description:
+Deleting a node "a" and saving its parent might result in a ConstraintViolationException if node "a" has been modified externally, where an InvalidItemStateException with message "item x has been modified externally" would be more intuitive.
+

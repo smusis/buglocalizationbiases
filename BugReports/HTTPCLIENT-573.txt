@@ -1,0 +1,7 @@
+Disallow the use of SecureProtocolSocketFactory with ProxyClient
+
+
+
+Description:
+ProxyClient cannot work correctly if SecureProtocolSocketFactory socket factory
+is being used to establish connection with the target server

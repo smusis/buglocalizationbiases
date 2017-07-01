@@ -1,0 +1,6 @@
+Avoid using BitSets in ChildAxisQuery to minimize memory usage
+
+
+
+Description:
+When doing ChildAxisQueries on large indexes the internal BitSet instance (hits) may consume a lot of memory because the BitSet is always as large as IndexReader.maxDoc(). In our case we had a query consisting of 7 ChildAxisQueries which combined to a total of 14MB. Since we have multiple users executing this query simultaneously this caused an out of memory error.

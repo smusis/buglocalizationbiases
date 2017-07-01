@@ -1,0 +1,10 @@
+An HTTP "204 NO CONTENT" response results in dropped connection
+
+
+
+Description:
+After receiving a "204 NO CONTENT" response, HttpClient always closes the 
+connection.
+
+This did not happen in earlier versions and appears to have been caused by a 
+recent fix to bug# 34262.

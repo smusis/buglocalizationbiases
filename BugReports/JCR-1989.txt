@@ -1,0 +1,9 @@
+AppendRecord writes single bytes to disk
+
+
+
+Description:
+The AppendRecord initially buffers writes in memory and starts
+to write it to a temp file as soon as it occupies more than
+64k heap. After switching to the temp file, data is written
+unbuffered.

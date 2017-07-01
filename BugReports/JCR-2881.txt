@@ -1,0 +1,6 @@
+Deadlock on version operations in a clustered environment
+
+
+
+Description:
+Version operations in a cluster may end up in a deadlock: a write operation in the version store will acquire the version manager's write lock (N1.VW) and subsequently the cluster journal's write lock (N1.JW). Another cluster node's write operation in some workspace will acquire the journal's write lock (N2.JW) and first process the journal record log: if some of these changes concern the version store, the version manager's read lock (N2.VR) has to be acquired in order to deliver them. If the first cluster node reaches N1.VW, and the second reaches N2.JW, we have a deadlock. The same scenario takes place when the second cluster node synchronizes to the latest journal changes and reaches N2.JR, when the first cluster node is in N1.VW.

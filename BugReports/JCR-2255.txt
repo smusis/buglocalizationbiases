@@ -1,0 +1,16 @@
+activity storage path
+
+
+
+Description:
+JSR-283 states in 15.12.3:
+
+"15.12.3 Activity Storage
+Activities are persisted as nodes of type nt:activity under system-generated
+node names in activity storage below /jcr:system/jcr:activities."
+
+As far as I can tell, this is currently not the case.
+
+A related test case, org.apache.jackrabbit.test.api.version.ActivitiesTest#testActivitiesPath, apparently was taken out accidentally.
+
+If Jackrabbit can't implement this JCR requirement, we either need to document it, or raise it as issue in the JCR Expert Group.

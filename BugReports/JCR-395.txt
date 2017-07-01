@@ -1,0 +1,26 @@
+Using transactions leads to memory leak
+
+
+
+Description:
+There is global static map in XASessionImpl class which stores all Xids and TransactionContexts
+
+    /**
+     * Global transactions
+     */
+    private static final Map txGlobal = new HashMap();
+
+It looks like this map is never cleared, even after end of transaction. It leads to memory leak because TransactionContexts and all nested objects (including XASessionImpl) are still referenced and couldn't be freed.
+
+Proposed solution : Is it posssible to add just single line which will remove TransactionContext from static map at the end of transaction ?
+
+      if (flags == TMSUCCESS || flags == TMFAIL) {
+            associate(null);
+-->       txGlobal.remove(xid);
+        } else  if (flags == TMSUSPEND) {
+            associate(null);
+        } else {
+            throw new XAException(XAException.XAER_INVAL);
+        }
+
+If this is not acceptable, then we have to unreference TransactionContext in another way.

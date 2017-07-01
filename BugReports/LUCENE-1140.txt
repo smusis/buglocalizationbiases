@@ -1,0 +1,45 @@
+NPE in StopFilter caused by StandardAnalyzer(boolean replaceInvalidAcronym) constructor
+
+
+
+Description:
+I think that I found a problem with the new code (https://issues.apache.org/jira/browse/LUCENE-1068).
+Usage of the new constructor StandardAnalyzer(boolean replaceInvalidAcronym) causes NPE in
+StopFilter:
+
+java.lang.NullPointerException
+        at org.apache.lucene.analysis.StopFilter.<init>(StopFilter.java:74)
+        at org.apache.lucene.analysis.StopFilter.<init>(StopFilter.java:86)
+        at
+org.apache.lucene.analysis.standard.StandardAnalyzer.tokenStream(StandardAnalyzer.java:151)
+        at
+org.apache.lucene.queryParser.QueryParser.getFieldQuery(QueryParser.java:452)
+        at
+org.apache.lucene.queryParser.QueryParser.Term(QueryParser.java:1133)
+        at
+org.apache.lucene.queryParser.QueryParser.Clause(QueryParser.java:1020)
+        at
+org.apache.lucene.queryParser.QueryParser.Query(QueryParser.java:948)
+        at
+org.apache.lucene.queryParser.QueryParser.Clause(QueryParser.java:1024)
+        at
+org.apache.lucene.queryParser.QueryParser.Query(QueryParser.java:948)
+        at
+org.apache.lucene.queryParser.QueryParser.TopLevelQuery(QueryParser.java:937)
+        at
+org.apache.lucene.queryParser.QueryParser.parse(QueryParser.java:147)
+
+The reason is that new constructor forgets to initialize the stopSet field:
+  public StandardAnalyzer(boolean replaceInvalidAcronym) {
+    this.replaceInvalidAcronym = replaceInvalidAcronym;
+  }
+
+I guess this should be changed to something like this:
+  public StandardAnalyzer(boolean replaceInvalidAcronym) {
+    this(STOP_WORDS);
+    this.replaceInvalidAcronym = replaceInvalidAcronym;
+  }
+
+The bug is present in RC3. Fix is one line, it'll be great to have it in 2.3
+release.
+

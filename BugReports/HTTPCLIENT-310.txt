@@ -1,0 +1,47 @@
+Memory leak in MultiThreadedHttpClient caused by bad .equals()
+
+
+
+Description:
+Note: I have '2.0 release candidate 1'; I'm not sure which version this
+translates into.  The bug is definitely present in the current source.
+
+MultiThreadedHttpClient uses the following code:
+
+// Look for a list of connections for the given config
+HostConnectionPool listConnections = (HostConnectionPool) 
+    mapHosts.get(hostConfiguration);
+if (listConnections == null) { 
+    // First time for this config
+    listConnections = new HostConnectionPool();
+    listConnections.hostConfiguration = hostConfiguration;
+    mapHosts.put(hostConfiguration, listConnections);
+}
+
+
+The hash map relys on HostConfiguration's .equals() to resolve equality &
+determine if there is a mapping for the configuration.
+
+HostConfiguration has the following in it's .equals() method:
+
+if (!protocol.equals(config.getProtocol())) {
+    return false;
+}
+
+. . . and Protocol has:
+
+if (obj instanceof Protocol) {
+            
+    Protocol p = (Protocol) obj;
+            
+    return (
+        defaultPort == p.getDefaultPort()
+        && scheme.equalsIgnoreCase(p.getScheme())
+        && secure == p.isSecure()
+        && socketFactory.equals(p.getSocketFactory()));
+
+}
+
+However, there is no .equals() method in any of the ProtocolSocketFactory
+objects, and there isn't any note in the interface about the necessity of the
+.equals() method.

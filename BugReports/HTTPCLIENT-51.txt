@@ -1,0 +1,9 @@
+Redefine HttpClient vs HttpMultiClient interface for 2.0
+
+
+
+Description:
+In particular the HttpClient/HttpMultiClient issue must be resolved. 
+HttpultiClient functionality should be prefered, but HttpClient is the most
+suitable name.  Consider impact to other projects.  Is java1.1 compatability
+really an issue anymore?

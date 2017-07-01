@@ -1,0 +1,6 @@
+[PATCH] better exception messages when generating schema
+
+
+
+Description:
+When a statement fails to execute generating the schema, patch outputs the statement that failed.

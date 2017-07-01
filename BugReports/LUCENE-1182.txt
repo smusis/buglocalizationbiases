@@ -1,0 +1,13 @@
+SimilarityDelegator is missing a delegating scorePayload() method
+
+
+
+Description:
+The handy SimilarityDelegator method is missing a scoreDelegator() delegating method.
+The fix is trivial, add the code below at the end of the class:
+
+  public float scorePayload(String fieldName, byte [] payload, int offset, int length)
+  {
+      return delegee.scorePayload(fieldName, payload, offset, length);
+  }
+

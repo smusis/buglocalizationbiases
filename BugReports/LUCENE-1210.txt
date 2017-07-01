@@ -1,0 +1,11 @@
+IndexWriter & ConcurrentMergeScheduler deadlock case if starting a merge hits an exception
+
+
+
+Description:
+If you're using CMS (the default) and mergeInit hits an exception (eg
+OOME), we are not properly clearing IndexWriter's internal tracking of
+running merges.  This causes IW.close() to hang while it incorrectly
+waits for these non-started merges to finish.
+
+

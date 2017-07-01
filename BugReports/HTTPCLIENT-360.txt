@@ -1,0 +1,43 @@
+questionable default value for BufferedOutputStream size in HttpConnection
+
+
+
+Description:
+From the dev list
+
+--
+
+Hi Eric
+
+Thanks for bringing this up. HttpClient 3.0 allows for parameterization
+of SO_SNDBUF and SO_RCVBUF settings. For HttpClient 2.0 (as well as for
+3.0 when falling back onto the system defaults), however, it would make
+sense to set a cap on the size of the send and receive buffers.
+
+Feel free to open a ticket for this issue with Bugzilla
+
+Oleg
+
+
+On Fri, 2004-07-02 at 18:39, Eric Bloch wrote:
+
+>> Hi httpclient folks,
+>> 
+>> I've been looking at 2.0 source code and the default value for the 
+>> BufferedOutputStream that is used in an HttpConnectionn is coming from 
+>> socket.getSendBufferSize().  My hunch, is that, in general, this is 
+>> bigger than you'd want.
+>> 
+>> Most HTTP "sends" are less than 1KByte ('cept for big POSTs).
+>> The default value I get for socket.getSendBufferSize for this is 8192.
+>> I would think a better default for this buffer would be 1K, no?
+>> 
+>> Also, fyi, if someone happens to dork the system send buffer size hi 
+>> (say MB) and you are using the MultiThreadedConnectionManager in 2.0 
+>> (dunno about 3.0), you will use up a lot of memory for each connection 
+>> since the pool doesn't let idle connections (or their buffers) be gced. 
+>>   I just got bit bad by that.
+>> 
+>> -Eric
+>> 
+>

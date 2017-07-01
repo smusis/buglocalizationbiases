@@ -1,0 +1,11 @@
+Change security configuration from 'simple' to the some reasonable default
+
+
+
+Description:
+I'd like to change the security configuration from 'simple' to a default that enables ac-management and user management (and consequently doesn't skip the corresponding tests).
+
+there is currently an issue with WEAKREFERENCEs (see issue JCR-2135) that prevents me from changing the config.
+unless someone objects i would like to change the default config as soon as JCR-2135 is solved.
+
+

@@ -1,0 +1,7 @@
+IndexModifier has incomplete Javadocs
+
+
+
+Description:
+A lot of public and protected members of org.apache.lucene.index.IndexModifier 
+don't have javadocs.

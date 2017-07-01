@@ -1,0 +1,18 @@
+UAX29URLEmailTokenizer fails to recognize emails as such when the mailto: scheme is prepended
+
+
+
+Description:
+As [reported by Kai Gülzau on solr-user|http://markmail.org/message/n32kji3okqm2c5qn]:
+
+UAX29URLEmailTokenizer seems to split at the wrong place:
+
+{noformat}mailto:test@example.org{noformat} ->
+{noformat}mailto:test{noformat}
+{noformat}example.org{noformat}
+
+As a workaround I use
+
+{code:xml}
+<charFilter class="solr.PatternReplaceCharFilterFactory" pattern="mailto:" replacement="mailto: "/>
+{code}

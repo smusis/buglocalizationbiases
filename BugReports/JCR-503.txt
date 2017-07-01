@@ -1,0 +1,33 @@
+TCK: SetValueDateTest compares Calendar objects
+
+
+
+Description:
+SetValueDateTest#testDateSession
+SetValueDateTest#testDateParent
+
+Tests compare Calendar objects.  Calendar.equals(Object) is a stronger test than JSR-170 specifies for Value.equals(Object), leading to false failures.  For the purpose of these tests, even Value.equals(Object) is too strong an equality test, since some repositories may normalize date/time values across a save/read roundtrip (for example, converting "Z" to "+00:00", or adding/removing trailing zeros in fractional seconds).
+
+Proposal: compare the getTimeInMillis() values.
+
+--- SetValueDateTest.java       (revision 422074)
++++ SetValueDateTest.java       (working copy)
+@@ -79,7 +80,8 @@
+     public void testDateSession() throws RepositoryException {
+         property1.setValue(value);
+         superuser.save();
+-        assertEquals("Date node property not saved", value.getDate(), property1.getValue().getDate());
++        assertEquals("Date node property not saved",
++          value.getDate().getTimeInMillis(), property1.getDate().getTimeInMillis());
+     }
+  
+     /**
+@@ -89,7 +91,8 @@
+     public void testDateParent() throws RepositoryException {
+         property1.setValue(value.getDate());
+         node.save();
+-        assertEquals("Date node property not saved", value.getDate(), property1.getValue().getDate());
++        assertEquals("Date node property not saved",
++          value.getDate().getTimeInMillis(), property1.getDate().getTimeInMillis());
+     }
+

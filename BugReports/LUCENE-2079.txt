@@ -1,0 +1,23 @@
+Further improvements to contrib/benchmark for testing NRT
+
+
+
+Description:
+Some small changes:
+
+  * Allow specifying a priority for BG threads, after the "&"
+    character; priority increment is + or - int that's added to main
+    thread's priority to set child thread's.  For my NRT tests I make
+    the reopen thread +2, the indexing threads +1, and leave searching
+    threads at their default.
+
+  * Added test case
+
+  * NearRealTimeReopenTask now reports @ the end the full array of
+    msec of each reopen latency
+
+  * Added optional breakout of counts by time steps.  If you set
+    log.time.step.msec to eg 1000 then reported counts for serial task
+    sequence is broken out by 1 second windows.  EG you can use this
+    to measure slowdown over time.
+

@@ -1,0 +1,7 @@
+[PATCH] Loosing first matching document in BooleanQuery
+
+
+
+Description:
+This patch fixes loosing of first matching document when BooleanQuery
+with BooleanClause.Occur.SHOULD is added to another BooleanQuery.

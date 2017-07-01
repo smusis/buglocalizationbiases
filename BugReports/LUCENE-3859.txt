@@ -1,0 +1,10 @@
+nuke/clean up AtomicReader.hasNorms
+
+
+
+Description:
+implementations already have to return fieldInfos() [which can tell you this], and normValues() [which can also tell you this].
+
+So if we want to keep it, I think it should just have a final implementation and not be required for FilterReaders, etc.
+
+Or we can just nuke it... do we really need 3 ways to do the same thing?

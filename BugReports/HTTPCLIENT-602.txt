@@ -1,0 +1,10 @@
+refactor HttpClientConnection and HttpProxyConnection
+
+
+
+Description:
+Instead of trying to define a full abstraction for client connections, let's define only a minimal interface in HttpCore with only those methods actually needed in the core. In particular, the core does not need to open connections (since HTTPCORE-11), and it does not care whether a connection is direct or through a proxy. An abstraction for client connections can be defined in HttpConn.
+
+(original description:)
+As discussed on the mailing list, separating the responsibility for establishing connections from the connection objects could improve the design and help with proxy support.
+

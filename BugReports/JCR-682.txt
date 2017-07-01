@@ -1,0 +1,28 @@
+AccessManager + CachingHierarchyManager problem
+
+
+
+Description:
+The problem we have is the implementation of the CachingHierarchyManager,
+to which the SimpleAccessManager holds a reference.
+
+Let's consider following example:
+i add 3 subnodes (a,b,c) to a node and after that i reorder b and c ..
+so i have a,c,b. in the process of reordering (using the function
+orderBefore of javax.jcr.Node) our AccessManager is called several times to check the permissions of the nodes. In this AccessManager we use some
+functions of the CachingHierarchyManager, f.ex.
+
+Path itemPath = hierMgr.getPath(id);
+return itemPath.denotesRoot();
+
+or
+
+Path itemPath = hierMgr.getPath(itemId);
+Path parentPath = itemPath.getAncestor(1);
+return hierMgr.resolvePath(parentPath);
+
+the problem is, that when calling the methods of the
+CachingHierarchyManager the nodes i ask for will be cached in the idCache in a wrong state (i. e.: before actually reordering the elements).
+so if i want f.ex. delete the node b after reordering, the node will
+be looked up in the idCache. in the cache the index of node b is still 2
+(actually it should be 3) and so the wrong node will be deleted! 

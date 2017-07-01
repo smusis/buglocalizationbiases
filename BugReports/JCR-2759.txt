@@ -1,0 +1,22 @@
+Collapse nested OR expressions
+
+
+
+Description:
+Executing a query with multiple OR expressions in a predicate leads to score values that depend on the order of the operands.
+
+For example, the following query:
+
+//*[jcr:contains(@prop1, 'foo') or jcr:contains(@prop2, 'foo') or jcr:contains(@prop3, 'foo')] order by @jcr:score descending
+
+will return a slightly different result compared to:
+
+//*[jcr:contains(@prop3, 'foo') or jcr:contains(@prop1, 'foo') or jcr:contains(@prop2, 'foo')] order by @jcr:score descending
+
+Internally jackrabbit parses the predicate of the first query into a tree:
+
+orExpr(orExpr(contains(prop1, 'foo'), contains(prop2, 'foo')), contains(prop3, 'foo'))
+
+Lucene will calculate the score for the inner OR expression first and then for the outer, which is not equivalent with a nested expression that has property names in a different sequence.
+
+The query should be translated internally into a single OR expression with three operands. That way, the score value is always the same, irrespective of the order of the operands.

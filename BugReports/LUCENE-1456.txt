@@ -1,0 +1,12 @@
+FieldInfo omitTerms bug
+
+
+
+Description:
+Around line 95 you have:
+
+    if (this.omitTf != omitTf) {
+      this.omitTf = true;                // if one require omitTf at least once, it remains off for life
+    }
+
+Both references of the omitTf booleans in the if statement refer to the same field. I am guessing its meant to be other.omitTf like the norms code above it.

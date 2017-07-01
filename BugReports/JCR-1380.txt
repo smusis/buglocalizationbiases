@@ -1,0 +1,6 @@
+CachingHierarchyManager synchronization problem
+
+
+
+Description:
+The method CachingHierarchyManager.resolveNodePath(..) does not synchronize on the cacheMonitor object. This can result in an endless loop in cache(), in NullPointerException or in other unexpected behavior in CachingHierarchyManager.

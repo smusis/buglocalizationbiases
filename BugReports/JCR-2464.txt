@@ -1,0 +1,7 @@
+Reduce usage of String.intern()
+
+
+
+Description:
+String.intern() is used for interning the namespace URI in NameImpl. For some trivial cases the intern() method shouldn't be called but a constant should be
+used. E.g. I'm thinking about the empty namespace URI, where calling String.intern() is way more expensive than checking if the length of the URI string is zero. 

@@ -1,0 +1,8 @@
+Revise Weight#scorer & Filter#getDocIdSet API to pass Readers context
+
+
+
+Description:
+Spinoff from LUCENE-2694 - instead of passing a reader into Weight#scorer(IR, boolean, boolean) we should / could revise the API and pass in a struct that has parent reader, sub reader, ord of that sub. The ord mapping plus the context with its parent would make several issues way easier. See LUCENE-2694, LUCENE-2348 and LUCENE-2829 to name some.
+
+

@@ -1,0 +1,12 @@
+Handling sub-domain cookies.
+
+
+
+Description:
+I noticed a difference in behaviour between httpclient and most common browsers 
+(IE/Mozilla). If a web site sets a cookie for "beta.gamma.com", this cookie is 
+not sent in requests to "alpha.beta.gamma.com". 
+  I am not sure what the cookie specs say, but Mozilla, IE and even 
+HTTP::Cookies module in LWP seem to behave differently from HttpClient. 
+HttpClient seems to rely on the leading dot in the domain name 
+(like ".beta.gamma.com").

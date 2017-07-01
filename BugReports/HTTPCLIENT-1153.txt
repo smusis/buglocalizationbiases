@@ -1,0 +1,11 @@
+org.apache.http.impl.client.cache.memcached.MemcachedHttpCacheStorage uses URL as cache key - shouldn't.
+
+
+
+Description:
+Spy memcached has 250 defined as max key length:
+http://dustin.github.com/java-memcached-client/apidocs/constant-values.html#net.spy.memcached.MemcachedClientIF.MAX_KEY_LENGTH
+
+URLs can be (and often are) much longer than 250 characters.
+
+URLs should be hashed before being used as keys.

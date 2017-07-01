@@ -1,0 +1,8 @@
+TopDocsCollector should be abstract super class that is the real "TopDocsCollector" contract, a subclass should implement the priority-queue logic. e.g. PQTopDocsCollector
+
+
+
+Description:
+TopDocsCollector is both an abstract interface for producing TopDocs as well as a PriorityQueue based implementation.
+Not all Collectors that could produce TopDocs must use a PriorityQueue, and it would be advantageous to allow the TopDocsCollector to be an "interface" type abstract class, with a PQTopDocsCollector sub-class.
+While doing this, it'd be good to clean up the generics uses in these classes. As it's odd to create a TopFieldCollector and have to case the TopDocs object, when this can be fixed with generics.

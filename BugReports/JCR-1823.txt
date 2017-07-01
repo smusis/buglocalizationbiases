@@ -1,0 +1,25 @@
+Repository.login throws IllegalStateException
+
+
+
+Description:
+Calling any login method on Repository instance, which has been shut down throws an IllegalStateException, which is caused by the RepositoryImpl.sanityCheck method.
+
+This exception is unexpected by callers of the login method, which is specified to throw one of LoginException, NoSuchWorkspaceException and RepositoryException. In particular the spec says, that a RepositoryException is thrown "if another error occurs".
+
+So I suggest to modify the RepositoryImpl.login(Credentials, String) as follows (patch against trunk):
+
+Index: /usr/src/jackrabbit/trunk/jackrabbit-core/src/main/java/org/apache/jackrabbit/core/RepositoryImpl.java
+===================================================================
+--- /usr/src/jackrabbit/trunk/jackrabbit-core/src/main/java/org/apache/jackrabbit/core/RepositoryImpl.java	(revision 706543)
++++ /usr/src/jackrabbit/trunk/jackrabbit-core/src/main/java/org/apache/jackrabbit/core/RepositoryImpl.java	(working copy)
+@@ -1358,6 +1358,8 @@
+         } catch (AccessDeniedException ade) {
+             // authenticated subject is not authorized for the specified workspace
+             throw new LoginException("Workspace access denied", ade);
++        } catch (RuntimeException re) {
++            throw new RepositoryException(re.getMessage(), re);
+         } finally {
+             shutdownLock.readLock().release();
+         }
+

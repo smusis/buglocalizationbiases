@@ -1,0 +1,22 @@
+Regex support and beyond in JavaCC QueryParser
+
+
+
+Description:
+Since the early days the standard query parser was limited to the queries living in core, adding other queries or extending the parser in any way always forced people to change the grammar file and regenerate. Even if you change the grammar you have to be extremely careful how you modify the parser so that other parts of the standard parser are affected by customisation changes. Eventually you had to live with all the limitation the current parser has like tokenizing on whitespaces before a tokenizer / analyzer has the chance to look at the tokens. 
+I was thinking about how to overcome the limitation and add regex support to the query parser without introducing any dependency to core. I added a new special character that basically prevents the parser from interpreting any of the characters enclosed in the new special characters. I choose the forward slash  '/' as the delimiter so that everything in between two forward slashes is basically escaped and ignored by the parser. All chars embedded within forward slashes are treated as one token even if it contains other special chars like * []?{} or whitespaces. This token is subsequently passed to a pluggable "parser extension" with builds a query from the embedded string. I do not interpret the embedded string in any way but leave all the subsequent work to the parser extension. Such an extension could be another full featured query parser itself or simply a ctor call for regex query. The interface remains quiet simple but makes the parser extendible in an easy way compared to modifying the javaCC sources.
+
+The downsides of this patch is clearly that I introduce a new special char into the syntax but I guess that would not be that much of a deal as it is reflected in the escape method though. It would truly be nice to have more than once extension an have this even more flexible so treat this patch as a kickoff though.
+
+Another way of solving the problem with RegexQuery would be to move the JDK version of regex into the core and simply have another method like:
+{code}
+protected Query newRegexQuery(Term t) {
+  ... 
+}
+{code}
+
+which I would like better as it would be more consistent with the idea of the query parser to be a very strict and defined parser.
+
+I will upload a patch in a second which implements the extension based approach I guess I will add a second patch with regex in core soon too.
+
+

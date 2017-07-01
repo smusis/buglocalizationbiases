@@ -1,0 +1,10 @@
+Remove JakarteRegExCapabilities shim to access package protected field
+
+
+
+Description:
+To access the prefix in Jakarta RegExes we use a shim class in the same package as jakarta. I will remove this and replace by reflection like Robert does in his ICUTokenizer rule compiler.
+
+Shim classes have the problem wth signed artifacts, as you cannot insert a new class into a foreign package if you sign regex classes.
+
+This shim-removal also allows users to use later jakarta regex versions, if they are in classpath and cannot be removed (even if they have bugs). Performance is no problem, as the prefix is only get once per TermEnum.

@@ -1,0 +1,11 @@
+The deprecated constructor of BooleanClause does not set new state
+
+
+
+Description:
+Nick Burch reported this on lucene-user. 
+ 
+Patch will follow. 
+ 
+Regards, 
+Paul Elschot

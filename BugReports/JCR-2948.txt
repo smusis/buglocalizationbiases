@@ -1,0 +1,8 @@
+jcr-server: add possibility to PROPFIND the JCR_NODETYPES_CND_LN property
+
+
+
+Description:
+patch by uwe jaeger see JCR-2454
+
+in didn't include in the resolution of JCR-2454 since i would like to have JCR-2946 fixed as a prerequisite.

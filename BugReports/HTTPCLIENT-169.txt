@@ -1,0 +1,50 @@
+Cookies with null value are not formatted correctly
+
+
+
+Description:
+I have a server that sets a bunch of empty cookies:
+
+2003/03/06 16:28:52:055 PST [DEBUG] wire - -<< "Set-Cookie: list%2ESince=; 
+path=/[\r][\n]"
+2003/03/06 16:28:52:055 PST [DEBUG] wire - -<< "Set-Cookie: search%2EPhoneSDA=; 
+path=/[\r][\n]"
+
+
+  On subsequent requests, httpclient attaches these cookies thusly:
+
+2003/03/06 16:28:55:480 PST [DEBUG] wire - ->> "Cookie: $Version=0; list%
+2ESince=null; $Path=/[\r][\n]"
+2003/03/06 16:28:55:480 PST [DEBUG] wire - ->> "Cookie: $Version=0; search%
+2EPhoneSDA=null; $Path=/[\r][\n]"
+
+
+  I'm not sure how to read this portion of wirelog, but seems that actual
+values containing the string "null" are being sent as part of the request.
+In the response to my request, the server now echos cookies with "null"
+values back to me.
+
+
+2003/03/06 16:28:55:660 PST [DEBUG] wire - -<< "Set-Cookie: search%
+2EPhoneSDA=null; path=/[\r][\n]"
+2003/03/06 16:28:55:660 PST [DEBUG] wire - -<< "Set-Cookie: list%2ESince=null; 
+path=/[\r][\n]"
+
+
+  This isn't good.  Basically, the list.Since= cookie is being
+converted to list.Since=null.  This causes the server's script to
+crash:
+
+<p>Microsoft VBScript runtime </font> <font face="Arial" 
+size=2>error '800a000d'</font>
+<p>
+<font face="Arial" size=2>Type mismatch: 'CINT'</font>
+<p>
+<font face="Arial" size=2>/listCust.asp</font><font face="Arial" size=2>, line 
+283</font> 
+
+
+  I guess the script tries to assign the string "null" to an integer, and
+dies.
+
+Reported by Tom Samplonius <tom@sdf.com>

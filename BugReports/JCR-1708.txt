@@ -1,0 +1,10 @@
+Impossible to import a string containing _x0020_  with Session.importXml
+
+
+
+Description:
+The importXml uses the ValueHelper.serialize methods. The option "decodeBlanks" does a simple string replace which replaces _x0020_ in spaces (line 695 and 793). This option is always set to true unless the imported data is binary. See: BufferedStringValue and StringValue getValue methods.
+
+The result is that it is now impossible to import a string with _x0020_ in it, because it gets translated in a space. The simple solution would be to just turn off the declodeBlanks option, but I'm not sure why it was added in the first place. Another option would be to use real encoding instead of a replace like the o.a.j.util.ISO9075.
+
+

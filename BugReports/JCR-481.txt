@@ -1,0 +1,28 @@
+Checks for optional features in test cases are wrong
+
+
+
+Description:
+Reported by David Sanders:
+
+The TCK for JSR-170 Final Release
+(http://jcp.org/aboutJava/communityprocess/final/jsr170/index.html)
+checks for level 2 and optional features by comparing
+Repository.getDescriptor to null.  According to the
+spec and javadoc, getDescriptor must return either
+"true" or "false" for the "capability" keys.
+
+Example in AbsractJCRest.java:
+
+        // setup custom namespaces
+        if
+(helper.getRepository().getDescriptor(Repository.LEVEL_2_SUPPORTED)
+!= null) {
+            NamespaceRegistry nsReg =
+superuser.getWorkspace().getNamespaceRegistry();
+
+
+I think the above if statement should be:
+       if
+(helper.getRepository().getDescriptor(Repository.LEVEL_2_SUPPORTED)
+.equals("true")) 

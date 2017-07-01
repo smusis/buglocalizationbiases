@@ -1,0 +1,21 @@
+move intblock/sep codecs into test
+
+
+
+Description:
+The intblock and sep codecs in core exist to make it easy for people to try different low-level algos for encoding ints.
+
+Sep breaks docs, freqs, pos, skip data, payloads into 5 separate files (vs 2 files that standard codec uses).
+
+Intblock further enables the docs, freqs, pos files to encode fixed-sized blocks of ints at a time.
+
+So an app can easily "subclass" these codecs, using their own int encoder.
+
+But these codecs are now concrete, and they use dummy low-level block int encoder (eg encoding 128 ints as separate vints).
+
+I'd like to change these to be abstract, and move these dummy codecs into test.
+
+The tests would still test these dummy codecs, by rotating them in randomly for all tests.
+
+I'd also like to rename IntBlock -> FixedIntBlock, because I'm trying to get a VariableIntBlock working well (for int encoders like Simple9, Simple16, whose block size varies depending on the particular values).
+

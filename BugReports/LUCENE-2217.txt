@@ -1,0 +1,6 @@
+Remaining reallocation should use ArrayUtil.getNextSize()
+
+
+
+Description:
+See recent discussion on ArrayUtils.getNextSize().

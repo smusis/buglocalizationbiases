@@ -1,0 +1,9 @@
+[PATCH] Add StopFilter ignoreCase option
+
+
+
+Description:
+Wanted to have the ability to ignore case in the stop filter.  In some cases, I
+don't want to have to lower case before passing through the stop filter, b/c I
+may need case preserved for other analysis further down the stream, yet I don't
+need the stopwords and I don't want to have to apply stopword filters twice.

@@ -1,0 +1,10 @@
+Timeout for Session and/or Lock
+
+
+
+Description:
+I think there needs to be a mechanism where we can set the timeout for a particular jcr Session.  Or at the most, there should be a provision to set a timeout for a lock on a node.
+
+Hope this is implemented soon.
+
+Thanks.

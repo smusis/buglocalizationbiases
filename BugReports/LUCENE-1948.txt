@@ -1,0 +1,34 @@
+Deprecating InstantiatedIndexWriter
+
+
+
+Description:
+http://markmail.org/message/j6ip266fpzuaibf7
+
+I suppose that should have been suggested before 2.9 rather than  
+after...
+
+There are at least three reasons to why I want to do this:
+
+The code is based on the behaviour or the Directory IndexWriter as of  
+2.3 and I have not been touching it since then. If there will be  
+changes in the future one will have to keep IIW in sync, something  
+that's easy to forget.
+There is no locking which will cause concurrent modification  
+exceptions when accessing the index via searcher/reader while  
+committing.
+It use the old token stream API so it has to be upgraded in case it  
+should stay.
+
+The java- and package level docs have since it was committed been  
+suggesting that one should consider using II as if it was immutable  
+due to the locklessness. My suggestion is that we make it immutable  
+for real.
+
+Since II is ment for small corpora there is very little time lost by  
+using the constructor that builts the index from an IndexReader. I.e.  
+rather than using InstantiatedIndexWriter one would have to use a  
+Directory and an IndexWriter and then pass an IndexReader to a new  
+InstantiatedIndex.
+
+Any objections?

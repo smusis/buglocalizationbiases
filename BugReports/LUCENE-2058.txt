@@ -1,0 +1,10 @@
+benchmark pkg: specify trec_eval submission output from the command line
+
+
+
+Description:
+the QueryDriver for the trec benchmark currently requires 4 command line arguments.
+the third argument is ignored (i typically populate this with "bogus")
+Instead, allow the third argument to specify the submission.txt file for trec_eval.
+
+while I am here, add a usage() documenting what the arguments to this driver program do.

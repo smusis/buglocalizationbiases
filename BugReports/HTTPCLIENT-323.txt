@@ -1,0 +1,38 @@
+GetMethod.getResponseBodyAsStream() .available() could return content-length
+
+
+
+Description:
+It would be nice if the InputStream returned from
+GetMethod.getResponseBodyAsStream() could override the available()
+method to return the content-length of the requested URL.  This would
+make things like ProgressMonitorInputStream useful for monitoring the
+progress of a download.  Here is a code snippet:
+
+
+/**
+ * supply a hard-coded value for available() method.
+ */
+class FixedInputStream extends FilterInputStream {
+  private int contentLength;
+
+  public FixedInputStream(InputStream is,
+              int contentLength) {
+    super(is);
+    this.contentLength = contentLength;
+  }
+
+  public int available() throws IOException {
+    return contentLength;
+  }
+} 
+
+
+
+Also, somewhat related to this request, could
+GetMethod.getResponseContentLength() must be made public?  Is there a
+good reason for it to be protected?  I had to extend GetMethod and
+implement a public getResponseContentLength() in order to feed that
+value to my FixedInputStream.
+
+Thanks for your time.

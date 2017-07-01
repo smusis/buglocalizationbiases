@@ -1,0 +1,8 @@
+Remove old byte[] norms api from IndexReader
+
+
+
+Description:
+Followup to LUCENE-3628.
+
+We should remove this api and just use docvalues everywhere, to allow for norms of arbitrary size in the future (not just byte[])

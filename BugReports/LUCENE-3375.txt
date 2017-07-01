@@ -1,0 +1,21 @@
+processing a synonym in a token stream will remove the following token from the stream
+
+
+
+Description:
+If you do a phrase search on a field derived from a fieldtype with the synonym filter which includes a synonym, the term following the synonym vanishes after synonym expansion.
+
+e.g. http://host:port/solr/corename/select/?q=desc:%22xyzzy%20%20bbb%20pot%20of%20gold%22&version=2.2&start=0&rows=10&indent=on&debugQuery=true   (bbb is in the default synonyms file, desc is a "text" fieldtype)
+
+outputs
+....
+<str name="rawquerystring">desc:"xyzzy  bbb pot of gold"</str>
+<str name="querystring">desc:"xyzzy  bbb pot of gold"</str>
+<str name="parsedquery">PhraseQuery(desc:"xyzzy bbbb 1 bbbb 2 of gold")</str>
+<str name="parsedquery_toString">desc:"xyzzy bbbb 1 bbbb 2 of gold"</str>
+....
+
+You can also see this behavior using the admin console analysis.jsp
+
+Solr 3.3 behaves properly.
+

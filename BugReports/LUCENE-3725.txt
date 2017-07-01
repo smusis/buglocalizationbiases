@@ -1,0 +1,13 @@
+Add optional packing to FST building
+
+
+
+Description:
+The FSTs produced by Builder can be further shrunk if you are willing
+to spend highish transient RAM to do so... our Builder today tries
+hard not to use much RAM (and has options to tweak down the RAM usage,
+in exchange for somewhat lager FST), even when building immense FSTs.
+
+But for apps that can afford highish transient RAM to get a smaller
+net FST, I think we should offer packing.
+

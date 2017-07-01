@@ -1,0 +1,8 @@
+user need a way to control cookie policy
+
+
+
+Description:
+User need a way to control what cookie can be accepted and what should be 
+rejected. It would be nice to provide a cookie filter interface, so the user 
+can change the cookie policy by implementing his own filter.

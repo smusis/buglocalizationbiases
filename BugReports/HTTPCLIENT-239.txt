@@ -1,0 +1,70 @@
+Redirect 302 to the same URL causes max redirects exception
+
+
+
+Description:
+I noticed that if the server returns a 302 without a URL in the link, the 
+HttpClient follows the empty URL up to the maximum times (100 by default).  
+Instead it should check and if the URL is an empty string it shouldn't try to 
+follow the redirect.
+
+12:18:17,430 [U:          ] [main                ] ERROR 
+HttpMethodBase               - Narrowly avoided an infinite loop in execute
+12:18:17,430 [U:          ] [main                ] DEBUG 
+URLMonitor                   - Method.execute attempt 1 failed 
+http://www.stagecoach.co.uk: 
+org.apache.commons.httpclient.HttpRecoverableException: Maximum redirects (100) 
+exceeded
+12:18:17,430 [U:          ] [main                ] DEBUG 
+URLMonitor                   - HttpRecoverableException 
+(http://www.stagecoach.co.uk) : 
+org.apache.commons.httpclient.HttpRecoverableException: Maximum redirects (100) 
+exceeded
+	at org.apache.commons.httpclient.HttpMethodBase.execute
+(HttpMethodBase.java:1065)
+	at com.verideon.veriguard.domain.URLMonitor.monitor(URLMonitor.java:189)
+	at com.verideon.veriguard.domain.URLMonitor.monitor(URLMonitor.java:101)
+	at com.verideon.veriguard.domain.TestURLMonitor.getPage
+(TestURLMonitor.java:58)
+	at com.verideon.veriguard.domain.TestURLMonitor.monitorURL
+(TestURLMonitor.java:47)
+	at com.verideon.veriguard.domain.TestURLMonitor.testMonitorURLStageCoach
+(TestURLMonitor.java:138)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke
+(NativeMethodAccessorImpl.java:39)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke
+(DelegatingMethodAccessorImpl.java:25)
+	at java.lang.reflect.Method.invoke(Method.java:324)
+	at junit.framework.TestCase.runTest(TestCase.java:154)
+	at junit.framework.TestCase.runBare(TestCase.java:127)
+	at junit.framework.TestResult$1.protect(TestResult.java:106)
+	at junit.framework.TestResult.runProtected(TestResult.java:124)
+	at junit.framework.TestResult.run(TestResult.java:109)
+	at junit.framework.TestCase.run(TestCase.java:118)
+	at junit.framework.TestSuite.runTest(TestSuite.java:208)
+	at junit.framework.TestSuite.run(TestSuite.java:203)
+	at org.eclipse.jdt.internal.junit.runner.RemoteTestRunner.runTests
+(RemoteTestRunner.java:392)
+	at org.eclipse.jdt.internal.junit.runner.RemoteTestRunner.run
+(RemoteTestRunner.java:276)
+	at org.eclipse.jdt.internal.junit.runner.RemoteTestRunner.main
+(RemoteTestRunner.java:167)
+
+Result with telnet:
+
+GET /
+HTTP/1.1 302 Object moved
+Server: Microsoft-IIS/5.0
+Date: Tue, 01 Jul 2003 10:05:58 GMT
+X-Powered-By: ASP.NET
+Location: http://www.stagecoach.co.uk
+Connection: Keep-Alive
+Content-Length: 121
+Content-Type: text/html
+Set-Cookie: ASPSESSIONIDCQCSRAAB=IFJJLEADOPDDNNGHLPFBIIIE; path=/
+Cache-control: private
+
+<head><title>Object moved</title></head>
+<body><h1>Object Moved</h1>This object may be found <a HREF="">here</a>.</body>
+Connection closed by foreign host.

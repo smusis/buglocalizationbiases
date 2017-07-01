@@ -1,0 +1,35 @@
+session.setNamespacePrefix() creates ambiguous mappings
+
+
+
+Description:
+1.) assume the following initial global mappings in the NamespaceRegistry 
+(prefixes in lowercase, URIs in uppercase):
+
+a  <-> A
+b  <-> B
+c  <-> C
+
+2.) locally remap  the namespaces in a session using the following code:
+
+            session.setNamespacePrefix("x", "B");
+            session.setNamespacePrefix("b", "C");
+            session.setNamespacePrefix("c", "B");
+
+this results in the following session-local mappings:
+
+a  <-> A
+c  <-> B
+b  <-> C
+
+3.) now the following stmt:
+
+            session.setNamespacePrefix("b", "A");
+
+produces this ambiguous mapping:
+
+b  <-> A
+c  <?> B
+c  <?> C
+
+

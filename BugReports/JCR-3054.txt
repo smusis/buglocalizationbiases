@@ -1,0 +1,16 @@
+Deprecate RepositoryService.getPropertyInfo method
+
+
+
+Description:
+I would like to deprecate and ultimately remove the RepositoryService.getPropertyInfo method and extend RepositoryService.getItemInfos to take over that functionality. getItemInfos would thus change to
+
+    /**
+     * Method used to 'batch-read' from the persistent storage. It returns the
+     * <code>ItemInfo</code> for the given <code>ItemId</code> as the first
+     * element in the <code>Iterator</code>. In addition the iterator may contain
+     * arbitrary <code>ItemInfo</code>s.
+     */
+    public Iterator<? extends ItemInfo> getItemInfos(SessionInfo sessionInfo, ItemId itemId) throws ItemNotFoundException, RepositoryException;
+
+

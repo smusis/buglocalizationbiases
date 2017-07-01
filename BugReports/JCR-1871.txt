@@ -1,0 +1,6 @@
+jcr2spi: use jcr names and path for log and exception message
+
+
+
+Description:
+in a couple of places jcr2spi adds the string representation of Path, Name and ItemId to the exception/error message. it would be convenient to convert them to jcr names and jcr path where ever possible.

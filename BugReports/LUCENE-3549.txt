@@ -1,0 +1,12 @@
+Remove DocumentBuilder interface from facet module
+
+
+
+Description:
+The facet module contains an interface called DocumentBuilder, which contains a single method, build(Document) (it's a builder API). We use it in my company to standardize how different modules populate a Document object. I've included it with the facet contribution so that things will compile with as few code changes as possible.
+
+Now it's time to do some cleanup and I'd like to start with this interface. If people think that this interface is useful to reside in 'core', then I don't mind moving it there. But otherwise, let's remove it from the code. It has only one impl in the facet module: CategoryDocumentBuilder, and we can certainly do without the interface.
+
+More so, it's under o.a.l package which is inappropriate IMO. If it's moved to 'core', it should be under o.a.l.document.
+
+If people see any problem with that, please speak up. I will do the changes and post a patch here shortly.

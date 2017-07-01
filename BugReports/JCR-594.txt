@@ -1,0 +1,6 @@
+It's not possible to register event listeners that filters on mixin supertypes
+
+
+
+Description:
+The current implementation of blocks() in EventFilter does not check if the given EventState has a mixin that is derived from one of the given node types.

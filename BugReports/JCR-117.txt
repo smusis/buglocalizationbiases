@@ -1,0 +1,45 @@
+Test cases not fully initialized at first run
+
+
+
+Description:
+It seems that some test cases in o.a.j.test.api.query and o.a.j.test.api do not properly initialized the test repository before running tests against it. The repository gets initialized by other test cases, and later runs of the troublesome tests report no errors.
+
+Thus the problem appears right after a fresh checkout and a tree cleanup. The command sequence below illustrates this problem. The error messages reported by the initial test runs are "Workspace does not contain test data at: /testdata/query" and "Workspace does not contain test data at: /testdata".
+
+I tried tracing the cause of this problem, but couldn't find it easily as I'm not yet too familiar with the test setup.
+
+$ svn co
+$ maven test
+
+    [junit] Running org.apache.jackrabbit.test.api.query.TestAll
+    [junit] Tests run: 77, Failures: 30, Errors: 0, Time elapsed: 5,333 sec
+    [junit] [ERROR] TEST org.apache.jackrabbit.test.api.query.TestAll FAILED
+    [junit] Running org.apache.jackrabbit.test.api.TestAll
+    [junit] Tests run: 534, Failures: 181, Errors: 0, Time elapsed: 16,105 sec
+    [junit] [ERROR] TEST org.apache.jackrabbit.test.api.TestAll FAILED
+
+$ maven test
+
+    [junit] Running org.apache.jackrabbit.test.api.query.TestAll
+    [junit] Tests run: 77, Failures: 0, Errors: 0, Time elapsed: 5,887 sec
+    [junit] Running org.apache.jackrabbit.test.api.TestAll
+    [junit] Tests run: 534, Failures: 0, Errors: 0, Time elapsed: 18,427 sec
+
+$ maven clean
+$ maven test
+
+    [junit] Running org.apache.jackrabbit.test.api.query.TestAll
+    [junit] Tests run: 77, Failures: 30, Errors: 0, Time elapsed: 13,185 sec
+    [junit] [ERROR] TEST org.apache.jackrabbit.test.api.query.TestAll FAILED
+    [junit] Running org.apache.jackrabbit.test.api.TestAll
+    [junit] Tests run: 534, Failures: 181, Errors: 0, Time elapsed: 40,42 sec
+    [junit] [ERROR] TEST org.apache.jackrabbit.test.api.TestAll FAILED
+
+$ maven test
+
+    [junit] Running org.apache.jackrabbit.test.api.query.TestAll
+    [junit] Tests run: 77, Failures: 0, Errors: 0, Time elapsed: 5,942 sec
+    [junit] Running org.apache.jackrabbit.test.api.TestAll
+    [junit] Tests run: 534, Failures: 0, Errors: 0, Time elapsed: 17,797 sec
+

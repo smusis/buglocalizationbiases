@@ -1,0 +1,23 @@
+Checking of stale connections is broken
+
+
+
+Description:
+HttpConnections that went stale (dropped by server) throw SocketExceptions
+instead of silently re-opening themselves, as has been the case with earlier
+versions of HttpClient.
+
+I think the problem for this can be found in HttpConnection:
+
+  public boolean closeIfStale() throws IOException {
+    if (used && isOpen && isStale()) {
+      LOG.debug("Connection is stale, closing...");
+      close();
+      return true;
+    }
+    return false;
+  }
+
+staleness is only checked if used = true, but there is no code in HttpConnection
+that sets the used flag. In other words: used is always false and isStale() is
+never called.

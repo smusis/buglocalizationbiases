@@ -1,0 +1,14 @@
+FileDataStore ignores return code from setLastModified
+
+
+
+Description:
+Garbage collection depends on the file modification date being successfully updated when records are "touched" during the mark phase. The result of a silent failure is the catastrophic loss of the file in the sweep phase.
+
+FileDataStore.getRecordIfStored does not, however, check the return code from setLastModified.
+
+I believe I was bitten by this when my dev deployment ran out of disk space. A substantial portion of my datastore was deleted, and the best explanation I can come up with is that the setLastModified calls started (silently) failing, leading to massive overkill in the sweep.
+
+There is also a call to setLastModified in FileDataStore.addRecord which is not strictly correct in the face of GC (i.e. it needs the resolution offset, and also must succeed if the file is writable or risk incorrect collection).
+
+Patch to follow.

@@ -1,0 +1,29 @@
+Improve InfoStream class in trunk to be more consistent with logging-frameworks like slf4j/log4j/commons-logging
+
+
+
+Description:
+Followup on a [thread by Shai Erea on java-dev@lao|http://lucene.472066.n3.nabble.com/IndexWriter-infoStream-is-final-td3537485.html]: I already discussed with Robert about that, that there is one thing missing. Currently the IW only checks if the infoStream!=null and then passes the message to the method, and that *may* ignore it. For your requirement it is the case that this is enabled or disabled dynamically. Unfortunately if the construction of the message is heavy, then this wastes resources.
+
+I would like to add another method to this class: abstract boolean isEnabled() that can also be implemented. I would then replace all null checks in IW by this method. The default config in IW would be changed to use a NoOutputInfoStream that returns false here and ignores the message.
+
+A simple logger wrapper for e.g. log4j / slf4j then could look like (ignoring component, could be enabled):
+
+{code:java}
+Loger log = YourLoggingFramework.getLogger(IndexWriter.class);
+
+public void message(String component, String message) {
+  log.debug(component + ": " + message);
+}
+
+public boolean isEnabled(String component) {
+  return log.isDebugEnabled();
+}
+{code}
+
+Using this you could enable/disable logging live by e.g. the log4j management console of your app server by enabling/disabling IndexWriter.class logging.
+
+The changes are really simple:
+- PrintStreamInfoStream returns true, always, mabye make it dynamically enable/disable to allow Shai's request
+- infoStream.getDefault() is never null and can never be set to null. Instead the default is a singleton NoOutputInfoStream that returns false of isEnabled(component).
+- All null checks on infoStream should be replaced by infoStream.isEanbled(component), this is possible as always != null. There are no slowdowns by this - it's like Collections.emptyList() instead stupid null checks.

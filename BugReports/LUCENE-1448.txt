@@ -1,0 +1,14 @@
+add getFinalOffset() to TokenStream
+
+
+
+Description:
+If you add multiple Fieldable instances for the same field name to a document, and you then index those fields with TermVectors storing offsets, it's very likely the offsets for all but the first field instance will be wrong.
+
+This is because IndexWriter under the hood adds a cumulative base to the offsets of each field instance, where that base is 1 + the endOffset of the last token it saw when analyzing that field.
+
+But this logic is overly simplistic.  For example, if the WhitespaceAnalyzer is being used, and the text being analyzed ended in 3 whitespace characters, then that information is lost and then next field's offsets are then all 3 too small.  Similarly, if a StopFilter appears in the chain, and the last N tokens were stop words, then the base will be 1 + the endOffset of the last non-stopword token.
+
+To fix this, I'd like to add a new getFinalOffset() to TokenStream.  I'm thinking by default it returns -1, which means "I don't know so you figure it out", meaning we fallback to the faulty logic we have today.
+
+This has come up several times on the user's list.

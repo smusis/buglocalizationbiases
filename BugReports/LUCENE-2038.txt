@@ -1,0 +1,6 @@
+Systemrequirements should say 1.5 instead of 1.4
+
+
+
+Description:
+The website still says Java 1.4 but it should say 1.5

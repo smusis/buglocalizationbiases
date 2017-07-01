@@ -1,0 +1,8 @@
+Deleting binary property does not remove 'blob file' in filesystem
+
+
+
+Description:
+when deleting a binary property or its containing node, the 'blob-file' sometime does not get removed.
+
+the reason for this, is an open FileInputStream, that gets referenced in the property value.

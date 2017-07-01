@@ -1,0 +1,13 @@
+remove field param from computeNorm, scorePayload ; remove UOE'd lengthNorm, switch SweetSpot to per-field 
+
+
+
+Description:
+In LUCENE-2236 we switched sim to per field (SimilarityProvider returns a per-field similarity).
+
+But we didn't completely cleanup there... I think we should now do this:
+* SweetSpotSimilarity loses all its hashmaps. Instead, just configure one per field and return it in your SimilarityProvider. this means for example, all its TF factors can now be configured per-field too, not just the length normalization factors.
+* computeNorm and scorePayload lose their field parameter, as its redundant and confusing.
+* the UOE'd obselete lengthNorm is removed. I also updated javadocs that were pointing to it (this is bad!).
+
+

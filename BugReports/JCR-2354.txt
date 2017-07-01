@@ -1,0 +1,6 @@
+Remove double quote as illegal XPathSearchChar from helper method in Text
+
+
+
+Description:
+Since Lucene 2.4 the double quote character at the end of a search term is no more illegal and must not be escaped

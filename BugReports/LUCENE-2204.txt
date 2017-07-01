@@ -1,0 +1,6 @@
+FastVectorHighlighter: some classes and members should be publicly accessible to implement FragmentsBuilder
+
+
+
+Description:
+I intended to design custom FragmentsBuilder can be written and pluggable, though, when I tried to write it out of the FVH package, it came out that some classes and members should be publicly accessible.

@@ -1,0 +1,35 @@
+jcr2spi NodeEntryImpl.getPath() blows stack due to getIndex() calling itself
+
+
+
+Description:
+The jcr2spi NodeEntryImpl class contains logic that causes getIndex() to call itself.
+
+Calling code:
+
+    Session sess = repo.login(creds);
+    Node inboxNode = sess.getRootNode().getNode("Inbox");
+    inboxNode.getPath(); <== blows stack
+
+Tracing reveals:
+
+    1. NodeEntryImpl.getPath() ultimately calls getIndex()
+    2. getIndex() calls NodeState.getDefinition()
+    3. which calls ItemDefinitionProviderImpl.getQNodeDefinition(...)
+    4. which catches a RepositoryException then calls NodeEntryImpl.getWorkspaceId()
+    5. which calls NodeEntryImpl.getWorkspaceIndex()
+    6. which calls getIndex() (back to step 2, ad infinitum)
+
+Configuration:
+    1. A configuration is loaded specifying in-memory persist manager
+    2. Config is wrapped in TransientRepository
+    3. that's wrapped in spi2jcr's RepositoryService using default BatchReadConfig
+    4. a jcr2spi provider is instantiated that directly couples to spi2jcr
+    5. Node in question is created as follows:
+
+    Session sess = repo.login(creds);
+    sess.getRootNode().addNode("Inbox", "nt:folder");
+    sess.save();
+
+I guess that's about it.
+David

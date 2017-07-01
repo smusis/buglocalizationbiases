@@ -1,0 +1,18 @@
+Extended javadocs in spellchecker
+
+
+
+Description:
+Added some javadocs that explains why the spellchecker does not work as one might expect it to.
+
+http://www.nabble.com/SpellChecker%3A%3AsuggestSimilar%28%29-Question-tf3118660.html#a8640395
+
+> Without having looked at the code for a long time, I think the problem is what the
+> lucene scoring consider to be best. First the grams are searched, resulting in a number
+> of hits. Then the edit-distance is calculated on each hit. "Genetics" is appearently the
+> third most similar hit according to Lucene, but the best according to Levenshtein.
+>
+> I.e. Lucene does not use edit-distance as similarity. You need to get a bunch of best hits
+> in order to find the one with the smallest edit-distance.
+
+I took a look at the code, and my assessment seems to be right.

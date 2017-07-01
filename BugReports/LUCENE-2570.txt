@@ -1,0 +1,17 @@
+Some improvements to _TestUtil and its usage
+
+
+
+Description:
+I've started this issue because I've noticed that _TestUtil.getRandomMultiplier() is called from many loops' condition check, sometimes hundreds and thousands of times. Each time it does Integer.parseInt after calling System.getProperty. This really can become a constant IMO, either in LuceneTestCase(J4) or _TestUtil, as it's not expected to change while tests are running ...
+
+I then reviewed the class and spotted some more things that I think can be fixed/improved:
+# getTestCodec() can become a constant as well
+# arrayToString is marked deprecated. I've checked an no one calls them, so I'll delete them. This is a 4.0 code branch + a test-only class. No need to deprecate anything.
+# getTempDir calls new Random(), instead of newRandom() in LuceneTestCaseJ4, which means that if something fails, we won't know the random seed used ...
+#* In that regard, we might want to output all the classes that obtained a static seed in reportAdditionalFailures(), instead of just the class that ran the test.
+# rmDir(String) can be removed IMO, and leave only rmDir(File)
+# I suggest we include some recursion in rmDir(File) to handle the deletion of nested directories.
+#* Also, it does not check whether the dir deletion itself succeeds (but it does so for the files). This can bite us on Windows, if some test did not close things properly.
+
+I'll work out a patch.

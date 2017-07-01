@@ -1,0 +1,13 @@
+client cache currently allows incomplete responses to be passed on to the client
+
+
+
+Description:
+Per the HTTP/1.1 spec:
+
+"A cache that receives an incomplete response (for example, with fewer bytes of data than specified in a Content-Length header) MAY store the response. However, the cache MUST treat this as a partial response. Partial responses MAY be combined as described in section 13.5.4; the result might be a full response or might still be partial. A cache MUST NOT return a partial response to a client without explicitly marking it as such, using the 206 (Partial Content) status code. A cache MUST NOT return a partial response using a status code of 200 (OK)."
+
+(http://www.w3.org/Protocols/rfc2616/rfc2616-sec13.html#sec13.8)
+
+For example, if a 200 response shows up with 128 bytes in the body but a Content-Length header of 256, the cache MUST NOT pass this through unchanged.
+

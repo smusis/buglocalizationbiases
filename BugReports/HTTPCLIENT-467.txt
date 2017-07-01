@@ -1,0 +1,35 @@
+CookieSpecBase.domainMatch() leaks cookies to 3rd party domains
+
+
+
+Description:
+The change committed for #32833
+<http://issues.apache.org/bugzilla/show_bug.cgi?id=32833> is buggy; it doesn't
+match browser behavior and in fact leaks cookies to third party domains. 
+
+To see, try the following:
+
+CookieSpecBase cspec = new CookieSpecBase();
+Cookie cookie = new Cookie(".hotmail.com","foo","bar","/",Integer.MAX_VALUE,false);
+cspec.match("iwanttostealcookiesfromhotmail.com",80,"/",false,cookie);
+
+It will return true. Testing in Firefox1.0.4 and IE6 show no such similar
+leakage for similar cases. (Indeed, it'd be a headline-making privacy bug if
+they were to do this.)
+
+Those browsers do, in my limited testing, behave as desired by the filer of
+#32833: a cookie of domain value '.mydomain.com' will be returned to exact host
+'mydomain.com' (. However, the fix that was suggested was overbroad.
+
+I suggest instead for CookieSpecBase.domainMatch():
+
+    public boolean domainMatch(final String host, final String domain) {
+// BUGGY: matches a '.service.com' cookie to hosts like 'enemyofservice.com'
+//        return host.endsWith(domain)
+//            || (domain.startsWith(".") && host.endsWith(domain.substring(1)));
+// BETTER: RFC2109, plus matches a '.service.com' cookie to exact host 'service.com'
+        return host.equals(domain)
+            || (domain.startsWith(".") 
+                    && (host.endsWith(domain)
+                            || host.equals(domain.substring(1))));
+    }

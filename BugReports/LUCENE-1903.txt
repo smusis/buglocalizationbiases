@@ -1,0 +1,10 @@
+Incorrect ShingleFilter behavior when outputUnigrams == false
+
+
+
+Description:
+ShingleFilter isn't working as expected when outputUnigrams == false. In particular, it is outputting unigrams at least some of the time when outputUnigrams==false.
+
+I'll attach a patch to ShingleFilterTest.java that adds some test cases that demonstrate the problem.
+
+I haven't checked this, but I hypothesize that the behavior for outputUnigrams == false got changed when the class was upgraded to the new TokenStream API?

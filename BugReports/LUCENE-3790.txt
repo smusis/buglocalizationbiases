@@ -1,0 +1,22 @@
+benchmark cannot parse highlight-vs-vector-highlight.alg, but only on 3.x?!
+
+
+
+Description:
+A new test (TestPerfTasksParse.testParseExamples) was added in LUCENE-3768 that 
+guarantees all .alg files in the conf/ directory can actually be parsed...
+
+But highlight-vs-vector-highlight.alg cannot be parsed on 3.x (NumberFormatException), 
+however it works fine on trunk... and the .alg is exactly the same in both cases.
+
+{noformat}
+    [junit] ------------- Standard Error -----------------
+    [junit] java.lang.NumberFormatException: For input string: "maxFrags[3.0],fields[body]"
+    [junit] 	at sun.misc.FloatingDecimal.readJavaFormatString(FloatingDecimal.java:1222)
+    [junit] 	at java.lang.Float.parseFloat(Float.java:422)
+    [junit] 	at org.apache.lucene.benchmark.byTask.tasks.SearchTravTask.setParams(SearchTravTask.java:76)
+    [junit] 	at org.apache.lucene.benchmark.byTask.tasks.SearchTravRetVectorHighlightTask.setParams(SearchTravRetVectorHighlightTask.java:124)
+    [junit] 	at org.apache.lucene.benchmark.byTask.utils.Algorithm.<init>(Algorithm.java:112)
+    [junit] 	at org.apache.lucene.benchmark.byTask.TestPerfTasksParse.testParseExamples(TestPerfTasksParse.java:132)
+{noformat}
+

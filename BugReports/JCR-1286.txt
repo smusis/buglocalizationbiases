@@ -1,0 +1,18 @@
+FilterImpl.getStringValue() does not use custom converter class specified in @Field annotation
+
+
+
+Description:
+I have a POJO with the following field:
+
+    @Field(converter = LocaleConverter.class)
+    private Locale                locale;
+
+When I attempt to query for objects based on this field, I get a NullPointerException:
+
+java.lang.NullPointerException
+        at org.apache.jackrabbit.ocm.query.impl.FilterImpl.getStringValue(FilterImpl.java:281)
+        at org.apache.jackrabbit.ocm.query.impl.FilterImpl.addEqualTo(FilterImpl.java:129)
+
+FilterImpl should preferentially use the atomic type converter defined in the @Field annotation to convert the value, then fallback to the global converters.  Converting the Locale to a string for use in the query is a workaround, but the logic for string conversion should only reside in my LocaleConverter class.
+

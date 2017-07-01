@@ -1,0 +1,6 @@
+Put resource files in java/{main,test}/resources
+
+
+
+Description:
+The Maven standard directory layout (see http://maven.apache.org/guides/introduction/introduction-to-the-standard-directory-layout.html) suggests that all resource files should be placed in src/main/resources or src/test/resources instead of putting them inside the java subdirectory. Following that guideline would simplify the pom files as we wouldn't need to explicitly configure the resource directories. I'll move the resource files unless anyone argues otherwise.

@@ -1,0 +1,9 @@
+BoostingNearQuery class (prototype)
+
+
+
+Description:
+This patch implements term boosting for SpanNearQuery. Refer to: http://www.gossamer-threads.com/lists/lucene/java-user/62779
+
+This patch works but probably needs more work. I don't like the use of 'instanceof', but I didn't want to touch Spans or TermSpans. Also, the payload code is mostly a copy of what's in BoostingTermQuery and could be common-sourced somewhere. Feel free to throw darts at it :)
+

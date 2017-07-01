@@ -1,0 +1,6 @@
+Convenience method to Or multiple values with a single filter
+
+
+
+Description:
+Added a convenience method to add Or Filter for the same property with multiple values. This is to simulate an IN Clause in JackRabbit. 

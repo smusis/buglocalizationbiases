@@ -1,0 +1,15 @@
+Unclosed threads in Jackrabbit
+
+
+
+Description:
+The Tomcat integration test added in JCR-2831 shows the following warnings about Jackrabbit threads that remain in place even after the repository has been closed:
+
+08-Dec-2010 12:14:58 org.apache.catalina.loader.WebappClassLoader clearReferencesThreads
+SEVERE: The web application [] appears to have started a thread named [Timer-1] but has failed to stop it. This is very likely to create a memory leak.
+08-Dec-2010 12:14:58 org.apache.catalina.loader.WebappClassLoader clearReferencesThreads
+SEVERE: The web application [] appears to have started a thread named [DynamicPooledExecutor] but has failed to stop it. This is very likely to create a memory leak.
+08-Dec-2010 12:14:58 org.apache.catalina.loader.WebappClassLoader clearReferencesThreads
+SEVERE: The web application [] appears to have started a thread named [Timer-2] but has failed to stop it. This is very likely to create a memory leak.
+
+It would be best to close all such background threads even if they are singleton daemon threads and thus unlikely to cause trouble when left unattended.

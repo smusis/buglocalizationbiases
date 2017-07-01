@@ -1,0 +1,6 @@
+TestFieldsReader - TestLazyPerformance problems w/ permissions in temp dir in multiuser environment
+
+
+
+Description:
+Was trying to setup some enhancements to the nightly builds and the testLazyPerformance test failed in TestFieldsReader since it couldn't delete the lazyDir directory from someone else's running of the test.  Will change it to append user.name System property to the directory name.

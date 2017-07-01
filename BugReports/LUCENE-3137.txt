@@ -1,0 +1,7 @@
+Benchmark's ExtractReuters creates its temp dir wrongly if provided out-dir param ends by slash
+
+
+
+Description:
+See LUCENE-929 for context.
+As result, it might fail to create the temp dir at all.

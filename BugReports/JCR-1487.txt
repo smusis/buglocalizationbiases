@@ -1,0 +1,12 @@
+Transient states should be persisted in depth-first traversal order
+
+
+
+Description:
+Inside Node.save(), when filling the list of transient (modified) items, the node itself is added first (if transient) and all transient descendant nodes in depth-first order. This can lead to the following problem with shareable nodes and path-based access management: 
+
+1) assume a node N has a shared child S, which is shared with at least one other node N'
+2) S.removeShare is invoked: this removes S from the list of child nodes in N
+3) N.save is invoked
+
+N is persisted first, then S. If a path-based access manager tries to build the path of S after N has been persisted, S will no longer be returned in the list of removed child node entries, and an exception will be thrown. This can be circumvented by adding N last.

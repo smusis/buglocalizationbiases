@@ -1,0 +1,12 @@
+Connection not closed after "Connection: close" request
+
+
+
+Description:
+In HTTP specification at http://www.w3.org/Protocols/rfc2616/rfc2616-
+sec8.html , under chapter "Negotiation", it is stated :
+"If either the client or the server sends the close token in the Connection 
+header, that request becomes the last one for the connection."
+
+HttpClient (v2.0.2 and v3.0 alpha2) is currently closing connection only if 
+server has sent "Connection: close" header, and not when request contains it.

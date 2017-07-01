@@ -1,0 +1,11 @@
+Build should enable unchecked warnings in javac
+
+
+
+Description:
+Just have to uncomment this:
+{code}
+        <!-- for generics in Java 1.5: -->
+        <!--<compilerarg line="-Xlint:unchecked"/>-->
+{code}
+in common-build.xml.  Test & core are clean, but contrib still has many warnings.  Either we fix contrib with this issue, or, conditionalize this (anyone anty who can do this?) so contrib is off until we can fix it.

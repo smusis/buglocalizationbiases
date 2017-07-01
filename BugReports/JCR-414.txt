@@ -1,0 +1,16 @@
+jcr:successors property not persisted correctly within a transaction
+
+
+
+Description:
+During a transaction, if you create a new version then read the version history the "jcr:successors" property is not updated. Note that "jcr:predecessors" is updated properly.
+
+Also, the version history is sometimes not propertly read. During the transaction, it might appear empty. This behavior in not consistent from one execution to another.
+
+After a restart of the repository, the version history and the "jcr:successors" property is read properly.
+
+* Tests cases will follow shortly.
+
+Thanks, 
+
+Nicolas

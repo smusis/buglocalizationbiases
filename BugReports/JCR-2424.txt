@@ -1,0 +1,6 @@
+Avoid Maven 3 warnings
+
+
+
+Description:
+Jackrabbit trunk builds fine with the Maven 3 alpha releases, but there are some warnings about deprecated ${pom....} variables and unspecified reporting plugin versions that we might want to fix.

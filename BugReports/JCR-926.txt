@@ -1,0 +1,17 @@
+Global data store for binaries
+
+
+
+Description:
+There are three main problems with the way Jackrabbit currently handles large binary values:
+
+1) Persisting a large binary value blocks access to the persistence layer for extended amounts of time (see JCR-314)
+2) At least two copies of binary streams are made when saving them through the JCR API: one in the transient space, and one when persisting the value
+3) Versioining and copy operations on nodes or subtrees that contain large binary values can quickly end up consuming excessive amounts of storage space.
+
+To solve these issues (and to get other nice benefits), I propose that we implement a global "data store" concept in the repository. A data store is an append-only set of binary values that uses short identifiers to identify and access the stored binary values. The data store would trivially fit the requirements of transient space and transaction handling due to the append-only nature. An explicit mark-and-sweep garbage collection process could be added to avoid concerns about storing garbage values.
+
+See the recent NGP value record discussion, especially [1], for more background on this idea.
+
+[1] http://mail-archives.apache.org/mod_mbox/jackrabbit-dev/200705.mbox/%3c510143ac0705120919k37d48dc1jc7474b23c9f02cbd@mail.gmail.com%3e
+

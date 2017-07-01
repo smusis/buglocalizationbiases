@@ -1,0 +1,6 @@
+Jackrabbit JCR Nodemanagement API implementation
+
+
+
+Description:
+There needs to be a Jackrabbit implementation of the org.apache.portals.graffito.jcr.nodemanagement.NodeTypeManager interface.

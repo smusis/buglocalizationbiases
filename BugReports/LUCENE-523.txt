@@ -1,0 +1,10 @@
+FSDirectory.openFile(String) causes ClassCastException
+
+
+
+Description:
+When you call FSDirectory.openFile(String) you get a ClassCastException since FSIndexInput is not an org.apache.lucene.store.InputStream
+
+The workaround is to reimplement using openInput(String). I personally don't need this to be fixed but wanted to document it here in case anyone else runs into this for any reason.
+
+The reason I'm calling this is that I have a requirement on my project to create read only indexes and name the index segments consistently from one build to the next. So, after creating and optimizing the index, I rename the files and rewrite the segments file. It would be nice if I had an API that would allow me to say "I only want one segment and I want its name to be 'foo'". For instance IndexWriter.optimize(String segmentName)

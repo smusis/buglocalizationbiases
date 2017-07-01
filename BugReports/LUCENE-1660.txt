@@ -1,0 +1,14 @@
+Make StopFilter.enablePositionIncrements explicit
+
+
+
+Description:
+I think the default for this should be true, ie, do not lose
+information when filtering (preserve the positions of the original
+tokens).
+
+But, we can't change this without breaking back-compat.
+
+So, as workaround, we should make the parameter explicit so one must
+decide up front.
+

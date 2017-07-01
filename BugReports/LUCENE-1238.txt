@@ -1,0 +1,31 @@
+intermittent failures of  TestTimeLimitedCollector.testTimeoutMultiThreaded in nightly tests
+
+
+
+Description:
+Occasionly TestTimeLimitedCollector.testTimeoutMultiThreaded fails. e.g. with this output:
+
+{noformat}
+   [junit] ------------- Standard Error -----------------
+   [junit] Exception in thread "Thread-97" junit.framework.AssertionFailedError: no hits found!
+   [junit]     at junit.framework.Assert.fail(Assert.java:47)
+   [junit]     at junit.framework.Assert.assertTrue(Assert.java:20)
+   [junit]     at org.apache.lucene.search.TestTimeLimitedCollector.doTestTimeout(TestTimeLimitedCollector.java:152)
+   [junit]     at org.apache.lucene.search.TestTimeLimitedCollector.access$100(TestTimeLimitedCollector.java:38)
+   [junit]     at org.apache.lucene.search.TestTimeLimitedCollector$1.run(TestTimeLimitedCollector.java:231)
+   [junit] Exception in thread "Thread-85" junit.framework.AssertionFailedError: no hits found!
+   [junit]     at junit.framework.Assert.fail(Assert.java:47)
+   [junit]     at junit.framework.Assert.assertTrue(Assert.java:20)
+   [junit]     at org.apache.lucene.search.TestTimeLimitedCollector.doTestTimeout(TestTimeLimitedCollector.java:152)
+   [junit]     at org.apache.lucene.search.TestTimeLimitedCollector.access$100(TestTimeLimitedCollector.java:38)
+   [junit]     at org.apache.lucene.search.TestTimeLimitedCollector$1.run(TestTimeLimitedCollector.java:231)
+   [junit] ------------- ---------------- ---------------
+   [junit] Testcase: testTimeoutMultiThreaded(org.apache.lucene.search.TestTimeLimitedCollector):      FAILED
+   [junit] some threads failed! expected:<50> but was:<48>
+   [junit] junit.framework.AssertionFailedError: some threads failed! expected:<50> but was:<48>
+   [junit]     at org.apache.lucene.search.TestTimeLimitedCollector.doTestMultiThreads(TestTimeLimitedCollector.java:255)
+   [junit]     at org.apache.lucene.search.TestTimeLimitedCollector.testTimeoutMultiThreaded(TestTimeLimitedCollector.java:220)
+   [junit]
+{noformat}
+
+Problem either in test or in TimeLimitedCollector.

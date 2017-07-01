@@ -1,0 +1,6 @@
+Create a Size Estimator model for Lucene and Solr
+
+
+
+Description:
+It is often handy to be able to estimate the amount of memory and disk space that both Lucene and Solr use, given certain assumptions.  I intend to check in an Excel spreadsheet that allows people to estimate memory and disk usage for trunk.  I propose to put it under dev-tools, as I don't think it should be official documentation just yet and like the IDE stuff, we'll see how well it gets maintained.

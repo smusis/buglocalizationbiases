@@ -1,0 +1,8 @@
+NodeEntryImpl.getWorkspaceId() very inefficient 
+
+
+
+Description:
+NodeEntryImpl.getWorkspaceId() calculates its path on each call by calling itself recursively. Further each call to getWorkspaceId() results in various calls to the path and item factories which might be somewhat expensive by themselves. 
+
+In my test scenario I have a RepositoryService.getItemInfos() call returning ~1000 items. Processing these items results in about 2700000 (!) calls to getWorkspaceId(). Profiler data shows, that 98% of the time to process the 1000 items is spent in getWorkspaceId()  and related calls. 

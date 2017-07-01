@@ -1,0 +1,17 @@
+jcr-server: make auth-header configurable for JCR-Server
+
+
+
+Description:
+In WEB-INF/web.xml, there is a section (commented-out by default) that reads:
+        <init-param>
+            <param-name>authenticate-header</param-name>
+            <param-value>Basic realm="Jackrabbit Webdav Server"</param-value>
+            <description>
+                Defines the value of the 'WWW-Authenticate' header.
+            </description>
+        </init-param>
+
+This parameter is ignored (not loaded) by the code - the default string is always used instead
+Note: this was more of a problem before JCR-286 had been fixed
+

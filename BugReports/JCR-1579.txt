@@ -1,0 +1,8 @@
+Improved XML export handling
+
+
+
+Description:
+As mentioned in JCR-1574, the current XML export functionality is generating workarounds like the new PropertyWrapper class. I'd like to refactor and clean up the XML export stuff so that such workarounds wouldn't be needed.
+
+An additional bonus would be to make both core and jcr2spi use the same XML export mechanism. For example the one in core already supports JSR 283 shareable nodes, but the one in jcr2spi does not.

@@ -1,0 +1,9 @@
+Multiple PropertyDefs with same name not possible
+
+
+
+Description:
+when adding property defs with the same name but different settings, for example one singlevalued, one multivalued, only the last is respected when creating a property.
+
+problem is the 'namedItemDefs' HashMap in the EffectiveNodeType which rather must contain a list of defs rather than the def itself.
+

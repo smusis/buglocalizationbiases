@@ -1,0 +1,6 @@
+Cut over SpanQuery#getSpans to AtomicReaderContext
+
+
+
+Description:
+Followup from LUCENE-2831 - SpanQuery#getSpans(IR) seems to be the last remaining artifact that doesn't enforce per-segments context while it should really work on AtomicReaderContext (SpanQuery#getSpans(AtomicReaderContext) instead of a naked IR.

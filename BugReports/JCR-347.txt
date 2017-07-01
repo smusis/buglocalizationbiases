@@ -1,0 +1,9 @@
+Jcr-server: Parsing NodeTypeProperty not compliant with definition
+
+
+
+Description:
+Creating a new NodeTypeProperty from an existing DavProperty fails, since assumptions made are not compliant with definition:
+
+a) nodetype name is always enclosed in a 'nodetypename' element
+b) nodetype property may be empty, thus contain no 'nodetype' element.

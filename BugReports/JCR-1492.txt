@@ -1,0 +1,16 @@
+Make behaviour configurable when re-indexing detects workspace inconsistency
+
+
+
+Description:
+Currently the query handler throws an exception and the repository will not start.
+
+There are multiple options how to deal with this situation:
+
+1) fail and repository startup will fail
+2) ignore and proceed
+3) fix the inconsistency and proceed
+
+1) and 2) can be implemented quite easily. with the recent enhancement JCR-1428, 3) can also be implemented with reasonable effort.
+
+In any case an error message should be written to the log.

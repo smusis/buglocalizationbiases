@@ -1,0 +1,201 @@
+Token div exceeds length of provided text sized 4114
+
+
+
+Description:
+I have a doc which contains html codes. I want to strip html tags and make the test clear after then apply highlighter on the clear text . But highlighter throws an exceptions if I strip out the html characters  , if i don't strip out , it works fine. It just confuses me at the moment 
+
+I copy paste 3 thing here from the console as it may contain special characters which might cause the problem.
+
+
+1 -) Here is the html text 
+
+          <h2>Starter</h2>
+          <div id="tab1-content" class="tabContent selected">
+            <div class="head"></div>
+            <div class="body">
+             <div class="subject-header">Learning path: History</div>
+              <h3>Key question</h3>
+              <p>Did transport fuel the industrial revolution?</p>
+              <h3>Learning Objective</h3>
+	      <ul>
+              <li>To categorise points as for or against an argument</li>
+              </ul>
+	      <p>
+              <h3>What to do?</h3>
+              <ul>
+                <li>Watch the clip: <em>Transport fuelled the industrial revolution.</em></li>
+              </ul>
+              <p>The clips claims that transport fuelled the industrial revolution. Some historians argue that the industrial revolution only happened because of developments in transport.</p>
+			  <ul>
+			  	<li>Read the statements below and decide which points are <em>for</em> and which points are <em>against</em> the argument that industry expanded in the 18th and 19th centuries because of developments in transport.</li>
+			</ul>
+			
+			<ol type="a">
+				<li>Industry expanded because of inventions and the discovery of steam power.</li>
+				<li>Improvements in transport allowed goods to be sold all over the country and all over the world so there were more customers to develop industry for.</li>
+				<li>Developments in transport allowed resources, such as coal from mines and cotton from America to come together to manufacture products.</li>
+				<li>Transport only developed because industry needed it. It was slow to develop as money was spent on improving roads, then building canals and the replacing them with railways in order to keep up with industry.</li>
+			</ol>
+			
+			<p>Now try to think of 2 more statements of your own.</p>
+			
+            </div>
+            <div class="foot"></div>
+          </div>
+          <h2>Main activity</h2>
+          <div id="tab2-content" class="tabContent">
+            <div class="head"></div>
+            <div class="body"><div class="subject-header">Learning path: History</div>
+              <h3>Learning Objective</h3>
+              <ul>
+                <li>To select evidence to support points</li>
+              </ul>
+              <h3>What to do?</h3>
+              <!--<ul>
+                <li>Watch the clip: <em>Windmill and water mill</em></li>
+              </ul>-->
+              <ul><li>Choose the 4 points that you think are most important - try to be balanced by having two <strong>for</strong> and two <strong>against</strong>.</li>
+			  <li>Write one in each of the point boxes of the paragraphs on the sheet <a href="lp_history_industry_transport_ws1.html" class="link-internal">Constructing a balanced argument</a>.</li></ul> <p>You might like to re write the points in your own words and use connectives to link the paragraphs.</p>
+              
+			  <p>In history and in any argument, you need evidence to support your points.</p>
+			  <ul><li>Find evidence from these sources and from your own knowledge to support each of your points:</li></ul>
+			  <ol>
+                <li><a href="../servlet/link?template=vid&macro=setResource&resourceID=2044" class="link-internal">At a toll gate</a></li>
+                <li><a href="../servlet/link?macro=setResource&template=vid&resourceID=2046" class="link-internal">Canals</a></li>
+                <li><a href="../servlet/link?macro=setResource&template=vid&resourceID=2043" class="link-internal">Growing cities: traffic</a></li>
+				<li><a href="../servlet/link?macro=setResource&template=vid&resourceID=2047" class="link-internal">Impact of the railway</a> </li>
+				<li><a href="../servlet/link?macro=setResource&template=vid&resourceID=2048" class="link-internal">Sailing ships</a> </li>
+				<li><a href="../servlet/link?macro=setResource&template=vid&resourceID=2050" class="link-internal">Liverpool: Capital of Culture</a> </li>
+              </ol>
+			  <p>Try to be specific in your evidence - use named examples of places or people. Use dates if you can.</p>
+            </div>
+            <div class="foot"></div>
+          </div>
+          <h2>Plenary</h2>
+          <div id="tab3-content" class="tabContent">
+            <div class="head"></div>
+            <div class="body"><div class="subject-header">Learning path: History</div>
+              <h3>Learning Objective</h3>
+              <ul>
+                <li>To judge which of the arguments is most valid</li>
+              </ul>
+              <h3>What to do?</h3>
+<!--              <ul>
+                <li>Watch the clip: <em>Food of the rich</em></li>
+              </ul>-->
+              <p>In order to be a good historian, and get good marks in exams, you need to show your evaluation skills and make a judgement. Having been through the evidence which point do you think is most important? Why? Is there more evidence? Is the evidence more convincing?</p>
+			  <ul><li>In the final box on your worksheet write a conclusion explaining whether on balance the evidence is enough to convince you that transport fuelled the industrial revolution.</li></ul>
+            </div>
+            <div class="foot"></div>
+          </div>
+          <h2>Extension</h2>
+          <div id="tab4-content" class="tabContent">
+            <div class="head"></div>
+            <div class="body"><div class="subject-header">Learning path: History</div>
+              <h3>What to do?</h3>
+              <p>Watch the clip <em>Stress in a ski resort</em></p>
+			  <p>New industries, such as tourism, can now be said to be fuelled by transport improvements.</p>
+              <ul><li>Search Clipbank, using the Related clip lists as well as the search function, to find examples from around the world of how transport has helped industry.</li></ul>              
+            </div>
+            <div class="foot"></div>
+          </div>
+          
+          
+2-) here is the text after stripped html tags  out 
+
+           Starter 
+           
+              
+             
+              Learning path: History 
+               Key question 
+               Did transport fuel the industrial revolution? 
+               Learning Objective 
+	       
+               To categorise points as for or against an argument 
+               
+	       
+               What to do? 
+               
+                 Watch the clip:  Transport fuelled the industrial revolution.  
+               
+               The clips claims that transport fuelled the industrial revolution. Some historians argue that the industrial revolution only happened because of developments in transport. 
+			   
+			  	 Read the statements below and decide which points are  for  and which points are  against  the argument that industry expanded in the 18th and 19th centuries because of developments in transport. 
+			 
+			
+			 
+				 Industry expanded because of inventions and the discovery of steam power. 
+				 Improvements in transport allowed goods to be sold all over the country and all over the world so there were more customers to develop industry for. 
+				 Developments in transport allowed resources, such as coal from mines and cotton from America to come together to manufacture products. 
+				 Transport only developed because industry needed it. It was slow to develop as money was spent on improving roads, then building canals and the replacing them with railways in order to keep up with industry. 
+			 
+			
+			 Now try to think of 2 more statements of your own. 
+			
+             
+              
+           
+           Main activity 
+           
+              
+              Learning path: History 
+               Learning Objective 
+               
+                 To select evidence to support points 
+               
+               What to do? 
+               
+                Choose the 4 points that you think are most important - try to be balanced by having two  for  and two  against . 
+			   Write one in each of the point boxes of the paragraphs on the sheet  Constructing a balanced argument .    You might like to re write the points in your own words and use connectives to link the paragraphs. 
+              
+			   In history and in any argument, you need evidence to support your points. 
+			    Find evidence from these sources and from your own knowledge to support each of your points:  
+			   
+                  At a toll gate  
+                  Canals  
+                  Growing cities: traffic  
+				  Impact of the railway   
+				  Sailing ships   
+				  Liverpool: Capital of Culture   
+               
+			   Try to be specific in your evidence - use named examples of places or people. Use dates if you can. 
+             
+              
+           
+           Plenary 
+           
+              
+              Learning path: History 
+               Learning Objective 
+               
+                 To judge which of the arguments is most valid 
+               
+               What to do? 
+ 
+               In order to be a good historian, and get good marks in exams, you need to show your evaluation skills and make a judgement. Having been through the evidence which point do you think is most important? Why? Is there more evidence? Is the evidence more convincing? 
+			    In the final box on your worksheet write a conclusion explaining whether on balance the evidence is enough to convince you that transport fuelled the industrial revolution.  
+             
+              
+           
+           Extension 
+           
+              
+              Learning path: History 
+               What to do? 
+               Watch the clip  Stress in a ski resort  
+			   New industries, such as tourism, can now be said to be fuelled by transport improvements. 
+                Search Clipbank, using the Related clip lists as well as the search function, to find examples from around the world of how transport has helped industry.                
+             
+              
+           
+          
+         3-) here is the exception I get
+
+org.apache.lucene.search.highlight.InvalidTokenOffsetsException: Token div exceeds length of provided text sized 4114
+	at org.apache.lucene.search.highlight.Highlighter.getBestTextFragments(Highlighter.java:228)
+	at org.apache.lucene.search.highlight.Highlighter.getBestFragments(Highlighter.java:158)
+	at org.apache.lucene.search.highlight.Highlighter.getBestFragments(Highlighter.java:462)
+
+

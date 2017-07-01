@@ -1,0 +1,24 @@
+jUnit test-cases: success of some DocumentViewImportTest tests depends on Xerxes version being used
+
+
+
+Description:
+if e.g. xerxes v. 2.4.0 is used instead of v. 2.6.2 as specified in project.xml certain tests in DocumentViewImportTest fail.
+
+e.g. 
+
+Testcase: testWorkspaceImportXml(org.apache.jackrabbit.test.api.DocumentViewImportTest):	FAILED
+Xml text is not correctly stored. expected:<......> but was:<...
+       ...>
+junit.framework.ComparisonFailure: Xml text is not correctly stored. expected:<......> but was:<...
+       ...>
+	at org.apache.jackrabbit.test.api.DocumentViewImportTest.checkXmlTextNode(DocumentViewImportTest.java:240)
+	at org.apache.jackrabbit.test.api.DocumentViewImportTest.checkImportSimpleXMLTree(DocumentViewImportTest.java:174)
+	at org.apache.jackrabbit.test.api.DocumentViewImportTest.performTests(DocumentViewImportTest.java:143)
+	at org.apache.jackrabbit.test.api.DocumentViewImportTest.doTestImportXML(DocumentViewImportTest.java:115)
+	at org.apache.jackrabbit.test.api.DocumentViewImportTest.testWorkspaceImportXml(DocumentViewImportTest.java:73)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:39)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:25)
+	at org.apache.jackrabbit.test.AbstractJCRTest.run(AbstractJCRTest.java:401)
+

@@ -1,0 +1,6 @@
+Skip sync delay when changes are found
+
+
+
+Description:
+The cluster synchronization on a slave does always wait for some time (as specified in the sync delay) before fetching changes. If a lot of changes are being written to the master, a slave will considerably fall behind the master in term of revisions, which may endanger the integrity of the cluster if the master will crash. I therefore suggest that a slave should rather immediately contact the master again after some changes have been found, until it sees no more changes.

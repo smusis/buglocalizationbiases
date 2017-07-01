@@ -1,0 +1,10 @@
+CustomScoreQuery should support multiple ValueSourceQueries
+
+
+
+Description:
+CustomScoreQuery's constructor currently accepts a subQuery, and a ValueSourceQuery.  I would like it to accept multiple ValueSourceQueries.  The workaround of nested CustomScoreQueries works for simple cases, but it quickly becomes either cumbersome to manage, or impossible to implement the desired function.
+
+This patch implements CustomMultiScoreQuery with my desired functionality, and refactors CustomScoreQuery to implement the special case of a CustomMultiScoreQuery with 0 or 1 ValueSourceQueries.  This keeps the CustomScoreQuery API intact.
+
+This patch includes basic tests, more or less taken from the original implementation, and customized a bit to cover the new cases.

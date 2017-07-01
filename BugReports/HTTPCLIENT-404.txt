@@ -1,0 +1,7 @@
+SO_TIMEOUT parameter on the method level has no effect
+
+
+
+Description:
+This bug has been reported on the HttpClient user list by Ilya Kharmatsky <ilyak
+-at- mainsoft.com>

@@ -1,0 +1,6 @@
+Index recovery may fail when redo log contains nodes that are part of an index aggregate
+
+
+
+Description:
+SearchIndex.mergeAggregatedNodeIndexes() will throw a NullPointerException because index is not yet set. The call is made from the recovery code that is triggered in the MultiIndex constructor.

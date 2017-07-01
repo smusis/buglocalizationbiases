@@ -1,0 +1,8 @@
+Elision filter for simple french analyzing
+
+
+
+Description:
+If you don't wont to use stemming, StandardAnalyzer miss some french strangeness like elision.
+"l'avion" wich means "the plane" must be tokenized as "avion" (plane).
+This filter could be used with other latin language if elision exists.

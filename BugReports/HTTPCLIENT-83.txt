@@ -1,0 +1,16 @@
+handle multivalue headers correctly
+
+
+
+Description:
+Some times, web servers send back multiple headers with the same key. e.g.
+
+WWW-Authenticate: Negotiate
+WWW-Authenticate: NTLM
+WWW-Authenticate: Basic realm="kmdc5"
+
+To handle this correctly, we should add a method 
+
+public java.util.Iterator getResponseHeaders(java.lang.String name)
+
+just as in javax.servlet.http.HttpServletRequest.

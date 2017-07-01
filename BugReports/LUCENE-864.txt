@@ -1,0 +1,16 @@
+contrib/benchmark files need eol-style set
+
+
+
+Description:
+The following files in contrib/benchmark don't have eol-style set to native, so when they are checked out, they don't get converted.
+
+./build.xml:                    
+./CHANGES.txt:                                                             
+./conf/sample.alg:                                                                                
+./conf/standard.alg:                                                                           
+./conf/sloppy-phrase.alg:                                                                                 
+./conf/deletes.alg:                                                                                         
+./conf/micro-standard.alg:                                                                   
+./conf/compound-penalty.alg:                                                                          
+

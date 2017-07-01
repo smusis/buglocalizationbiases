@@ -1,0 +1,22 @@
+Performance fix, when deserializing large jcr:binary in ValueHelper.deserialize()
+
+
+
+Description:
+While profiling import of large PDF files into Magnolia 3.6.3 (which uses Jackrabbit 1.4 as JCR repository) we had found that there is large CPU time spent on:
+
+"http-8080-4" daemon prio=6 tid=0x5569fc00 nid=0x6ec runnable [0x5712d000..0x5712fb14]
+   java.lang.Thread.State: RUNNABLE
+	at java.io.FileOutputStream.writeBytes(Native Method)
+	at java.io.FileOutputStream.write(FileOutputStream.java:260)
+	at org.apache.jackrabbit.util.Base64.decode(Base64.java:269)
+	at org.apache.jackrabbit.util.Base64.decode(Base64.java:184)
+	at org.apache.jackrabbit.value.ValueHelper.deserialize(ValueHelper.java:759)
+	at org.apache.jackrabbit.core.xml.BufferedStringValue.getValue(BufferedStringValue.java:258)
+	at org.apache.jackrabbit.core.xml.PropInfo.apply(PropInfo.java:132)
+
+Looking into source code of Base64.decode it became obvious, that it writes each 1to3byte chunk into unbuffered FileOutputStream (thus calling OS kernel many times to write just few bytes) which causes lot of CPU usage without disk usage.
+
+
+Provided fix is quite trivial - just wrap FileOutputStream into BufferedOutputStream.
+

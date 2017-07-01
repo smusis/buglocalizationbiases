@@ -1,0 +1,21 @@
+Automatic repository shutdown
+
+
+
+Description:
+Currently Jackrabbit relies on two mechanisms for safely shutting down a repository:
+
+    1) client application invoking RepositoryImpl.shutdown(), or
+    2) the shutdown hook installed by RepositoryImpl being run
+
+Both of these mechanisms have problems:
+
+    1) The shutdown() method is not a part of the JCR API, thus making the client application depend on a Jackrabbit-specific feature
+    2) In some cases the shutdown hook is not properly run (see issues JCR-120 and JCR-233)
+
+I think the JCR spec thinks of the Repository and Session interfaces as being somewhat similar to the JDBC DataSource and Connection interfaces. The Repository instances have no real lifecycle methods while the Session instances have clearly specified login and logout steps. (DataSource.getConnection() = Repository.login(), Session.logout() = Connection.close()) However the Jackrabbit implementation defines an explicit lifecycle for the RepositoryImpl instances.
+
+This causes problems especially for container environments (JNDI, Spring) where it is hard or even impossible to specify a shutdown mechanism for resource factories like the Repository instances. The current solution for such environments is to use a shutdown hook, but as reported this solution does not work perfectly in all cases.
+
+How about if we bound the RepositoryImpl lifecycle to the lifecycles of the instantiated Sessions. A RepositoryImpl instance could initialize (and lock) the repository when the first session is opened and automatically shut down when the last session has logged out. As long as the sessions are properly logged out (or finalized by the garbage collector) there would be no need for an explicitly RepositoryImpl.shutdown() call. The current behaviour of pre-initializing the repository and shutting down during a shutdown hook could be enabled with a configuration option for environments (like global JNDI resources) in which the shutdown hooks work well.
+

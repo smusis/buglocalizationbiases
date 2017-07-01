@@ -1,0 +1,33 @@
+Test failure: org.apache.jackrabbit.test.TestAll
+
+
+
+Description:
+Subsequent test runs fail unless doing a mvn clean first.
+
+-------------------------------------------------------
+ T E S T S
+-------------------------------------------------------
+Running org.apache.jackrabbit.spi2jcr.spi.TestAll
+Tests run: 50, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 3.965 sec
+Running org.apache.jackrabbit.test.TestAll
+Tests run: 1038, Failures: 11, Errors: 0, Skipped: 0, Time elapsed: 44.925 sec <<< FAILURE!
+Running org.apache.jackrabbit.spi2jcr.jcr2spi.TestAll
+Tests run: 394, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 5.416 sec
+
+Results :
+
+Failed tests:
+  testOrderByAscending(org.apache.jackrabbit.test.api.query.SQLOrderByTest)
+  testOrderByDescending(org.apache.jackrabbit.test.api.query.SQLOrderByTest)
+  testOrderByDefault(org.apache.jackrabbit.test.api.query.SQLOrderByTest)
+  testDocOrderIndexedNotation(org.apache.jackrabbit.test.api.query.XPathPosIndexTest)
+  testDocOrderPositionFunction(org.apache.jackrabbit.test.api.query.XPathDocOrderTest)
+  testDocOrderPositionIndex(org.apache.jackrabbit.test.api.query.XPathDocOrderTest)
+  testDocOrderLastFunction(org.apache.jackrabbit.test.api.query.XPathDocOrderTest)
+  testDocOrderFirstFunction(org.apache.jackrabbit.test.api.query.XPathDocOrderTest)
+  testOrderByAscending(org.apache.jackrabbit.test.api.query.XPathOrderByTest)
+  testOrderByDescending(org.apache.jackrabbit.test.api.query.XPathOrderByTest)
+  testOrderBy(org.apache.jackrabbit.test.api.query.XPathOrderByTest)
+
+

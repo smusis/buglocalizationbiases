@@ -1,0 +1,6 @@
+please have spi2dav create a test-jar
+
+
+
+Description:
+for my davex-on-sling integration tests, I need the test classes from spi2dav.

@@ -1,0 +1,6 @@
+jcr mapping layer does not expose node move and node copy via PersistenceManager.java
+
+
+
+Description:
+The PersistenceManagerImpl.java  in jcr-apping layer does not implement move and copy methods for a node.  

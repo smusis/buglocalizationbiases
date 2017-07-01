@@ -1,0 +1,21 @@
+isValid should be invoked after analyze rather than before it so it can validate the output of analyze
+
+
+
+Description:
+The Synonym map has a protected method String analyze(String word) designed for custom stemming.
+
+However, before analyze is invoked on a word, boolean isValid(String str) is used to validate the word - which causes the program to discard words that maybe useable by the custom analyze method. 
+
+I think that isValid should be invoked after analyze rather than before it so it can validate the output of analyze and allow implemters to decide what is valid for the overridden analyze method. (In fact, if you look at code snippet below, isValid should really go after the empty string check)
+
+This is a two line change in org.apache.lucene.index.memory.SynonymMap
+
+      /*
+       * Part B: ignore phrases (with spaces and hyphens) and
+       * non-alphabetic words, and let user customize word (e.g. do some
+       * stemming)
+       */
+      if (!isValid(word)) continue; // ignore
+      word = analyze(word);
+      if (word == null || word.length() == 0) continue; // ignore

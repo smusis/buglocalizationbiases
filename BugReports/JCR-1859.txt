@@ -1,0 +1,16 @@
+BeanLazyLoader is not Serializable
+
+
+
+Description:
+Class org.apache.jackrabbit.ocm.manager.objectconverter.impl.BeanLazyLoader is not serializable.
+In ocm module we can mark some property to be lazy loaded. For example @Bean(..., proxy=true)
+In such scenario instead of object we will have here proxy BeanLazyLoader which is not serializable.
+
+It is problematic while using another technologies. 
+For example Spring WebFlow requires objects (model) stored in scope to be Serializable.
+So when we use proxied model with Spring WebFlow we received exception "org.springframework.webflow.execution.repository.snapshot.SnapshotCreationException: Could not serialize flow execution; make sure all objects stored in flow or flash scope are serializable.... Caused by: java.io.NotSerializableException: org.apache.jackrabbit.ocm.manager.objectconverter.impl.BeanLazyLoader
+..."
+
+Please make BeanLazyLoader Serializable.
+

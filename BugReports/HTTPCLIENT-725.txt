@@ -1,0 +1,12 @@
+TSCCM code cleanup
+
+
+
+Description:
+The ThreadSafeClientConnectionManager, or rather it's ConnPoolByRoute, needs plenty of cleanup.
+- use long + TimeUnit for timeout intervals (Java 5 style)
+- compute timeout end date once instead of remaining interval
+- review which methods should acquire the pool lock,
+  and which should expect the caller to have done that
+- use factory methods to instantiate some of the helper objects
+

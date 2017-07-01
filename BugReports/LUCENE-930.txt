@@ -1,0 +1,21 @@
+fail build if contrib tests fail to compile
+
+
+
+Description:
+spinoff of LUCENE-885, from Steven's comments...
+
+Looking at the current build (r545324) it looks like the some contrib failures are getting swallowed. Things like lucli are throwing errors along the lines of
+
+ [subant] /home/barronpark/smparkes/work/lucene/trunk/common-build.xml:366: srcdir "/home/barronpark/smparkes/work/lucene/trunk/contrib/lucli/src/test" does not exist!
+
+but these don't make it back up to the top level status.
+
+It looks like the current state will bubble up junit failures, but maybe not build failures?
+
+...
+
+It's "test-compile-contrib" (if you will) that fails and rather being contrib-crawled, that's only done as the target of "test" in each contrib directory, at which point, it's running in the protected contrib-crawl.
+
+Easy enough to lift this loop into another target, e.g., build-contrib-test. And that will start surfacing errors, which I can work through.
+

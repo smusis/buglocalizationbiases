@@ -1,0 +1,16 @@
+Error in FSDirectory if java.io.tmpdir incorrectly specified
+
+
+
+Description:
+A user of the JAMWiki project (http://jamwiki.org/) reported an error with the following stack trace:
+
+SEVERE: Unable to create search instance /usr/share/tomcat5/webapps/jamwiki-0.3.4-beta7/test/base/search/indexen
+java.io.IOException: Cannot create directory: /temp
+        at org.apache.lucene.store.FSDirectory.init(FSDirectory.java:171)
+        at org.apache.lucene.store.FSDirectory.getDirectory(FSDirectory.java:141)
+        at org.apache.lucene.store.FSDirectory.getDirectory(FSDirectory.java:117)
+        at org.jamwiki.search.LuceneSearchEngine.getSearchIndexPath(LuceneSearchEngine.java:318)
+
+The culprit is that the java.io.tmpdir property was incorrectly specified on the user's system.  Lucene could easily handle this issue by modifying the FSDirectory.init() method.  Currently the code uses the index directory if java.io.tmpdir and org.apache.lucene.lockDir are unspecified, but it could use that directory if those values are unspecified OR if they are invalid.  Doing so would make Lucene a bit more robust without breaking any existing installations.
+

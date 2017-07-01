@@ -1,0 +1,16 @@
+Default blob size for mysql ddl too small
+
+
+
+Description:
+the default datatype for:
+NODE.NODE_DATA
+PROP.PROP_DATA
+REFS.REFS_DATA 
+in the mysql ddl is "BLOB" which is pretty small to the default size in other dbs.
+
+When playing with a (not very large) jackrabbit repo using mysql for persistence I easily got data truncation errors on both NODE.NODE_DATA and PROP.PROP_DATA columns. The same issue has been reported in the past by other users.
+Although anyone could easily create a custom ddl with larger fields it should be nice to increase the blob size in the mysql ddl embedded in jackrabbit, in order to avoid this kind of problems for new users (you usually learn this the hard way, when the number of nodes in your repository starts to grow and jackrabbit start throwing errors :/).
+Changing BLOB to MEDIUMBLOB will make the default size for mysql more similar to the one in other dbs, without critically increasing the used space...
+
+

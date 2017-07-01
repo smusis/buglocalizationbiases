@@ -1,0 +1,16 @@
+DefaultHttpRequestRetryHandler#retryRequest should not retry aborted requests
+
+
+
+Description:
+DefaultHttpRequestRetryHandler#retryRequest incorrectly retries aborted requests; I have seen the following log messages in JMeter:
+
+org.apache.http.impl.client.DefaultHttpClient: I/O exception (java.net.SocketException) caught when processing request: socket closed
+org.apache.http.impl.client.DefaultHttpClient: Retrying request
+
+and
+
+org.apache.http.impl.client.DefaultHttpClient: I/O exception (java.net.BindException) caught when connecting to the target host: Address already in use: connect
+org.apache.http.impl.client.DefaultHttpClient: Retrying connect
+
+The abort() method sets the isAborted() flag, but the retry handler does not check it.

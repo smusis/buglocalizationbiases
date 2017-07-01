@@ -1,0 +1,8 @@
+Improve logging of Session.save() to trace back root cause of externally modified nodes
+
+
+
+Description:
+Currently it's very difficult to find the root cause of error like: javax.jcr.InvalidItemStateException: <UUID> has been modified externally.
+
+To better trace back such issues, it would be nice to add DEBUG logging for the Session.save() call.

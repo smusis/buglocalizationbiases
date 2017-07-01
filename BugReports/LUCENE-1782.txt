@@ -1,0 +1,19 @@
+Rename OriginalQueryParserHelper
+
+
+
+Description:
+We should rename the new QueryParser so it's clearer that it's
+Lucene's default QueryParser, going forward, and not just a temporary
+"bridge" to a future new QueryParser.
+
+How about we rename oal.queryParser.original -->
+oal.queryParser.standard (can't use "default": it's a Java keyword)?
+Then, leave the OriginalQueryParserHelper under that package, but
+simply rename it to QueryParser?
+
+This way if we create other sub-packages in the future, eg
+ComplexPhraseQueryParser, they too can have a QueryParser class under
+them, to make it clear that's the "top" class you use to parse
+queries.
+

@@ -1,0 +1,13 @@
+Add search timeout support to Lucene
+
+
+
+Description:
+This patch is based on Nutch-308. 
+
+This patch adds support for a maximum search time limit. After this time is exceeded, the search thread is stopped, partial results (if any) are returned and the total number of results is estimated.
+
+This patch tries to minimize the overhead related to time-keeping by using a version of safe unsynchronized timer.
+
+This was also discussed in an e-mail thread.
+http://www.nabble.com/search-timeout-tf3410206.html#a9501029

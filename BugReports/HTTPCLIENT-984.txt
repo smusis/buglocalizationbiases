@@ -1,0 +1,6 @@
+additional conditional compliance tests for the caching module for Content-Encoding, Content-Location, Date, Expires, Server, Transfer-Encoding, and Vary headers
+
+
+
+Description:
+Patch is forthcoming.

@@ -1,0 +1,7 @@
+Handle Null Arguments consistantly
+
+
+
+Description:
+Consider throwing a NullPointerException or InvalidArgumentException for null
+argument when they are not allowed.  Be consistant and document behaviour.

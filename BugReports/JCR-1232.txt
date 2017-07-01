@@ -1,0 +1,10 @@
+Merge UUID to NodeId
+
+
+
+Description:
+The current NodeId class is mostly just a wrapper around UUID, which causes two objects to be instantiated for each node identifier that the system uses. The memory and processing overhead is quite small, but given that there are tons of NodeId instances it would be good to eliminate that overhead.
+
+There is also lots of code that just converts UUIDs to NodeIds and vice versa. We could simplify such code if we just used NodeId everywhere.
+
+Also, we might want to open up the possibility of using non-UUID node identifiers at some point in future, so it would make a lot of sense to remove the NodeId.getUUID method and rely directly on NodeId and it's equals(), hashCode(), and toString() methods in many places where we currently use UUIDs.

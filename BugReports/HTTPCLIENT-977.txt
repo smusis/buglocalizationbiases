@@ -1,0 +1,6 @@
+provide a memcached implementation for HttpCache
+
+
+
+Description:
+The feature here would be an implementation of the HttpCache interface that stored cache entries in memcached.

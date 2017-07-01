@@ -1,0 +1,6 @@
+IndexWriter.deleteDocuments bug
+
+
+
+Description:
+IndexWriter.deleteDocuments() fails random testing

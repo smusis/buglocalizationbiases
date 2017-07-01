@@ -1,0 +1,11 @@
+Lucene Scorer implementations should handle the 'advance' to NO_MORE_DOCS optimisation better
+
+
+
+Description:
+This is from the lucene Scorer (actually DocIdSetIterator) api:
+"NOTE: this method may be called with NO_MORE_DOCS for efficiency by some Scorers. If your implementation cannot efficiently determine that it should exhaust, it is recommended that you check for that value in each call to this method."
+
+None of the scorer implementations does that currently. Except for ChildAxisScorer thanks to JCR-3082.
+
+This is a worthwhile effort, which can save us from bugs (JCR-3082) but also leverage some performance optimisation hints from the lucene api.

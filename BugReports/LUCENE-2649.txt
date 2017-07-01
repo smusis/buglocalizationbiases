@@ -1,0 +1,8 @@
+FieldCache should include a BitSet for matching docs
+
+
+
+Description:
+The FieldCache returns an array representing the values for each doc.  However there is no way to know if the doc actually has a value.
+
+This should be changed to return an object representing the values *and* a BitSet for all valid docs.

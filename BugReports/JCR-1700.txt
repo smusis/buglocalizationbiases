@@ -1,0 +1,10 @@
+Deprecate NamespaceListener and AbstractNamespaceResolver
+
+
+
+Description:
+The NamespaceListener interface is no longer used with the JSR 283 style namespace handling that avoids lots of the synchronization that was previously to keep the local namespace mappings up to date.
+
+Also, the only (remaining) purpose of the AbstractNamespaceResolver class is to add support for managing NamespaceListeners. Since that functionality is nowhere used anymore, we can make all subclasses use the NamespaceResolver interface directly.
+
+Since NamespaceListener and AbstractNamespaceResolver are public in jackrabbit-spi-commons, I will for now only mark them as deprecated. We can get rid of them in Jackrabbit 2.0.

@@ -1,0 +1,6 @@
+Upgrade all default socket factories to use SO_REUSEADDR parameter
+
+
+
+Description:
+See HTTPCORE-209

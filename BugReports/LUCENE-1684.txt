@@ -1,0 +1,48 @@
+Add matchVersion to StandardAnalyzer
+
+
+
+Description:
+I think we should add a matchVersion arg to StandardAnalyzer.  This
+allows us to fix bugs (for new users) while keeping precise back
+compat (for users who upgrade).
+
+We've discussed this on java-dev, but I'd like to now make it concrete
+(patch attached).  I think it actually works very well, and is a
+simple tool to help us carry out our back-compat policy.
+
+I coded up an example with StandardAnalyzer:
+
+  * The ctor now takes a required arg (Version matchVersion).  You
+    pass Version.LUCENE_CURRENT to always get lates & greatest, or eg
+    Version.LUCENE_24 to match 2.4's bugs/settings/behavior.
+
+  * StandardAalyzer conditionalizes the "replace invalid acronym" and
+    "enable position increment in StopFilter" based on matchVersion.
+
+  * It also prevents creating zillions of ctors, over time, as we need
+    to change settings in the class.  EG StandardAnalyzer now has 2
+    settings that are version dependent, and there's at least another
+    2 issues open on fixing some more of its bugs.
+
+The migration is also very clean: we'd only add this to classes on an
+"as needed" basis.  On the first release that adds the arg, the
+default remains back compatible with the prior release.  Then, going
+forward, we are free to fix issues on that class and conditionalize by
+matchVersion.
+
+The javadoc at the top of StandardAnalyzer clearly calls out what
+version specific behavior is done:
+
+{code}
+ * <p>You must specify the required {@link Version}
+ * compatibility when creating StandardAnalyzer:
+ * <ul>
+ *   <li> As of 2.9, StopFilter preserves position
+ *        increments by default
+ *   <li> As of 2.9, Tokens incorrectly idenfied as acronyms
+ *        are corrected (see <a href="https://issues.apache.org/jira/browse/LUCENE-1068">LUCENE-1608</a>
+ * </ul>
+ *
+{code}
+

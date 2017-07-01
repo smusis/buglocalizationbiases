@@ -1,0 +1,8 @@
+Get rid of NonMatchingScorer from BooleanScorer2
+
+
+
+Description:
+Over in LUCENE-1614 Mike has made a comment about removing NonMatchinScorer from BS2, and return null in BooleanWeight.scorer(). I've checked and this can be easily done, so I'm going to post a patch shortly. For reference: https://issues.apache.org/jira/browse/LUCENE-1614?focusedCommentId=12715064&page=com.atlassian.jira.plugin.system.issuetabpanels%3Acomment-tabpanel#action_12715064.
+
+I've marked the issue as 2.9 just because it's small, and kind of related to all the search enhancements done for 2.9.

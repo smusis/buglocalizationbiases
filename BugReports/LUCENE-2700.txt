@@ -1,0 +1,30 @@
+Expose DocValues via Fields
+
+
+
+Description:
+DocValues Reader are currently exposed / accessed directly via IndexReader. To integrate the new feature in a more "native" way we should expose the DocValues via Fields on a perSegment level and on MultiFields in the multi reader case. DocValues should be side by side with Fields.terms  enabling access to Source, SortedSource and ValuesEnum something like that:
+
+{code}
+public abstract class Fields {
+...
+
+  public DocValues values();
+
+}
+
+public abstract class DocValues {
+  /** on disk enum based API */
+  public abstract ValuesEnum getEnum() throws IOException;
+  /** in memory Random Access API - with enum support - first call loads values in ram*/
+  public abstract Source getSource() throws IOException;
+  /** sorted in memory Random Access API - optional operation */
+  public SortedSource getSortedSource(Comparator<BytesRef> comparator) throws IOException, UnsupportedOperationException;
+  /** unloads previously loaded source only but keeps the doc values open */
+  public abstract unload();
+  /** closes the doc values */
+  public abstract close();
+}
+{code}
+
+

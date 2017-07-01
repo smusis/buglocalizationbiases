@@ -1,0 +1,10 @@
+Thread safety and visibility Improvements
+
+
+
+Description:
+AbstractAuthenticationHandler.DEFAULT_SCHEME_PRIORITY is not protected against external changes.
+
+Although the field is private, subclasses can obtain a reference to it and so may be able to change it.
+
+Consider making the list read-only, or returning a copy instead.

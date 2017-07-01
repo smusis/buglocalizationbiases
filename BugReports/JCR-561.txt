@@ -1,0 +1,38 @@
+Add support to provide custom classloader for class instantiation from configuration
+
+
+
+Description:
+The configuration framework is based around a BaseConfig class, which provides functionality to instantiate a class whose name is configured in the repository configuration file. Examples of such classes are the FileSystem or the PersistenceManager elements.
+
+The current implementation of the BeanConfig.newInstance() method is to use the "default classloader" to load configured classes. That is, the class loader of the BeanConfig class is actually used. This is - generally - the class loader which loads the repository. In certain environments, classes may be provided from outside the core repository class loader. An example fo such an environment is an OSGi setup where each bundle gets its own class laoder, which is separate from all other class loaders except declared by configuration.
+
+I propose to enhance the BeanConfig class as follows:
+
+public class BeanConfig {
+ ...
+ // Current default class loader, default is BeanConfig's class loader
+ private static ClassLoader defaultClassLoader =
+BeanConfig.class.getClassLoader();
+ // Current instance class loader
+ private ClassLoader classLoader;
+ ...
+ // Sets the default class loader for new BeanConfig instances
+ public static void setDefaultClassLoader(ClassLoader loader);
+ // Returns the default class loader for new BeanConfig instances
+ public static ClassLoader getClassLoader();
+ // Sets the class loader of this BeanConfig instance
+ public void setClassLoader(ClassLoader loader);
+ // Returns the class loader of this BeanConfig instance
+ public ClassLoader getClassLoader();
+}
+
+The BeanConfig.newInstance method would then use the following to use the class:
+
+public Object newInstance() throws ConfigurationException {
+ Class clazz = Class.forName(getClassName(), true, getClassLoader());
+ ...
+}
+
+
+This has also been discussed on the dev list: http://mail-archives.apache.org/mod_mbox/jackrabbit-dev/200607.mbox/%3cae03024e0607272341l52aff9b2h3957131411790bc9@mail.gmail.com%3e

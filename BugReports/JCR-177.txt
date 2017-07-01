@@ -1,0 +1,8 @@
+Commit volatile index to disc after some configurable idle time
+
+
+
+Description:
+The query handler keeps the most recent part of the index in memory (volatile index). That index is committed to disc when a certain amount of nodes (config param: minMergeDocs) has been added. Most of the times the volatile index will contain some nodes, causing a redo.log that needs to be applied when the jackrabbit process is killed.
+
+In addition to the size threshold (minMergeDocs) of the volatile index, an idle time limit should force a commit to disc. The volatile index would be written to disc after some configurable idle time. This will result in an persistent index (on dic) which is most of the time in sync with the data, but still minimizes the disc IO during heavy modification activity on the workspace.

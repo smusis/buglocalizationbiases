@@ -1,0 +1,18 @@
+The creation of a spell index from a LuceneDictionary via SpellChecker.indexDictionary (Dictionary dict) fails starting with 1.9.1 (up to current svn version)
+
+
+
+Description:
+Two different errors in 1.9.1/2.0.0 and current svn version.
+
+1.9.1/2.0.0:
+at the end of indexDictionary (Dictionary dict) 
+the IndexReader-instance reader is closed.
+This causes a NullpointerException because reader has not been initialized before (neither in that method nor in the constructor).
+Uncommenting this line (reader.close()) seems to resolve that issue.
+
+current svn:
+the constructor tries to create an IndexSearcher-instance for the specified path;
+as there is no index in that path - it is not created yet -  an exception is thrown.
+
+

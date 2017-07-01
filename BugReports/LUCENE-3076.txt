@@ -1,0 +1,22 @@
+add -Dtests.codecprovider
+
+
+
+Description:
+Currently to test a codec (or set of codecs) you have to add them to lucene's core and edit a couple of arrays here and there...
+
+It would be nice if when using the test-framework you could instead specify a codecprovider by classname (possibly containing your own set of huper-duper codecs).
+
+For example I made the following little codecprovider in contrib:
+{noformat}
+public class AppendingCodecProvider extends CodecProvider {
+  public AppendingCodecProvider() {
+    register(new AppendingCodec());
+    register(new SimpleTextCodec());
+  }
+}
+{noformat}
+
+Then, I'm able to run tests with 'ant -lib build/contrib/misc/lucene-misc-4.0-SNAPSHOT.jar test-core -Dtests.codecprovider=org.apache.lucene.index.codecs.appending.AppendingCodecProvider', and it always picks from my set of  codecs (in this case Appending and SimpleText), and I can set -Dtests.codec=Appending if i want to set just one.
+
+

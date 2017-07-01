@@ -1,0 +1,11 @@
+Extend the client's redirect handling interface to allow control of the content of the redirect
+
+
+
+Description:
+The existing RedirectHandler interface provides the ability influence which situations cause redirects, but gives you no control over the content of the redirect itself.  For example, if you want the client follow the redirect of a POST request with a POST request to the new location, you can't do it.  DefaultRequestDirector decides what method will be used on the redirect request and as of the most recent patch, it's always either a HEAD or a GET.
+
+One option for resolving this might be extending the RedirectHandler interface to be a factory for creating the redirect request object.  The the DefaultRequestDirector could then be changed to ask the RedirectHandler to create the appropriate request for the situation.
+
+Thanks,
+Ben

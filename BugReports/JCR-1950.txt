@@ -1,0 +1,14 @@
+Testing for indexable properties should check the default indexable properties first
+
+
+
+Description:
+org.apache.jackrabbit.core.query.lucene.NodeIndexer#addValue, uses the following condition for a PropertyType.NAME type of property:
+
+if (isIndexed(name)
+                    || name.equals(NameConstants.JCR_PRIMARYTYPE)
+                    || name.equals(NameConstants.JCR_MIXINTYPES)) {
+                addNameValue(doc, fieldName, value.getQName());
+}
+
+It'd be more efficient to test the default properties first (which are on every node anyway) than to query the custom indexing rules every time. 

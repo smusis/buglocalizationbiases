@@ -1,0 +1,35 @@
+Unreleased 2.3 version of IndexWriter.optimize()  consistly throws java.lang.IllegalArgumentException out-of-the-box
+
+
+
+Description:
+Since the upcoming 2.3 version of Lucene has support for the setRAMBufferSizeMB() method in Index Writer,  I thought I would test its performance.   So, using my application that was built upon (and worked with) Lucene 2.2,  I downloaded the nightly build 2007-10-26_03-16-46 and rebuilt my application with new code setting setRAMBufferSizeMB() from a properties file.   My test data resides in a database table of 30 columns holding 1.25 million records.   The good news is that performance is superior to Lucene 2.2.  The indexing completes in roughly 1/3 the time.   The bad news is the Index Writer.optimize() step now throws an java.lang.IllegalArgumentException.
+I also run tests against various other tables.  Indexing smaller amounts of data did not throw the exception.  Indexing largers amounts of data did throw the exception.  Note, I also tested nightly builds dating back to 2007-10-05.
+
+...
+INFO:  SEIndexThread.commitCheck...
+INFO:    ----Commit point reached:  1200000
+INFO:  SEIndexThread.commitCheck...
+INFO:    ----Commit point reached:  1225000
+INFO:  SEIndexThread.commitCheck...
+INFO:    ----Commit point reached:  1250000
+INFO:  SEIndexThread.closeIndex()...
+INFO:    ----commit point reached:  1250659
+INFO:    ----optimize index
+INFO: SEIndexThread():  java.lang.IllegalArgumentException
+
+java.lang.IllegalArgumentException
+        at java.lang.Thread.setPriority(Thread.java(Compiled Code))
+        at org.apache.lucene.index.ConcurrentMergeScheduler.merge(ConcurrentMerg
+eScheduler.java(Compiled Code))
+        at org.apache.lucene.index.IndexWriter.maybeMerge(IndexWriter.java:1750)
+        at org.apache.lucene.index.IndexWriter.optimize(IndexWriter.java:1686)
+        at org.apache.lucene.index.IndexWriter.optimize(IndexWriter.java:1652)
+        at LuceneSearchEngine.optimizeIndex(LuceneSearchEngine.java:643)
+        at LuceneSearchEngine.optimizeIndex(LuceneSearchEngine.java:636)
+        at SEIndexThread.closeIndex(SEIndexThread.java:674)
+        at SEIndexThread.processSearchObject(SEIndexThread.java:487)
+        at SEIndexThread.prepareIndex(SEIndexThread.java:391)
+        at SEIndexThread.run(SEIndexThread.java:41)
+
+

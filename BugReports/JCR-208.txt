@@ -1,0 +1,6 @@
+tck doesn't compile (use of enum keyword)
+
+
+
+Description:
+Use if enum keyword in TestFinder (patch will be attached)

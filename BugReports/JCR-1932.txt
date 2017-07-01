@@ -1,0 +1,13 @@
+Session.getAttributes( ) call always returns an empty array
+
+
+
+Description:
+Repository repository = new RMIRemoteRepository("//localhost:1099/jackrabbit.repository");
+SimpleCredentials c = new SimpleCredentials("alex","ok".toCharArray());
+c.setAttribute("anAttribute", "aValue");
+Session s = repository.login(c, "aWorkspace");
+String[]attr=s.getAttributeNames();
+
+array attr is empty.
+according to docs it should contains attributes from the SimpleCredentials object.

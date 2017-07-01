@@ -1,0 +1,10 @@
+Proxy tunneling/auth with CONNECT for non-HTTP protocols
+
+
+
+Description:
+HttpClient would be even more useful if it supported connections tunneled 
+through proxies and proxy authentication for non-HTTP protocols. E.g. Binary 
+protocols such as SSH or JXTA-TCP could be tunneled through a web proxy if 
+HttpClient provided access to the underlying Socket after the negotiations 
+(auth, CONNECT) with the web proxy were complete.

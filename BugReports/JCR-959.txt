@@ -1,0 +1,6 @@
+Remove @author tags in jackrabbit-jcr-rmi
+
+
+
+Description:
+It is a recommendation within Apache not to use @author tags or other means to identify source code with individual developers.  The @author tags in jackrabbit-jcr-rmi should therefore be removed.

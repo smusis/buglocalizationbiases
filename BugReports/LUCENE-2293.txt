@@ -1,0 +1,57 @@
+IndexWriter has hard limit on max concurrency
+
+
+
+Description:
+DocumentsWriter has this nasty hardwired constant:
+
+{code}
+private final static int MAX_THREAD_STATE = 5;
+{code}
+
+which probably I should have attached a //nocommit to the moment I
+wrote it ;)
+
+That constant sets the max number of thread states to 5.  This means,
+if more than 5 threads enter IndexWriter at once, they will "share"
+only 5 thread states, meaning we gate CPU concurrency to 5 running
+threads inside IW (each thread must first wait for the last thread to
+finish using the thread state before grabbing it).
+
+This is bad because modern hardware can make use of more than 5
+threads.  So I think an immediate fix is to make this settable
+(expert), and increase the default (8?).
+
+It's tricky, though, because the more thread states, the less RAM
+efficiency you have, meaning the worse indexing throughput.  So you
+shouldn't up and set this to 50: you'll be flushing too often.
+
+But... I think a better fix is to re-think how threads write state
+into DocumentsWriter.  Today, a single docID stream is assigned across
+threads (eg one thread gets docID=0, next one docID=1, etc.), and each
+thread writes to a private RAM buffer (living in the thread state),
+and then on flush we do a merge sort.  The merge sort is inefficient
+(does not currently use a PQ)... and, wasteful because we must
+re-decode every posting byte.
+
+I think we could change this, so that threads write to private RAM
+buffers, with a private docID stream, but then instead of merging on
+flush, we directly flush each thread as its own segment (and, allocate
+private docIDs to each thread).  We can then leave merging to CMS
+which can already run merges in the BG without blocking ongoing
+indexing (unlike the merge we do in flush, today).
+
+This would also allow us to separately flush thread states.  Ie, we
+need not flush all thread states at once -- we can flush one when it
+gets too big, and then let the others keep running.  This should be a
+good concurrency gain since is uses IO & CPU resources "throughout"
+indexing instead of "big burst of CPU only" then "big burst of IO
+only" that we have today (flush today "stops the world").
+
+One downside I can think of is... docIDs would now be "less
+monotonic", meaning if N threads are indexing, you'll roughly get
+in-time-order assignment of docIDs.  But with this change, all of one
+thread state would get 0..N docIDs, the next thread state'd get
+N+1...M docIDs, etc.  However, a single thread would still get
+monotonic assignment of docIDs.
+

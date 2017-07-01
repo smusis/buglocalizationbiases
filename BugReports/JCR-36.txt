@@ -1,0 +1,12 @@
+NodeTypeRegistry.reregister unregisters dependent types
+
+
+
+Description:
+NodeTypeRegistry.reregister allows modifying a registered node type if the difference to the currently registered node type with the same name is TRIVIAL according to NodeTypeDefDiff.
+
+Before registering the new node type definition the old node type is unregistered. The side effect of that first step is that also all NodeTypes, which depend (extend ?) the node type to be re-registered, are removed from the registry.
+
+After the modified node type is then registered, the previously registered dependent node types will not be registered anymore and will not be known any more.
+
+While it makes sense to me, to temporarily unregister dependent node types, those must be registered again after the re-registered node type has been registered. Otherwise the system may become pretty useless.

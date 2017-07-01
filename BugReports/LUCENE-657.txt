@@ -1,0 +1,12 @@
+FuzzyQuery should not be final
+
+
+
+Description:
+I am trying to extend the FuzzyQuery to further filter the TermEnum. (I am indexing stem forms and original forms, but I only want to match original forms with a fuzzy term, otherwise I get to much noise). However, FuzzyQuery is a final class and I cannot extend it.  
+
+As discussed in the mailing list (http://www.gossamer-threads.com/lists/lucene/java-dev/38756), we want to make the private variables and inner classes protected.
+
+I am attaching a patch for FuzzyQuery.java that implements this. I ran all unit tests and they passed without errors.
+
+Andreas.

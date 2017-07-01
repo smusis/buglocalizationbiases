@@ -1,0 +1,6 @@
+Move repository home directory into target directory
+
+
+
+Description:
+Currently the spi test client uses the repository home directory from the jackrabbit-core module. Instead it should use its own repository home, preferably in the target directory which can be reset using the maven clean goal.

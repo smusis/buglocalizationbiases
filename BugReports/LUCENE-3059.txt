@@ -1,0 +1,12 @@
+PulsingTermState.clone leaks memory
+
+
+
+Description:
+I looked at the heap dump from the OOME this morning (thank you Uwe
+for turning this on!), and I think it's a real memory leak.
+
+Well, not really a leak; rather, the cloned PulsingTermState, which we
+cache in the terms dict cache, is hanging onto large byte[]
+unnecessarily.
+

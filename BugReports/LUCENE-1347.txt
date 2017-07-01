@@ -1,0 +1,22 @@
+IndexWriter.rollback can hang if a previous call hit an exception
+
+
+
+Description:
+IW.rollback has logic to make sure only one thread actually gets to do
+the rollback whenever multiple threads are calling it at the same
+time, by setting the "boolean closing" to true in the thread that got
+there first.
+
+Other threads wait for that variable to become false again before
+returning from abort.
+
+But, we are not restoring closing to false in a try/finally in
+rollback(), which means on hitting an exception in rollback, a
+subsequent call to rollback() will hang forever.
+
+close() has the same logic, but there is already a try/finally there
+to restore closing to false on exception.
+
+The fix is straightforward.
+

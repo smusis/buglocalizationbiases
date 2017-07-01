@@ -1,0 +1,15 @@
+NullPointerException in ServerRow
+
+
+
+Description:
+A NullPointerException occurs in ServerRow.getValues() when the underlying Value array contains a null reference. See http://www.nabble.com/exception-after-calling-webdav-search-command-tf2826750.html for the details.
+
+java.lang.NullPointerException
+     at org.apache.jackrabbit.rmi.value.StatefulValueAdapter.getType(StatefulValueAdapter.java:98)
+     at org.apache.jackrabbit.rmi.value.SerialValue.<init>(SerialValue.java:65)
+     at org.apache.jackrabbit.rmi.value.SerialValueFactory.makeSerialValue(SerialValueFactory.java:100)
+     at org.apache.jackrabbit.rmi.value.SerialValueFactory.makeSerialValueArray(SerialValueFactory.java:77)
+     at org.apache.jackrabbit.rmi.server.ServerRow.getValues(ServerRow.java:58)
+
+The best solution would be to explicitly handle nulls in SerialValueFactory.makeSerialValue().

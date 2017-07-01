@@ -1,0 +1,13 @@
+Add reflection API to AttributeSource/AttributeImpl
+
+
+
+Description:
+AttributeSource/TokenStream inspection in Solr needs to have some insight into the contents of AttributeImpls. As LUCENE-2302 has some problems with toString() [which is not structured and conflicts with CharSequence's definition for CharTermAttribute], I propose an simple API that get a default implementation in AttributeImpl (just like toString() current):
+
+- Iterator<Map.Entry<String,?>> AttributeImpl.contentsIterator() returns an iterator (for most attributes its a singleton) of a key-value pair, e.g. "term"->"foobar","startOffset"->Integer.valueOf(0),...
+- AttributeSource gets the same method, it just concat the iterators of each getAttributeImplsIterator() AttributeImpl
+
+No backwards problems occur, as the default toString() method will work like before (it just gets iterator and lists), but we simply remove the documentation for the format. (Char)TermAttribute gets a special impl fo toString() according to CharSequence and a corresponding iterator.
+
+I also want to remove the abstract hashCode() and equals() methods from AttributeImpl, as they are not needed and just create work for the implementor.

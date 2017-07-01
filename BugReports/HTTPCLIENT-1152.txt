@@ -1,0 +1,28 @@
+org.apache.http.impl.client.cache.memcached.MemcachedHttpCacheStorage should verify class of returned object before casting
+
+
+
+Description:
+org.apache.http.impl.client.cache.memcached.MemcachedHttpCacheStorage
+
+Original (in getEntry function): 
+  byte[] data = (byte[]) client.get(url);
+
+Should be:
+  Object obj= client.get(url);
+  if (null == obj || !(objinstanceof byte[])) {
+    return null;
+  }
+  byte[] data = (byte[])obj;
+
+
+Original (in updateEntry function):
+  byte[] oldBytes = (v != null) ? (byte[]) v.getValue() : null;
+
+Should be:
+  byte[] oldBytes = (v != null && (v.getValue() instanceof byte[])) ? (byte[]) v.getValue() : null;
+
+
+
+  
+

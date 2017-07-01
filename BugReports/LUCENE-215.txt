@@ -1,0 +1,12 @@
+addIndexes unexpectedly closes index
+
+
+
+Description:
+It seems that in 1.4rc2, a call to IndexWriter.addIndexes (IndexReader[]) will
+close the provided IndexReader; in 1.3-final this does not happen.  So my code
+which uses addIndexes to merge new information into an index and then calls
+close() on the IndexReader now crashes with an "already closed" exception.  I
+can attach test code which works in 1.3 but not in 1.4rc2 if that would be helpful.
+
+If this is an intentional change in behavior, it needs to be documented.  Thanks!

@@ -1,0 +1,6 @@
+extensibility patch for DavResourceImpl
+
+
+
+Description:
+attached is a very simple patch that allows subclasses of DavResourceImpl to access the Node represented by the dav resource.

@@ -1,0 +1,12 @@
+Add open ended range query syntax to QueryParser
+
+
+
+Description:
+The QueryParser fails to generate open ended range queries.
+Parsing e.g. "date:[1990 TO *]"  gives zero results,
+but
+ConstantRangeQuery("date","1990",null,true,true)
+does produce the expected results.
+
+"date:[* TO 1990]" gives the same results as ConstantRangeQuery("date",null,"1990",true,true).

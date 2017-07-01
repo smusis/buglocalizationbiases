@@ -1,0 +1,6 @@
+Optimize ReadOnlyIndexReader.read(int[] docs, int[] freqs)
+
+
+
+Description:
+This method is currently implemented trivially using next(), doc() and freq(). It should read in blocks and filter out deleted docs.

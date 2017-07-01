@@ -1,0 +1,74 @@
+Further steps towards flexible indexing
+
+
+
+Description:
+I attached a very rough checkpoint of my current patch, to get early
+feedback.  All tests pass, though back compat tests don't pass due to
+changes to package-private APIs plus certain bugs in tests that
+happened to work (eg call TermPostions.nextPosition() too many times,
+which the new API asserts against).
+
+[Aside: I think, when we commit changes to package-private APIs such
+that back-compat tests don't pass, we could go back, make a branch on
+the back-compat tag, commit changes to the tests to use the new
+package private APIs on that branch, then fix nightly build to use the
+tip of that branch?o]
+
+There's still plenty to do before this is committable! This is a
+rather large change:
+
+  * Switches to a new more efficient terms dict format.  This still
+    uses tii/tis files, but the tii only stores term & long offset
+    (not a TermInfo).  At seek points, tis encodes term & freq/prox
+    offsets absolutely instead of with deltas delta.  Also, tis/tii
+    are structured by field, so we don't have to record field number
+    in every term.
+.
+    On first 1 M docs of Wikipedia, tii file is 36% smaller (0.99 MB
+    -> 0.64 MB) and tis file is 9% smaller (75.5 MB -> 68.5 MB).
+.
+    RAM usage when loading terms dict index is significantly less
+    since we only load an array of offsets and an array of String (no
+    more TermInfo array).  It should be faster to init too.
+.
+    This part is basically done.
+
+  * Introduces modular reader codec that strongly decouples terms dict
+    from docs/positions readers.  EG there is no more TermInfo used
+    when reading the new format.
+.
+    There's nice symmetry now between reading & writing in the codec
+    chain -- the current docs/prox format is captured in:
+{code}
+FormatPostingsTermsDictWriter/Reader
+FormatPostingsDocsWriter/Reader (.frq file) and
+FormatPostingsPositionsWriter/Reader (.prx file).
+{code}
+    This part is basically done.
+
+  * Introduces a new "flex" API for iterating through the fields,
+    terms, docs and positions:
+{code}
+FieldProducer -> TermsEnum -> DocsEnum -> PostingsEnum
+{code}
+    This replaces TermEnum/Docs/Positions.  SegmentReader emulates the
+    old API on top of the new API to keep back-compat.
+    
+Next steps:
+
+  * Plug in new codecs (pulsing, pfor) to exercise the modularity /
+    fix any hidden assumptions.
+
+  * Expose new API out of IndexReader, deprecate old API but emulate
+    old API on top of new one, switch all core/contrib users to the
+    new API.
+
+  * Maybe switch to AttributeSources as the base class for TermsEnum,
+    DocsEnum, PostingsEnum -- this would give readers API flexibility
+    (not just index-file-format flexibility).  EG if someone wanted
+    to store payload at the term-doc level instead of
+    term-doc-position level, you could just add a new attribute.
+
+  * Test performance & iterate.
+

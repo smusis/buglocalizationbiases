@@ -1,0 +1,6 @@
+ Reduce number of compiler warning by adding @Override and generics where appropriate 
+
+
+
+Description:
+Same as JCR-2482 for the webdav library and the modules using it.

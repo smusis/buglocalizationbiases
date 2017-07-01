@@ -1,0 +1,37 @@
+Build fails on system without X
+
+
+
+Description:
+The failing test is: testFileContains(org.apache.jackrabbit.core.query.FulltextQueryTest)
+
+caused by:
+
+java.lang.InternalError: Can't connect to X11 window server using ':0.0' as the value of the DISPLAY variable.
+	at sun.awt.X11GraphicsEnvironment.initDisplay(Native Method)
+	at sun.awt.X11GraphicsEnvironment.access$000(X11GraphicsEnvironment.java:53)
+	at sun.awt.X11GraphicsEnvironment$1.run(X11GraphicsEnvironment.java:142)
+	at java.security.AccessController.doPrivileged(Native Method)
+	at sun.awt.X11GraphicsEnvironment.<clinit>(X11GraphicsEnvironment.java:131)
+	at java.lang.Class.forName0(Native Method)
+	at java.lang.Class.forName(Class.java:164)
+	at java.awt.GraphicsEnvironment.getLocalGraphicsEnvironment(GraphicsEnvironment.java:68)
+	at sun.awt.X11.XToolkit.<clinit>(XToolkit.java:96)
+	at java.lang.Class.forName0(Native Method)
+	at java.lang.Class.forName(Class.java:164)
+	at java.awt.Toolkit$2.run(Toolkit.java:821)
+	at java.security.AccessController.doPrivileged(Native Method)
+	at java.awt.Toolkit.getDefaultToolkit(Toolkit.java:804)
+	at java.awt.Toolkit.getEventQueue(Toolkit.java:1592)
+	at java.awt.EventQueue.isDispatchThread(EventQueue.java:666)
+	at javax.swing.SwingUtilities.isEventDispatchThread(SwingUtilities.java:1270)
+	at javax.swing.text.StyleContext.reclaim(StyleContext.java:437)
+	at javax.swing.text.StyleContext.addAttribute(StyleContext.java:294)
+	at javax.swing.text.StyleContext$NamedStyle.addAttribute(StyleContext.java:1486)
+	at javax.swing.text.StyleContext$NamedStyle.setName(StyleContext.java:1296)
+	at javax.swing.text.StyleContext$NamedStyle.<init>(StyleContext.java:1244)
+	at javax.swing.text.StyleContext.addStyle(StyleContext.java:90)
+	at javax.swing.text.StyleContext.<init>(StyleContext.java:70)
+	at javax.swing.text.DefaultStyledDocument.<init>(DefaultStyledDocument.java:88)
+	at org.apache.tika.parser.rtf.RTFParser.parse(RTFParser.java:42)
+

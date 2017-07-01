@@ -1,0 +1,75 @@
+Intermitted failure on DocValues branch
+
+
+
+Description:
+I lately ran into two random failures on the CSF branch that seem not to be related to docValues but I can't reproduce them neither on docvalues branch nor on trunk.
+
+{code}
+jError Message
+
+IndexFileDeleter doesn't know about file _1e.tvx
+Stacktrace
+
+junit.framework.AssertionFailedError: IndexFileDeleter doesn't know about file _1e.tvx
+	at org.apache.lucene.util.LuceneTestCase$LuceneTestCaseRunner.runChild(LuceneTestCase.java:979)
+	at org.apache.lucene.util.LuceneTestCase$LuceneTestCaseRunner.runChild(LuceneTestCase.java:917)
+	at org.apache.lucene.index.IndexWriter.filesExist(IndexWriter.java:3633)
+	at org.apache.lucene.index.IndexWriter.startCommit(IndexWriter.java:3699)
+	at org.apache.lucene.index.IndexWriter.prepareCommit(IndexWriter.java:2407)
+	at org.apache.lucene.index.IndexWriter.commitInternal(IndexWriter.java:2478)
+	at org.apache.lucene.index.IndexWriter.commit(IndexWriter.java:2460)
+	at org.apache.lucene.index.IndexWriter.commit(IndexWriter.java:2444)
+	at org.apache.lucene.index.TestIndexWriterExceptions.testRandomExceptionsThreads(TestIndexWriterExceptions.java:213)
+Standard Output
+
+NOTE: reproduce with: ant test -Dtestcase=TestIndexWriterExceptions -Dtestmethod=testRandomExceptionsThreads -Dtests.seed=-6528669668419768890:4860241142852689334 -Dtests.codec=randomPerField -Dtests.multiplier=3
+NOTE: test params are: codec=PreFlex, locale=sv, timezone=Atlantic/South_Georgia
+Standard Error
+
+NOTE: all tests run in this JVM:
+[TestDemo, TestToken, TestBinaryDocument, TestCodecs, TestDirectoryReader, TestIndexInput, TestIndexWriterExceptions]
+{code}
+
+and
+
+{code}
+
+[junit] Testsuite: org.apache.lucene.index.TestIndexReaderReopen
+    [junit] Testcase: testThreadSafety(org.apache.lucene.index.TestIndexReaderReopen):	Caused an ERROR
+    [junit] MockDirectoryWrapper: cannot close: there are still open files: {_4_3.frq=1, _4_3.pos=1, _4_0.frq=1, _4_0.prx=1, _4.pst=1, _4_3.pyl=1, _4_3.skp=1, _4_0.tis=1, _4_3.doc=1, _4_3.tis=1}
+    [junit] java.lang.RuntimeException: MockDirectoryWrapper: cannot close: there are still open files: {_4_3.frq=1, _4_3.pos=1, _4_0.frq=1, _4_0.prx=1, _4.pst=1, _4_3.pyl=1, _4_3.skp=1, _4_0.tis=1, _4_3.doc=1, _4_3.tis=1}
+    [junit] 	at org.apache.lucene.store.MockDirectoryWrapper.close(MockDirectoryWrapper.java:387)
+    [junit] 	at org.apache.lucene.index.TestIndexReaderReopen.testThreadSafety(TestIndexReaderReopen.java:859)
+    [junit] 	at org.apache.lucene.util.LuceneTestCase$LuceneTestCaseRunner.runChild(LuceneTestCase.java:979)
+    [junit] 	at org.apache.lucene.util.LuceneTestCase$LuceneTestCaseRunner.runChild(LuceneTestCase.java:917)
+    [junit] Caused by: java.lang.RuntimeException: unclosed IndexInput
+    [junit] 	at org.apache.lucene.store.MockDirectoryWrapper.openInput(MockDirectoryWrapper.java:342)
+    [junit] 	at org.apache.lucene.store.Directory.openInput(Directory.java:122)
+    [junit] 	at org.apache.lucene.index.codecs.standard.StandardPostingsReader.<init>(StandardPostingsReader.java:49)
+    [junit] 	at org.apache.lucene.index.codecs.standard.StandardCodec.fieldsProducer(StandardCodec.java:87)
+    [junit] 	at org.apache.lucene.index.PerFieldCodecWrapper$FieldsReader.<init>(PerFieldCodecWrapper.java:119)
+    [junit] 	at org.apache.lucene.index.PerFieldCodecWrapper.fieldsProducer(PerFieldCodecWrapper.java:211)
+    [junit] 	at org.apache.lucene.index.SegmentReader$CoreReaders.<init>(SegmentReader.java:137)
+    [junit] 	at org.apache.lucene.index.SegmentReader.get(SegmentReader.java:532)
+    [junit] 	at org.apache.lucene.index.SegmentReader.get(SegmentReader.java:509)
+    [junit] 	at org.apache.lucene.index.DirectoryReader.<init>(DirectoryReader.java:238)
+    [junit] 	at org.apache.lucene.index.DirectoryReader.doReopen(DirectoryReader.java:500)
+    [junit] 	at org.apache.lucene.index.DirectoryReader.access$000(DirectoryReader.java:48)
+    [junit] 	at org.apache.lucene.index.DirectoryReader$2.doBody(DirectoryReader.java:493)
+    [junit] 	at org.apache.lucene.index.SegmentInfos$FindSegmentsFile.run(SegmentInfos.java:623)
+    [junit] 	at org.apache.lucene.index.DirectoryReader.doReopenNoWriter(DirectoryReader.java:488)
+    [junit] 	at org.apache.lucene.index.DirectoryReader.doReopen(DirectoryReader.java:446)
+    [junit] 	at org.apache.lucene.index.DirectoryReader.reopen(DirectoryReader.java:406)
+    [junit] 	at org.apache.lucene.index.TestIndexReaderReopen$9.run(TestIndexReaderReopen.java:770)
+    [junit] 	at org.apache.lucene.index.TestIndexReaderReopen$ReaderThread.run(TestIndexReaderReopen.java:897)
+    [junit] 
+    [junit] 
+    [junit] Tests run: 17, Failures: 0, Errors: 1, Time elapsed: 13.766 sec
+    [junit] 
+    [junit] ------------- Standard Output ---------------
+    [junit] NOTE: reproduce with: ant test -Dtestcase=TestIndexReaderReopen -Dtestmethod=testThreadSafety -Dtests.seed=-5455993123574190959:-1935535300313439968 -Dtests.codec=randomPerField -Dtests.multiplier=3
+    [junit] NOTE: test params are: codec=RandomCodecProvider: {field5=MockVariableIntBlock(baseBlockSize=29), id=Standard, fielda=Standard, field4=MockFixedIntBlock(blockSize=924), field3=Standard, field2=SimpleText, id2=Standard, field6=MockSep, field1=Pulsing(freqCutoff=8)}, locale=zh_CN, timezone=Asia/Hovd
+{code}
+
+I haven't seen those before - let me know if you have!

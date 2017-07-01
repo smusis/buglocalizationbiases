@@ -1,0 +1,6 @@
+Mark pending nodes in IndexingQueue directly in index
+
+
+
+Description:
+The index currently writes an indexing_queue.log file which contains all nodes that timed out while text was extracted. Instead, the index itself should mark an indexed node as pending. This is more robust because no additional file must be written.

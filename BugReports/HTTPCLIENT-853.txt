@@ -1,0 +1,16 @@
+Wrong cookie matching port number reported when using a proxy
+
+
+
+Description:
+Following the example given in https://issues.apache.org/jira/browse/HTTPCLIENT-852 and the route HttpRoute[{}->http://xyz.webfactional.com:7295->http://www.seoconsultants.com]:
+
+one of the new cookies is reported to be added as:
+
+[java] 2009/05/28 19:58:23:398 CEST [DEBUG] RequestAddCookies - Cookie [version: 0][name: ASPSESSIONIDCSARBQBA][value: MAMPAMKCBDJJFKNAAPKPMDAA][domain: www.seoconsultants.com][path: /][expiry: null] match [www.seoconsultants.com:7295/]
+
+whereas it should be:
+
+[java] 2009/05/28 19:57:46:667 CEST [DEBUG] RequestAddCookies - Cookie [version: 0][name: ASPSESSIONIDCSARBQBA][value: AAMPAMKCMBINHNEHPFEBFADA][domain: www.seoconsultants.com][path: /][expiry: null] match [www.seoconsultants.com:80/]
+
+i.e. the same as without using a proxy. 7295 is the port number used to access the proxy. The target domain www.seoconsultants.com is accessed through the regular HTTP port number 80, thus the cookie matching should also refer to port 80 and not the proxy's port.

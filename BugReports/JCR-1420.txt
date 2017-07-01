@@ -1,0 +1,8 @@
+Add test for Node.restore() may throw InvalidStateException
+
+
+
+Description:
+Add a unit test for JCR-1399 in the 1.3 branch.
+
+A test for the original feature in the trunk/1.4 (JCR-1197) needs a separate issue. 

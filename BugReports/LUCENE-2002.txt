@@ -1,0 +1,12 @@
+Add oal.util.Version ctor to QueryParser
+
+
+
+Description:
+This is a followup of LUCENE-1987:
+
+If somebody uses StandardAnalyzer with Version.LUCENE_CURRENT and then uses QueryParser, phrase queries will not work, because the StopFilter enables position Increments for stop words, but QueryParser ignores them per default. The user has to explicitely enable them.
+
+This issue would add a ctor taking the Version constant and automatically enable this setting. The same applies to the contrib queryparser. Eventually also StopAnalyzer should add this version ctor.
+
+To be able to remove the default ctor for 3.0 (to remove a possible trap for users of QueryParser), it must be deprecated and the new one also added to 2.9.1.

@@ -1,0 +1,9 @@
+User interaction for authentication
+
+
+
+Description:
+Some actions require user input.  Like forwarding to another host or retrieveing
+authentication credentials.  Should have some way for clients to setup listeners
+for such events so that they can be handled on the fly.  No gui, programatic
+only.

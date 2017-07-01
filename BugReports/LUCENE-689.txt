@@ -1,0 +1,23 @@
+NullPointerException thrown by equals method in SpanOrQuery
+
+
+
+Description:
+Part of our code utilizes the equals method in SpanOrQuery and, in certain cases (details to follow, if necessary), a NullPointerException gets thrown as a result of the String "field" being null.  After applying the following patch, the problem disappeared:
+
+Index: src/java/org/apache/lucene/search/spans/SpanOrQuery.java
+===================================================================
+--- src/java/org/apache/lucene/search/spans/SpanOrQuery.java    (revision 465065)
++++ src/java/org/apache/lucene/search/spans/SpanOrQuery.java    (working copy)
+@@ -121,7 +121,8 @@
+     final SpanOrQuery that = (SpanOrQuery) o;
+
+     if (!clauses.equals(that.clauses)) return false;
+-    if (!field.equals(that.field)) return false;
++    if (field != null && !field.equals(that.field)) return false;
++    if (field == null && that.field != null) return false;
+
+     return getBoost() == that.getBoost();
+   }
+
+

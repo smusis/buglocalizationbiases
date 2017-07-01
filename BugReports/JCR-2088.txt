@@ -1,0 +1,8 @@
+Drop Maven 1 compatibility
+
+
+
+Description:
+We migrated from Maven 1 to Maven 2 as the build system in Jackrabbit 1.2, but we kept compatibility with related Maven 1 build with the maven-one-plugin that deployed all builds also to the local Maven 1 repository.
+
+Hardly any downstream project uses Maven 1 anymore, so it's safe for us to simplify our build now by dropping the use of the maven-one-plugin.

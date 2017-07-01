@@ -1,0 +1,8 @@
+replace invalid U+FFFF character during indexing
+
+
+
+Description:
+If the invalid U+FFFF character is embedded in a token, it actually causes indexing to silently corrupt the index by writing duplicate terms into the terms dict.  CheckIndex will catch the error, and merging will hit exceptions (I think).
+
+We already replace invalid surrogate pairs with the replacement character U+FFFD, so I'll just do the same with U+FFFF.

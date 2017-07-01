@@ -1,0 +1,7 @@
+JCR-Server Code depends on Log4J directly
+
+
+
+Description:
+The code is written against the Log4J APIs, which forces all users of Jackarabbit to pick up log4J dependency and to juggle with JDK logging and Log4J configuration if other components of the project uses JDK 1.4 logging.
+If the code is move to depend on Apache commons-logging this issue will be resolved. Also this should be a minor fix. 

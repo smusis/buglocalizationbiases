@@ -1,0 +1,10 @@
+NativeFSLockFactory throws an exception on Android 2.2 platform as java.lang.management package is not available on android.
+
+
+
+Description:
+NativeFSLockFactory throws an exception on Android 2.2 platform as java.lang.management package is not available on android.
+   Looks like FSDirectory defaults to NativeFSLockFactory, and this class refers to java.lang.management package to generate a unique lock. java.lang.management is not available in Android 2.2 and hence a runtime exception is raised. The workaround is to use another custom LockFactory or SimpleFSLockFactory, but Fixing NativeFSLockFactroy will help.
+
+Thanks,
+Surinder

@@ -1,0 +1,33 @@
+BrowserCompatHostnameVerifier and StrictHostnameVerifier should handle wildcards in SSL certificates better
+
+
+
+Description:
+I ran into a problem with SSL wildcard certificates in the class BrowserCompatHostnameVerifier. It handles "*.example.org" fine but "server*.example.org" fails to work correctly. The javadoc claims that it should behave the same way as curl and FireFox. In Firefox an SSL certificate for "server*.example.org" works fine for the host "server.example.org", using HttpClient it throws an exception.
+
+Here is an example test (JUnit4):
+
+package org.example.hb;
+
+import javax.net.ssl.SSLException;
+
+import org.apache.http.conn.ssl.BrowserCompatHostnameVerifier;
+import org.junit.Test;
+
+public class BrowserCompatHostnameVerifierTest {
+
+	/**
+	 * Should not throw an exeption in the verify method.
+	 * @throws SSLException
+	 */
+	@Test
+	public void testVerifyStringStringArrayStringArray() throws SSLException
+	{
+		BrowserCompatHostnameVerifier hv = new BrowserCompatHostnameVerifier();
+		String host = "www.example.org";
+		String[] cns = {"www*.example.org"};
+		
+		hv.verify(host, cns, cns);
+	}
+
+}

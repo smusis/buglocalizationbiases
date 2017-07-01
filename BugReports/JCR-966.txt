@@ -1,0 +1,6 @@
+[OCM] Add unit tests with BundleDbPersistenceManager
+
+
+
+Description:
+Until now, we have not yet check the ocm framework with the BundleDbPersistenceManager

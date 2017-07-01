@@ -1,0 +1,10 @@
+Make the extraction of Session UserIDs from Subjects configurable
+
+
+
+Description:
+The SessionImpl class must extract a string name from the Prinicpals in a Subject to use as the Session userID.  In 1.4 the SessionImpl class directly selects the first available Principal.  In 1.5, this is delegated to the SecurityManager, which chooses the first  non-group principal.
+
+It would be useful to be able to configure specific selection criteria for the Principal used for the Session userID.  A simple mechanism would involve specifying a Principal implementation classname in the configuration, and the first instance of that class found in the Subject would be used for the userID.  One way to implement this in 1.4 would be to extend AuthContext to include a method getSessionPrincipal() which encapsulates the selection logic, and adding an option the LoginModuleConfig to specify the class name of the Principal to select.
+
+A particular use case is using the LDAP LoginModule from Sun JDK 6 with the repository.  The first Principal LdapLoginModule populates into the Subject is an instance of LdapPrincipal, which renders the userID as the full DN of the user.  The LoginModule also adds an instance of UserPrincipal, whose name is the simple username/uid attribute, which would be more appropriate as the Session userId since it corresponds to the username provided by the user to application authentication mechanisms (the provided username is expanded into the full DN prior to authentication by the login module).  If the above configuration mechanism were available, one could configure the LdapLoginModule, and specify that the userID be extracted from the first instance of com.sun.security.auth.UserPrincipal.  Since rewriting LoginModules is not always possible or desirable, this change would enable the stable integration of 3rd-party login modules that may populate the Subject with several principals.

@@ -1,0 +1,7 @@
+unable to workspace import XML.
+
+
+
+Description:
+tika detects xml as "application/xml" thus breaking the org.apache.jackrabbit.server.io.XmlHandler
+which just checks for "text/xml".

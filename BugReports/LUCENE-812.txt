@@ -1,0 +1,24 @@
+Unable to set LockFactory implementation via ${org.apache.lucene.store.FSDirectoryLockFactoryClass}
+
+
+
+Description:
+While trying to move from Lucene 2.0 to Lucene 2.1 I noticed a problem with the LockFactory instantiation code.
+During previous tests we successfully specified the LockFactory implementation by setting the property
+${org.apache.lucene.store.FSDirectoryLockFactoryClass} to "org.apache.lucene.store.NativeFSLockFactory".
+This does no longer work due to a bug in the FSDirectory class. The problem is caused from the fact that this
+class tries to invoke the default constructor of the specified LockFactory class. However neither NativeFSLockFactory
+nor SimpleFSLockFactory do have a default constructor.
+
+FSDirectory, Line 285:
+          try {
+            lockFactory = (LockFactory) c.newInstance();          
+          } catch (IllegalAccessException e) {
+            throw new IOException("IllegalAccessException when instantiating LockClass " + lockClassName);
+          } catch (InstantiationException e) {
+            throw new IOException("InstantiationException when instantiating LockClass " + lockClassName);
+          } catch (ClassCastException e) {
+            throw new IOException("unable to cast LockClass " + lockClassName + " instance to a LockFactory");
+          }
+
+A possible workaround is to not set the property at all and call FSDirectory.setLockFactory(...) instead. 

@@ -1,0 +1,8 @@
+add IndexCommit.isOptimized method
+
+
+
+Description:
+Spinoff from here:
+
+    http://mail-archives.apache.org/mod_mbox/lucene-java-user/200807.mbox/%3C69de18140807010347s6269fea5r12c3212e0ec0a12a@mail.gmail.com%3E

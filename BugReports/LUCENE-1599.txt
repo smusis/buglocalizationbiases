@@ -1,0 +1,16 @@
+SpanRegexQuery and SpanNearQuery is not working with MultiSearcher
+
+
+
+Description:
+MultiSearcher is using:
+queries[i] = searchables[i].rewrite(original);
+to rewrite query and then use combine to combine them.
+
+But SpanRegexQuery's rewrite is different from others.
+After you call it on the same query, it always return the same rewritten queries.
+
+As a result, only search on the first IndexSearcher work. All others are using the first IndexSearcher's rewrite queries.
+So many terms are missing and return unexpected result.
+
+Billow

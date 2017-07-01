@@ -1,0 +1,24 @@
+Add ability to open prior commits to IndexReader
+
+
+
+Description:
+If you use a customized DeletionPolicy, which keeps multiple commits
+around (instead of the default which is to only preserve the most
+recent commit), it's useful to be able to list all such commits and
+then open a reader against one of these commits.
+
+I've added this API to list commits:
+
+  public static Collection IndexReader.listCommits(Directory)
+
+and these two new open methods to IndexReader to open a specific commit:
+
+  public static IndexReader open(IndexCommit)
+  public static IndexReader open(IndexCommit, IndexDeletionPolicy)
+
+Spinoff from here:
+
+  http://mail-archives.apache.org/mod_mbox/lucene-java-dev/200806.mbox/%3c85d3c3b60806161735o207a3238sa2e6c415171a8019@mail.gmail.com%3e
+
+

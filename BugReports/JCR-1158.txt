@@ -1,0 +1,44 @@
+jcr2spi spi2dav getProperties returns only cached properties
+
+
+
+Description:
+I'm using JCR through webdav (contrib jcr2spi and spi2dav libraries).
+Server is default jcr server (jackrabbit-webapp-1.3.1 on tomcat),
+client is 2007/09/28 svn snapshot
+
+I've noticed that Node.getProperty returns only cached properties. 
+
+Sample test case can be found at http://kplab.tuke.sk/svn/kplab/ctm/trunk/test/org/kplab/tsf/CTMTest.java
+
+Note that sometimes properties do get printed, so it may not be so straightforwarding to reproduce this bug.
+
+
+Simple Example:
+
+// I have nt:file node at kplab/jojo in my repository
+...
+Session session = repository.login();
+Node root  = session.getRootNode();
+Node node = root.getNode("kplab/jojo");
+// node.getProperty("jcr:content/jcr:data"); // force to load property
+from server
+dump(node); // simple dump method from (
+http://jackrabbit.apache.org/doc/firststeps.html )
+
+
+dump prints:
+/kplab/jojo
+/kplab/jojo/jcr:content
+
+But when I uncomment the getProperty line above, it prints:
+/kplab/jojo
+/kplab/jojo/jcr:content
+/kplab/jojo/jcr:content/jcr:lastModified = 2007-09-27T15:52:27.312+02:00
+/kplab/jojo/jcr:content/jcr:uuid = 4421ed5a-6200-4918-864e-c58643bc8d4e
+/kplab/jojo/jcr:content/jcr:mimeType = text/plain
+/kplab/jojo/jcr:content/jcr:data = hura hura
+/kplab/jojo/jcr:content/jcr:primaryType = nt:resource
+
+--
+Jozef Wagner

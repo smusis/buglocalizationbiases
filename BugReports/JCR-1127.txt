@@ -1,0 +1,10 @@
+Text extractor classes are obsolete in web
+
+
+
+Description:
+Text extractor classes are obsolete in http://jackrabbit.apache.org/doc/components/index-filters.html
+
+"org.apache.jackrabbit.core.query" are actually "org.apache.jackrabbit.extractor"
+
+Plain text extractor continue being "org.apache.jackrabbit.core.query.lucene.TextPlainTextFilter"? 

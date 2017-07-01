@@ -1,0 +1,25 @@
+LogSource.setLevel incorrectly uses entrySet
+
+
+
+Description:
+When I call LogSource.setLevel, I get the following exception:
+
+java.lang.ClassCastException: java.util.HashMap$Entry
+	at org.apache.commons.httpclient.log.LogSource.setLevel
+(LogSource.java:158)
+
+The calling code is :
+
+    LogSource.setLevel (Log.OFF);
+
+The error (I believe) is that you should get the value set from the map, not 
+the entry set (in LogSource):
+
+    static public void setLevel(int level) {
+        Iterator it = _logs.entrySet().iterator(); <-- should be _logs.values()
+        while(it.hasNext()) {
+            Log log = (Log)(it.next());
+            log.setLevel(level);
+        }
+    }

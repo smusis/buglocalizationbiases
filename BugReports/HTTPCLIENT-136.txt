@@ -1,0 +1,14 @@
+Inadequate HTTP proxy server support in HttpClient.
+
+
+
+Description:
+1. The HttpClient class does not save the StatusLine from the hidden
+ConnectMethod object used to connect via an HTTP proxy server, thus any proxy
+failures are only picked up as 'anonymous exceptions', this is useless for
+gracefull recovery and rapid debugging.
+
+2. The current class structure is too fragile to neatly support HTTP Proxy (and
+authenication) chains so it would be a good idea to look at this at the same
+time, preferable with support for a Proxy chain redirect when an non/dead HTTP
+Proxy server is found.

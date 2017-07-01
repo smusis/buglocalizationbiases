@@ -1,0 +1,6 @@
+Only load root node definition when required
+
+
+
+Description:
+The root node definition is currently loaded whenever a session logs in.

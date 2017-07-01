@@ -1,0 +1,6 @@
+Sessions are not logged out in case of exceptions
+
+
+
+Description:
+Some test cases do not logout sessions if an exception occurs.

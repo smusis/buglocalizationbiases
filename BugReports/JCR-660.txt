@@ -1,0 +1,13 @@
+SQL Parser fails with SQL 92 timestamp format
+
+
+
+Description:
+The SQL query parser fails with an exception if the SQL 92 timestamp format is used.
+
+E.g:
+... WHERE my:date > TIMESTAMP '1976-01-01 00:00:00.000+01:00'
+
+does not work, but the following will succeed using ISO8601:
+
+... WHERE my:date > TIMESTAMP '1976-01-01T00:00:00.000+01:00'

@@ -1,0 +1,21 @@
+Log at debug level rather that info in CacheManager
+
+
+
+Description:
+Please change org.apache.jackrabbit.core.state.CacheManager#resizeAll to log at DEBUG level rather that INFO.
+15:50:01,058 INFO  [CacheManager] resizeAll size=8
+
+--- jackrabbit-core/src/main/java/org/apache/jackrabbit/core/state/CacheManager.java    (revision 565102)
++++ jackrabbit-core/src/main/java/org/apache/jackrabbit/core/state/CacheManager.java    (working copy)
+@@ -122,7 +122,7 @@
+      * Re-calcualte the maximum memory for each cache, and set the new limits.
+      */
+     private void resizeAll() {
+-        log.info("resizeAll size=" + caches.size());
++        log.debug("resizeAll size=" + caches.size());
+         // get strong references
+         // entries in a weak hash map may disappear any time
+         // so can't use size() / keySet() directly
+
+

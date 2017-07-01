@@ -1,0 +1,11 @@
+refactor spatial contrib "Filter" "Query" classes
+
+
+
+Description:
+From erik's comments in LUCENE-1387
+
+    * DistanceQuery is awkwardly named. It's not an (extends) Query.... it's a POJO with helpers. Maybe DistanceQueryFactory? (but it creates a Filter also)
+
+    * CartesianPolyFilter is not a Filter (but CartesianShapeFilter is)
+

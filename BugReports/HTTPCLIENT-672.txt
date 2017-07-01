@@ -1,0 +1,8 @@
+re-sync client with changes in core alpha6 snapshot
+
+
+
+Description:
+There have been API changes in core since it's alpha5 release.
+Client needs to be adapted so it's alpha2 (snapshot) builds and runs against the current core API.
+

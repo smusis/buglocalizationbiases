@@ -1,0 +1,6 @@
+temporary files created by some jUnit test are not automatically removed
+
+
+
+Description:
+

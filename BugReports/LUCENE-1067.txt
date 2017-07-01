@@ -1,0 +1,72 @@
+TestStressIndexing has intermittent failures
+
+
+
+Description:
+See http://www.gossamer-threads.com/lists/lucene/java-dev/55092 copied below:
+
+ OK, I have seen this twice in the last two days:
+Testsuite: org.apache.lucene.index.TestStressIndexing
+[junit] Tests run: 1, Failures: 1, Errors: 0, Time elapsed: 18.58
+sec
+[junit]
+[junit] ------------- Standard Output ---------------
+[junit] java.lang.NullPointerException
+[junit] at
+org.apache.lucene.store.RAMInputStream.readByte(RAMInputStream.java:67)
+[junit] at
+org.apache.lucene.store.IndexInput.readInt(IndexInput.java:66)
+[junit] at org.apache.lucene.index.SegmentInfos
+$FindSegmentsFile.run(SegmentInfos.java:544)
+[junit] at
+org
+.apache
+.lucene.index.DirectoryIndexReader.open(DirectoryIndexReader.java:63)
+[junit] at
+org.apache.lucene.index.IndexReader.open(IndexReader.java:209)
+[junit] at
+org.apache.lucene.index.IndexReader.open(IndexReader.java:192)
+[junit] at
+org.apache.lucene.search.IndexSearcher.<init>(IndexSearcher.java:56)
+[junit] at org.apache.lucene.index.TestStressIndexing
+$SearcherThread.doWork(TestStressIndexing.java:111)
+[junit] at org.apache.lucene.index.TestStressIndexing
+$TimedThread.run(TestStressIndexing.java:55)
+[junit] ------------- ---------------- ---------------
+[junit] Testcase:
+testStressIndexAndSearching
+(org.apache.lucene.index.TestStressIndexing): FAILED
+[junit] hit unexpected exception in search1
+[junit] junit.framework.AssertionFailedError: hit unexpected
+exception in search1
+[junit] at
+org
+.apache
+.lucene.index.TestStressIndexing.runStressTest(TestStressIndexing.java:
+159)
+[junit] at
+org
+.apache
+.lucene
+.index
+.TestStressIndexing
+.testStressIndexAndSearching(TestStressIndexing.java:187)
+[junit]
+[junit]
+[junit] Test org.apache.lucene.index.TestStressIndexing FAILED
+
+Subsequent runs have, however passed. Has anyone else hit this on
+trunk?
+
+I am running using "ant clean test"
+
+I'm on a Mac Pro 4 core, 4GB machine, if that helps at all. Not sure
+how to reproduce at this point, but strikes me as a threading issue.
+Oh joy!
+
+I'll try to investigate more tomorrow to see if I can dream up a test
+case.
+
+-Grant 
+
+

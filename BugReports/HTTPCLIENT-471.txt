@@ -1,0 +1,43 @@
+DateUtil#formatDate uses default locale instead of US
+
+
+
+Description:
+Problem reported by Yannick <yannick at meudal.net> on the httpclient-user list
+
+==================================================================
+Hello,
+
+This is a bug report.
+
+I'm using Commons HTTPClient (rc2) for generating HTTP requests. I put in 
+headers some specific header, like the If-Modified-Since attribute. 
+When I generate the date through DateUtil.formatDate method, I get a 
+localized date, in french. Example: 
+If-Modified-Since: dim., 10 avr. 2005 05:04:08 CEST
+
+I get problems on my http server during parsing the received date. This is 
+not a RFC 2616 compliant date format. It should be:
+If-Modified-Since: Sun, 10 Apr 2005 05:04:08 CEST
+
+A patch should be applied, by creating a new SimpleDateFormat(pattern, 
+Locale.US) instead of SimpleDateFormat(pattern) (like it is done in the 
+parse method, line #159).
+
+org.apache.commons.httpclient.util.DateUtil, line #205:
+
+    public static String formatDate(Date date, String pattern) {
+        if (date == null) throw new IllegalArgumentException("date is 
+null");
+        if (pattern == null) throw new IllegalArgumentException("pattern 
+is null");
+ 
+        SimpleDateFormat formatter = new SimpleDateFormat(pattern, 
+Locale.US);
+        return formatter.format(date);
+    }
+
+
+Regards,
+
+Yannick.

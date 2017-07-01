@@ -1,0 +1,12 @@
+Improve Greek analysis
+
+
+
+Description:
+* Changed tokenstreams to CharTermAttribute
+* Moved stopwords out of private String[] to a txt file (for use by Solr, etc)
+* Removed TODO / fixed unicode conformance of GreekLowerCaseFilter
+* Reformatted touched files to normal indentation
+* Added inflectional stemmer (Ntais algorithm)
+
+all the changes are backwards compatible with Version.

@@ -1,0 +1,11 @@
+Reduce exposure of nightly build documentation
+
+
+
+Description:
+From LUCENE-1157  -
+
+ ..the nightly build documentation is too prominent. A search for "indexwriter api" on Google or Yahoo! returns nightly documentation before released documentation.
+
+(https://issues.apache.org/jira/browse/LUCENE-1157?focusedCommentId=12565820#action_12565820)
+

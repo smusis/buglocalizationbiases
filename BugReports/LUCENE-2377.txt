@@ -1,0 +1,6 @@
+Enable the use of NoMergePolicy and NoMergeScheduler by Benchmark
+
+
+
+Description:
+Benchmark allows one to set the MP and MS to use, by defining the class name and then use reflection to instantiate them. However NoMP and NoMS are singletons and therefore reflection does not work for them. Easy fix in CreateIndexTask. I'll post a patch soon.

@@ -1,0 +1,6 @@
+JackrabbitIndexReader prevents use of DocNumberCache
+
+
+
+Description:
+The JackrabbitIndexReader was introduced in 1.5 by JCR-1363. Unfortunately it does not overwrite the method termDocs(Term), which means the default implementation in IndexReader is used. This bypasses the DocNumberCache built into CachingIndexReader, which is used for UUID terms that look up individual documents.

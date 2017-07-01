@@ -1,0 +1,32 @@
+ParameterParser parse method for authentication headers does not appear to deal with empty value strings
+
+
+
+Description:
+Hi, I have found an issue with HTTPClient due to the way it parses parameter 
+strings.
+
+In particular, consider the following WWW-Authenticate header:
+
+WWW-Authenticate: Digest realm="", algorithm=MD5, qop="auth", 
+domain="/content", nonce="0e11dcf146563c3a89e5327f0c5f5bad"
+ 
+The realm is definitely specified, but is equal to the empty string.  It is not 
+a null value.
+
+However, the extractParams method of AuthChallengeParser which in turn calls 
+ParameterParser will actually parse the value as Null  instead of an empty 
+string.
+
+This is due to parseQuotedToken getToken(true) call which essentially returns a 
+null String result  as the condition i2>i1 fails :-
+
+        String result = null;
+        if (i2 > i1) {
+            result = new String(chars, i1, i2 - i1);
+        }
+        return result;
+
+As the processChallenge method of DigestScheme throws an exception when 
+getParameter("realm") == null, HTTPClient is not able to process the digest 
+request when an empty string realm value is present.

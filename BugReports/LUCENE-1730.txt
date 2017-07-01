@@ -1,0 +1,8 @@
+TrecContentSource should use a fixed encoding, rather than system dependent
+
+
+
+Description:
+TrecContentSource opens InputStreamReader w/o a fixed encoding. On Windows, this means CP1252 (at least on my machine) which is ok. However, when I opened it on a Linux machine w/ a default of UTF-8, it failed to read the files. The patch changes it to use ISO-8859-1, which seems to be the right one (and http://mg4j.dsi.unimi.it/man/manual/ch01s04.html mentions this encoding in its example of a script which reads the data).
+
+Patch to follow shortly.

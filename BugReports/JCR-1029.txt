@@ -1,0 +1,10 @@
+CLONE -Handling of multiple residual prop defs in EffectiveNodeTypeImpl
+
+
+
+Description:
+org.apache.jackrabbit.jcr2spi.nodetype.EffectiveNodeTypeImpl currently rejects multiple residual property definitions, if they do not differ in getMultiple(). In fact, it should accept all combinations, so differing values for getOnParentVersionAction and other aspects should be accepted as well.
+
+See JSR 170, 6.7.8:
+
+"For purposes of the above, the notion of two definitions having the same name does not apply to two residual definitions. Two (or more) residual property or child node definitions with differing subattributes must be permitted to co-exist in the same effective node type. They are interpreted as disjunctive (ORed) options."

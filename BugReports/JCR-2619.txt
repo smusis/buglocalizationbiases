@@ -1,0 +1,12 @@
+improved internal representation of DATE values
+
+
+
+Description:
+DATE values are currently internally represented as java.util.Calendar objects.
+
+Calendar objects have a huge memory footprint (approx 200bytes per instance) 
+and are mutable.
+
+i suggest to replace the internal DATE representation with a ISO8601 format string
+(immutable and approx. 85-90% smaller footprint).

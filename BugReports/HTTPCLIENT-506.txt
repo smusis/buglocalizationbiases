@@ -1,0 +1,41 @@
+Digest auth uses wrong uri in proxy authentication
+
+
+
+Description:
+I'm having a problem getting httpclient-rc1 to authenticate using
+digest to our IAS server.  I've tried upgrading to rc3 without any
+effect.  I also got our IT guys to upgrade IAS without luck.  I was
+also able to have the GET method work under IAS and CONNECT to work
+with a couple other proxy servers.  After examining ethereal logs for
+my (commons) code and firefox to the same URLs I noticed that the
+value for the "uri" setting in the "Proxy-Authorization" header was
+the only significant difference.  After looking at RFC 2617 I noticed
+that in section 3.2.2 (The Authorization Request Header) it states:
+
+digest-uri
+The URI from Request-URI of the Request-Line; duplicated here because
+proxies are allowed to change the Request-Line in transit.
+
+A re-examination of the headers showed that firefox was matching the Request-URI
+with the digest-uri but that httpclient was not.  I reproduced partial headers
+below.  I tried modifying the RC3 source to produce a hard-coded value for "uri"
+and demonstrated that it would successfully authenticate to that URI.  I also
+checked that authentication would fail to any other URI and it did.
+
+partial httpclient header (fails with 407):
+CONNECT gmail.google.com:443 HTTP/1.1
+Proxy-Authorization: Digest username="proxytest", realm="Digest",
+nonce="503902c343c8c501057a85cea6bad2734378fb44b4cbd1970bf320637871dae85373082cf70ac254",
+uri="/", response="7717d0738332a3d8e83e9102b5ead6b9", qop="auth", nc=00000001,
+cnonce="583aa0469b31290dc2acd7ec6cfc98f1", algorithm="MD5-sess",
+opaque="bb319760fce84856e5648d3536502d81"
+
+partial firefox header (succeeds with 200):
+CONNECT mail1.combrio.local:443 HTTP/1.1
+Proxy-Authorization: Digest username="proxytest", realm="Digest",
+nonce="0e61fe645ec8c5015aa3afe8cfe5219488ed473e277a8cddf8225ad66e74fd214f97d9d96ac99991",
+uri="mail1.combrio.local:443", algorithm=MD5-sess,
+response="bfac109287273e867531170475172ccf",
+opaque="70cb2a1533b85882d0f1aa1e2ad1fbae", qop=auth, nc=00000001,
+cnonce="b41aecd6e527e774"

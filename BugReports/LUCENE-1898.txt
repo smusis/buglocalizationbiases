@@ -1,0 +1,12 @@
+Decide if we should remove lines numbers from latest Changes
+
+
+
+Description:
+As Lucene dev has grown, a new issue has arisen - many times, new changes invalidate old changes. A proper changes file should just list the changes from the last version, not document the dev life of the issues. Keeping changes in proper order now requires a lot of renumbering sometimes. The numbers have no real meaning and could be added to more rich versions (such as the html version) automatically if desired.
+
+I think an * makes a good replacement myself. The issues already have ids that are stable, rather than the current, decorational numbers which are subject to change over a dev cycle.
+
+I think we should replace the numbers with an asterix for the 2.9 section and going forward (ie 4. becomes *).
+
+If we don't get consensus very quickly, this issue won't block.

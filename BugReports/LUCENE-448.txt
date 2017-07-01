@@ -1,0 +1,23 @@
+optional norms
+
+
+
+Description:
+For applications with many indexed fields, the norms cause memory problems both during indexing and querying.
+This patch makes norms optional on a per-field basis, in the same way that term vectors are optional per-field.
+
+Overview of changes:
+ - Field.omitNorms that defaults to false
+ - backward compatible lucene file format change: FieldInfos.FieldBits has a bit for omitNorms
+ - IndexReader.hasNorms() method
+ - During merging, if any segment includes norms, then norms are included.
+ - methods to get norms return the equivalent 1.0f array for backward compatibility
+
+The patch was designed for backward compatibility:
+ - all current unit tests pass w/o any modifications required
+ - compatible with old indexes since the default is omitNorms=false
+ - compatible with older/custom subclasses of IndexReader since a default hasNorms() is provided
+ - compatible with older/custom users of IndexReader such as Weight/Scorer/explain since a norm array is produced on demand, even if norms were not stored
+
+If this patch is accepted (or if the direction is acceptable), performance for scoring  could be improved by assuming 1.0f when hasNorms(field)==false.
+

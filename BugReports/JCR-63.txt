@@ -1,0 +1,39 @@
+/contrib/orm-persistence/ OJBPersistenceManager
+
+
+
+Description:
+OJBPersistenceManager seems to have the following problems
+
+1. OJBPersistenceBroker inherites from AbstractPersistenceBroker. There's no 
+need of using a non transactional implementation as the feature is available in 
+jdbc. 
+
+2. A single broker is used and It's not thread-safe. This is not a problem now 
+because it inherits from AbstractPersistenceManager, and the store(ChangeLog ) 
+method is synchronized.
+
+3. The broker is never closed so it leaves an open connection.
+
+4. There's no pooling with only one broker.
+
+5 Each write method (e.g. store(NodeState state)) starts its own transaction 
+but the transaction should start and end in store(ChangeLog log).
+
+6. It never rollbacks, even when an item in the changelog can't be persisted.
+
+7. The mysql example create MyISAM tables which don't support transactions. 
+Innodb tables would be more appropriate.
+
+8. jdbc to java type mapping is wrong for 
+class: org.apache.jackrabbit.core.state.orm.ORMBlobValue
+field: size
+Changed from INTEGER to BIGINT
+
+9. When a Blob value is loaded a ArrayStoreException is thrown because in 
+load(PropertyId id) BlobFileValues are added to internalValueList instead of 
+InternalValue instances.
+
+10. in store(NodeReferences). When storing a NodeReferences which have some (but not all) the references deleted the OJB persistence Manager doesn't delete any one.
+
+Some of this problems are present in the Hibernate implementation.

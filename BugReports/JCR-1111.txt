@@ -1,0 +1,8 @@
+Accesss to version history results in reading all versions of versionable node
+
+
+
+Description:
+InternalVersionHistoryImpl loads all versions at once during initialization. Because of that all versioning operations (incl. checkin, label, restore) are significantly slower when node has many versions.
+
+

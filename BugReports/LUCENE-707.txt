@@ -1,0 +1,6 @@
+Lucene Java Site docs
+
+
+
+Description:
+It would be really nice if the Java site docs where consistent with the rest of the Lucene family (namely, with navigation tabs, etc.) so that one can easily go between Nutch, Hadoop, etc.

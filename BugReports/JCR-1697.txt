@@ -1,0 +1,10 @@
+Simple Google style query
+
+
+
+Description:
+In the Sling project there's a need for a simple query language. See SLING-573.
+
+I've created a parser that translates the simple query into an XPath query statement and executes it on a JCR workspace.
+
+I'll commit it to the jackrabbit-jcr-commons module.

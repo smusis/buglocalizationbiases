@@ -1,0 +1,12 @@
+WorkspaceAccessManager defined with SecurityManager that keeps users per workspace must test if user exists
+
+
+
+Description:
+the WorkspaceAccessManager defined with the security manager keeping users per workspace currently returns true upon calls to grant(Set, String) if
+a workspace with the given name exists.
+
+while this is fine for the initial check upon session creation, it obviously isn't for all method calls that test for accessible workspace names, such as
+Workspace#getAccessibleWorkspaceName, Workspace#clone and copy across workspaces.
+
+instead it should test if any of the specified principals corresponds to a valid user within the workspace identified by the given workspaceName.

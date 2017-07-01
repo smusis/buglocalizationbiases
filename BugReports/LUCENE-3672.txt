@@ -1,0 +1,10 @@
+IndexCommit.equals() bug
+
+
+
+Description:
+IndexCommit.equals() checks for equality of Directories and versions, but it doesn't check IMHO the more important generation numbers. It looks like commits are really identified by a combination of directory and segments_XXX, which means the generation number, because that's what the DirectoryReader.open() checks for.
+
+This bug leads to an unexpected behavior when the only change to be committed is in userData - we get two commits then that are declared equal, they have the same version but they have different generation numbers. I have no idea how this situation is treated in a few dozen references to IndexCommit.equals() across Lucene...
+
+On the surface the fix is trivial - either add the gen number to equals(), or use gen number instead of version. However, it's puzzling why these two would ever get out of sync??? and if they are always supposed to be in sync then maybe we don't need both of them at all, maybe just generation or version is sufficient?

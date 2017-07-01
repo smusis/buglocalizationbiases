@@ -1,0 +1,34 @@
+DefaultClientConnectionOperator doesn't update socket after call to connectSocket(...)
+
+
+
+Description:
+In the DefaultClientConnectionOperator function openConnection(...) it calls SocketFactory.connectSocket(...). The documentation for connectSocket(...) says that it returns:
+   "the connected socket. The returned object may be different from
+the sock argument if this factory supports a layered protocol. "
+
+A quick peek at the source showed:
+In org.apache.http.impl.conn.DefaultClientConnectionOperator:
+
+117         final SocketFactory sf = schm.getSocketFactory();
+118
+119         Socket sock = sf.createSocket();
+120         conn.opening(sock, target);
+121
+122         try {
+123             sock = sf.connectSocket(sock, target.getHostName(),
+124                     schm.resolvePort(target.getPort()),
+125                     local, 0, params);
+126         } catch (ConnectException ex) {
+127             throw new HttpHostConnectException(target, ex);
+128         }
+129         prepareSocket(sock, context, params);
+130         conn.openCompleted(sf.isSecure(sock), params);
+
+So DefaultClientConnectionOperator never updates conn with the new version of sock that may have been returned from connectSocket(...).
+
+adding:
+        130         conn.openCompleted(sf.isSecure(sock), params);
++++ 131         conn.update(sock, target, sf.isSecure(sock), params);
+appears to fix the issue.
+

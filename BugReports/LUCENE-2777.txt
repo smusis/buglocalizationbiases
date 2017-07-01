@@ -1,0 +1,27 @@
+Revise PagedBytes#fillUsingLengthPrefix* methods names
+
+
+
+Description:
+PagedBytes has 3 different variants of fillUsingLengthPrefix. We need better names for that since CSFBranch already added a 4th one.
+
+
+here are some suggestions:
+
+{code}
+/** Reads length as 1 or 2 byte vInt prefix, starting @ start */
+    public BytesRef fillLengthAndOffset(BytesRef b, long start) 
+//    was: public BytesRef fillUsingLengthPrefix(BytesRef b, long start) 
+
+
+ /** @lucene.internal  Reads length as 1 or 2 byte vInt prefix, starting @ start.  Returns the block number of the term. */
+    public int getBlockAndFill(BytesRef b, long start) 
+//    was: public BytesRef fillUsingLengthPrefix2(BytesRef b, long start) 
+
+/** @lucene.internal  Reads length as 1 or 2 byte vInt prefix, starting @ start. 
+     * Returns the start offset of the next part, suitable as start parameter on next call
+     * to sequentially read all BytesRefs. */
+    public long getNextOffsetAndFill(BytesRef b, long start) 
+//    was: public BytesRef fillUsingLengthPrefix3(BytesRef b, long start) 
+
+{code}

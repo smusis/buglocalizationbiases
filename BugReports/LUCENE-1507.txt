@@ -1,0 +1,6 @@
+adding EmptyDocIdSet/Iterator
+
+
+
+Description:
+Adding convenience classes for EmptyDocIdSet and EmptyDocIdSetIterator

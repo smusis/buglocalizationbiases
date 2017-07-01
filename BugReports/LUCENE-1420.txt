@@ -1,0 +1,14 @@
+Similarity.lengthNorm and positionIncrement=0
+
+
+
+Description:
+Calculation of lengthNorm factor should in some cases take into account the number of tokens with positionIncrement=0. This should be made optional, to support two different scenarios:
+
+* when analyzers insert artificially constructed tokens into TokenStream (e.g. ASCII-fied versions of accented terms, stemmed terms), and it's unlikely that users submit queries containing both versions of tokens: in this case lengthNorm calculation should ignore the tokens with positionIncrement=0.
+
+* when analyzers insert synonyms, and it's likely that users may submit queries that contain multiple synonymous terms: in this case the lengthNorm should be calculated as it is now, i.e. it should take into account all terms no matter what is their positionIncrement.
+
+The default should be backward-compatible, i.e. it should count all tokens.
+
+(See also the discussion here: http://markmail.org/message/vfvmzrzhr6pya22h )

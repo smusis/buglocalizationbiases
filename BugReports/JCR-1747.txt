@@ -1,0 +1,9 @@
+org.apache.jackrabbit.core.query.lucene.SearchIndex with in-memory lucene index
+
+
+
+Description:
+If I'm not wrong, there is actually no way to configure SearchIndex in order to use a memory only lucene index.
+
+Since you can configure a repository using a org.apache.jackrabbit.core.state.mem.InMemPersistenceManager, it makes sense that also search index offers a similar configuration.
+MultiIndex and PersistentIndex now always use a org.apache.lucene.store.FSDirectory, they should be refactored in order to allow a switching to a org.apache.lucene.store.RAMDirectory for this.

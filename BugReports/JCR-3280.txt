@@ -1,0 +1,21 @@
+SQL2 joins on empty sets are not efficient
+
+
+
+Description:
+It seems that in the cases where the LEFT side of the join doesn't contain any hits, the QueryEngine in unable to generate an efficient query for the RIGHT side, so it basically select all the possible nodes.
+See this discussion as context [0].
+
+Example:
+LEFT side has hits, RIGHT side select is fast given some conditions: 
+> SQL2 JOIN LEFT SIDE took 18 ms. fetched 145 rows.
+> SQL2 JOIN RIGHT SIDE took 67 ms. fetched 0 rows.
+
+LEFT side has no hits, RIGHT select everything
+> SQL2 JOIN LEFT SIDE took 8 ms. fetched 0 rows.
+> SQL2 JOIN RIGHT SIDE took 845 ms. fetched 13055 rows.
+...so it fetches 130k nodes and doesn't keep any of them.
+
+
+[0] http://jackrabbit.510166.n4.nabble.com/Strange-Search-Performance-problem-with-OR-td4507121.html
+

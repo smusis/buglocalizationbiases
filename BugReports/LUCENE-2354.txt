@@ -1,0 +1,6 @@
+Convert NumericUtils and NumericTokenStream to use BytesRef instead of Strings/char[]
+
+
+
+Description:
+After LUCENE-2302, we should use TermToBytesRefAttribute to index using NumericTokenStream. This also should convert the whole NumericUtils to use BytesRef when converting numerics.

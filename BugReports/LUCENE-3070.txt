@@ -1,0 +1,6 @@
+Enable DocValues by default for every Codec
+
+
+
+Description:
+Currently DocValues are enable with a wrapper Codec so each codec which needs DocValues must be wrapped by DocValuesCodec. The DocValues writer and reader should be moved to Codec to be enabled by default.

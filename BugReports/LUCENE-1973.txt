@@ -1,0 +1,6 @@
+Remove deprecated query components
+
+
+
+Description:
+Remove the rest of the deprecated query components.

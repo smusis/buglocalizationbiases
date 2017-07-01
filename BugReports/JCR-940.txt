@@ -1,0 +1,6 @@
+add db connection autoConnect for BundleDbPersistenceManager.
+
+
+
+Description:
+Since bundled db pm doesn't inherited from database pm, it can't reconnect once database is bounced. it would be nice to add this feature. 

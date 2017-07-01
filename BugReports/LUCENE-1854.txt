@@ -1,0 +1,6 @@
+build.xml's tar task should use longfile="gnu"
+
+
+
+Description:
+The default (used now) is the same, but we get all those nasty false warnings filling the screen.

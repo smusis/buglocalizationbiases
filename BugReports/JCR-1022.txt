@@ -1,0 +1,6 @@
+Reduce calls to RepositoryService.getRepositoryDescriptors()
+
+
+
+Description:
+Descriptors do not change and should not be requested for each session.

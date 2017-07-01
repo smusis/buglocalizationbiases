@@ -1,0 +1,9 @@
+CheckIndex incorrectly sees deletes as index corruption
+
+
+
+Description:
+There is a silly bug in CheckIndex whereby any segment with deletes is
+considered corrupt.
+
+Thanks to Bogdan Ghidireac for reporting this.

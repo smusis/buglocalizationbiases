@@ -1,0 +1,8 @@
+Exception during IndexWriter.close() prevents release of the write.lock
+
+
+
+Description:
+After encountering a case of index corruption - see http://issues.apache.org/jira/browse/LUCENE-140 - when the close() method encounters an exception in the flushRamSegments() method, the index write.lock is not released (ie. it is not really closed).
+
+The writelock is only released when the IndexWriter is GC'd and finalize() is called.

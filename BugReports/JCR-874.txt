@@ -1,0 +1,6 @@
+Move & copy objects
+
+
+
+Description:
+Add new methods in the persistence manager to move and copy objects

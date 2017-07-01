@@ -1,0 +1,9 @@
+jcr-commons: add cnd writer functionality
+
+
+
+Description:
+currently jcr-commons only provides an cnd-reader while the writer functionality is only present in spi-commons.
+for JCR-2948 a implementation independent cnd-writer would be useful and i would therefore suggest to
+add this to jcr-commons based on the code present in spi-commons and let the implementation in spi-commons
+extend from the general functionality.

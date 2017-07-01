@@ -1,0 +1,8 @@
+DirectoryTaxonomyWriter extensions should be able to set internal index writer config attributes such as info stream
+
+
+
+Description:
+Current protected openIndexWriter(Directory directory, OpenMode openMode) does not provide access to the IWC it creates.
+So extensions must reimplement this method completely in order to set e.f. info stream for the internal index writer.
+This came up in [user question: Taxonomy indexer debug |http://lucene.472066.n3.nabble.com/Taxonomy-indexer-debug-td3533341.html]

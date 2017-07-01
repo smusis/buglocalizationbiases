@@ -1,0 +1,13 @@
+[PATCH] Avoid checking for TermBuffer in SegmentTermEnum#scanTo
+
+
+
+Description:
+It seems that SegmentTermEnum#scanTo is a critical method which is called very often, especially whenever we iterate over a sequence of terms in an index.
+
+When that method is called, the first thing happens is that it checks whether a temporary TermBuffer "scratch" has already been initialized.
+
+In fact, this is not necessary. We can simply declare and initialize the "scratch"-Buffer at the class-level (right now, the initial value is _null_). Java's lazy-loading capabilities allow this without adding any memory footprint for cases where we do not need that buffer.
+
+The attached patch takes care of this. We now save one comparison per term.
+In addition to that, the patch renames "scratch" to "scanBuffer", which aligns with the naming of the other two buffers that are declared in the class.

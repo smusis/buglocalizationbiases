@@ -1,0 +1,8 @@
+isOpen needs to be accessible by subclasses of Directory
+
+
+
+Description:
+The Directory abstract class has a member variable named isOpen which is package accessible. The usage of the variable is such that it should be readable and must be writable (in order to implement close())  by any concrete implementation of directory. Because of the current accessibility of this variable is is not possible to create a Directory implementation that is not also in the org.apache.lucene.store.
+
+I propose that either the isOpen variable either needs to be declared protected or that there should be getter/setter methods that are protected.

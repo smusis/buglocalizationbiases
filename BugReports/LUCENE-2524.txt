@@ -1,0 +1,22 @@
+when many query clases are specified in boolean or dismax query, highlighted terms are always "yellow" if multi-colored feature is used
+
+
+
+Description:
+The problem is the following snippet:
+
+{code}
+protected String getPreTag( int num ){
+  return preTags.length > num ? preTags[num] : preTags[0];
+}
+{code}
+
+it should be:
+
+{code}
+protected String getPreTag( int num ){
+  int n = num % preTags.length;
+  return  preTags[n];
+}
+{code}
+

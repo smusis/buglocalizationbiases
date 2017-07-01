@@ -1,0 +1,47 @@
+TestIndexReaderReopen nightly build failure
+
+
+
+Description:
+An interesting failure in last night's build (http://hudson.zones.apache.org/hudson/job/Lucene-trunk/920).
+
+I think the root cause wast he AIOOB exception... all the "lock obtain timed out" exceptions look like they cascaded.
+
+{code}
+    [junit] Testsuite: org.apache.lucene.index.TestIndexReaderReopen
+    [junit] Lock obtain timed out: org.apache.lucene.store.SingleInstanceLock@6ac615: write.lock)
+    [junit] Tests run: 15, Failures: 1, Errors: 0, Time elapsed: 31.087 sec
+    [junit] 
+    [junit] ------------- Standard Output ---------------
+    [junit] java.lang.ArrayIndexOutOfBoundsException: Array index out of range: 148
+    [junit] 	at org.apache.lucene.util.BitVector.getAndSet(BitVector.java:74)
+    [junit] 	at org.apache.lucene.index.SegmentReader.doDelete(SegmentReader.java:908)
+    [junit] 	at org.apache.lucene.index.IndexReader.deleteDocument(IndexReader.java:1122)
+    [junit] 	at org.apache.lucene.index.DirectoryReader.doDelete(DirectoryReader.java:521)
+    [junit] 	at org.apache.lucene.index.IndexReader.deleteDocument(IndexReader.java:1122)
+    [junit] 	at org.apache.lucene.index.TestIndexReaderReopen$8.modifyIndex(TestIndexReaderReopen.java:638)
+    [junit] 	at org.apache.lucene.index.TestIndexReaderReopen.refreshReader(TestIndexReaderReopen.java:840)
+    [junit] 	at org.apache.lucene.index.TestIndexReaderReopen.access$400(TestIndexReaderReopen.java:47)
+    [junit] 	at org.apache.lucene.index.TestIndexReaderReopen$9.run(TestIndexReaderReopen.java:681)
+    [junit] 	at org.apache.lucene.index.TestIndexReaderReopen$ReaderThread.run(TestIndexReaderReopen.java:822)
+    [junit] org.apache.lucene.store.LockObtainFailedException: Lock obtain timed out: org.apache.lucene.store.SingleInstanceLock@88d319: write.lock
+    [junit] 	at org.apache.lucene.store.Lock.obtain(Lock.java:85)
+    [junit] 	at org.apache.lucene.index.DirectoryReader.acquireWriteLock(DirectoryReader.java:666)
+    [junit] 	at org.apache.lucene.index.IndexReader.setNorm(IndexReader.java:994)
+    [junit] 	at org.apache.lucene.index.IndexReader.setNorm(IndexReader.java:1020)
+    [junit] 	at org.apache.lucene.index.TestIndexReaderReopen$8.modifyIndex(TestIndexReaderReopen.java:634)
+    [junit] 	at org.apache.lucene.index.TestIndexReaderReopen.refreshReader(TestIndexReaderReopen.java:840)
+    [junit] 	at org.apache.lucene.index.TestIndexReaderReopen.access$400(TestIndexReaderReopen.java:47)
+    [junit] 	at org.apache.lucene.index.TestIndexReaderReopen$9.run(TestIndexReaderReopen.java:681)
+    [junit] 	at org.apache.lucene.index.TestIndexReaderReopen$ReaderThread.run(TestIndexReaderReopen.java:822)
+    ...
+    [junit] ------------- ---------------- ---------------
+    [junit] Testcase: testThreadSafety(org.apache.lucene.index.TestIndexReaderReopen):	FAILED
+    [junit] Error occurred in thread Thread-36:
+    [junit] Lock obtain timed out: org.apache.lucene.store.SingleInstanceLock@6ac615: write.lock
+    [junit] junit.framework.AssertionFailedError: Error occurred in thread Thread-36:
+    [junit] Lock obtain timed out: org.apache.lucene.store.SingleInstanceLock@6ac615: write.lock
+    [junit] 	at org.apache.lucene.index.TestIndexReaderReopen.testThreadSafety(TestIndexReaderReopen.java:764)
+    [junit] 
+    [junit] 
+{code}

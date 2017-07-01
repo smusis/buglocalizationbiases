@@ -1,0 +1,28 @@
+disk full can cause index corruption in certain cases
+
+
+
+Description:
+Robert uncovered this nasty bug, in adding more randomness to
+oal.index tests...
+
+I got a standalone test to show the issue; the corruption path is
+as follows:
+
+  * The merge hits an initial exception (eg disk full when merging the
+    postings).
+
+  * In handling this exception, IW closes all the sub-readers,
+    suppressing any further exceptions.
+
+  * If one of these sub-readers has pending deletions, which happens
+    if readers are pooled in IW, it will flush them.  If that flush
+    hits a 2nd exception (eg disk full), then SegmentReader
+    [incorrectly] leaves the SegmentInfo's delGen advanced by 1,
+    referencing a corrupt file, yet the SegmentReader is still
+    forcefully closed.
+
+  * If enough disk frees up such that a later IW.commit/close
+    succeeds, the resulting segments file will reference an invalid
+    deletions file.
+

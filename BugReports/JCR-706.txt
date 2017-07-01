@@ -1,0 +1,6 @@
+RTFTextExtractor should also support mime type text/rtf
+
+
+
+Description:
+There exist two mime types for RTF documents: application/rtf and text/rtf. The current RTFTextExtractor currently only recognizes the first.

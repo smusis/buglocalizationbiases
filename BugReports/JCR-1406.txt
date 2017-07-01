@@ -1,0 +1,7 @@
+Add the org.apache.jackrabbit.rmi.jackrabbit package to the rmic generation 
+
+
+
+Description:
+From the UnicastRemoteObject's (ServerJackrabbitNodeTypeManager, ServerJackrabbitWorkspace) should be stubs generated.
+

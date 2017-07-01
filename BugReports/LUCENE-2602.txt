@@ -1,0 +1,6 @@
+Default merge policy should take deletions into account
+
+
+
+Description:
+LUCENE-1634 added a calibrateSizeByDeletes; we had a TODO to default this to true as of 3.0 but we missed it.  I'll fix it now for 3.1 and 4.0.  While this is technically a change in back-compat (for 3.x), I think it's fine to make an exception here; this should be a big win for indices that have high doc turnover with time.

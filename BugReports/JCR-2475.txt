@@ -1,0 +1,8 @@
+Test failures when running "mvn cobertura:check"
+
+
+
+Description:
+It looks like the bytecode instrumentation done by Cobertura interferes with the rather complex XPathTokenManager class produced by JavaCC.
+
+The easiest workaround seems to be to simply exclude XPathTokenManager from being instrumented by Cobertura.

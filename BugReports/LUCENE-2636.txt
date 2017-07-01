@@ -1,0 +1,6 @@
+Create ChainingCollector
+
+
+
+Description:
+ChainingCollector allows chaining a bunch of Collectors, w/o them needing to know or care about each other, and be passed into Lucene's search API, since it is a Collector on its own. It is a convenient, yet useful, class. Will post a patch w/ it shortly.

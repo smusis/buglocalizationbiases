@@ -1,0 +1,6 @@
+Put JavaDoc resources in src/main/javadoc
+
+
+
+Description:
+The Maven javadoc plugin suggests that Javadoc resources like package.html files and doc-files subdirectories should be placed in the src/main/javadoc folder (see http://maven.apache.org/plugins/maven-javadoc-plugin/faq.html). I'll move the javadoc files unless anyone argues otherwise.

@@ -1,0 +1,8 @@
+Publish source/javadoc jar files to the Maven repository
+
+
+
+Description:
+It would be really nice if HttpComponents (Core and Client) published jar files to the Maven repository for not just the bytecode, but also for the source and javadoc (done by defining a "classifier" attribute of "javadoc" or "source" for the jar when publishing with Maven).
+
+Having these in the Maven repo allows an IDE (like Eclipse) to auto-download and attach the source/javadoc to the HttpComponent jar files - meaning developers will then see the API documentation automatically in their IDE.  This also greatly aids debugging if one needs to step through HttpComponent code, and placing the source in the hands of more developers also means you might see more patches coming back.

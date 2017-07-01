@@ -1,0 +1,6 @@
+CharacterCache - references deleted 
+
+
+
+Description:
+CharacterCache is deprecated by Character.valueOf(c) . Hence the latter is chosen over the former. 

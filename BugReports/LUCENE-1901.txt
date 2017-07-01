@@ -1,0 +1,10 @@
+TermAttributeImpl.equals() does not check termLength
+
+
+
+Description:
+If you look at the code from equals(), I think it misses this check :
+
+other.termLength==this.termLength
+
+This check must be before the comparison of the arrays.

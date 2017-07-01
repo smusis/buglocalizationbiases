@@ -1,0 +1,8 @@
+OperandEvaluator should be able to handle Nodes as well, not just Rows
+
+
+
+Description:
+OperandEvaluator is used to evaluate Operands values against given Rows, and in an effort to improve the sorting part of SQL2 (JCR-2959), I need it to handle plain Nodes as well.
+
+This is a small change, as the OperandEvaluator already extracts the Node info from the Row, so there is no obvious reason no to expose the Node operations directly.

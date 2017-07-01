@@ -1,0 +1,19 @@
+Don't leak deleted open file handles with pooled readers
+
+
+
+Description:
+If you have CFS enabled today, and pooling is enabled (either directly
+or because you've pulled an NRT reader), IndexWriter will hold open
+SegmentReaders against the non-CFS format of each merged segment.
+
+So even if you close all NRT readers you've pulled from the writer,
+you'll still see file handles open against files that have been
+deleted.
+
+This count will not grow unbounded, since it's limited by the number
+of segments in the index, but it's still a serious problem since the
+app had turned off CFS in the first place presumably to avoid risk of
+too-many-open-files.  It's also bad because it ties up disk space
+since these files would otherwise be deleted.
+

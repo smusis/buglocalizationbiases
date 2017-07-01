@@ -1,0 +1,10 @@
+InternalXAResource.rollback() can be called twice and without prepare
+
+
+
+Description:
+during the prepare phase in the transaction context, each resource is 'prepared'. if one of them fails to prepare, the rest is rolledback, and later all of them are rolledback again. this can cause that:
+- a resource that is never prepared is rolled back (which is ok, since is may need to cleanup stuff)
+- a resource's rollback() may be called twice (which i don't know, if it's ok)
+
+however, some of the resources are buggy and can't handle neither case correctly.

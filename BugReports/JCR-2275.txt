@@ -1,0 +1,15 @@
+some legal jcr names cause unneccessary server-roundtrips 
+
+
+
+Description:
+assume the following legal qualified jcr names:
+
+"{foo}"
+"{foo} bar"
+
+when items with such names are read from the spi layer, they are first interpreted as expanded form names.
+a prefix lookup for namespace 'foo' fails and the name is treated as qualified jcr name.
+
+=> depending on the spi implementation, a server-roundtrip is required in order to determine that 'foo' is not a
+registered namespace. 

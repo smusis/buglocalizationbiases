@@ -1,0 +1,16 @@
+Persistence: support property databaseType
+
+
+
+Description:
+In persistence managers and cluster journal the term 'schema' is used to mean 'database type'. 
+
+Using the term 'schema' for that is actually quite confusing (in my view):
+
+The definition of schema http://en.wikipedia.org/wiki/Database_schema is "the schema defines the tables, the fields in each table, and the relationships between fields and tables."
+
+Additionally in most databases a schema is is a name space within a database: http://java.sun.com/j2se/1.4.2/docs/api/java/sql/DatabaseMetaData.html#getSchemas() .
+
+I suggest to support the property 'databaseType' in addition to 'schema' for the persistence managers and the cluster journal.
+
+

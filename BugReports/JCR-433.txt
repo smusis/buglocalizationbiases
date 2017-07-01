@@ -1,0 +1,11 @@
+NodeTypeRegistry could auto-subtype from nt:base
+
+
+
+Description:
+when tying to register a (primary) nodetype that does not extend from nt:base the following error is
+thrown:
+
+"all primary node types except nt:base itself must be (directly or indirectly) derived from nt:base"
+
+since the registry is able to detect this error, it would be easy to auto-subtype all nodetypes from nt:base. imo it's pointless to explzitely add the nt:base to every supperclass set. as an analogy, you don't need to 'extend from java.lang.Object' explicitely - the compiler does that automatically for your.

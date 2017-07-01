@@ -1,0 +1,15 @@
+BlockJoinQuery doesn't implement boost
+
+
+
+Description:
+After reviewing LUCENE-3494, i checked other queries and noticed that BlockJoinQuery currently throws UOE for getBoost and setBoost:
+{noformat}
+throw new UnsupportedOperationException("this query cannot support boosting; please use childQuery.setBoost instead");
+{noformat}
+
+I don't think we can safely do that in queries, because other parts of lucene rely upon this working... for example BQs rewrite when
+it has a single clause and erases itself.
+
+So I think we should just pass down the boost to the inner weight.
+

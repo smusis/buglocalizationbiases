@@ -1,0 +1,6 @@
+Demo HTMLParser compares StringBuffer to an empty String with .equals
+
+
+
+Description:
+

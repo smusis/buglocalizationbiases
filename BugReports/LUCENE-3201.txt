@@ -1,0 +1,30 @@
+improved compound file handling
+
+
+
+Description:
+Currently CompoundFileReader could use some improvements, i see the following problems
+* its CSIndexInput extends bufferedindexinput, which is stupid for directories like mmap.
+* it seeks on every readInternal
+* its not possible for a directory to override or improve the handling of compound files.
+
+for example: it seems if you were impl'ing this thing from scratch, you would just wrap the II directly (not extend BufferedIndexInput,
+and add compound file offset X to seek() calls, and override length(). But of course, then you couldnt throw read past EOF always when you should,
+as a user could read into the next file and be left unaware.
+
+however, some directories could handle this better. for example MMapDirectory could return an indexinput that simply mmaps the 'slice' of the CFS file.
+its underlying bytebuffer etc naturally does bounds checks already etc, so it wouldnt need to be buffered, not even needing to add any offsets to seek(),
+as its position would just work.
+
+So I think we should try to refactor this so that a Directory can customize how compound files are handled, the simplest 
+case for the least code change would be to add this to Directory.java:
+
+{code}
+  public Directory openCompoundInput(String filename) {
+    return new CompoundFileReader(this, filename);
+  }
+{code}
+
+Because most code depends upon the fact compound files are implemented as a Directory and transparent. at least then a subclass could override...
+but the 'recursion' is a little ugly... we could still label it expert+internal+experimental or whatever.
+

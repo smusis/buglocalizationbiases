@@ -1,0 +1,11 @@
+speed up automaton seeking in nextString
+
+
+
+Description:
+While testing, i found there are some queries (e.g. wildcard ?????????) that do quite a lot of backtracking.
+
+nextString doesn't handle this particularly well, when it walks the DFA, if it hits a dead-end and needs to backtrack, it increments the bytes, and starts over completely.
+
+alternatively it could save the path information in an int[], and backtrack() could return a position to restart from, instead of just a boolean.
+

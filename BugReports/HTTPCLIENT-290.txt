@@ -1,0 +1,7 @@
+MS Proxy with NTLM authentication set up does not work
+
+
+
+Description:
+When I try to go via a MS Proxy which is set up with NTLM authentication I
+always get a "407" error, no matter which credentials used.

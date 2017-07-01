@@ -1,0 +1,15 @@
+BlockJoinCollector only allows retrieving groups for only one BlockJoinQuery
+
+
+
+Description:
+Spinoff from Mark Harwood's email (subject "BlockJoin concerns") to
+dev list.
+
+It's fine to use multiple nested joins in a single query, and
+BlockJoinCollector should let you retrieve the top groups for all of
+them.
+
+But currently it always returns null after the first query's groups
+have been retrieved, because of a silly bug.
+

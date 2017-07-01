@@ -1,0 +1,19 @@
+LockMethod.getResponseAsLockDiscovery() fails when status==201 
+
+
+
+Description:
+RFC 4918 Section 9.10.6 specifies that 201 is a valid response code for LOCK: "201 (Created) - The LOCK request was to an unmapped URL, the request succeeded and resulted in the creation of a new resource, and the value of the DAV:lockdiscovery property is included in the response body."
+
+However, LockMethod.getResponseAsLockDiscovery() would fail in that scenario. 
+    org.apache.jackrabbit.webdav.DavException: Created
+	 at org.apache.jackrabbit.webdav.client.methods.DavMethodBase.getResponseException(DavMethodBase.java:164)
+	 at org.apache.jackrabbit.webdav.client.methods.LockMethod.getResponseAsLockDiscovery(LockMethod.java:119)
+
+
+The reason is in LockMethod:175 
+      return statusCode == DavServletResponse.SC_OK;
+
+Should be: 
+      return statusCode == DavServletResponse.SC_OK
+             || statusCode ==DavServletResponse.SC_CREATED;

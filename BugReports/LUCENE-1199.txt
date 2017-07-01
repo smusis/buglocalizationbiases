@@ -1,0 +1,27 @@
+NullPointerException in IndexModifier.close()
+
+
+
+Description:
+We upgraded from Lucene 2.0.0. to 2.3.1 hoping this would resolve this issue.
+
+http://jira.codehaus.org/browse/MRM-715
+
+Trace is as below for Lucene 2.3.1:
+java.lang.NullPointerException
+at org.apache.lucene.index.IndexModifier.close(IndexModifier.java:576)
+at org.apache.maven.archiva.indexer.lucene.LuceneRepositoryContentIndex.closeQuietly(LuceneRepositoryContentIndex.java:416)
+at org.apache.maven.archiva.indexer.lucene.LuceneRepositoryContentIndex.modifyRecord(LuceneRepositoryContentIndex.java:152)
+at org.apache.maven.archiva.consumers.lucene.IndexContentConsumer.processFile(IndexContentConsumer.java:169)
+at org.apache.maven.archiva.repository.scanner.functors.ConsumerProcessFileClosure.execute(ConsumerProcessFileClosure.java:51)
+at org.apache.commons.collections.functors.IfClosure.execute(IfClosure.java:117)
+at org.apache.commons.collections.CollectionUtils.forAllDo(CollectionUtils.java:388)
+at org.apache.maven.archiva.repository.scanner.RepositoryContentConsumers.executeConsumers(RepositoryContentConsumers.java:283)
+at org.apache.maven.archiva.proxy.DefaultRepositoryProxyConnectors.transferFile(DefaultRepositoryProxyConnectors.java:597)
+at org.apache.maven.archiva.proxy.DefaultRepositoryProxyConnectors.fetchFromProxies(DefaultRepositoryProxyConnectors.java:157)
+at org.apache.maven.archiva.web.repository.ProxiedDavServer.applyServerSideRelocation(ProxiedDavServer.java:447)
+at org.apache.maven.archiva.web.repository.ProxiedDavServer.fetchContentFromProxies(ProxiedDavServer.java:354)
+at org.apache.maven.archiva.web.repository.ProxiedDavServer.process(ProxiedDavServer.java:189)
+at org.codehaus.plexus.webdav.servlet.multiplexed.MultiplexedWebDavServlet.service(MultiplexedWebDavServlet.java:119)
+at org.apache.maven.archiva.web.repository.RepositoryServlet.service(RepositoryServlet.java:155)
+at javax.servlet.http.HttpServlet.service(HttpServlet.java:803)

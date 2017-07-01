@@ -1,0 +1,24 @@
+if index is too old you should hit an exception saying so
+
+
+
+Description:
+If you create an index in 2.3.x (I used demo's IndexFiles) and then try to read it in 4.0.x (I used CheckIndex), you hit a confusing exception like this:
+{noformat}
+java.io.IOException: read past EOF
+        at org.apache.lucene.store.BufferedIndexInput.refill(BufferedIndexInput.java:154)
+        at org.apache.lucene.store.BufferedIndexInput.readByte(BufferedIndexInput.java:39)
+        at org.apache.lucene.store.ChecksumIndexInput.readByte(ChecksumIndexInput.java:40)
+        at org.apache.lucene.store.DataInput.readInt(DataInput.java:76)
+        at org.apache.lucene.index.SegmentInfo.<init>(SegmentInfo.java:171)
+        at org.apache.lucene.index.SegmentInfos.read(SegmentInfos.java:230)
+        at org.apache.lucene.index.SegmentInfos$1.doBody(SegmentInfos.java:269)
+        at org.apache.lucene.index.SegmentInfos$FindSegmentsFile.run(SegmentInfos.java:649)
+        at org.apache.lucene.index.SegmentInfos$FindSegmentsFile.run(SegmentInfos.java:484)
+        at org.apache.lucene.index.SegmentInfos.read(SegmentInfos.java:265)
+        at org.apache.lucene.index.CheckIndex.checkIndex(CheckIndex.java:308)
+        at org.apache.lucene.index.CheckIndex.checkIndex(CheckIndex.java:287)
+        at org.apache.lucene.index.CheckIndex.main(CheckIndex.java:930)
+{noformat}
+
+I think instead we should throw an IndexTooOldException or something like that?

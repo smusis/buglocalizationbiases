@@ -1,0 +1,22 @@
+Removal of first version throws javax.jcr.ReferentialIntegrityException
+
+
+
+Description:
+A ReferentialIntegrityException occurs when I delete the first version succeeding the root version. Deleting other versions works fine. Here is the stack:
+
+javax.jcr.ReferentialIntegrityException: Unable to remove version. At least once referenced.
+        at org.apache.jackrabbit.core.version.InternalVersionHistoryImpl.removeVersion(InternalVersionHistoryImpl.java:379)
+        at org.apache.jackrabbit.core.version.InternalVersionManagerBase.internalRemoveVersion(InternalVersionManagerBase.java:684)
+        at org.apache.jackrabbit.core.version.InternalVersionManagerImpl$5.run(InternalVersionManagerImpl.java:495)
+        at org.apache.jackrabbit.core.version.InternalVersionManagerImpl$DynamicESCFactory.doSourced(InternalVersionManagerImpl.java:760)
+        at org.apache.jackrabbit.core.version.InternalVersionManagerImpl.removeVersion(InternalVersionManagerImpl.java:493)
+        at org.apache.jackrabbit.core.version.InternalXAVersionManager.removeVersion(InternalXAVersionManager.java:264)
+        at org.apache.jackrabbit.core.version.VersionHistoryImpl.removeVersion(VersionHistoryImpl.java:253)
+
+The code is simple:
+
+VersionHistory vh = session.getWorkspace().getVersionManager().getVersionHistory(path);
+vh.removeVersion(version); // where version is the first version succeeding the root version
+
+

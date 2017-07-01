@@ -1,0 +1,22 @@
+NamespaceAdder.addNamespace throws ClassCastException
+
+
+
+Description:
+Here's the method
+
+public void addNamespaces(NamespaceMapping nsm)
+            throws NamespaceException, 
+UnsupportedRepositoryOperationException, RepositoryException {
+        Map m = nsm.getPrefixToURIMapping();
+        for (Iterator i = m.values().iterator(); i.hasNext();) {
+            Map.Entry e = (Map.Entry) i.next();
+            String prefix = (String) e.getKey();
+            String uri = (String) e.getKey();
+            registry.registerNamespace(prefix, uri);
+        }
+    }
+
+
+should be the entrySet iterator, and uri should come from the value, patch fixes this.
+Occurs in both spi-commons and jcr-commons (duplicate code)

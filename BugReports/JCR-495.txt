@@ -1,0 +1,21 @@
+TCK: SessionReadMethodsTest#testIsLive calls logout() more than once
+
+
+
+Description:
+SessionReadMethodsTest#testIsLive calls logout more than once in a session (once in the test, once in tearDown).  JSR-170 doesn't prohibit an implementation from throwing an unchecked exception (such as IllegalStateException) if logout is called more than once.
+
+Proposal: change tearDown to test isLive before calling logout.
+
+--- SessionReadMethodsTest.java (revision 422074)
++++ SessionReadMethodsTest.java (working copy)
+@@ -57,7 +57,7 @@
+      * Releases the session aquired in {@link #setUp()}.
+      */
+     protected void tearDown() throws Exception {
+-        if (session != null) {
++        if (session != null && session.isLive()) {
+             session.logout();
+         }
+         super.tearDown();
+

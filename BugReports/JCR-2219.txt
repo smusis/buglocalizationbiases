@@ -1,0 +1,8 @@
+Improved background text extraction
+
+
+
+Description:
+As recently discussed on the mailing list (see http://markmail.org/message/syt7lc2guzapt7la), the current approach to text extraction in background threads doesn't work that well especially with the Tika-based extractors that support streamed parsing of many document types.
+
+Also, we currently *all* of the extracted text streams are buffered into Strings before being passed into the Lucene index. It would be good if we could somehow get back to passing just Readers to Lucene.

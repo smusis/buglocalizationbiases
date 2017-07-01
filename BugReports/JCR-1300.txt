@@ -1,0 +1,18 @@
+spi2dav Improve performance for large binary properties
+
+
+
+Description:
+Sending large binary properties over spi2dav is slow and requires a lot of heap space in both client and server.
+One problematic part is base64 conversion of the property value.
+
+On the contrary, using 'normal' webdav interface (/repository/default/ instead of /server) for uploading a file (through traditional webdav client) it is pretty fast and don't have such impact on heap space.
+
+Some suggestions from the previous discussion:
+ - avoid temporary copies of the data, and persist large objects as early as possible. 
+ - transfer large objects in blocks from the Jackrabbit SPI client to the server (and back).
+ - make usage of the global data store (JCR-926). 
+ - straight forward PUT for single-valued properties
+
+Link to discussion: http://www.mail-archive.com/dev@jackrabbit.apache.org/msg09481.html
+

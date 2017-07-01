@@ -1,0 +1,85 @@
+Some enhancements to jackrabbit commons
+
+
+
+Description:
+I would like to suggest a couple of  enhancements to the commons module. 
+
+The patch was created against rev. 417443 and the tests did not reveal any 
+problems.
+
+Summary of suggestion modifications:
+
+QName
+-------------------------------------------------------------------------------------------------------------------------
+- reduce QName to its core functionality and put conversion from and to JCR name to
+  a separate class 'NameFormat'
+- in order not to break existing code, all methods that deal with the conversion in QName
+  are marked deprecated.
+- add constant for the name of the root node.
+
+Path
+-------------------------------------------------------------------------------------------------------------------------
+- reduce Path to its core functionality and put conversion from and to JCR path to
+  a separate class 'PathFormat'
+- in order not to break existing code, all methods that deal with the conversion in Path
+  are marked deprecated.
+- introduce new constants for UNDEFINED_INDEX (0) and DEFAULT_INDEX (1), that
+   are currently hardcoded throughout  the jackrabbit project.
+- new method Path.getElement(int) [PathElement]
+- make PathElement constants public (used by PathFormat)
+
+Path.PathBuilder
+-------------------------------------------------------------------------------------------------------------------------
+- additional constructor  PathBuilder(Path)
+
+Path.PathElement
+-------------------------------------------------------------------------------------------------------------------------
+- add PathElement.getNormalizedIndex() that always asserts a 1-based index.
+- change subclasses to be private (no usage within the jackrabbit, except inside Path).
+
+PathMap
+-------------------------------------------------------------------------------------------------------------------------
+- move o.a.j.core.PathMap  to o.a.j.util.PathMap in order to make it available in the
+  commons module.
+
+NamespaceResolver
+-------------------------------------------------------------------------------------------------------------------------
+- add methods for resolution of paths:
+   > getQPath(String jcrPath) [Path]
+   > getJCRPath(Path qPath) [String]
+
+NamespaceListener
+-------------------------------------------------------------------------------------------------------------------------
+- add method 'namespaceRemove(String)'
+
+ValueHelper
+-------------------------------------------------------------------------------------------------------------------------
+currently  JCR value objects are 'manually' created in the ValueHelper despite the
+fact, that JSR170 defines a ValueFactory interface. Consequently the ValueHelper
+present in the commons module can only be used by implementations that use
+the same value implementations.
+
+- add new helper methods that take a ValueFactory as argument.
+- in order not to break existing code the original methods are marked deprecated and
+  may be removed at a later time.
+
+consequently:
+- modify signature of  InternalValue.create that include a value conversion to take a
+  ValueFactory param and adjust all usages inside the core package.
+
+ValueFactoryImpl
+-------------------------------------------------------------------------------------------------------------------------
+- createValue(String, int ): used to call the conversion on ValueHelper. with the 
+   changes suggested to ValueHelper, the code must be changed in order to
+   created instances of the Value implementations within the factory.
+- together with the modification to ValueHelper, stefan suggested to replace the public 
+  constructor with a static 'getInstance' method. All usages within jackrabbit.core, were
+   modified accordingly.
+
+Text
+-------------------------------------------------------------------------------------------------------------------------
+- add getName(String, boolean) where the boolean flag indicates whether  a trailing slash 
+   should be ignored.
+- add getRelativeParent(String, int, boolean) where the boolean flag indicates whether  a 
+  trailing slash should be ignored.

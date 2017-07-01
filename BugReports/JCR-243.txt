@@ -1,0 +1,7 @@
+expose shutdown method in o.a.j.jndi.BindableRepository
+
+
+
+Description:
+see http://thread.gmane.org/gmane.comp.apache.jackrabbit.devel/3680
+

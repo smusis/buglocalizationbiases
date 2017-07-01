@@ -1,0 +1,36 @@
+Add unsigned packed int impls in oal.util
+
+
+
+Description:
+There are various places in Lucene that could take advantage of an
+efficient packed unsigned int/long impl.  EG the terms dict index in
+the standard codec in LUCENE-1458 could subsantially reduce it's RAM
+usage.  FieldCache.StringIndex could as well.  And I think "load into
+RAM" codecs like the one in TestExternalCodecs could use this too.
+
+I'm picturing something very basic like:
+{code}
+interface PackedUnsignedLongs  {
+  long get(long index);
+  void set(long index, long value);
+}
+{code}
+
+Plus maybe an iterator for getting and maybe also for setting.  If it
+helps, most of the usages of this inside Lucene will be "write once"
+so eg the set could make that an assumption/requirement.
+
+And a factory somewhere:
+
+{code}
+  PackedUnsignedLongs create(int count, long maxValue);
+{code}
+
+I think we should simply autogen the code (we can start from the
+autogen code in LUCENE-1410), or, if there is an good existing impl
+that has a compatible license that'd be great.
+
+I don't have time near-term to do this... so if anyone has the itch,
+please jump!
+

@@ -1,0 +1,9 @@
+Clone support
+
+
+
+Description:
+It would be nice to have a clone method for some of the classes that don't have getters & setters exposed for all of their fields. Where relevant, the clone method could be in the interface, so that it doesn't matter which implementing class is being used. The main interfaces that I would like to clone are HttpRequest and Cookie. I know that HttpRequest is technically part of HttpCore, but the primary implementations of it are in HttpClient, so I thought I would post it here. 
+
+Thanks,
+David Byrne

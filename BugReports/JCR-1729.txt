@@ -1,0 +1,18 @@
+Node#addNode fails with AccessDeniedException if session lacks read-permission to an ancestor
+
+
+
+Description:
+Consider a Session that has following permissions:
+/home  -> no permission
+/home/myself -> read|remove|set_property|add_node
+
+if this session tries to add a Node to /home/myself.
+An AccessDeniedException is thrown indicateing that it can not read /home.
+
+The Exception is caused by the Node's check, if it is checked-out.
+This check asumes that the session has read-access to all its ancestors.
+Which breaks in this case:
+
+see NodeImpl internalIsCheckedOut()   (ln 3875)
+

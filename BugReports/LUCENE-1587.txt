@@ -1,0 +1,14 @@
+RangeQuery equals method does not compare collator property fully
+
+
+
+Description:
+The equals method in the range query has the collator comparison implemented as:
+(this.collator != null && ! this.collator.equals(other.collator))
+
+When _this.collator = null_ and _other.collator = someCollator_  this method will incorrectly assume they are equal. 
+
+So adding something like
+|| (this.collator == null && other.collator != null)
+would fix the problem
+

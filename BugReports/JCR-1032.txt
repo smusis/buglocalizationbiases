@@ -1,0 +1,6 @@
+Clean caches in node type registry on session logout
+
+
+
+Description:
+When running the JCR tests the memory consumption increases steadily. At the end of the test run it consumes about 300 Mb on my machine. There's not really a memory leak in jcr2spi, because the JUnit tests keep references to Session and Node instances until the end of the test run, but  it would be nice if those instances were a bit more lightweight.

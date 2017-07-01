@@ -1,0 +1,6 @@
+Remove build.xml from jackrabbit-core
+
+
+
+Description:
+After JCR-1203 the build.xml within jackrabbit-core contains only a single Ant task, that could just as well be moved into the pom.xml file to be run inline with the maven antrun plugin.

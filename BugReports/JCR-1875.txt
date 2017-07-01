@@ -1,0 +1,8 @@
+Failing Node.unlock() might leave inconsistent transient state
+
+
+
+Description:
+Similar to issue JCR-538 but for Node.unlock():
+
+If updating the lock related properties (jcr:lockIsDeep or jcr:lockOwner) fails e.g. due to missing permission, there might be inconsistent transient modifications pending.

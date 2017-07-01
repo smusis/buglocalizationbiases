@@ -1,0 +1,8 @@
+paging collector
+
+
+
+Description:
+http://issues.apache.org/jira/browse/LUCENE-2127?focusedCommentId=12796898&page=com.atlassian.jira.plugin.system.issuetabpanels%3Acomment-tabpanel#action_12796898
+
+Somebody assign this to Aaron McCurry and we'll see if we can get enough votes on this issue to convince him to upload his patch.  :)

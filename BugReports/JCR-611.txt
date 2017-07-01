@@ -1,0 +1,7 @@
+Setup nightly builds for Jackrabbit
+
+
+
+Description:
+Once the Jackrabbit zone is created (see INFRA-1008), setup nightly Jackrabbit builds as discussed in http://thread.gmane.org/gmane.comp.apache.jackrabbit.devel/9190/.
+

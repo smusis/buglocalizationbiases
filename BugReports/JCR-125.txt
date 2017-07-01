@@ -1,0 +1,10 @@
+Repository holds onto Session instance after logout
+
+
+
+Description:
+
+After a call to Session.logout the Repository instance's activeSession map still holds a reference to the session. This causes a problem when trying to unlock nodes locked by another session, the addLockToken method rejects the lock token.
+
+Looking at the code in Session.logout, it tries to notify SessionListeners about the logout but Repository, which implements the SessionListener interface and will remove a session on logout, doesn't register with the Session to receive the logout notification.
+

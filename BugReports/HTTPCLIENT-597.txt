@@ -1,0 +1,30 @@
+MultithreadedConnectionManager and IdleConnectionTimeoutThread improvements
+
+
+
+Description:
+Changes to MultithreadedConnectionManager and IdleConnectionTimeoutThread following the suggestions of Balazs SZÜCS.
+
+
+-------- Forwarded Message --------
+From: SZÜCS Balazs <Balazs.Szuecs@wave-solutions.com>
+Reply-To: HttpClient User Discussion
+<httpclient-user@jakarta.apache.org>
+To: 'HttpClient User Discussion' <httpclient-user@jakarta.apache.org>
+Subject: RE: MultithreadedConnectionManager pooling strategy
+Date: Mon, 15 May 2006 15:26:08 +0200
+
+Hello,
+
+I made two changes to the HttpClient code:
+
+1) in the class ConnectionPool in the method getFreeConnection( ... ) I
+changed freeConnections.removeFirst() to freeConnections.removeLast(). Now
+the container for free connections behaves as a stack rather than a queue.
+
+2) additionally I changed the IdleConnectionTimeoutThread, in the run()
+method I added connectionManager.deleteClosedConnections() so that the pool
+size is maintained correctly.
+
+What do you think?
+Balazs

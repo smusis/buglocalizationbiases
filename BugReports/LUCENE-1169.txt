@@ -1,0 +1,9 @@
+Search with Filter does not work!
+
+
+
+Description:
+See attached JUnitTest, self-explanatory
+
+
+

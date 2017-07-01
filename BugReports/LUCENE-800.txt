@@ -1,0 +1,42 @@
+Incorrect parsing by QueryParser.parse() when it encounters backslashes (always eats one backslash.)
+
+
+
+Description:
+Test code and output follow. Tested  Lucene 1.9 version only. Affects hose who would index/search for Lucene's reserved characters.
+
+Description: When an input search string has a sequence of N (java-escaped) backslashes, where N >= 2, the QueryParser will produce a query in which that sequence has N-1 backslashes.
+
+TEST CODE:
+    Analyzer analyzer = new WhitespaceAnalyzer();
+    String[] queryStrs = {"item:\\\\",
+                          "item:\\\\*",
+                          "(item:\\\\ item:ABCD\\\\))",
+                          "(item:\\\\ item:ABCD\\\\)"};
+    for (String queryStr : queryStrs) {
+      System.out.println("--------------------------------------");
+      System.out.println("String queryStr = " + queryStr);
+      Query luceneQuery = null;
+      try {
+        luceneQuery = new QueryParser("_default_", analyzer).parse(queryStr);
+        System.out.println("luceneQuery.toString() = " + luceneQuery.toString());
+      } catch (Exception e) {
+        System.out.println(e.getClass().toString());
+      }
+    }
+
+OUTPUT (with remarks in comment notation:) 
+--------------------------------------
+String queryStr = item:\\
+luceneQuery.toString() = item:\             //One backslash has disappeared. Searcher will fail on this query.
+--------------------------------------
+String queryStr = item:\\*
+luceneQuery.toString() = item:\*           //One backslash has disappeared. This query will search for something unintended.
+--------------------------------------
+String queryStr = (item:\\ item:ABCD\\))
+luceneQuery.toString() = item:\ item:ABCD\)     //This should have thrown a ParseException because of an unescaped ')'. It did not.
+--------------------------------------
+String queryStr = (item:\\ item:ABCD\\)
+class org.apache.lucene.queryParser.ParseException        //...and this one should not have, but it did.
+
+

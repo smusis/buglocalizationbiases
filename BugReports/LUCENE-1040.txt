@@ -1,0 +1,6 @@
+Can't quickly create StopFilter
+
+
+
+Description:
+Due to the use of CharArraySet by StopFilter, one can no longer efficiently pre-create a Set for use by future StopFilter instances.

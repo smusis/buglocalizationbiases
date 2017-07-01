@@ -1,0 +1,6 @@
+Deprecate StandardBenchmarker and "old" benchmarker code in favor of the Task based approach
+
+
+
+Description:
+We should deprecate the StandardBechmarker code that was the start of the benchmark contribution in favor of the much easier to use/extend byTask benchmark code

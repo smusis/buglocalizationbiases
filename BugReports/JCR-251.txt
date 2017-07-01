@@ -1,0 +1,8 @@
+NullPointerException in VirtualNodeTypeStateManager.nodeTypeRegistered
+
+
+
+Description:
+I am working on a custom persistence manager which requires an additional node type being registered. For performance reasons, the existence of this node type is verified during PersistenceManager.init.
+
+Unfortunately this does not seem to work as the VirtualNodeTypeStateManager is not prepared to handle this situation at that point in time - the systemSession field seems to still be null.

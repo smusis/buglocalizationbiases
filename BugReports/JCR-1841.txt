@@ -1,0 +1,12 @@
+Workspace.xml can't be loaded if it has a BOM
+
+
+
+Description:
+I wondered if there was a specific reason why workspace.xml files are loaded using a FileReader instead of an InputStream in RepositoryConfig?
+
+If the workspace.xml file has a BOM (which could happen if someone edited the file manually with some misbehaving editor), then it can't be loaded ("Content not allowed in prolog") - here's a little patch that fixes this.
+
+I left the output part untouched (i.e still using a Writer) - which makes it a little inconsistent - maybe someone with a better knowledge of the JR FileSystem api could fix this.
+
+

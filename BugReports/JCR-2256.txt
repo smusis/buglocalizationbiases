@@ -1,0 +1,8 @@
+JSR 283 Repository Descriptors
+
+
+
+Description:
+- new methods returning Value objects (jcr2spi)
+- check descriptor-report in jcr-server and corresponding handling on the client side
+- etc.etc.

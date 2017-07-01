@@ -1,0 +1,6 @@
+Consolidate Solr's and Lucene's OpenBitSet classes
+
+
+
+Description:
+See SOLR-875 for details.

@@ -1,0 +1,35 @@
+Allow heuristic freshness caching
+
+
+
+Description:
+I noticed that the CachingHttpClient behaves strangely when it receives responses with only the public cache-control directive, e.g.:
+
+HTTP/1.0 200 OK
+Server: My test server
+Cache-control: public
+Content-Length: 1
+
+1
+
+
+Using a debugger, I could see that the response is cached. But when the response is queried from the cache, it is not considered as "fresh".
+According to the HTTP RFC, such responses "may" be cached (I understand it as a "should" in our case)... but there's no reason to put responses in the cache if we don't use them later one.
+
+The "freshness of the response is analysed after the response is queried from the cache, thanks to:
+CachedResponseSuitabilityChecker#canCachedResponseBeUsed()
+... calling CacheEntry#isResponseFresh()
+... returning true if the response date (getCurrentAgeSecs()) is lower than its use-by date (getFreshnessLifetimeSecs())
+
+The issue is that getFreshnessLifetimeSecs() returns 0 when there is no max-age directive.
+
+This could be fixed by replacing the code of CacheEntry#isResponseFresh() by:
+    public boolean isResponseFresh() {
+        final long freshnessLifetime = getFreshnessLifetimeSecs();
+        if (freshnessLifetime == 0) {
+            return true;
+        }
+        return (getCurrentAgeSecs() < getFreshnessLifetimeSecs());
+    }
+
+But i'm not 100% confident about not producing some bad side-effects...

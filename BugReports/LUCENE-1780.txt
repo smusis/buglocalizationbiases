@@ -1,0 +1,8 @@
+deprecate Scorer.explain
+
+
+
+Description:
+Spinoff from LUCENE-1749.
+
+We already have QueryWeight.explain, which is directly invoked by IndexSearcher.explain.  Some queries in turn will defer to their Scorer impl's explain, but many do not (and their Scorer.explain simply throw UOE).  So we should deprecate & remove Scorer.explain, leaving it up to individual queries to define that method if they need it.

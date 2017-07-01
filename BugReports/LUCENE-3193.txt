@@ -1,0 +1,19 @@
+TwoPhaseCommit interface
+
+
+
+Description:
+I would like to propose a TwoPhaseCommit interface which declares the methods necessary to implement a 2-phase commit algorithm:
+* prepareCommit()
+* commit()
+* rollback()
+
+The prepare/commit ones have variants that take a (Map<String,String> commitData) following the ones we have in IndexWriter.
+
+In addition, a TwoPhaseCommitTool which implements a 2-phase commit amongst several TPCs.
+
+Having IndexWriter implement that interface will allow running the 2-phase commit algorithm on multiple IWs or IW + any other object that implements the interface.
+
+We should mark the interface @lucene.internal so as to not block ourselves in the future. This is pretty advanced stuff anyway.
+
+Will post a patch soon

@@ -1,0 +1,6 @@
+NPE in ObservationManagerImpl.getRegisteredEventListeners() during shutdown after broken startup
+
+
+
+Description:
+See JCR-2378. The variable "dispatcher" is passed as null in the constructor.

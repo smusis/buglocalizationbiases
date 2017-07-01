@@ -1,0 +1,6 @@
+Typo in repository.xml
+
+
+
+Description:
+There's another typo in repository.xml. This is basically the same as JCR-1460, but for the SearchIndex element at the bottom of the repository.xml.

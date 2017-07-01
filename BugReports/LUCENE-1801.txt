@@ -1,0 +1,14 @@
+Tokenizers (which are the source of Tokens) should call AttributeSource.clearAttributes() first
+
+
+
+Description:
+This is a followup for LUCENE-1796:
+{quote}
+Token.clear() used to be called by the consumer... but then it was switched to the producer here: LUCENE-1101 
+I don't know if all of the Tokenizers in lucene were ever changed, but in any case it looks like at least some of these bugs were introduced with the switch to the attribute API - for example StandardTokenizer did clear it's reusableToken... and now it doesn't.
+{quote}
+
+As alternative to changing all core/contrib Tokenizers to call clearAttributes first, we could do this in the indexer, what would be a overhead for old token streams that itsself clear their reusable token. This issue should also update the Javadocs, to clearly state inside Tokenizer.java, that the source TokenStream (normally the Tokenizer) should clear *all* Attributes. If it does not do it and e.g. the positionIncrement is changed to 0 by any TokenFilter, but the filter does not change it back to 1, the TokenStream would stay with 0. If the TokenFilter would call PositionIncrementAttribute.clear() (because he is responsible), it could also break the TokenStream, because clear() is a general method for the whole attribute instance. If e.g. Token is used as AttributeImpl, a call to clear() would also clear offsets and termLength, which is not wanted. So the source of the Tokenization should rest the attributes to default values.
+
+LUCENE-1796 removed the iterator creation cost, so clearAttributes should run fast, but is an additional cost during Tokenization, as it was not done consistently before, so a small speed degradion is caused by this, but has nothing to do with the new TokenStream API.

@@ -1,0 +1,6 @@
+Add test to check maven artifacts and their poms
+
+
+
+Description:
+As release manager it is hard to find out if the maven artifacts work correct. It would be good to have an ant task that executes maven with a .pom file that requires all contrib/core artifacts (or one for each contrib) that "downloads" the artifacts from the local dist/maven folder and builds that test project. This would require maven to execute the build script. Also it should pass the ${version} ANT property to this pom.xml

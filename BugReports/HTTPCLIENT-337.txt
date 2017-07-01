@@ -1,0 +1,6 @@
+Move Content-Type to the RequestEntity
+
+
+
+Description:
+The content type is really a property of the RequestEntity.  It should be moved there.

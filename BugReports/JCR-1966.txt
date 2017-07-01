@@ -1,0 +1,21 @@
+[PATCH] Remove Stutter in NodeState
+
+
+
+Description:
+Code duplicates code for no reason
+
+Index: src/main/java/org/apache/jackrabbit/jcr2spi/state/NodeState.java
+===================================================================
+--- src/main/java/org/apache/jackrabbit/jcr2spi/state/NodeState.java	(revision 740824)
++++ src/main/java/org/apache/jackrabbit/jcr2spi/state/NodeState.java	(working copy)
+@@ -449,7 +449,7 @@
+              */
+             NodeState parent = getParent();
+             NodeId wspId = (NodeId) getWorkspaceId();
+-            def = definitionProvider.getQNodeDefinition(getParent().getNodeTypeNames(), getName(), getNodeTypeName(), wspId);
++            def = definitionProvider.getQNodeDefinition(parent.getNodeTypeNames(), getName(), getNodeTypeName(), wspId);
+         }
+         return def;
+     }
+

@@ -1,0 +1,12 @@
+remove IndexSearcher.docFreq/maxDoc
+
+
+
+Description:
+As pointed out by Mark on SOLR-1632, these are no longer used by the scoring system.
+
+We've added new stats to Lucene, so having these methods on indexsearcher makes no sense.
+Its confusing to people upgrading if they subclassed IndexSearcher to provide distributed stats,
+only to find these are not used (LUCENE-3555 has a correct API for them to do this).
+
+So I think we should remove these in 4.0.

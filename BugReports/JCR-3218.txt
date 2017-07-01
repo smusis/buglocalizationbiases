@@ -1,0 +1,7 @@
+UserImporter should trigger execution AuthorizableActions in case of user/group creation
+
+
+
+Description:
+in accordance to the new implementation specific extensions made to user mangement in JCR-3118 the user-importer
+should be adjusted as well.

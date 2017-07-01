@@ -1,0 +1,6 @@
+SimpleDateFormat used in a non thread safe manner
+
+
+
+Description:
+As Mike pointed out in http://www.mail-archive.com/java-dev@lucene.apache.org/msg10831.html SimpleDateFormat is not thread safe and hence DocMakers need to maintain it in a ThreadLocal.

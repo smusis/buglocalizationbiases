@@ -1,0 +1,11 @@
+Expose registered node types below /jcr:system/jcr:nodeTypes
+
+
+
+Description:
+spec says:
+
+6.8 System Node
+[...]
+For example, if a repository exposes node type definitions in content, then those node type definitions should be located at /jcr:system/jcr:nodeTypes.
+

@@ -1,0 +1,11 @@
+DateTools.stringToDate() can cause lock contention under load
+
+
+
+Description:
+Load testing our application (the JIRA Issue Tracker) has shown that threads spend a lot of time blocked in DateTools.stringToDate().
+
+The stringToDate() method uses a singleton SimpleDateFormat object to parse the dates.
+Each call to SimpleDateFormat.parse() is *synchronized* because SimpleDateFormat is not thread safe.
+
+

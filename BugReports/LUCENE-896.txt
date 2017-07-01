@@ -1,0 +1,9 @@
+Let users set Similarity for MoreLikeThis
+
+
+
+Description:
+Let users set Similarity used for MoreLikeThis
+
+For discussion, see:
+http://www.nabble.com/MoreLikeThis-API-changes--tf3838535.html

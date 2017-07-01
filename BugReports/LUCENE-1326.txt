@@ -1,0 +1,15 @@
+Inflater.end() method not always called in FieldsReader
+
+
+
+Description:
+
+We've just found an insidious memory leak in our own application as we did not always call Deflater.end() and Inflater.end(). As documented here;
+
+http://bugs.sun.com/view_bug.do?bug_id=4797189
+
+The non-heap memory that the native zlib code uses is not freed in a timely manner.
+
+FieldsWriter appears safe as no exception can be thrown between the Deflater's creation and end() as it uses a ByteArrayOutputStream
+
+FieldsReader, however, is not safe. In the event of a DataFormatException the call to end() will not occur.

@@ -1,0 +1,6 @@
+Using the WeightedTerms option in the Highlighter can cause fragments to be supressed for indexes with deletes
+
+
+
+Description:
+An index with a few documents and many deletes can report a lower total docs than docFreq for a term - total docs will account for deletes while docFreq will not - this causes the idf to be negative and the fragment to score < 0.

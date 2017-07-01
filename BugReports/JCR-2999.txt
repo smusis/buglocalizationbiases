@@ -1,0 +1,46 @@
+Access control evaluation does not properly cope with XA transactions
+
+
+
+Description:
+the following test fails with ItemNotFoundException at the indicated position due to the fact that
+the parent n2 is EXISTING but still not visible to the system session responsible for the ac
+evaluation.
+
+public void testTransaction() throws Exception {
+
+        // make sure testUser has all privileges
+        Privilege[] privileges = privilegesFromName(Privilege.JCR_ALL);
+        givePrivileges(path, privileges, getRestrictions(superuser, path));
+
+        // create new node and lock it
+        Session s = getTestSession();
+        UserTransaction utx = new UserTransactionImpl(s);
+        utx.begin();
+
+        // add node and save it
+        Node n = s.getNode(childNPath);
+        if (n.hasNode(nodeName1)) {
+            Node c = n.getNode(nodeName1);
+            c.remove();
+            s.save();
+        }
+
+        Node n2 = n.addNode(nodeName1);
+        s.save();
+            
+        Node n3 = n2.addNode(nodeName2);
+        s.save(); // exception
+
+        // commit
+        utx.commit();
+    }
+
+A possible workaround would be to make sure that ItemSaveOperation.persistTransientItems 
+retrieves the parent without having the checkPermission enabled since we can assume that
+the new item could not be added if the parent was not readable in the first place.... but careful
+evaluation would be required.
+
+NOTE: this is just one example of the AC-evaluation not properly dealing with XA transactions.
+I am convinced that other examples could be find....
+

@@ -1,0 +1,14 @@
+UUIDDocId cache does not work properly because of weakReferences in combination with new instance for combined indexreader 
+
+
+
+Description:
+Queries that use ChildAxisQuery or DescendantSelfAxisQuery make use of getParent() functions to know wether the parents are correct and if the result is allowed. The getParent() is called recursively for every hit, and can become very expensive. Hence, in DocId.UUIDDocId, the parents are cached. 
+
+Currently,  docId.UUIDDocId's are cached by having a WeakRefence to the CombinedIndexReader, but, this CombinedIndexReader is recreated all the time, implying that a gc() is allowed to remove the 'expensive' cache.
+
+A much better solution is to not have a weakReference to the CombinedIndexReader, but to a reference of each indexreader segment. This means, that in getParent(int n) in SearchIndex the return 
+
+return id.getDocumentNumber(this) needs to be replaced by return id.getDocumentNumber(subReaders[i]); and something similar in CachingMultiReader. 
+
+That is all. Obviously, when a node/property is added/removed/changed, some parts of the cached DocId.UUIDDocId will be invalid, but mainly small indexes are updated frequently, which obviously are less expensive to recompute.

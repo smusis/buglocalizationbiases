@@ -1,0 +1,7 @@
+The getOutputStream of the MemoryFileSystem class can replace a folder with a newly created file
+
+
+
+Description:
+It seems that if the filePath parameter passed to the getOutputStream method of the MemoryFileSystem class points to an  existing folder and not to a file - the folder will be replaced with a newly created file.
+The function should probably check whether the passed path points to a file and throw an exception if it points to a folder.

@@ -1,0 +1,72 @@
+Refactor DocumentsWriter
+
+
+
+Description:
+I've been working on refactoring DocumentsWriter to make it more
+modular, so that adding new indexing functionality (like column-stride
+stored fields, LUCENE-1231) is just a matter of adding a plugin into
+the indexing chain.
+
+This is an initial step towards flexible indexing (but there is still
+alot more to do!).
+
+And it's very much still a work in progress -- there are intemittant
+thread safety issues, I need to add tests cases and test/iterate on
+performance, many "nocommits", etc.  This is a snapshot of my current
+state...
+
+The approach introduces "consumers" (abstract classes defining the
+interface) at different levels during indexing.  EG DocConsumer
+consumes the whole document.  DocFieldConsumer consumes separate
+fields, one at a time.  InvertedDocConsumer consumes tokens produced
+by running each field through the analyzer.  TermsHashConsumer writes
+its own bytes into in-memory posting lists stored in byte slices,
+indexed by term, etc.
+
+DocumentsWriter*.java is then much simpler: it only interacts with a
+DocConsumer and has no idea what that consumer is doing.  Under that
+DocConsumer there is a whole "indexing chain" that does the real work:
+
+  * NormsWriter holds norms in memory and then flushes them to _X.nrm.
+
+  * FreqProxTermsWriter holds postings data in memory and then flushes
+    to _X.frq/prx.
+
+  * StoredFieldsWriter flushes immediately to _X.fdx/fdt
+
+  * TermVectorsTermsWriter flushes immediately to _X.tvx/tvf/tvd
+
+DocumentsWriter still manages things like flushing a segment, closing
+doc stores, buffering & applying deletes, freeing memory, aborting
+when necesary, etc.
+
+In this first step, everything is package-private, and, the indexing
+chain is hardwired (instantiated in DocumentsWriter) to the chain
+currently matching Lucene trunk.  Over time we can open this up.
+
+There are no changes to the index file format.
+
+For the most part this is just a [large] refactoring, except for these
+two small actual changes:
+
+  * Improved concurrency with mixed large/small docs: previously the
+    thread state would be tied up when docs finished indexing
+    out-of-order.  Now, it's not: instead I use a separate class to
+    hold any pending state to flush to the doc stores, and immediately
+    free up the thread state to index other docs.
+
+  * Buffered norms in memory now remain sparse, until flushed to the
+    _X.nrm file.  Previously we would "fill holes" in norms in memory,
+    as we go, which could easily use way too much memory.  Really this
+    isn't a solution to the problem of sparse norms (LUCENE-830); it
+    just delays that issue from causing memory blowup during indexing;
+    memory use will still blowup during searching.
+
+I expect performance (indexing throughput) will be worse with this
+change.  I'll profile & iterate to minimize this, but I think we can
+accept some loss.  I also plan to measure benefit of manually
+re-cycling RawPostingList instances from our own pool, vs letting GC
+recycle them.
+
+

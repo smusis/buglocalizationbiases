@@ -1,0 +1,6 @@
+XMLPersistenceManager incorrectly handles properties
+
+
+
+Description:
+JCR Property instances are written by the XMLPersistenceManager as java.util.Properties files and loaded through the loadPropertyState() method as Properties files. Unfortunately the reload() method tries to re-load the Property states from XML files, which is not possible.

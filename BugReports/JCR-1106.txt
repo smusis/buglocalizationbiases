@@ -1,0 +1,12 @@
+Add simple query method to ObjectContentManager
+
+
+
+Description:
+As discussed in [1], I suggest a new method 
+
+    ObejctContentManager.getObjectIterator(String query, String language)
+
+to easily query the repository for objects using a predefined query. (I chose getObjectIterator instead of getObjects as I intend the method to return an Iterator and not a Collection)
+
+[1] http://www.mail-archive.com/dev%40jackrabbit.apache.org/msg07475.html

@@ -1,0 +1,10 @@
+Fix rawtypes warnings for Java 7 compiler
+
+
+
+Description:
+Java 7 changed the warnings a little bit:
+- Java 6 only knew "unchecked" warning type, applying for all types of generics violations, like missing generics (raw types)
+- Java 7 still knows "unchecked" but only emits warning if the call is really unchecked. Declaration of variables/fields or constructing instances without type param now emits "rawtypes" warning.
+
+The changes above causes the Java 7 compile now emit lots of "rawtypes" warnings, where Java 6 is silent. The easy fix is to suppres both warning types: @SuppressWarnings({"unchecked","rawtypes"}) for all those places. Changes are easy to do, will provide patch later!

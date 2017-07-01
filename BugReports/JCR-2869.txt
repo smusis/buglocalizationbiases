@@ -1,0 +1,8 @@
+AccessControlManager#setPolicy may fail for new applicable policy despite jcr:modifyAccessControl privilege being granted
+
+
+
+Description:
+the sequence AccessControlManager.getApplicablePolicies -> modify -> AccessControlManager#setPolicy fails
+due to bug in AC evaluation if target is an AC-item but not yet existing. in this case the
+wrong parent node is used for AC-evaluation.

@@ -1,0 +1,8 @@
+Deprecate non-pooled bundle DB persistence managers
+
+
+
+Description:
+In JCR-1456 and Jackrabbit 2.0 we introduced database connection pooling, but decided to keep the existing database bundle persistence managers intact to avoid potential regressions. We haven't seen such problems even though pooled bundle persistence has been the default since the 2.0 release, so I think it would be safe to deprecate all the non-pooled bundle DB PMs.
+
+And in order to remove duplicate code (that has already complicated some changes within o.a.j.persistence), I'd also take the extra step of  making the o.a.j.p.bundle.* classes extend respective the o.a.j.p.pool.* classes. This would automatically allow also old non-pooled configurations to benefit from connection pooling.

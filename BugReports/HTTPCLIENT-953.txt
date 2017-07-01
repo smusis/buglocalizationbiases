@@ -1,0 +1,60 @@
+ConnPoolByRoute driving RouteSpecificPool to IllegalState
+
+
+
+Description:
+Hi all,
+
+I encountered an issue on ConnPoolByRoute / RouteSpecificPool on HTTPClient 4.0.1, akin to HTTPCLIENT-747 (it also leads to a java.lang.IllegalStateException: No entry created for this pool. HttpRoute[{}XXX] ), but it is not a concurrency issue (no race condition, just a logic error if I understood it correctly).
+
+From my understanding, the error lies in ConnPoolByRoute#getEntryBlocking
+Quoting from the code (line 309-314) :
+RouteSpecificPool rospl = getRoutePool(route, true);
+... 
+} else if (hasCapacity && !freeConnections.isEmpty()) {
+
+deleteLeastUsedEntry();
+entry = createEntry(rospl, operator);
+
+} else { ...
+
+The short version of the issue is : under certain circumstances, #deleteLeastUsedEntry can remove rospl from the map of known RootSpecificPool. But as this code still holds on to the rospl instance, it will modify its state in a way the pool will never recover from later, not having any other way to access this instance when the connection gets released.
+
+A Step by Step guide to what's going wrong.
+0) You have to be in a condition that leads to the execution of said code extract (i.e. no free entry on the current route - but the route already is registered to the global pool -, current Route has capacity, max connections reached for the global pool, but there are free connections to destroy).
+2) We arrive in deleteLeastUsedEntry(). We get the last entry from a queue. It can be that this entry is bound to the same (hashCode() wise) Route that the one we are getting a connection to (i.e. rospl instance held in the #getEntryBlocking context)
+3) this entry can be the last of its pool, thus at this point, rospl.isUnused() == true
+4) As a consequence, deleteEntry() will remove rospl from the routeToPool map
+5) Back in the getEntryBlocking method, we do entry = createEntry(rospl, operator), which will do createdEntry() on the "locally-scoped" rospl instance that has just been removed from routeToPool 
+6) When the connexion from this new entry is released at some point in the future, the rospl instance that got the createdEntry() does not exist anymore, and it is a new one that gets the freeEntry() call
+7) App breaks : this newly created RouteSpecificPool throws IllegalStateException.
+
+Step 0, though, is a rare condition that I only reached during stress tests, and on a SSL client-auth server. This is so because this is the only condition that I know of in HTTPClient, where there is a keep-alive connection in the RouteSpecificPool that can not be reused (when the State is set to the X500 principals of the client cert in the pool, but not in the request).
+
+Possible fix (from what I understand) :
+The rospl instance variable in the context of getEntryBlocking() should be protected against the consequences of #deleteLeastUsedEntry().
+Not being confortable with all issues at hand, nor with the code base, the simplest thing I can think of would be to preemptively reset the rospl variable after deleteLeastUsedEntry(), thus writing the previous code extract as :
+
+} else if (hasCapacity && !freeConnections.isEmpty()) {
+
+deleteLeastUsedEntry();
+// delete may have made deprecated the RouteSpecificPool instance
+rospl = getRoutePool(route, true);
+entry = createEntry(rospl, operator);
+
+} else { ...
+
+
+I have a test case that I will attach to this issue ASAP.
+It is a simple example that triggers the above conditions with 3 HttpGet calls, in a serial fashion. As stated previsouly, these calls need nothing particular, except that one of these calls must go to a HTTPS server with client-side certificate authentication (I guess NTLM would be OK, anything that will place a non null state along with the route in BasicEntryPool).
+
+I hope code is self-explainatory. I get 100% failure in my setup. Just configure your 2 URLS, configure classpath, set your keystores system properties, and launch.
+
+Workaround :
+Best workaround I found is : do not get to step 0.
+The most robust way I found to do that (i.e. a way that does not involve things like setting max pool size to a gigantic number that can never be reached, ...) is to actively set the ClientContext.USER_TOKEN attribute in an exec context while submitting the request to the client.
+Step 0 triggers when there is an idle connection that waits, and when this idle connection can not be reused, which can only happen if the request's "USER_TOKEN" does not match the BasicPoolEntry#getState(). As, in the SSL case, the state is the SSL Cert's X500PrincipalName, and I know it in advance, it's easy to set up front.
+
+By the way, this taught me that I never could benefit from connection reuse strategies in this SSL case, as connections would always get into the pool with a USER_TOKEN that my requests never had. Don't know if it's mentionned somewhere in the documentation, but this is a noteworthy fact to me.
+
+Please feel free to comment / correct any mistakes.

@@ -1,0 +1,6 @@
+Use executor service from repository for index merging
+
+
+
+Description:
+The index merger currently starts its own threads for index merges. Using the repository wide executor service would simplify things and make configuration easier.

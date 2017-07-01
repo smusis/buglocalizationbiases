@@ -1,0 +1,6 @@
+toString() causes StackOverflowError
+
+
+
+Description:
+further regressions of JCR-2763...

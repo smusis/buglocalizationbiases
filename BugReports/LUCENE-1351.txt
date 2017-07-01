@@ -1,0 +1,6 @@
+Add some ligatures (ff, fi, fl, ft, st) to ISOLatin1AccentFilter
+
+
+
+Description:
+ISOLatin1AccentFilter removes common diacritics and some ligatures. This patch adds support for additional common ligatures: ff, fi, fl, ft, st.

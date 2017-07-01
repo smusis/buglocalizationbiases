@@ -1,0 +1,26 @@
+Cookie rejected
+
+
+
+Description:
+Hello,
+
+I'm using HttpClient 1.0 rc2 to login in the SourceForge website and perform
+some operations, but i'm getting the following error:
+
+Page 1 from https://sourceforge.net/account/login.php
+6 dÃ©c. 2003 23:45:27 org.apache.commons.httpclient.HttpMethodBase
+processResponseHeaders
+ATTENTION: Cookie rejected: "username=l6qpwtK5hpE%3D". Illegal domain attribute
+".sourceforge.net". Domain of origin: "sourceforge.net"
+6 dÃ©c. 2003 23:45:27 org.apache.commons.httpclient.HttpMethodBase readResponseBody
+
+The cookie returned by Sourceforge is rejected because the domain for the
+request was sourceforge.net and the domain for the cookie was .sourceforge.net
+I have tried to change the cookie policy to all available options, but none work. 
+CookiePolicy.setDefaultPolicy(CookiePolicy.COMPATIBILITY);
+
+What can i do?
+
+Thanks,
+Ludovic

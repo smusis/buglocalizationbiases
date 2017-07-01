@@ -1,0 +1,6 @@
+StackOverflowError if too many versions of a node are created
+
+
+
+Description:
+In org.apache.jackrabbit.core.version.VersionIteratorImpl addVersion() is called recursively which can cause StackOverflowErrors if there are too many versions.

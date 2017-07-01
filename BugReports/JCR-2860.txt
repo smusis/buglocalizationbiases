@@ -1,0 +1,8 @@
+Make version recovery extensible
+
+
+
+Description:
+Currently JCR-2551 (Recovery from a lost version history) is implemented within the protected method RepositoryImpl$WorkspaceInfo.doInitialize(). However, it is implemented in a way that can't be re-used in a subclass (RepositoryChecker is not a public class).
+
+I will create a new method doVersionRecovery() that contains the code for JCR-2551.

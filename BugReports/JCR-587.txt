@@ -1,0 +1,6 @@
+XMLTextFilter does not extract text elements
+
+
+
+Description:
+XMLTextFilter only returns the text from attributes, not the content of text elements,

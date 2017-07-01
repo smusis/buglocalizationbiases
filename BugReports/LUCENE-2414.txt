@@ -1,0 +1,19 @@
+add icu-based tokenizer for unicode text segmentation
+
+
+
+Description:
+I pulled out the last part of LUCENE-1488, the tokenizer itself and cleaned it up some.
+
+The idea is simple:
+* First step is to divide text into writing system boundaries (scripts)
+* You supply an ICUTokenizerConfig (or just use the default) which lets you tailor segmentation on a per-writing system basis.
+* This tailoring can be any BreakIterator, so rule-based or dictionary-based or your own.
+
+The default implementation (if you do not customize) is just to do UAX#29, but with tailorings for stuff with no clear word division:
+* Thai (uses dictionary-based word breaking)
+* Khmer, Myanmar, Lao (uses custom rules for syllabification)
+
+Additionally as more of an example i have a tailoring for hebrew that treats the punctuation special. (People have asked before
+for ways to make standardanalyzer treat dashes differently, etc)
+

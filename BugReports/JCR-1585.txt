@@ -1,0 +1,6 @@
+Remove calls to System.out in tests
+
+
+
+Description:
+Two tests write to System.out: QueryTest and HierarchyNodeTest

@@ -1,0 +1,37 @@
+DbInputStream does not support mark()/reset() when exhausted.
+
+
+
+Description:
+The DbDataStore implementation uses a DbInputStream to read binary properties from the database. When a new binary property is created, Jackrabbit attempts to index it. Tika's CharsetDetector is used in the process, which marks the input stream, reads the first 8000 bytes and then resets the stream.
+
+This results in the stacktrace shown at the end of the issue, if the following two conditions hold true:
+* the property is larger than the minRecordLength configuration of the Datastore and
+* the property is smaller than 8000 bytes
+
+The DbInputStream needs to have the following properties:
+1. lazy instantiation of the underlying stream
+2. auto-close underlying stream when EOF is reached
+3. fully support mark()/reset() even if  the underlying stream is auto-closed due to 2.
+
+
+12.03.2010 15:53:28 *WARN * LazyTextExtractorField: Failed to extract text from a binary property (LazyTextExtractorField.java, line 165)
+java.io.EOFException
+        at org.apache.jackrabbit.core.data.db.DbInputStream.reset(DbInputStream.java:180)
+        at org.apache.tika.io.ProxyInputStream.reset(ProxyInputStream.java:156)
+        at org.apache.tika.io.ProxyInputStream.reset(ProxyInputStream.java:156)
+        at org.apache.tika.parser.txt.CharsetDetector.setText(CharsetDetector.java:131)
+        at org.apache.tika.parser.txt.TXTParser.parse(TXTParser.java:77)
+        at org.apache.tika.parser.CompositeParser.parse(CompositeParser.java:120)
+        at org.apache.tika.parser.AutoDetectParser.parse(AutoDetectParser.java:101)
+        at org.apache.tika.parser.AutoDetectParser.parse(AutoDetectParser.java:114)
+        at org.apache.jackrabbit.core.query.lucene.LazyTextExtractorField$ParsingTask.run(LazyTextExtractorField.java:160)
+        at java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:441)
+        at java.util.concurrent.FutureTask$Sync.innerRun(FutureTask.java:303)
+        at java.util.concurrent.FutureTask.run(FutureTask.java:138)
+        at java.util.concurrent.ScheduledThreadPoolExecutor$ScheduledFutureTask.access$301(ScheduledThreadPoolExecutor.java:98)
+        at java.util.concurrent.ScheduledThreadPoolExecutor$ScheduledFutureTask.run(ScheduledThreadPoolExecutor.java:207)
+        at java.util.concurrent.ThreadPoolExecutor$Worker.runTask(ThreadPoolExecutor.java:886)
+        at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:908)
+        at java.lang.Thread.run(Thread.java:619)
+

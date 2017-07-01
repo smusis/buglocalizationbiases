@@ -1,0 +1,14 @@
+Optimize queries that check for the existence of a property
+
+
+
+Description:
+//*[@mytext] is transformed into the org.apache.jackrabbit.core.query.lucene.MatchAllQuery, that through the MatchAllWeight uses the MatchAllScorer.  The calculateDocFilter() in MatchAllScorer  does not scale and becomes slow for growing number of nodes. 
+
+Solution: lucene documents will get a new Field:
+
+public static final String PROPERTIES_SET = "_:PROPERTIES_SET".intern();
+
+that holds the available properties of this document. 
+
+NOTE: Lucene indices build without this performance improvement should still work and fall back to the original implementation

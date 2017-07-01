@@ -1,0 +1,6 @@
+EntryCollectorTest failure on certain Java versions
+
+
+
+Description:
+The testCache test case in the EntryCollectorTest class uses array comparison for a set of permissions, which causes test failures on certain Java versions where the ordering of permissions is different than expected.

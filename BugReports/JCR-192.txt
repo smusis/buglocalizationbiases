@@ -1,0 +1,6 @@
+Update monitor is not released
+
+
+
+Description:
+When the timer thread in MultiIndex commits the volatile index after some idle time it does not release / reset the updateInProgress flag. This results in queries that hang until another thread writes to the workspace.

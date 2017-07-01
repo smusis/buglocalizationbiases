@@ -1,0 +1,30 @@
+Deadlock: IndexWriter.addIndexes(IndexReader[])
+
+
+
+Description:
+A deadlock issue occurs under the following circumstances
+- IndexWriter.autoCommit == true
+- IndexWriter.directory contains multiple segments
+- IndexWriter.AddIndex(IndexReader[]) is invoked
+
+I put together a JUnit test that recreates the deadlock, which I've attached.  It is the first test method, 'testAddIndexByIndexReader()'.
+
+In a nutshell, here is what happens:
+
+        // 1) AddIndexes(IndexReader[]) acquires the write lock,
+        // then begins optimization of destination index (this is
+        // prior to adding any external segments).
+        //
+        // 2) Main thread starts a ConcurrentMergeScheduler.MergeThread
+        // to merge the 2 segments.
+        //
+        // 3) Merging thread tries to acquire the read lock at
+        // IndexWriter.blockAddIndexes(boolean) in
+        // IndexWriter.StartCommit(), but cannot as...
+        //
+        // 4) Main thread still holds the write lock, and is
+        // waiting for the IndexWriter.runningMerges data structure
+        // to be devoid of merges with their optimize flag
+        // set (IndexWriter.optimizeMergesPending()).
+

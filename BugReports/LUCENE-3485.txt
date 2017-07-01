@@ -1,0 +1,8 @@
+LuceneTaxonomyReader .decRef() may close the inner IR, renderring the LTR in a limbo.
+
+
+
+Description:
+TaxonomyReader which supports ref-counting, has a decRef() method which delegates to an inner IndexReader and calls its .decRef(). The latter may close the reader (if the ref is zeroes) but the taxonomy would remain 'open' which will fail many of its method calls.
+
+Also, the LTR's .close() method does not work in the same manner as IndexReader's - which calls decRef(), and leaves the real closing logic to the decRef(). I believe this should be the right approach for the fix.

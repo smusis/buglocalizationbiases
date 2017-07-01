@@ -1,0 +1,6 @@
+Make BaseTokenStreamTestCase a bit more evil
+
+
+
+Description:
+Throw an exception from the Reader while tokenizing, stop after not consuming all tokens, sometimes spoon-feed chars from the reader...

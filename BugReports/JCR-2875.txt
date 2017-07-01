@@ -1,0 +1,6 @@
+Exclude the netcdf dependency
+
+
+
+Description:
+As discussed on the mailing list, the netcdf dependency we get through Tika since version 0.8 is only used in very rare cases and thus does not justify the added size overhead. We should thus exclude it from default installations.

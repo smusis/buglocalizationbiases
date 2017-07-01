@@ -1,0 +1,18 @@
+Wrap IllegalArgumentException from UUID when bad ID passed to Session.getNodeByUUID
+
+
+
+Description:
+Hi,
+
+On 6/30/06, David Kennedy <davek@us.ibm.com> wrote:
+> When invoking session.getNodeByUUID and passing an invalid ID, an
+> IllegalArgumentException is thrown.  Should this be wrapped in an
+> ItemNotFoundException or RepositoryException by SessionImpl?
+
+Good point, an ItemNotFoundException would probably be best. Could you
+please file a Jira issue for this?
+
+BR,
+
+Jukka Zitting

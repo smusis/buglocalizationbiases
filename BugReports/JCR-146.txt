@@ -1,0 +1,95 @@
+importXML prepending line feeds to tag values
+
+
+
+Description:
+Importing using Session.importXML(...) results in new line characters being inserted at the beginning of tag
+values:
+
+<?xml version="1.0" encoding="UTF-8"?>
+<Policy xmlns="urn:oasis:names:tc:xacml:1.0:policy"  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" PolicyId="test:policy-one" RuleCombiningAlgId="urn:oasis:names:tc:xacml:1.0:rule-combining-algorithm:ordered-permit-overrides">
+  <Description>policy-description</Description>
+  <Target>
+...
+
+Becomes
+
+/test/policies/Policy/jcr:primaryType=nt:unstructured
+/test/policies/Policy/PolicyId=test:policy-one
+/test/policies/Policy/RuleCombiningAlgId=urn:oasis:names:tc:xacml:1.0:rule-combining-algorithm:ordered-permit-overrides
+/test/policies/Policy/Description/jcr:primaryType=nt:unstructured
+/test/policies/Policy/Description/jcr:xmltext/jcr:primaryType=nt:unstructured
+/test/policies/Policy/Description/jcr:xmltext/jcr:xmlcharacters=
+policy-description
+/test/policies/Policy/Target/jcr:primaryType=nt:unstructured
+
+(in other cases, many LFs are inserted)
+
+FULL EXAMPLE XML FILE:
+
+<?xml version="1.0" encoding="UTF-8"?>
+<Policy xmlns="urn:oasis:names:tc:xacml:1.0:policy" 
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+  PolicyId="test:policy-one" 
+  RuleCombiningAlgId="urn:oasis:names:tc:xacml:1.0:rule-combining-algorithm:ordered-permit-overrides">
+  <Description>policy-description</Description>
+  <Target>
+    <Resources>
+      <Resource>
+        <ResourceMatch 
+          MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
+          <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">test/12345-resource-67890</AttributeValue>
+          <ResourceAttributeDesignator 
+            DataType="http://www.w3.org/2001/XMLSchema#string" 
+            AttributeId="urn:oasis:names:tc:xacml:1.0:resource:resource-id"/>
+        </ResourceMatch>
+      </Resource>
+    </Resources>
+    <Actions>
+      <AnyAction/>
+    </Actions>
+  </Target>
+  <Rule RuleId="PermitRule" Effect="Permit">
+    <Target>
+      <Subjects>
+        <Subject>
+          <SubjectMatch 
+            MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
+            <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">alice</AttributeValue>
+            <SubjectAttributeDesignator 
+              DataType="http://www.w3.org/2001/XMLSchema#string" 
+              AttributeId="urn:oasis:names:tc:xacml:1.0:subject:subject-id"/>
+          </SubjectMatch>
+        </Subject>
+      </Subjects>
+      <Actions>
+        <Action>
+          <ActionMatch 
+            MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
+            <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">read</AttributeValue>
+            <ActionAttributeDesignator 
+              DataType="http://www.w3.org/2001/XMLSchema#string" 
+              AttributeId="urn:oasis:names:tc:xacml:1.0:action:action-id"/>
+          </ActionMatch>
+        </Action>
+        <Action>
+          <ActionMatch 
+            MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
+            <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">write</AttributeValue>
+            <ActionAttributeDesignator 
+              DataType="http://www.w3.org/2001/XMLSchema#string" 
+              AttributeId="urn:oasis:names:tc:xacml:1.0:action:action-id"/>
+          </ActionMatch>
+        </Action>
+        <Action>
+          <ActionMatch 
+            MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
+            <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">delete</AttributeValue>
+            <ActionAttributeDesignator 
+              DataType="http://www.w3.org/2001/XMLSchema#string" AttributeId="urn:oasis:names:tc:xacml:1.0:action:action-id"/>
+          </ActionMatch>
+        </Action>
+      </Actions>
+    </Target>
+  </Rule>
+</Policy>

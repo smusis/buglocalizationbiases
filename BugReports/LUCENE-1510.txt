@@ -1,0 +1,44 @@
+InstantiatedIndexReader throws NullPointerException in norms() when used with a MultiReader
+
+
+
+Description:
+
+When using InstantiatedIndexReader under a MultiReader where the other Reader contains documents, a NullPointerException is thrown here;
+
+ public void norms(String field, byte[] bytes, int offset) throws IOException {
+    byte[] norms = getIndex().getNormsByFieldNameAndDocumentNumber().get(field);
+    System.arraycopy(norms, 0, bytes, offset, norms.length);
+  }
+
+the 'norms' variable is null. Performing the copy only when norms is not null does work, though I'm sure it's not the right fix.
+
+java.lang.NullPointerException
+	at org.apache.lucene.store.instantiated.InstantiatedIndexReader.norms(InstantiatedIndexReader.java:297)
+	at org.apache.lucene.index.MultiReader.norms(MultiReader.java:273)
+	at org.apache.lucene.search.TermQuery$TermWeight.scorer(TermQuery.java:70)
+	at org.apache.lucene.search.IndexSearcher.search(IndexSearcher.java:131)
+	at org.apache.lucene.search.IndexSearcher.search(IndexSearcher.java:112)
+	at org.apache.lucene.search.Searcher.search(Searcher.java:136)
+	at org.apache.lucene.search.Searcher.search(Searcher.java:146)
+	at org.apache.lucene.store.instantiated.TestWithMultiReader.test(TestWithMultiReader.java:41)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:39)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:25)
+	at java.lang.reflect.Method.invoke(Method.java:597)
+	at junit.framework.TestCase.runTest(TestCase.java:164)
+	at junit.framework.TestCase.runBare(TestCase.java:130)
+	at junit.framework.TestResult$1.protect(TestResult.java:106)
+	at junit.framework.TestResult.runProtected(TestResult.java:124)
+	at junit.framework.TestResult.run(TestResult.java:109)
+	at junit.framework.TestCase.run(TestCase.java:120)
+	at junit.framework.TestSuite.runTest(TestSuite.java:230)
+	at junit.framework.TestSuite.run(TestSuite.java:225)
+	at org.eclipse.jdt.internal.junit.runner.junit3.JUnit3TestReference.run(JUnit3TestReference.java:130)
+	at org.eclipse.jdt.internal.junit.runner.TestExecution.run(TestExecution.java:38)
+	at org.eclipse.jdt.internal.junit.runner.RemoteTestRunner.runTests(RemoteTestRunner.java:460)
+	at org.eclipse.jdt.internal.junit.runner.RemoteTestRunner.runTests(RemoteTestRunner.java:673)
+	at org.eclipse.jdt.internal.junit.runner.RemoteTestRunner.run(RemoteTestRunner.java:386)
+	at org.eclipse.jdt.internal.junit.runner.RemoteTestRunner.main(RemoteTestRunner.java:196)
+
+

@@ -1,0 +1,11 @@
+Writers blocked forever when waiting on update operations  
+
+
+
+Description:
+Thread 1 calls Session.save() and has a write lock.
+
+Thread 2 is in XA prepare() and is waiting on thread 1 in FineGrainedISMLocking.acquireWriteLock().
+
+Thread 1's save calls SharedItemStateManager.Update#end() and performs a write-lock downgrade to a read-lock, then (at the end of Update#end()) it calls readLock.release(). FineGrainedISMLocking.ReadLockImpl#release thinks activeWriterId is of the current transation and does not notify any writers (activeWriterId is not being reset on downgrade in what seems to be a related to JCR-2753).
+Thread 1 waits forever.

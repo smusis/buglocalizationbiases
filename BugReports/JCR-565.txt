@@ -1,0 +1,17 @@
+Refactor ObservationManagerFactory
+
+
+
+Description:
+The current o.a.j.core.observation.ObservationManagerFactory class has two main responsibilities:
+
+    1) Create new ObservationManagerImpl instances as an observation manager factory
+    2) Manage event consumers and dispatch events within a workspace
+
+These two responsibilities are quite unrelated and the factory responsibility essentially boils down to the following method that is only ever invoked within WorkspaceImpl.getObservationManager():
+
+    public ObservationManagerImpl createObservationManager(SessionImpl session, ItemManager itemMgr) {
+        return new ObservationManagerImpl(this, session, itemMgr);
+    }
+
+To simplify the design I'd inline this method and rename ObservationManagerFactory to ObservationDispatcher to better reflect the one remaining responsibility.

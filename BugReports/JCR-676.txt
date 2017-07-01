@@ -1,0 +1,6 @@
+Participation of a workspace in a cluster should be configurable
+
+
+
+Description:
+Currently, when clustering is enabled, every workspace participates automatically. This should be configurable in the workspace, by introducing an attribute such as "clustered=[true|false]".

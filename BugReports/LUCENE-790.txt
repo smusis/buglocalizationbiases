@@ -1,0 +1,14 @@
+contrib/benchmark - few improvements and a bug fix
+
+
+
+Description:
+Benchmark byTask was slightly improved:
+
+1. fixed a bug in the "child-should-not-report" mechanism. If a task sequence contained only simple tasks it worked as expected (i.e. child tasks did not report times/memory) but if a child was a task sequence, then its children would report - they should not - this was fixed, so this property is now "penetrating/inherited" all the way down.
+
+2. doc size control now possible also for the Reuters doc maker. (allowing to index N docs of size C characters each.)
+
+3. TrecDocMaker was added - it reads as input the .gz files used in Trec - e.g. .gov data - this can be handy to benchmark Lucene on these large collections.  Similar to the Reuters collection, the doc-maker scans the input directory for all the files and extracts documents from the files.  Here there are multiple documents in each input file. Unlike the Reuters collection, we cannot provide a 'loader' for these collections - they are available from http://trec.nist.gov - for research purposes.
+
+4. a new BasicDocMaker abstract class handles most of doc-maker tasks, including creating docs with specific size, so adding new doc-makers for other data is now much simpler.

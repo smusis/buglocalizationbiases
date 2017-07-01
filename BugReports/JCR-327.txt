@@ -1,0 +1,6 @@
+Mixins as supertypes do not appear to be queryable
+
+
+
+Description:
+When creating custom nodetypes that contain mixins as the supertype, nodes of the custom type do not appear to be queryable when using statements of the form: //element(*, mixin). Attached are a relatively simple JUnit test and compact type definition that seem to illustrate the problem.

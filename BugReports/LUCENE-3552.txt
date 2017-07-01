@@ -1,0 +1,13 @@
+TaxonomyReader/Writer and their Lucene* implementation
+
+
+
+Description:
+The facet module contains two interfaces TaxonomyWriter and TaxonomyReader, with two implementations Lucene*. We've never actually implemented two TaxonomyWriters/Readers, so I'm not sure if these interfaces are useful anymore. Therefore I'd like to propose that we do either of the following:
+
+# Remove the interfaces and remove the Lucene part from the implementation classes (to end up with TW/TR impls). Or,
+# Keep the interfaces, but rename the Lucene* impls to Directory*.
+
+Whatever we do, I'd like to make the impls/interfaces impl also TwoPhaseCommit.
+
+Any preferences?

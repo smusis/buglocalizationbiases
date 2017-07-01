@@ -1,0 +1,10 @@
+BooleanQuery.rewrite does not work properly for minNumberShouldMatch
+
+
+
+Description:
+BooleanQuery.rewrite does not respect minNumberShouldMatch if the number of clauses is 1. This causes inconsistencies for the queries "+def" and "+abc +def", while setting the minNumShouldMatch to '1' for both.
+For the first query, results are returned although there are no SHOULD clauses in the query.
+For the second query no results are returned.
+The reason lies in the optimization BooleanQuery.rewrite has for one clauses queries.
+Patch included - optimize the query for a single clause only if the minNumShouldMatch <= 0.

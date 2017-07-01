@@ -1,0 +1,13 @@
+HttpClient enter 100% for endless time
+
+
+
+Description:
+I was working masively using HttpClient (I was testing it for usage within a 
+server) and it got to 100% CPU for an endless time.
+
+I was querying urls of the type 
+http://search.barnesandnoble.com/booksearch/results.asp?WRD=<text>&sort=R&SAT=1
+
+To reproduce it, run 100-200 urls with random words instead of <text> and 
+you'll probably reproduce the problem.

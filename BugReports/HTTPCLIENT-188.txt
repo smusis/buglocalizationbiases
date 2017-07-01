@@ -1,0 +1,7 @@
+recoverable exceptions when reading are not retried
+
+
+
+Description:
+If a recoverable exception occurs after a request is written then the method is
+not retried.

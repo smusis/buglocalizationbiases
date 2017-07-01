@@ -1,0 +1,34 @@
+Redesign virtual host API
+
+
+
+Description:
+HttpClient is ignoring an explicity set host.  e.g. if you set the host like
+client.getHostConfiguration().setHost("127.0.0.1") then execute a method looking
+up say http://google.com then the program will connect to google.com rather than
+the localhost.
+
+The fix that works for me:
+diff -Naur
+../../t2/commons-httpclient/src/java/org/apache/commons/httpclient/HttpClient.java
+src/java/org/apache/commons/httpclient/HttpClient.java
+---
+../../t2/commons-httpclient/src/java/org/apache/commons/httpclient/HttpClient.java
+2005-12-22 01:06:54.000000000 +1300
++++ src/java/org/apache/commons/httpclient/HttpClient.java	2005-12-22
+19:13:30.000000000 +1300
+@@ -383,7 +383,9 @@
+         if (hostconfig == defaulthostconfig || uri.isAbsoluteURI()) {
+             // make a deep copy of the host defaults
+             hostconfig = new HostConfiguration(hostconfig);
+-            if (uri.isAbsoluteURI()) {
++	    // if the host is explicity set already (e.g. to the IP of the virtual host
++	    // on which we are executing a method), just leave it
++            if (uri.isAbsoluteURI()  && hostconfig.getHost()==null) {
+                 hostconfig.setHost(uri);
+             }
+
+Note: Why do we care that the host is specified?  Why not just use the uri
+authority?  In my case I have a virtual host running on several servers/IPs and
+I need to make sure the request goes through to a specific IP and the response
+that comes back is for the virtual host I am testing.

@@ -1,0 +1,6 @@
+Avoid docFreq calls for non-fulltext queries
+
+
+
+Description:
+Looking up the document frequency for a query terms costs I/O and is only useful for fulltext queries (-> the document frequency has an influence on the relevance of a result node). Simple constraints like: @foo = 'bar' may return a constant value for docFreq.

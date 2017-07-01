@@ -1,0 +1,58 @@
+Workspace.copy(src, dest) throws unexpected RepositoryException ("Invalid path")
+
+
+
+Description:
+when using the davex remoting layer (jcr2spi->spi2davex), 
+the following code fragment causes an unexpected RepositoryException:
+
+<snip>
+    Node testNode1 = session.getRootNode().addNode("test", "nt:folder");
+
+    Node copyDestination = testNode1.addNode("CopyDestination", "nt:folder");
+    testNode1.addNode("CopySource", "nt:folder").addNode("testCopyCommand", "nt:folder").addNode("abc", "nt:folder");
+    session.save();
+    copyDestination.addMixin("mix:referenceable");
+    session.save();
+
+    session.getWorkspace().copy("/test/CopySource/testCopyCommand", "/test/CopyDestination/testCopyCommand");
+</snip>
+
+==> Caused by: javax.jcr.RepositoryException: Invalid path:/test/CopyDestination//testCopyCommand
+	at sun.reflect.NativeConstructorAccessorImpl.newInstance0(Native Method)
+	at sun.reflect.NativeConstructorAccessorImpl.newInstance(NativeConstructorAccessorImpl.java:39)
+	at sun.reflect.DelegatingConstructorAccessorImpl.newInstance(DelegatingConstructorAccessorImpl.java:27)
+	at java.lang.reflect.Constructor.newInstance(Constructor.java:513)
+	at org.apache.jackrabbit.spi2dav.ExceptionConverter.generate(ExceptionConverter.java:69)
+	at org.apache.jackrabbit.spi2dav.ExceptionConverter.generate(ExceptionConverter.java:51)
+	at org.apache.jackrabbit.spi2dav.RepositoryServiceImpl.execute(RepositoryServiceImpl.java:482)
+	at org.apache.jackrabbit.spi2dav.RepositoryServiceImpl.copy(RepositoryServiceImpl.java:1307)
+	at org.apache.jackrabbit.spi2davex.RepositoryServiceImpl.copy(RepositoryServiceImpl.java:326)
+	at org.apache.jackrabbit.jcr2spi.WorkspaceManager$OperationVisitorImpl.visit(WorkspaceManager.java:889)
+	at org.apache.jackrabbit.jcr2spi.operation.Copy.accept(Copy.java:48)
+	at org.apache.jackrabbit.jcr2spi.WorkspaceManager$OperationVisitorImpl.execute(WorkspaceManager.java:848)
+	at org.apache.jackrabbit.jcr2spi.WorkspaceManager$OperationVisitorImpl.access$400(WorkspaceManager.java:793)
+	at org.apache.jackrabbit.jcr2spi.WorkspaceManager.execute(WorkspaceManager.java:581)
+	at org.apache.jackrabbit.jcr2spi.WorkspaceImpl.copy(WorkspaceImpl.java:149)
+	[...]  
+
+
+however, the following slightly altered code fragment works as expected:
+
+
+<snip>
+    Node testNode1 = session.getRootNode().addNode("test", "nt:folder");
+/*
+    Node copyDestination = testNode1.addNode("CopyDestination", "nt:folder");
+    testNode1.addNode("CopySource", "nt:folder").addNode("testCopyCommand", "nt:folder").addNode("abc", "nt:folder");
+    session.save();
+    copyDestination.addMixin("mix:referenceable");
+    session.save();
+*/
+    testNode1.addNode("CopyDestination", "nt:folder").addMixin(NodeType.MIX_REFERENCEABLE);
+    Node n = testNode1.addNode("CopySource", "nt:folder").addNode("testCopyCommand", "nt:folder").addNode("abc", "nt:folder");
+    session.save();
+
+    session.getWorkspace().copy("/test/CopySource/testCopyCommand", "/test/CopyDestination/testCopyCommand");
+</snip>
+

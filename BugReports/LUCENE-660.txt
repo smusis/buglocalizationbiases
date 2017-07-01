@@ -1,0 +1,10 @@
+GData html render preview
+
+
+
+Description:
+GData output is usually ATOM / RSS e.g plain xml. This feature enables users or admins to preview the server output as html transformed by user defined xsl stylesheet. Stylesheet is configurable per service.
+
+That's just a cool feature for developing and for users wanna use the server for simple blog or feed server.
+
+regards simon

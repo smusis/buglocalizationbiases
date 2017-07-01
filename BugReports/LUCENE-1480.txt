@@ -1,0 +1,15 @@
+Wrap messages output with a check of InfoStream != null
+
+
+
+Description:
+I've found several places in the code where messages are output w/o first checking if infoStream != null. The result is that in most of the time, unnecessary strings are created but never output (because infoStream is not set). We should follow Java's logging best practices, where a log message is always output in the following format:
+if (logger.isLoggable(leve)) {
+    logger.log(level, msg);
+}
+
+Log messages are usually created w/o paying too much attention to performance (such as string concatenation using '+' instead of StringBuffer). Therefore, at runtime it is important to avoid creating those messages, if they will be discarded eventually.
+
+I will add a method to IndexWriter messagesEnabled() and then use it wherever a call to iw.message() is made.
+
+Patch will follow

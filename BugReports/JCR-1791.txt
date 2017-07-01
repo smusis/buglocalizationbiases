@@ -1,0 +1,6 @@
+New utility: Journal walker for journal files
+
+
+
+Description:
+Given the cluster record access provided by JCR-1789, add a journal walker utiltity that provides descriptive information about the contents of journal records.

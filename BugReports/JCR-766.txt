@@ -1,0 +1,10 @@
+Remove Maven 1 files
+
+
+
+Description:
+Now that we have a working Maven 2 build environment (JCR-332) we should remove the old Maven 1
+project files to avoid confusion and misunderstandings. The old Maven 1 build environment doesn't even
+work anymore.
+
+Unless anyone objects, I'll proceed to remove the project.xml, maven.xml, and project.properties files in a few days.

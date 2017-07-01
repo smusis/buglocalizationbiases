@@ -1,0 +1,6 @@
+Remove synchronization in CompoundFileReader
+
+
+
+Description:
+Currently there is what seems to be unnecessary synchronization in CompoundFileReader.  This is solved by cloning the base IndexInput.  Synchronization in low level IO classes creates lock contention on highly multi threaded Lucene installations, so much so that in many cases the CPU utilization never reaches the maximum without using something like ParallelMultiSearcher.

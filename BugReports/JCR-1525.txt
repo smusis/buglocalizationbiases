@@ -1,0 +1,6 @@
+Jackrabbit depends on Oracle driver for BLOB support in Oracle versions previous than 10.2
+
+
+
+Description:
+In Oracle versions previous to 10.2, Jackrabbit explicitly uses a class from the Oracle driver to provide BLOB support (see OracleFileSystem.init()). This special handling is no longer necesary for Oracle 10.2+, so we should provide a new implementation. As discussed on the list, we can create a new class for Oracle 10.2+, make it inherit from DbFileSystem, and override the createSchema(), and table space related methods, which are the ones that need special handling. Furthermore, we could refactor the current OracleFileSystem and break it into two clases, one of them to keep the current behavior and a new one to keep the common code (which we could rename to OracleBaseFileSystem or similar, to maintain compatiblity with code that uses OracleFileSystem for versions previous to 10.2). Then we make the Oracle10FileSystem inherit from the latter.

@@ -1,0 +1,55 @@
+[PATCH] NullPointerException when using nested SpanOrQuery in SpanNotQuery
+
+
+
+Description:
+Overview description: 
+I'm using the span query classes in Lucene to generate higher scores for 
+search results where the search terms are closer together. In certain 
+situations I want to exclude terms from the span. When I attempt to exclude 
+more than one term I get an error. 
+ 
+The example query I'm using is:  
+ 
+'brighton AND tourism' -pier -contents 
+ 
+I construct the query objects and the toString() version is: 
+ 
+spanNot(spanNear([contents:brighton contents:tourism], 10, false), 
+spanOr([contents:pier, contents:road])) 
+  
+ 
+Steps to reproduce: 
+1. Construct a SpanNearQuery (must have at least one term, but at least two 
+makes more sense) 
+2. Construct a SpanOrQuery containing two or more terms 
+3. Construct a SpanNotQuery to include the first query object and exclude the 
+second (SpanOrQuery) 
+4. Execute the search 
+ 
+ 
+Actual Results: 
+A null pointer exception is thrown while generating the scores within the 
+search. 
+ 
+Stack trace:  
+java.lang.NullPointerException   
+        at   
+org.apache.lucene.search.spans.SpanOrQuery$1.doc(SpanOrQuery.java:174)   
+        at   
+org.apache.lucene.search.spans.SpanNotQuery$1.next(SpanNotQuery.java:75)   
+        at org.apache.lucene.search.spans.SpanScorer.next(SpanScorer.java:50)   
+        at org.apache.lucene.search.Scorer.score(Scorer.java:37)   
+        at   
+org.apache.lucene.search.IndexSearcher.search(IndexSearcher.java:92)   
+        at org.apache.lucene.search.Hits.getMoreDocs(Hits.java:64)   
+        at org.apache.lucene.search.Hits.<init>(Hits.java:43)   
+        at org.apache.lucene.search.Searcher.search(Searcher.java:33)   
+        at org.apache.lucene.search.Searcher.search(Searcher.java:27)   
+        at   
+com.runtimecollective.search.LuceneSearch.search(LuceneSearch.java:362)   
+ 
+ 
+Expected Resuts: 
+It executes the search and results where the first search terms (near query) 
+are close together but without the second terms (or query) appearing.

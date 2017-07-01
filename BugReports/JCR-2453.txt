@@ -1,0 +1,10 @@
+Break the spi2dav dependency to jcr-server
+
+
+
+Description:
+Currently the spi2dav component has a dependency on the jcr-server component, which is troublesome due to the extra transitive dependencies and which strictly speaking should not be necessary from an architectural point of view.
+
+The dependency exists mostly for sharing a number of JCR-specific WebDAV constants. I'd like to push those constants down to jackrabbit-webdav as they are essentially just shared strings and as jackrabbit-webdav already contains a number of constants used by JCR extensions.
+
+In addition to constant values, code in the following classes is shared between jcr-server and spi2dav: JcrValueType, NamespacesProperty, NodeTypesProperty, SearchResultProperty, SubscriptionImpl, ValuesProperty. The shared code in JcrValueType and SubscriptionImpl is mostly just about mapping constant value mappings and could fairly easily be moved to jackrabbit-webdav. The Property classes are a but trickier, but it looks like it would be possible to split the code to separate server- and client-side classes for jcr-server and spi2dav.

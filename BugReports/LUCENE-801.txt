@@ -1,0 +1,10 @@
+build.xml in cnotrib/benchmark should auto build core java and demo if required
+
+
+
+Description:
+Currently one needs to build core jar and demo jar before building/running benchmark.
+This is not very convenient. 
+Change it to 
+- use core classes and demo classes (instead of jars).
+- build core and demo by dependency if required.

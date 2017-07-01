@@ -1,0 +1,8 @@
+the spi2dav sandbox project should be put into a common release cycle
+
+
+
+Description:
+Remoting JSR170 calls requires obviously both server and client sides.  The server is available for download, as JCR WebDAV Server in both http://www.apache.org/dyn/closer.cgi/jackrabbit/binaries/jackrabbit-jcr-server-1.4.1.jar and http://www.apache.org/dyn/closer.cgi/jackrabbit/binaries/jackrabbit-webapp-1.4.war.  However, the client is just casually mentioned as "can be found in the Jackrabbit sandbox."  This issue is to request that the SPI2DAV client code (especially a ResponseFactory that returns a JCR2SPI Repository implementation) be available for download as well.
+
+Furthermore, please make the RepositoryFactory implements javax.naming.spi.ObjectFactory so that only configuration (vs. Java coding) is needed in order to use it.  This is how org.apache.jackrabbit.rmi.client.ClientRepositoryFactory works.

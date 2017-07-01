@@ -1,0 +1,14 @@
+OCM:Add the ability to specify name of a Collection Element through XML Mapping files.
+
+
+
+Description:
+Collection elements get mapped to a node "collection-element" when the mappings are specified through XML config files.  We need the ability to control this name through configuration.  Without that feature querying object structures is painful.  For example I have structure as below :
+
+class Foo{
+String id;
+ List<Foo> children
+ List<Foo> friends
+}
+
+And I have a need to query a Foo with id : 100 .  If I am interested only in child nodes with id = 110 , I could specify through the Filter that look at only node names , "childFoo" ; If I have the flexibility of adding a child node name.

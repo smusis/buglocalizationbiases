@@ -1,0 +1,6 @@
+Add timing information to event delivery
+
+
+
+Description:
+There should be debug messages that contain information on how long event listeners spend iterating over the delivered events.

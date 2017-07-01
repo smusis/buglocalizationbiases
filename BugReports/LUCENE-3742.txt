@@ -1,0 +1,6 @@
+SynFilter doesn't set offsets for outputs that hang off the end of the input tokens
+
+
+
+Description:
+If you have syn rule a -> x y and input a then output is a/x y but... what should y's offsets be?  Right now we set to 0/0.

@@ -1,0 +1,11 @@
+Optimize usage of norms
+
+
+
+Description:
+There is a very significant potential for optimizing the size of the search index.
+
+We have seen a case where there were multiple segments with about the same number of nodes (roughly 10 million), but the size on disk was very different.
+One segment was 19 GB while all others where around 3 GB. The major difference was the number of fields indexed. The large segment had significantly more fields, which resulted in a large norms file.
+
+We should go through our implementation and see where norms are really necessary and disable tracking of norms wherever possible.

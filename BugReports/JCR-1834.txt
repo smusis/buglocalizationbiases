@@ -1,0 +1,11 @@
+JSR 283: Create RepositoryFactory implementation
+
+
+
+Description:
+JSR 283 specifies a RepositoryFactory to retrieve a repository instance based on a map of parameters. We should have the following implementations:
+
+- local repository with repository home and repository configuration parameters
+- repository obtained via JNDI
+- repository obtained via RMI
+

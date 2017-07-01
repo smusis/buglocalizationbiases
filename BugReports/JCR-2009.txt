@@ -1,0 +1,77 @@
+Large file download over webdav causes exception
+
+
+
+Description:
+Downloading a large file (>2GB) from webdav causes an exception.
+
+(Note: uploading the file works ok, when jackrabbit is configured to use the filesystem DataStore.)
+
+When trying to retrieve the file with e.g. "wget", we get the following error:
+
+Gozer:Desktop greg$ wget --http-user=xxx --http-passwd=xxx http://localhost:8080/jackrabbit/repository/workbench/pkgs/demo/zip/zips/largetest-1.zip
+--08:59:50--  http://localhost:8080/jackrabbit/repository/workbench/pkgs/demo/zip/zips/largetest-1.zip
+           => `largetest-1.zip'
+Resolving localhost... done.
+Connecting to localhost[127.0.0.1]:8080... connected.
+HTTP request sent, awaiting response... 500 For input string: "3156213760"
+09:04:53 ERROR 500: For input string: "3156213760".
+
+In the server log we see this:
+
+06.03.2009 08:59:50 *INFO * RepositoryImpl: SecurityManager = class org.apache.jackrabbit.core.security.simple.SimpleSecurityManager (RepositoryImpl.java, line 432)
+2009-03-06 09:04:53.822::WARN:  /jackrabbit/repository/workbench/pkgs/demo/zip/zips/largetest-1.zip
+java.lang.NumberFormatException: For input string: "3156213760"
+	at java.lang.NumberFormatException.forInputString(NumberFormatException.java:48)
+	at java.lang.Integer.parseInt(Integer.java:459)
+	at java.lang.Integer.parseInt(Integer.java:497)
+	at org.apache.jackrabbit.webdav.io.OutputContextImpl.setContentLength(OutputContextImpl.java:60)
+	at org.apache.jackrabbit.server.io.ExportContextImpl.informCompleted(ExportContextImpl.java:192)
+	at org.apache.jackrabbit.server.io.IOManagerImpl.exportContent(IOManagerImpl.java:157)
+	at org.apache.jackrabbit.webdav.simple.DavResourceImpl.spool(DavResourceImpl.java:332)
+	at org.apache.jackrabbit.webdav.server.AbstractWebdavServlet.spoolResource(AbstractWebdavServlet.java:422)
+	at org.apache.jackrabbit.webdav.server.AbstractWebdavServlet.doGet(AbstractWebdavServlet.java:388)
+	at org.apache.jackrabbit.webdav.server.AbstractWebdavServlet.execute(AbstractWebdavServlet.java:229)
+	at org.apache.jackrabbit.webdav.server.AbstractWebdavServlet.service(AbstractWebdavServlet.java:196)
+	at javax.servlet.http.HttpServlet.service(HttpServlet.java:820)
+	at org.mortbay.jetty.servlet.ServletHolder.handle(ServletHolder.java:502)
+	at org.mortbay.jetty.servlet.ServletHandler.handle(ServletHandler.java:363)
+	at org.mortbay.jetty.security.SecurityHandler.handle(SecurityHandler.java:216)
+	at org.mortbay.jetty.servlet.SessionHandler.handle(SessionHandler.java:181)
+	at org.mortbay.jetty.handler.ContextHandler.handle(ContextHandler.java:766)
+	at org.mortbay.jetty.webapp.WebAppContext.handle(WebAppContext.java:417)
+	at org.mortbay.jetty.handler.ContextHandlerCollection.handle(ContextHandlerCollection.java:230)
+	at org.mortbay.jetty.handler.HandlerCollection.handle(HandlerCollection.java:114)
+	at org.mortbay.jetty.handler.HandlerWrapper.handle(HandlerWrapper.java:152)
+	at org.mortbay.jetty.Server.handle(Server.java:324)
+	at org.mortbay.jetty.HttpConnection.handleRequest(HttpConnection.java:534)
+	at org.mortbay.jetty.HttpConnection$RequestHandler.headerComplete(HttpConnection.java:864)
+	at org.mortbay.jetty.HttpParser.parseNext(HttpParser.java:533)
+	at org.mortbay.jetty.HttpParser.parseAvailable(HttpParser.java:207)
+	at org.mortbay.jetty.HttpConnection.handle(HttpConnection.java:403)
+	at org.mortbay.io.nio.SelectChannelEndPoint.run(SelectChannelEndPoint.java:409)
+	at org.mortbay.thread.BoundedThreadPool$PoolThread.run(BoundedThreadPool.java:451)
+
+
+The problem seems to lie in OutputContextImpl.java it makes the mistake of potentially trying to parse a Long as an Integer, here: http://svn.apache.org/repos/asf/jackrabbit/trunk/jackrabbit-webdav/src/main/java/org/apache/jackrabbit/webdav/io/OutputContextImpl.java
+
+in the method setContentLength(long contentLength):
+
+public void setContentLength(long contentLength) {
+       int length = Integer.parseInt(contentLength + "");
+       if (length >= 0) {
+           response.setContentLength(length);
+       }
+   }
+
+I'm not sure, but a fix might be like this:
+
+public void setContentLength(long contentLength) {
+       if(contentLength <= Integer.MAX_VALUE && contentLength >= 0) {
+           response.setContentLength((int) contentLength);
+       }else if (contentLength >  Integer.MAX_VALUE) {
+            response.addHeader("Content-Length", Long.toString(contentLength));
+       }
+   }
+
+This would at least set the Content-Length header, and in some preliminary tests does seem to allow downloading the files.

@@ -1,0 +1,10 @@
+MultiPhraseQuery has incorrect hashCode() implementation - Leads to Solr Cache misses
+
+
+
+Description:
+I found this while hunting for the cause of Solr Cache misses.
+
+The MultiPhraseQuery class hashCode() implementation is non-deterministic. It uses termArrays.hashCode() in the computation. The contents of that ArrayList are actually arrays themselves, which return there reference ID as a hashCode instead of returning a hashCode which is based on the contents of the array. I would suggest an implementation involving the Arrays.hashCode() method.
+
+I will try to submit a patch soon, off for today.

@@ -1,0 +1,7 @@
+[PATCH] usage feedback for IndexFiles demo
+
+
+
+Description:
+Just a small patch that adds "usage" output if the demo is called without a 
+parameter, makes it a little bit friendlier to beginners.

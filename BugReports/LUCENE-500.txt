@@ -1,0 +1,8 @@
+Lucene 2.0 requirements - Remove all deprecated code
+
+
+
+Description:
+Per the move to Lucene 2.0 from 1.9, remove all deprecated code and update documentation, etc.
+
+Patch to follow shortly.

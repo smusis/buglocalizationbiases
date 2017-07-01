@@ -1,0 +1,8 @@
+Database persistence managers: log database and driver name and version
+
+
+
+Description:
+Database related problems can be solved more easily when we know what database and driver version is used. Sometimes multiple database drivers are installed in an app server environment, and the user may not even know it. 
+
+Currently the driver class name is logged. I suggest to log the driver and database name and version as well.

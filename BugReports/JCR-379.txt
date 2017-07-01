@@ -1,0 +1,6 @@
+Remove the unneeded cqfs dependencies
+
+
+
+Description:
+There's still unneeded dependencies to the cqfs libraries in jcr-server/webapp and jca.

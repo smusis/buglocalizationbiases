@@ -1,0 +1,10 @@
+DirectoryTaxonomyWriter can lose the INDEX_CREATE_TIME property, causing DirTaxoReader.refresh() to falsely succeed (or fail)
+
+
+
+Description:
+DirTaxoWriter sets createTime to null after it put it in the commit data once. But that's wrong because if one calls commit(Map<>) twice, the second time doesn't record the creation time. Also, in the ctor, if an index exists and OpenMode is not CREATE, the creation time property is not read.
+
+I wrote a couple of unit tests that assert this, and modified DirTaxoWriter to always record the creation time (in every commit) -- that's the only safe way.
+
+Will upload a patch shortly.

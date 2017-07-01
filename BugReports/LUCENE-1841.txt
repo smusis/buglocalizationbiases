@@ -1,0 +1,6 @@
+Provide Summary Information on the Files in the Lucene index
+
+
+
+Description:
+I find myself often having to remember, by file extension, what is in a particular index file.  The information is all contained in the File Formats, but not summarized.  This patch provides a simple table that describes the extensions and provides links to the relevant section.

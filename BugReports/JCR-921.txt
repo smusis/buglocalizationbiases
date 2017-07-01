@@ -1,0 +1,21 @@
+Add more unit tests on BeanConverters
+
+
+
+Description:
+Some BeanConverters are not yet stable. We have to add more unit tests.  It seems that null values for bean attributes are not well supported. We have to test that for all BeanConverters. 
+
+Here is a good scenario to test : 
+
+Model : Class A contains an attribute "b" based on class B. 
+
+Create an instance of A with "b" = null
+insert A / save
+Get instance of A
+set the attribute of B
+update A /save
+
+
+
+
+

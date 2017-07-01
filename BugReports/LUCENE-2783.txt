@@ -1,0 +1,6 @@
+Deadlock in IndexWriter
+
+
+
+Description:
+If autoCommit == true a merge usually triggers a commit. A commit (prepareCommit) can trigger a merge vi the flush method. There is a synchronization mechanism for commit (commitLock) and a separate synchronization mechanism for merging (ConcurrentMergeScheduler.wait). If one thread holds the commitLock monitor and another one holds the ConcurrentMergeScheduler monitor we have a deadlock.

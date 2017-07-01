@@ -1,0 +1,16 @@
+Improvements to contrib.benchmark for TREC collections
+
+
+
+Description:
+The benchmarking utilities for  TREC test collections (http://trec.nist.gov) are quite limited and do not support some of the variations in format of older TREC collections.  
+
+I have been doing some benchmarking work with Lucene and have had to modify the package to support:
+* Older TREC document formats, which the current parser fails on due to missing document headers.
+* Variations in query format - newlines after <title> tag causing the query parser to get confused.
+* Ability to detect and read in uncompressed text collections
+* Storage of document numbers by default without storing full text.
+
+I can submit a patch if there is interest, although I will probably want to write unit tests for the new functionality first.
+
+

@@ -1,0 +1,12 @@
+Generalize SearcherManager
+
+
+
+Description:
+I'd like to generalize SearcherManager to a class which can manage instances of a certain type of interfaces. The reason is that today SearcherManager knows how to handle IndexSearcher instances. I have a SearcherManager which manages a pair of IndexSearcher and TaxonomyReader pair.
+
+Recently, few concurrency bugs were fixed in SearcherManager, and I realized that I need to apply them to my version as well. Which led me to think why can't we have an SM version which is generic enough so that both my version and Lucene's can benefit from?
+
+The way I see SearcherManager, it can be divided into two parts: (1) the part that manages the logic of acquire/release/maybeReopen (i.e., ensureOpen, protect from concurrency stuff etc.), and (2) the part which handles IndexSearcher, or my SearcherTaxoPair. I'm thinking that if we'll have an interface with incRef/decRef/tryIncRef/maybeRefresh, we can make SearcherManager a generic class which handles this interface.
+
+I will post a patch with the initial idea, and we can continue from there.

@@ -1,0 +1,13 @@
+XML import always throws ItemExistsException when trying to overwrite existing nodes
+
+
+
+Description:
+According to the JCR-API, it should be possible to govern the import of XML serialized referenceable nodes in case of UUID collision. Unfortunately, the UUID conflict is handled too late during import, an ItemExistsException is always thrown beforehand due to not allowed same-name-siblings.
+
+Simply try to import a previously exported referenceable node twice, providing either
+
+- ImportUUIDBehavior.IMPORT_UUID_COLLISION_REMOVE_EXISTING or
+- ImportUUIDBehavior.IMPORT_UUID_COLLISION_REPLACE_EXISTING.
+
+This will fail and result in an ItemExistsException.

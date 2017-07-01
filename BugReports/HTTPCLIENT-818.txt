@@ -1,0 +1,6 @@
+No documentation on how to use CookieSpec
+
+
+
+Description:
+None of http://hc.apache.org/httpcomponents-client/httpclient/apidocs/org/apache/http/cookie/CookieSpec.html, http://hc.apache.org/httpcomponents-client/httpclient/apidocs/org/apache/http/cookie/CookieSpecFactory.html, http://hc.apache.org/httpcomponents-client/httpclient/apidocs/org/apache/http/cookie/CookieSpecRegistry.html, or http://hc.apache.org/httpcomponents-client/httpclient/apidocs/org/apache/http/impl/client/DefaultHttpClient.html explain how to set the CookieSpec that the HttpClient actually uses. It looks like CookieSpecRegistry might be it, but it doesn't document what the "names" mean, so I don't know what to pick to make a factory actually get used.

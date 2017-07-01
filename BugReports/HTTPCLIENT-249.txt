@@ -1,0 +1,10 @@
+please log allocation of new connections to support debugging, testing
+
+
+
+Description:
+I'd like to suggest that the MultiThreaded connection manager emit a trace-level log when it 
+allocates a new HttpConnection to support debugging and testing.  I added one while working on 
+my integration in Apache Axis (see org.apache.axis.transport.http.CommonsHTTPSender) and 
+figured this would be of general use.  I'll attach a patch with the oh-so-minor addition after 
+submitting this enhancement request.

@@ -1,0 +1,7 @@
+QueryManagerImpl hardwires supported query languages
+
+
+
+Description:
+QueryManagerImpl hardwires supported query languages. This seems to be sub-optimal, given the fact that Jackrabbit has a pluggable architecture for additional query languages.
+

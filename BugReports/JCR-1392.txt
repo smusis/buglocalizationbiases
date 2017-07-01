@@ -1,0 +1,16 @@
+[PATCH] Exception not thrown where it appears it should have been
+
+
+
+Description:
+Code creates an expection in an apparent error state, but doesn't throw it when it looks like it should
+
+class: org.apache.jackrabbit.webdav.jcr.search.SearchResultProperty
+ctor: public SearchResultProperty(DavProperty property, ValueFactory valueFactory) throws RepositoryException
+around line 96
+
+        } else {
+            new IllegalArgumentException("SearchResultProperty requires a list of 'dcr:column' xml elements.");
+        }
+
+Patch fixes this

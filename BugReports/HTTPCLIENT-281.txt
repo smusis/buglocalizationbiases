@@ -1,0 +1,37 @@
+DefaultHttpParamsFactory violates applet sandbox
+
+
+
+Description:
+The DefaultHttpParamsFactory in nightly build 20031009 makes two calls to 
+System.getProperties().  This is by default verboten in an applet.  I have 
+patched the source to catch the security exceptions and set the properties to a 
+default value.  My modified code block follows:
+
+        // TODO: To be removed. Provided for backward compatibility
+        try {
+          String agent = System.getProperties().getProperty
+("httpclient.useragent");
+          if (agent != null) {
+            params.setParameter(HttpMethodParams.USER_AGENT, agent);
+          }
+        }
+        catch (SecurityException dontCare) { }
+
+        // TODO: To be removed. Provided for backward compatibility
+        try {
+          String preemptiveDefault = System.getProperties()
+              .getProperty("httpclient.authentication.preemptive");
+          if (preemptiveDefault != null) {
+            preemptiveDefault = preemptiveDefault.trim().toLowerCase();
+            if (preemptiveDefault.equals("true")) {
+              params.setParameter
+(HttpClientParams.PREEMPTIVE_AUTHENTICATION, "on");
+            }
+            else if (preemptiveDefault.equals("false")) {
+              params.setParameter
+(HttpClientParams.PREEMPTIVE_AUTHENTICATION, "off");
+            }
+          }
+        }
+        catch(SecurityException dontCare) { }

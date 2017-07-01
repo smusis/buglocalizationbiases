@@ -1,0 +1,6 @@
+Aggregate include ignored if no primaryType set
+
+
+
+Description:
+If the include element of an aggregate definition does not have a primaryType attribute then the include is never matched.

@@ -1,0 +1,39 @@
+"Directory was previously created with a different LockFactory" when open, close, delete a repository in a loop
+
+
+
+Description:
+Opening a TransientRepository in a loop throws the exception "Directory was previously created with a different LockFactory instance".
+
+Test case:
+
+for (int i = 0; i < 3; i++) {
+	FileUtils.deleteDirectory(new File("repository"));
+	Repository rep = new TransientRepository();
+	Session session = rep.login(new SimpleCredentials("", new char[0]));
+	session.logout();
+}
+
+The problem seems to be that org.apache.lucene.store.FSDirectory.DIRECTORIES is not cleared (FSDirectory.close() is not called?).
+
+Stack trace:
+
+Exception in thread "main" javax.jcr.RepositoryException: Directory was previously created with a different LockFactory instance; please pass null as the lockFactory instance and use setLockFactory to change it: Directory was previously created with a different LockFactory instance; please pass null as the lockFactory instance and use setLockFactory to change it: Directory was previously created with a different LockFactory instance; please pass null as the lockFactory instance and use setLockFactory to change it
+	at org.apache.jackrabbit.core.SearchManager.initializeQueryHandler(SearchManager.java:555)
+	at org.apache.jackrabbit.core.SearchManager.<init>(SearchManager.java:239)
+	at org.apache.jackrabbit.core.RepositoryImpl.getSystemSearchManager(RepositoryImpl.java:688)
+	at org.apache.jackrabbit.core.RepositoryImpl.access$3(RepositoryImpl.java:681)
+	at org.apache.jackrabbit.core.RepositoryImpl$WorkspaceInfo.getSearchManager(RepositoryImpl.java:1780)
+	at org.apache.jackrabbit.core.RepositoryImpl.initWorkspace(RepositoryImpl.java:667)
+	at org.apache.jackrabbit.core.RepositoryImpl.initStartupWorkspaces(RepositoryImpl.java:480)
+	at org.apache.jackrabbit.core.RepositoryImpl.<init>(RepositoryImpl.java:321)
+	at org.apache.jackrabbit.core.RepositoryImpl.create(RepositoryImpl.java:618)
+	at org.apache.jackrabbit.core.TransientRepository$2.getRepository(TransientRepository.java:241)
+	at org.apache.jackrabbit.core.TransientRepository.startRepository(TransientRepository.java:261)
+Caused by: java.io.IOException: Directory was previously created with a different LockFactory instance; please pass null as the lockFactory instance and use setLockFactory to change it
+	at org.apache.lucene.store.FSDirectory.getDirectory(FSDirectory.java:192)
+	at org.apache.jackrabbit.core.query.lucene.directory.FSDirectoryManager.getDirectory(FSDirectoryManager.java:64)
+	at org.apache.jackrabbit.core.query.lucene.MultiIndex.<init>(MultiIndex.java:227)
+	at org.apache.jackrabbit.core.query.lucene.SearchIndex.doInit(SearchIndex.java:477)
+	at org.apache.jackrabbit.core.query.AbstractQueryHandler.init(AbstractQueryHandler.java:59)
+

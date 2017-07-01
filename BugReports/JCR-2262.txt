@@ -1,0 +1,13 @@
+o.a.j.webdav.jcr.DavResourceFactoryImpl#createResource creates VersionControlledResource instances regardless of mix:versionable status
+
+
+
+Description:
+DavResourceFactoryImpl#createResource() first calls createResourceForItem() which threats all nodes as version-controlled. 
+it then calls isVersionControlled() which indirectly triggers a call to Node#getVersionHistroy(). 
+getVersionHistroy throws a UnsupportedRepositoryException if the node is non-versionable, leading to a DavException further up the call stack.
+
+as a consequence, every request for a non-versionable node leads to unnecessary (and expensive) exception generation which could be avoided by checking the mix:versionable status of a node.
+
+
+

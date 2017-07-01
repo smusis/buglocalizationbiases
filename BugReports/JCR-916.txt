@@ -1,0 +1,7 @@
+Review pck names in the others ocm subprojects
+
+
+
+Description:
+Review package structure and graffito references in the other OCM subprojects : jcr-nodemanagement & spring. 
+

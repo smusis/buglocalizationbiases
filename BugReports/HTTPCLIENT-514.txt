@@ -1,0 +1,23 @@
+Preemptive auth flags disregarded during ssl tunnel creation
+
+
+
+Description:
+Using a Squid2.4 proxy, the connection is dropped when trying to connect to a 
+ssl site. In order for the connection to remain open, preemptive authorization 
+is needed for the proxy. The preemptive authorization flags are not propagated 
+down to where the ssl tunnel is created in HttpMethodDirectors executeConnect 
+method. A new ConnectMethod object is created for the tunnel but the preemptive 
+flags set as parameters are not being set on the new ConnectMethod object.
+
+Here is the code that would replicate the problem using a Squid(2.4) proxy :
+
+HttpClient client = new HttpClient();
+client.getHostConfiguration().setProxyHost(new ProxyHost("someproxy", 3128));
+client.getParams().setAuthenticationPreemptive(true);
+client.getState().setProxyCredentials(AuthScope.ANY, new 
+UsernamePasswordCredentials("user", "password"));
+GetMethod httpget = new GetMethod("https://www.verisign.com/");
+httpget.getProxyAuthState().setPreemptive();
+client.executeMethod(httpget);
+httpget.releaseConnection();

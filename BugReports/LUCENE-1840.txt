@@ -1,0 +1,6 @@
+QueryUtils should check that equals properly handles null
+
+
+
+Description:
+Its part of the equals contract, but many classes currently violate

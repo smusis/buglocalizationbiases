@@ -1,0 +1,24 @@
+Optimization for FieldDocSortedHitQueue
+
+
+
+Description:
+When updating core for generics,  I found the following as a optimization of FieldDocSortedHitQueue:
+
+All FieldDoc values are Compareables (also the score or docid, if they
+appear as SortField in a MultiSearcher or ParallelMultiSearcher). The code
+of lessThan seems very ineffective, as it has a big switch statement on the
+SortField type, then casts the value to the underlying numeric type Object,
+calls Number.xxxValue() & co for it and then compares manually. As
+j.l.Number is itself Comparable, I see no reason to do this. Just call
+compareTo on the Comparable interface and we are happy. The big deal is that
+it prevents casting and the two method calls xxxValue(), as Number.compareTo
+works more efficient internally.
+
+The only special cases are String sort, where the Locale may be used and the
+score sorting which is backwards. But these are two if statements instead of
+the whole switch.
+
+I had not tested it now for performance, but in my opinion it should be
+faster for MultiSearchers. All tests still pass (because they should).
+

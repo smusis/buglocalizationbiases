@@ -1,0 +1,7 @@
+References to old repository-1.x.dtd
+
+
+
+Description:
+Some components still reference old version of the repository-1.x.dtd.
+All components should be upgraded to repository-1.6.dtd

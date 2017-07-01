@@ -1,0 +1,10 @@
+CheckIndex should verify numUniqueTerms == recomputedNumUniqueTerms
+
+
+
+Description:
+Just glancing at the code it seems to sorta do this check, but only in the hasOrd==true case maybe (which seems to be testing something else)?
+
+It would be nice to verify this also for terms dicts that dont support ord.
+
+we should add explicit checks per-field in 4.x, and for-all-fields in 3.x and preflex

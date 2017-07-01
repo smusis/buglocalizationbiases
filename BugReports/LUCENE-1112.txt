@@ -1,0 +1,16 @@
+Document is partially indexed on an unhandled exception
+
+
+
+Description:
+With LUCENE-843, it's now possible for a subset of a document's
+fields/terms to be indexed or stored when an exception is hit.  This
+was not the case in the past (it was "all or none").
+
+I plan to make it "all or none" again by immediately marking a
+document as deleted if any exception is hit while indexing it.
+
+Discussion leading up to this:
+
+  http://www.gossamer-threads.com/lists/lucene/java-dev/56103
+

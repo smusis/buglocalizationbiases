@@ -1,0 +1,22 @@
+Document not guaranteed to be found after write and commit
+
+
+
+Description:
+after same email on developer list:
+"I developed a stress test to assert that a new document containing a
+specific term "X" is always found after a commit on the IndexWriter.
+This works most of the time, but it fails under load in rare occasions.
+
+I'm testing with 40 Threads, both with a SerialMergeScheduler and a
+ConcurrentMergeScheduler, all sharing a common IndexWriter.
+Attached testcase is using a RAMDirectory only, but I verified a
+FSDirectory behaves in the same way so I don't believe it's the
+Directory implementation or the MergeScheduler.
+This test is slow, so I don't consider it a functional or unit test.
+It might give false positives: it doesn't always fail, sorry I
+couldn't find out how to make it more likely to happen, besides
+scheduling it to run for a longer time."
+
+I tested this to affect versions 2.4.1 and 2.9.1;
+

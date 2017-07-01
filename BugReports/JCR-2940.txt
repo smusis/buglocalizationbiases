@@ -1,0 +1,6 @@
+PrivilegeDefinition should implement equals and hashcode
+
+
+
+Description:
+

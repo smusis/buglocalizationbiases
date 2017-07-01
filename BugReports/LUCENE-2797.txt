@@ -1,0 +1,6 @@
+upgrade icu to 4.6
+
+
+
+Description:
+version 4.6 supports unicode 6, new collators (search collators) etc.

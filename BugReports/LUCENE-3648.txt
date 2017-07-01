@@ -1,0 +1,8 @@
+Speed up SegementDocsEnum by making it more friendly for JIT optimizations
+
+
+
+Description:
+Since we moved the bulk reading into the codec ie. make all  bulk reading codec private in LUCENE-3584 we have seen some performance [regression|http://people.apache.org/~mikemccand/lucenebench/Term.html] on different CPUs. I tried to optimize the implementation to make it more eligible for runtime optimizations, tried to make loops JIT friendly by moving out branches where I can, minimize member access in all loops, use final members where possible and specialize the two common cases With & Without LiveDocs.
+
+I will attache a patch and my benchmark results in a minute.

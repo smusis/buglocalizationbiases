@@ -1,0 +1,6 @@
+Improve equals for binary values
+
+
+
+Description:
+The current implementation of spi2dav's equals method for binary values is not symmetric. Moreover it forces the values to be loaded instead of trying to determine equality by examining etag and last-modified headers. 

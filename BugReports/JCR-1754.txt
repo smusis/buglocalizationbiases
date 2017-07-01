@@ -1,0 +1,7 @@
+ The jackrabbit-ocm DTD 1.5 is missing and has to be publish
+
+
+
+Description:
+
+The jackrabbit-ocm DTD 1.5 is missing and it should be made available for reference on the Jackrabbit web site.

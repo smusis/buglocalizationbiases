@@ -1,0 +1,8 @@
+Improve name resolution
+
+
+
+Description:
+As discussed in JCR-685, the current CachingNamespaceResolver class contains excessive synchronization causing monitor contention that reduces performance.
+
+In JCR-685 there's a proposed patch that replaces synchronization with a read-write lock that would allow concurrent read access to the name cache.

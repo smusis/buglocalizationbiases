@@ -1,0 +1,8 @@
+jcr-server should respect child node definition of jcr:content
+
+
+
+Description:
+When creating a new file, jcr:content defaults to nt:unstructured. This causes file creation to fail when the underlying persistent store (i.e. SPI implementation) does not support nt:unstructured for jcr:content. 
+
+I suggest to check whether the underlying implementation provides its own node type for jcr:content and use that one. If not, default to nt:unstructured.

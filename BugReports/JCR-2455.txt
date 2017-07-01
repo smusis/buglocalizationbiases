@@ -1,0 +1,31 @@
+Automatic staging of the non-Maven release artefacts
+
+
+
+Description:
+Currently the Jackrabbit release process includes the following manual steps in addition to the standard Maven release plugin invocations:
+
+<script>
+VERSION=x.y.z  # Release version number
+
+# Prepare the release directory
+mkdir target/$VERSION
+
+# Copy the main release artifacts created in the release:perform stage
+cp target/checkout/RELEASE-NOTES.txt target/$VERSION
+cp target/checkout/target/jackrabbit-$VERSION-src.zip* target/$VERSION
+cp target/checkout/jackrabbit-webapp/target/jackrabbit-webapp-$VERSION.war* target/$VERSION
+cp target/checkout/jackrabbit-jca/target/jackrabbit-jca-$VERSION.rar* target/$VERSION
+cp target/checkout/jackrabbit-standalone/target/jackrabbit-standalone-$VERSION.jar* target/$VERSION
+
+# Add MD5 and SHA1 checksums
+for BINARY in target/$VERSION/*.zip target/$VERSION/*ar; do
+  openssl md5 < $BINARY > $BINARY.md5
+  openssl sha1 < $BINARY > $BINARY.sha
+done
+
+# Upload the release directory to people.apache.org
+scp -r target/$VERSION people.apache.org:public_html/jackrabbit/$VERSION
+</script>
+
+I'd like to automate these steps.

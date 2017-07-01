@@ -1,0 +1,6 @@
+Add Bundle Persistence Managers
+
+
+
+Description:
+we (day software) offer our set of bundle persistence managers to the jackrabbit project. those pms combine the node and property states into a single bundle and store them together. this improves performance and reduces storage-memory overhead (no exact numbers available). The bundle pms also have a "bundle-cache" that does a memory sensitive caching of the bundles and a negative cache for non-existent bundles. small binary properties are inlined into the bundle rather than stored in the blobstore.

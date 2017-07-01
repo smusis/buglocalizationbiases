@@ -1,0 +1,12 @@
+Remove per-document multiply in FilteredQuery
+
+
+
+Description:
+Spinoff of LUCENE-1536.
+
+In LUCENE-1536, Uwe suggested using FilteredQuery under-the-hood to implement filtered search.
+
+But this query is inefficient, it does a per-document multiplication (wrapped.score() * boost()).
+
+Instead, it should just pass the boost down in its weight, like BooleanQuery does to avoid this per-document multiply.

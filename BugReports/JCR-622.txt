@@ -1,0 +1,16 @@
+Auto Reconnect for RMI Repository
+
+
+
+Description:
+If i bind the RepositoryAccessServlet to a RMI Repository and then reboot the Repository i get a
+NullpointerException. 
+Stack :
+java.lang.NullPointerException
+	at org.apache.jackrabbit.webdav.jcr.JcrDavException.<init>(JcrDavException.java:111)
+	at org.apache.jackrabbit.webdav.simple.DavSessionProviderImpl.attachSession(DavSessionProviderImpl.java:99)
+	at org.apache.jackrabbit.server.AbstractWebdavServlet.service(AbstractWebdavServlet.java:181)
+
+If i deploy jackrabbit in a Model 3 Environment this Situation can happen very often.
+thanks
+claus

@@ -1,0 +1,102 @@
+TestIndexWriter.testThreadInterruptDeadlock failed (can't reproduce)
+
+
+
+Description:
+trunk: r1134163 
+
+ran it a few times with tests.iter=200 and couldn't reproduce, but i believe you like an issue anyway.
+
+{code}
+    [junit] Testsuite: org.apache.lucene.index.TestIndexWriter
+    [junit] Testcase: testThreadInterruptDeadlock(org.apache.lucene.index.TestIndexWriter):     FAILED
+    [junit]
+    [junit] junit.framework.AssertionFailedError:
+    [junit]     at org.apache.lucene.index.TestIndexWriter.testThreadInterruptDeadlock(TestIndexWriter.java:1203)
+    [junit]     at org.apache.lucene.util.LuceneTestCase$LuceneTestCaseRunner.runChild(LuceneTestCase.java:1403)
+    [junit]     at org.apache.lucene.util.LuceneTestCase$LuceneTestCaseRunner.runChild(LuceneTestCase.java:1321)
+    [junit]
+    [junit]
+    [junit] Tests run: 40, Failures: 1, Errors: 0, Time elapsed: 23.79 sec
+    [junit]
+    [junit] ------------- Standard Output ---------------
+    [junit] CheckIndex failed
+    [junit] ERROR: could not read any segments file in directory
+    [junit] java.io.FileNotFoundException: segments_2w
+    [junit]     at org.apache.lucene.store.MockDirectoryWrapper.openInput(MockDirectoryWrapper.java:407)
+    [junit]     at org.apache.lucene.index.codecs.DefaultSegmentInfosReader.openInput(DefaultSegmentInfosReader.java:112)
+    [junit]     at org.apache.lucene.index.codecs.DefaultSegmentInfosReader.read(DefaultSegmentInfosReader.java:45)
+    [junit]     at org.apache.lucene.index.SegmentInfos.read(SegmentInfos.java:257)
+    [junit]     at org.apache.lucene.index.SegmentInfos$1.doBody(SegmentInfos.java:287)
+    [junit]     at org.apache.lucene.index.SegmentInfos$FindSegmentsFile.run(SegmentInfos.java:698)
+    [junit]     at org.apache.lucene.index.SegmentInfos$FindSegmentsFile.run(SegmentInfos.java:533)
+    [junit]     at org.apache.lucene.index.SegmentInfos.read(SegmentInfos.java:283)
+    [junit]     at org.apache.lucene.index.CheckIndex.checkIndex(CheckIndex.java:311)
+    [junit]     at org.apache.lucene.util._TestUtil.checkIndex(_TestUtil.java:154)
+    [junit]     at org.apache.lucene.util._TestUtil.checkIndex(_TestUtil.java:144)
+    [junit]     at org.apache.lucene.index.TestIndexWriter$IndexerThreadInterrupt.run(TestIndexWriter.java:1154)
+    [junit]
+    [junit] CheckIndex FAILED: unexpected exception
+    [junit] java.lang.RuntimeException: CheckIndex failed
+    [junit]     at org.apache.lucene.util._TestUtil.checkIndex(_TestUtil.java:158)
+    [junit]     at org.apache.lucene.util._TestUtil.checkIndex(_TestUtil.java:144)
+    [junit]     at org.apache.lucene.index.TestIndexWriter$IndexerThreadInterrupt.run(TestIndexWriter.java:1154)
+    [junit] IndexReader.open FAILED: unexpected exception
+    [junit] java.io.FileNotFoundException: segments_2w
+    [junit]     at org.apache.lucene.store.MockDirectoryWrapper.openInput(MockDirectoryWrapper.java:407)
+    [junit]     at org.apache.lucene.index.codecs.DefaultSegmentInfosReader.openInput(DefaultSegmentInfosReader.java:112)
+    [junit]     at org.apache.lucene.index.codecs.DefaultSegmentInfosReader.read(DefaultSegmentInfosReader.java:45)
+    [junit]     at org.apache.lucene.index.SegmentInfos.read(SegmentInfos.java:257)
+    [junit]     at org.apache.lucene.index.DirectoryReader$1.doBody(DirectoryReader.java:88)
+    [junit]     at org.apache.lucene.index.SegmentInfos$FindSegmentsFile.run(SegmentInfos.java:698)
+    [junit]     at org.apache.lucene.index.DirectoryReader.open(DirectoryReader.java:84)
+    [junit]     at org.apache.lucene.index.IndexReader.open(IndexReader.java:500)
+    [junit]     at org.apache.lucene.index.IndexReader.open(IndexReader.java:293)
+    [junit]     at org.apache.lucene.index.TestIndexWriter$IndexerThreadInterrupt.run(TestIndexWriter.java:1161)
+
+    [junit] ------------- ---------------- ---------------
+    [junit] ------------- Standard Error -----------------
+    [junit] NOTE: reproduce with: ant test -Dtestcase=TestIndexWriter -Dtestmethod=testThreadInterruptDeadlock -Dtests.seed=6733070832417768606:3130345095020099096
+    [junit] NOTE: test params are: codec=RandomCodecProvider: {=MockRandom, f6=SimpleText, f7=MockRandom, f8=MockSep, f9=Standard, f1=SimpleText, f0=Standard, f3=Standard, f2=MockSep, f5=Pulsing(freqCutoff=12),
+ f4=MockFixedIntBlock(blockSize=552), c=MockVariableIntBlock(baseBlockSize=43), d9=MockVariableIntBlock(baseBlockSize=43), d8=MockRandom, d5=MockSep, d4=Pulsing(freqCutoff=12), d7=MockFixedIntBlock(blockSize=55
+2), d6=MockVariableIntBlock(baseBlockSize=43), d25=MockSep, d0=MockVariableIntBlock(baseBlockSize=43), c29=MockFixedIntBlock(blockSize=552), d24=Pulsing(freqCutoff=12), d1=MockFixedIntBlock(blockSize=552), c28=
+Standard, d23=SimpleText, d2=SimpleText, c27=MockSep, d22=Standard, d3=MockRandom, d21=MockRandom, d20=SimpleText, c22=MockSep, c21=Pulsing(freqCutoff=12), c20=SimpleText, d29=SimpleText, c26=MockVariableIntBlo
+ck(baseBlockSize=43), d28=Standard, c25=MockRandom, d27=MockVariableIntBlock(baseBlockSize=43), c24=Pulsing(freqCutoff=12), d26=MockRandom, c23=MockFixedIntBlock(blockSize=552), e9=Pulsing(freqCutoff=12), e8=St
+andard, e7=MockSep, e6=MockRandom, e5=SimpleText, c17=MockFixedIntBlock(blockSize=552), e3=MockFixedIntBlock(blockSize=552), d12=Pulsing(freqCutoff=12), c16=MockVariableIntBlock(baseBlockSize=43), e4=Pulsing(fr
+eqCutoff=12), d11=MockFixedIntBlock(blockSize=552), c19=MockRandom, e1=MockSep, d14=MockVariableIntBlock(baseBlockSize=43), c18=SimpleText, e2=Standard, d13=MockRandom, e0=SimpleText, d10=MockSep, d19=MockVaria
+bleIntBlock(baseBlockSize=43), c11=MockVariableIntBlock(baseBlockSize=43), c10=MockRandom, d16=Standard, c13=MockRandom, c12=SimpleText, d15=MockSep, d18=Pulsing(freqCutoff=12), c15=Standard, d17=MockFixedIntBl
+ock(blockSize=552), c14=MockSep, b3=Standard, b2=MockSep, b5=Pulsing(freqCutoff=12), b4=MockFixedIntBlock(blockSize=552), b7=MockFixedIntBlock(blockSize=552), b6=MockVariableIntBlock(baseBlockSize=43), d50=Mock
+Random, b9=MockRandom, b8=SimpleText, d43=SimpleText, d42=Standard, d41=MockVariableIntBlock(baseBlockSize=43), d40=MockRandom, d47=Pulsing(freqCutoff=12), d46=MockFixedIntBlock(blockSize=552), b0=MockRandom, d
+45=Standard, b1=MockVariableIntBlock(baseBlockSize=43), d44=MockSep, d49=MockRandom, d48=SimpleText, c6=SimpleText, c5=Standard, c4=MockVariableIntBlock(baseBlockSize=43), c3=MockRandom, c9=MockFixedIntBlock(bl
+ockSize=552), c8=Standard, c7=MockSep, d30=Standard, d32=Pulsing(freqCutoff=12), d31=MockFixedIntBlock(blockSize=552), c1=Pulsing(freqCutoff=12), d34=MockFixedIntBlock(blockSize=552), c2=MockSep, d33=MockVariab
+leIntBlock(baseBlockSize=43), d36=MockRandom, c0=SimpleText, d35=SimpleText, d38=MockSep, d37=Pulsing(freqCutoff=12), d39=MockVariableIntBlock(baseBlockSize=43), e92=MockFixedIntBlock(blockSize=552), e93=Pulsin
+g(freqCutoff=12), e90=MockSep, e91=Standard, e89=Standard, e88=MockVariableIntBlock(baseBlockSize=43), e87=MockRandom, e86=MockFixedIntBlock(blockSize=552), e85=MockVariableIntBlock(baseBlockSize=43), e84=MockS
+ep, e83=Pulsing(freqCutoff=12), e80=MockFixedIntBlock(blockSize=552), e81=SimpleText, e82=MockRandom, e77=Standard, e76=MockSep, e79=Pulsing(freqCutoff=12), e78=MockFixedIntBlock(blockSize=552), e73=MockVariabl
+eIntBlock(baseBlockSize=43), e72=MockRandom, e75=SimpleText, e74=Standard, binary=MockSep, f98=MockRandom, f97=SimpleText, f99=MockSep, f94=Pulsing(freqCutoff=12), f93=MockFixedIntBlock(blockSize=552), f96=Mock
+VariableIntBlock(baseBlockSize=43), f95=MockRandom, e95=MockRandom, e94=SimpleText, e97=Standard, e96=MockSep, e99=MockSep, e98=Pulsing(freqCutoff=12), id=Standard, f34=SimpleText, f33=Standard, f32=MockVariabl
+eIntBlock(baseBlockSize=43), f31=MockRandom, f30=MockFixedIntBlock(blockSize=552), f39=SimpleText, f38=MockVariableIntBlock(baseBlockSize=43), f37=MockRandom, f36=Pulsing(freqCutoff=12), f35=MockFixedIntBlock(b
+lockSize=552), f43=MockSep, f42=Pulsing(freqCutoff=12), f45=MockFixedIntBlock(blockSize=552), f44=MockVariableIntBlock(baseBlockSize=43), f41=Standard, f40=MockSep, f47=SimpleText, f46=Standard, f49=MockSep, f4
+8=Pulsing(freqCutoff=12), content=Standard, e19=Standard, e18=MockSep, e17=SimpleText, f12=MockRandom, e16=Standard, f11=SimpleText, f10=MockFixedIntBlock(blockSize=552), e15=MockVariableIntBlock(baseBlockSize=
+43), e14=MockRandom, f16=MockFixedIntBlock(blockSize=552), e13=MockSep, e12=Pulsing(freqCutoff=12), f15=MockVariableIntBlock(baseBlockSize=43), e11=SimpleText, f14=MockSep, e10=Standard, f13=Pulsing(freqCutoff=
+12), f19=Standard, f18=MockVariableIntBlock(baseBlockSize=43), f17=MockRandom, e29=MockRandom, e26=MockSep, f21=Standard, e25=Pulsing(freqCutoff=12), f20=MockSep, e28=MockFixedIntBlock(blockSize=552), f23=Pulsi
+ng(freqCutoff=12), e27=MockVariableIntBlock(baseBlockSize=43), f22=MockFixedIntBlock(blockSize=552), f25=MockRandom, e22=MockFixedIntBlock(blockSize=552), f24=SimpleText, e21=MockVariableIntBlock(baseBlockSize=
+43), f27=Standard, e24=MockRandom, f26=MockSep, e23=SimpleText, f29=MockSep, f28=Pulsing(freqCutoff=12), e20=Pulsing(freqCutoff=12), field=MockSep, string=MockVariableIntBlock(baseBlockSize=43), e30=MockFixedIn
+tBlock(blockSize=552), e31=Pulsing(freqCutoff=12), a98=MockSep, e34=SimpleText, a99=Standard, e35=MockRandom, f79=MockSep, e32=MockVariableIntBlock(baseBlockSize=43), e33=MockFixedIntBlock(blockSize=552), b97=M
+ockRandom, f77=MockRandom, e38=MockVariableIntBlock(baseBlockSize=43), b98=MockVariableIntBlock(baseBlockSize=43), f78=MockVariableIntBlock(baseBlockSize=43), e39=MockFixedIntBlock(blockSize=552), b99=Standard,
+ f75=MockFixedIntBlock(blockSize=552), e36=Pulsing(freqCutoff=12), f76=Pulsing(freqCutoff=12), e37=MockSep, f73=Pulsing(freqCutoff=12), f74=MockSep, f71=Standard, f72=SimpleText, f81=Standard, f80=MockSep, e40=
+MockVariableIntBlock(baseBlockSize=43), e41=Standard, e42=SimpleText, e43=MockSep, e44=Standard, e45=MockFixedIntBlock(blockSize=552), e46=Pulsing(freqCutoff=12), f86=Standard, e47=SimpleText, f87=SimpleText, e
+48=MockRandom, f88=Pulsing(freqCutoff=12), e49=MockSep, f89=MockSep, f82=MockVariableIntBlock(baseBlockSize=43), f83=MockFixedIntBlock(blockSize=552), f84=SimpleText, f85=MockRandom, f90=Pulsing(freqCutoff=12),
+ f92=MockVariableIntBlock(baseBlockSize=43), f91=MockRandom, str=MockRandom, a76=Standard, e56=Standard, f59=Pulsing(freqCutoff=12), a77=SimpleText, e57=SimpleText, a78=Pulsing(freqCutoff=12), e54=MockRandom, f
+57=Standard, a79=MockSep, e55=MockVariableIntBlock(baseBlockSize=43), f58=SimpleText, e52=MockVariableIntBlock(baseBlockSize=43), e53=MockFixedIntBlock(blockSize=552), e50=Pulsing(freqCutoff=12), e51=MockSep, f
+51=MockSep, f52=Standard, f50=MockRandom, f55=MockVariableIntBlock(baseBlockSize=43), f56=MockFixedIntBlock(blockSize=552), f53=Pulsing(freqCutoff=12), e58=MockFixedIntBlock(blockSize=552), f54=MockSep, e59=Pul
+sing(freqCutoff=12), a80=Pulsing(freqCutoff=12), e60=Pulsing(freqCutoff=12), a82=MockVariableIntBlock(baseBlockSize=43), a81=MockRandom, a84=MockRandom, a83=SimpleText, a86=Standard, a85=MockSep, a89=SimpleText
+, f68=MockVariableIntBlock(baseBlockSize=43), e65=Pulsing(freqCutoff=12), f69=MockFixedIntBlock(blockSize=552), e66=MockSep, a87=MockVariableIntBlock(baseBlockSize=43), e67=MockVariableIntBlock(baseBlockSize=43
+), a88=MockFixedIntBlock(blockSize=552), e68=MockFixedIntBlock(blockSize=552), e61=SimpleText, e62=MockRandom, e63=MockSep, e64=Standard, f60=MockFixedIntBlock(blockSize=552), f61=Pulsing(freq
+
+Cutoff=12), f62=MockRandom, f63=MockVariableIntBlock(baseBlockSize=43), e69=Standard, f64=SimpleText, f65=MockRandom, f66=MockSep, f67=Standard, f70=MockFixedIntBlock(blockSize=552), a93=MockSep, a92=Pulsing(freqCutoff=12), a91=SimpleText, e71=SimpleText, a90=Standard, e70=Standard, a97=MockVariableIntBlock(baseBlockSize=43), a96=MockRandom, a95=Pulsing(freqCutoff=12), a94=MockFixedIntBlock(blockSize=552), c58=MockRandom, a63=MockFixedIntBlock(blockSize=552), a64=Pulsing(freqCutoff=12), c59=MockVariableIntBlock(baseBlockSize=43), c56=MockFixedIntBlock(blockSize=552), d59=MockRandom, a61=MockSep, c57=Pulsing(freqCutoff=12), a62=Standard, c54=Pulsing(freqCutoff=12), c55=MockSep, a60=SimpleText, c52=Standard, c53=SimpleText, d53=SimpleText, d54=MockRandom, d51=MockVariableIntBlock(baseBlockSize=43), d52=MockFixedIntBlock(blockSize=552), d57=Pulsing(freqCutoff=12), b62=Standard, d58=MockSep, b63=SimpleText, d55=Standard, b60=MockRandom, d56=SimpleText, b61=MockVariableIntBlock(baseBlockSize=43), b56=Standard, b55=MockSep, b54=MockRandom, b53=SimpleText, d61=MockVariableIntBlock(baseBlockSize=43), b59=MockVariableIntBlock(baseBlockSize=43), d60=MockRandom, b58=MockSep, b57=Pulsing(freqCutoff=12), c62=Standard, c61=MockSep, a59=MockVariableIntBlock(baseBlockSize=43), c60=MockRandom, a58=MockRandom, a57=MockFixedIntBlock(blockSize=552), a56=MockVariableIntBlock(baseBlockSize=43), a55=MockSep, a54=Pulsing(freqCutoff=12), a72=MockRandom, c67=Standard, a73=MockVariableIntBlock(baseBlockSize=43), c68=SimpleText, a74=Standard, c69=Pulsing(freqCutoff=12), a75=SimpleText, c63=MockVariableIntBlock(baseBlockSize=43), c64=MockFixedIntBlock(blockSize=552), a70=MockVariableIntBlock(baseBlockSize=43), c65=SimpleText, a71=MockFixedIntBlock(blockSize=552), c66=MockRandom, d62=MockSep, d63=Standard, d64=MockFixedIntBlock(blockSize=552), b70=Standard, d65=Pulsing(freqCutoff=12), b71=Pulsing(freqCutoff=12), d66=MockVariableIntBlock(baseBlockSize=43), b72=MockSep, d67=MockFixedIntBlock(blockSize=552), b73=MockVariableIntBlock(baseBlockSize=43), d68=SimpleText, b74=MockFixedIntBlock(blockSize=552), d69=MockRandom, b65=Pulsing(freqCutoff=12), b64=MockFixedIntBlock(blockSize=552), b67=MockVariableIntBlock(baseBlockSize=43), b66=MockRandom, d70=SimpleText, b69=MockRandom, b68=SimpleText, d72=MockSep, d71=Pulsing(freqCutoff=12), c71=Pulsing(freqCutoff=12), c70=MockFixedIntBlock(blockSize=552), a69=Pulsing(freqCutoff=12), c73=MockVariableIntBlock(baseBlockSize=43), c72=MockRandom, a66=MockRandom, a65=SimpleText, a68=Standard, a67=MockSep, c32=MockSep, c33=Standard, c30=SimpleText, c31=MockRandom, c36=MockVariableIntBlock(baseBlockSize=43), a41=Pulsing(freqCutoff=12), c37=MockFixedIntBlock(blockSize=552), a42=MockSep, a0=MockRandom, c34=Pulsing(freqCutoff=12), c35=MockSep, a40=SimpleText, b84=MockSep, d79=MockFixedIntBlock(blockSize=552), b85=Standard, b82=SimpleText, d77=MockSep, c38=Standard, b83=MockRandom, d78=Standard, c39=SimpleText, b80=MockRandom, d75=Standard, b81=MockVariableIntBlock(baseBlockSize=43), d76=SimpleText, d73=MockRandom, d74=MockVariableIntBlock(baseBlockSize=43), d83=MockRandom, a9=MockFixedIntBlock(blockSize=552), d82=SimpleText, d81=MockFixedIntBlock(blockSize=552), d80=MockVariableIntBlock(baseBlockSize=43), b79=MockFixedIntBlock(blockSize=552), b78=MockSep, b77=Pulsing(freqCutoff=12), b76=SimpleText, b75=Standard, a1=Pulsing(freqCutoff=12), a35=Pulsing(freqCutoff=12), a2=MockSep, a34=MockFixedIntBlock(blockSize=552), a3=MockVariableIntBlock(baseBlockSize=43), a33=Standard, a4=MockFixedIntBlock(blockSize=552), a32=MockSep, a5=MockRandom, a39=MockRandom, c40=SimpleText, a6=MockVariableIntBlock(baseBlockSize=43), a38=SimpleText, a7=Standard, a37=MockFixedIntBlock(blockSize=552), a8=SimpleText, a36=MockVariableIntBlock(baseBlockSize=43), c41=MockFixedIntBlock(blockSize=552), c42=Pulsing(freqCutoff=12), c43=MockRandom, c44=MockVariableIntBlock(baseBlockSize=43), c45=SimpleText, a50=MockVariableIntBlock(baseBlockSize=43), c46=MockRandom, a51=MockFixedIntBlock(blockSize=552), c47=MockSep, a52=SimpleText, c48=Standard, a53=MockRandom, b93=MockFixedIntBlock(blockSize=552), d88=MockRandom, c49=MockVariableIntBlock(baseBlockSize=43), b94=Pulsing(freqCutoff=12), d89=MockVariableIntBlock(baseBlockSize=43), b95=MockRandom, b96=MockVariableIntBlock(baseBlockSize=43), d84=Pulsing(freqCutoff=12), b90=SimpleText, d85=MockSep, b91=Pulsing(freqCutoff=12), d86=MockVariableIntBlock(baseBlockSize=43), b92=MockSep, d87=MockFixedIntBlock(blockSize=552), d92=Standard, d91=MockSep, d94=Pulsing(freqCutoff=12), d93=MockFixedIntBlock(blockSize=552), b87=MockFixedIntBlock(blockSize=552), b86=MockVariableIntBlock(baseBlockSize=43), d90=SimpleText, b89=MockRandom, b88=SimpleText, a44=MockVariableIntBlock(baseBlockSize=43), a43=MockRandom, a46=SimpleText, a45=Standard, a48=Standard, a47=MockSep, c51=MockFixedIntBlock(blockSize=552), a49=MockFixedIntBlock(blockSize=552), c50=MockVariableIntBlock(baseBlockSize=43), d98=MockFixedIntBlock(blockSize=552), d97=MockVariableIntBlock(baseBlockSize=43), d96=MockSep, d95=Pulsing(freqCutoff=12), d99=MockRandom, a20=MockVariableIntBlock(baseBlockSize=43), c99=SimpleText, c98=Standard, c97=MockVariableIntBlock(baseBlockSize=43), c96=MockRandom, b19=MockVariableIntBlock(baseBlockSize=43), a16=Pulsing(freqCutoff=12), a17=MockSep, b17=Pulsing(freqCutoff=12), a14=Standard, b18=MockSep, a15=SimpleText, a12=SimpleText, a13=MockRandom, a10=MockVariableIntBlock(baseBlockSize=43), a11=MockFixedIntBlock(blockSize=552), b11=MockFixedIntBlock(blockSize=552), b12=Pulsing(freqCutoff=12), b10=Standard, b15=SimpleText, b16=MockRandom, a18=MockRandom, b13=MockVariableIntBlock(baseBlockSize=43), a19=MockVariableIntBlock(baseBlockSize=43), b14=MockFixedIntBlock(blockSize=552), b30=MockRandom, a31=MockSep, a30=Pulsing(freqCutoff=12), b28=SimpleText, a25=MockVariableIntBlock(baseBlockSize=43), b29=MockRandom, a26=MockFixedIntBlock(blockSize=552), a27=SimpleText, a28=MockRandom, a21=MockSep, a22=Standard, a23=MockFixedIntBlock(blockSize=552), a24=Pulsing(freqCutoff=12), b20=MockRandom, b21=MockVariableIntBlock(baseBlockSize=43), b22=Standard, b23=SimpleText, a29=Pulsing(freqCutoff=12), b24=MockSep, b25=Standard, b26=MockFixedIntBlock(blockSize=552), b27=Pulsing(freqCutoff=12), b41=Pulsing(freqCutoff=12), b40=MockFixedIntBlock(blockSize=552), c77=MockRandom, c76=SimpleText, c75=MockFixedIntBlock(blockSize=552), c74=MockVariableIntBlock(baseBlockSize=43), c79=SimpleText, c78=Standard, c80=MockSep, c83=MockRandom, c84=MockVariableIntBlock(baseBlockSize=43), c81=MockFixedIntBlock(blockSize=552), b39=MockFixedIntBlock(blockSize=552), c82=Pulsing(freqCutoff=12), b37=Standard, b38=SimpleText, b35=MockRandom, b36=MockVariableIntBlock(baseBlockSize=43), b33=MockVariableIntBlock(baseBlockSize=43), b34=MockFixedIntBlock(blockSize=552), b31=Pulsing(freqCutoff=12), b32=MockSep, str2=MockSep, b50=MockVariableIntBlock(baseBlockSize=43), b52=SimpleText, str3=MockVariableIntBlock(baseBlockSize=43), b51=Standard, c86=Standard, tvtest=MockSep, c85=MockSep, c88=Pulsing(freqCutoff=12), c87=MockFixedIntBlock(blockSize=552), c89=MockVariableIntBlock(baseBlockSize=43), c90=SimpleText, c91=MockRandom, c92=Standard, c93=SimpleText, c94=Pulsing(freqCutoff=12), c95=MockSep, content1=MockRandom, b46=Pulsing(freqCutoff=12), b47=MockSep, content3=MockFixedIntBlock(blockSize=552), b48=MockVariableIntBlock(baseBlockSize=43), content4=MockVariableIntBlock(baseBlockSize=43), b49=MockFixedIntBlock(blockSize=552), content5=Pulsing(freqCutoff=12), b42=SimpleText, b43=MockRandom, b44=MockSep, b45=Standard}, locale=sk, timezone=America/Rainy_River
+    [junit] NOTE: all tests run in this JVM:
+    [junit] [TestDateTools, TestDeletionPolicy, TestDocsAndPositions, TestFlex, TestIndexReaderCloneNorms, TestIndexWriter]
+    [junit] NOTE: Linux 2.6.39-gentoo amd64/Sun Microsystems Inc. 1.6.0_25 (64-bit)/cpus=8,threads=1,free=86065896,total=127401984
+    [junit] ------------- ---------------- ---------------
+    [junit] TEST org.apache.lucene.index.TestIndexWriter FAILED
+{code}

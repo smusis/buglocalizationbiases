@@ -1,0 +1,6 @@
+small float underflow detection bug
+
+
+
+Description:
+Underflow detection in small floats has a bug, and can incorrectly result in a byte value of 0 for a non-zero float.

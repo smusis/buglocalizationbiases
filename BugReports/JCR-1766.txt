@@ -1,0 +1,12 @@
+Bundle binding deserialization problem
+
+
+
+Description:
+I'm trying to upgrade from 1.3.x to jackrabbit 1.4.x (branch)  and have problems with existing repostories (probaly the same issue is with 1.5.x)
+
+Caused by: org.apache.jackrabbit.core.state.ItemStateException: failed to read bundle: deadbeef-face-babe-cafe-babecafebabe: java.lang.IllegalArgumentException: invalid namespaceURI specified
+ at org.apache.jackrabbit.core.persistence.bundle.BundleDbPersistenceManager.loadBundle(BundleDbPersistenceManager.java:1229)
+ at org.apache.jackrabbit.core.persistence.bundle.BundleDbPersistenceManager.loadBundle(BundleDbPersistenceManager.java:1161)
+
+It looks that issue was introduced by resolving JCR-1632

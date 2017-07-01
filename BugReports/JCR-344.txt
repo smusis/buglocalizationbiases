@@ -1,0 +1,7 @@
+Jcr-server: DeltaVResource lists MKWORKSPACE in the method constant.
+
+
+
+Description:
+RFC 3253 requires REPORT to be supported by all DeltaV compliant resources.
+The method constant therefore should list REPORT only.

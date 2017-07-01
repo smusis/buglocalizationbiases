@@ -1,0 +1,6 @@
+DatabaseFileSystem: mysql.ddl works for mysql5 but not mysql 4.1.20
+
+
+
+Description:
+Perhaps a new column ( primary key ) could get added to the table called uid, which is actually an md5checksum of FSENTRY_PATH and FSENTRY_NAME.

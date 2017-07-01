@@ -1,0 +1,12 @@
+Add ability to run backwards-compatibility tests automatically
+
+
+
+Description:
+This is an idea Doug mentioned on LUCENE-1422.
+
+This patch adds new targets to build.xml to automatically download the junit tests from a previous Lucene release and run them against the current core.
+Execute tests like this:
+ant -Dtag=lucene_2_4_0 test-tag
+
+It will create a new directory tags/lucene_2_4_0 and fetch the tests from the svn repository and run them.

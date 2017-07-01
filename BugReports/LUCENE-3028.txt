@@ -1,0 +1,8 @@
+IW.getReader() returns inconsistent reader on RT Branch
+
+
+
+Description:
+I extended the testcase TestRollingUpdates#testUpdateSameDoc to pull a NRT reader after each update and asserted that is always sees only one document. Yet, this fails with current branch since there is a problem in how we flush in the getReader() case. What happens here is that we flush all threads and then release the lock (letting other flushes which came in after we entered the flushAllThread context, continue) so that we could concurrently get a new segment that transports global deletes without the corresponding add. They sneak in while we continue to open the NRT reader which in turn sees inconsistent results.
+
+I will upload a patch soon

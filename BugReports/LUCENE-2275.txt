@@ -1,0 +1,8 @@
+DocumentsWriter.applyDeletes should not create TermDocs or IndexSearcher if not needed
+
+
+
+Description:
+DocumentsWriter.applyDeletes(IndexReader, int) always creates TermDocs and IndexSearcher, even if there were no deletes by Term or by Query. The attached patch wraps those creations w/ checks on whether there were any deletes by these two. Additionally, the searcher wasn't closed in a finally block, so I fixed that as well.
+
+I'll attach a patch shortly.

@@ -1,0 +1,7 @@
+SPI: RepositoryService.getItemInfos should be allowed to return entries outside of the requested tree.
+
+
+
+Description:
+michael duerig asked for for that extension of the semantic of RepositoryService.getItemInfos.
+currently this doesn't work and leads to an inconsistent hierarchy.

@@ -1,0 +1,8 @@
+DefaultItemStateProvider contains grow-only cache
+
+
+
+Description:
+The DefaultItemStateProvider class contains a private HashMap "items" which contains references to ItemState objects. The bad thing about this cache is, that it only grows, but is not being managed to forget about "unused" items.
+
+Example: A repository which is filled with 9350 nodes and 52813 properties grows this items map to 1'667'557 (!) entries. In this concrete case, the VM all13ates 213MB to the heap of which 57MB is referenced by the DefaultItemStateProvider.items map.

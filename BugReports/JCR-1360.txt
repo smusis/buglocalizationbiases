@@ -1,0 +1,36 @@
+Parsing built-in CND and XML nodetypes does not result in equal nt-definitions
+
+
+
+Description:
+i created a test in order to make sure builtin-nodetypes.xml and builtin-nodetypes.cnd provide the same definitions (actually i only wanted to test my own changes).
+
+it reveals that the existing built-in NodeTypeDefinitions are not equal due to the following reason:
+
+- in the xml-format nt:base is always specified if no other super type extends from nt:base
+- in the cnd notation the nt:base is omitted (see below for quote from appendix of jsr 283) even if other super type(s) are
+  defined and none of them extends from nt:base.
+
+this affects the following nodetypes (all extending from mix:referenceable only):
+
+nt:versionHistory
+nt:version
+nt:frozenNode
+nt:resource
+
+
+quote from public-review of jsr 283:
+
+"7.2.2.4 Supertypes [...]
+After the node type name comes the optional list of supertypes. If this element is not present and the node type is not a mixin (see 7.2.2.5 Options), then a supertype of nt:base is assumed."
+
+
+I'm not totally sure, if according to the quote above the built-in cnd-definitions are valid at all. since it states, that the nt:base is assumed if no other super type is defined. In the case of the node types above, mix:referenceable is defined to be the only super type, which is not totally true... the non-mixin types are always sub types of nt:base.
+
+In either case: From my understanding the node types resulting from parsing the xml and the cnd file should be equal.
+If the definitions are valid, we may need to adjust the CompactNodeTypeDefReader.
+
+
+
+
+

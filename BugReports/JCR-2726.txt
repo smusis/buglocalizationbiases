@@ -1,0 +1,7 @@
+Make collecting group membership information lazy
+
+
+
+Description:
+JCR-2710 added a more scalable content model for storing group membership information. To further leverage the new model it would be preferable when group membership collecting where lazy. (i.e. Group#getDeclaredMembers() and Group#getMembers() should not construct the list of all members up front). 
+

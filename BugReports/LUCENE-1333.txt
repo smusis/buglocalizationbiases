@@ -1,0 +1,19 @@
+Token implementation needs improvements
+
+
+
+Description:
+This was discussed in the thread (not sure which place is best to reference so here are two):
+http://mail-archives.apache.org/mod_mbox/lucene-java-dev/200805.mbox/%3C21F67CC2-EBB4-48A0-894E-FBA4AECC0D50@gmail.com%3E
+or to see it all at once:
+http://www.gossamer-threads.com/lists/lucene/java-dev/62851
+
+Issues:
+1. JavaDoc is insufficient, leading one to read the code to figure out how to use the class.
+2. Deprecations are incomplete. The constructors that take String as an argument and the methods that take and/or return String should *all* be deprecated.
+3. The allocation policy is too aggressive. With large tokens the resulting buffer can be over-allocated. A less aggressive algorithm would be better. In the thread, the Python example is good as it is computationally simple.
+4. The parts of the code that currently use Token's deprecated methods can be upgraded now rather than waiting for 3.0. As it stands, filter chains that alternate between char[] and String are sub-optimal. Currently, it is used in core by Query classes. The rest are in contrib, mostly in analyzers.
+5. Some internal optimizations can be done with regard to char[] allocation.
+6. TokenStream has next() and next(Token), next() should be deprecated, so that reuse is maximized and descendant classes should be rewritten to over-ride next(Token)
+7. Tokens are often stored as a String in a Term. It would be good to add constructors that took a Token. This would simplify the use of the two together.
+

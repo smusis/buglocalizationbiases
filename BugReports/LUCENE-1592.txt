@@ -1,0 +1,14 @@
+fix or deprecate TermsEnum.skipTo
+
+
+
+Description:
+This method is a trap: it looks legitimate but it has hideously poor performance (simple linear scan implemented in the TermsEnum base class since none of the concrete impls override it with a more efficient implementation).
+
+The least we should do for 2.9 is deprecate the method with  a strong warning about its performance.
+
+See here for background: http://www.lucidimagination.com/search/document/77dc4f8e893d3cf3/possible_terminfosreader_speedup
+
+And, here for historical context: 
+
+http://www.lucidimagination.com/search/document/88f1b95b404ebf16/remove_termenum_skipto_term_target

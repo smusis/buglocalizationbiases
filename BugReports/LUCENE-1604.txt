@@ -1,0 +1,6 @@
+Stop creating huge arrays to represent the absense of field norms
+
+
+
+Description:
+Creating and keeping around huge arrays that hold a constant value is very inefficient both from a heap usage standpoint and from a localility of reference standpoint. It would be much more efficient to use null to represent a missing norms table.

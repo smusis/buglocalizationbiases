@@ -1,0 +1,13 @@
+Enhance indexing of binary content
+
+
+
+Description:
+Indexing of binary content should be enhanced in order to allow either configuration what fields are indexed or provide better support for custom NodeIndexer implementations.
+
+The current design has a couple of flaws that should be addressed at the same time:
+- Reader instances are requested from the text filters even though the reader might never be used
+- only jcr:data properties of nt:resource nodes are fulltext indexed
+- It is up to the text filter implementation to decide the lucene field name for the text representation, responsibility should be moved to the NodeIndexer. A text filter should only provide a Reader instance.
+
+With those changes a custom NodeIndexer can then decide if a binary property has one or more representations in the index.

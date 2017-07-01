@@ -1,0 +1,6 @@
+trunk tests hang/deadlock TestIndexWriterWithThreads
+
+
+
+Description:
+trunk tests have been hanging often lately in hudson, this time i was careful to kill and get a good stacktrace:

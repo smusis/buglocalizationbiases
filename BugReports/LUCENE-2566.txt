@@ -1,0 +1,7 @@
++ - operators allow any amount of whitespace
+
+
+
+Description:
+As an example, (foo - bar) is treated like (foo -bar).
+It seems like for +- to be treated as unary operators, they should be immediately followed by the operand.

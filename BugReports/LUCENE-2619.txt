@@ -1,0 +1,11 @@
+simple improvements to tests
+
+
+
+Description:
+Simon had requested some docs on what all our test options do, so lets clean it up and doc it.
+
+i propose:
+# change all vars to be tests.xxx (e.g. tests.threadspercpu, tests.multiplier, ...)
+# ensure all 6 build systems (lucene, solr, each solr contrib) respect these.
+# add a simple wiki page listing what these do.

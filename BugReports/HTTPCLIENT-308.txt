@@ -1,0 +1,17 @@
+Log level for message should be debug instead of error.
+
+
+
+Description:
+In method org.apache.commons.httpclient.HttpMethodBase.getResponseBody() Log
+message should be logged as debug instead of error. 
+
+717             } catch (IOException e) {
+718                 LOG.error("I/O failure reading response body", e);
+719                 this.responseBody = null;
+720             }
+
+According to HTTPCLIENT-57:
+2) Only/always log exception stack traces at the debug level
+        } catch (Exception ex) {
+            log.debug

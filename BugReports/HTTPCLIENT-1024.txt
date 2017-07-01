@@ -1,0 +1,6 @@
+cache does not validate multiple cached variants
+
+
+
+Description:
+There is a bug in CachingHttpClient, where when we attempt to collect all the etags for existing cached variants so we can send a conditional request to the origin, we accidentally don't find any, and send an unconditional request instead.

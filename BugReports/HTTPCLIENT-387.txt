@@ -1,0 +1,25 @@
+DefaultHttpParamsFactory.getDefaultParams() is not thread safe
+
+
+
+Description:
+The method getDefaultParams() in 
+org.apache.commons.httpclient.params.DefaultHttpParamsFactory is not thread 
+safe.  In this code:
+
+    public HttpParams getDefaultParams() {
+        if (httpParams == null) {
+            httpParams = createParams();
+        }
+
+        return httpParams;
+    }
+
+it is possible that httpParams will be called by one thread which will set 
+httpParams, then a second thread may call it and may find httpParams is 
+non-null.  However, under both the old (Java Language Spec chapter 17) and 
+new Java Memory Models, the second thread won't necessarily see the values 
+the first thread has set in the referenced HttpParams object.
+
+The easiest way to fix this for all JVMs and memory models is by declaring 
+getDefaultParams() to be synchronized.

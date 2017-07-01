@@ -1,0 +1,8 @@
+InitiatedIndex: CCE on casting NumericField to Field
+
+
+
+Description:
+An unchecked cast to List<Field> throws a ClassCastException when applied to, for example, a NumericField.
+Appearently, this has been fixed trunk, but for a 2.9.1 release, this could be helpful.
+The patch can be applied against the 2.9.0 tag.

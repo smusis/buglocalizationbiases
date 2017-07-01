@@ -1,0 +1,37 @@
+ConnectException not handled in DefaultHttpMethodRetryHandler
+
+
+
+Description:
+Copied from my mailing list post, Oleg suggested I post it to JIRA for 4.0 fix.
+
+i am using commons-httpclient.3.0.1 and I am sending some requests
+through https protocol. I have a problem with a long creation of
+connection if ip address of remote service is not existing. I think
+problem is in the situation when https connection is not created and
+ConnectException is thrown after connection timeout. This exception is
+catched in HttpMethodDirector.java in method executeWithRetry. Then
+the DefaultHttpMethodRetryHandler is called to recognize whether
+connection creation will be repeated or not.
+I think, that special handling for ConnectException is missing in
+retryMethod of DefaultHttpMethodRetryHandler, because exception is not
+recognized and connetions are created again.
+On the other hand, ConnectTimeoutException is thrown after connection
+timeout for HTTP. This exception is handled in
+DefaultHttpMethodRetryHandler and call is stopped.
+
+These lines of code handle ConnectTimeoutException in retryMethod of
+DefaultHttpMethodRetryHandler:
+if (exception instanceof InterruptedIOException) {
+            // Timeout
+            return false;
+        }
+
+Probably this is missing for ConnectException:
+if (exception instanceof InterruptedIOException || exception
+instanceof ConnectException) {
+            // Timeout
+            return false;
+        }
+
+

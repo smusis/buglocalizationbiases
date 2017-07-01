@@ -1,0 +1,51 @@
+[PATCH] Field.toString could be more helpful
+
+
+
+Description:
+org.apache.lucene.document.Field.toString defaults to using Object.toString
+for some sensible fields. e.g. !isStored && isIndexed && !isTokenized
+fields. This makes debugging slightly more difficult than is really needed.
+
+Please find pasted below possible alternative:
+
+ /** Prints a Field for human consumption. */
+  public final String toString() {
+  	StringBuffer result = new StringBuffer();
+  	if (isStored) {
+  		if (isIndexed) {
+  			if (isTokenized) {
+  				result.append("Text");
+  			} else {
+  				result.append("Keyword");
+  			}
+  		} else {
+			// XXX warn on tokenized not indexed?
+  			result.append("Unindexed");
+  		}
+  	} else {
+  		if (isIndexed) {
+  			if (isTokenized) {
+  				result.append("Unstored");
+  			} else {
+  				result.append("UnstoredUntokenized");
+  			}
+  		} else {
+			result.append("Nonsense_UnstoredUnindexed");
+  		}
+  	}
+  	
+  	result.append('<');
+  	result.append(name);
+  	result.append(':');
+  	if (readerValue != null) {
+  		result.append(readerValue.toString());
+  	} else {
+  		result.append(stringValue);
+  	}
+  	result.append('>');
+  	return result.toString();
+  }
+
+
+NB Im working against CVS HEAD

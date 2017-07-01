@@ -1,0 +1,39 @@
+ClassCastException MultiReader
+
+
+
+Description:
+(See original message below)
+Sure.  'Bugzilla it', please.
+
+Otis
+P.S.
+That line 274 should be line 273 in the CVS HEAD as of now.
+
+--- Rasik Pandey <rasik.pandey@ajlsm.com> wrote:
+> Howdy,
+> 
+> This exception was thrown with 1.4rc3. Do you need a test case for 
+> this one?
+> 
+> java.lang.ClassCastException
+>         at
+> org.apache.lucene.index.MultiTermEnum.<init>(MultiReader.java:274)
+>         at
+> org.apache.lucene.index.MultiReader.terms(MultiReader.java:187)
+> 
+> 
+> Regards,
+> RBP
+> 
+> 
+> 
+> ---------------------------------------------------------------------
+> To unsubscribe, e-mail: lucene-dev-unsubscribe@jakarta.apache.org
+> For additional commands, e-mail: lucene-dev-help@jakarta.apache.org
+> 
+
+
+---------------------------------------------------------------------
+To unsubscribe, e-mail: lucene-dev-unsubscribe@jakarta.apache.org
+For additional commands, e-mail: lucene-dev-help@jakarta.apache.org

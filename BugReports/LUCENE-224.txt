@@ -1,0 +1,9 @@
+[PATCH] FilteredTermEnum code cleanup
+
+
+
+Description:
+FilteredTermEnum's constructor takes two parameters but doesn't use them. This 
+patch changes that and thus makes the code easier readable. Maybe the old 
+constructor should be kept (as deprecated)? I'm not sure, this version seems 
+cleaner to me.

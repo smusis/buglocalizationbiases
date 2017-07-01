@@ -1,0 +1,6 @@
+Remove deprecated RangeQuery classes
+
+
+
+Description:
+Remove deprecated RangeQuery classes

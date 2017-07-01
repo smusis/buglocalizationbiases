@@ -1,0 +1,9 @@
+SSL connections cannot be established using resolvable IP address
+
+
+
+Description:
+HttpClient 4.1 introduced a regression in establishing SSL connections to remote peers (it seems this is a common regression for major httpclient updates, see HTTPCLIENT-803).
+The new SSLSocketFactory.connectSocket method calls the X509HostnameVerifier with InetSocketAddress.getHostName() parameter. When the selected IP address has a reverse lookup name, the verifier is called with the resolved name, and so the IP check fails.
+4.0 release checked for original ip/hostname, but this cannot be done with the new connectSocket() method. 
+The TestHostnameVerifier.java only checks 127.0.0.1/.2 and so masked the issue, because the matching certificate has both "localhost" and "127.0.0.1", but actually only "localhost" is matched. A test case with 8.8.8.8 would be better.

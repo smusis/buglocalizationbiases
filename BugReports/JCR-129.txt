@@ -1,0 +1,6 @@
+ORM PersistenceManagers don't compile
+
+
+
+Description:
+ORM PMs are out of synch with the latest changes of the api. 

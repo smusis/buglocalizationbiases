@@ -1,0 +1,9 @@
+Remove norms() support from non-atomic IndexReaders
+
+
+
+Description:
+Spin-off from LUCENE-2769:
+Currently all IndexReaders support norms(), but the core of Lucene never uses it and its even dangerous because of memory usage. We should do the same like with MultiFields and factor it out and throw UOE on non-atomic readers.
+
+The SlowMultiReaderWrapper can then manage the norms. Also ParallelReader needs to be fixed.

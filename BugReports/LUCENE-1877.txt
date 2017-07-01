@@ -1,0 +1,15 @@
+Use NativeFSLockFactory as default for new API (direct ctors & FSDir.open)
+
+
+
+Description:
+A user requested we add a note in IndexWriter alerting the availability of NativeFSLockFactory (allowing you to avoid retaining locks on abnormal jvm exit). Seems reasonable to me - we want users to be able to easily stumble upon this class. The below code looks like a good spot to add a note - could also improve whats there a bit - opening an IndexWriter does not necessarily create a lock file - that would depend on the LockFactory used.
+
+
+{code}  <p>Opening an <code>IndexWriter</code> creates a lock file for the directory in use. Trying to open
+  another <code>IndexWriter</code> on the same directory will lead to a
+  {@link LockObtainFailedException}. The {@link LockObtainFailedException}
+  is also thrown if an IndexReader on the same directory is used to delete documents
+  from the index.</p>{code}
+
+Anyone remember why NativeFSLockFactory is not the default over SimpleFSLockFactory?

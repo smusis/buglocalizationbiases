@@ -1,0 +1,22 @@
+rep:similar in xpath does not work
+
+
+
+Description:
+This query //*[rep:similar(., '/content/en')] produces an exception:
+
+24.09.2009 16:56:48.156 *ERROR* [0:0:0:0:0:0:0:1%0 [1253804208093] GET /libs/cq/search/content/querydebug.html HTTP/1.1] org.apache.sling.engine.impl.SlingMainServlet service: Uncaught SlingException java.lang.ArrayIndexOutOfBoundsException: -1
+	at org.apache.jackrabbit.core.query.lucene.LuceneQueryBuilder.visit(LuceneQueryBuilder.java:612)
+	at org.apache.jackrabbit.spi.commons.query.RelationQueryNode.accept(RelationQueryNode.java:115)
+	at org.apache.jackrabbit.spi.commons.query.NAryQueryNode.acceptOperands(NAryQueryNode.java:143)
+	at org.apache.jackrabbit.core.query.lucene.LuceneQueryBuilder.visit(LuceneQueryBuilder.java:489)
+	at org.apache.jackrabbit.spi.commons.query.LocationStepQueryNode.accept(LocationStepQueryNode.java:166)
+	at org.apache.jackrabbit.core.query.lucene.LuceneQueryBuilder.visit(LuceneQueryBuilder.java:468)
+	at org.apache.jackrabbit.spi.commons.query.PathQueryNode.accept(PathQueryNode.java:74)
+	at org.apache.jackrabbit.core.query.lucene.LuceneQueryBuilder.visit(LuceneQueryBuilder.java:257)
+	at org.apache.jackrabbit.spi.commons.query.QueryRootNode.accept(QueryRootNode.java:115)
+	at org.apache.jackrabbit.core.query.lucene.LuceneQueryBuilder.createLuceneQuery(LuceneQueryBuilder.java:247)
+	at org.apache.jackrabbit.core.query.lucene.LuceneQueryBuilder.createQuery(LuceneQueryBuilder.java:227)
+	at org.apache.jackrabbit.core.query.lucene.QueryImpl.execute(QueryImpl.java:111)
+	at org.apache.jackrabbit.core.query.QueryImpl.execute(QueryImpl.java:127)
+

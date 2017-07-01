@@ -1,0 +1,18 @@
+Node.setProperty(String, ...) implementation not according to the specification
+
+
+
+Description:
+to illustrate the issue assume the following  property definition:
+
+name: someText
+type: String
+non-mandatory
+non-autocreate
+
+the following call would throw a ConstraintViolationException
+if the property doesn't exist yet:
+
+node.setProperty("someText", 12345);
+
+the rules used to find an applicable definition in this case are too strict.

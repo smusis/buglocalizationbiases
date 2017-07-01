@@ -1,0 +1,7 @@
+Database Data Store: clean up the code
+
+
+
+Description:
+There is some unnecessary code in the DbDataStore that should be removed.
+Also, some more tests should be added.

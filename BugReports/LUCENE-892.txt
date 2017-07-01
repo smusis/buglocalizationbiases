@@ -1,0 +1,24 @@
+CompoundFileReader's openInput produces streams that may do an extra buffer copy
+
+
+
+Description:
+Spinoff of LUCENE-888.
+
+The class for reading from a compound file (CompoundFileReader) has a
+primary stream which is a BufferedIndexInput when that stream is from
+an FSDirectory (which is the norm).  That is one layer of buffering.
+
+Then, when its openInput is called, a CSIndexInput is created which
+also subclasses from BufferedIndexInput.  That's a second layer of
+buffering.
+
+When a consumer actually uses that CSIndexInput to read, and a call to
+readByte or readBytes runs out of what's in the first buffer, it will
+go to refill its buffer.  But that refill calls the first
+BufferedIndexInput which in turn may refill its buffer (a double
+copy) by reading the underlying stream.
+
+Not sure how to fix it yet but we should change things to not do the
+extra buffer copy.
+

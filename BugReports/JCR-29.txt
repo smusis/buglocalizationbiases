@@ -1,0 +1,32 @@
+Node.addNode() does not scale with increasing content
+
+
+
+Description:
+With increasing repository content (and versions), the time to create new nodes increases. For example with around 6500 nodes and 33500 properties, it takes around 3 seconds (!) to just add one single node !
+
+When attaching to the application with a Debugger and delibaretly suspending the VM, this stack trace is displayed all the times :
+
+   [ changing internals of access List iterator ]
+   PersistentNodeState(NodeState).getChildNodeEntries(String) line: 362
+   PersistentNode.getName() line: 84
+   PersistentVersionManager.getVersion(String) line: 278
+   VersionManager.getVersion(String) line: 304
+   VersionItemStateProvider.getNodeState(NodeId) line: 124
+   VersionItemStateProvider.hasPropertyState(PropertyId) line: 154
+   VersionItemStateProvider.hasItemState(ItemId) line: 174
+   SessionItemStateManager.getItemState(ItemId) line: 246
+   ItemManager.createItemInstance(ItemId) line: 563
+   ItemManager.getItem(ItemId) line: 332
+   NodeImpl.getProperty(QName) line: 876
+   NodeImpl.hasProperty(QName) line: 893
+   NodeImpl.safeIsCheckedOut() line: 2515
+   NodeImpl.internalAddChildNode(QName, NodeTypeImpl, String) line: 527
+   NodeImpl.internalAddNode(String, NodeTypeImpl, String) line: 475
+   NodeImpl.internalAddNode(String, NodeTypeImpl) line: 436
+   NodeImpl.addNode(String, String) line: 1145
+   ...
+
+It seems, that virtual item state providers are asked for whatever property is looked for and this in return calls into the version handler, which loops over some child entries (currently around 1100 entries) to find one single entry with a given UUID.
+
+Besides the latter not being optimal and certainly not scaling, the former has its problems in its own right.

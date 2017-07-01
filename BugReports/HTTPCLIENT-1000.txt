@@ -1,0 +1,14 @@
+Configure Maximum Connection Lifetimes
+
+
+
+Description:
+Provide a means of configuring a maximum lifetime for HttpClient connections.  Currently, it would appear as long as a connection is used it may persist indefinitely.
+
+This would be useful for situations where HttpClient needs to react to DNS changes, such as the following situation that may occur when using DNS load balancing:
+ - HttpClient maintains connections to example.com which resolves to IP A
+ - Machine at IP A fails, and example.com now resolves to backup machine at IP B
+ - Since IP A is failing, connections are destroyed, and new connections are made to IP B
+ - Machine at IP A recovers, but HttpClient maintains connections to IP B since the connections are still healthy
+
+The desired behavior would be that connections to IP B will reach their connection lifetime, and new connections could be created back to IP A according to the updated DNS settings.

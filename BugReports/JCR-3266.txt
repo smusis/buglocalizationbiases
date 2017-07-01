@@ -1,0 +1,16 @@
+JCR-SQL2 query with multiple columns in result only returns last column when using Row.getValues()
+
+
+
+Description:
+When running a query like below on an in-process repository (via TransientRepository) or via RMI access, a call to Row.getValues() only returns the last column selected:
+
+       SELECT property1, property2 FROM [nodetype]
+
+QueryResult.getColumnNames() returns the right set of columns.
+
+Stepping through the code shows that org.apache.jackrabbit.core.query.lucene.join.AbstractRow has the implementation of getValues() - this creates a new Values array, then overwrites it multiple times in a for loop that iterates once per column. That doesn't sound like the desired behaviour.
+
+Getting values via individual calls to Row.getValue("property1") gives the correct results.
+
+

@@ -1,0 +1,14 @@
+SearchManager might throw when handling cluster event
+
+
+
+Description:
+When handling events that are generated from another node in the cluster, the SearchManager might try to index an index that does no longer exist. This results in an error message or even a NPE. The scenario looks as follows (A and B are nodes in a repository cluster)
+
+1: A adds node N
+2: A saves changes
+3: A removes node N
+4: A saves changes
+
+Upon receiving the event of a newly created node, B starts indexing node N. If this process hasn't been concluded before step 3 above, it will throw.
+

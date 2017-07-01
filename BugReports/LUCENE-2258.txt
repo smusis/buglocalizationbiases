@@ -1,0 +1,11 @@
+Remove "synchonized" from FuzzyTermEnum#similarity(final String target)
+
+
+
+Description:
+The similarity method in FuzzyTermEnum is synchronized which is stupid because of:
+- TermEnums are the iterator pattern and so are single-thread per definition
+- The method is private, so nobody could ever create a fake FuzzyTermEnum just to have this method and use it multithreaded.
+- The method is not static and has no static fields - so instances do not affect each other
+
+The root of this comes from LUCENE-296, but was never reviewd and simply committed. The argument for making it synchronized is wrong.

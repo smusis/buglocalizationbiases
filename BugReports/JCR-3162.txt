@@ -1,0 +1,6 @@
+Index update overhead on cluster slave due to JCR-905
+
+
+
+Description:
+JCR-905 is a quick and dirty fix and causes overhead on a cluster slave node when it processes revisions.

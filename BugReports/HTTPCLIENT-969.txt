@@ -1,0 +1,10 @@
+BasicCookieStore.getCookies() returns non-threadsafe collection
+
+
+
+Description:
+BasicCookieStore.getCookies() is a simple method.  It's synchronized, and it returns an unmodifiable wrapper around the underlying cookie list.  If the caller were to then iterate over it as another thread were to manipulate the cookie list via BasicCookieStore, this would create a thread un-safe situation because both threads aren't doing their reading/writing with the same lock (the reader doesn't even have a lock).
+
+I suggest fixing this by using CopyOnWriteArrayList, or by making a defensive copy in getCookies()
+
+This issue might apply to some of the other basic implementations of some of the interfaces but I haven't checked.

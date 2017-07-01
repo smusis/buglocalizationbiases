@@ -1,0 +1,8 @@
+Support for embedded index aggregates
+
+
+
+Description:
+Index aggregates could contain other index aggregates. JR should be able to handle a complete hierarchy of aggregates. 
+
+I'm working on a patch.

@@ -1,0 +1,16 @@
+DigestScheme.authenticate returns invalid authorization string when algorithm is null
+
+
+
+Description:
+DigestScheme.authenticate returns invalid authorization string when algorithm 
+is null. 
+I traced the bug and found the following from the method call:
+authenticate(Credentials credentials, String method, String uri) calls
+authenticate(UsernamePasswordCredentials credentials,
+            Map params) calls
+createDigest(String uname, String pwd,
+            Map params)
+  and properly defaults algorithm to MD5 if null
+but the final call to createDigestHeader(String uname, Map params,
+            String digest) does not default algorithm to MD5 if null

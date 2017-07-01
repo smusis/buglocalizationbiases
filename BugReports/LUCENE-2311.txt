@@ -1,0 +1,11 @@
+Pass potent SR to IRWarmer.warm(), and also call warm() for new segments
+
+
+
+Description:
+Currently warm() receives a SegmentReader without terms index and docstores.
+It would be arguably more useful for the app to receive a fully loaded reader, so it can actually fire up some caches. If the warmer is undefined on IW, we probably leave things as they are.
+
+It is also arguably more concise and clear to call warm() on all newly created segments, so there is a single point of warming readers in NRT context, and every subreader coming from getReader is guaranteed to be warmed up -> you don't have to introduce even more mess in your code by rechecking it.
+
+

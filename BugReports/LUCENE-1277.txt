@@ -1,0 +1,6 @@
+Remove System.out left in SpanHighlighter code
+
+
+
+Description:
+A System.out debug was left in the code when a Query is not supported by the SpanHighlighter. This issue simply removes it.

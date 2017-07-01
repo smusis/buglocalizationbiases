@@ -1,0 +1,11 @@
+move contrib/benchmark to modules/benchmark
+
+
+
+Description:
+I think we should move lucene/contrib/benchmark to a shared modules/benchmark, so you can easily benchmark anything (lucene, solr, other modules like analysis or whatever).
+
+For example, if you want to do some benchmarking of something in solr (LUCENE-2844) you should be able to do this.
+Another example is simply being able to benchmark an analyzer definition from a schema.xml, its more convenient than writing the equivalent java analyzer just for benchmarking.
+
+

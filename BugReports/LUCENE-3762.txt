@@ -1,0 +1,10 @@
+Upgrade JUnit to 4.10, refactor state-machine of detecting setUp/tearDown call chaining.
+
+
+
+Description:
+Both Lucene and Solr use JUnit 4.7. I suggest we move forward and upgrade to JUnit 4.10 which provides several infrastructural changes (serializable Description objects, class-level rules, various tweaks). JUnit 4.10 also changes (or fixes, depends how you look at it) the order in which @Before/@After hooks and @Rules are applied. This makes the old state-machine in LuceneTestCase fail (because the order is changed).
+
+I rewrote the state machine and used a different, I think simpler, although Uwe may disagree :), mechanism in which the hook methods setUp/ tearDown are still there, but they are empty at the top level and serve only to detect whether subclasses chain super.setUp/tearDown properly (if they override anything).
+
+In the long term, I would love to just get rid of public setup/teardown methods and make them private (so that they cannot be overriden or even seen by subclasses) but this will require changes to the runner itself.

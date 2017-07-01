@@ -1,0 +1,59 @@
+loadURI compile error with Maven 1.0.2
+
+
+
+Description:
+As reported on the mailing list by Ashley Martens:
+
+----
+C:\apache\jackrabbit-contrib\nt-ns-util>maven
+ __  __
+|  \/  |__ _Apache__ ___
+| |\/| / _` \ V / -_) ' \  ~ intelligent projects ~
+|_|  |_\__,_|\_/\___|_||_|  v. 1.0.2
+
+Attempting to download jackrabbit-1.0-SNAPSHOT.jar.
+Artifact /org.apache.jackrabbit/jars/jackrabbit-1.0-SNAPSHOT.jar doesn't exists in remote repository, but it exists locally
+Attempting to download jackrabbit-commons-1.0-SNAPSHOT.jar.
+Artifact /org.apache.jackrabbit/jars/jackrabbit-commons-1.0-SNAPSHOT.jar doesn't exists in remote repository, but it exists locally
+build:start:
+
+java:prepare-filesystem:
+
+java:compile:
+   [echo] Compiling to C:\apache\jackrabbit-contrib\nt-ns-util/target/classes
+   [javac] Compiling 1 source file to C:\apache\jackrabbit-contrib\nt-ns-util\target\classes
+C:\apache\jackrabbit-contrib\nt-ns-util\src\main\java\org\apache\jackrabbit\util\nodetype\SchemaConverter.java:71: cannot resolve symbol
+symbol  : method loadURI (java.lang.String)
+location: class org.apache.xerces.impl.xs.XMLSchemaLoader
+       XSModel xsModel = loader.loadURI(uri);
+                               ^
+1 error
+
+BUILD FAILED
+File...... C:\Documents and Settings\ashleym\.maven\cache\maven-java-plugin-1.5\plugin.jelly
+Element... ant:javac
+Line...... 63
+Column.... 48
+Compile failed; see the compiler error output for details.
+Total time: 8 seconds
+Finished at: Mon Jan 02 10:40:47 EST 2006
+----
+
+Peeter Piegaze found out the problem:
+
+----
+I was able to build it without a problem using maven-1.1-beta-2 and JDK 1.4.2.
+
+However, it sounds to me like in your case maven has set up its
+on-build classpath so that it sees the older xerces-2.4.0.jar before
+the new xerxesImpl.-2.6.2.jar. Maven seems to download the old
+xerces-2.4.0 into its repository for internal use, while my code uses
+the newer xerxesImpl-2.6.2.jar. The old jar overlaps class-wise with
+the new one, but the new one implements the additional loadURI method
+(among others).
+
+I am not sure exactly why your maven build process is looking in the
+wrong jar. But that is what is doing, almost certainly.
+----
+

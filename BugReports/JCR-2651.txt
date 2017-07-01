@@ -1,0 +1,7 @@
+Add a OnWorkspaceInconsistency with logging only
+
+
+
+Description:
+If a Workspace performs a re-index on startup with  a inconsistency in it the process will fail now.
+The new OnWorkspaceInconsistency "log" will only log the inconsistency but the reindex-process will not fail

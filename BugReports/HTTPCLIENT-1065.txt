@@ -1,0 +1,28 @@
+Documentation on SingleClientConnManager(SchemeRegistry schreg) constructor is wrong
+
+
+
+Description:
+Seems that the documentation for single-arg constructor SingleClientConnManager(SchemeRegistry schreg) is wrong.
+
+Documentation says that incoming SchemeRegistry parameter can be null:
+    schreg - the scheme registry, or null for the default registry
+
+However, the constructor throws an exception in incoming schreg param is null:
+
+    /**
+     * Creates a new simple connection manager.
+     *
+     * @param params    the parameters for this manager
+     * @param schreg    the scheme registry, or
+     *                  <code>null</code> for the default registry
+     */
+    public SingleClientConnManager(HttpParams params,
+                                   SchemeRegistry schreg) {
+        if (schreg == null) {
+            throw new IllegalArgumentException
+                ("Scheme registry must not be null.");
+        }
+
+
+So this is likely a documentation bug...

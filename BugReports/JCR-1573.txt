@@ -1,0 +1,52 @@
+Lucene Query Exception: 'attempt to access a deleted document'
+
+
+
+Description:
+Hi,
+
+I am getting an exception when trying to execute a query through the (Spring) JcrTemplate class....using the following code:
+QueryManager qMgr = session.getWorkspace().getQueryManager();
+QueryResult result = qMgr.createQuery(xpathQuery, Query.XPATH ).execute();
+
+The exception is thrown at the second line and is as follows:
+
+[DEBUG] << "[0x9]at org.apache.lucene.search.IndexSearcher.search(IndexSearcher.java:113)[\n]"
+[DEBUG] << "[0x9]at org.apache.lucene.search.Hits.getMoreDocs(Hits.java:74)[\n]"
+[DEBUG] << "[0x9]at org.apache.lucene.search.Hits.&lt;init>(Hits.java:53)[\n]"
+[DEBUG] << "[0x9]at org.apache.lucene.search.Searcher.search(Searcher.java:46)[\n]"
+[DEBUG] << "[0x9]at org.apache.lucene.search.Searcher.search(Searcher.java:38)[\n]"
+[DEBUG] << "[0x9]at org.apache.jackrabbit.core.query.lucene.SearchIndex.executeQuery(SearchIndex.java:660)[\n]"
+[DEBUG] << "[0x9]at org.apache.jackrabbit.core.query.lucene.QueryResultImpl.executeQuery(QueryResultImpl.java:242)[\n]"
+[DEBUG] << "[0x9]at org.apache.jackrabbit.core.query.lucene.QueryResultImpl.getResults(QueryResultImpl.java:290)[\n]"
+[DEBUG] << "[0x9]at org.apache.jackrabbit.core.query.lucene.QueryResultImpl.&lt;init>(QueryResultImpl.java:192)[\n]"
+[DEBUG] << "[0x9]at org.apache.jackrabbit.core.query.lucene.QueryImpl.execute(QueryImpl.java:138)[\n]"
+[DEBUG] << "[0x9]at org.apache.jackrabbit.core.query.QueryImpl.execute(QueryImpl.java:176)[\n]"
+[DEBUG] << "[0x9]at com.intel.cds.cr.jcr.JcrManager$5.doInJcr(JcrManager.java:363)[\n]"
+[DEBUG] << "[0x9]at org.springmodules.jcr.JcrTemplate.execute(JcrTemplate.java:76)[\n]"
+[DEBUG] << "[0x9]at org.springmodules.jcr.JcrTemplate.execute(JcrTemplate.java:108)[\n]"
+[DEBUG] << "[0x9]... 19 more[\n]"
+[DEBUG] << "</Exception></detail></soapenv:Fault></soapenv:Body></soapenv:Envelope>"
+org.apache.axis2.AxisFault: attempt to access a deleted document
+	at org.apache.axis2.util.Utils.getInboundFaultFromMessageContext(Utils.java:486)
+	at org.apache.axis2.description.OutInAxisOperationClient.handleResponse(OutInAxisOperation.java:343)
+	at org.apache.axis2.description.OutInAxisOperationClient.send(OutInAxisOperation.java:389)
+	at org.apache.axis2.description.OutInAxisOperationClient.executeImpl(OutInAxisOperation.java:211)
+	at org.apache.axis2.client.OperationClient.execute(OperationClient.java:163)
+
+
+My Jackrabbit/Lucene configuration is as follows:
+
+<SearchIndex class="org.apache.jackrabbit.core.query.lucene.SearchIndex">
+        <param name="path" value="${rep.home}/repository/index"/>
+        
+        <param name="useCompoundFile" value="false"/>
+        <param name="mergeFactor" value="5"/>
+        <param name="cacheSize" value="10000"/>
+        <param name="respectDocumentOrder" value="false"/>  
+  </SearchIndex>
+
+Is this a configuration issue or a bug?
+
+Thanks,
+David.

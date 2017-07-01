@@ -1,0 +1,12 @@
+add a test for PorterStemFilter
+
+
+
+Description:
+There are no tests for PorterStemFilter, yet svn history reveals some (very minor) cleanups, etc.
+The only thing executing its code in tests is a test or two in SmartChinese tests.
+
+This patch runs the StemFilter against Martin Porter's test data set for this stemmer, checking for expected output.
+
+The zip file is 100KB added to src/test, if this is too large I can change it to download the data instead.
+

@@ -1,0 +1,11 @@
+FileDataStore should check for lastModified error result
+
+
+
+Description:
+According to javadoc for File.lastModified(), the return value may indicate error: "...or 0L if the file does not exist or if an I/O error occurs".
+
+Accordingly, FileDataStore should be checking for this return value, rather than treating it as an actual modification time of "0".
+
+Patch to follow.
+

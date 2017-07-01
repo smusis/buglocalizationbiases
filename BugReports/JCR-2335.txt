@@ -1,0 +1,10 @@
+Problems with jackrabbit-standalone
+
+
+
+Description:
+I'm having problems with the jackrabbit-standalone component not starting up properly because of two issues:
+
+* The bundle packaging doesn't include the WEB-INF/config.xml file. I assume this is because of the more recent bundle plugin version treating whitespace differently in the inlining settings.
+
+* The RMI binding fails if a local RMI registry is already running with another repository reference. I'm thinking of simply disabling the RMI registry bindings and using the http://localhost:8080/rmi address as the recommended RMI endpoint.

@@ -1,0 +1,6 @@
+JCR-RMI depends on commons-logging
+
+
+
+Description:
+The commons-logging dependency in JCR-RMI should be removed.

@@ -1,0 +1,9 @@
+DocValuesField should not overload setInt/setFloat etc
+
+
+
+Description:
+See my description on LUCENE-3687. In general we should avoid this for primitive types and give them each unique names.
+
+So I think instead of setInt(byte), setInt(short), setInt(int), setInt(long), setFloat(float) and setFloat(double),
+we should have setByte(byte), setShort(short), setInt(int), setLong(long), setFloat(float) and setDouble(double).

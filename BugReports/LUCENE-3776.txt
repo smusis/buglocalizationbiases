@@ -1,0 +1,16 @@
+NRTManager shouldn't expose its private SearcherManager
+
+
+
+Description:
+Spinoff from LUCENE-3769.
+
+To actually obtain an IndexSearcher from NRTManager, it's a 2-step process now.
+
+You must .getSearcherManager(), then .acquire() from the returned SearcherManager.
+
+This is very trappy... because if the app incorrectly calls maybeReopen on that private SearcherManager (instead of NRTManager.maybeReopen) then it can unexpectedly cause threads to block forever, waiting for the necessary gen to become visible.  This will be hard to debug... I don't like creating trappy APIs.
+
+Hopefully once LUCENE-3761 is in, we can fix NRTManager to no longer expose its private SM, instead subclassing ReferenceManaager.
+
+Or alternatively, or in addition, maybe we factor out a new interface (SearcherProvider or something...) that only has acquire and release methods, and both NRTManager and ReferenceManager/SM impl that, and we keep NRTManager's SM private.

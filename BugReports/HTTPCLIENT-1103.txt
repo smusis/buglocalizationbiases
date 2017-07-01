@@ -1,0 +1,38 @@
+GzipDecompressingEntity (and therefore ContentEncodingHttpClient) not consistent with EntityUtils.consumeEntity
+
+
+
+Description:
+Invoking EntityUtils.consume( entity ) after a previous call to entity.getContent (and subsequent processing of the content) throws a java.io.EOFException when gzip decompression support is enabled via ContentEncodingHttpClient or some similar mechanism.  I invoke EntityUtils.consume in a 'finally' block - maybe I'm not using the API correctly ... ?  
+
+java.io.EOFException
+	at java.util.zip.GZIPInputStream.readUByte(GZIPInputStream.java:207)
+	at java.util.zip.GZIPInputStream.readUShort(GZIPInputStream.java:197)
+	at java.util.zip.GZIPInputStream.readHeader(GZIPInputStream.java:136)
+	at java.util.zip.GZIPInputStream.<init>(GZIPInputStream.java:58)
+	at java.util.zip.GZIPInputStream.<init>(GZIPInputStream.java:68)
+	at org.apache.http.client.entity.GzipDecompressingEntity.getContent(GzipDecompressingEntity.java:63)
+	at org.apache.http.conn.BasicManagedEntity.getContent(BasicManagedEntity.java:88)
+	at org.apache.http.util.EntityUtils.consume(EntityUtils.java:65)
+
+I believe the problem is that the underlying DecompressingEntity allocates a new GzipInputStream for each call to getContent, rather than caching the stream created by the first getContent call.  
+       http://svn.apache.org/repos/asf/httpcomponents/httpclient/trunk/httpclient/src/main/java/org/apache/http/client/entity/DecompressingEntity.java
+The "CustomProtocolInterceptors" example has the same bug:  http://hc.apache.org/httpcomponents-client-ga/examples.html
+
+I worked around the problem implementing the example with my own GzipDecompressingEntity (scala code - lazy value not evaluated till accessed):
+
+  class GzipDecompressingEntity( entity:http.HttpEntity) extends http.entity.HttpEntityWrapper(entity) {
+    private lazy val gzipStream = new GZIPInputStream( entity.getContent() )
+    
+    /** 
+     * Wrap entity stream in GZIPInputStream
+     */
+    override def getContent():java.io.InputStream = gzipStream
+
+    /**
+     * Return -1 - don't know unzipped content size
+     */
+    override def getContentLength():Long = -1L
+  }
+
+

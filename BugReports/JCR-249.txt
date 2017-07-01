@@ -1,0 +1,42 @@
+Webdav: Review usage of command chains
+
+
+
+Description:
+i'd like to review the usage of command chains for import/export within the simple webdav server.
+
+while the concept of command chains offers a lot of flexibility, it showed that the implementation generates some drawbacks. a new mechanism should take advantage of the experiences made with the command chains.
+
+from my point of view the following issues should be taken into consideration:
+
+- provide means to extend and modify the import/export logic with minimal effort
+
+- consistent import/export functionality for both collections and non-collections
+  > export/import should not be completely separated.
+  > interfaces should encourage consistency
+  > increase maintainability, reduce no of errors
+
+- distinction of collections and non-collections for import/export behaviour
+  > PUT must result in non-coll, MKCOL in collection
+
+- allow to defined a set of import/export-handlers with a given order.
+
+- the different handlers must not rely on each other.
+
+- an import/export should be completed after the first handler indicates success. there 
+  should not be other classes involved in order to complete the import/export.
+
+- avoid huge configuration files and if possible, avoid program flow being defined outside of java code.
+
+- avoid duplicate configuration (e.g. resource-filtering), duplicate code, duplicate logic, that is 
+  hard to maintain.
+
+- additonal logic should be defined within a given import/export handler.
+  however, in case of webdav i see limited value of using extra logic such as addMixin or checkin, 
+  that are covered by  webdav methods (such as LOCK, VERSION-CONTROL or CHECKIN).
+
+regards
+angela
+
+
+

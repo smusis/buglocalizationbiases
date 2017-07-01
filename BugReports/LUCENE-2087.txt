@@ -1,0 +1,8 @@
+Remove recursion in NumericRangeTermEnum
+
+
+
+Description:
+The current FilteredTermEnum in NRQ uses setEnum() which itsself calls next(). This may lead to a recursion that can overflow stack, if the index is empty and a large range with low precStep is used. With 64 bit numbers and precStep == 1 there may be 127 recursions, as each sub-range would hit no term on empty index and the setEnum call would then call next() which itsself calls setEnum again. This leads to recursion depth of 256.
+
+Attached is a patch that converts to iterative approach. setEnum is now unused and throws UOE (like endEnum()).

@@ -1,0 +1,157 @@
+Memory leak when sorting
+
+
+
+Description:
+This is the same post I sended two days before to the Lucene user's list. This 
+bug seems to have something in common with bug no. 30628 but that bug is closed 
+as invalid.
+
+I'm sending test code that everyone can try. The code is singular, don't say 
+there is no sense in reopening the same index. I can only show, that reopening 
+leaks memory. The index is filled by pseudo-real data, they aren't significant 
+and the process of index creation as well. 
+
+The problem must be in field caching code used by sort.
+
+Affected versions of Lucene:
+1.4.1
+CVS 1.5-rc1-dev
+
+This code survives only few first iterations if you run java with -Xmx5m. With 
+Lucene 1.4-final ends regulary.
+
+import org.apache.lucene.analysis.standard.StandardAnalyzer;
+import org.apache.lucene.document.Document;
+import org.apache.lucene.document.Field;
+import org.apache.lucene.index.IndexReader;
+import org.apache.lucene.index.IndexWriter;
+import org.apache.lucene.index.Term;
+import org.apache.lucene.search.Hits;
+import org.apache.lucene.search.IndexSearcher;
+import org.apache.lucene.search.Searcher;
+import org.apache.lucene.search.Sort;
+import org.apache.lucene.search.SortField;
+import org.apache.lucene.search.TermQuery;
+import org.apache.lucene.store.Directory;
+import org.apache.lucene.store.RAMDirectory;
+
+import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+
+/**
+ * Run this test with Lucene 1.4.1 and -Xmx5m
+ */
+public class ReopenTest
+{
+    private static long mem_last = 0;
+
+    public static void main(String[] args) throws IOException
+    {
+        Directory directory = create_index();
+
+        for (int i = 1; i < 100; i++) {
+            System.err.println("loop " + i + ", index version: " + IndexReader.
+getCurrentVersion(directory));
+            search_index(directory);
+            add_to_index(directory, i);
+        }
+    }
+
+    private static void add_to_index(Directory directory, int i) throws 
+IOException
+    {
+        IndexWriter writer = new IndexWriter(directory, new StandardAnalyzer(), 
+false);
+
+        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+        Document doc = new Document();
+
+        doc.add(Field.Keyword("date", 
+          df.format(new Date(System.currentTimeMillis()))));
+        doc.add(Field.Keyword("id", "CD" + String.valueOf(i)));
+        doc.add(Field.Text("text", "Tohle neni text " + i));
+        writer.addDocument(doc);
+
+        System.err.println("index size: " + writer.docCount());
+        writer.close();
+    }
+
+    private static void search_index(Directory directory) throws IOException
+    {
+        IndexReader reader = IndexReader.open(directory);
+        Searcher searcher = new IndexSearcher(reader);
+
+        print_mem("search 1");
+        SortField[] fields = new SortField[2];
+        fields[0] = new SortField("date", SortField.STRING, true);
+        fields[1] = new SortField("id", SortField.STRING, false);
+        Sort sort = new Sort(fields);
+        TermQuery query = new TermQuery(new Term("text", "\"text 5\""));
+
+        print_mem("search 2");
+        Hits hits = searcher.search(query, sort);
+        print_mem("search 3");
+
+        for (int i = 0; i < hits.length(); i++) {
+            Document doc = hits.doc(i);
+            System.out.println("doc " + i + ": " + doc.toString());
+        }
+        print_mem("search 4");
+        searcher.close();
+        reader.close();
+    }
+
+    private static void print_mem(String log)
+    {
+        long mem_free = Runtime.getRuntime().freeMemory();
+        long mem_total = Runtime.getRuntime().totalMemory();
+        long mem_max = Runtime.getRuntime().maxMemory();
+
+        long delta = (mem_last - mem_free) * -1;
+
+        System.out.println(log + "= delta: " + delta + ", free: " + mem_free + 
+", used: " + (mem_total-mem_free) + ", total: " + mem_total + ", max: " + 
+mem_max);
+
+        mem_last = mem_free;
+    }
+
+    private static Directory create_index() throws IOException
+    {
+        print_mem("create 1");
+        Directory directory = new RAMDirectory();
+
+        Calendar c = Calendar.getInstance();
+        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+        IndexWriter writer = new IndexWriter(directory, new StandardAnalyzer(), 
+true);
+        for (int i = 0; i < 365 * 15; i++) {
+            Document doc = new Document();
+
+            doc.add(Field.Keyword("date", 
+               df.format(new Date(c.getTimeInMillis()))));
+            doc.add(Field.Keyword("id", "AB" + String.valueOf(i)));
+            doc.add(Field.Text("text", "Tohle je text " + i));
+            writer.addDocument(doc);
+
+            doc = new Document();
+
+            doc.add(Field.Keyword("date", 
+               df.format(new Date(c.getTimeInMillis()))));
+            doc.add(Field.Keyword("id", "ef" + String.valueOf(i)));
+            doc.add(Field.Text("text", "Je tohle text " + i));
+            writer.addDocument(doc);
+
+            c.add(Calendar.DAY_OF_YEAR, 1);
+        }
+        writer.optimize();
+        System.err.println("index size: " + writer.docCount());
+        writer.close();
+
+        print_mem("create 2");
+        return directory;
+    }
+}

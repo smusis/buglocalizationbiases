@@ -1,0 +1,7 @@
+3.0 not compile-time compatible with 2.0 library usage
+
+
+
+Description:
+To my surprise Oleg says this was the intent, yet the Jakarta-Slide webdavclient
+libraries do not compile out of the box.  Patch for that issue to follow.

@@ -1,0 +1,12 @@
+Reduce log level in MultiIndex for deleting obsolete index
+
+
+
+Description:
+The MultiIndex class issues a logging message (with info level) that the obsolete index cannot be deleted (quite often).
+As the segments are deleted later (with a retry) and this "warning" can be ignored (http://dev.day.com/kb/content/wiki/kb/Crx/Troubleshooting/UnableToDeleteObsoleteIndex.html ), it would be nice to reduce the logging level to debug. People, who are maintaining projects, are not aware of Jackarabbit details and are sometimes scared about this "warning" :-)
+
+Thank you in advance!
+
+Kind regards
+Sergiy

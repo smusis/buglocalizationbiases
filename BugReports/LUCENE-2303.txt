@@ -1,0 +1,10 @@
+Remove code duplication from Token class, just extend TermAttributeImpl
+
+
+
+Description:
+This issue removes the code duplication from Token, as it shares the whole char[] buffer handling code with TermAttributeImpl. This issue removes this duplication by just extending TermAttributeImpl.
+
+When the parent issue LUCENE-2302 will extend TermAttribute to support CharSequence and Appendable and also the new BytesRefAttribute gets added, Token will automatically provide this too, so no further code duplication.
+
+This code should also be committed to trunk, as it has nothing to do with flex.

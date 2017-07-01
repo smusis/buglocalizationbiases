@@ -1,0 +1,17 @@
+rename expungeDeletes
+
+
+
+Description:
+Similar to optimize(), expungeDeletes() has a misleading name.
+
+We already had problems with this on the user list because TieredMergePolicy
+didn't 'expunge' all their deletes.
+
+Also I think expunge is the wrong word, because expunge makes it seem
+like you just wrangle up the deletes and kick them out of the party and
+that it should be fast.
+
+
+
+

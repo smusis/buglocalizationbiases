@@ -1,0 +1,7 @@
+Adding DerbyDataStore to handle proper close of the embedded database
+
+
+
+Description:
+When using embedded Derby in conjunction with DbDataStore, the Derby database is never shutdown, as it requires special code to be executed (creating a Connection with ";shutdown=true")
+We may provide a DerbyDataStore extending standard DbDataStore for handling that.

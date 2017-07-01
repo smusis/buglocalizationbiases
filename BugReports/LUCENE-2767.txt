@@ -1,0 +1,32 @@
+Missing sync in IndexWriter.addIndexes(IndexReader[])
+
+
+
+Description:
+The 3.x build just hit this:
+
+{noformat}
+    [junit] Testsuite: org.apache.lucene.index.TestAddIndexes
+    [junit] Testcase: testAddIndexesWithThreads(org.apache.lucene.index.TestAddIndexes):	FAILED
+    [junit] expected:<3160> but was:<2701>
+    [junit] junit.framework.AssertionFailedError: expected:<3160> but was:<2701>
+    [junit] 	at org.apache.lucene.util.LuceneTestCase$LuceneTestCaseRunner.runChild(LuceneTestCase.java:779)
+    [junit] 	at org.apache.lucene.util.LuceneTestCase$LuceneTestCaseRunner.runChild(LuceneTestCase.java:745)
+    [junit] 	at org.apache.lucene.index.TestAddIndexes.testAddIndexesWithThreads(TestAddIndexes.java:708)
+    [junit] 
+    [junit] 
+    [junit] Tests run: 15, Failures: 1, Errors: 0, Time elapsed: 9.28 sec
+    [junit] 
+    [junit] ------------- Standard Output ---------------
+    [junit] java.lang.AssertionError: RefCount is 0 pre-decrement for file "_8a.tvf"
+    [junit] 	at org.apache.lucene.index.IndexFileDeleter$RefCount.DecRef(IndexFileDeleter.java:608)
+    [junit] 	at org.apache.lucene.index.IndexFileDeleter.decRef(IndexFileDeleter.java:505)
+    [junit] 	at org.apache.lucene.index.IndexFileDeleter.decRef(IndexFileDeleter.java:496)
+    [junit] 	at org.apache.lucene.index.IndexWriter.addIndexes(IndexWriter.java:2972)
+    [junit] 	at org.apache.lucene.index.TestAddIndexes$CommitAndAddIndexes.doBody(TestAddIndexes.java:681)
+    [junit] 	at org.apache.lucene.index.TestAddIndexes$RunAddIndexesThreads$1.run(TestAddIndexes.java:624)
+    [junit] NOTE: reproduce with: ant test -Dtestcase=TestAddIndexes -Dtestmethod=testAddIndexesWithThreads -Dtests.seed=-6912763261803132408:-5575674032550262483 -Dtests.multiplier=3
+    [junit] NOTE: test params are: locale=en_AU, timezone=America/Atka
+{noformat}
+
+It looks like it's caused by a long-standing missing sync (since at least 2.9.x).  I think likely we hit it just now thanks to adding random Thread.yield()'s in MockDirWrapper!

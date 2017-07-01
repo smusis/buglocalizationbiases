@@ -1,0 +1,7 @@
+the jcr:frozenUuid property is of type REFERENCE instead of STRING
+
+
+
+Description:
+The spec says that jcr:frozenUuid is a STRING but jackrabbit 1.0.1 uses a REFERENCE for it.
+

@@ -1,0 +1,7 @@
+JCR2SPI: VersionHistoryImpl.getQLabels() needs to skip jcr:mixinTypes as well
+
+
+
+Description:
+getQLabels() iterates through the properties on a version labels node to compute the set of labels. Currently it only ignores jcr:primaryType, but it needs to skip jcr:mixinTypes as well.
+

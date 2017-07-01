@@ -1,0 +1,9 @@
+Move JCRWebdavServerServlet to jcr-server and make it abstract
+
+
+
+Description:
+In line with isse JCR-417, I suggest to partially move the JCRWebdavServerServlet from the jcr-webapp project to the jcr-server project. By partially I mean, that the new (moved) servlet will be abstract and the getRepository() method will be abstract. The jcr-webapp project will still contain a JCRWebdavServerServlet (for backwards compatibility maintaing the same name) which just extends the new servlet and implements the getRepository() method using the RepositoryAccess servlet.
+
+This allows for the reuse of the jcr-server project including the abstract JCRWebdavServerServlet in other environments.
+

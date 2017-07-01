@@ -1,0 +1,12 @@
+Speed up junit tests
+
+
+
+Description:
+As Lucene grows, so does the number of JUnit tests. This is obviously a good thing, but it comes with longer and longer test times. Now that we also run back compat tests in a standard test run, this problem is essentially doubled.
+
+There are some ways this may get better, including running parallel tests. You will need the hardware to fully take advantage, but it should be a nice gain. There is already an issue for this, and Junit 4.6, 4.7 have the beginnings of something we might be able to count on soon. 4.6 was buggy, and 4.7 still doesn't come with nice ant integration. Parallel tests will come though.
+
+Beyond parallel testing, I think we also need to concentrate on keeping our tests lean. We don't want to sacrifice coverage or quality, but I'm sure there is plenty of fat to skim.
+
+I've started making a list of some of the longer tests - I think with some work we can make our tests much faster - and then with parallelization, I think we could see some really great gains.

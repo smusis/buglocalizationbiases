@@ -1,0 +1,6 @@
+IndexSplitter that divides by primary key term
+
+
+
+Description:
+Index splitter that divides by primary key term.  The contrib MultiPassIndexSplitter we have divides by docid, however to guarantee external constraints it's sometimes necessary to split by a primary key term id.  I think this implementation is a fairly trivial change.

@@ -1,0 +1,20 @@
+ConcurrentModificationException thrown in MultiThreaded code
+
+
+
+Description:
+Now seeing this error.  This is with default cookie settings.  Happening rarely, however the web sites we're talking to do not use cookies very much.
+
+
+java.util.ConcurrentModificationException
+        at java.util.AbstractList$Itr.checkForComodification(AbstractList.java:372)
+        at java.util.AbstractList$Itr.next(AbstractList.java:343)
+        at java.util.Collections$UnmodifiableCollection$1.next(Collections.java:1010)
+        at org.apache.http.client.protocol.RequestAddCookies.process(RequestAddCookies.java:152)
+        at org.apache.http.protocol.BasicHttpProcessor.process(BasicHttpProcessor.java:290)
+        at org.apache.http.protocol.HttpRequestExecutor.preProcess(HttpRequestExecutor.java:160)
+        at org.apache.http.impl.client.DefaultClientRequestDirector.execute(DefaultClientRequestDirector.java:355)
+        at org.apache.http.impl.client.AbstractHttpClient.execute(AbstractHttpClient.java:501)
+        at org.apache.http.impl.client.AbstractHttpClient.execute(AbstractHttpClient.java:456)
+        at org.apache.http.impl.client.AbstractHttpClient.execute(AbstractHttpClient.java:422)
+        at com.hi5.os.Hi5RemoteContentFetcher.fetch(Hi5RemoteContentFetcher.java:279)

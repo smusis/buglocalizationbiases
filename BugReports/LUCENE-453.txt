@@ -1,0 +1,17 @@
+Using MultiSearcher and ParallelMultiSearcher can change the sort order.
+
+
+
+Description:
+When using multiple sort criteria the first criterium that indicates a difference should be used.
+When a field does not exist for a given document, special rules apply.
+From what I see in the code, it is sorted as 0 for integer and float fields, and null Strings are sorted before others.
+
+This works correctly in both Lucene 1.4.3 and in trunk as long as you use a single IndexSearcher (except perhaps in special cases, see other bug reports like LUCENE-374).
+
+However, in MultiSearcher and ParallelMultiSearcher, the results of the separate IndexSearchers are merged and there an error occurs.
+The bug is located in FieldDocSortedHitQueue.
+
+It can even be demonstrated by passing a single indexSearcher to a MultiSearcher.
+
+TestCase and patch follow.

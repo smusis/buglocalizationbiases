@@ -1,0 +1,46 @@
+StandardTokenizer disposes of Hiragana combining mark dakuten instead of attaching it to the character it belongs to
+
+
+
+Description:
+Lucene 3.3 (possibly 3.1 onwards) exhibits less than great behaviour for tokenising hiragana, if combining marks are in use.
+
+Here's a unit test:
+
+{code}
+    @Test
+    public void testHiraganaWithCombiningMarkDakuten() throws Exception
+    {
+        // Hiragana 'S' following by the combining mark dakuten
+        TokenStream stream = new StandardTokenizer(Version.LUCENE_33, new StringReader("\u3055\u3099"));
+
+        // Should be kept together.
+        List<String> expectedTokens = Arrays.asList("\u3055\u3099");
+        List<String> actualTokens = new LinkedList<String>();
+        CharTermAttribute term = stream.addAttribute(CharTermAttribute.class);
+        while (stream.incrementToken())
+        {
+            actualTokens.add(term.toString());
+        }
+
+        assertEquals("Wrong tokens", expectedTokens, actualTokens);
+
+    }
+{code}
+
+This code fails with:
+{noformat}
+java.lang.AssertionError: Wrong tokens expected:<[ã?–]> but was:<[ã?•]>
+{noformat}
+
+It seems as if the tokeniser is throwing away the combining mark entirely.
+
+3.0's behaviour was also undesirable:
+{noformat}
+java.lang.AssertionError: Wrong tokens expected:<[ã?–]> but was:<[ã?•, ã‚™]>
+{noformat}
+
+But at least the token was there, so it was possible to write a filter to work around the issue.
+
+Katakana seems to be avoiding this particular problem, because all katakana and combining marks found in a single run seem to be lumped into a single token (this is a problem in its own right, but I'm not sure if it's really a bug.)
+

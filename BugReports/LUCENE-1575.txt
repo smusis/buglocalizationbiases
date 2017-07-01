@@ -1,0 +1,40 @@
+Refactoring Lucene collectors (HitCollector and extensions)
+
+
+
+Description:
+This issue is a result of a recent discussion we've had on the mailing list. You can read the thread [here|http://www.nabble.com/Is-TopDocCollector%27s-collect()-implementation-correct--td22557419.html].
+
+We have agreed to do the following refactoring:
+* Rename MultiReaderHitCollector to Collector, with the purpose that it will be the base class for all Collector implementations.
+* Deprecate HitCollector in favor of the new Collector.
+* Introduce new methods in IndexSearcher that accept Collector, and deprecate those that accept HitCollector.
+** Create a final class HitCollectorWrapper, and use it in the deprecated methods in IndexSearcher, wrapping the given HitCollector.
+** HitCollectorWrapper will be marked deprecated, so we can remove it in 3.0, when we remove HitCollector.
+** It will remove any instanceof checks that currently exist in IndexSearcher code.
+* Create a new (abstract) TopDocsCollector, which will:
+** Leave collect and setNextReader unimplemented.
+** Introduce protected members PriorityQueue and totalHits.
+** Introduce a single protected constructor which accepts a PriorityQueue.
+** Implement topDocs() and getTotalHits() using the PQ and totalHits members. These can be used as-are by extending classes, as well as be overridden.
+** Introduce a new topDocs(start, howMany) method which will be used a convenience method when implementing a search application which allows paging through search results. It will also attempt to improve the memory allocation, by allocating a ScoreDoc[] of the requested size only.
+* Change TopScoreDocCollector to extend TopDocsCollector, use the topDocs() and getTotalHits() implementations as they are from TopDocsCollector. The class will also be made final.
+* Change TopFieldCollector to extend TopDocsCollector, and make the class final. Also implement topDocs(start, howMany).
+* Change TopFieldDocCollector (deprecated) to extend TopDocsCollector, instead of TopScoreDocCollector. Implement topDocs(start, howMany)
+* Review other places where HitCollector is used, such as in Scorer, deprecate those places and use Collector instead.
+
+Additionally, the following proposal was made w.r.t. decoupling score from collect():
+* Change collect to accecpt only a doc Id (unbased).
+* Introduce a setScorer(Scorer) method.
+* If during collect the implementation needs the score, it can call scorer.score().
+If we do this, then we need to review all places in the code where collect(doc, score) is called, and assert whether Scorer can be passed. Also this raises few questions:
+* What if during collect() Scorer is null? (i.e., not set) - is it even possible?
+* I noticed that many (if not all) of the collect() implementations discard the document if its score is not greater than 0. Doesn't it mean that score is needed in collect() always?
+
+Open issues:
+* The name for Collector
+* TopDocsCollector was mentioned on the thread as TopResultsCollector, but that was when we thought to call Colletor ResultsColletor. Since we decided (so far) on Collector, I think TopDocsCollector makes sense, because of its TopDocs output.
+* Decoupling score from collect().
+
+I will post a patch a bit later, as this is expected to be a very large patch. I will split it into 2: (1) code patch (2) test cases (moving to use Collector instead of HitCollector, as well as testing the new topDocs(start, howMany) method.
+There might be even a 3rd patch which handles the setScorer thing in Collector (maybe even a different issue?)

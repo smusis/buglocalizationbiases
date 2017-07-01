@@ -1,0 +1,6 @@
+Improve logging in LazyItemIterator#prefetchNext 
+
+
+
+Description:
+When LazyItemIterator#prefetchNext fails an item it should spell out the name of that item in  the respective log message. 

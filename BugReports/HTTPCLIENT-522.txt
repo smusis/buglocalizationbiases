@@ -1,0 +1,79 @@
+ProxyCredentials disclosed to remote host
+
+
+
+Description:
+I'm using httpclient (svn-trunk of today) to connect to a remote SSL-Host 
+via a proxy. The proxy requires authorization (basic) and I want to use 
+preemptive authorization. 
+ 
+Since HTTPCLIENT-514 is fixed the preemptive authorization works, but my traces 
+show that the proxy credentials are also transmitted to the remote host 
+through the CONNECT-tunnel, thus disclosing sensitive information to the 
+remote host. 
+ 
+My code looks like this: 
+ 
+HttpClient client = new HttpClient(); 
+HttpMethod method = new GetMethod("https://test"); 
+ 
+client.getHostConfiguration().setProxy("127.0.0.1",3128); 
+client.getState().setProxyCredentials( 
+                new AuthScope("127.0.0.1", 3128), 
+                new UsernamePasswordCredentials("proxy", "test")); 
+client.getState().setAuthenticationPreemptive(true); 
+client.executeMethod(method); 
+ 
+The trace: 
+ 
+2005/11/03 13:53:13:244 CET [DEBUG] HttpMethodDirector - Preemptively 
+sending default basic credentials 
+2005/11/03 13:53:13:261 CET [DEBUG] HttpMethodDirector - Authenticating 
+with BASIC <any realm>@127.0.0.1:3128 
+2005/11/03 13:53:13:262 CET [DEBUG] HttpMethodParams - Credential charset 
+not configured, using HTTP element charset 
+2005/11/03 13:53:13:266 CET [DEBUG] HttpMethodDirector - Authenticating 
+with BASIC <any realm>@test:443 
+2005/11/03 13:53:13:267 CET [WARN] HttpMethodDirector - Required 
+credentials not available for BASIC <any realm>@test:443 
+2005/11/03 13:53:13:267 CET [WARN] HttpMethodDirector - Preemptive 
+authentication requested but no default credentials available 
+2005/11/03 13:53:13:268 CET [DEBUG] HttpConnection - Open connection to 
+127.0.0.1:3128 
+2005/11/03 13:53:13:279 CET [DEBUG] HttpMethodDirector - Preemptively 
+sending default basic credentials 
+2005/11/03 13:53:13:280 CET [DEBUG] HttpMethodDirector - Authenticating 
+with BASIC <any realm>@127.0.0.1:3128 
+2005/11/03 13:53:13:280 CET [DEBUG] HttpMethodParams - Credential charset 
+not configured, using HTTP element charset 
+2005/11/03 13:53:13:283 CET [DEBUG] header - >> "CONNECT test:443 HTTP/1.1" 
+2005/11/03 13:53:13:284 CET [DEBUG] HttpMethodBase - Adding Host request 
+header 
+2005/11/03 13:53:13:284 CET [DEBUG] header - >> "Proxy-Authorization: 
+Basic cHJveHk6dGVzdA==[\r][\n]" 
+2005/11/03 13:53:13:285 CET [DEBUG] header - >> "User-Agent: Jakarta 
+Commons-HttpClient/3.0-rc4[\r][\n]" 
+2005/11/03 13:53:13:285 CET [DEBUG] header - >> "Host: test[\r][\n]"       
+                                                                           
+2005/11/03 13:53:13:286 CET [DEBUG] header - >> "Proxy-Connection: 
+Keep-Alive[\r][\n]" 
+2005/11/03 13:53:13:286 CET [DEBUG] header - >> "[\r][\n]"                 
+                                                                         
+2005/11/03 13:53:13:311 CET [DEBUG] header - << "HTTP/1.0 200 
+Connection established[\r][\n]"                                            
+2005/11/03 13:53:13:326 CET [DEBUG] ConnectMethod - CONNECT status code 200 
+2005/11/03 13:53:13:327 CET [DEBUG] HttpConnection - Secure tunnel to 
+test:443 
+2005/11/03 13:53:13:418 CET [DEBUG] header - >> "GET / HTTP/1.1[\r][\n]" 
+2005/11/03 13:53:13:420 CET [DEBUG] HttpMethodBase - Adding Host request 
+header 
+2005/11/03 13:53:13:423 CET [DEBUG] header - >> "Proxy-Authorization: 
+Basic cHJveHk6dGVzdA==[\r][\n]" 
+2005/11/03 13:53:13:424 CET [DEBUG] header - >> "User-Agent: Jakarta 
+Commons-HttpClient/3.0-rc4[\r][\n]" 
+2005/11/03 13:53:13:425 CET [DEBUG] header - >> "Host: test[\r][\n]" 
+2005/11/03 13:53:13:425 CET [DEBUG] header - >> "[\r][\n]" 
+2005/11/03 13:53:14:391 CET [DEBUG] header - << "HTTP/1.1 200 OK[\r][\n]" 
+ 
+As you can see the proxy credentials are also transmitted through the 
+SSL-tunnel to the remote host which is a security risk.

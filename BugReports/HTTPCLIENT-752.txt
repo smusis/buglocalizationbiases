@@ -1,0 +1,8 @@
+version.properties
+
+
+
+Description:
+If we're not going to split it, there should be only one version.properties in module-client.
+module-httpmime is currently missing a version.properties file.
+

@@ -1,0 +1,20 @@
+Default retry count three even if documentation says it's five
+
+
+
+Description:
+The exception handling documentation (http://hc.apache.org/httpclient-3.x/exception-handling.html) says "HttpClient will automatically retry up to 5 times those methods...", but in DefaultHttpMethodRetryHandler  e.g. in trunk (http://svn.apache.org/viewvc/httpcomponents/oac.hc3x/trunk/src/java/org/apache/commons/httpclient/DefaultHttpMethodRetryHandler.java?revision=608014&view=markup) you can see that the retry count is three:
+
+    public DefaultHttpMethodRetryHandler(int retryCount, boolean requestSentRetryEnabled) {
+        super();
+        this.retryCount = retryCount;
+        this.requestSentRetryEnabled = requestSentRetryEnabled;
+    }
+    
+    /**
+     * Creates a new DefaultHttpMethodRetryHandler that retries up to 3 times
+     * but does not retry methods that have successfully sent their requests.
+     */
+    public DefaultHttpMethodRetryHandler() {
+        this(3, false);
+    }

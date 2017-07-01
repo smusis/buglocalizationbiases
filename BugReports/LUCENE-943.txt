@@ -1,0 +1,17 @@
+ComparatorKey in Locale based sorting
+
+
+
+Description:
+This is a reply/follow-up on Chris Hostetter's message on Lucene developers list (aug 2006):
+http://mail-archives.apache.org/mod_mbox/lucene-java-dev/200608.mbox/%3cPine.LNX.4.58.0608211050330.5081@hal.rescomp.berkeley.edu%3e
+
+> perhaps it would be worthwhile for comparatorStringLocale to convert the String[] it gets back from FieldCache.DEFAULT.getStrings to a new CollationKey[]? or maybe even for FieldCache.DEFAULT.getStrings to be deprecated, and replaced with a FieldCache.DEFAULT.getCollationKeys(reader,field,Collator)?
+
+I think the best is to keep the default behavior as it is today. There is a cost of building caches for sort fields which I think not everyone wants. However for some international production environments there are indeed possible performance gains in comparing precalculated keys instead of comparing strings with rulebased collators.
+
+Since Lucene's Sort architecture is pluggable it is easy to create a custom locale-based comparator, which utilizes the built-in caching/warming mechanism of FieldCache, and may be used in SortField constructor.
+
+I'm not sure whether there should be classes for this in Lucene core or not, but it could be nice to have the option of performance vs. memory consumption in localized sorting without having to use additional jars.
+
+

@@ -1,0 +1,6 @@
+Release the OCM component
+
+
+
+Description:
+The contrib/jackrabbit-jcr-mapping/jcr-mapping should be promoted from contrib into a jackrabbit-jcr-ocm component.

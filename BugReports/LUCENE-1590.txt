@@ -1,0 +1,14 @@
+Stored-only fields automatically enable norms and tf when added to document
+
+
+
+Description:
+During updating my internal components to the new TrieAPI, I have seen the following:
+
+I index a lot of numeric fields with trie encoding omitting norms and term frequency. This works great. Luke shows that both is omitted.
+
+As I sometimes also want to have the components of the field stored and want to use the same field name for it. So I add additionally the field again to the document, but stored only (as the Field c'tor using a TokenStream cannot additionally store the field). As it is stored only, I thought, that I can left out explicit setting of omitNorms and omitTermFreqAndPositions. After adding the stored-only-without-omits field, Luke shows all fields with norms enabled. I am not sure, if the norms/tf were really added to the index, but Luke shows a value for the norms and FieldInfo has it enabled.
+
+In my opinion, this is not intuitive, o.a.l.document.Field  should switch both omit* options on when storing fields only (and also disable other indexing-only options). Alternatively the internal FieldInfo.update(boolean isIndexed, boolean storeTermVector, boolean storePositionWithTermVector, boolean storeOffsetWithTermVector, boolean omitNorms, boolean storePayloads, boolean omitTermFreqAndPositions) should only change the omit* and other options, if the isIndexed parameter (not this.isIndexed) is also true, elsewhere leave it as it is.
+
+In principle, when adding a stored-only field, any indexing-specific options should not be changed in FieldInfo. If the field was indexed with norms before, norms should stay enabled (but this would be the default as it is).

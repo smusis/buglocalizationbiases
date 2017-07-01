@@ -1,0 +1,16 @@
+Review and potentially remove unused/unsupported Contribs
+
+
+
+Description:
+Some of our contribs appear to be lacking for development/support or are missing tests.  We should review whether they are even pertinent these days and potentially deprecate and remove them.
+
+One of the things we did in Mahout when bringing in Colt code was to mark all code that didn't have tests as @deprecated and then we removed the deprecation once tests were added.  Those that didn't get tests added over about a 6 mos. period of time were removed.
+
+I would suggest taking a hard look at:
+ant
+db
+lucli
+swing
+
+(spatial should be gutted to some extent and moved to modules)

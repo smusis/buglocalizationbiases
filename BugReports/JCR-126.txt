@@ -1,0 +1,6 @@
+Jcr-Server Module: Remove Dependency from Jackrabbit-Core
+
+
+
+Description:
+

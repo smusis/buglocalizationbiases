@@ -1,0 +1,10 @@
+SQL query with jcr:path LIKE '/foo/%' only selects children
+
+
+
+Description:
+A query like: 
+
+SELECT * FROM nt:base WHERE jcr:path LIKE '/foo/%'
+
+only selects the children of /foo instead off all descendants of /foo.

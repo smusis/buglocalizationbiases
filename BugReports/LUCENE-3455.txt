@@ -1,0 +1,8 @@
+All Analysis Consumers should use reusableTokenStream
+
+
+
+Description:
+With Analyzer now using TokenStreamComponents, theres no reason for Analysis consumers to use tokenStream() (it just gives bad performance).  Consequently all consumers will be moved over to using reusableTokenStream().  The only challenge here is that reusableTokenStream throws an IOException which many consumers are not rigged to deal with.
+
+Once all consumers have been moved, we can rename reusableTokenStream() back to tokenStream().

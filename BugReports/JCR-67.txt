@@ -1,0 +1,6 @@
+Node.canAddMixin(String)
+
+
+
+Description:
+after the spec this method must return false if the node is locked.

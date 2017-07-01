@@ -1,0 +1,6 @@
+TaxonomyWriter parents array creation is not thread safe, can cause NPE
+
+
+
+Description:
+Following user list thread [TaxWriter leakage? | http://markmail.org/thread/jkkhemfzpnbdzoft] it appears that if two threads or more are asking for the parent array for the first time, a context switch after the first thread created the empty parents array but before it initialized it would cause the other array to use an uninitialized array, causing an NPE. Fix is simple: synchronize the method getParentArray()

@@ -1,0 +1,8 @@
+Add a isDeleted method to IndexCommit
+
+
+
+Description:
+I wish to add a IndexCommit.isDeleted() method.
+
+The use-case is that Solr will now support configurable IndexDeletionPolicy (SOLR-617). For the new replication (SOLR-561) to work, we need access to a list of IndexCommit instances which haven't been deleted yet. I can wrap the user specified IndexDeletionPolicy but since the IndexCommit does not have a isDeleted method, I may store a reference to an IndexCommit on which delete() has been called by the deletion policy. I can wrap the IndexCommit objects too just for having a isDeleted() method so a workaround exists. Not a big pain but if it can be managed on the lucene side easily, I'll appreciate it. It would save me from writing some delegate code.

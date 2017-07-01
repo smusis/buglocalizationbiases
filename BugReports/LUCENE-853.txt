@@ -1,0 +1,9 @@
+Caching does not work when using RMI
+
+
+
+Description:
+Filters and caching uses transient maps so that caching does not work if you are using RMI and a remote searcher 
+
+I want to add a new RemoteCachededFilter that will make sure that the caching is done on the remote searcher side 
+ 

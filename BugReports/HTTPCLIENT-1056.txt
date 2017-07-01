@@ -1,0 +1,10 @@
+Wrong creation of AuthScope object
+
+
+
+Description:
+Class Name: org.apache.http.client.protocol.RequestAuthCache
+Line #: 118-119
+
+Issue: Want to create a new Object of AuthScope by passing host name, port and scheme name but due to incorrect constructor call, Getting a object with realm name as scheme name.
+Current Code: Credentials creds = credsProvider.getCredentials(new AuthScope(host.getHostName(), host.getPort(), null, schemeName));

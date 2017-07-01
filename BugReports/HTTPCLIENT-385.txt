@@ -1,0 +1,55 @@
+Access to SO_TIMEOUT for open connections
+
+
+
+Description:
+I'm trying to access a set of pages in order, for which I have a maximum delay
+permissible.  The complete operation includes following all redirects and
+fetching the complete page content.  What I need, which doesn't seem to be
+doable right now (according to the common-users list) is to reset the SO_TIMEOUT
+property of the socket before each read to the inputstream.  I'd need an access
+to the HttpConnection, or a way to set the parameters for that object.
+
+This is a simplified version of what I'm doing:
+-----
+HttpURL url = new HttpURL(urlString);
+method.setURI(url);
+method.setFollowRedirects(false);
+method.getParams().setSoTimeout(remainingTime);
+HostConfiguration hostConfig = new HostConfiguration();
+hostConfig.setHost(url);
+method.setHostConfiguration(hostConfig);
+timeoutChecker.getRemainingTime());
+
+int statusCode = client.executeMethod(hostConfig, method, state);
+String pageContent;
+
+if (isRedirect(statusCode)) {
+    if (timeoutChecker.isTimeout()) {
+        throw new TimeoutException("Total execution time for fetch exceeded
+timeout parameter");
+    } else {
+        Header locationHeader = method.getResponseHeader("location");
+        HttpURL nextLocation = new HttpURL(locationHeader.getValue().toCharArray());
+        pageContent = fetchGet(nextLocation.getEscapedURI(), addressHolder,
+timeoutChecker, state);
+    }
+} else if (isSuccess(statusCode)) {
+    // at least 4K buffers, might be as big as the webpage
+    int responseSize = Math.max(getResponseSize(method), DEFAULT_RESPONSE_SIZE);
+    InputStream response = method.getResponseBodyAsStream();
+    ByteArrayOutputStream outstream = new ByteArrayOutputStream(responseSize);
+    byte[] buffer = new byte[responseSize];
+    int len;
+    do {
+        // ***TODO need to reset the SO_TIMEOUT to the remaining time
+        len = response.read(buffer);
+        outstream.write(buffer, 0, len);
+    while ((len > 0) && !timeoutChecker.isTimeout());
+    outstream.close();
+    pageContent = EncodingUtil.getString(outstream.toByteArray(),
+method.getResponseCharSet());
+    response.close();
+} else {
+    ...
+}

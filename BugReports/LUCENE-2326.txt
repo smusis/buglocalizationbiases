@@ -1,0 +1,16 @@
+Remove SVN.exe and revision numbers from build.xml by svn-copy the backwards branch and linking snowball tests by svn:externals
+
+
+
+Description:
+As we often need to update backwards tests together with trunk and always have to update the branch first, record rev no, and update build xml, I would simply like to do a svn copy/move of the backwards branch.
+
+After a release, this is simply also done:
+{code}
+svn rm backwards
+svn cp releasebranch backwards
+{code}
+
+By this we can simply commit in one pass, create patches in one pass.
+
+The snowball tests are currently downloaded by svn.exe, too. These need a fixed version for checkout. I would like to change this to use svn:externals. Will provide patch, soon.

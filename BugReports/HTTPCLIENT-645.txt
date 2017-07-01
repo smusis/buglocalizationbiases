@@ -1,0 +1,25 @@
+Cookie.compare(...) uses single instance STRING_COLLATOR to do blocking compares
+
+
+
+Description:
+I am using a MultiThreadedHttpConnectionManager with a single HttpClient instance and multiple GetMethod objects.  I have a 500 thread max.  I recently noticed that all 500 threads are in the same place and seem to be blocking each other - the stack trace is below.  I dug into the Cookie.compare(...) method and saw that it is using STRING_COLLARTOR.compare(c1.getPath(), c2.getPath()).  STRING_COLLATOR is defined as a single instance object, 'private static final RuleBasedCollator STRING_COLLATOR = (RuleBasedCollator) RuleBasedCollator.getInstance(new Locale("en", "US", ""));'.  I also saw that RuleBasedCollator.compare is synchronized.  That means that every thread that is trying to make a request is getting blocked while it tries to add cookies to the request method.  I do not see a workaround because this is the same static final object in every Cookie instance.  So, the more threads, the more synchronized comparisons.  At times I am fetching URLs all from the same site so I am going through this code a lot.  I need it to be much faster than it currently is because all of my threads are getting eaten up on this call and backlogging my system.  Can a different RuleBasedCollator be used for each compare (use the RuleBasedCollator.getInstance() for every compare?  I think that would solve things.
+
+Name: pool-1-thread-1443: 72.21.206.5
+State: BLOCKED on java.text.RuleBasedCollator@190330a owned by: pool-1-thread-1867: 72.21.206.5
+Total blocked: 9,598  Total waited: 381
+
+Stack trace: 
+java.text.RuleBasedCollator.compare(RuleBasedCollator.java:396)
+org.apache.commons.httpclient.Cookie.compare(Cookie.java:484)
+org.apache.commons.httpclient.cookie.CookieSpecBase.addInPathOrder(CookieSpecBase.java:578)
+org.apache.commons.httpclient.cookie.CookieSpecBase.match(CookieSpecBase.java:557)
+org.apache.commons.httpclient.HttpMethodBase.addCookieRequestHeader(HttpMethodBase.java:1179)
+org.apache.commons.httpclient.HttpMethodBase.addRequestHeaders(HttpMethodBase.java:1305)
+org.apache.commons.httpclient.HttpMethodBase.writeRequestHeaders(HttpMethodBase.java:2036)
+org.apache.commons.httpclient.HttpMethodBase.writeRequest(HttpMethodBase.java:1919)
+org.apache.commons.httpclient.HttpMethodBase.execute(HttpMethodBase.java:993)
+org.apache.commons.httpclient.HttpMethodDirector.executeWithRetry(HttpMethodDirector.java:397)
+org.apache.commons.httpclient.HttpMethodDirector.executeMethod(HttpMethodDirector.java:170)
+org.apache.commons.httpclient.HttpClient.executeMethod(HttpClient.java:396)
+org.apache.commons.httpclient.HttpClient.executeMethod(HttpClient.java:324)

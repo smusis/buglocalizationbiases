@@ -1,0 +1,12 @@
+Update site lucene-sandbox page
+
+
+
+Description:
+The page has misleading/bad info. One thing I would like to do - but I won't attempt now (prob good for the modules issue) - is commit to one word - contrib or sandbox. I think sandbox should be purged myself.
+
+The current page says that the sandbox is kind of a rats nest with various early stage software that one day may make it into core - that info is outdated I think. We should replace it, and also specify how the back compat policy works in contrib eg each contrib can have its own policy, with the default being no policy.
+
+We should also drop the piece about being open to Lucene's committers and others - a bit outdated.
+
+We should also either include the other contribs, or change the wording to indicate that the list is only a sampling of the many contribs.

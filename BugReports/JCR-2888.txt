@@ -1,0 +1,8 @@
+Namespace comparison in Namespace.java doesn't work, if a node return null, but it expects an empty string
+
+
+
+Description:
+If a node returns null for Node.getNamespaceUri(), but Namespace.EMPTY_NAMESPACE expects an empty string, the comparison fails. But to my knowledge a null and "" namespaceUri should be treated the same.
+
+

@@ -1,0 +1,10 @@
+TCK: PropertyReadMethodsTest#testGetValues fails if it cannot find a single valued STRING property
+
+
+
+Description:
+If the JCR repository being tested does not contain any single valued property of type STRING, PropertyReadMethodsTest#testGetValues fails with the following exception:
+
+java.lang.NullPointerException at org.apache.jackrabbit.test.api.PropertyReadMethodsTest.testGetValues(PropertyReadMethodsTest.java:273) at org.apache.jackrabbit.test.AbstractJCRTest.run(AbstractJCRTest.java:401)
+
+The test should either try to find a single valued property of any type (it is guaranted that it will at least find jcr:primaryType) or should throw NotExecutableException if is does not find the property it needs.

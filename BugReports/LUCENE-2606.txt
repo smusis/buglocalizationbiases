@@ -1,0 +1,9 @@
+optimize contrib/regex for flex
+
+
+
+Description:
+* changes RegexCapabilities match(String) to match(BytesRef)
+* the jakarta and jdk impls uses CharacterIterator/CharSequence matching against the utf16result instead.
+* i also reuse the matcher for jdk, i don't see why we didnt do this before but it makes sense esp since we reuse the CSQ
+

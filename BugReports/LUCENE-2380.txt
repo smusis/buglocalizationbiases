@@ -1,0 +1,8 @@
+Add FieldCache.getTermBytes, to load term data as byte[]
+
+
+
+Description:
+With flex, a term is now an opaque byte[] (typically, utf8 encoded unicode string, but not necessarily), so we need to push this up the search stack.
+
+FieldCache now has getStrings and getStringIndex; we need corresponding methods to load terms as native byte[], since in general they may not be representable as String.  This should be quite a bit more RAM efficient too, for US ascii content since each character would then use 1 byte not 2.

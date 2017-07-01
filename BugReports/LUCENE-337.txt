@@ -1,0 +1,26 @@
+Combination of BooleanQuery and PhrasePrefixQuery can provoke UnsupportedOperationException
+
+
+
+Description:
+A BooleanQuery including a PhrasePrefixQuery can cause an exception to be thrown
+from BooleanScorer#skipTo when the search is executed:  
+
+java.lang.UnsupportedOperationException
+	at org.apache.lucene.search.BooleanScorer.skipTo(BooleanScorer.java:189)
+	at org.apache.lucene.search.ConjunctionScorer.doNext(ConjunctionScorer.java:53)
+	at org.apache.lucene.search.ConjunctionScorer.next(ConjunctionScorer.java:48)
+	at org.apache.lucene.search.Scorer.score(Scorer.java:37)
+	at org.apache.lucene.search.IndexSearcher.search(IndexSearcher.java:92)
+	at org.apache.lucene.search.Hits.getMoreDocs(Hits.java:64)
+	at org.apache.lucene.search.Hits.<init>(Hits.java:43)
+	at org.apache.lucene.search.Searcher.search(Searcher.java:33)
+	at org.apache.lucene.search.Searcher.search(Searcher.java:27)
+        ... (non-lucene code)
+
+The problem appears to be that PhrasePrefixQuery optimizes itself into a
+BooleanQuery when it contains only one term.  However, it does this in the
+createWeight() method of its scorer instead of in the rewrite method of the
+query itself.  Thus it bypasses the boolean typecheck when BooleanQuery is
+deciding whether to use ConjunctionScorer or BooleanScorer, eventually resulting
+in the UOE.

@@ -1,0 +1,7 @@
+Registering multiple node types with the same name in a single file must fail
+
+
+
+Description:
+Registering node types from a file (XML or CND) containing multiple definitions with the same name will succeed and only the last definition will be used.
+The right behavior is to throw an exception as this kind of file is well-formed but invalid.

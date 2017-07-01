@@ -1,0 +1,23 @@
+MSSqlFileSystem - JNDI & several configuration issues
+
+
+
+Description:
+there are several configuration issues using the org.apache.jackrabbit.core.fs.db.MSSqlFileSystem
+my (working) configuration (repository.xml) looks like:
+
+<FileSystem class="org.apache.jackrabbit.core.fs.db.MSSqlFileSystem">
+ <param name="driver" value="javax.naming.InitialContext"/>
+ <param name="url" value="java:MYDatasource"/>
+ <param name="schema" value="mssql"/>
+ <param name="schemaObjectPrefix" value="MYPREFIX_"/>
+ <param name="user" value="MYUSERNAME"/> 
+ <param name="password" value="MYPASSWORD"/>
+ <param name="tableSpace" value=""/>
+</FileSystem>
+
+i have to unnecessarily specify username & password, because the MSSqlFileSystem presets them to an empty string instead of null. funnily enough  the tableSpace is preset to null, which leads to a nullpointer in createSchemaSql
+
+
+
+

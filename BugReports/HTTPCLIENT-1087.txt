@@ -1,0 +1,48 @@
+Proxy authentication error: Unexpected state: MSG_TYPE3_GENERATED when using NTLM authentication
+
+
+
+Description:
+Trying to connect to a website that requires basic authentication through a proxy that requires NTLM authentication.
+
+Proxy authentication fails with "Proxy authentication error: Unexpected state: MSG_TYPE3_GENERATED".
+
+Full wire log attached.  Code to replicate problem follows:
+
+    private void execute() throws HttpException, IOException {
+    	
+    	URL targetUrl = new URL(TARGET_URL);
+    	
+        DefaultHttpClient httpclient = new DefaultHttpClient();
+
+        HttpHost targetHost = new HttpHost(targetUrl.getHost()); 
+        HttpHost proxyHost = new HttpHost(PROXY_HOST, PROXY_PORT); 
+        
+        httpclient.getParams().setParameter(ConnRoutePNames.DEFAULT_PROXY, 
+        		proxyHost);
+
+        CredentialsProvider credProvider = httpclient.getCredentialsProvider();
+        
+        Credentials proxyCredentials = new NTCredentials(PROXY_USER, 
+        		PROXY_PASSWORD, PROXY_MACHINE, PROXY_DOMAIN);
+        AuthScope proxyAuthScope = new AuthScope(proxyHost.getHostName(),
+        		proxyHost.getPort());
+        
+        credProvider.setCredentials(proxyAuthScope, proxyCredentials);
+        
+        Credentials targetCredentials = new UsernamePasswordCredentials(
+        		TARGET_USER, TARGET_PASSWORD);
+        AuthScope targetAuthScope = new AuthScope(targetHost.getHostName(),
+        		targetHost.getPort());
+        
+        credProvider.setCredentials(targetAuthScope, targetCredentials);
+      
+        HttpGet httpget = new HttpGet(targetUrl.getPath());
+
+        HttpResponse response = httpclient.execute(targetHost, httpget);
+        
+        System.out.println("response = " + response);
+        
+       
+    }
+

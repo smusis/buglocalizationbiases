@@ -1,0 +1,11 @@
+Enabling wire logging changes isEof/isStale behavior
+
+
+
+Description:
+If you enable wire logging, DefaultClientConnection wraps the SocketInputBuffer with a LoggingSessionInputBuffer. This hides the EofSensor interface implemented by SocketInputBuffer (but not LoggingSessionInputBuffer), which makes at least AbstractHttpClientConnection.isEof() and isStale() methods behave differently.
+
+(That is, stale connection checks won't really work as intended if wire logging is enabled. Which makes it a bit difficult to debug problems related to stale connections...)
+
+Proposed fix: implement EofSensor interface in LoggingSessionInputBuffer (delegating it to wrapped buffer).
+

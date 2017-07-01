@@ -1,0 +1,9 @@
+Minor typo in org.apache.commons.httpclient.Wire 2.0-rc1
+
+
+
+Description:
+Minor typo "...may noy be null" in 
+public static final void output(final String s) and
+public static final void input(final String s)
+of org.apache.commons.httpclient.Wire.

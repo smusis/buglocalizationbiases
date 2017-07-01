@@ -1,0 +1,10 @@
+[PATCH] Problem with Sort logic on tokenized fields
+
+
+
+Description:
+When you set s SortField to a Text field which gets tokenized
+FieldCacheImpl uses the term to do the sort, but then sorting is off 
+especially with more then one word in the field. I think it is much 
+more logical to sort by field's string value if the sort field is Tokenized and
+stored. This way you'll get the CORRECT sort order

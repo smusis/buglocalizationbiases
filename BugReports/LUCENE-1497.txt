@@ -1,0 +1,10 @@
+Minor changes to SimpleHTMLFormatter
+
+
+
+Description:
+I'd like to make few minor changes to SimpleHTMLFormatter.
+
+1. Define DEFAULT_PRE_TAG and DEFAULT_POST_TAG and use them in the default constructor. This will not trigger String lookups by the JVM whenever the highlighter is instantiated.
+
+2. Create the StringBuffer in highlightTerm with the right number of characters from the beginning. Even though StringBuffer's default constructor allocates 16 chars, which will probably be enough for most highlighted terms (pre + post tags are 7 chars, which leaves 9 chars for terms), I think it's better to allocate SB with the right # of chars in advance, to avoid char[] allocations in the middle.

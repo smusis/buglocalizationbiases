@@ -1,0 +1,8 @@
+Add VERBOSE to LuceneTestCase and LuceneTestCaseJ4
+
+
+
+Description:
+component-build.xml allows to define tests.verbose as a system property when running tests. Both LuceneTestCase and LuceneTestCaseJ4 don't read that property. It will be useful for overriding tests to access one place for this setting (I believe currently some tests do it on their own). Then (as a separate issue) we can move all tests that don't check the parameter to only print if VERBOSE is true.
+
+I will post a patch soon.

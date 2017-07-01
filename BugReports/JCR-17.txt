@@ -1,0 +1,16 @@
+Creating and saving a mix:versionable node creates two VersionHistory nodes
+
+
+
+Description:
+Steps:
+   - Create a new mix:versionable node
+      [ This creates a new VersionHistory node below jcr:persistentVersionStore
+        and sets the new node's versionHistory property to the UUID of this
+        VersionHistory node. ]
+   - Save the session (or alternatively save the parent of the new node)
+      [ This creates a new VersionHistory node below jcr:persistentVersionStore
+        and sets the node's versionHistory property to the UUID of this
+        VersionHistory node. ]
+
+As you can see, you end up with two VersionHistory nodes for the same node, of which the first VersionHistory node is never used again, because the second VersionHistory node is used from now on.

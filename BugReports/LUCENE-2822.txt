@@ -1,0 +1,10 @@
+TimeLimitingCollector starts thread in static {} with no way to stop them
+
+
+
+Description:
+See the comment in LuceneTestCase.
+
+If you even do Class.forName("TimeLimitingCollector") it starts up a thread in a static method, and there isn't a way to kill it.
+
+This is broken.

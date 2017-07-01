@@ -1,0 +1,8 @@
+contrib/benchmark build doesn't handle checking if content is properly extracted
+
+
+
+Description:
+The contrib/benchmark build does not properly handle checking to see if the content (such as Reuters coll.) is properly extracted.  It only checks to see if the directory exists.  Thus, it is possible that the directory gets created and the extraction fails.  Then, the next time it is run, it skips the extraction part and tries to continue on running the benchmark.
+
+The workaround is to manually delete the extraction directory.

@@ -1,0 +1,9 @@
+InternalValue should implement QValue.discard() for BINARY types
+
+
+
+Description:
+currently jackrabbit-core always extracts the BLOBFileValue in order to free resources. Since InternalValue now implements QValue this could be achieved on the InternalValue directly.
+However, currently the base implementation is inherited instead of dealing with the BLOBFileValues.
+
+

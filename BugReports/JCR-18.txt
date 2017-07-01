@@ -1,0 +1,19 @@
+Multithreading issue with versioning
+
+
+
+Description:
+In a multithreading environment with two or more threads accessing the same version history, inconsistent state may be encountered. Concretely, the first thread is currently checking in the node to which the version history is attached while the second thread walks this same version history by means of a "self-built" iterator, which just accesses the successors of each version to get the "next" to visit.
+
+At a certain point the second point may encounter an ItemNotFoundException with a stack trace similar to this:
+
+javax.jcr.ItemNotFoundException: c9bd405b-dff4-46ef-845c-d98e073e473a
+        at org.apache.jackrabbit.core.ItemManager.createItemInstance(ItemManager.java:354)
+        at org.apache.jackrabbit.core.ItemManager.getItem(ItemManager.java:230)
+        at org.apache.jackrabbit.core.SessionImpl.getNodeByUUID(SessionImpl.java:494)
+        at org.apache.jackrabbit.core.version.VersionImpl.getSuccessors(VersionImpl.java:86)
+        ....
+
+It seems that the first thread has already filled the successor of the version, while the node is not yet accessible by the createItemInstance method.
+
+This bug seems to not be enforcible, but it is easily reproducible.

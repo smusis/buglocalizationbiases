@@ -1,0 +1,6 @@
+MatchAllDocsQuery doesn't honor boost or queryNorm
+
+
+
+Description:
+MatchAllDocsQuery doesn't pay attention to either it's own boost, or lucene's query normalization factor.

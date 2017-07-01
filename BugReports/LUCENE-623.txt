@@ -1,0 +1,7 @@
+RAMDirectory.close() should have a comment about not releasing any resources
+
+
+
+Description:
+I wrongly assumed that calling RAMDirectory.close() would free up the memory occupied by the RAMDirectory.
+It might be helpful to add a javadoc comment that warns users that RAMDirectory.close() is a no-op, since it might be a common assumption that close() would release resources.

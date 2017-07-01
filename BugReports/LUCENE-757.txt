@@ -1,0 +1,8 @@
+Source packaging fails if ${dist.dir} does not exist
+
+
+
+Description:
+package-tgz-src and package-zip-src fail if ${dist.dir} does not exist, since these two targets do not call the package target, which is responsible for making the dir.
+
+I have a fix and will commit shortly.

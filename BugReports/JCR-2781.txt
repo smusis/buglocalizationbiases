@@ -1,0 +1,8 @@
+FileDataStore performance improvements
+
+
+
+Description:
+As seen in JCR-2695, the FileDataStore is slow on some file system. 
+
+Some file operations such as File.exists() or File.isDirectory() can be replaced with try / catch, or by inspecting the return value of a previous method (File.renameTo).

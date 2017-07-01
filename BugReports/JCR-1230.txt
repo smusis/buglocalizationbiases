@@ -1,0 +1,9 @@
+Jcr-Server: useful output upon GET to root- and workspace-resources
+
+
+
+Description:
+in contrast to the resources representing JCR Node or Properties, the 'root' resource and the resources representing the
+workspaces present in the repository don't provide any output when accessed in a browser.
+
+-> add some very simple listing for those 2 resource types.

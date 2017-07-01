@@ -1,0 +1,10 @@
+Provide an convenience AttributeFactory that implements all default attributes with Token
+
+
+
+Description:
+I found some places in contrib tests, where the Token.class was added using addAttributeImpl(). The problem here is, that you cannot be sure, that the attribute is really added and you may fail later (because you only update your local instance). The tests in contrib will partially fail with 3.0 without backwards layer (because the backwards layer uses Token/TokenWrapper internally and copyTo() will work.
+
+The correct way to achieve this is using an AttributeFactory. The AttributeFactory is currently private in SingleTokenTokenStream. I want to move it to Token.java as a static class / static member. In this case the tests can be rewritten.
+
+I also want to mark addAttributeImpl() as EXPERT, because you must really know whats happening and what are the traps.

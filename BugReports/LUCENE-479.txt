@@ -1,0 +1,43 @@
+MultiReader.numDocs incorrect after undeleteAll
+
+
+
+Description:
+Calling MultiReader.undeleteAll does not clear cached numDocs value. So the subsequent numDocs() call returns a wrong value if there were deleted documents in the index. Following patch fixes the bug and adds a test showing the issue.
+
+
+Index: src/test/org/apache/lucene/index/TestMultiReader.java
+===================================================================
+--- src/test/org/apache/lucene/index/TestMultiReader.java       (revision 354923)
++++ src/test/org/apache/lucene/index/TestMultiReader.java       (working copy)
+@@ -69,6 +69,18 @@
+     assertTrue(vector != null);
+     TestSegmentReader.checkNorms(reader);
+   }
++
++  public void testUndeleteAll() throws IOException {
++    sis.read(dir);
++    MultiReader reader = new MultiReader(dir, sis, false, readers);
++    assertTrue(reader != null);
++    assertEquals( 2, reader.numDocs() );
++    reader.delete(0);
++    assertEquals( 1, reader.numDocs() );
++    reader.undeleteAll();
++    assertEquals( 2, reader.numDocs() );
++  }
++
+
+   public void testTermVectors() {
+     MultiReader reader = new MultiReader(dir, sis, false, readers);
+Index: src/java/org/apache/lucene/index/MultiReader.java
+===================================================================
+--- src/java/org/apache/lucene/index/MultiReader.java   (revision 354923)
++++ src/java/org/apache/lucene/index/MultiReader.java   (working copy)
+@@ -122,6 +122,7 @@
+     for (int i = 0; i < subReaders.length; i++)
+       subReaders[i].undeleteAll();
+     hasDeletions = false;
++    numDocs = -1;      // invalidate cache
+   }
+
+   private int readerIndex(int n) {    // find reader for doc n:

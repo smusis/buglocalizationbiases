@@ -1,0 +1,6 @@
+Minor refactoring to IndexFileNameFilter
+
+
+
+Description:
+IndexFileNameFilter looks like it's designed to be a singleton, however its constructor is public and its singleton member is package visible. The proposed patch changes the constructor and member to private. Since it already has a static getFilter() method, and no code in Lucene references those two, I don't think it creates any problems from an API perspective.

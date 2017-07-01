@@ -1,0 +1,8 @@
+It should be possible to create a non-transient Repository inside the JCARepositoryManager
+
+
+
+Description:
+With JCR-2555 jukka changed the code to create a Repository with the RepositoryFactory mechanism.
+It should be possible to create a non-transient Repository
+

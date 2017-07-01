@@ -1,0 +1,10 @@
+Use ConcurrentHashMap in RAMDirectory
+
+
+
+Description:
+RAMDirectory synchronizes on its instance in many places to protect access to map of RAMFiles, in addition to updating the sizeInBytes member. In many places the sync is done for 'read' purposes, while only in few places we need 'write' access. This looks like a perfect use case for ConcurrentHashMap
+
+Also, syncing around sizeInBytes is unnecessary IMO, since it's an AtomicLong ...
+
+I'll post a patch shortly.

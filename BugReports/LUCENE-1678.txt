@@ -1,0 +1,12 @@
+Deprecate Analyzer.tokenStream
+
+
+
+Description:
+The addition of reusableTokenStream to the core analyzers unfortunately broke back compat of external subclasses:
+
+    http://www.nabble.com/Extending-StandardAnalyzer-considered-harmful-td23863822.html
+
+On upgrading, such subclasses would silently not be used anymore, since Lucene's indexing invokes reusableTokenStream.
+
+I think we should should at least deprecate Analyzer.tokenStream, today, so that users see deprecation warnings if their classes override this method.  But going forward when we want to change the API of core classes that are extended, I think we have to  introduce entirely new classes, to keep back compatibility.

@@ -1,0 +1,10 @@
+DatabaseJournal improperly finds tables in external schemas when used on Oracle
+
+
+
+Description:
+The DatabaseJournal currently calls database metadata to determine if the journal table has already been created.  It uses the following code to do so:
+
+ResultSet rs = metaData.getTables(null, null, tableName, null);
+
+The Oracle driver sometimes will return the table if it is in another schema on the same database.  Other DBMS code within JackRabbit has a specific Oracle version that handles this case.  In order for the journal table to be properly created, Oracle databases will need the schema name included in the getTables() call.

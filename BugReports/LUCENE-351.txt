@@ -1,0 +1,6 @@
+More javadocs for Weight
+
+
+
+Description:
+From Doug's reply of 21 Feb 2005 in bug 31841

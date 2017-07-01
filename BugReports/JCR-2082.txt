@@ -1,0 +1,14 @@
+Query does not work after logging into workspace with no indexes
+
+
+
+Description:
+When I login to workspace that does not have indexes, they are created but my queries do not return results unless I relog. Output from running attached code sample is:
+
+Node [node1240842434531] created in workspace [test1240842434312]
+Property [name] set to [someValueOfMyProperty]
+Asking query: select * from nt:unstructured where nt:name like 'someValueOfMyProperty'
+Found: 1 nodes before deleting index.
+Asking query: select * from nt:unstructured where nt:name like 'someValueOfMyProperty'
+Found: 0 nodes after deleting index.
+done

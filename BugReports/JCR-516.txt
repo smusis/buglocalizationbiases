@@ -1,0 +1,10 @@
+remove dependencies of XPathQueryBuilder on core Jackrabbit code
+
+
+
+Description:
+The XPath query parser currently has a single dependency on SearchManager, for the sole purpose of importing two namespace URIs (for XML Schema and XPath 2.0 functions). This makes it harder than it should be to use it stand-alone.
+
+I propose to copy the two namespace URIs into XPathQueryBuilder, getting rid of the dependency.
+
+

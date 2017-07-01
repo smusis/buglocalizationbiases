@@ -1,0 +1,13 @@
+Introduce daily integration test suite
+
+
+
+Description:
+Some time ago we discussed integration tests that would be run on a daily basis. See also comments in issue JCR-1452. It seems we reached consensus that running a daily integration test suite is desirable.
+
+Here's my proposal:
+
+- Introduce a test suite org.apache.jackrabbit.core.integration.daily.DailyIntegrationTest which includes all tests that should be run on a daily basis.
+- Configure our continuous integration system to run the test suite on a daily basis. e.g. mvn -Dtest=DailyIntegrationTest package
+
+With this approach we don't need to introduce maven profiles or any other pom magic, yet it's easy for a developer to run the daily tests when needed.

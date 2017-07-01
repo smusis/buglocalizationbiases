@@ -1,0 +1,19 @@
+Finding Newest Segment In Empty Index
+
+
+
+Description:
+While extending the index writer, I discovered that its newestSegment method does not check to see if there are any segments before accessing the segment infos vector. Specifically, if you call the IndexWriter#newestSegment method on a brand-new index which is essentially empty, then it throws an java.lang.ArrayIndexOutOfBoundsException exception.
+
+The proposed fix is to return null if no segments exist, as shown below:
+
+--- lucene/src/java/org/apache/lucene/index/IndexWriter.java	(revision 930788)
++++ lucene/src/java/org/apache/lucene/index/IndexWriter.java	(working copy)
+@@ -4587,7 +4587,7 @@
+ 
+   // utility routines for tests
+   SegmentInfo newestSegment() {
+-    return segmentInfos.info(segmentInfos.size()-1);
++    return segmentInfos.size() > 0 ? segmentInfos.info(segmentInfos.size()-1) : null;
+   }
+

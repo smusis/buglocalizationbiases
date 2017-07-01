@@ -1,0 +1,90 @@
+HttpClient does not retry authentication when multiple challenges are present if the primary one fails
+
+
+
+Description:
+I'm trying to request a page from IIS (6 and 7.5).  If the IIS is configured with providers for "negotiate" and "ntlm" then the Negotiate authentication is tried and fails, but it does not then try to use the NTLM authentication which is what I require.  If I removed "negotiate" as a provider from IIS and just use NTLM then all works well - but this is not a solution as I don't have control of the web servers. 
+
+Output below...
+
+
+[DEBUG] SingleClientConnManager - Get connection for route HttpRoute[{}->http://WIN-HNB91NNAB2G]
+[DEBUG] DefaultClientConnectionOperator - Connecting to WIN-HNB91NNAB2G/147.183.80.134:80
+[DEBUG] RequestAddCookies - CookieSpec selected: best-match
+[DEBUG] DefaultHttpClient - Attempt 1 to execute request
+[DEBUG] DefaultClientConnection - Sending request: GET / HTTP/1.1
+[DEBUG] wire - >> "GET / HTTP/1.1[\r][\n]"
+[DEBUG] wire - >> "Host: WIN-HNB91NNAB2G[\r][\n]"
+[DEBUG] wire - >> "Connection: Keep-Alive[\r][\n]"
+[DEBUG] wire - >> "User-Agent: Apache-HttpClient/4.1 (java 1.5)[\r][\n]"
+[DEBUG] wire - >> "[\r][\n]"
+[DEBUG] headers - >> GET / HTTP/1.1
+[DEBUG] headers - >> Host: WIN-HNB91NNAB2G
+[DEBUG] headers - >> Connection: Keep-Alive
+[DEBUG] headers - >> User-Agent: Apache-HttpClient/4.1 (java 1.5)
+[DEBUG] wire - << "HTTP/1.1 401 Unauthorized[\r][\n]"
+[DEBUG] wire - << "Content-Type: text/html[\r][\n]"
+[DEBUG] wire - << "Server: Microsoft-IIS/7.5[\r][\n]"
+[DEBUG] wire - << "WWW-Authenticate: Negotiate[\r][\n]"
+[DEBUG] wire - << "WWW-Authenticate: NTLM[\r][\n]"
+[DEBUG] wire - << "Date: Fri, 15 Jul 2011 12:15:11 GMT[\r][\n]"
+[DEBUG] wire - << "Content-Length: 58[\r][\n]"
+[DEBUG] wire - << "[\r][\n]"
+[DEBUG] DefaultClientConnection - Receiving response: HTTP/1.1 401 Unauthorized
+[DEBUG] headers - << HTTP/1.1 401 Unauthorized
+[DEBUG] headers - << Content-Type: text/html
+[DEBUG] headers - << Server: Microsoft-IIS/7.5
+[DEBUG] headers - << WWW-Authenticate: Negotiate
+[DEBUG] headers - << WWW-Authenticate: NTLM
+[DEBUG] headers - << Date: Fri, 15 Jul 2011 12:15:11 GMT
+[DEBUG] headers - << Content-Length: 58
+[DEBUG] DefaultHttpClient - Connection can be kept alive indefinitely
+[DEBUG] DefaultHttpClient - Target requested authentication
+[DEBUG] DefaultTargetAuthenticationHandler - Authentication schemes in the order of preference: [negotiate, NTLM, Digest, Basic]
+[DEBUG] DefaultTargetAuthenticationHandler - negotiate authentication scheme selected
+[DEBUG] NegotiateScheme - Received challenge '' from the auth server
+[DEBUG] DefaultHttpClient - Authorization challenge processed
+[DEBUG] DefaultHttpClient - Authentication scope: NEGOTIATE <any realm>@win-hnb91nnab2g:80
+[DEBUG] DefaultHttpClient - Found credentials
+[DEBUG] wire - << "You do not have permission to view this directory or page."
+[DEBUG] RequestAddCookies - CookieSpec selected: best-match
+[DEBUG] NegotiateScheme - init WIN-HNB91NNAB2G
+[ERROR] RequestTargetAuthentication - Authentication error: Invalid name provided (Mechanism level: Could not load configuration file C:\WINDOWS\krb5.ini (The system cannot find the file specified))
+[DEBUG] DefaultHttpClient - Attempt 2 to execute request
+[DEBUG] DefaultClientConnection - Sending request: GET / HTTP/1.1
+[DEBUG] wire - >> "GET / HTTP/1.1[\r][\n]"
+[DEBUG] wire - >> "Host: WIN-HNB91NNAB2G[\r][\n]"
+[DEBUG] wire - >> "Connection: Keep-Alive[\r][\n]"
+[DEBUG] wire - >> "User-Agent: Apache-HttpClient/4.1 (java 1.5)[\r][\n]"
+[DEBUG] wire - >> "[\r][\n]"
+[DEBUG] headers - >> GET / HTTP/1.1
+[DEBUG] headers - >> Host: WIN-HNB91NNAB2G
+[DEBUG] headers - >> Connection: Keep-Alive
+[DEBUG] headers - >> User-Agent: Apache-HttpClient/4.1 (java 1.5)
+[DEBUG] wire - << "HTTP/1.1 401 Unauthorized[\r][\n]"
+[DEBUG] wire - << "Content-Type: text/html[\r][\n]"
+[DEBUG] wire - << "Server: Microsoft-IIS/7.5[\r][\n]"
+[DEBUG] wire - << "WWW-Authenticate: Negotiate[\r][\n]"
+[DEBUG] wire - << "WWW-Authenticate: NTLM[\r][\n]"
+[DEBUG] wire - << "Date: Fri, 15 Jul 2011 12:15:11 GMT[\r][\n]"
+[DEBUG] wire - << "Content-Length: 58[\r][\n]"
+[DEBUG] wire - << "[\r][\n]"
+[DEBUG] DefaultClientConnection - Receiving response: HTTP/1.1 401 Unauthorized
+[DEBUG] headers - << HTTP/1.1 401 Unauthorized
+[DEBUG] headers - << Content-Type: text/html
+[DEBUG] headers - << Server: Microsoft-IIS/7.5
+[DEBUG] headers - << WWW-Authenticate: Negotiate
+[DEBUG] headers - << WWW-Authenticate: NTLM
+[DEBUG] headers - << Date: Fri, 15 Jul 2011 12:15:11 GMT
+[DEBUG] headers - << Content-Length: 58
+[DEBUG] DefaultHttpClient - Connection can be kept alive indefinitely
+[DEBUG] DefaultHttpClient - Target requested authentication
+[DEBUG] NegotiateScheme - Received challenge '' from the auth server
+[DEBUG] NegotiateScheme - Authentication already attempted
+[DEBUG] DefaultHttpClient - Authorization challenge processed
+[DEBUG] DefaultHttpClient - Authentication scope: NEGOTIATE <any realm>@win-hnb91nnab2g:80
+[DEBUG] DefaultHttpClient - Authentication failed
+[DEBUG] wire - << "You do not have permission to view this directory or page."
+content:You do not have permission to view this directory or page.
+[DEBUG] SingleClientConnManager - Releasing connection org.apache.http.impl.conn.SingleClientConnManager$ConnAdapter@17fa65e
+

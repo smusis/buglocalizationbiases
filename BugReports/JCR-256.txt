@@ -1,0 +1,16 @@
+Improve jcr decorator in jcr-ext
+
+
+
+Description:
+The jcr decorator in jcr-ext does not cover all the necessary interfaces of the jcr api. It may happen that a client loses the decoration layer when accessing properties.
+
+I've added decoration for several jcr interfaces to ensure that the decoration layer is never left.
+
+The attached patch also removes the classes related to decorator chaining. I found it hard to understand the purpose of those classes and decided to remove them from the default implementation. If we want to keep those classes they should be less intrusive.
+
+I've also noticed that there are class name clashes, specifically the package org.apache.jackrabbit.name contains classes that are also present in the jackrabbit and jackrabbit-commons jar file. I propose to move the respective classes in jcr-ext to a different package or remove them in favor of the jackrabbit-commons classes.
+
+Let me know if I should commit the the patch.
+
+Thanks

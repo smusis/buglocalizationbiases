@@ -1,0 +1,10 @@
+Logging into a repository with a big version history takes a long time
+
+
+
+Description:
+Wenn a SessionImpl instance is created, the VersionManager.getVirtualItemStateProvider method is called. This method - amongst other things - loads the complete (!) version history into memory and walks through it to do some mapping.
+
+Besides taking a long time (near 1 minute just to get the version history through PersistentVersionManager.getVersionHistories()) mapping the version histories ultimately results in an "OutOfMemoryError".
+
+Currently there are 768 version histories and this is only a very small fraction of the expected final number of version histories in my application

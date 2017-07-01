@@ -1,0 +1,8 @@
+RFE: Make Credentials Serializable
+
+
+
+Description:
+I've been working on upgrading the HtmlUnit library to use HttpClient 4, and I've realized that we could eliminate some hackish internal code if Credentials instances were Serializable. I don't really see a downside, and this would be a huge convenience for us.
+
+The change would involve making the org.apache.http.auth.Credentials interface extend Serializable, and having org.apache.http.auth.BasicUserPrincipal and org.apache.http.auth.NTUserPrincipal implement Serializable (plus serialVersionUIDs where appropriate, I guess).

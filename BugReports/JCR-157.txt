@@ -1,0 +1,6 @@
+Reorganize Jackrabbit into 'core' 'api' and 'commons'
+
+
+
+Description:
+

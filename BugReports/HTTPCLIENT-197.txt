@@ -1,0 +1,40 @@
+Problem with redirect on HEAD when (bad, naughty) server returns body content
+
+
+
+Description:
+I've been testing/using HttpClient 2.0a3 with Resin 2.1.9. I've found that when
+using a HEAD request on a JSP, Resin returns the body content along with the
+headers.
+
+In this case, something in the HttpClient breaks. Looking at the httpclient
+logs, it looks like:
+
+1) HttpClient does a HEAD against the original URL
+2) Resin returns valid status line and headers
+3) HttpClient parses the headers and recognizes the redirect header
+4) HttpClient does a HEAD against the new URL (from the Location header)
+5) HttpMethodBase calls readStatusLine, which (eventually) calles readRawLine in
+HttpConnection (which reads from the internal inputStream)
+6) readRawLine returns the first line in the body from the original HEAD request
+in (1).
+
+It looks like the original body content (in response to the first HEAD) is being
+buffered somewhere, but I can't figure out where.
+
+I know that this is invalid behavior on the server's part, but I would like to
+be able to recover from it.
+
+
+
+---- redir_test.jsp ----
+<?xml version="1.0"?>
+<% 
+  response.setStatus(response.SC_MOVED_TEMPORARILY);
+  response.setHeader("Location", "redirect_pass.xml");
+%>
+<some>
+  <dummy>
+    <data attr="yea, well"/>
+  </dummy>
+</some>

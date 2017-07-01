@@ -1,0 +1,21 @@
+allow SPI implementation to compute default values for autocreated properties
+
+
+
+Description:
+Currently, when creating nodes in transient space, JCR2SPI uses hard-wired logic trying to populate system generated properties such as jcr:created, jcr;uuid and so on.
+
+This is problematic as
+
+- it doesn't scale -- it fails for autocreated properties not known to JCR2SPI, and
+
+- the syntax for the defaults may be dependant on the back end, such as legal syntax for (UU)IDs.
+
+Proposal:
+
+- extend QValueFactory with something like
+
+  QValue computeDefaultValue(QPropertyDefinition)
+
+- use that in JCR2SPI, getting rid of the currently hard-wired logic.
+

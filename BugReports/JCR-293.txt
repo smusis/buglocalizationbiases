@@ -1,0 +1,10 @@
+Property.setValue(InputStream) closes stream
+
+
+
+Description:
+Currently the Property.setValue(InputStream) - actually all methods setting a property value from an InputStream - method closes the stream when it has completely been read. While this might be a nice-to-have in some situations, it is IMHO not standard behaviour for stream consumers to close the stream when done.
+
+My special use case is unpacking the contents of a ZIP file (ZIPInputStream). After streaming the contents of the first ZIP file entry into a property, the ZIPInputStream is closed by Jackrabbit and the rest of the file cannot be read.
+
+Workaround: Instead of giving the original InputStream to the method, create a FileInputStream wrapper overwriting the close method to do nothing.

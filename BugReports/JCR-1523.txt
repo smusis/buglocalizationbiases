@@ -1,0 +1,6 @@
+[PATCH] png, apng, mng text extractor
+
+
+
+Description:
+Text extractor for tEXt chunk for png, apng and mng formats

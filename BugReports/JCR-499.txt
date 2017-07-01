@@ -1,0 +1,21 @@
+TCK: NamespaceRegistryTest#testRegisterNamespace doesn't remove node in new namespace
+
+
+
+Description:
+The test creates a node in the new namespace, but doesn't remove it.  This prevents tearDown from unregistering the namespace.
+
+Proposal: the test should remove the new node before returning.
+
+--- NamespaceRegistryTest.java  (revision 422074)
++++ NamespaceRegistryTest.java  (working copy)
+@@ -138,6 +138,10 @@
+  
+         testRootNode.addNode(namespacePrefix + ":root");
+         testRootNode.save();
++
++        // Need to remove it here, otherwise teardown can't unregister the NS.
++        testRootNode.getNode(namespacePrefix + ":root").remove();
++        testRootNode.save();
+     }
+

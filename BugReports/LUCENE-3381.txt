@@ -1,0 +1,6 @@
+Sandbox remaining contrib queries
+
+
+
+Description:
+In LUCENE-3271, I moved the 'good' queries from the queries contrib to new destinations (primarily the queries module).  The remnants now need to find their home.  As suggested in LUCENE-3271, these classes are not bad per se, just odd.  So lets create a sandbox contrib that they and other 'odd' contrib classes can go to.  We can then decide their fate at another time.

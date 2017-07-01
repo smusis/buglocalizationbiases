@@ -1,0 +1,14 @@
+CheckIndex API changed without backwards compaitibility
+
+
+
+Description:
+The API of CheckIndex changed. The Check function returns a CheckIndexStatus and not boolean. And JavaDocs notes the boolean return value.
+
+I am not sure if it works, but it would be good to have the check method that returns boolean available @Deprecated, i.e.
+@Deprecated public static CheckIndexStatus check(Directory dir, boolean doFix) throws IOException {
+ final CheckIndexStatus stat=this.check(dir,doFix);
+ return stat.clean;
+}
+
+I am not sure, if it can be done with the same method name, but it prevents drop-in-replacements of Lucene to work.

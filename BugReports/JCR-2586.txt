@@ -1,0 +1,6 @@
+Missing synchronization in InternalVersionHistoryImpl
+
+
+
+Description:
+The InternalVersionHistoryImpl objects can be accessed (and modified) concurrently by multiple sessions, which can in some rare cases result in corruption in the internal cache map data structures. Access to these cache maps should be properly synchronized.

@@ -1,0 +1,34 @@
+[PATCH] BufferedIndexOutput - optimized writeBytes() method
+
+
+
+Description:
+I have created a patch that optimize writeBytes metod:
+
+  public void writeBytes(byte[] b, int length) throws IOException {
+    if (bufferPosition > 0) // flush buffer
+      flush();
+ 
+    if (length < BUFFER_SIZE) {
+      flushBuffer(b, length);
+      bufferStart += length;
+    } else {
+      int pos = 0;
+      int size;
+      while (pos < length) {
+        if (length - pos < BUFFER_SIZE) {
+          size = length - pos;
+        } else {
+          size = BUFFER_SIZE;
+        }
+        System.arraycopy(b, pos, buffer, 0, size);
+        pos += size;
+        flushBuffer(buffer, size);
+        bufferStart += size;
+      }
+    }
+  }
+
+Its a much more faster now. I know that for indexing this not help much, but for copying files in the IndexStore this is so big improvement. Its about 400% faster that old implementation.
+
+The patch was tested with 300MB data, "ant test" sucessfuly finished with no errors.

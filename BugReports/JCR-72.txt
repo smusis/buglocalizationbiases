@@ -1,0 +1,8 @@
+Session.impersonate non-functional
+
+
+
+Description:
+Currently SessionImpl.impersonate simply calls Repository.login with the given credentials and the workspace name of the session. If the credentials are incomplete in that the password is missing, the method throws a "LoginException: Failed to authenticate userID", which is actually a misleading text, as the reason is not failure to authenticate userID but at best that the session has not enough access rights to impersonate as userID.
+
+For my application, it is crucial, that Session.impersonate is implemented in the sense that this method allows creation of a session with password-less credentials. I accept this method to fail, but it should fail with a correct message.

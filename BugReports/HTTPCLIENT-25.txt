@@ -1,0 +1,11 @@
+[httpclient] Incorrect credentials loop infinitely
+
+
+
+Description:
+If incorrect credentials are assigned to the request, HttpClient will loop 
+forever.  It should only try once, and fail with an HttpException if a request 
+with credentials set fails.
+
+In org.apache.commons.httpclient.HttpMethodBase.execute(), a check is needed to 
+track if credentials have been sent before.

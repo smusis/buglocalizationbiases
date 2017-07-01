@@ -1,0 +1,9 @@
+problem in jcr-server/project.properties dependencies?
+
+
+
+Description:
+There seems to be a mismatch in the version numbers in the dependencies defined in jcr-server/project.properties. It refers to version 1.0, yet the other components are already at 1.1.
+
+The attached patch solves the problem for me, but I don't claim to fully understand how this works...
+

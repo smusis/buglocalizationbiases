@@ -1,0 +1,6 @@
+Random access non RAM resident IndexDocValues (CSF)
+
+
+
+Description:
+There should be a way to get specific IndexDocValues by going through the Directory rather than loading all of the values into memory.

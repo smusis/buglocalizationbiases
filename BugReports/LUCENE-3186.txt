@@ -1,0 +1,8 @@
+DocValues type should be recored in FNX file to early fail if user specifies incompatible type
+
+
+
+Description:
+Currently segment merger fails if the docvalues type is not compatible across segments. We already catch this problem if somebody changes the values type for a field within one segment but not across segments. in order to do that we should record the type in the fnx fiel alone with the field numbers.
+
+I marked this 4.0 since it should not block the landing on trunk

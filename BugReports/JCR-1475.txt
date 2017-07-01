@@ -1,0 +1,16 @@
+Inconsistency when version with a label is removed
+
+
+
+Description:
+While executing random operations on the version storage I came across a situation where a version is removed that has a version label.
+
+The current behaviour in jackrabbit is IMO not correct because the version node gets removed, but the version label is still present in the version history. This means there is a referenceable property that points to nowhere.
+
+So I guess either:
+
+- the version label property must be removed as well when the version is removed
+or
+- the remove version operation should fail because the version is still referenced
+
+I wasn't able to find a relevant section in the spec, though I must admit that I don't know the versioning section that well.

@@ -1,0 +1,6 @@
+minimizeHopcroft OOMEs on smallish (2096 states, finite) automaton
+
+
+
+Description:
+Not sure what's up w/ this... if you check out the blocktree branch (LUCENE-3030) and comment out the @Ignore in TestTermsEnum2.testFiniteVersusInfinite then this should hit OOME: {[ant test-core -Dtestcase=TestTermsEnum2 -Dtestmethod=testFiniteVersusInfinite -Dtests.seed=-2577608857970454726:-2463580050179334504}}

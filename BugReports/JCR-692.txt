@@ -1,0 +1,45 @@
+XMLPersistenceManager fails after creating too many directories on linux
+
+
+
+Description:
+When using the  XMLPersistenceManager it creates a bunch of directories in jackrabbit/home/version/data. Eventually I reach 32000 directories in the data directory and subsequent writes fail.
+
+I believe this is caused by XMLPersistenceManager.buildNodeFolderPath() method where it does 
+   if (cnt == 4 || cnt == 8) {
+      sb.append('/');
+   }
+
+This causes the subdirectories to be 4 characters, 0-f i.e. 16^4 which is 65536, if what I'm seeing is correct, on linux ext3, it's limited to 32000 entries. If the XMLPersistence manager used 2 or 3 characters this should fix the problem, or if it were configurable it would also solve this (I think).
+
+an 
+   ls jackrabbit/home/version/data | wc -l
+returns 
+   32001
+
+A stack trace for when this happens is as follows :
+Caused by: javax.jcr.RepositoryException: failed to write node state: da2cd5d1-9776-4dbe-a42b-842b0134dbfb: failed to write node state: da2cd5d1-9776-4dbe-a42b-842b0134dbfb
+        at org.apache.jackrabbit.core.version.AbstractVersionManager.createVersionHistory(AbstractVersionManager.java:181)
+        at org.apache.jackrabbit.core.version.VersionManagerImpl$1.run(VersionManagerImpl.java:194)
+        at org.apache.jackrabbit.core.version.VersionManagerImpl$DynamicESCFactory.doSourced(VersionManagerImpl.java:526)
+        at org.apache.jackrabbit.core.version.VersionManagerImpl.createVersionHistory(VersionManagerImpl.java:191)
+        at org.apache.jackrabbit.core.version.XAVersionManager.createVersionHistory(XAVersionManager.java:140)
+        at org.apache.jackrabbit.core.ItemImpl.initVersionHistories(ItemImpl.java:754)
+        at org.apache.jackrabbit.core.ItemImpl.save(ItemImpl.java:1166)
+        at org.apache.jackrabbit.core.SessionImpl.save(SessionImpl.java:805)
+        ... 166 more
+Caused by: org.apache.jackrabbit.core.state.ItemStateException: failed to write node state: da2cd5d1-9776-4dbe-a42b-842b0134dbfb
+        at org.apache.jackrabbit.core.state.xml.XMLPersistenceManager.store(XMLPersistenceManager.java:579)
+        at org.apache.jackrabbit.core.state.AbstractPersistenceManager.store(AbstractPersistenceManager.java:66)
+        at org.apache.jackrabbit.core.state.SharedItemStateManager$Update.end(SharedItemStateManager.java:574)
+        at org.apache.jackrabbit.core.state.SharedItemStateManager.update(SharedItemStateManager.java:697)
+        at org.apache.jackrabbit.core.state.LocalItemStateManager.update(LocalItemStateManager.java:315)
+        at org.apache.jackrabbit.core.state.LocalItemStateManager.update(LocalItemStateManager.java:291)
+        at org.apache.jackrabbit.core.version.AbstractVersionManager.createVersionHistory(AbstractVersionManager.java:174)
+        ... 173 more
+Caused by: org.apache.jackrabbit.core.fs.FileSystemException: failed to create folder /home/cms/pepsiaccess/jackrabbit/home/version/data/da2c/d5d1/97764dbea42b842b0134dbfb
+        at org.apache.jackrabbit.core.fs.local.LocalFileSystem.createFolder(LocalFileSystem.java:208)
+        at org.apache.jackrabbit.core.fs.BasedFileSystem.createFolder(BasedFileSystem.java:99)
+        at org.apache.jackrabbit.core.fs.FileSystemResource.makeParentDirs(FileSystemResource.java:100)
+        at org.apache.jackrabbit.core.state.xml.XMLPersistenceManager.store(XMLPersistenceManager.java:517)
+        ... 179 more

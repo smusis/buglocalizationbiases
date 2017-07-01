@@ -1,0 +1,6 @@
+Concurrent add/remove child node operations in a cluster may corrupt repository.
+
+
+
+Description:
+Concurrent add/remove child node operations in a cluster may store an inconsistent list of child node entries, i.e. an entry in the list may appear that has no associated node. This eventually results in an ItemNotFoundException, the next time one of these bogus entries is accessed.

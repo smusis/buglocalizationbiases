@@ -1,0 +1,6 @@
+MockRAMDirectory (used only by unit tests) has some synchronization problems
+
+
+
+Description:
+Coming out of a failure that Earwin noted on java-dev this morning, I reworked the synchronization on MockRAMDirectory.

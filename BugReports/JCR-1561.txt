@@ -1,0 +1,6 @@
+New MsOutlook Message Extractor
+
+
+
+Description:
+Sinse we are using poi 3.0.2 it will be useful to have a outlook message extractor

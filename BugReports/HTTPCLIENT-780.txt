@@ -1,0 +1,8 @@
+ProxyHost/HttpHost: Checks for null when javadoc document null ok
+
+
+
+Description:
+The constructor javadocs for ProxyHost and HttpHost all state that null is an allowed value - but there's an check in the HttpHost constructor for this which throws IllegalArgumentException.
+
+(Actually allowing null as documented would also allow for a spring wiring remaining the same when using a proxy or not - steering the values from a propertyfile.)

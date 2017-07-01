@@ -1,0 +1,10 @@
+client cache does not respect 'Cache-Control: no-store' on requests
+
+
+
+Description:
+"The purpose of the no-store directive is to prevent the inadvertent release or retention of sensitive information (for example, on backup tapes). The no-store directive applies to the entire message, and MAY be sent either in a response or in a request. If sent in a request, a cache MUST NOT store any part of either this request or any response to it."
+
+http://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.9.2
+
+The current implementation will incorrectly cache responses to requests containing 'Cache-Control: no-store'.

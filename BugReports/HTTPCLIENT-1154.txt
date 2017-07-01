@@ -1,0 +1,6 @@
+org.apache.http.impl.client.cache.memcached.MemcachedHttpCacheStorage should allow client to specify custom prefix string for keys
+
+
+
+Description:
+org.apache.http.impl.client.cache.memcached.MemcachedHttpCacheStorage should allow client to specify custom prefix string for keys, so as to ensure collision-avoidance with other memcached keys the client may be using.

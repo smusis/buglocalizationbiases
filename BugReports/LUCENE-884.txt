@@ -1,0 +1,43 @@
+Query Syntax page does not make it clear that wildcard searches are not allowed in Phrase Queries
+
+
+
+Description:
+The queryparsersyntax page which is where I expect most novices (such as myself) start with lucene seems to indicate that wildcards can be used in phrase terms
+
+Quoting:
+'Terms: A query is broken up into terms and operators. There are two types of terms: Single Terms and Phrases.
+A Single Term is a single word such as "test" or "hello".
+A Phrase is a group of words surrounded by double quotes such as "hello dolly".
+
+....
+
+Wildcard Searches
+Lucene supports single and multiple character wildcard searches.
+To perform a multiple character wildcard search use the "*" symbol.
+Multiple character wildcard searches looks for 0 or more characters. For example, to search for test, tests or tester, you can use the search:
+
+test*
+You can also use the wildcard searches in the middle of a term.
+
+'
+there is nothing to indicate in the section on Wildcard Searches that it can be performed only on Single word terms not Phrase terms.
+
+Chris  argues 'that there is nothing in the description of a Phrase to indicate that it can be anything other then what it says "a group of words surrounded by double quotes" .. at no point does it
+suggest that other types of queries or syntax can be used inside the quotes.  likewise the discussion of Wildcards makes no mention of phrases to suggest that wildcard characters can be used in a phrase.'
+but I don't accept this because there is nothing in the description of a Single Term either to indicate it can use wildcards either. Wildcards are only mentioned in the Wildcard section and there it says thay can be used in a term, it does not restrict the type of term
+
+
+I Propose a simple solution modify:
+
+Lucene supports single and multiple character wildcard searches.
+
+to 
+
+Lucene supports single and multiple character wildcard searches within single terms.
+
+(Chris asked for a patch, but Im not sure how to do this, but the change is simple enough)
+
+
+
+

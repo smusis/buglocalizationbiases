@@ -1,0 +1,21 @@
+Possible thread hazard in IndexWriter.close(false)
+
+
+
+Description:
+Spinoff from this thread:
+
+  http://www.gossamer-threads.com/lists/lucene/java-dev/55391
+
+On reviewing the code I found one case where an aborted merge (from
+calling close(false)) could write to files that a newly opened
+IndexWriter would also try to write to.
+
+I strengthened an existing test case in TestConcurrentMergeScheduler
+to tickle this case, and also modified MockRAMDirectory to throw an
+IOException if ever a file besides segments.gen is overwritten.
+
+However, strangely, I can't get an unhandled exception to occur during
+the test and I'm not sure why.  Still I think this is a good defensive
+check so we should commit it.
+

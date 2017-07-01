@@ -1,0 +1,146 @@
+BundleFsPersistenceManager has no property called: minBlobSize
+
+
+
+Description:
+2008-04-03 16:48:51,ERROR,org.apache.jackrabbit.core.RepositoryImpl,Thread-237 failed to start Repository: Cannot instantiate persistence manager org.apache.jackrabbit.core.persistence.bundle.BundleFsPersistenceManager: The bean of type: org.apache.jackrabbit.core.persistence.bundle.BundleFsPersistenceManager has no property called: minBlobSize
+javax.jcr.RepositoryException: Cannot instantiate persistence manager org.apache.jackrabbit.core.persistence.bundle.BundleFsPersistenceManager: The bean of type: org.apache.jackrabbit.core.persistence.bundle.BundleFsPersistenceManager has no property called: minBlobSize: The bean of type: org.apache.jackrabbit.core.persistence.bundle.BundleFsPersistenceManager has no property called: minBlobSize
+	at org.apache.jackrabbit.core.RepositoryImpl.createPersistenceManager(RepositoryImpl.java:1176)
+	at org.apache.jackrabbit.core.RepositoryImpl.createVersionManager(RepositoryImpl.java:390)
+	at org.apache.jackrabbit.core.RepositoryImpl.<init>(RepositoryImpl.java:294)
+	at org.apache.jackrabbit.core.RepositoryImpl.create(RepositoryImpl.java:557)
+	at pps.jcr.util.RepositoryManager.createRepository(RepositoryManager.java:117)
+	at pps.jcr.util.RepositoryManager.startRepository(RepositoryManager.java:43)
+	at pps.jcr.ejb.session.JcrUtilFacade.startRepository(JcrUtilFacade.java:62)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:39)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:25)
+	at java.lang.reflect.Method.invoke(Method.java:597)
+	at com.sun.enterprise.security.application.EJBSecurityManager.runMethod(EJBSecurityManager.java:1067)
+	at com.sun.enterprise.security.SecurityUtil.invoke(SecurityUtil.java:176)
+	at com.sun.ejb.containers.BaseContainer.invokeTargetBeanMethod(BaseContainer.java:2895)
+	at com.sun.ejb.containers.BaseContainer.intercept(BaseContainer.java:3986)
+	at com.sun.ejb.containers.EJBLocalObjectInvocationHandler.invoke(EJBLocalObjectInvocationHandler.java:197)
+	at com.sun.ejb.containers.EJBLocalObjectInvocationHandlerDelegate.invoke(EJBLocalObjectInvocationHandlerDelegate.java:127)
+	at $Proxy181.startRepository(Unknown Source)
+	at pps.jcr.web.JcrLifecycleListener.contextInitialized(JcrLifecycleListener.java:55)
+	at org.apache.catalina.core.StandardContext.listenerStart(StandardContext.java:4523)
+	at org.apache.catalina.core.StandardContext.start(StandardContext.java:5184)
+	at com.sun.enterprise.web.WebModule.start(WebModule.java:326)
+	at org.apache.catalina.core.ContainerBase.addChildInternal(ContainerBase.java:973)
+	at org.apache.catalina.core.ContainerBase.addChild(ContainerBase.java:957)
+	at org.apache.catalina.core.StandardHost.addChild(StandardHost.java:688)
+	at com.sun.enterprise.web.WebContainer.loadWebModule(WebContainer.java:1584)
+	at com.sun.enterprise.web.WebContainer.loadWebModule(WebContainer.java:1222)
+	at com.sun.enterprise.web.WebContainer.loadJ2EEApplicationWebModules(WebContainer.java:1147)
+	at com.sun.enterprise.server.TomcatApplicationLoader.doLoad(TomcatApplicationLoader.java:141)
+	at com.sun.enterprise.server.AbstractLoader.load(AbstractLoader.java:244)
+	at com.sun.enterprise.server.ApplicationManager.applicationDeployed(ApplicationManager.java:336)
+	at com.sun.enterprise.server.ApplicationManager.applicationDeployed(ApplicationManager.java:210)
+	at com.sun.enterprise.server.ApplicationManager.applicationDeployed(ApplicationManager.java:645)
+	at com.sun.enterprise.admin.event.AdminEventMulticaster.invokeApplicationDeployEventListener(AdminEventMulticaster.java:928)
+	at com.sun.enterprise.admin.event.AdminEventMulticaster.handleApplicationDeployEvent(AdminEventMulticaster.java:912)
+	at com.sun.enterprise.admin.event.AdminEventMulticaster.processEvent(AdminEventMulticaster.java:461)
+	at com.sun.enterprise.admin.event.AdminEventMulticaster.multicastEvent(AdminEventMulticaster.java:176)
+	at com.sun.enterprise.admin.server.core.DeploymentNotificationHelper.multicastEvent(DeploymentNotificationHelper.java:308)
+	at com.sun.enterprise.deployment.phasing.DeploymentServiceUtils.multicastEvent(DeploymentServiceUtils.java:226)
+	at com.sun.enterprise.deployment.phasing.ServerDeploymentTarget.sendStartEvent(ServerDeploymentTarget.java:298)
+	at com.sun.enterprise.deployment.phasing.ApplicationStartPhase.runPhase(ApplicationStartPhase.java:132)
+	at com.sun.enterprise.deployment.phasing.DeploymentPhase.executePhase(DeploymentPhase.java:108)
+	at com.sun.enterprise.deployment.phasing.PEDeploymentService.executePhases(PEDeploymentService.java:919)
+	at com.sun.enterprise.deployment.phasing.PEDeploymentService.start(PEDeploymentService.java:591)
+	at com.sun.enterprise.deployment.phasing.PEDeploymentService.start(PEDeploymentService.java:635)
+	at com.sun.enterprise.admin.mbeans.ApplicationsConfigMBean.start(ApplicationsConfigMBean.java:744)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:39)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:25)
+	at java.lang.reflect.Method.invoke(Method.java:597)
+	at com.sun.enterprise.admin.MBeanHelper.invokeOperationInBean(MBeanHelper.java:375)
+	at com.sun.enterprise.admin.MBeanHelper.invokeOperationInBean(MBeanHelper.java:358)
+	at com.sun.enterprise.admin.config.BaseConfigMBean.invoke(BaseConfigMBean.java:464)
+	at com.sun.jmx.interceptor.DefaultMBeanServerInterceptor.invoke(DefaultMBeanServerInterceptor.java:836)
+	at com.sun.jmx.mbeanserver.JmxMBeanServer.invoke(JmxMBeanServer.java:761)
+	at sun.reflect.GeneratedMethodAccessor19.invoke(Unknown Source)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:25)
+	at java.lang.reflect.Method.invoke(Method.java:597)
+	at com.sun.enterprise.admin.util.proxy.ProxyClass.invoke(ProxyClass.java:90)
+	at $Proxy1.invoke(Unknown Source)
+	at com.sun.enterprise.admin.server.core.jmx.SunoneInterceptor.invoke(SunoneInterceptor.java:304)
+	at com.sun.enterprise.interceptor.DynamicInterceptor.invoke(DynamicInterceptor.java:174)
+	at com.sun.enterprise.deployment.client.DeploymentClientUtils.startApplication(DeploymentClientUtils.java:145)
+	at com.sun.enterprise.deployment.client.DeployAction.run(DeployAction.java:537)
+	at java.lang.Thread.run(Thread.java:619)
+Caused by: java.lang.IllegalArgumentException: The bean of type: org.apache.jackrabbit.core.persistence.bundle.BundleFsPersistenceManager has no property called: minBlobSize
+	at org.apache.commons.collections.BeanMap.put(BeanMap.java:367)
+	at org.apache.jackrabbit.core.config.BeanConfig.newInstance(BeanConfig.java:109)
+	at org.apache.jackrabbit.core.RepositoryImpl.createPersistenceManager(RepositoryImpl.java:1171)
+	... 64 more
+
+<?xml version="1.0"?>
+<Repository>
+    <DataStore class="org.apache.jackrabbit.core.data.FileDataStore">
+        <param name="path" value="${rep.home}/datastore"/>
+        <param name="minRecordLength" value="100"/>
+    </DataStore>    
+    <FileSystem class="org.apache.jackrabbit.core.fs.local.LocalFileSystem">
+        <param name="path" value="${rep.home}"/>
+    </FileSystem>    
+    <Security appName="Jackrabbit">
+        <AccessManager class="org.apache.jackrabbit.core.security.SimpleAccessManager" />
+        <LoginModule class="org.apache.jackrabbit.core.security.SimpleLoginModule">
+            <param name="anonymousId" value="anonymous" />
+        </LoginModule>
+    </Security>
+    <Workspaces rootPath="${rep.home}/workspaces" defaultWorkspace="default" />
+    <Workspace name="${wsp.name}">
+        <FileSystem class="org.apache.jackrabbit.core.fs.local.LocalFileSystem">
+            <param name="path" value="${rep.home}/${wsp.name}"/>
+        </FileSystem>            
+        <!--  <PersistenceManager class="org.apache.jackrabbit.core.persistence.obj.ObjectPersistenceManager"/>  -->
+        <PersistenceManager class="org.apache.jackrabbit.core.persistence.bundle.BundleFsPersistenceManager">
+            <param name="bundleCacheSize" value="8"/> 
+            <param name="blobFSBlockSize" value="0"/> 
+            <param name="minBlobSize" value="4096"/> 
+            <param name="errorHandling" value=""/>             
+        </PersistenceManager>        
+        <SearchIndex class="org.apache.jackrabbit.core.query.lucene.SearchIndex">
+            <param name="path" value="${wsp.home}/index"/>    
+            <param name="textFilterClasses" value="
+                   org.apache.jackrabbit.extractor.MsExcelTextExtractor,
+                   org.apache.jackrabbit.extractor.MsPowerPointTextExtractor,
+                   org.apache.jackrabbit.extractor.MsWordTextExtractor,
+                   org.apache.jackrabbit.extractor.PdfTextExtractor,
+                   org.apache.jackrabbit.extractor.PlainTextExtractor,
+                   org.apache.jackrabbit.extractor.HTMLTextExtractor,
+                   org.apache.jackrabbit.extractor.XMLTextExtractor,
+                   org.apache.jackrabbit.extractor.RTFTextExtractor,
+            org.apache.jackrabbit.extractor.OpenOfficeTextExtractor"/>
+        </SearchIndex>
+    </Workspace>
+    <Versioning rootPath="${rep.home}/version">
+        <FileSystem class="org.apache.jackrabbit.core.fs.local.LocalFileSystem">
+            <param name="path" value="${rep.home}/version"/>
+        </FileSystem>                
+        <!-- <PersistenceManager class="org.apache.jackrabbit.core.persistence.obj.ObjectPersistenceManager"/> -->
+        <PersistenceManager class="org.apache.jackrabbit.core.persistence.bundle.BundleFsPersistenceManager">
+            <param name="bundleCacheSize" value="8"/> 
+            <param name="blobFSBlockSize" value="0"/> 
+            <param name="minBlobSize" value="4096"/> 
+            <param name="errorHandling" value=""/>             
+        </PersistenceManager>            
+    </Versioning>
+    <SearchIndex class="org.apache.jackrabbit.core.query.lucene.SearchIndex">
+        <param name="path" value="${rep.home}/index"/>    
+        <param name="textFilterClasses" value="
+               org.apache.jackrabbit.extractor.MsExcelTextExtractor,
+               org.apache.jackrabbit.extractor.MsPowerPointTextExtractor,
+               org.apache.jackrabbit.extractor.MsWordTextExtractor,
+               org.apache.jackrabbit.extractor.PdfTextExtractor,
+               org.apache.jackrabbit.extractor.PlainTextExtractor,
+               org.apache.jackrabbit.extractor.HTMLTextExtractor,
+               org.apache.jackrabbit.extractor.XMLTextExtractor,
+               org.apache.jackrabbit.extractor.RTFTextExtractor,
+        org.apache.jackrabbit.extractor.OpenOfficeTextExtractor"/>
+    </SearchIndex>    
+</Repository>
+

@@ -1,0 +1,18 @@
+BooleanQuery can not find all matches in special condition
+
+
+
+Description:
+query: (name:tang*)
+doc=5137 score=1.0  doc:Document<stored,indexed<name:tangfulin>>
+doc=11377 score=1.0  doc:Document<stored,indexed<name:tangfulin>>
+query: name:tang* name:notexistnames
+doc=5137 score=0.048133932  doc:Document<stored,indexed<name:tangfulin>>
+
+It is two queries on the same index, one is just a prefix query in a
+boolean query, and the other is a prefix query plus a term query in a
+boolean query, all with Occur.SHOULD .
+
+what I wonder is why the later query can not find the doc=11377 doc ?
+
+the problem can be repreduced by the code in the attachment .

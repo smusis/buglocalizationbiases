@@ -1,0 +1,6 @@
+Make Jackrabbit repository DTD easier to extend
+
+
+
+Description:
+It would be nice if a downstream project could easily extend the Jackrabbit repository configuration format by adding new configuration elements under the <Repository> root. Currently that can only be done by customizing a copy of the entire DTD. It would be better if the relevant parts of the DTD could simply be included via an external parameter entity into a downstream DTD.

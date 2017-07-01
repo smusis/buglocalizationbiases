@@ -1,0 +1,7 @@
+broken link to the release notes
+
+
+
+Description:
+On http://jakarta.apache.org/httpcomponents/httpclient-3.x/downloads.html
+the link to the release notes is broken

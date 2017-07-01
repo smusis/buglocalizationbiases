@@ -1,0 +1,11 @@
+HeaderElement#parse(String) implementation is not optimal
+
+
+
+Description:
+The cookie setted by the LocalDirector 416 Version 4.2.3 has a bug.
+It sets for Tuesday and Thursday "Tues" and "Thur" instead of the 
+canonical "Tue" and "Thu". This break the parsing stage and stop HttpClient to 
+work for 2 days a week. Of course I modified the parse method in HeaderElement 
+class, but everytime I download a new version, I have to remake the jar....
+It's possible to include this into the CVS files ?

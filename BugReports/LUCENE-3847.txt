@@ -1,0 +1,8 @@
+LuceneTestCase should check for modifications on System properties
+
+
+
+Description:
+- fail the test if changes have been detected.
+- revert the state of system properties before the suite.
+- cleanup after the suite.

@@ -1,0 +1,8 @@
+Infinite loop on basic authentication
+
+
+
+Description:
+Class org.apache.http.impl.client.DefaultRequestDirector has a bug whereby when Authentication fails if the log is not warnEnabled then you will receive a retry request and end up in an infinite loop retrying requests.. This occurred for me when SL4J was being picked up as the implementation but not properly configured.
+
+In 4.1.2 the line number of the offending code is in the handleResponse method, line 1126, the return null statement requires moving outside of the if statement that checkes if the log is warn enabled.

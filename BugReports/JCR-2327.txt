@@ -1,0 +1,10 @@
+java.util.UUID.fromString() too slow
+
+
+
+Description:
+Benchmarking shows that the java.util.UUID.fromString() method is 10 times slower than the previous version we used from jackrabbit-jcr-commons. This method is quite heavily used in the query section or more generally whenever a NodeId is created from a String.
+
+I'd like to introduce the custom String UUID parsing code again that we had in the jackrabbit-jcr-commons UUID class and use it in the NodeId(String) constructor.
+
+WDYT?

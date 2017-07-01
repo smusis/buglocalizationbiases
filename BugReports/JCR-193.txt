@@ -1,0 +1,11 @@
+MultiStatus response for PROPPATCH (copied from JCR-175)
+
+
+
+Description:
+Rob Owen commented on JCR-175:
+--------------------------------------------------
+
+doPropPatch in AbstractWebdavServlet still needs to send back a multistatus (207) response even in the successful case.
+
+I didn't see a way to collect the success/failure status for each property, but instead created a multistatus response and added a propstat (SC_OK) for each of the properties in the setProperties and removeProperties. This allowed a WebDAV client, which expected a multistatus response from PROPPATCH, to work correctly with jcr-server. In the more general case the actual property status code will need to be used .

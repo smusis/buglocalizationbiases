@@ -1,0 +1,18 @@
+Destination URI should be normalized
+
+
+
+Description:
+WebdavRequestImpl.getHrefLocator tests if the URI passed as parameter starts with the context path, and passes the next segments to the locator factory.
+ 
+There is a potential hole if the parameter contains "..", because "http://example.com/dav/../foo" starts with the context path "http://example.com/dav" but represents to "http://example.com/foo". Currently, it is up to the locator factory to detect this situation, meaning that every locator factory should implement this check. Additionally, DavLocatorFactory.createResourceLocator cannot throw exceptions, hence it would not fail cleanly (RuntimeException causing a 500 INTERNAL SERVER ERROR response, when a 403 FORBIDDEN status code would have been apropriate)
+
+Note that the Request-URI should have already been normalized by the servlet container, but in COPY/MOVE operations, the Destination-URI is not normalized.
+
+Conformant clients MUST NOT use dot-segments ("." or "..")  [RFC 4918, Section 8.3] in Simple-Ref constructions such as the Destination header [RFC 4918, Section 10.3]), but the server should be able to detect this error.
+
+Proposed change in WebdavRequestImpl:193 (in package org.apache.jackrabbit.webdav from webdav/java)
+- ref = uri.getRawPath();
++ ref = uri.normalize().getRawPath();
+
+(This causes /dav/../foo to be rejected because it doesn't start with the context path, and accepts dav/foo/../bar because it starts with the context path)

@@ -1,0 +1,8 @@
+Use ConcurrentHashMap instead of HashMap wherever thread-safe access is needed
+
+
+
+Description:
+Consider using ConcurrentHashMap instead of HashMap for any Maps that are used by multiple threads.
+
+For example SchemeRegistry and AuthSchemeRegistry.

@@ -1,0 +1,6 @@
+Create OSGi Bundles from jackrabbit-webdav and jackrabbit-jcr-server libraries
+
+
+
+Description:
+Propose to generate bundles from the jackrabbit-webdav (exporting everything) and jackrabbit-jcr-server (exporting nothing) libraries. In addition a new class is added to the jackrabbit-jcr-server library, which in case of deployment in an OSGi framework will register a Servlet with the OSGi HttpService to expose the JcrRemotingServlet.

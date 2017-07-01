@@ -1,0 +1,47 @@
+MatchAllScorer calculateDocFilter() bug
+
+
+
+Description:
+In MatchAllScorer.calculateDocFilter(), When you have just two nodes, with different properties, like "myprop" and "myprop2", and you have an xpath String xpath = "//*[@myprop], you get both nodes back (to be precise, you'll get every node that has a property that startswith "myprop")
+
+
+You can reproduce it by changing the SimpleQueryTest.testIsNotNull() a little:
+
+Change 
+
+bar.setProperty("text", "the quick brown fox jumps over the lazy dog."); 
+
+to
+
+bar.setProperty("mytextwhichstartswithmytext", "the quick brown fox jumps over the lazy dog.");
+
+Now the test with xpath = "//*[@jcr:primaryType='nt:unstructured' and @mytext]"; fails because 2 results. I did test for the trunk and tag 1.3.1 and both have the same problem. I have attached MatchAllScorer.java.patch in this mail, or should I create a JIRA issue for this? 
+
+Furthermore I would like to discuss a different implementation for the MatchAllScorer, because IMHO the current calculateDocFilter() becomes slow pretty fast (see bottom email the code part i am referring to: if you have 100.000 docs with "mytext" property, and you query  [@mytext] the loop below is executed at least 100.000 times). I think it might be out of scope for the user-list, or is the user-list the place to discuss something like this? 
+
+-----------------------------------------------------------------------
+
+TermEnum terms = reader.terms(new Term(FieldNames.PROPERTIES, field));
+        try {
+            TermDocs docs = reader.termDocs();
+            try {
+                while (terms.term() != null
+                        && terms.term().field() == FieldNames.PROPERTIES
+                        && terms.term().text().startsWith(field)) {
+                    docs.seek(terms);
+                    while (docs.next()) {
+                        docFilter.set(docs.doc());
+                    }
+                    terms.next();
+                }
+            } finally {
+                docs.close();
+            }
+        } finally {
+            terms.close();
+        }
+
+-----------------------------------------------------------------------
+
+

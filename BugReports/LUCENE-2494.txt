@@ -1,0 +1,17 @@
+Modify ParallelMultiSearcher to use a CompletionService instead of slowly polling for results
+
+
+
+Description:
+Right now, the parallel multi searcher creates an array/list of Future<V> representing each of the searchables that's being concurrently searched (and its corresponding search task).
+
+As it stands, once the tasks are all submitted to the executor, the array is iterated over, FIFO, and Future.get() is called iteratively.  This obviously works, but isn't ideal.  It's entirely possible (a situation I've run into) where one of the first searchables represents a large index that takes a long time to search, so the results of the other searchables can't be processed until the large index is done searching.  In my case, we have two indexes with several million records that get searched in front of some other indexes, the smallest of which has only a few ten thousand entries and I didn't think it was ideal for the results of the other indexes to wait.
+
+I've modified ParallelMultiSearcher to use CompletionServices instead, so that results are processed in the order they are completed, rather than the order that they are submitted.  All the tests still pass, and to the best of my knowledge this won't break anything.  This have several advantages:
+1) Speed - the thread owning the executor doesn't have to wait for the first submitted task to finish in order to process the results of the other tasks, which may have finished first
+2) Removed several warnings (even if they are annotated away) due to the ugliness of typecasting generic arrays.
+3) Decreased the complexity of the code in some cases, usually by removing the necessity of allocating and filling arrays.
+
+With a primed "cache" of searchables, I was getting 700-1200 ms per search, and using the same phrases, with this patch, I am now getting 400-500ms per search :)
+
+Patch is attached.

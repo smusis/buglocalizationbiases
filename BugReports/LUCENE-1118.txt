@@ -1,0 +1,21 @@
+core analyzers should not produce tokens > N (100?) characters in length
+
+
+
+Description:
+Discussion that led to this:
+
+  http://www.gossamer-threads.com/lists/lucene/java-dev/56103
+
+I believe nearly any time a token > 100 characters in length is
+produced, it's a bug in the analysis that the user is not aware of.
+
+These long tokens cause all sorts of problems, downstream, so it's
+best to catch them early at the source.
+
+We can accomplish this by tacking on a LengthFilter onto the chains
+for StandardAnalyzer, SimpleAnalyzer, WhitespaceAnalyzer, etc.
+
+Should we do this in 2.3?  I realize this is technically a break in
+backwards compatibility, however, I think it must be incredibly rare
+that this break would in fact break something real in the application?

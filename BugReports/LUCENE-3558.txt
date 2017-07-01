@@ -1,0 +1,14 @@
+SearcherManager and NRTManager should be in the same package
+
+
+
+Description:
+I didnt even know NRTManager was still around, because its in the .index package, whereas SearcherManager is in the .search package.
+
+Separately, I don't like that this stuff is so 'hard' with core lucene... would it be so bad if this stuff was added to core?
+
+I suspect a lot of people have issues with this stuff (see http://www.lucidimagination.com/search/document/37964e5f0e5d733b) for example.
+
+Worst case is just that, combine mistakes with trying to manage this stuff with MMap unmapping and total lack of error detection
+for searching closed readers (LUCENE-3439) and its a mess.
+

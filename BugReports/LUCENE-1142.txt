@@ -1,0 +1,14 @@
+Updated Snowball package
+
+
+
+Description:
+Updated Snowball contrib package
+
+ * New org.tartarus.snowball java package with patched SnowballProgram to be abstract to avoid using reflection.
+ * Introducing Hungarian, Turkish and Romanian stemmers
+ * Introducing constructor SnowballFilter(SnowballProgram)
+
+It is possible there have been some changes made to the some of there stemmer algorithms between this patch and the current SVN trunk of Lucene, an index might thus not be compatible with new stemmers!
+
+The API is backwards compatibile and the test pass.

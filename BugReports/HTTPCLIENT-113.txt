@@ -1,0 +1,25 @@
+NullPointerException in HttpMethodBase.getResponseBodyAsString
+
+
+
+Description:
+The following code in a cocoon component, causes the NPE.
+A delay seems to help sometimes.
+
+-------------
+      int htcode = httpClient.executeMethod( method );
+       
+      // @todo: fix-me
+      // This sleep() is a temporary workaround 
+      // to avoid NullPointerException in the next line.
+      Thread.currentThread().sleep( 100 ); 
+
+      String ret = method.getResponseBodyAsString();
+---------------------
+
+java.lang.NullPointerException 
+at java.lang.String.<init>(String.java:399) 
+at org.apache.commons.httpclient.HttpMethodBase.getResponseBodyAsString
+(HttpMethodBase.java:579) 
+at org.apache.cocoon.generation.WebServiceProxyGenerator.fetch
+(WebServiceProxyGenerator.java:264)

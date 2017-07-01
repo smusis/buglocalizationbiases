@@ -1,0 +1,10 @@
+Optimize SegmentMerger to work on atomic (Segment)Readers where possible
+
+
+
+Description:
+This is a spin-off from LUCENE-2769:
+
+Currently SegmentMerger has some optimizations when it merges segments that are SegmentReaders (e.g. when doing normal indexing or optimizing). But when you do IndexWriter.addIndexes(IndexReader...) the listed IndexReaders may not really be per-segment. SegmentMerger should track down all passed in reads down to the lowest level (Segment)Reader (or other atomic readers like SlowMultiReaderWrapper) and then merge. We can then remove most MultiFields usage (except term merging itsself) and clean up the code.
+
+This especially saves lots of memory for merging norms, as no longer the duplicate norms arrays are created when MultiReaders are used!

@@ -1,0 +1,9 @@
+Fold AuthSSLProtocolSocketFactory into HttpClient proper
+
+
+
+Description:
+Include the functionality of the AuthSSLProtocolSocketFactory class into the
+main distribution of HttpClient
+
+http://svn.apache.org/repos/asf/jakarta/commons/proper/httpclient/trunk/src/contrib/org/apache/commons/httpclient/contrib/ssl/

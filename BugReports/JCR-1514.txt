@@ -1,0 +1,13 @@
+SPI: Javadoc Issue with QNodeTypeDefinition#getPropertyDefs and #getChildNodeDefs
+
+
+
+Description:
+Javadoc of the mentioned methods currently states:
+
+@return an array containing the property definitions or
+     *         <code>null</code> if not set.
+
+while the default implementation returns an empty array, which i find much nicer.
+
+if nobody objects, i would fix the javadoc accordingly.

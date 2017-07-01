@@ -1,0 +1,6 @@
+Add method getID to interface ItemInfo
+
+
+
+Description:
+ItemInfo is the base for NodeInfo and PropertyInfo both of which declare a method getId with return type NodeId and PropertyId, respectively. With Java 1.5. it is now possible to override a method with a covariant return type. I thus propose to introduce a method getId on ItemInfo with return type ItemId which is the common base type of NodeId and PropertyId.

@@ -1,0 +1,23 @@
+BundleDbPersistenceManager.checkConsistency() only fixes inconsistency if consistencyFix is enabled in configuration
+
+
+
+Description:
+The method has a parameter that explicitly tells whether an inconsistency should be fixed, thus the configuration parameter should be ignored.
+
+Suggested patch:
+
+Index: BundleDbPersistenceManager.java
+===================================================================
+--- BundleDbPersistenceManager.java	(revision 648657)
++++ BundleDbPersistenceManager.java	(working copy)
+@@ -864,7 +864,7 @@
+         }
+ 
+         // repair collected broken bundles
+-        if (consistencyFix && !modifications.isEmpty()) {
++        if (fix && !modifications.isEmpty()) {
+             log.info(name + ": Fixing " + modifications.size() + " inconsistent bundle(s)...");
+             Iterator iterator = modifications.iterator();
+             while (iterator.hasNext()) {
+

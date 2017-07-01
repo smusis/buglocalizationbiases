@@ -1,0 +1,15 @@
+JCR2SPI: Workspace.getImportHandler creates a handler which doesn't work properly under JDK 1.4.
+
+
+
+Description:
+JCR2SPI returns an import handler which delegates work to a SAXTransformerHandler. In JDK, that one has a known issue not processing namespace prefix mappings properly (will attach a separate test case).
+
+Proposals:
+
+- drop JDK 1.4 support
+- tune the JCR2SPI handler to create namespace attributes when needed
+- use an entirely different serializer
+
+My personal preference would be just to drop JDK 1.4 support, but that may not be acceptable for everyone.
+

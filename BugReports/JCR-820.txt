@@ -1,0 +1,11 @@
+Add support for query result highlighting
+
+
+
+Description:
+Highlighting matches in a query result list is regularly needed for an application. The query languages should support a pseudo property or function that allows one to retrieve text fragments with highlighted matches from the content of the matching node.
+
+To support this feature the following enhancements are required:
+- define a pseudo property or function that returns the text excerpt and can be used in the select clause
+- the index needs to *store* the original text it used when the node was indexed. this also includes extracted text from binary properties.
+- text fragments must be created based on the original text, the query and index information

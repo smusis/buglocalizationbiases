@@ -1,0 +1,10 @@
+sort missing string fields last
+
+
+
+Description:
+A SortComparatorSource for string fields that orders documents with the sort
+field missing after documents with the field.  This is the reverse of the
+default Lucene implementation.
+
+The concept and first-pass implementation was done by Chris Hostetter.

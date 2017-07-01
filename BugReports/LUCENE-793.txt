@@ -1,0 +1,11 @@
+Javadocs should explain possible causes for IOExceptions
+
+
+
+Description:
+
+Most methods in Lucene reserve the right to throw an IOException.  This can occur for nearly all methods from low level problems like wrong permissions, transient IO errors, bad hard drive or corrupted file system, corrupted index, etc, but for some methods there are also more interesting causes that we should try to document.
+
+Spinoff of this thread:
+
+    http://www.gossamer-threads.com/lists/lucene/java-user/44929

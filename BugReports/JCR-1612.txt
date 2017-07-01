@@ -1,0 +1,18 @@
+Reintroduce NamespaceStorage
+
+
+
+Description:
+hi jukka
+
+i open this issue as a reminder of our recent discussion in basel:
+
+we decided that you will 
+- reintroduce the NamespaceStorage you recently removed from jcr2spi
+- reintroduce a namespace cache in jcr2spi (but using a simple map instead of NamespaceCache object)
+
+in addition we agreed that we want to share the NamespaceRegistryImpl between jcr2spi and jackrabbit-core
+and you volenteered to provide a patch for that.
+
+thanks in advance
+angela

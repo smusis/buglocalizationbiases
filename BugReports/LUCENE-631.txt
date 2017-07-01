@@ -1,0 +1,24 @@
+GData Server - Milestone 3 Patch, Bugfixes, Documentation
+
+
+
+Description:
+For Milestone 3 added Features:
+
+- Update Delete Concurrency
+- Version control
+- Second storage impl. based on Db4o. (Distributed Storage)
+- moved all configuration in one single config file.
+- removed dependencies in testcases.
+- added schema validation for and all  xml files in the project (Configuration etc.)
+- added JavaDoc
+- much better Performance after reusing some resources
+- added recovering component to lucene based storage to recover entries after a server crash or OOM Error (very simple)
+
+- solved test case fail on hyperthread / multi core machines (@ hossman: give it a go)
+
+@Yonik && Doug could you get that stuff in the svn please
+
+regards simon
+
+

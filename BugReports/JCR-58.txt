@@ -1,0 +1,39 @@
+warning: unmappable character for encoding UTF8
+
+
+
+Description:
+There are a few non-ASCII characters in the Jackrabbit source files that cause warnings at least in my environment. It seems that all the warnings are caused by "smart quote" characters.
+
+The exact warnings are: 
+
+/home/hukka/workspace/Jackrabbit/src/java/org/apache/jackrabbit/core/NodeImpl.java:3068: warning: unmappable character for encoding UTF8
+            // &#65533;newer&#65533; than N and therefore N should be updated to reflect N'.
+               ^
+/home/hukka/workspace/Jackrabbit/src/java/org/apache/jackrabbit/core/NodeImpl.java:3068: warning: unmappable character for encoding UTF8
+            // &#65533;newer&#65533; than N and therefore N should be updated to reflect N'.
+                     ^
+/home/hukka/workspace/Jackrabbit/src/java/org/apache/jackrabbit/core/NodeImpl.java:3074: warning: unmappable character for encoding UTF8
+            // N' is &#65533;older&#65533; or the &#65533;same age&#65533; as N and therefore N should be left alone.
+                     ^
+/home/hukka/workspace/Jackrabbit/src/java/org/apache/jackrabbit/core/NodeImpl.java:3074: warning: unmappable character for encoding UTF8
+            // N' is &#65533;older&#65533; or the &#65533;same age&#65533; as N and therefore N should be left alone.
+                           ^
+/home/hukka/workspace/Jackrabbit/src/java/org/apache/jackrabbit/core/NodeImpl.java:3074: warning: unmappable character for encoding UTF8
+            // N' is &#65533;older&#65533; or the &#65533;same age&#65533; as N and therefore N should be left alone.
+                                    ^
+/home/hukka/workspace/Jackrabbit/src/java/org/apache/jackrabbit/core/NodeImpl.java:3074: warning: unmappable character for encoding UTF8
+            // N' is &#65533;older&#65533; or the &#65533;same age&#65533; as N and therefore N should be left alone.
+                                             ^
+/home/hukka/workspace/Jackrabbit/src/java/org/apache/jackrabbit/core/NodeImpl.java:3376: warning: unmappable character for encoding UTF8
+        // 2. N&#65533;s jcr:baseVersion property will be changed to point to V.
+               ^
+/home/hukka/workspace/Jackrabbit/src/java/org/apache/jackrabbit/core/NodeImpl.java:3382: warning: unmappable character for encoding UTF8
+        // 3. N&#65533;s jcr:isCheckedOut property is set to false.
+
+/home/hukka/workspace/Jackrabbit/src/test/org/apache/jackrabbit/test/api/version/CheckinTest.java:80: warning: unmappable character for encoding UTF8
+        assertEquals("The versionable checked-out node&#65533;s jcr:predecessors property is copied to the new version on checkin.", Arrays.asList(nPredecessorsValue), Arrays.asList(vPredecessorsValue));
+                                                      ^
+/home/hukka/workspace/Jackrabbit/src/test/org/apache/jackrabbit/init/NodeTestData.java:95: warning: unmappable character for encoding UTF8
+        writer.write("Hello w&#65533;rld.");
+

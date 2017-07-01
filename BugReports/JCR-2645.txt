@@ -1,0 +1,11 @@
+XML text extraction in Jackrabbit 1.x accesses external resources
+
+
+
+Description:
+As discussed on users@, we should add the following code to the ExtractorHandler class:
+
+   public InputSource resolveEntity(String publicId, String systemId) {
+       return new InputSource(new ByteArrayInputStream(new byte[0]));
+   }
+

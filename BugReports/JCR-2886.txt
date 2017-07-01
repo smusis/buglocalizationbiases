@@ -1,0 +1,7 @@
+Add SessionImpl#isAdminOrSystem
+
+
+
+Description:
+we have several places in jackrabbit-core where we need to find out if the executing session is either a SystemSession or corresponds to the admin user.
+currently the same code (analysing the sessions subject) is copied throughout jackrabbit-core. i would like to replace that by a helper method on SessionImpl.

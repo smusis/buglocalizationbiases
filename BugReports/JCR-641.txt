@@ -1,0 +1,6 @@
+can't add lock token to session after 3 login/logout
+
+
+
+Description:
+I login and lock a file and logout. Perfoms a new login and add the previous lock token to the current session because I want to unlock this file. This works fine. But if I do a new logout/login I can't unlock the file (the file is locked). It is best understanded looking at the test case.

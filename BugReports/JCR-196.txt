@@ -1,0 +1,9 @@
+jcr:like() does not scale well on large value ranges
+
+
+
+Description:
+There are two major issues with the current WildcardQuery implementation:
+
+1) A wildcard expression is restricted to match at most 1024 terms, otherwise a TooManyClauses exception is thrown. Similar to the RangeQuery issue: JCR-111
+2) The enumeration over the terms that match the wildcard pattern is slow

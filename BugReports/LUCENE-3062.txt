@@ -1,0 +1,33 @@
+TestBytesRefHash#testCompact is broken
+
+
+
+Description:
+TestBytesRefHash#testCompact fails when run with ant test -Dtestcase=TestBytesRefHash -Dtestmethod=testCompact -Dtests.seed=-7961072421643387492:5612141247152835360
+{noformat}
+
+    [junit] Testsuite: org.apache.lucene.util.TestBytesRefHash
+    [junit] Tests run: 1, Failures: 0, Errors: 1, Time elapsed: 0.454 sec
+    [junit] 
+    [junit] ------------- Standard Error -----------------
+    [junit] NOTE: reproduce with: ant test -Dtestcase=TestBytesRefHash -Dtestmethod=testCompact -Dtests.seed=-7961072421643387492:5612141247152835360
+    [junit] NOTE: test params are: codec=PreFlex, locale=et, timezone=Pacific/Tahiti
+    [junit] NOTE: all tests run in this JVM:
+    [junit] [TestBytesRefHash]
+    [junit] NOTE: Linux 2.6.35-28-generic amd64/Sun Microsystems Inc. 1.6.0_24 (64-bit)/cpus=12,threads=1,free=363421800,total=379322368
+    [junit] ------------- ---------------- ---------------
+    [junit] Testcase: testCompact(org.apache.lucene.util.TestBytesRefHash):	Caused an ERROR
+    [junit] bitIndex < 0: -27
+    [junit] java.lang.IndexOutOfBoundsException: bitIndex < 0: -27
+    [junit] 	at java.util.BitSet.set(BitSet.java:262)
+    [junit] 	at org.apache.lucene.util.TestBytesRefHash.testCompact(TestBytesRefHash.java:146)
+    [junit] 	at org.apache.lucene.util.LuceneTestCase$LuceneTestCaseRunner.runChild(LuceneTestCase.java:1260)
+    [junit] 	at org.apache.lucene.util.LuceneTestCase$LuceneTestCaseRunner.runChild(LuceneTestCase.java:1189)
+    [junit] 
+    [junit] 
+    [junit] Test org.apache.lucene.util.TestBytesRefHash FAILED
+{noformat}
+
+the test expects that _TestUtil.randomRealisticUnicodeString(random, 1000); will never return the same string.
+
+I will upload a patch soon.

@@ -1,0 +1,9 @@
+CacheManager resizeAll is slow
+
+
+
+Description:
+CacheManager.resizeAll calls log.debug with a complex constructed log message.
+The message is immediately discarded except when using the debug log level.
+
+To improve performance, log.isDebugEnabled() should be used.

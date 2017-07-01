@@ -1,0 +1,52 @@
+TestTermInfosReaderIndex failing (always reproducible)
+
+
+
+Description:
+Always fails on branch (use reproduce string below):
+git clone --depth 1 -b rr git@github.com:dweiss/lucene_solr.git
+
+{noformat}
+[junit4] Running org.apache.lucene.codecs.lucene3x.TestTermInfosReaderIndex
+[junit4] FAILURE 0.04s J0 | TestTermInfosReaderIndex.testSeekEnum
+[junit4]    > Throwable #1: java.lang.AssertionError: expected:<field9:z91ob3wozm6d> but was:<:>
+[junit4]    > 	at __randomizedtesting.SeedInfo.seed([C7597DFBBE0B3D7D:C6D9CEDD0700AAFF]:0)
+[junit4]    > 	at org.junit.Assert.fail(Assert.java:93)
+[junit4]    > 	at org.junit.Assert.failNotEquals(Assert.java:647)
+[junit4]    > 	at org.junit.Assert.assertEquals(Assert.java:128)
+[junit4]    > 	at org.junit.Assert.assertEquals(Assert.java:147)
+[junit4]    > 	at org.apache.lucene.codecs.lucene3x.TestTermInfosReaderIndex.testSeekEnum(TestTermInfosReaderIndex.java:137)
+[junit4]    > 	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+[junit4]    > 	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:39)
+[junit4]    > 	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:25)
+[junit4]    > 	at java.lang.reflect.Method.invoke(Method.java:597)
+[junit4]    > 	at com.carrotsearch.randomizedtesting.RandomizedRunner.invoke(RandomizedRunner.java:1766)
+[junit4]    > 	at com.carrotsearch.randomizedtesting.RandomizedRunner.access$1000(RandomizedRunner.java:141)
+[junit4]    > 	at com.carrotsearch.randomizedtesting.RandomizedRunner$6.evaluate(RandomizedRunner.java:728)
+[junit4]    > 	at com.carrotsearch.randomizedtesting.RandomizedRunner$7.evaluate(RandomizedRunner.java:789)
+[junit4]    > 	at com.carrotsearch.randomizedtesting.RandomizedRunner$8.evaluate(RandomizedRunner.java:803)
+[junit4]    > 	at org.apache.lucene.util.LuceneTestCase$SubclassSetupTeardownRule$1.evaluate(LuceneTestCase.java:744)
+[junit4]    > 	at org.apache.lucene.util.LuceneTestCase$InternalSetupTeardownRule$1.evaluate(LuceneTestCase.java:636)
+[junit4]    > 	at org.apache.lucene.util.SystemPropertiesInvariantRule$1.evaluate(SystemPropertiesInvariantRule.java:22)
+[junit4]    > 	at org.apache.lucene.util.LuceneTestCase$TestResultInterceptorRule$1.evaluate(LuceneTestCase.java:550)
+[junit4]    > 	at org.apache.lucene.util.LuceneTestCase$RememberThreadRule$1.evaluate(LuceneTestCase.java:600)
+[junit4]    > 	at com.carrotsearch.randomizedtesting.RandomizedRunner.runSingleTest(RandomizedRunner.java:735)
+[junit4]    > 	at com.carrotsearch.randomizedtesting.RandomizedRunner.access$600(RandomizedRunner.java:141)
+[junit4]    > 	at com.carrotsearch.randomizedtesting.RandomizedRunner$3$1.run(RandomizedRunner.java:586)
+[junit4]    > 	at com.carrotsearch.randomizedtesting.RandomizedRunner$3.evaluate(RandomizedRunner.java:605)
+[junit4]    > 	at com.carrotsearch.randomizedtesting.RandomizedRunner$4.evaluate(RandomizedRunner.java:641)
+[junit4]    > 	at com.carrotsearch.randomizedtesting.RandomizedRunner$5.evaluate(RandomizedRunner.java:652)
+[junit4]    > 	at org.apache.lucene.util.SystemPropertiesInvariantRule$1.evaluate(SystemPropertiesInvariantRule.java:22)
+[junit4]    > 	at com.carrotsearch.randomizedtesting.RandomizedRunner.runSuite(RandomizedRunner.java:533)
+[junit4]    > 	at com.carrotsearch.randomizedtesting.RandomizedRunner.access$400(RandomizedRunner.java:141)
+[junit4]    > 	at com.carrotsearch.randomizedtesting.RandomizedRunner$2.run(RandomizedRunner.java:479)
+[junit4]    > 
+[junit4]   2> NOTE: reproduce with: ant test -Dtests.filter=*.TestTermInfosReaderIndex -Dtests.filter.method=testSeekEnum -Drt.seed=C7597DFBBE0B3D7D -Dargs="-Dfile.encoding=UTF-8"
+[junit4]   2>
+[junit4]    > (@AfterClass output)
+[junit4]   2> NOTE: test params are: codec=Appending, sim=DefaultSimilarity, locale=en, timezone=Atlantic/Stanley
+[junit4]   2> NOTE: all tests run in this JVM:
+[junit4]   2> [TestLock, TestFileSwitchDirectory, TestWildcardRandom, TestVersionComparator, TestTermdocPerf, TestBitVector, TestParallelTermEnum, TestSimpleSearchEquivalence, TestNumericRangeQuery64, TestSort, TestIsCurrent, TestToken, TestIntBlockCodec, TestDocumentsWriterDeleteQueue, TestPagedBytes, TestThreadedForceMerge, TestOmitTf, TestSegmentTermEnum, TestIndexWriterConfig, TestCheckIndex, TestTermVectorsWriter, TestNumericTokenStream, TestSearchAfter, TestRegexpQuery, InBeforeClass, InAfterClass, InTestMethod, NonStringProperties, TestIndexWriterMergePolicy, TestVirtualMethod, TestFieldCache, TestSurrogates, TestSegmentTermDocs, TestMultiValuedNumericRangeQuery, TestBasicOperations, TestCodecs, TestDateSort, TestPositiveScoresOnlyCollector, TestBooleanQuery, TestIndexInput, TestMinimize, TestNumericRangeQuery32, TestBoolean2, TestSloppyPhraseQuery, TestNoDeletionPolicy, TestFieldCacheTermsFilter, TestRandomStoredFields, TestDocBoost, TestTransactionRollback, TestUnicodeUtil, TestIndexWriterLockRelease, TestUTF32ToUTF8, TestFixedBitSet, TestDoubleBarrelLRUCache, TestTimeLimitingCollector, TestSpanFirstQuery, TestDirectory, TestSpansAdvanced2, TestConcurrentMergeScheduler, TestIndexWriterExceptions, TestDocValues, TestCustomNorms, TestFieldValueFilter, TestTermVectors, TestTermInfosReaderIndex]
+[junit4]   2> NOTE: Linux 2.6.32-38-server amd64/Sun Microsystems Inc. 1.6.0_20 (64-bit)/cpus=4,threads=1,free=100102360,total=243859456
+[junit4]   2> 
+{noformat}

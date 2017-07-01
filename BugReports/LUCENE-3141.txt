@@ -1,0 +1,11 @@
+FastVectorHighlighter - expose FieldFragList.fragInfo for user-customizable FragmentsBuilder
+
+
+
+Description:
+Needed to build a custom highlightable snippet - snippet should start with the sentence containing the first match, then continue for 250 characters.
+
+So created a custom FragmentsBuilder extending SimpleFragmentsBuilder and overriding the createFragments(IndexReader reader, int docId, String fieldName, FieldFragList fieldFragList) method - unit test containing the code is attached to the JIRA.
+
+To get this to work, needed to expose (make public) the FieldFragList.fragInfo member variable. This is currently package private, so only FragmentsBuilder implementations within the lucene-highlighter o.a.l.s.vectorhighlight package (such as SimpleFragmentsBuilder) can access it. Since I am just using the lucene-highlighter.jar as an external dependency to my application, the simplest way to access FieldFragList.fragInfo in my class was to make it public.
+

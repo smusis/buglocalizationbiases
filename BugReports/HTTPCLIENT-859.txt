@@ -1,0 +1,13 @@
+BasicCookieStore treats cookies of the same name from the same host as duplicates, even if they have different paths
+
+
+
+Description:
+The DefaultHttpClient is not handling cookies correctly when a single host returns multiple cookies of the same name but with separate paths.  For example, if a single instance of the client is used to access two different webapps on the same server, it may receive two different JSESSIONID cookies:
+
+Cookie: [version: 0][name: JSESSIONID][value: F832C01D23F501CE5EEB296B602700C1][domain: lglom139.example.com][path: /msa-adrenalina][expiry: null]
+Cookie: [version: 0][name: JSESSIONID][value: 0FC660347391B93267168F84F2B520F5][domain: lglom139.example.com][path: /maps][expiry: null]
+
+Because the CookieIdentityComparator class does not test the cookie path when determining equality, each new JSESSIONID received replaces the previous one instead of adding a new cookie to the store.  This results in "disconnecting" the client from its sessions on the prior webapps.
+
+I've confirmed that adding a path test to CookieIdentityComparator resolves this problem.

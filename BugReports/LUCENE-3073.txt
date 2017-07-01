@@ -1,0 +1,10 @@
+make compoundfilewriter public
+
+
+
+Description:
+CompoundFileReader is public, but CompoundFileWriter is not.
+
+I propose we make it public + @lucene.internal instead (just in case someone 
+else finds themselves wanting to manipulate cfs files)
+

@@ -1,0 +1,29 @@
+WebDAV BIND support
+
+
+
+Description:
+I'm tempted to work on implementing the WebDAV BIND protocol, as currently defined in http://greenbytes.de/tech/webdav/draft-ietf-webdav-bind-20.html.
+
+This issue can be used to collect design proposals and track progress.
+
+1) DAV:resource-id live property
+
+This can be implemented in terms of the JCR UUID. However, we need to turn this one into a URI for WebDAV. If the JCR UUID happens to *really* use UUID syntax, we *could* use urn:uuid. Otherwise, it would probably useful to mint an HTTP URI, served by the WebDAV servlet. (note that the latter has the disadvantage that moving a node to a different server will affect its resource-id, in case that other server allows importing UUIDs).
+
+2) REBIND and UNBIND methods
+
+Same as MOVE and DELETE, with the excpetion of marshalling.
+
+3) DAV:parent-set property
+
+Either trivial (when node isn't shared), or needs to use the JCR 2.0 shared set functionality.
+
+4) BIND method
+
+Either trivial (when shareable nodes aren't supported), or needs to use the JCR 2.0 shared set functionality.
+
+5) Cycle detection in depth:infinity requests
+
+TBD :-)
+

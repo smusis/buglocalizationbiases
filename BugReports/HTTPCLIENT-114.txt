@@ -1,0 +1,13 @@
+httpclient build requires jdk 1.4 or jce in classpath
+
+
+
+Description:
+Currently when a 'ant dist'
+is performed httpclient is looking for javax.crypt.* which is in jce.jar
+
+The build.xml and build.properties.sample need to be patched
+so they allow the jce.jar file to be specified
+just like the jsse.jar is specified.
+
+will attach two patch files made from todays cvs

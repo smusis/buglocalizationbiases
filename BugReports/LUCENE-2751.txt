@@ -1,0 +1,8 @@
+add LuceneTestCase.newSearcher()
+
+
+
+Description:
+Most tests in the search package don't care about what kind of searcher they use.
+
+we should randomly use MultiSearcher or ParallelMultiSearcher sometimes in tests.

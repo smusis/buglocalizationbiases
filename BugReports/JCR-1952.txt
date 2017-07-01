@@ -1,0 +1,38 @@
+DOMException: NAMESPACE_ERR thrown when exporting document view
+
+
+
+Description:
+When I try to export some nodes with ExportDocumentView I get a DOMException with Jackrabbit 1.5.2. Version 1.4.6 works fine. Xerces version was 2.8.1.
+
+Code:
+
+Document document = documentBuilder.newDocument();
+Element exportElement = (Element) document.appendChild(document.createElement("Export"));
+Result result = new DOMResult(exportElement);
+TransformerHandler transformerHandler = saxTransformerFactory.newTransformerHandler();
+transformerHandler.setResult(result);
+session.exportDocumentView(workflowNode.getPath(), transformerHandler, true, false);
+
+Exception:
+
+org.w3c.dom.DOMException: NAMESPACE_ERR: An attempt is made to create or change an object in a way which is incorrect with regard to namespaces.
+	at org.apache.xerces.dom.CoreDocumentImpl.checkDOMNSErr(Unknown Source)
+	at org.apache.xerces.dom.AttrNSImpl.setName(Unknown Source)
+	at org.apache.xerces.dom.AttrNSImpl.<init>(Unknown Source)
+	at org.apache.xerces.dom.CoreDocumentImpl.createAttributeNS(Unknown Source)
+	at org.apache.xerces.dom.ElementImpl.setAttributeNS(Unknown Source)
+	at com.sun.org.apache.xalan.internal.xsltc.trax.SAX2DOM.startElement(SAX2DOM.java:194)
+	at com.sun.org.apache.xml.internal.serializer.ToXMLSAXHandler.closeStartTag(ToXMLSAXHandler.java:204)
+	at com.sun.org.apache.xml.internal.serializer.ToSAXHandler.flushPending(ToSAXHandler.java:277)
+	at com.sun.org.apache.xml.internal.serializer.ToXMLSAXHandler.startElement(ToXMLSAXHandler.java:646)
+	at com.sun.org.apache.xalan.internal.xsltc.trax.TransformerHandlerImpl.startElement(TransformerHandlerImpl.java:263)
+	at org.apache.jackrabbit.commons.xml.Exporter.startElement(Exporter.java:438)
+	at org.apache.jackrabbit.commons.xml.DocumentViewExporter.exportNode(DocumentViewExporter.java:76)
+	at org.apache.jackrabbit.commons.xml.Exporter.exportNode(Exporter.java:298)
+	at org.apache.jackrabbit.commons.xml.Exporter.exportNodes(Exporter.java:214)
+	at org.apache.jackrabbit.commons.xml.DocumentViewExporter.exportNode(DocumentViewExporter.java:77)
+	at org.apache.jackrabbit.commons.xml.Exporter.exportNode(Exporter.java:295)
+	at org.apache.jackrabbit.commons.xml.Exporter.export(Exporter.java:144)
+	at org.apache.jackrabbit.commons.AbstractSession.export(AbstractSession.java:461)
+	at org.apache.jackrabbit.commons.AbstractSession.exportDocumentView(AbstractSession.java:241)

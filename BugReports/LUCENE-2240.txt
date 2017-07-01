@@ -1,0 +1,6 @@
+SimpleAnalyzer and WhitespaceAnalyzer should have Version ctors
+
+
+
+Description:
+Due to the Changes to CharTokenizer ( LUCENE-2183 ) WhitespaceAnalyzer and SimpleAnalyzer need a Version ctor. Default ctors must be deprecated

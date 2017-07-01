@@ -1,0 +1,28 @@
+Set default precisionStep for NumericField and NumericRangeFilter
+
+
+
+Description:
+This is a spinoff from LUCENE-1701.
+
+A user using Numeric* should not need to understand what's
+"under the hood" in order to do their indexing & searching.
+
+They should be able to simply:
+{code}
+doc.add(new NumericField("price", 15.50);
+{code}
+
+And have a decent default precisionStep selected for them.
+
+Actually, if we add ctors to NumericField for each of the supported
+types (so the above code works), we can set the default per-type.  I
+think we should do that?
+
+4 for int and 6 for long was proposed as good defaults.
+
+The default need not be "perfect", as advanced users can always
+optimize their precisionStep, and for users experiencing slow
+RangeQuery performance, NumericRangeQuery with any of the defaults we
+are discussing will be much faster.
+

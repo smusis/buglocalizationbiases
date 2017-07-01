@@ -1,0 +1,37 @@
+Create merge policy that doesn't periodically inadvertently optimize
+
+
+
+Description:
+The current merge policy, at every maxBufferedDocs *
+power-of-mergeFactor docs added, will do a fully cascaded merge, which
+is the same as an optimize.
+
+I think this is not good because at that "optimization poin", the
+particular addDocument call is [surprisingly] very expensive.  While,
+amortized over all addDocument calls, the cost is low, the cost is
+paid "up front" and in a very "bunched up" manner.
+
+I think of this as "pay it forward": you are paying the full cost of
+an optimize right now on the expectation / hope that you will be
+adding a great many more docs.  But, if you don't add that many more
+docs, then, the amortized cost for your index is in fact far higher
+than it should have been.  Better to "pay as you go" instead.
+
+So we could make a small change to the policy by only merging the
+first mergeFactor segments once we hit 2X the merge factor.  With
+mergeFactor=10, when we have created the 20th level 0 (just flushed)
+segment, we merge the first 10 into a level 1 segment.  Then on
+creating another 10 level 0 segments, we merge the second set of 10
+level 0 segments into a level 1 segment, etc.
+
+With this new merge policy, an index that's a bit bigger than a
+current "optimization point" would then have a lower amortized cost
+per document.  Plus the merge cost is less "bunched up" and less "pay
+it forward": instead you pay for what you are actually using.
+
+We can start by creating this merge policy (probably, combined with
+with the "by size not by doc count" segment level computation from
+LUCENE-845) and then later decide whether we should make it the
+default merge policy.
+

@@ -1,0 +1,32 @@
+CachingHieraarchyManager may serve moved items
+
+
+
+Description:
+There is a problem with weak referenced item states and event notification in the
+LocalItemStateManager.
+
+consider the following:
+- Session A traverses some nodes and fills-up the cache of the ChachingHierarchyManager
+- This also fills the weak-ref cache in Session A LocalItemStateManager.
+- Session B does some operations
+- At some point, GC decides to remove the weakly refferenced ItemStates in Session As
+  LocalItemStateManager
+- Session B moves a node and saves the changes.
+- The SharedItemStateManager notifies all listeners that a node was modified
+- The LocalItemStateManager of Session A receives the event, but does not bubble it,
+  because it does not have the item anymore in its cache
+- The CachingHierarchyManager of Session A never receives the modification event and still
+  servers the items at the old location.
+
+Solution A:
+reconnect missing states in the LocalItemStateManager when an event is received. this has
+the drawback that a lot of state would be generated that are not needed.
+
+Solution B:
+add a new event 'nodeModified' that is only sent by the LocalItemStateManager if a
+'stateModified' was received for which it does not have the item aymore. this has the
+drawback that alot more events are generated.
+
+Will implement solution B
+

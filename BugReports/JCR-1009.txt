@@ -1,0 +1,7 @@
+JCR2SPI: add JNDI support
+
+
+
+Description:
+adding jndi support to jcr2spi was one of the improvements that came up during the f2f.
+julian volunteered to take a look at it.

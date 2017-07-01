@@ -1,0 +1,8 @@
+Use FileLock for locking instead of empty file
+
+
+
+Description:
+The FSDirectory uses File.createNewFile to effectively lock a directory (in makeLock), yet the Java Spec says explcitly not to use it for this purpose, and instead use FileLock from nio.
+
+The attached patch shows how this is/could be done (change is internal to the makeLock method only, and functionally equivalent, the same tests apply).

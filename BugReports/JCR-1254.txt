@@ -1,0 +1,6 @@
+DatabaseJournal commits twice inside a transaction, causing an error with MySQL
+
+
+
+Description:
+When committing a transaction in a clustered setup, multiple records may be appended to the DatabaseJournal. After having appended a record, commit() is called on the connection and auto-commit mode is again enabled. Apart from not being semantically correct, committing a connection that is already in auto-commit mode throws an error when using MySQL as backend.

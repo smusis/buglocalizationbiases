@@ -1,0 +1,10 @@
+Basic refactoring of DocumentsWriter
+
+
+
+Description:
+As a starting point for making DocumentsWriter more understandable,
+I've fixed its inner classes to be static, and then broke the classes
+out into separate sources, all in org.apache.lucene.index package.
+
+

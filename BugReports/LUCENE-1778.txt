@@ -1,0 +1,10 @@
+Add log.step support per task
+
+
+
+Description:
+Following LUCENE-1774, this will add support for log.step per task name, rather than a single log.step setting for all tasks. The .alg file will support:
+* log.step - for all tasks.
+* log.step.<Task Class Name> - for a specific task. For example, log.step.AddDoc, or log.step.DeleteDoc
+
+I will post the patch soon

@@ -1,0 +1,13 @@
+JCAResourceAdapter must implement Serializable
+
+
+
+Description:
+We are running Weblogic 10.0 servers in cluster environment.   When deploying the rar, we always get this warning from weblogic stdout.log: 
+
+<Jan 15, 2009 2:42:10 AM PST> <Warning> <Connector> <BEA-190155> <Compliance checking/validation of the resource adapter /home/user/jackrabbit_rar/jackrabbit-jca-1.5.0.rar resulted in the following warnings:  The ra.xml <resourceadapter-class> class 'org.apache.jackrabbit.jca.JCAResourceAdapter' should implement java.io.Serializable but does not.> 
+
+When trying to do the JNDI lookup the repository, we got the error "No Object found: jackrabbit|null".   The jackrabbit entry in the jndi tree is visible only as a javax.naming.reference and not as the JCARepositoryHandle due to the above warning.  Due to that, we can't deploy jackrabbit-jca in Test/Production environment.  
+
+I'm no expert in JCA, but feel it is fairly easy to implement Serializable for  JCAResourceAdapter.  Please help us out.
+

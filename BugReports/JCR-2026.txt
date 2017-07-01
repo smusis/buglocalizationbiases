@@ -1,0 +1,25 @@
+DbDataStore: garbage collection deadlock
+
+
+
+Description:
+Sometimes, the unit tests hangs with the following threads blocked. It looks like a database level deadlock caused by the DbDataStore implementation. The database used is Apache Derby.
+
+org.apache.jackrabbit.core.data.db.DbDataStore.addRecord line=298
+org.apache.jackrabbit.core.value.BLOBInDataStore.getInstance line=120
+org.apache.jackrabbit.core.value.InternalValue.getBLOBFileValue line=644
+org.apache.jackrabbit.core.value.InternalValue.create line=123
+org.apache.jackrabbit.core.PropertyImpl.setValue line=609
+org.apache.jackrabbit.core.PropertyImpl.setValue line=525
+org.apache.jackrabbit.core.NodeImpl.setProperty line=2312
+org.apache.jackrabbit.core.data.CopyValueTest.doTestCopy line=64
+org.apache.jackrabbit.core.data.CopyValueTest.testCopyStream line=45
+
+org.apache.jackrabbit.core.data.db.DbDataStore.updateLastModifiedDate line=641
+org.apache.jackrabbit.core.data.db.DbDataStore.touch line=631
+org.apache.jackrabbit.core.data.db.DbDataStore.getRecord line=484
+org.apache.jackrabbit.core.value.BLOBInDataStore.getDataRecord line=136
+org.apache.jackrabbit.core.value.BLOBInDataStore.getLength line=92
+org.apache.jackrabbit.core.data.GarbageCollector.scanPersistenceManagers
+org.apache.jackrabbit.core.data.GarbageCollector.scan line=161
+org.apache.jackrabbit.core.data.GCThread.run line=52

@@ -1,0 +1,41 @@
+Check for correct content-type in URLEncodedUtils not working for encoding-suffixes
+
+
+
+Description:
+Dear DEV-Team,
+
+i am developing an application with the httpclient. Today i found a small problem, related to URLEncodedUtils.
+
+Our Tomcat-Server deliveres for Server-Requests, the HTTP-Header: "Content-Type=application/x-www-form-urlencoded;charset=UTF-8", but the httpclient only checks for: "Content-Type=application/x-www-form-urlencoded". This failing check results in an empty result of call to the method: URLEncodedUtils.parse(entity);
+
+Following source-code causes the prob: 
+
+public class URLEncodedUtils {
+
+    /**
+     * Returns true if the entity's Content-Type header is
+     * <code>application/x-www-form-urlencoded</code>.
+     */
+    public static boolean isEncoded (final HttpEntity entity) {
+        final Header contentType = entity.getContentType();
+        return (contentType != null && contentType.getValue().equalsIgnoreCase(CONTENT_TYPE));
+    }
+}
+
+IMO the method should be changed to:
+
+
+public class URLEncodedUtils {
+
+    /**
+     * Returns true if the entity's Content-Type header is
+     * <code>application/x-www-form-urlencoded</code>.
+     */
+    public static boolean isEncoded (final HttpEntity entity) {
+        final Header contentType = entity.getContentType();
+        return (contentType != null && contentType.getValue().startsWith(CONTENT_TYPE + ";"));
+    }
+}
+
+Best Regards,

@@ -1,0 +1,52 @@
+Add a ContextAwareAuthScheme that has access to the HttpContext in the authenticate method
+
+
+
+Description:
+The interface to be added would be:
+
+/**
+ * This interface represents an extended  authentication scheme
+ * that requires access to {@link HttpContext} in order to
+ * generate an authorization string.
+ *
+ * @since 4.1
+ */
+
+public interface ContextAwareAuthScheme extends AuthScheme {
+
+    /**
+     * Produces an authorization string for the given set of
+     * {@link Credentials}.
+     *
+     * @param credentials The set of credentials to be used for athentication
+     * @param request The request being authenticated
+     * @param context HTTP context
+     * @throws AuthenticationException if authorization string cannot
+     *   be generated due to an authentication failure
+     *
+     * @return the authorization string
+     */
+    Header authenticate(
+            Credentials credentials,
+            HttpRequest request,
+            HttpContext context) throws AuthenticationException;
+
+}
+
+Binary compatibility can be maintained by doing an instanceof check at the location where AuthScheme.authenticate() is called at the moment, and calling the context aware version if available.
+
+This interface is necessary for the NegotiateScheme authentication scheme because the service names for the authentication tickets are based on the hostname of the target host or proxy host, depending on whether it's normal or proxy authentication, and this information is only available from the HttpContext.
+
+Without the HttpContext there is a workaround that works most of the time, which looks like this:
+
+	String host;
+	if (isProxy()) {
+		// FIXME this should actually taken from the HttpContext.
+		HttpHost proxy = ConnRouteParams.getDefaultProxy(request.getParams());
+		host = proxy.getHostName();
+	} else {
+		host = request.getLastHeader("Host").getValue();
+	}
+
+

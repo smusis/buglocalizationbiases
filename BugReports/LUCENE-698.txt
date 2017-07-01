@@ -1,0 +1,6 @@
+FilteredQuery ignores boost
+
+
+
+Description:
+Filtered query ignores it's own boost.

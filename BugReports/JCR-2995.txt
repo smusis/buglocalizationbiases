@@ -1,0 +1,7 @@
+jcr2spi: create ChangePolling thread on demand
+
+
+
+Description:
+currently a new ChangePolling thread is created for every single session even if there is neither observation eventlistener nor cachebehaviour#observation.
+i think we could create that on demand.

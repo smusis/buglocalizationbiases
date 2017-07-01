@@ -1,0 +1,25 @@
+Set-Cookie2 and Set-Cookie
+
+
+
+Description:
+Acording to RFC2965 9.1:
+                                                 User agents that
+   receive in the same response both a Set-Cookie and Set-Cookie2
+   response header for the same cookie MUST discard the Set-Cookie
+   information and use only the Set-Cookie2 information.
+
+this is read that the header for a cetain cookie, but not all cookie.
+So, Server can send only Set-Cookie header for some cookies and,
+for cookies send Set-Cookie2,Set-cookie both.
+
+But httpclient implementation handles this that if find any set-cookie2 header,
+then ignores all Set-cookie header.
+I know some sites use set-cookie2 only for cookies which needs
+ more flexible exiration handling, and for other cookies use only
+Set-Cookie. One of exmaples of such sites I know is 
+TDNet Database service provided by Tokyo Stock Exchange.
+
+So, the preferred implementation is that if set-cookie2 header
+ found for a certain cookie then cookie value is set from set-cookie2 header, if
+not, then from Set-Cookie header.

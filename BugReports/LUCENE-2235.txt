@@ -1,0 +1,6 @@
+implement PerFieldAnalyzerWrapper.getOffsetGap
+
+
+
+Description:
+PerFieldAnalyzerWrapper does not delegates calls to getOffsetGap(Fieldable), instead it returns the default values from the implementation of Analyzer. (Similar to LUCENE-659 "PerFieldAnalyzerWrapper fails to implement getPositionIncrementGap")

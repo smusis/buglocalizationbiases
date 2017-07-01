@@ -1,0 +1,6 @@
+HTTPClient doesn't send authentication header in threaded environment
+
+
+
+Description:
+Using HTTPClient with multiple threads and basic authentication seems to create a race condition. The request headers sometimes don't contain the authorization entry, which results in a 401 (although the username and password credentials are correctly set). 

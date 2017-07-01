@@ -1,0 +1,24 @@
+Create org.apache.jackrabbit.api.jsr283 (in jackrabbit-api) and move future jsr283 interfaces and classes there
+
+
+
+Description:
+(as discussed on mailing list)
+
+as the implementation of the new features for jsr283 have started, i
+suggest to put the new jsr283 interfaces to jackrabbit-api instead to
+core (where possible). this way, we can already figure out
+inter-module dependency issues and people can start using experimental
+features through an API than rather through casting objects to core
+interfaces.
+
+suggestion: use 'org.apache.jackrabbit.api.jsr283' as base package for
+the new jsr283 interfaces and classes.
+
+for example, use
+org.apache.jackrabbit.api.jsr283.nodetype.NodeDefinitionTemplate
+for the future javax.jcr.nodetype.NodeDefinitionTemplate
+
+once jcr2.0 is released, we will drop the interim interfaces.
+
+

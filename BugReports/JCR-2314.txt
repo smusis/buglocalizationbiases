@@ -1,0 +1,8 @@
+Open access modifier for RepositoryImpl.doShutdown()
+
+
+
+Description:
+This is required for a subclass of RepositoryImpl that wants to run additional code on shutdown, otherwise a deadlock may occur because the sequence of lock acquisition cannot be ensured.
+
+Jackrabbit requires that the shutdownLock is first acquired and then the actual shutdown code is executed.

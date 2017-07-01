@@ -1,0 +1,17 @@
+revisit segments.gen sleeping
+
+
+
+Description:
+in LUCENE-3601, i worked up a change where we intentionally crash() all un-fsynced files 
+in tests to ensure that we are calling sync on files when we should.
+
+I think this would be nice to do always (and with some fixes all tests pass).
+
+But this is super-slow sometimes because when we corrupt the unsynced segments.gen, it causes
+SIS.read to take 500ms each time (and in checkindex for some reason we do this twice, which seems wrong).
+
+I can workaround this for now for tests (just do a partial crash that avoids corrupting the segments.gen),
+but I wanted to create this issue for discussion about the sleeping/non-fsyncing of segments.gen, just
+because i guess its possible someone could hit this slowness.
+ 

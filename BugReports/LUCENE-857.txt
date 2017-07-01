@@ -1,0 +1,6 @@
+Remove BitSet caching from QueryFilter
+
+
+
+Description:
+Since caching is built into the public BitSet bits(IndexReader reader)  method, I don't see a way to deprecate that, which means I'll just cut it out and document it in CHANGES.txt.  Anyone who wants QueryFilter caching will be able to get the caching back by wrapping the QueryFilter in the CachingWrapperFilter.

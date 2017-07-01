@@ -1,0 +1,18 @@
+more performance improvements for snowball
+
+
+
+Description:
+i took a more serious look at snowball after LUCENE-2194.
+
+This gives greatly improved performance, but note it has some minor breaks to snowball internals:
+* Among.s becomes a char[] instead of a string
+* SnowballProgram.current becomes a char[] instead of a StringBuilder
+* SnowballProgram.eq_s(int, String) becomes eq_s(int, CharSequence), so that eq_v(StringBuilder) doesnt need to create an extra string.
+* same as the above with eq_s_b and eq_v_b
+* replace_s(int, int, String) becomes replace_s(int, int, CharSequence), so that StringBuilder-based slice and insertion methods don't need to create an extra string.
+
+all of these "breaks" imho are only theoretical, the problem is just that pretty much everything is public or protected in the snowball internals.
+
+the performance improvement here depends heavily upon the snowball language in use, but its way more significant than LUCENE-2194.
+

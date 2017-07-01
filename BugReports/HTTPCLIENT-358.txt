@@ -1,0 +1,57 @@
+Auto method retrial broken
+
+
+
+Description:
+Folks,
+While working on the exception handling guide for the 3.0-alpha2 release I
+stumbled upon a problem with HttpTimeoutException and its subclasses. In 3.0a1
+HttpTimeoutException subclasses HttpRecoverableException which causes HTTP
+methods failed due to a connect or socket timeout to be automatically retried. 
+
+[INFO] HttpMethodDirector - -Recoverable exception caught when processing request
+[INFO] HttpMethodDirector - -Recoverable exception caught when processing request
+[INFO] HttpMethodDirector - -Recoverable exception caught when processing request
+[INFO] HttpMethodDirector - -Recoverable exception caught when processing request
+[WARN] HttpMethodDirector - -Recoverable exception caught but
+MethodRetryHandler.retryMethod() returned false, rethrowing exception
+org.apache.commons.httpclient.IOTimeoutException: Read timed out
+	at
+org.apache.commons.httpclient.HttpConnection$WrappedInputStream.handleException(HttpConnection.java:1350)
+	at
+org.apache.commons.httpclient.HttpConnection$WrappedInputStream.read(HttpConnection.java:1360)
+	at java.io.FilterInputStream.read(FilterInputStream.java:66)
+	at java.io.PushbackInputStream.read(PushbackInputStream.java:120)
+	at org.apache.commons.httpclient.HttpParser.readRawLine(HttpParser.java:76)
+	at org.apache.commons.httpclient.HttpParser.readLine(HttpParser.java:104)
+	at org.apache.commons.httpclient.HttpConnection.readLine(HttpConnection.java:1054)
+	at
+org.apache.commons.httpclient.HttpMethodBase.readStatusLine(HttpMethodBase.java:1785)
+	at
+org.apache.commons.httpclient.HttpMethodBase.readResponse(HttpMethodBase.java:1546)
+	at org.apache.commons.httpclient.HttpMethodBase.execute(HttpMethodBase.java:977)
+	at
+org.apache.commons.httpclient.HttpMethodDirector.executeWithRetry(HttpMethodDirector.java:383)
+	at
+org.apache.commons.httpclient.HttpMethodDirector.executeMethod(HttpMethodDirector.java:164)
+	at org.apache.commons.httpclient.HttpClient.executeMethod(HttpClient.java:437)
+	at org.apache.commons.httpclient.HttpClient.executeMethod(HttpClient.java:324)
+	at Test.main(Test.java:13)
+Caused by: java.net.SocketTimeoutException: Read timed out
+	at java.net.SocketInputStream.socketRead0(Native Method)
+	at java.net.SocketInputStream.read(SocketInputStream.java:129)
+	at java.net.SocketInputStream.read(SocketInputStream.java:182)
+	at
+org.apache.commons.httpclient.HttpConnection$WrappedInputStream.read(HttpConnection.java:1358)
+	... 13 more
+Exception in thread "main" 
+
+This probably is not what we want. Besides, for non-idempotent methods this may
+simply be fatal and result in all sorts of unpleasant side-effects.
+
+One possibilty that I personally favour is to make HttpTimeoutException class
+extend IOException instead of HttpRecoverableException. There are others. The
+question is whether timeout exceptions should be considered recoverable from the
+conseptual standpoint. What do you think?
+
+Oleg

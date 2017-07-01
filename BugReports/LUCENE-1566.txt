@@ -1,0 +1,24 @@
+Large Lucene index can hit false OOM due to Sun JRE issue
+
+
+
+Description:
+This is not a Lucene issue, but I want to open this so future google
+diggers can more easily find it.
+
+There's this nasty bug in Sun's JRE:
+
+  http://bugs.sun.com/bugdatabase/view_bug.do?bug_id=6478546
+
+The gist seems to be, if you try to read a large (eg 200 MB) number of
+bytes during a single RandomAccessFile.read call, you can incorrectly
+hit OOM.  Lucene does this, with norms, since we read in one byte per
+doc per field with norms, as a contiguous array of length maxDoc().
+
+The workaround was a custom patch to do large file reads as several
+smaller reads.
+
+Background here:
+
+  http://www.nabble.com/problems-with-large-Lucene-index-td22347854.html
+

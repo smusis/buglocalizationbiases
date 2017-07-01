@@ -1,0 +1,10 @@
+Allow TaskSequence to run for certain time
+
+
+
+Description:
+To help the perf testing for LUCENE-1483, I added simple ability to specify a fixed run time (seconds) for a task sequence, eg:
+{code}
+{ "XSearchWithSort" SearchWithSort(doctitle:string) > : 2.7s
+{code}
+iterates on that subtask until 2.7 seconds have elapsed, and then sets the repetition count to how many iterations were done.  This is useful when you are running searches whose runtime may vary drastically.

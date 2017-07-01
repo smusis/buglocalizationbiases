@@ -1,0 +1,9 @@
+terminology: source uses "protected  property" for something that only only indirectly has to do with that term
+
+
+
+Description:
+Documentation and method names (DavProperty) use "protected" as pseudonym for "return upon PROPFIND/allprop". This isn't really accurate, because the live properties defined in RFC2518/4918 *are* protected, but are returned with PROPFIND/allprop nevertheless.
+
+Proposal: update documentation and method names to say something like "visibleInAllprop".
+

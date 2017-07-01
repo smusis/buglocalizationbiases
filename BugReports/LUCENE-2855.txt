@@ -1,0 +1,6 @@
+Contrib queryparser should not use CharSequence as Map key
+
+
+
+Description:
+Today, contrib query parser uses Map<CharSequence,...> in many different places, which may lead to problems, since CharSequence interface does not enforce the implementation of hashcode and equals methods. Today, it's causing a problem with QueryTreeBuilder.setBuilder(CharSequence,QueryBuilder) method, that does not works as expected.

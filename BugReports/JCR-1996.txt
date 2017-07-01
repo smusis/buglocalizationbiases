@@ -1,0 +1,7 @@
+Handle date values in the far future or prevent these from being persisted
+
+
+
+Description:
+Setting a date property with a value in the far future (e.g., the year 20009) and saving the session causes the index component to throw an exception (see the DateField#timeToString method). Furthermore, when the repository is restarted, the properties' value cannot be retrieved anymore because of a ValueFormatException caused by an empty value. Restarting the repository with an empty search index does not work because indexing fails. I haven't looked into the effect on queries.
+

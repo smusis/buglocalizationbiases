@@ -1,0 +1,21 @@
+StandardCodec sometimes supplies skip pointers past EOF
+
+
+
+Description:
+Pretty sure this is 4.0-only:
+I added an assertion, the test to reproduce is:
+
+ant test-core -Dtestcase=TestPayloadNearQuery -Dtestmethod=testMinFunction -Dtests.seed=4841190615781133892:3888521539169738727 -Dtests.multiplier=3
+
+{noformat}
+    [junit] Testcase: testMinFunction(org.apache.lucene.search.payloads.TestPayloadNearQuery):  FAILED
+    [junit] invalid skip pointer: 404, length=337
+    [junit] junit.framework.AssertionFailedError: invalid skip pointer: 404, length=337
+    [junit]     at org.apache.lucene.util.LuceneTestCase$LuceneTestCaseRunner.runChild(LuceneTestCase.java:1127)
+    [junit]     at org.apache.lucene.util.LuceneTestCase$LuceneTestCaseRunner.runChild(LuceneTestCase.java:1059)
+    [junit]     at org.apache.lucene.index.codecs.MultiLevelSkipListReader.init(MultiLevelSkipListReader.java:176)
+    [junit]     at org.apache.lucene.index.codecs.standard.DefaultSkipListReader.init(DefaultSkipListReader.java:50)
+    [junit]     at org.apache.lucene.index.codecs.standard.StandardPostingsReader$SegmentDocsAndPositionsAndPayloadsEnum.advance(StandardPostingsReader.java:742)
+    [junit]     at org.apache.lucene.search.spans.TermSpans.skipTo(TermSpans.java:72)
+{noformat}

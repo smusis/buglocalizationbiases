@@ -1,0 +1,6 @@
+Improve performance for queries with large result sets
+
+
+
+Description:
+The current implementation of QueryResult requires that access rights are checked on all NodeIds before they are passed ot the QueryResult. This handling should be improved to a more lazy approach where result nodes are checked in configurable batches. Usually a client is only interested in the top scoring results.

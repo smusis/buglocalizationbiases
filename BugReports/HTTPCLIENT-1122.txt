@@ -1,0 +1,30 @@
+NPE in RequestProxyAuthentication on Android
+
+
+
+Description:
+Got a NPE backtrace in RequestProxyAuthentication.process(). 
+
+HttpRoute route = conn.getRoute();
+        if (route.isTunnelled()) {      <= line 88, NPE here
+            return;
+        }
+
+There's no null check on the returned route although getRoute() can return null.
+I guess it's not supposed to happen.
+
+In the httpclient code, there's a few more calls to getRoute() without a null check on the returned route.
+
+
+java.lang.NullPointerException
+at com.bubblesoft.org.apache.http.client.protocol.RequestProxyAuthentication.process(SourceFile:88)
+at com.bubblesoft.org.apache.http.protocol.ImmutableHttpProcessor.process(SourceFile:108)
+at com.bubblesoft.org.apache.http.protocol.HttpRequestExecutor.preProcess(SourceFile:174)
+at com.bubblesoft.org.apache.http.impl.client.DefaultRequestDirector.execute(SourceFile:457)
+at com.bubblesoft.org.apache.http.impl.client.AbstractHttpClient.createHttpProcessor(SourceFile:821)
+                                                                 execute
+at com.bubblesoft.org.apache.http.impl.client.AbstractHttpClient.createHttpProcessor(SourceFile:755)
+                                                                 execute
+at com.bubblesoft.org.apache.http.impl.client.AbstractHttpClient.createHttpProcessor(SourceFile:733)
+                                                                 execute
+

@@ -1,0 +1,8 @@
+MoreLikeThis - allow to exclude terms that appear in too many documents (patch included)
+
+
+
+Description:
+The MoreLikeThis class allows to generate a likeness query based on a given document. So far, it is impossible to suppress words from the likeness query, that appear in almost all documents, making it necessary to use extensive lists of stop words.
+
+Therefore I suggest to allow excluding words for which a certain absolute document count or a certain percentage of documents is exceeded. Depending on the corpus of text, words that appear in more than 50 or even 70% of documents can usually be considered insignificant for classifying a document.      

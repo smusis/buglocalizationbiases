@@ -1,0 +1,8 @@
+BooleanQuery.hashCode and equals ignore isCoordDisabled
+
+
+
+Description:
+BooleanQuery.isCoordDisabled() is not considered by BooleanQuery's hashCode() or equals() methods ... this can cause serious badness to happen when caching BooleanQueries.
+
+bug traces back to at least 1.9

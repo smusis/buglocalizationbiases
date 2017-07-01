@@ -1,0 +1,34 @@
+XML export (stream) doesn't initialize TransformerHandler properly
+
+
+
+Description:
+For instance, in SessionImpl.java:
+
+    public void exportSystemView(String absPath, OutputStream out,
+                                 boolean skipBinary, boolean noRecurse)
+            throws IOException, PathNotFoundException, RepositoryException {
+
+        SAXTransformerFactory stf = (SAXTransformerFactory) SAXTransformerFactory.newInstance();
+        try {
+            TransformerHandler th = stf.newTransformerHandler();
+            th.setResult(new StreamResult(out));
+            th.getTransformer().setParameter(OutputKeys.METHOD, "xml");
+            th.getTransformer().setParameter(OutputKeys.ENCODING, "UTF-8");
+            th.getTransformer().setParameter(OutputKeys.INDENT, "no");
+
+            exportSystemView(absPath, th, skipBinary, noRecurse);
+        } catch (TransformerException te) {
+            throw new RepositoryException(te);
+        } catch (SAXException se) {
+            throw new RepositoryException(se);
+        }
+    }
+
+(1) It should be "setOutputProperty()", not "setParameter()",
+
+(2) My tests show that setting the parameters only has an effect when done before calling setResult()
+
+That being said, the effect is minor, as the default settings for the TransformerHandler seem to be correct anway.
+
+

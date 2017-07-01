@@ -1,0 +1,14 @@
+[PATCH] Refactoring of SpanScorer
+
+
+
+Description:
+Refactored some common code in next() and skipTo(). 
+Removed dependency on score value for next() and skipTo(). 
+Passes all current tests at just about the same speed 
+as the current version. Added minimal javadoc. 
+ 
+Iirc, there has been some discussion on the dependency of next() 
+and skipTo() on the score value, but I don't remember the conclusion. 
+In case that dependency should stay in, it can be adapted 
+in the refactored code.

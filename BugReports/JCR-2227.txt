@@ -1,0 +1,6 @@
+NodeTypeDefinitionFactory does not set PropertyDefinition#isQueryOrderable
+
+
+
+Description:
+

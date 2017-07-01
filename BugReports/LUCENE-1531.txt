@@ -1,0 +1,11 @@
+contrib/xml-query-parser, BoostingTermQuery support
+
+
+
+Description:
+I'm not 100% on this patch. 
+
+BooleanTermQuery is a part of the spans family, but I generally use that class as a replacement for TermQuery.  Thus in the DTD I have stated that it can be a part of the root queries as well as a part of a span. 
+
+However, SpanFooQueries xml elements are named <SpanFoo/> rather than <SpanFooQuery/>, I have however chosen to call it <BoostingTermQuery/>. It would be possible to set it up so it would be parsed as <SpanBoostingTerm/> when inside of a <SpanSomething>, but I just find that confusing.
+

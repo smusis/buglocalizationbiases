@@ -1,0 +1,37 @@
+Enable MultiTermQuery's constant score mode to also use BooleanQuery under the hood
+
+
+
+Description:
+When MultiTermQuery is used (via one of its subclasses, eg
+WildcardQuery, PrefixQuery, FuzzyQuery, etc.), you can ask it to use
+"constant score mode", which pre-builds a filter and then wraps that
+filter as a ConstantScoreQuery.
+
+If you don't set that, it instead builds a [potentially massive]
+BooleanQuery with one SHOULD clause per term.
+
+There are some limitations of this approach:
+
+  * The scores returned by the BooleanQuery are often quite
+    meaningless to the app, so, one should be able to use a
+    BooleanQuery yet get constant scores back.  (Though I vaguely
+    remember at least one example someone raised where the scores were
+    useful...).
+
+  * The resulting BooleanQuery can easily have too many clauses,
+    throwing an extremely confusing exception to newish users.
+
+  * It'd be better to have the freedom to pick "build filter up front"
+    vs "build massive BooleanQuery", when constant scoring is enabled,
+    because they have different performance tradeoffs.
+
+  * In constant score mode, an OpenBitSet is always used, yet for
+    sparse bit sets this does not give good performance.
+
+I think we could address these issues by giving BooleanQuery a
+constant score mode, then empower MultiTermQuery (when in constant
+score mode) to pick & choose whether to use BooleanQuery vs up-front
+filter, and finally empower MultiTermQuery to pick the best (sparse vs
+dense) bit set impl.
+

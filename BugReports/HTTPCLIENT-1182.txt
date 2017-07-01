@@ -1,0 +1,12 @@
+Add a constructor to org.apache.http.conn.ssl.SSLSocketFactory to allow for directly wrapping a javax.net.ssl.SSLSocketFactory socketfactory
+
+
+
+Description:
+Our application use Java Webstart for deployment.  Amoung other things, Webstart gives us the ability to access the system's (in our case, Windows) certificate system.  For instance, one of our client is using certificate based authentication to their webserver.  This is done through a hardware device they attach to their system.  Window's already has a way to interface with this device, and Webstart has a way to interface with the Windows API.
+
+I don't think we can get by with using any SocketFactory that we create.  (We would have to check with Oracle to be sure.)  I think we need to use the one that is set as the default in HttpsURLConnection.
+
+What I am suggesting is that another constructor be added to allow for just wrapping this one.  I was not planning on putting a dependancy on HttpsURLConnection, but rather just add the ability to wrap any javax.net.ssl.SSLSocketFactory.
+
+This will not be a big change to the API.  I will get a patch ready soon.

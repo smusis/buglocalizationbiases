@@ -1,0 +1,10 @@
+Repository lock file is not removed on shutdown
+
+
+
+Description:
+The repository lock file is not removed when Jackrabbit runs on a windows platform:
+
+*ERROR* [Thread-4] RepositoryImpl: Unable to release repository lock (RepositoryImpl.java, line 283)
+
+I assume this problem does not occur on unix based platforms, because they allow to delete a file while another process still uses it.

@@ -1,0 +1,10 @@
+Maybe rename Field.omitTf, and strengthen the javadocs
+
+
+
+Description:
+Spinoff from here:
+
+  http://www.nabble.com/search-problem-when-indexed-using-Field.setOmitTf()-td22456141.html
+
+Maybe rename omitTf to something like omitTermPositions, and make it clear what queries will silently fail to work as a result.

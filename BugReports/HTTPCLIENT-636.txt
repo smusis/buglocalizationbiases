@@ -1,0 +1,10 @@
+Revise internal data structures of ThreadSafeClientConnManager
+
+
+
+Description:
+ThreadSafeClientConnManager internal data structures can be improved:
+- keep track of issued connections with weak references
+- use class derived from WeakReference instead of a lookup table for callbacks from ReferenceThread
+  (or drop ReferenceThread in favor of occasionally polling the issued connections for leaks)
+

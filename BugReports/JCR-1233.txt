@@ -1,0 +1,8 @@
+Create org.apache.jackrabbit.core.id
+
+
+
+Description:
+I'd like to create a separate package for the identifier interfaces and classes in jackrabbit-core. Currently all the identifiers are in org.apache.jackrabbit.core, which makes almost all the other packages have dependencies to o.a.j.core and causes trouble for various package-level code quality and dependency analysis tools.
+
+For now the package would contain the ItemId, NodeId, and PropertyId classes.

@@ -1,0 +1,7 @@
+ReferencesPropertyTest can't deal with multivalued reference properties
+
+
+
+Description:
+The setUp() method uses prop.getNode(), thus assuming that the reference property is not multivalued.
+

@@ -1,0 +1,8 @@
+Do not increment revison while target workspace is not initialized
+
+
+
+Description:
+It can happen that a workspace is not initialized at all during a syncronize should be performed.
+This can happen when a cluster member performs a re-index of a workspace. The changelog should not be ignored it
+should be processed after the workspace is initailized.

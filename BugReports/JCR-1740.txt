@@ -1,0 +1,8 @@
+Make ObjectIterator implement RangeIterator interface
+
+
+
+Description:
+Currently, it's not possible to skip a part of results returned in the form of ObjectIterator (for example, to implement db-like pagination feature with offset/max parameters).
+
+It would be great if ObjectIterator implement RangeIterator interface, and it's trivial enough since underlying NodeIterator implements this interface.

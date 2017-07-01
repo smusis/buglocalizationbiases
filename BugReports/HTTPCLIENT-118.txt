@@ -1,0 +1,11 @@
+Build with JDK 1.4, get many javadoc warnings
+
+
+
+Description:
+Building httpclient "dist" ant target, I get lots of "warning - The first
+sentence is interpreted to be:".
+
+As the summary says, I get these warnings when I build using JDK 1.4.  Using JDK
+1.3.1 yields far fewer problems.  I see this with the latest sources as of this
+posting.

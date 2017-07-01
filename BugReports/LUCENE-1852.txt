@@ -1,0 +1,12 @@
+Fix remaining localization test failures in lucene
+
+
+
+Description:
+see also LUCENE-1836 and LUCENE-1846
+
+all tests should pass under different locales.
+the fix is to run 'ant test' under different locales, look and fix problems, and use the LocalizedTestCase from LUCENE-1836 to keep them from coming back.
+
+the same approach as LUCENE-1836 fixes the core queryparser, but I am running ant test under a few locales to look for more problems.
+

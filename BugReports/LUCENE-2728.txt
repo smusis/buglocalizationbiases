@@ -1,0 +1,27 @@
+EnwikiContentSource does not properly identify the name/id of the Wikipedia article
+
+
+
+Description:
+The EnwikiContentSource does not properly identify the id (name in benchmark parlance) of the documents.  It currently produces assigns the id on the last <id> tag it sees in the document, as opposed to the id of the document.  Most documents have multiple <id> tags in them.  This prevents the ContentSource from being used effectively in producing documents for updating.
+
+Example doc:
+{quote}
+<page>
+    <title>AlgeriA</title>
+    <id>5</id>
+    <revision>
+      <id>133452200</id>
+      <timestamp>2007-05-25T17:11:48Z</timestamp>
+      <contributor>
+        <username>Gurch</username>
+        <id>241822</id>
+      </contributor>
+      <minor />
+      <comment>[[WP:AES|â<86><90>]]Redirected page to [[Algeria]]</comment>
+      <text xml:space="preserve">#REDIRECT [[Algeria]] {{R from CamelCase}}</text>
+    </revision>
+  </page>
+{quote}
+
+In this case, the getName() return 241822 instead of 5.  page/id is unique according to the schema at  http://www.mediawiki.org/xml/export-0.3.xsd, so we should just get that one.

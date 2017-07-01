@@ -1,0 +1,10 @@
+Leftover legacy enum in IndexReader
+
+
+
+Description:
+In IndexReader we still have some leftover "handmade" enum from pre-Java5 times. Unfortunately the Generics/Java5 Policeman did not notice it.
+
+This patch is just code cleanup, no baclkwards breaks, as code using this enum would not see any difference (because only superclass changes).
+
+I will commit this asap.

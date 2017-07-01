@@ -1,0 +1,7 @@
+[patch] Support for digest auth MD5-sess
+
+
+
+Description:
+I was attempting to access a device that requires Digest authentication using
+MD5-sess, which does not seem to be supported.

@@ -1,0 +1,6 @@
+Replace customized QueryParser.jjt
+
+
+
+Description:
+We should rather use the Lucene default and implement a  Jackrabbit  version that extends from it. This eases maintenance when moving from one Lucene version to another.

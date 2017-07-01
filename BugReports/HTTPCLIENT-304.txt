@@ -1,0 +1,7 @@
+Cleanup use of EncodingUtil and HttpConstants
+
+
+
+Description:
+HttpConstants has become somewhat irrelevant.  Deprecate HttpConstants and move any existing 
+functionality to EncodingUtil.

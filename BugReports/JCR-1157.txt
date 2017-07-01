@@ -1,0 +1,6 @@
+Expose namespace registry via workspace instead via session in spi2jcr
+
+
+
+Description:
+spi2jcr/SessionInfoImpl.getNamespaceResolver() returns the namespace registry through the current session of the wrapped repository. Since session scoped namespace remapping is not visible to the SPI I think the method should return the namespace registry through the current workspace. 

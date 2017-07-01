@@ -1,0 +1,6 @@
+Cluster revision entries should be retrieved in order
+
+
+
+Description:
+The selectRevisionStmtSQL (DatabaseJournal#buildSqlStatements) returns a result set which may not be ordered by REVISION_ID. This has the effect that cluster instances that want to synchronize to the latest revision do not update their local revision appropriately since they assume that the revision result set is ordered (see code in AbstractJournal#doSync). This might cause a lot of unnecessary CPU cycles on these machines with degraded performance as a result. Furthermore, it causes functional issues as well as events may be fired multiple times and in the wrong order.

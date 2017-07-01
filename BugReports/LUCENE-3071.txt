@@ -1,0 +1,13 @@
+PathHierarchyTokenizer adaptation for urls: splits reversed
+
+
+
+Description:
+{{PathHierarchyTokenizer}} should be usable to split urls the a "reversed" way (useful for faceted search against urls):
+{{www.site.com}} -> {{www.site.com, site.com, com}}
+
+Moreover, it should be able to skip a given number of first (or last, if reversed) tokens:
+{{/usr/share/doc/somesoftware/INTERESTING/PART}}
+Should give with 4 tokens skipped:
+{{INTERESTING}}
+{{INTERESTING/PART}}

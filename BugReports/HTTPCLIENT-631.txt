@@ -1,0 +1,10 @@
+String constants should be final
+
+
+
+Description:
+RFC2109Spec - SET_COOKIE_KEY
+
+RFC2965Spec - SET_COOKIE2_KEY
+
+both should be final.

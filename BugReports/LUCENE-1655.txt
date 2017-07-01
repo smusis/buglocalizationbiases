@@ -1,0 +1,58 @@
+remove 1.5 only unit test code that snuck in
+
+
+
+Description:
+I just tried to run unit tests w/ Java 1.4.2, but hit this:
+
+{code}
+common.compile-test:
+    [mkdir] Created dir: /lucene/src/diagnostics.1654/build/classes/test
+    [javac] Compiling 191 source files to /lucene/src/diagnostics.1654/build/classes/test
+    [javac] /lucene/src/diagnostics.1654/src/test/org/apache/lucene/index/TestIndexWriterReader.java:26: package java.util.concurrent.atomic does not exist
+    [javac] import java.util.concurrent.atomic.AtomicInteger;
+    [javac]                                    ^
+    [javac] /lucene/src/diagnostics.1654/src/test/org/apache/lucene/index/TestIndexWriterReader.java:262: cannot resolve symbol
+    [javac] symbol  : class AtomicInteger 
+    [javac] location: class org.apache.lucene.index.TestIndexWriterReader.DeleteThreads
+    [javac]     AtomicInteger delCount = new AtomicInteger();
+    [javac]     ^
+    [javac] /lucene/src/diagnostics.1654/src/test/org/apache/lucene/index/TestIndexWriterReader.java:332: cannot resolve symbol
+    [javac] symbol  : class AtomicInteger 
+    [javac] location: class org.apache.lucene.index.TestIndexWriterReader.AddDirectoriesThreads
+    [javac]     AtomicInteger count = new AtomicInteger(0);
+    [javac]     ^
+    [javac] /lucene/src/diagnostics.1654/src/test/org/apache/lucene/index/TestIndexWriterReader.java:333: cannot resolve symbol
+    [javac] symbol  : class AtomicInteger 
+    [javac] location: class org.apache.lucene.index.TestIndexWriterReader.AddDirectoriesThreads
+    [javac]     AtomicInteger numAddIndexesNoOptimize = new AtomicInteger(0);
+    [javac]     ^
+    [javac] /lucene/src/diagnostics.1654/src/test/org/apache/lucene/index/TestIndexWriterReader.java:262: cannot resolve symbol
+    [javac] symbol  : class AtomicInteger 
+    [javac] location: class org.apache.lucene.index.TestIndexWriterReader.DeleteThreads
+    [javac]     AtomicInteger delCount = new AtomicInteger();
+    [javac]                                  ^
+    [javac] /lucene/src/diagnostics.1654/src/test/org/apache/lucene/index/TestIndexWriterReader.java:332: cannot resolve symbol
+    [javac] symbol  : class AtomicInteger 
+    [javac] location: class org.apache.lucene.index.TestIndexWriterReader.AddDirectoriesThreads
+    [javac]     AtomicInteger count = new AtomicInteger(0);
+    [javac]                               ^
+    [javac] /lucene/src/diagnostics.1654/src/test/org/apache/lucene/index/TestIndexWriterReader.java:333: cannot resolve symbol
+    [javac] symbol  : class AtomicInteger 
+    [javac] location: class org.apache.lucene.index.TestIndexWriterReader.AddDirectoriesThreads
+    [javac]     AtomicInteger numAddIndexesNoOptimize = new AtomicInteger(0);
+    [javac]                                                 ^
+    [javac] /lucene/src/diagnostics.1654/src/test/org/apache/lucene/search/TestSort.java:932: cannot resolve symbol
+    [javac] symbol  : method getSimpleName ()
+    [javac] location: class java.lang.Class
+    [javac]           assertEquals(actualTFCClasses[j], tdc.getClass().getSimpleName());
+    [javac]                                                         ^
+    [javac] /lucene/src/diagnostics.1654/src/test/org/apache/lucene/search/TestTopScoreDocCollector.java:70: cannot resolve symbol
+    [javac] symbol  : method getSimpleName ()
+    [javac] location: class java.lang.Class
+    [javac]         assertEquals(actualTSDCClass[i], tdc.getClass().getSimpleName());
+    [javac]                                                      ^
+    [javac] Note: Some input files use or override a deprecated API.
+    [javac] Note: Recompile with -deprecation for details.
+    [javac] 9 errors
+{code}

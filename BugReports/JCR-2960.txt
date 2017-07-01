@@ -1,0 +1,8 @@
+Long values not properly stored
+
+
+
+Description:
+When a long value assigned to a property is too big, when restarting the server the value become 0 !! 
+
+The test pass with versions 1.6.4 and 2.0

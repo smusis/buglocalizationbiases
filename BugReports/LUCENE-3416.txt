@@ -1,0 +1,6 @@
+Allow to pass an instance of RateLimiter to FSDirectory allowing to rate limit merge IO across several directories / instances
+
+
+
+Description:
+This can come in handy when running several Lucene indices in the same VM, and wishing to rate limit merge across all of them.

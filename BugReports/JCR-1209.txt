@@ -1,0 +1,6 @@
+NodeImpl.checkout() calls save() two times
+
+
+
+Description:
+Similar to JCR-975, The version related properties on a versionable node that is checked out are saved individually. There is no need to save them individually because checkd in node must not have pending changes and save() can be called safely on the node itself.

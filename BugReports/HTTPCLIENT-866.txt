@@ -1,0 +1,19 @@
+HttpClient depends on jcip-annotations.jar
+
+
+
+Description:
+When using Java 5 to compile code that uses HttpClient, jcip-annotations.jar must be in the classpath or else you get a compiler error:
+
+    [javac] /path/to/src/SomeFile.java:129: cannot access net.jcip.annotations.GuardedBy
+    [javac] file net/jcip/annotations/GuardedBy.class not found
+    [javac]         DefaultHttpClient httpclient = new DefaultHttpClient();
+    [javac]                                        ^
+
+
+With Java 6, you get a bunch of warnings instead.
+    [javac] org/apache/http/impl/client/AbstractHttpClient.class(org/apache/http/impl/client:AbstractHttpClient.class): warning: Cannot find annotation method 'value()' in type 'net.jcip.annotations.GuardedBy': class file for net.jcip.annotations.GuardedBy not found
+
+
+This requirement doesn't seem to be documented anywhere, and jcip-annotations.jar is not included in the "httpcomponents-client-4.0-bin-with-dependencies" package.
+

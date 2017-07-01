@@ -1,0 +1,6 @@
+Generalize directory copy operation
+
+
+
+Description:
+The copy operation in RAMDirectory(Directory) constructor can be used more generally to copy one directory to another. Why bound it only to RAMDirectory?. For example, I build index in RAMDirectory but I need it to persist in FSDirectory. I created a patch to solve it.

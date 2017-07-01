@@ -1,0 +1,15 @@
+Incorrect Specification-Title headers in MANIFEST.MF
+
+
+
+Description:
+The Specification-Title headers in MANIFEST.MF should all include the full project name, i.e.
+
+Apache HttpComponents ...
+
+The "HttpComponents" qualifier is missing; at present the entries are:
+
+Specification-Title: Apache HttpClient
+Specification-Title: Apache HttpMime
+
+If present, Implementation-Title should follow the same convention.

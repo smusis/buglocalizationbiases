@@ -1,0 +1,19 @@
+corrupted paths after moving nodes
+
+
+
+Description:
+we just found a bug which corrupts the results of Node.getPath() - it seems to be related to older Jackrabbit bugs (e.g. JCR-768) but still happens in jackrabbit 1.3 and jackrabbit-1.4-SNAPSHOT
+
+Basically we have a node with 3 subnodes (a, b, c), we move all of them to index 1 - this works fine, unless we call getPath() of the third Node before moving it.
+
+The expected paths after moving would be:
+a: /pages[37]/page/element[3]
+b: /pages[37]/page/element[2]
+c: /pages[37]/page/element
+
+But we get these paths:
+
+a: /pages[37]/page/element[3]
+b: /pages[37]/page/element
+c: /pages[37]/page/element

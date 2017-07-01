@@ -1,0 +1,24 @@
+PropertyState binary type desirialsation only returns half of content
+
+
+
+Description:
+Create a PropertyState for a binary Property (e.g jcr:data) set a value larger than the BLOBFileValues#MAX_BUFFER_SIZE  (e.g. 300Kbyte) serialse it.
+On deserialisation the resulting PropertyState's InternalValue's size is only half as the origianl (e.g. 150Kbyte)
+
+Most probably this is due to the States InputStream implementation marking bytes twice to be read.
+Following fix solves the issue for call to #read(byte[], in, int),
+but other Stream methods may fail as well.
+
+Index: jackrabbit/java/org/apache/jackrabbit/core/state/PropertyState.java
+===================================================================
+--- jackrabbit/java/org/apache/jackrabbit/core/state/PropertyState.java (revision 399293)
++++ jackrabbit/java/org/apache/jackrabbit/core/state/PropertyState.java (working  copy)
+@@ -305,7 +305,6 @@
+                                 len = (int) (length - consumed);
+                             }
+                             int read = super.read(b, off, len);
+-                            consumed += read;
+                             return read;
+                         }
+

@@ -1,0 +1,12 @@
+shutdown of MultiThreadedHttpConnectionManager
+
+
+
+Description:
+- declare 'shutdown' attributes volatile
+- interrupt cleanup thread to avoid polling
+- don't use iterator on WeakHashMap, ConcurrentModificationException
+  might be triggered by garbage collection
+
+patch follows
+

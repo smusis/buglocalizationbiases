@@ -1,0 +1,6 @@
+use packed ints for the terms dict index
+
+
+
+Description:
+Terms dict index needs to store large RAM resident arrays of ints, but, because their size is bound & variable (depending on the segment/docs), we should used packed ints for them.

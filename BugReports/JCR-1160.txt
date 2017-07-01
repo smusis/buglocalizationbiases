@@ -1,0 +1,17 @@
+JCR2SPI: test regression for WorkspaceMoveReferenceableTest.testMoveNodesReferenceableNodesNewUUID
+
+
+
+Description:
+The latest changes (up to 581637) seems to have broken TCK tests:
+
+
+-------------------------------------------------------------------------------
+Test set: org.apache.jackrabbit.test.TestAll
+-------------------------------------------------------------------------------
+Tests run: 1037, Failures: 6, Errors: 2, Skipped: 0, Time elapsed: 102.644 sec <<< FAILURE!
+testMoveNodesReferenceableNodesNewUUID(org.apache.jackrabbit.test.api.WorkspaceMoveReferenceableTest)  Time elapsed: 0.03 sec  <<< ERROR!
+javax.jcr.InvalidItemStateException: Item 'org.apache.jackrabbit.jcr2spi.NodeImpl@13ef9df' doesn't exist anymore
+    at org.apache.jackrabbit.jcr2spi.ItemImpl.checkStatus(ItemImpl.java:428)
+    at org.apache.jackrabbit.jcr2spi.NodeImpl.getName(NodeImpl.java:120)
+    at org.apache.jackrabbit.test.api.WorkspaceMoveReferenceableTest.testMoveNodesReferenceableNodesNewUUID(WorkspaceMoveReferenceableTest.java:57) 

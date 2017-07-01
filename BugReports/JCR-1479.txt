@@ -1,0 +1,6 @@
+[PATCH] don't use the reflective form of {Collection}.toArray
+
+
+
+Description:
+Passing a prototype array into {Collection}.toArray that is too small makes the toArray call expend alot of effort using reflection to do it's job. It is more performant to just pass in a correctly sized prototype. This patch does this.

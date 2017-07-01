@@ -1,0 +1,17 @@
+nightly build/javadocs for sandbox
+
+
+
+Description:
+This isn't something i think is crucial, but since i've been on the lucene-users
+mailing list (less then 2 months) I've seen several people post questions asking
+where they can find documentation on some module available in the sandbox.
+
+the answer of course is usually that they should download the source and build
+the javadocs themselves, but since it keeps coming up, I figured i'd suggest
+setting up a nightly "build" of the whole sandbox, including the javadocs.
+
+if nothing else, it will cut down on the number of questions -- but i think it
+may also have an added benefit to the size of the user base.  In my experience,
+people tend to be more willing to download/install something and try it out
+after they've read the docs online.

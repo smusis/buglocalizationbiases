@@ -1,0 +1,6 @@
+extensibility changes to SimpleWebdavServlet
+
+
+
+Description:
+the new SimpleWebdavServlet class lost some of the extensibility of the old WebdavServlet that allowed subclasses to ignore the dependency on RepositoryAccessServlet and provide their own support objects. attached is a patch that adds back these qualities.

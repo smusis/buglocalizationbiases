@@ -1,0 +1,8 @@
+Jcr2Spi: Avoid extra round trip to the SPI upon Node.getNode and Session.getItem
+
+
+
+Description:
+Upon Session.getItem/itemExists and Node.getNode/hasNode JCR2SPI currently tries to load the Node from the persistent layer (SPI) if no corresponding entry exists in the hierarchy.
+
+Since with JCR-1638 a flag has been introduced indicating if the child node entries are complete. In this case, the extra round trip could be omitted.

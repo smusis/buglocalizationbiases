@@ -1,0 +1,10 @@
+Massive Code Duplication in Contrib Analyzers - unifly the analyzer ctors
+
+
+
+Description:
+Due to the variouse tokenStream APIs we had in lucene analyzer subclasses need to implement at least one of the methodes returning a tokenStream. When you look at the code it appears to be almost identical if both are implemented in the same analyzer.  Each analyzer defnes the same inner class (SavedStreams) which is unnecessary.
+In contrib almost every analyzer uses stopwords and each of them creates his own way of loading them or defines a large number of ctors to load stopwords from a file, set, arrays etc.. those ctors should be removed / deprecated and eventually removed.
+
+
+

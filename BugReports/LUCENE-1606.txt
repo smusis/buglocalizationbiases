@@ -1,0 +1,23 @@
+Automaton Query/Filter (scalable regex)
+
+
+
+Description:
+Attached is a patch for an AutomatonQuery/Filter (name can change if its not suitable).
+
+Whereas the out-of-box contrib RegexQuery is nice, I have some very large indexes (100M+ unique tokens) where queries are quite slow, 2 minutes, etc. Additionally all of the existing RegexQuery implementations in Lucene are really slow if there is no constant prefix. This implementation does not depend upon constant prefix, and runs the same query in 640ms.
+
+Some use cases I envision:
+ 1. lexicography/etc on large text corpora
+ 2. looking for things such as urls where the prefix is not constant (http:// or ftp://)
+
+The Filter uses the BRICS package (http://www.brics.dk/automaton/) to convert regular expressions into a DFA. Then, the filter "enumerates" terms in a special way, by using the underlying state machine. Here is my short description from the comments:
+
+     The algorithm here is pretty basic. Enumerate terms but instead of a binary accept/reject do:
+      
+     1. Look at the portion that is OK (did not enter a reject state in the DFA)
+     2. Generate the next possible String and seek to that.
+
+the Query simply wraps the filter with ConstantScoreQuery.
+
+I did not include the automaton.jar inside the patch but it can be downloaded from http://www.brics.dk/automaton/ and is BSD-licensed.

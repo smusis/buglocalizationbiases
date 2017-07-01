@@ -1,0 +1,18 @@
+BasicAuthenticatonExample.java in CVS
+
+
+
+Description:
+From the example in CVS Revision 1.1.2.1 the code below would lead you to 
+belive that setCredentials uses ("HOST", "REALM", credientials). It actually 
+should be ("REALM", "HOST", credientials). It looks like it was correct in the 
+Revision 1.1 and was changed with Revision 1.1.2.1
+
+// pass our credentials to HttpClient, they will only be used for
+// authenticating to servers with realm "realm", to authenticate agains
+// an arbitrary realm change this to null.
+client.getState().setCredentials(
+            "www.verisign.com",
+            "realm",
+            new UsernamePasswordCredentials("username", "password")
+);

@@ -1,0 +1,8 @@
+Build.xml - add log level definitions
+
+
+
+Description:
+The default log level is debug, which produces quite a lot of output when testing.
+
+The patch allows separate definition of wire and other log levels (assuming SimpleLog is used)

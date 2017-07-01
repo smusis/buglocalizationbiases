@@ -1,0 +1,60 @@
+Block tree terms dict & index
+
+
+
+Description:
+Our default terms index today breaks terms into blocks of fixed size
+(ie, every 32 terms is a new block), and then we build an index on top
+of that (holding the start term for each block).
+
+But, it should be better to instead break terms according to how they
+share prefixes.  This results in variable sized blocks, but means
+within each block we maximize the shared prefix and minimize the
+resulting terms index.  It should also be a speedup for terms dict
+intensive queries because the terms index becomes a "true" prefix
+trie, and can be used to fast-fail on term lookup (ie returning
+NOT_FOUND without having to seek/scan a terms block).
+
+Having a true prefix trie should also enable much faster intersection
+with automaton (but this will be a new issue).
+
+I've made an initial impl for this (called
+BlockTreeTermsWriter/Reader).  It's still a work in progress... lots
+of nocommits, and hairy code, but tests pass (at least once!).
+
+I made two new codecs, temporarily called StandardTree, PulsingTree,
+that are just like their counterparts but use this new terms dict.
+
+I added a new "exactOnly" boolean to TermsEnum.seek.  If that's true
+and the term is NOT_FOUND, we will (quickly) return NOT_FOUND and the
+enum is unpositioned (ie you should not call next(), docs(), etc.).
+
+In this approach the index and dict are tightly connected, so it does
+not support a pluggable index impl like BlockTermsWriter/Reader.
+Blocks are stored on certain nodes of the prefix trie, and can contain
+both terms and pointers to sub-blocks (ie, if the block is not a leaf
+block).  So there are two trees, tied to one another -- the index
+trie, and the blocks.  Only certain nodes in the trie map to a block
+in the block tree.
+
+I think this algorithm is similar to burst tries
+(http://citeseer.ist.psu.edu/viewdoc/summary?doi=10.1.1.18.3499),
+except it allows terms to be stored on inner blocks (not just leaf
+blocks).  This is important for Lucene because an [accidental]
+"adversary" could produce a terms dict with way too many blocks (way
+too much RAM used by the terms index).  Still, with my current patch,
+an adversary can produce too-big blocks... which we may need to fix,
+by letting the terms index not be a true prefix trie on it's leaf
+edges.
+
+Exactly how the blocks are picked can be factored out as its own
+policy (but I haven't done that yet).  Then, burst trie is one policy,
+my current approach is another, etc.  The policy can be tuned to
+the terms' expected distribution, eg if it's a primary key field and
+you only use base 10 for each character then you want block sizes of
+size 10.  This can make a sizable difference on lookup cost.
+
+I modified the FST Builder to allow for a "plugin" that freezes the
+"tail" (changed suffix) of each added term, because I use this to find
+the blocks.
+

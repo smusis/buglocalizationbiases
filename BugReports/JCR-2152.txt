@@ -1,0 +1,15 @@
+ValueFormat should provide method getJCRString
+
+
+
+Description:
+In order to retrieve the JCR String representation of a QValue currently the following calls are required:
+
+ValueFormat.getJCRValue(QValue, NamePathResolver, ValueFactory)
+Value.getString()
+
+This could be simplified if the ValueFormat would provide
+
+ValueFormat.getJCRString(QValue, NamePathResolver)
+
+

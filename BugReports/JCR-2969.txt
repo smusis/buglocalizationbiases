@@ -1,0 +1,14 @@
+FileDataStore garbage collection can throw a NullPointerException if there is I/O problem
+
+
+
+Description:
+The FileDataStore can throw a NPE when doing garbage collection, if there is file I/O problem (for example an access rights problem). The reason is that it doesn't check if File.list / listFiles returns null. Stack trace:
+
+Exception in thread "Thread-461" java.lang.NullPointerException
+	at org.apache.jackrabbit.core.data.FileDataStore.deleteOlderRecursive(FileDataStore.java:334)
+	at org.apache.jackrabbit.core.data.FileDataStore.deleteOlderRecursive(FileDataStore.java:328)
+	at org.apache.jackrabbit.core.data.FileDataStore.deleteOlderRecursive(FileDataStore.java:328)
+	at org.apache.jackrabbit.core.data.FileDataStore.deleteOlderRecursive(FileDataStore.java:328)
+
+

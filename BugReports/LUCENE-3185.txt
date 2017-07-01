@@ -1,0 +1,6 @@
+NRTCachingDirectory.deleteFile always throws exception
+
+
+
+Description:
+Silly bug.

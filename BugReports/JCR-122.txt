@@ -1,0 +1,9 @@
+cannot PUT changes to a resource in the simple webdav server
+
+
+
+Description:
+when using the simple webdav server to PUT a resource, the "versionable" mixin node type is assigned to the new node without regard to whether the node type is already assigned to the node. this causes PUT requests that change existing resources to fail with 403 errors.
+
+the fix is to augment AddMixinCommand to not try to add the mixin node type if the node already has it.
+

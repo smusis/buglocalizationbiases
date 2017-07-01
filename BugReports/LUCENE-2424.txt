@@ -1,0 +1,6 @@
+FieldDoc.toString only returns super.toString
+
+
+
+Description:
+The FieldDoc.toString method very carefully builds a StringBuffer sb containing the information for the FieldDoc instance and then just returns super.toString() instead of sb.toString()

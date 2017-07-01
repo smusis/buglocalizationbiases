@@ -1,0 +1,11 @@
+SearchIndex class contains garbled String
+
+
+
+Description:
+Somehow during the switch to SL4J also a String literal in the SearchIndex class got garbled.
+
+See:
+http://svn.apache.org/viewcvs.cgi/incubator/jackrabbit/trunk/jackrabbit/src/main/java/org/apache/jackrabbit/core/query/lucene/SearchIndex.java?rev=385280&r1=378221&r2=385280
+
+Since this is a low risk change I would like to get this included into the 1.0 branch.

@@ -1,0 +1,14 @@
+Make IndexReader.open() always return MSR to simplify (re-)opens.
+
+
+
+Description:
+As per discussion in mailing list, I'm making DirectoryIndexReader.open() always return MSR, even for single-segment indexes.
+While theoretically valid in the past (if you make sure to keep your index constantly optimized) this feature is made practically obsolete by per-segment collection.
+
+The patch somewhat de-hairies (re-)open logic for MSR/SR.
+SR no longer needs an ability to pose as toplevel directory-owning IR.
+All related logic is moved from DIR to MSR.
+DIR becomes almost empty, and copying two or three remaining fields over to MSR/SR, I remove it.
+Lots of tests fail, as they rely on SR returned from IR.open(), I fix by introducing SR.getOnlySegmentReader static package-private method.
+Some previous bugs are uncovered, one is fixed in LUCENE-1645, another (partially fixed in LUCENE-1648) is fixed in this patch. 

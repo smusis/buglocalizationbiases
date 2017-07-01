@@ -1,0 +1,14 @@
+Calling size method of a ManageableArrayList causes NullPointerException
+
+
+
+Description:
+When using the NTCollectionConverterImpl with proxy="true" a call on the size () method of a ManageableArrayList causes a NullPointerException if there is no underlying List. LazyCollectionLoader doLoad returns null because there is are no children.
+
+The ManageableArrayList is created because the isNull method of the NTCollectionConverterImpl class always returns false. 
+According to the comment line this is done because the getCollectionNodes always returns a list. 
+But after the fix for JCR-882 this is not correct anymore.
+
+The attached fix corrects this. 
+
+The only question remaining is how to differ between an empty list and a null-value for the field containing the list.

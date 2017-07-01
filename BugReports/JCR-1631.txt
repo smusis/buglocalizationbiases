@@ -1,0 +1,6 @@
+Replace commons-logging dependency with SLF4J
+
+
+
+Description:
+The poi dependency in jackrabbit-text-extractors brings in a transitive dependency to commons-logging. Since we use SLF4J for all logging, we should exclude the commons-logging dependency and replace it with jcl104-over-slf4j.

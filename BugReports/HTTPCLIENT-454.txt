@@ -1,0 +1,14 @@
+Connection with the proxy is not reopened if an proxy auth failure occurs while SSL tunnel is being established
+
+
+
+Description:
+Connection with the proxy is not reopened if an proxy auth failure occurs while
+SSL tunnel is being established.
+
+This problem has been reported by on the httpclient-user by Gebhard Gaukler
+<gebhard.gaukler at db.com>.
+
+My bad.
+
+Oleg

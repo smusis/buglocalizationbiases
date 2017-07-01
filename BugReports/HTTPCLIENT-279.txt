@@ -1,0 +1,6 @@
+Connections are not release when a recoverable exception occurs.
+
+
+
+Description:
+Please see the url for discussion details.

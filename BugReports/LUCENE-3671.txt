@@ -1,0 +1,6 @@
+Add a TypeTokenFilter
+
+
+
+Description:
+It would be convenient to have a TypeTokenFilter that filters tokens by its type, either with an exclude or include list. This might be a stupid thing to provide for people who use Lucene directly, but it would be very useful to later expose it to Solr and other Lucene-backed search solutions.

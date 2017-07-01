@@ -1,0 +1,16 @@
+IndexWriter.updateDocument is no longer atomic
+
+
+
+Description:
+Spinoff from LUCENE-847.
+
+Ning caught that as of LUCENE-843, we lost the atomicity of the delete
++ add in IndexWriter.updateDocument.
+
+Ning suggested a simple fix: move the buffered deletes into
+DocumentsWriter and let it do the delete + add atomically.  This has a
+nice side effect of also consolidating the "time to flush" logic in
+DocumentsWriter.
+
+

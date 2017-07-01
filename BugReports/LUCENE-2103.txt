@@ -1,0 +1,8 @@
+NoLockFactory should have a private constructor
+
+
+
+Description:
+NoLockFactory documents in its javadocs that one should use the static getNoLockFactory() method. However the class does not declare a private empty constructor, which breaks its Singleton purpose. We cannot add the empty private constructor because that'd break break-compat (even though I think it's very low chance someone actually instantiates the class), therefore we'll add a @deprecated warning to the class about this, and add the method in 4.0. I personally prefer to add an empty constructor w/ the @deprecated method, but am fine either way.
+
+Don't know if a patch is needed, as this is a trivial change. 

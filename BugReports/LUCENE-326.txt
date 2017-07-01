@@ -1,0 +1,41 @@
+IndexWriter.addIndexes results in java.lang.OutOfMemoryError
+
+
+
+Description:
+I'm re-opening a bug I logged previously. My previous bug report has 
+disappeared. 
+
+Issue: IndexWriter.addIndexes results in java.lang.OutOfMemoryError for large 
+merges.
+
+Until this writing, I've been merging successfully only through repetition, 
+i.e. I keep repeating merges until a success. As my index size has grown, my 
+success rate has steadily declined. I've reached the point where merges now 
+fail 100% of the time. I can't merge.
+
+My tests indicate the threshold is ~30GB on P4/800MB VM with 6 indexes. I have 
+repeated my tests on many different machines (not machine dependent). I have 
+repeated my test using local and attached storage devices (not storage 
+dependent).
+
+For what its worth, I believe the exception occurs entirely during the optimize 
+process which is called implicitly after the merge. I say this because each 
+time it appears the correct amount of bytes are written to the new index. Is it 
+possible to decouple the merge and optimize processes?
+
+
+The code snippet follows. I can send you the class file and 120GB data set. Let 
+me know how you want it.
+
+>>>>> code sample >>>>>
+
+Directory[] sources = new Directory[paths.length];
+...
+
+Directory dest = FSDirectory.getDirectory( path, true);
+IndexWriter writer = new IndexWriter( dest, new TermAnalyzer( 
+StopWords.SEARCH_MAP), true);
+
+writer.addIndexes( sources);
+writer.close();

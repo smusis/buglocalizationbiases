@@ -1,0 +1,11 @@
+Add support for the Ingres RDBMS
+
+
+
+Description:
+Hi Folks,
+    I've put together all the stuff I can figure out that is required to add support for using the Ingres RBMS. I'll upload a svn diff for what I've done. It is against the 1.5.2 version from the tags repository.
+
+    I was looking around but couldn't see if there was a way of running a test suite using Ingres as the DBMS provider. Is that possible with the current environment?
+
+Cheers

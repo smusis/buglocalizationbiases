@@ -1,0 +1,6 @@
+add IndexCommit.getTimestamp method
+
+
+
+Description:
+Convenience method for getDirectory().fileModified(getSegmentsFileName()).

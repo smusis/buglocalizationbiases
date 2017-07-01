@@ -1,0 +1,14 @@
+Request is retried if preemptive authentication fails
+
+
+
+Description:
+Hello,
+
+I'm using premptive authentification from an Axis client using BASIC Http
+authentification. When the user isn't authenticated/authorized by server (in my
+case, credentials are expired), httpclient runs a "Chalenge" that produces a
+second request to server with same credentials.
+
+when using preemptive mode, chalenge should be skipped if authentication scheme
+hasn't changed !

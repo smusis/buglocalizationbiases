@@ -1,0 +1,7 @@
+Benchmark's ContentSource should not rely on file suffixes to be lower cased when detecting file type (gzip/bzip2/text)
+
+
+
+Description:
+file.gz is correctly handled as gzip, but file.GZ handled as text which is wrong.
+

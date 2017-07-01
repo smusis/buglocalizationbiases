@@ -1,0 +1,15 @@
+Remove Priority-Queue size trap in MultiTermQuery.TopTermsBooleanQueryRewrite
+
+
+
+Description:
+These APIs are new in 3.x, so we can do this with no backwards-compatibility issue:
+
+Before 3.1, FuzzyQuery had its own internal rewrite method.
+We exposed this in 3.x as TopTermsBooleanQueryRewrite, and then as subclasses for Scoring and Boost-only variants.
+
+The problem I have is that the PQ has a default (large) size of Integer.MAX_VALUE... of course its later limited by
+the value of BooleanQuery's maxClauseCount, but I think this is a trap.
+
+Instead its better to simply remove these defaults and force the user to provide a default (reasonable) size.
+

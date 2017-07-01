@@ -1,0 +1,6 @@
+Cleanup suggester API
+
+
+
+Description:
+Currently the suggester api and especially TermFreqIterator don't play that nice with BytesRef and other paradigms we use in lucene, further the java iterator pattern isn't that useful when it gets to work with TermsEnum, BytesRef etc. We should try to clean up this api step by step moving over to BytesRef including the Lookup class and its interface...

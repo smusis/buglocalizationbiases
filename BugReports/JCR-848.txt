@@ -1,0 +1,15 @@
+javacc-maven-plugin version in jackrabbit-core pom file
+
+
+
+Description:
+Hi, I noticed that the pom.xml file of the jackrabbit-core project needs to specify version "2.1" for the javacc-maven-plugin because if it takes the 2.2-SNAPSHOT it won't compile. I put the 2.1 version and it worked fine.
+
+<plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>javacc-maven-plugin</artifactId>
+        <version>2.1</version>
+        <executions>
+
+
+Im working with revision 529712 [April 17, 2007, 15:05 EST]

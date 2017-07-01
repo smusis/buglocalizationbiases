@@ -1,0 +1,12 @@
+[REFACTORING] FieldSortedHitQueue has too much duplicated code
+
+
+
+Description:
+There's 40LOC duplicated in FieldDocSortedHitQueue::lessThan just to handle 
+the reverse sort. It would be more readable to actually do something like 
+(YMMV):
+
+if (field.getReverse()) {
+    c = -c;
+}

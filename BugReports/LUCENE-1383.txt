@@ -1,0 +1,33 @@
+Work around ThreadLocal's "leak"
+
+
+
+Description:
+Java's ThreadLocal is dangerous to use because it is able to take a
+surprisingly very long time to release references to the values you
+store in it.  Even when a ThreadLocal instance itself is GC'd, hard
+references to the values you had stored in it are easily kept for
+quite some time later.
+
+While this is not technically a "memory leak", because eventually
+(when the underlying Map that stores the values cleans up its "stale"
+references) the hard reference will be cleared, and GC can proceed,
+its end behavior is not different from a memory leak in that under the
+right situation you can easily tie up far more memory than you'd
+expect, and then hit unexpected OOM error despite allocating an
+extremely large heap to your JVM.
+
+Lucene users have hit this many times.  Here's the most recent thread:
+
+  http://mail-archives.apache.org/mod_mbox/lucene-java-dev/200809.mbox/%3C6e3ae6310809091157j7a9fe46bxcc31f6e63305fcdc%40mail.gmail.com%3E
+
+And here's another:
+
+  http://mail-archives.apache.org/mod_mbox/lucene-java-dev/200807.mbox/%3CF5FC94B2-E5C7-40C0-8B73-E12245B91CEE%40mikemccandless.com%3E
+
+And then there's LUCENE-436 and LUCENE-529 at least.
+
+A google search for "ThreadLocal leak" yields many compelling hits.
+
+Sun does this for performance reasons, but I think it's a terrible
+trap and we should work around it with Lucene.

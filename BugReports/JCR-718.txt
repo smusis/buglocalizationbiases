@@ -1,0 +1,151 @@
+NoSuchItemStateException on removing node (no versioning)
+
+
+
+Description:
+I'm using jackrabbit 1.2.1
+with no versioning
+with a very simple SimpleAccessManager (this try to compute the path of the passed ItemId and verify permissions over that path)
+
+when I remove a node (nt:file or nt:folder),  calling session.save() I obtains the exception reported below.
+
+is it really a bug or am i wrong?
+thanks
+
+the following is the code I'm using to build the path
+----------------------------------------- CODE START
+public String getStringPath(ItemId id) throws ItemNotFoundException, RepositoryException, NoPrefixDeclaredException
+	{
+		String p = "";
+		NamespaceResolver nsResolver = ((HierarchyManagerImpl) hierMgr).getNamespaceResolver();
+		Path path = hierMgr.getPath(id);
+		PathElement[] pe = path.getElements();
+		for (int i = 0; i < pe.length; i++)
+		{
+			if (pe[i].denotesName())
+				p += "/" + pe[i].toJCRName(nsResolver);
+		}
+		return p;
+	}
+----------------------------------------- CODE END
+
+
+----------------------------------------- START
+javax.jcr.ItemNotFoundException: failed to build path of d688e92f-26ae-4f7c-aba7-aaff1df62c2c: d688e92f-26ae-4f7c-aba7-aaff1df62c2c: d688e92f-26ae-4f7c-aba7-aaff1df62c2c
+	at org.apache.jackrabbit.core.HierarchyManagerImpl.getPath(HierarchyManagerImpl.java:362)
+	at org.apache.jackrabbit.core.CachingHierarchyManager.getPath(CachingHierarchyManager.java:224)
+	at it.unict.faq.jackrabbit.SimpleAccessManager.getStringPath(SimpleAccessManager.java:238)
+	at it.unict.faq.jackrabbit.SimpleAccessManager.controllo(SimpleAccessManager.java:215)
+	at it.unict.faq.jackrabbit.SimpleAccessManager.isGranted(SimpleAccessManager.java:183)
+	at org.apache.jackrabbit.core.ItemImpl.validateTransientItems(ItemImpl.java:645)
+	at org.apache.jackrabbit.core.ItemImpl.save(ItemImpl.java:1162)
+	at org.apache.jackrabbit.core.SessionImpl.save(SessionImpl.java:821)
+	at it.unict.faq.driver.manager.impl.DAO.JcrDAO.CancellaNodo(JcrDAO.java:638)
+	at it.unict.faq.driver.manager.impl.DocumentServerManager.ds_del(DocumentServerManager.java:58)
+	at elearn.portal.action.ds_del_portal.execute(ds_del_portal.java:28)
+	at org.apache.struts.action.RequestProcessor.processActionPerform(RequestProcessor.java:421)
+	at org.apache.struts.action.RequestProcessor.process(RequestProcessor.java:226)
+	at org.apache.struts.action.ActionServlet.process(ActionServlet.java:1158)
+	at org.apache.struts.action.ActionServlet.doPost(ActionServlet.java:415)
+	at javax.servlet.http.HttpServlet.service(HttpServlet.java:709)
+	at javax.servlet.http.HttpServlet.service(HttpServlet.java:802)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:252)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:173)
+	at org.acegisecurity.util.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:264)
+	at org.acegisecurity.intercept.web.FilterSecurityInterceptor.invoke(FilterSecurityInterceptor.java:107)
+	at org.acegisecurity.intercept.web.FilterSecurityInterceptor.doFilter(FilterSecurityInterceptor.java:72)
+	at org.acegisecurity.util.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:274)
+	at org.acegisecurity.ui.ExceptionTranslationFilter.doFilter(ExceptionTranslationFilter.java:110)
+	at org.acegisecurity.util.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:274)
+	at org.acegisecurity.providers.anonymous.AnonymousProcessingFilter.doFilter(AnonymousProcessingFilter.java:125)
+	at org.acegisecurity.util.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:274)
+	at org.acegisecurity.ui.rememberme.RememberMeProcessingFilter.doFilter(RememberMeProcessingFilter.java:142)
+	at org.acegisecurity.util.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:274)
+	at org.acegisecurity.wrapper.SecurityContextHolderAwareRequestFilter.doFilter(SecurityContextHolderAwareRequestFilter.java:81)
+	at org.acegisecurity.util.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:274)
+	at org.acegisecurity.ui.AbstractProcessingFilter.doFilter(AbstractProcessingFilter.java:217)
+	at org.acegisecurity.util.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:274)
+	at org.acegisecurity.ui.logout.LogoutFilter.doFilter(LogoutFilter.java:108)
+	at org.acegisecurity.util.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:274)
+	at org.acegisecurity.context.HttpSessionContextIntegrationFilter.doFilter(HttpSessionContextIntegrationFilter.java:193)
+	at org.acegisecurity.util.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:274)
+	at org.acegisecurity.util.FilterChainProxy.doFilter(FilterChainProxy.java:148)
+	at org.acegisecurity.util.FilterToBeanProxy.doFilter(FilterToBeanProxy.java:98)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:202)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:173)
+	at org.apache.catalina.core.StandardWrapperValve.invoke(StandardWrapperValve.java:213)
+	at org.apache.catalina.core.StandardContextValve.invoke(StandardContextValve.java:178)
+	at org.apache.catalina.core.StandardHostValve.invoke(StandardHostValve.java:126)
+	at org.apache.catalina.valves.ErrorReportValve.invoke(ErrorReportValve.java:105)
+	at org.apache.catalina.core.StandardEngineValve.invoke(StandardEngineValve.java:107)
+	at org.apache.catalina.connector.CoyoteAdapter.service(CoyoteAdapter.java:148)
+	at org.apache.coyote.http11.Http11Processor.process(Http11Processor.java:869)
+	at org.apache.coyote.http11.Http11BaseProtocol$Http11ConnectionHandler.processConnection(Http11BaseProtocol.java:664)
+	at org.apache.tomcat.util.net.PoolTcpEndpoint.processSocket(PoolTcpEndpoint.java:527)
+	at org.apache.tomcat.util.net.LeaderFollowerWorkerThread.runIt(LeaderFollowerWorkerThread.java:80)
+	at org.apache.tomcat.util.threads.ThreadPool$ControlRunnable.run(ThreadPool.java:684)
+	at java.lang.Thread.run(Thread.java:595)
+Caused by: org.apache.jackrabbit.core.state.NoSuchItemStateException: d688e92f-26ae-4f7c-aba7-aaff1df62c2c
+	at org.apache.jackrabbit.core.state.SessionItemStateManager.getTransientItemState(SessionItemStateManager.java:323)
+	at org.apache.jackrabbit.core.state.SessionItemStateManager.getItemState(SessionItemStateManager.java:154)
+	at org.apache.jackrabbit.core.HierarchyManagerImpl.getItemState(HierarchyManagerImpl.java:120)
+	at org.apache.jackrabbit.core.HierarchyManagerImpl.getPath(HierarchyManagerImpl.java:357)
+	... 52 more
+org.apache.jackrabbit.core.state.NoSuchItemStateException: d688e92f-26ae-4f7c-aba7-aaff1df62c2c
+	at org.apache.jackrabbit.core.state.SessionItemStateManager.getTransientItemState(SessionItemStateManager.java:323)
+	at org.apache.jackrabbit.core.state.SessionItemStateManager.getItemState(SessionItemStateManager.java:154)
+	at org.apache.jackrabbit.core.HierarchyManagerImpl.getItemState(HierarchyManagerImpl.java:120)
+	at org.apache.jackrabbit.core.HierarchyManagerImpl.getPath(HierarchyManagerImpl.java:357)
+	at org.apache.jackrabbit.core.CachingHierarchyManager.getPath(CachingHierarchyManager.java:224)
+	at it.unict.faq.jackrabbit.SimpleAccessManager.getStringPath(SimpleAccessManager.java:238)
+	at it.unict.faq.jackrabbit.SimpleAccessManager.controllo(SimpleAccessManager.java:215)
+	at it.unict.faq.jackrabbit.SimpleAccessManager.isGranted(SimpleAccessManager.java:183)
+	at org.apache.jackrabbit.core.ItemImpl.validateTransientItems(ItemImpl.java:645)
+	at org.apache.jackrabbit.core.ItemImpl.save(ItemImpl.java:1162)
+	at org.apache.jackrabbit.core.SessionImpl.save(SessionImpl.java:821)
+	at it.unict.faq.driver.manager.impl.DAO.JcrDAO.CancellaNodo(JcrDAO.java:638)
+	at it.unict.faq.driver.manager.impl.DocumentServerManager.ds_del(DocumentServerManager.java:58)
+	at elearn.portal.action.ds_del_portal.execute(ds_del_portal.java:28)
+	at org.apache.struts.action.RequestProcessor.processActionPerform(RequestProcessor.java:421)
+	at org.apache.struts.action.RequestProcessor.process(RequestProcessor.java:226)
+	at org.apache.struts.action.ActionServlet.process(ActionServlet.java:1158)
+	at org.apache.struts.action.ActionServlet.doPost(ActionServlet.java:415)
+	at javax.servlet.http.HttpServlet.service(HttpServlet.java:709)
+	at javax.servlet.http.HttpServlet.service(HttpServlet.java:802)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:252)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:173)
+	at org.acegisecurity.util.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:264)
+	at org.acegisecurity.intercept.web.FilterSecurityInterceptor.invoke(FilterSecurityInterceptor.java:107)
+	at org.acegisecurity.intercept.web.FilterSecurityInterceptor.doFilter(FilterSecurityInterceptor.java:72)
+	at org.acegisecurity.util.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:274)
+	at org.acegisecurity.ui.ExceptionTranslationFilter.doFilter(ExceptionTranslationFilter.java:110)
+	at org.acegisecurity.util.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:274)
+	at org.acegisecurity.providers.anonymous.AnonymousProcessingFilter.doFilter(AnonymousProcessingFilter.java:125)
+	at org.acegisecurity.util.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:274)
+	at org.acegisecurity.ui.rememberme.RememberMeProcessingFilter.doFilter(RememberMeProcessingFilter.java:142)
+	at org.acegisecurity.util.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:274)
+	at org.acegisecurity.wrapper.SecurityContextHolderAwareRequestFilter.doFilter(SecurityContextHolderAwareRequestFilter.java:81)
+	at org.acegisecurity.util.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:274)
+	at org.acegisecurity.ui.AbstractProcessingFilter.doFilter(AbstractProcessingFilter.java:217)
+	at org.acegisecurity.util.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:274)
+	at org.acegisecurity.ui.logout.LogoutFilter.doFilter(LogoutFilter.java:108)
+	at org.acegisecurity.util.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:274)
+	at org.acegisecurity.context.HttpSessionContextIntegrationFilter.doFilter(HttpSessionContextIntegrationFilter.java:193)
+	at org.acegisecurity.util.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:274)
+	at org.acegisecurity.util.FilterChainProxy.doFilter(FilterChainProxy.java:148)
+	at org.acegisecurity.util.FilterToBeanProxy.doFilter(FilterToBeanProxy.java:98)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:202)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:173)
+	at org.apache.catalina.core.StandardWrapperValve.invoke(StandardWrapperValve.java:213)
+	at org.apache.catalina.core.StandardContextValve.invoke(StandardContextValve.java:178)
+	at org.apache.catalina.core.StandardHostValve.invoke(StandardHostValve.java:126)
+	at org.apache.catalina.valves.ErrorReportValve.invoke(ErrorReportValve.java:105)
+	at org.apache.catalina.core.StandardEngineValve.invoke(StandardEngineValve.java:107)
+	at org.apache.catalina.connector.CoyoteAdapter.service(CoyoteAdapter.java:148)
+	at org.apache.coyote.http11.Http11Processor.process(Http11Processor.java:869)
+	at org.apache.coyote.http11.Http11BaseProtocol$Http11ConnectionHandler.processConnection(Http11BaseProtocol.java:664)
+	at org.apache.tomcat.util.net.PoolTcpEndpoint.processSocket(PoolTcpEndpoint.java:527)
+	at org.apache.tomcat.util.net.LeaderFollowerWorkerThread.runIt(LeaderFollowerWorkerThread.java:80)
+	at org.apache.tomcat.util.threads.ThreadPool$ControlRunnable.run(ThreadPool.java:684)
+	at java.lang.Thread.run(Thread.java:595)
+----------------------------------------- END

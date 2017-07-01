@@ -1,0 +1,12 @@
+creating empty field + empty term leads to invalid index
+
+
+
+Description:
+Spinoff from LUCENE-3526.
+
+* if you create new Field("", ""), you get IllegalArgumentException from Field's ctor: "name and value cannot both be empty"
+* But there are tons of other ways to index an empty term for the empty field (for example initially make it "garbage" then .setValue(""), or via tokenstream).
+* If you do this, and you have assertions enabled, you will trip an assert (the assert is fixed in trunk, in LUCENE-3526)
+* But If you don't have assertions enabled, you will create a corrupt index: test: terms, freq, prox...ERROR [term : docFreq=1 != num docs seen 0 + num docs deleted 0]
+

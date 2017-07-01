@@ -1,0 +1,14 @@
+UUID generation: SecureRandom should be used by default
+
+
+
+Description:
+Currently, the UUID generation used the regular java.util.Random implementation to generate random UUIDs. The seed value of Random is initialized using System.currentTimeMillis(); for Windows, the resolution is about 15 milliseconds. That means two computer that start creating UUIDs with Jackrabbit within the same 15 millisecond interval will generate the same UUIDs. In a clustered environment the nodes could be started automatically at the same time (for example after a backup).
+
+Also, the Random class uses a 48-bit seed, which is much less than the number of random bits in UUID (122). This is not secure. See also:
+
+http://en.wikipedia.org/wiki/UUID
+Random UUID probability of duplicates
+"The probability [of duplicates] also depends on the quality of the random number generator. A cryptographically secure pseudorandom number generator must be used to generate the values, otherwise the probability of duplicates may be significantly higher."
+
+Therefore, I suggest to change VersionFourGenerator to use the SecureRandom implementation in by default.

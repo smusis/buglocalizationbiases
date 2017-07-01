@@ -1,0 +1,10 @@
+typos on FAQ
+
+
+
+Description:
+I found out the following typos on the FAQ (http://lucene.sourceforge.net/cgi-
+bin/faq/faqmanager.cgi) of lucene:
+in 8. Will Lucene work with my Java application ?
+- felxible
+- applciations

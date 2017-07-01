@@ -1,0 +1,28 @@
+Jcr-Server: Invalid value for HTTP auth header
+
+
+
+Description:
+At present, DAV Explorer won't log in to the JCR WebDav servlet - it doesn't even ask for a username & password.  (Neither the Microsoft WinXP WebDAV & Novell's NetDrive were as fussy and were happy to log in)
+Using Ethereal, I compared the traffic for a valid Slide WebDav login compared to a JCR WebDav login.
+
+I've now found and fixed the problem on my local build, and I've now got DAV Explorer to work with JCR Webdav.  Here's a description of the bugfix:
+
+In jackrabbit/contrib/jcr-server/server/src/java/org/apache/jackrabbit/server/AbstractWebdavServlet.java, there is a public static final String DEFAULT_AUTHENTICATE_HEADER.
+This is currently set to "Basic Realm=Jackrabbit Webdav Server".
+
+This is not a valid string for use in this context as it is in breach of RFC2617 for 2 reasons:
+1) "Realm" should be "realm"
+2) "Jackrabbit Webdav Server" should be in quotes, i.e. "\"Jackrabbit Webdav Server\""
+
+According to http://www.ietf.org/rfc/rfc2617.txt, a valid challenge would be:
+   WWW-Authenticate: Basic realm="WallyWorld"
+Note that "realm" is not capitalised and "WallyWorld" has been enclosed in quotes (the "WWW-Authenticate: " string is held elsewhere in the Java code and is correct)
+
+
+In other words, AbstractWebdavServlet.java line 82, which currently reads:
+    public static final String DEFAULT_AUTHENTICATE_HEADER = "Basic Realm=Jackrabbit Webdav Server";
+should be changed to read
+    public static final String DEFAULT_AUTHENTICATE_HEADER = "Basic realm=\"Jackrabbit Webdav Server\"";
+
+

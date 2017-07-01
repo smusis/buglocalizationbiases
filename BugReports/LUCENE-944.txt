@@ -1,0 +1,6 @@
+Remove deprecated methods in BooleanQuery
+
+
+
+Description:
+Remove deprecated methods setUseScorer14 and getUseScorer14 in BooleanQuery, and adapt javadocs.

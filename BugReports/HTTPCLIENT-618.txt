@@ -1,0 +1,13 @@
+Eliminate class HostConfiguration
+
+
+
+Description:
+Remove the target host attribute from the HostConfiguration class. This will allow one HostConfiguration object to be used for different targets.
+The problem is that currently MultiThreadedHttpConnectionManager uses HostConfiguration objects as cache keys, which needs to be changed.
+
+This is a followup to HTTPCLIENT-615.
+
+cheers,
+  Roland
+

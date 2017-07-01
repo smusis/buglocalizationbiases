@@ -1,0 +1,6 @@
+TCK does not clean 2nd workspace during AbstractJCRTest.setUp()
+
+
+
+Description:
+the XATest.testXAVersionsThoroughly fails if run 2 times, since the 2nd workspace is not cleaned on startup. will provide provisonairy fix.

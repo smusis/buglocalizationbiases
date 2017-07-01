@@ -1,0 +1,19 @@
+Initialize the cause of a login exception in the repository
+
+
+
+Description:
+===================================================================
+--- RepositoryImpl.java8(revision 379871)
++++ RepositoryImpl.java (working copy)
+@@ -1056,7 +1056,9 @@
+             }
+             authCtx.login();
+         } catch (javax.security.auth.login.LoginException le) {
+-            throw new LoginException(le.getMessage());
++           LoginException nle = new LoginException(le.getMessage());
++           nle.initCause(le);
++           throw nle;
+         }
+
+         // create session

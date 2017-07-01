@@ -1,0 +1,21 @@
+Consolidate Lucene's QueryParsers into a module
+
+
+
+Description:
+Lucene has a lot of QueryParsers and we should have them all in a single consistent place.  
+
+The following are QueryParsers I can find that warrant moving to the new module:
+
+- Lucene Core's QueryParser
+- AnalyzingQueryParser
+- ComplexPhraseQueryParser
+- ExtendableQueryParser
+- Surround's QueryParser
+- PrecedenceQueryParser
+- StandardQueryParser
+- XML-Query-Parser's CoreParser
+
+All seem to do a good job at their kind of parsing with extensive tests.
+
+One challenge of consolidating these is that many tests use Lucene Core's QueryParser.  One option is to just replicate this class in src/test and call it TestingQueryParser.  Another option is to convert all tests over to programmatically building their queries (seems like alot of work).

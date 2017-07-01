@@ -1,0 +1,23 @@
+Repository is not unlocked if version manager init failed and assertions are enabled
+
+
+
+Description:
+The following test case will work as expected, except when assertions are enabled (java -ea ...):
+
+Connection conn = DriverManager.getConnection(
+        "jdbc:derby:repository/version/db;create=true");
+Statement stat = conn.createStatement();
+stat.execute("create table version_bundle(id int)");
+TransientRepository rep = new TransientRepository();
+try {
+    rep.login(new SimpleCredentials("", new char[0]));
+} catch (Exception e) {
+    // ignore
+}
+rep.shutdown();
+stat.execute("drop table version_bundle");
+new TransientRepository().login(new SimpleCredentials("", new char[0]));
+
+The reason is the assertion in RepositoryContext.getInternalVersionManager. Because of this assertion, the repository lock is not released during the repository shutdown.
+

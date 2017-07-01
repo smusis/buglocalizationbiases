@@ -1,0 +1,6 @@
+Journal: Use buffered input / output streams
+
+
+
+Description:
+The journal should use buffered input / output streams wherever possible. Currently there are some places where bytes are directly written to the journal file, which degrades performance.

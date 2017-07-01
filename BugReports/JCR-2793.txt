@@ -1,0 +1,15 @@
+Typo in NodeTypeRegistry
+
+
+
+Description:
+It seems a little typo has been introduced in the NodeTypeRegistry, as illustrated in this stack trace : 
+
+Caused by: javax.jcr.RepositoryException: internal error: invalid resource: nodetypes/custom_nodetypes.xml
+	at org.apache.jackrabbit.core.nodetype.NodeTypeRegistry.<init>(NodeTypeRegistry.java:703) ~[jackrabbit-core-2.2-SNAPSHOT.jar:2.2-SNAPSHOT]
+	at org.apache.jackrabbit.core.RepositoryImpl.createNodeTypeRegistry(RepositoryImpl.java:422) ~[jackrabbit-core-2.2-SNAPSHOT.jar:na]
+	at org.apache.jackrabbit.core.RepositoryImpl.<init>(RepositoryImpl.java:294) ~[jackrabbit-core-2.2-SNAPSHOT.jar:na]
+
+This happens when using a DbFileSystem for the root filesystem. This didn't cause a problem in 2.1.1
+
+The patch attached to this ticket correct the issue.

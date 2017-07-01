@@ -1,0 +1,6 @@
+RMI: Property.getValue() fails with EOFException after many reads
+
+
+
+Description:
+When reading binary properties via RMI it can happen that it fails throwing an EOFException. This is caused by a server sided "Too many open files" bacause BinaryValue.writeObject() does not close the underlying value InputStream.

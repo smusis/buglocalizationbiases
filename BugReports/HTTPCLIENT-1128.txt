@@ -1,0 +1,9 @@
+Provide factory method to create DefaultHttpClient instances pre-configured based on JSSE and networking system properties
+
+
+
+Description:
+Provide factory method or a factory class intended to create DefaultHttpClient instances pre-configured based on JSSE [1] and networking [2] system properties.
+
+[1] http://download.oracle.com/javase/1,5.0/docs/guide/security/jsse/JSSERefGuide.html
+[2] http://download.oracle.com/javase/1.5.0/docs/guide/net/properties.html

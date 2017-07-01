@@ -1,0 +1,6 @@
+Allow whitespaces in base64 encoded binary fields of XML import files
+
+
+
+Description:
+When importing files using Session.importXML(), the Binary property values are Base64 encoded.  However you cannot put whitespaces in them, and XML files with binaries in them become very long lines.  The files are more manageable if whilespaces could be put in them, as is common to do in base base64 encoded files.

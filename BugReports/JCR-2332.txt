@@ -1,0 +1,9 @@
+Unable to delete a non session-scoped locked node in XA Environment
+
+
+
+Description:
+You must first add a valid lockToken to the Session and then try to remove this node in a XA Environment.
+This will resulting in a NoSuchItemStateException: State has been marked destroyed.
+The  problem is that the unlock Operation will be done after that the node has been marked for destroyed.
+

@@ -1,0 +1,10 @@
+Merging implemented by codecs must catch aborted merges
+
+
+
+Description:
+This is a regression (we lost functionality on landing flex).
+
+When you close IW with "false" (meaning abort all running merges), IW asks the merge threads to abort.  The threads are supposed to periodically check if they are aborted and throw an exception if so.
+
+But on the cutover to flex, where the codec can override how merging is done (but a default impl is in the base enum classes), we lost this.

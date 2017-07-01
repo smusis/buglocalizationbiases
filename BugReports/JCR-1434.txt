@@ -1,0 +1,6 @@
+SPI: Description of Path.isDescendantOf(Path) 
+
+
+
+Description:
+Description of Path.isDescendantOf lists different reasons for IllegalArgumentException and RepositoryException than isAncestorOf... this is obviously a mistake.

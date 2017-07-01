@@ -1,0 +1,13 @@
+impl.conn.Wire uses String.getBytes() which depends on the default charset
+
+
+
+Description:
+impl.conn.Wire uses String.getBytes() which depends on the default charset
+
+The methods 
+public void output(final String s)
+and
+public void input(final String s)
+
+could probably be recoded to avoid this problem, as the output routine uses a StringBuilder.

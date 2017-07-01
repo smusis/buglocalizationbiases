@@ -1,0 +1,13 @@
+Issue LUCENE-352 was closed, but the patch there is not applied in the current trunk
+
+
+
+Description:
+See here:
+http://issues.apache.org/jira/browse/LUCENE-352
+
+And thanks for making JIRA easier, I noticed the Lucene Java project
+was preselected for me.
+
+Regards,
+Paul Elschot

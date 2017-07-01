@@ -1,0 +1,13 @@
+Tiered flushing of DWPTs by RAM with low/high water marks
+
+
+
+Description:
+Now that we have DocumentsWriterPerThreads we need to track total consumed RAM across all DWPTs.
+
+A flushing strategy idea that was discussed in LUCENE-2324 was to use a tiered approach:  
+- Flush the first DWPT at a low water mark (e.g. at 90% of allowed RAM)
+- Flush all DWPTs at a high water mark (e.g. at 110%)
+- Use linear steps in between high and low watermark:  E.g. when 5 DWPTs are used, flush at 90%, 95%, 100%, 105% and 110%.
+
+Should we allow the user to configure the low and high water mark values explicitly using total values (e.g. low water mark at 120MB, high water mark at 140MB)?  Or shall we keep for simplicity the single setRAMBufferSizeMB() config method and use something like 90% and 110% for the water marks?

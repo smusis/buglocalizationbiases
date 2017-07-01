@@ -1,0 +1,55 @@
+Some improvements to contrib/benchmark
+
+
+
+Description:
+I've made some small improvements to the contrib/benchmark, mostly
+merging in the ad-hoc benchmarking code I've been using in LUCENE-843:
+
+  - Fixed thread safety of DirDocMaker's usage of SimpleDateFormat
+
+  - Print the props in sorted order
+
+  - Added new config "autocommit=true|false" to CreateIndexTask
+
+  - Added new config "ram.flush.mb=int" to AddDocTask
+
+  - Added new configs "doc.term.vector.positions=true|false" and
+    "doc.term.vector.offsets=true|false" to BasicDocMaker
+
+  - Added WriteLineDocTask.java, so you can make an alg that uses this
+    to build up a single file containing one document per line in a
+    single file.  EG this alg converts the reuters-out tree into a
+    single file that has ~1000 bytes per body field, saved to
+    work/reuters.1000.txt:
+
+      docs.dir=reuters-out
+      doc.maker=org.apache.lucene.benchmark.byTask.feeds.DirDocMaker
+      line.file.out=work/reuters.1000.txt
+      doc.maker.forever=false
+      {WriteLineDoc(1000)}: *
+
+    Each line has tab-separted TITLE, DATE, BODY fields.
+
+  - Created feeds/LineDocMaker.java that creates documents read from
+    the file created by WriteLineDocTask.java.  EG this alg indexes
+    all documents created above:
+
+      analyzer=org.apache.lucene.analysis.SimpleAnalyzer
+      directory=FSDirectory
+      doc.add.log.step=500
+
+      docs.file=work/reuters.1000.txt
+      doc.maker=org.apache.lucene.benchmark.byTask.feeds.LineDocMaker
+      doc.tokenized=true
+      doc.maker.forever=false
+
+      ResetSystemErase
+      CreateIndex
+      {AddDoc}: *
+      CloseIndex
+
+      RepSumByPref AddDoc
+
+I'll attach initial patch shortly.
+

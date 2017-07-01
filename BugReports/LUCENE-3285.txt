@@ -1,0 +1,8 @@
+Move QueryParsers from contrib/queryparser to queryparser module
+
+
+
+Description:
+Each of the QueryParsers will be ported across.
+
+Those which use the flexible parsing framework will be placed under the package flexible.  The StandardQueryParser will be renamed to FlexibleQueryParser and surround.QueryParser will be renamed to SurroundQueryParser.

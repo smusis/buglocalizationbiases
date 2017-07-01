@@ -1,0 +1,10 @@
+Some contribs depend on core tests to be compiled and fail when ant clean was done before
+
+
+
+Description:
+If you do "ant clean" on the root level of Lucene and then go to e.g. contrib/queryparser (3.x only) or contrib/misc (3.x and trunk) and call "ant test", the build of tests fails:
+- contrib/queryparser's ExtendedableQPTests extend a core TestQueryParser (3.x only, in module this works, of course)
+- contrib/misc/TestIndexSplitter uses a core class to build its index
+
+To find the root cause: We should first remove the core tests from contrib classpath, so the issue gets visible even without "ant clean" before. Then we can fix this.

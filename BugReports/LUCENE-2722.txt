@@ -1,0 +1,19 @@
+Sep codec should store less in terms dict
+
+
+
+Description:
+I'm working on improving Lucene's performance with int block codecs
+(FOR/PFOR), but in early perf testing I found that these codecs cause
+a big perf hit to those MTQs that need to scan many terms but don't
+end up accepting many of those terms (eg fuzzy, wildcard, regexp).
+
+This is because sep codec stores much more in the terms dict, since
+each file is separate, ie seek points for each of doc, frq, pos, pyl,
+skp files.
+
+So I'd like to shift these seek points to instead be stored in the doc
+file, except for the doc seek point itself.  Since a given query will
+always need to seek to the doc file, this does not add an extra seek.
+But it saves tons of vInt decodes for the next/seke intensive MTQs...
+

@@ -1,0 +1,8 @@
+Node.orderBefore does not check permissions
+
+
+
+Description:
+It seems that Node.orderBefore(String, String) does not check if the editing session is allowed to modify the parent, neither immediately nor upon saving the transient changes.
+
+This issue was found by Alexandre Capt. Thanks!

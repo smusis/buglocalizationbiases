@@ -1,0 +1,46 @@
+Lucene is not fsync'ing files on commit
+
+
+
+Description:
+Thanks to hurricane Irene, when Mark's electricity became unreliable, he discovered that on power loss Lucene could easily corrumpt the index, which of course should never happen...
+
+I was able to easily repro, by pulling the plug on an Ubuntu box during indexing.  On digging, I discovered, to my horror, that Lucene is failing to fsync any files, ever!
+
+This bug was unfortunately created when we committed LUCENE-2328... that issue added tracking, in FSDir, of which files have been closed but not sync'd, so that when sync is called during IW.commit we only sync those files that haven't already been sync'd.
+
+That tracking is done via the FSDir.onIndexOutputClosed callback, called when an FSIndexOutput is closed.  The bug is that we only call it on exception during close:
+
+{noformat}
+
+    @Override
+    public void close() throws IOException {
+      // only close the file if it has not been closed yet
+      if (isOpen) {
+        boolean success = false;
+        try {
+          super.close();
+          success = true;
+        } finally {
+          isOpen = false;
+          if (!success) {
+            try {
+              file.close();
+              parent.onIndexOutputClosed(this);
+            } catch (Throwable t) {
+              // Suppress so we don't mask original exception
+            }
+          } else
+            file.close();
+        }
+      }
+    }
+{noformat}
+
+And so FSDir thinks no files need syncing when its sync method is called....
+
+I think instead we should call it up-front; better to over-sync than under-sync.
+
+The fix is trivial (move the callback up-front), but I'd love to somehow have a test that can catch such a bad regression in the future.... still I think we can do that test separately and commit this fix first.
+
+Note that even though LUCENE-2328 was backported to 2.9.x and 3.0.x, this bug wasn't, ie the backport was a much simpler fix (to just address the original memory leak); it's 3.1, 3.2, 3.3 and trunk when this bug is present.

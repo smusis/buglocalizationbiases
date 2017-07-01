@@ -1,0 +1,35 @@
+Lock.refresh(): throws if lock is alive
+
+
+
+Description:
+The spec says:
+
+Lock.refresh():
+If this lock's time-to-live is governed by a timer, this method resets that timer so that the lock does not timeout and expire. If this lock's time-to-live is not governed by a timer, then this method has no effect.A LockException is thrown if this Session does not hold the correct lock token for this lock.A RepositoryException is thrown if another error occurs.
+
+
+The jackrabbit impl does:
+
+/**
+     * {@inheritDoc}
+     */
+    public void refresh() throws LockException, RepositoryException {
+        if (isLive()) {
+            throw new LockException("Lock still alive.");
+        }
+        [...]
+    }
+
+
+Isn't this a leftover from a very old version of the spec?
+There was ones a misunderstanding about the refresh (bringing locks back to live) that has been discussed (mail by david to g. clemm, tobi, peeter and myself, 25.4.2005). as far is i know everybody agreed that this does not make sense and the spec has been adjusted accordingly.
+
+The usage of the refresh is to prevent the lock from being timeouted. That was the original meaning of the refresh, when i suggested it for the JCR locking. If the lock is still alive and there is no timeout to reset, then the method should simply not do anything.
+
+am i missing something? 
+
+regards
+angela
+
+

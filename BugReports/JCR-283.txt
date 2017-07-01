@@ -1,0 +1,15 @@
+NamespaceRegistry.registerNamespace(pre, uri)  might accidentally remove namespace in certain situations
+
+
+
+Description:
+assume the following mappings exist in the global NamespaceRegistry:
+
+pre1 <-> uri1
+pre2 <-> uri2
+
+the following stmt correclty throws a NamespaceException, complaining that an existing prefix can not be remapped:
+
+nsReg.registerNamespace("pre2", "uri1")
+
+but, as a sideeffect, it has also removed the mapping pre1 <-> uri1.

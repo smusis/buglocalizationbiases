@@ -1,0 +1,40 @@
+ContentEncodingHttpClient.execute(HttpGet, ResponseHandler<T>) throws IOException when reading compressed response
+
+
+
+Description:
+The following snippet:
+
+    String url = "http://yahoo.com";
+    HttpClient httpClient = new ContentEncodingHttpClient();
+    HttpGet get = new HttpGet(url);
+    String content = httpClient.execute(get, new BasicResponseHandler());
+
+throws:
+
+java.io.IOException: Attempted read from closed stream.
+	at org.apache.http.impl.io.ChunkedInputStream.read(ChunkedInputStream.java:126)
+	at java.util.zip.CheckedInputStream.read(CheckedInputStream.java:42)
+	at java.util.zip.GZIPInputStream.readUByte(GZIPInputStream.java:205)
+	at java.util.zip.GZIPInputStream.readUShort(GZIPInputStream.java:197)
+	at java.util.zip.GZIPInputStream.readHeader(GZIPInputStream.java:136)
+	at java.util.zip.GZIPInputStream.<init>(GZIPInputStream.java:58)
+	at java.util.zip.GZIPInputStream.<init>(GZIPInputStream.java:68)
+	at org.apache.http.client.entity.GzipDecompressingEntity.getContent(GzipDecompressingEntity.java:63)
+	at org.apache.http.conn.BasicManagedEntity.getContent(BasicManagedEntity.java:88)
+	at org.apache.http.util.EntityUtils.consume(EntityUtils.java:65)
+	at org.apache.http.impl.client.AbstractHttpClient.execute(AbstractHttpClient.java:974)
+	at org.apache.http.impl.client.AbstractHttpClient.execute(AbstractHttpClient.java:919)
+	at org.apache.http.impl.client.AbstractHttpClient.execute(AbstractHttpClient.java:910)
+	at tv.adap.service.HttpPoolTest.testChunkedGzip(HttpPoolTest.java:41)
+
+whereas the following snippet runs fine:
+
+    String url = "http://yahoo.com";
+    HttpClient httpClient = new ContentEncodingHttpClient();
+    HttpGet get = new HttpGet(url);
+    HttpResponse response = httpClient.execute(get);
+    HttpEntity entity = response.getEntity();
+    String content = EntityUtils.toString(entity);
+
+These two snippets should be functionally the same (putting the entity body into content). Creating a JIRA per the recommendation of Oleg from httpclient-users.

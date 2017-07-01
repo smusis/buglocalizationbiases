@@ -1,0 +1,6 @@
+Auth state is not correctly maintained if a successful NTLM authentication results in a redirect
+
+
+
+Description:
+HttpClient fails to update the auth state correctly if a successful NTLM authentication results in a redirect response. Reported by Valentin Popov <valentin.po at gmail.com>

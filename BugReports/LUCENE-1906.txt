@@ -1,0 +1,37 @@
+Backwards problems with CharStream and Tokenizers with custom reset(Reader) method
+
+
+
+Description:
+When reviewing the new CharStream code added to Tokenizers, I found a
+serious problem with backwards compatibility and other Tokenizers, that do
+not override reset(CharStream).
+
+The problem is, that e.g. CharTokenizer only overrides reset(Reader):
+
+{code}
+  public void reset(Reader input) throws IOException {
+    super.reset(input);
+    bufferIndex = 0;
+    offset = 0;
+    dataLen = 0;
+  }
+{code}
+
+If you reset such a Tokenizer with another CharStream (not a Reader), this
+method will never be called and breaking the whole Tokenizer.
+
+As CharStream extends Reader, I propose to remove this reset(CharStream
+method) and simply do an instanceof check to detect if the supplied Reader
+is no CharStream and wrap it. We could also remove the extra ctor (because
+most Tokenizers have no support for passing CharStreams). If the ctor also
+checks with instanceof and warps as needed the code is backwards compatible
+and we do not need to add additional ctors in subclasses.
+
+As this instanceof check is always done in CharReader.get() why not remove
+ctor(CharStream) and reset(CharStream) completely?
+
+Any thoughts?
+
+I would like to fix this somehow before RC4, I'm, sorry :(
+

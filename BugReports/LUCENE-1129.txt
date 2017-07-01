@@ -1,0 +1,12 @@
+ReadTask ignores traversalSize
+
+
+
+Description:
+The ReadTask doLogic() method ignores the value of the traversalSize and loops over hits.length() instead, thus falsely reporting the desired number of iterations through the hit list.
+
+The fix is relatively trivial since we already calculate 
+{code}
+int traversalSize = Math.min(hits.length(), traversalSize());
+{code}
+so we just need to use this value in the loop condition.

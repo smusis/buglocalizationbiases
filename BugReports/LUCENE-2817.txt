@@ -1,0 +1,6 @@
+SimpleText has a bulk enum buffer reuse bug
+
+
+
+Description:
+testBulkPostingsBufferReuse fails with SimpleText codec.

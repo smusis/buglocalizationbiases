@@ -1,0 +1,14 @@
+Registering a Nodetype based on an existing NodeType fail
+
+
+
+Description:
+If I create a new NodeTypeTemplate using the code show below,
+
+           NodeTypeManagerImpl ntm = (NodeTypeManagerImpl) session.getWorkspace().getNodeTypeManager();
+           NodeTypeDefinition nt = (NodeTypeDefinition) ntm.getNodeType("wr:entity");
+           NodeTypeTemplate ntt = ntm.createNodeTypeTemplate(nt);
+
+the list of declaredSuperType contains the same name of the original nodeType (repeted twice) and not the declaredSuperType of the original nodeType (in this example [nt:base, nt:file])
+
+          ntt.getDeclaredSupertypeNames(); -> [wr:entity, wr:entity]

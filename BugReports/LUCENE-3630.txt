@@ -1,0 +1,10 @@
+MultiReader and ParallelReader accidently override doOpenIfChanged(boolean readOnly) with doOpenIfChanged(boolean doClone)
+
+
+
+Description:
+I found this during adding deprecations for RW access in LUCENE-3606:
+
+the base class defines doOpenIfChanged(boolean readOnly), but MultiReader and ParallelReader "override" this method with a signature doOpenIfChanged(doClone) and missing @Override. This makes consumers calling IR.openIfChanged(boolean readOnly) do the wrong thing. Instead they should get UOE like for the other unimplemented doOpenIfChanged methods in MR and PR.
+
+Easy fix is to rename and hide this internal "reopen" method, like DirectoryReader,...

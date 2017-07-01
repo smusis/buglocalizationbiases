@@ -1,0 +1,7 @@
+PredefinedNodeTypeTest..getNodeTypeSpec handling unknown super types
+
+
+
+Description:
+This method tries to filter out custom super types, but produces a broken spec when *all* super types are custom (in which case it should emit "[]", but doesn't).
+

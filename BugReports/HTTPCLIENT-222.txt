@@ -1,0 +1,34 @@
+Via NTLM proxy to SSL Apache/BasicAuth. - worked in may 22nd, but broken in beta1
+
+
+
+Description:
+Hi there,
+
+This morning I downloaded beta 1 and tried a small piece of code to connect to 
+a SSLified apache server (using basic authentication) via a MS-Proxy 2.0 with 
+NTLM enabled. The sourcecode of my crashme is based on the 1st attachment for 
+HTTPCLIENT-153. It differs from the original in using basic authentication for the 
+webserver instead of NTLM.
+
+It failed with this error:
+
+--
+10-jun-2003 16:39:05 org.apache.commons.httpclient.HttpMethodBase 
+processAuthenticationResponse
+INFO: Already tried to authenticate to "website#" but still receiving 407.
+Status: 407 : Proxy authentication required
+--
+
+Then I downloaded a fresh night build (commons-httpclient-20030605) which also 
+failed :/
+
+Then I went back to an old build from May (commons-httpclient-20030522) which 
+worked like a charm!!!
+
+Using MSIE I can succesfully connect to the apache server. I know it's not a 
+problem with typos because I have MSIE ask me for all creds.
+
+Seems somethings got broken along the way. If I can help, please ask!
+
+Cheers.

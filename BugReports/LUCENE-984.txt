@@ -1,0 +1,7 @@
+remove TermVectorsWriter (it's no longer used)
+
+
+
+Description:
+We should remove TermVectorsWriter: it's no longer used now that
+DocumentsWriter writes the term vectors directly to the index.

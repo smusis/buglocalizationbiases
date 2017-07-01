@@ -1,0 +1,10 @@
+Token of  "" returns in CJKTokenizer + new TestCJKTokenizer
+
+
+
+Description:
+The "" string returns as Token in the boundary of two byte character and one byte character. 
+
+There is no problem in CJKAnalyzer. 
+When CJKTokenizer is used with the unit, it becomes a problem. (Use it with 
+Solr etc.)

@@ -1,0 +1,14 @@
+Fix StandardAnalyzer to not mis-identify HOST as ACRONYM by default
+
+
+
+Description:
+Coming out of the discussion around back compatibility, it seems best to default StandardAnalyzer to properly fix LUCENE-1068, while preserving the ability to get the back-compatible behavior in the rare event that it's desired.
+
+This just means changing the replaceInvalidAcronym = false with = true, and, adding a clear entry to CHANGES.txt that this very slight non back compatible change took place.
+
+Spinoff from here:
+
+    http://www.gossamer-threads.com/lists/lucene/java-dev/57517#57517
+
+I'll commit that change in a day or two.

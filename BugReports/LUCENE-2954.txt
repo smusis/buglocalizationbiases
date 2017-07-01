@@ -1,0 +1,12 @@
+CheckIndex prints wrong version number on 3.1 indexes (and posibly also in trunk)
+
+
+
+Description:
+When you run CheckIndex on an index created/updated with 3.1, it prints about the SegmentInfos:
+
+{noformat}
+Segments file=segments_g19 numSegments=5 version=-11 [Lucene 1.3 or prior]
+{noformat}
+
+We should fix CheckIndex and also verify other cases where version numbers are printed out. In trunk the issue may be more complicated!

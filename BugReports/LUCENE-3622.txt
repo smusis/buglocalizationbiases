@@ -1,0 +1,11 @@
+separate IndexDocValues interface from implementation
+
+
+
+Description:
+Currently the o.a.l.index.values contains both the abstract apis and Lucene40's current implementation.
+
+I think we should move the implementation underneath Lucene40Codec, leaving only the abstract apis.
+
+For example, simpletext might have a different implementation, and we might make a int8 implementation
+underneath preflexcodec to support norms.

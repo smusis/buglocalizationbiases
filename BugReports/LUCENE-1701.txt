@@ -1,0 +1,12 @@
+Add NumericField, make plain text numeric parsers public in FieldCache, move trie parsers to FieldCache
+
+
+
+Description:
+In discussions about LUCENE-1673, Mike & me wanted to add a new NumericField to o.a.l.document specific for easy indexing. An alternative would be to add a NumericUtils.newXxxField() factory, that creates a preconfigured Field instance with norms and tf off, optionally a stored text (LUCENE-1699) and the TokenStream already initialized. On the other hand NumericUtils.newXxxSortField could be moved to NumericSortField.
+
+I and Yonik tend to use the factory for both, Mike tends to create the new classes.
+
+Also the parsers for string-formatted numerics are not public in FieldCache. As the new SortField API (LUCENE-1478) makes it possible to support a parser in SortField instantiation, it would be good to have the static parsers in FieldCache public available. SortField would init its member variable to them (instead of NULL), so making code a lot easier (FieldComparator has this ugly null checks when retrieving values from the cache).
+
+Moving the Trie parsers also as static instances into FieldCache would make the code cleaner and we would be able to hide the "hack" StopFillCacheException by making it private to FieldCache (currently its public because NumericUtils is in o.a.l.util).

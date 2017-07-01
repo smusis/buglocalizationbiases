@@ -1,0 +1,24 @@
+Add an "termInfosIndexDivisor" to IndexReader
+
+
+
+Description:
+The termIndexInterval, set during indexing time, let's you tradeoff
+how much RAM is used by a reader to load the indexed terms vs cost of
+seeking to the specific term you want to load.
+
+But the downside is you must set it at indexing time.
+
+This issue adds an indexDivisor to TermInfosReader so that on opening
+a reader you could further sub-sample the the termIndexInterval to use
+less RAM.  EG a setting of 2 means every 2 * termIndexInterval is
+loaded into RAM.
+
+This is particularly useful if your index has a great many terms (eg
+you accidentally indexed binary terms).
+
+Spinoff from this thread:
+
+  http://www.gossamer-threads.com/lists/lucene/java-dev/54371
+
+

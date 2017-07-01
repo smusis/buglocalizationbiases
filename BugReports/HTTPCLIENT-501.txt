@@ -1,0 +1,40 @@
+Minor RFC 2109 / 2965 violation
+
+
+
+Description:
+Hi all,
+
+we received this bug report for the debian commons-httpclient
+package:
+
+<debian_bugreport>
+The following bug is present in upstream, 2.0.2 and 3.0RC3, at least as far
+as I can tell by testing.
+
+The specification grammar for the Cookie and Cookie2 HTTP headers
+(specified by RFC 2109 section 4.3.4, and RFC 2965 section 3.3.4,
+respectively) require that the ordering of pairs is "Version, NAME, path,
+domain" (and, in RFC 2965, "port" after "domain"). However, HTTPClient
+produces a cookie string with the domain pair appearing before, rather
+than after, the path pair. The RFCs specifically *do not* use either the
+grammar or the clarifying text ("can occur in any order") that occurs in
+the sections that define the Set-Cookie and Set-Cookie2 headers (4.2.2 and
+3.2.2, respectively).
+
+Since the sections in question do not, in fact, discuss the issue of pair
+ordering in Set-Cookie/Set-Cookie2 at all (other than in using a grammar
+that clearly expresses the requirement), and since the complimentary
+header explicitly permits them to occur in any order, it seems likely
+that HTTPClient is not the only client with this issue, and that most
+servers will accomodate this situation (in fact, for it to have gone
+unnoticed for this long, it seems likely that either I'm badly misreading
+the specification, or no major server has a problem coping with this).
+</debian_bugreport>
+
+For your reference the debian bug number:
+http://bugs.debian.org/cgi-bin/bugreport.cgi?bug=329245
+
+Regards,
+
+Wolfgang

@@ -1,0 +1,27 @@
+Host configuration properties not updated when the method is redirected
+
+
+
+Description:
+the above uri:
+
+http://www.adobe.com/cgi-bin/redirect?http://lists.w3.org/Archives/Public/www-xsl-fo
+
+generates two 302 responses:
+
+from the original to http://lists.w3.org/Archives/Public/www-xsl-fo
+and from that to http://lists.w3.org/Archives/Public/www-xsl-fo/
+
+the client accepts and follows these redirects (a trace of the process shows it's working well) but when 
+you ask the getmethod what uri we ended up at using the getURI() method it returns the bastardised 
+result:
+
+http://www.adobe.com/Archives/Public/www-xsl-fo/
+
+instead of the correct 
+
+http://lists.w3.org/Archives/Public/www-xsl-fo/
+
+that the client has actually downloaded.
+
+using cvsup'd copy showing version string " Jakarta Commons-HttpClient/2.1m1"

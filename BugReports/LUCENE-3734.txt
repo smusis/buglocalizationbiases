@@ -1,0 +1,12 @@
+Allow customizing/subclassing of DirectoryReader
+
+
+
+Description:
+DirectoryReader is final and has only static factory methods. It is not possible to subclass it in any way.
+
+The problem is mainly Solr, as Solr accesses directory(), IndexCommits,... and therefore cannot work on abstract IndexReader anymore. This should be changed, by e.g. handling reopening in the IRFactory, also versions, commits,... Currently its not possible to implement any other IRFactory that returns something else.
+
+On the other hand, it should be possible to "wrap" a DirectoryReader / CompositeReader to handle filtering of collection based information (subreaders, reopening hooks,...). This can be done by making DirectoryReader abstract and let DirectoryReader.open return a internal hidden class "StandardDirectoryReader". This is similar to the relatinship between IndexReader and hidden DirectoryReader in the past.
+
+DirectoryReader will have final implementations of most methods like getting document stored fields, global docFreq and other statistics, but allows hooking into doOpenIfChanged. Also it should not be limited to SegmentReaders as childs - any AtomicReader is fine. This allows users to create e.g. a Directory-based ParallelReader (see LUCENE-3736) that supports reopen and (partially commits).

@@ -1,0 +1,10 @@
+[PATCH] When locks are disabled, IndexWriter.close() throws NullPointerException
+
+
+
+Description:
+If locks are disabled (via setting the System property 'disableLuceneLocks' to
+true), IndexWriter throws a NullPointerException on closing. The reason is that
+the attempt to call writeLock.release() fails because writeLock is null.
+To correct this, just check for this case before releasing. A (trivial) patch is
+attached.

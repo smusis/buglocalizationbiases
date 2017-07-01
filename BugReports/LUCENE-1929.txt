@@ -1,0 +1,9 @@
+Highlighter doesn't support NumericRangeQuery or deprecated RangeQuery
+
+
+
+Description:
+Sucks. Will throw a NullPointer exception. 
+
+Only NumericRangeQuery will throw the exception.
+RangeQuery just won't highlight.

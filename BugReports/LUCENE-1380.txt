@@ -1,0 +1,17 @@
+Patch for ShingleFilter.enablePositions (or PositionFilter)
+
+
+
+Description:
+Make it possible for *all* words and shingles to be placed at the same position, that is for _all_ shingles (and unigrams if included) to be treated as synonyms of each other.
+
+Today the shingles generated are synonyms only to the first term in the shingle.
+For example the query "abcd efgh ijkl" results in:
+   ("abcd" "abcd efgh" "abcd efgh ijkl") ("efgh" efgh ijkl") ("ijkl")
+
+where "abcd efgh" and "abcd efgh ijkl" are synonyms of "abcd", and "efgh ijkl" is a synonym of "efgh".
+
+There exists no way today to alter which token a particular shingle is a synonym for.
+This patch takes the first step in making it possible to make all shingles (and unigrams if included) synonyms of each other.
+
+See http://comments.gmane.org/gmane.comp.jakarta.lucene.user/34746 for mailing list thread.

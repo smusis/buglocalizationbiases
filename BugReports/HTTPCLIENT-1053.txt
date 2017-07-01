@@ -1,0 +1,12 @@
+Security issue - DigestScheme uses constant nonce count value
+
+
+
+Description:
+The nonce count value in DigestScheme is static (set to 00000001) and never changes.  (also seen as comment in said file).
+
+This means that it fails against servers that correctly detect man-in-the-middle or replay attacks, leading to additional 401 requests (every second time), or such servers must be configured to turn such checks off (which is either poor security or poor for performance).
+
+I suggest that at minimum, this count is incremented for every call to DigestScheme#createDigest.  It should also be an instance variable instead of a static, as it really relates to the challenge (assuming cases where instances are cached for reuse).  AtomicInteger is a good choice for implementing this counter.
+
+See RFC 2617 chapters 3.2.2 and 3.2.3

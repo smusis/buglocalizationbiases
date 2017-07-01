@@ -1,0 +1,6 @@
+Update Lucene to 3.0
+
+
+
+Description:
+Lucene 3.0 was released on 2009/11/25. They migrated to Java 1.5 as Jackrabbit is doing with 2.0. Also they added some new optimizations. It would be nice if Jackrabbit could switch to the new lucene version too.

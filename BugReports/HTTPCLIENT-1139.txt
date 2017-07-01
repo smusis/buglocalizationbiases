@@ -1,0 +1,10 @@
+NTLM Authentication No Longer Working In Latest Release
+
+
+
+Description:
+Our application has been working fine using NTLM auth with HttpClient for 3 years.   We were most recently on 4.0.3.    Upon upgrading to 4.1.2, NTLM stopped working.
+
+I tried both the new for 4.1 built-in NTLM and the "old way" of using JCIFS: client.getAuthSchemes().register("ntlm", new NTLMSchemeFactory()); 
+
+Using wireshark I can see that NTLM auth is not even attempted using 4.1.2.    Rolling back to 4.0.3 immediately resolved this problem.

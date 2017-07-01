@@ -1,0 +1,29 @@
+Add javadoc notes about ICUCollationKeyFilter's advantages over CollationKeyFilter
+
+
+
+Description:
+contrib/collation's ICUCollationKeyFilter, which uses ICU4J collation, is faster than CollationKeyFilter, the JVM-provided java.text.Collator implementation in the same package.  The javadocs of these classes should be modified to add a note to this effect.
+
+My curiosity was piqued by [Robert Muir's comment|https://issues.apache.org/jira/browse/LUCENE-1581?focusedCommentId=12720300#action_12720300] on LUCENE-1581, in which he states that ICUCollationKeyFilter is up to 30x faster than CollationKeyFilter.
+
+I timed the operation of these two classes, with Sun JVM versions 1.4.2/32-bit, 1.5.0/32- and 64-bit, and 1.6.0/64-bit, using 90k word lists of 4 languages (taken from the corresponding Debian wordlist packages and truncated to the first 90k words after a fixed random shuffling), using Collators at the default strength, on a Windows Vista 64-bit machine.  I used an analysis pipeline consisting of WhitespaceTokenizer chained to the collation key filter, so to isolate the time taken by the collation key filters, I also timed WhitespaceTokenizer operating alone for each combination.  The rightmost column represents the performance advantage of the ICU4J implemtation (ICU) over the java.text.Collator implementation (JVM), after discounting the WhitespaceTokenizer time (WST): (JVM-ICU) / (ICU-WST). The best times out of 5 runs for each combination, in milliseconds, are as follows:
+
+||Sun JVM||Language||java.text||ICU4J||WhitespaceTokenizer||ICU4J Improvement||
+|1.4.2_17 (32 bit)|English|522|212|13|156%|
+|1.4.2_17 (32 bit)|French|716|243|14|207%|
+|1.4.2_17 (32 bit)|German|669|264|16|163%|
+|1.4.2_17 (32 bit)|Ukranian|931|474|25|102%|
+|1.5.0_15 (32 bit)|English|604|176|16|268%|
+|1.5.0_15 (32 bit)|French|817|209|17|317%|
+|1.5.0_15 (32 bit)|German|799|225|20|280%|
+|1.5.0_15 (32 bit)|Ukranian|1029|436|26|145%|
+|1.5.0_15 (64 bit)|English|431|89|10|433%|
+|1.5.0_15 (64 bit)|French|562|112|11|446%|
+|1.5.0_15 (64 bit)|German|567|116|13|438%|
+|1.5.0_15 (64 bit)|Ukranian|734|281|21|174%|
+|1.6.0_13 (64 bit)|English|162|81|9|113%|
+|1.6.0_13 (64 bit)|French|192|92|10|122%|
+|1.6.0_13 (64 bit)|German|204|99|14|124%|
+|1.6.0_13 (64 bit)|Ukranian|273|202|21|39%|
+

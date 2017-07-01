@@ -1,0 +1,9 @@
+fix some more locale problems in lucene/solr
+
+
+
+Description:
+set ANT_ARGS="-Dargs=-Duser.language=tr -Duser.country=TR"
+ant clean test
+
+We should make sure this works across all of lucene/solr

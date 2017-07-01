@@ -1,0 +1,13 @@
+omitTF is viral, but omitNorms is anti-viral.
+
+
+
+Description:
+omitTF is viral. if you add document 1 with field "foo" as omitTF, then document 2 has field "foo" without omitTF, they are both treated as omitTF.
+
+but omitNorms is the opposite. if you have a million documents with field "foo" with omitNorms, then you add just one document without omitting norms, 
+now you suddenly have a million 'real norms'.
+
+I think it would be good for omitNorms to be viral too, just for consistency, and also to prevent huge byte[]'s.
+but another option is to make omitTF anti-viral, which is more "schemaless" i guess.
+

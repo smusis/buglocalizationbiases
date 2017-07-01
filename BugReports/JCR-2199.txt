@@ -1,0 +1,12 @@
+Improvements to user management
+
+
+
+Description:
+Container issue for various improvements needed for the user management implementation in jr-core.
+
+Known improvements are:
+
+- extensibility
+- current structuring of users/groups in the JCR content doesn't allow for easy finding user/group by ID.
+- groupID should be unescaped before being returned by getID

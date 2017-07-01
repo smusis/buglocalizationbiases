@@ -1,0 +1,21 @@
+Update idea plugin version
+
+
+
+Description:
+We are using a quite outdated version (2.0). The most recent idea plugin release is 2.2.
+
+Index: jackrabbit-parent/pom.xml
+===================================================================
+--- jackrabbit-parent/pom.xml	(revision 802755)
++++ jackrabbit-parent/pom.xml	(working copy)
+@@ -73,7 +73,7 @@
+       <plugin>
+         <!-- http://maven.apache.org/plugins/maven-idea-plugin/ -->
+         <artifactId>maven-idea-plugin</artifactId>
+-        <version>2.0</version>
++        <version>2.2</version>
+         <configuration>
+           <downloadSources>true</downloadSources>
+           <jdkLevel>1.5</jdkLevel>
+

@@ -1,0 +1,19 @@
+DisjunctionSumScorer small tweak
+
+
+
+Description:
+Move ScorerDocQueue initialization from next() and skipTo() methods to the Constructor. Makes DisjunctionSumScorer a bit faster (less than 1% on my tests). 
+
+Downside (if this is one, I cannot judge) would be throwing IOException from DisjunctionSumScorer constructors as we touch HardDisk there. I see no problem as this IOException does not propagate too far (the only modification I made is in BooleanScorer2)
+
+if (scorerDocQueue == null) {
+      initScorerDocQueue();
+}
+ 
+
+Attached test is just quick & dirty rip of  TestScorerPerf from standard Lucene test package. Not included as patch as I do not like it.
+
+
+All test pass, patch made on trunk revision 613923
+

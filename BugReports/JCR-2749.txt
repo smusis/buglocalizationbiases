@@ -1,0 +1,11 @@
+Closing a session twice shouldn't write a warning in the log
+
+
+
+Description:
+When closing a session twice the following warning is written to the log file as of JCR-2741:
+
+"This session has already been closed. See the chained exception for a trace of where the session was closed."
+
+I think the second "close()" should simply be ignored, without warning.
+

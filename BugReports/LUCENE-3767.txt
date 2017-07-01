@@ -1,0 +1,18 @@
+Explore streaming Viterbi search in Kuromoji
+
+
+
+Description:
+I've been playing with the idea of changing the Kuromoji viterbi
+search to be 2 passes (intersect, backtrace) instead of 4 passes
+(break into sentences, intersect, score, backtrace)... this is very
+much a work in progress, so I'm just getting my current state up.
+It's got tons of nocommits, doesn't properly handle the user dict nor
+extended modes yet, etc.
+
+One thing I'm playing with is to add a double backtrace for the long
+compound tokens, ie, instead of penalizing these tokens so that
+shorter tokens are picked, leave the scores unchanged but on backtrace
+take that penalty and use it as a threshold for a 2nd best
+segmentation...
+

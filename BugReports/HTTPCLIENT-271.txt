@@ -1,0 +1,33 @@
+PostMethod#setParameter
+
+
+
+Description:
+[HttpClient2.0-rc1]
+
+-------- code fragment 1 -------------------------
+PostMethod method = new PostMethod(uriString);
+method.addParameter("tel", "1111-1111");
+method.addParameter("tel", "2222-2222");
+method.setParameter("tel", "3333-3333");
+
+(post data sent)
+tel=1111-1111&tel=2222-2222&tel=3333-3333
+
+(post data i hope)
+tel=3333-3333
+-------------------------------------------------
+
+---------------- code fragment 2 -----------------
+PostMethod method = new PostMethod(uriString);
+method.addParameter("tel", "1111-1111");
+method.addParameter("tel", "2222-2222");
+method.addParameter("tel", "3333-3333");
+
+(post data sent)
+tel=1111-1111&tel=2222-2222&tel=3333-3333
+--------------------------------------------------
+
+what difference between code 1 and code2 ?
+
+sorry for my poor english.

@@ -1,0 +1,10 @@
+Default to anonymous access when no Credentials are given
+
+
+
+Description:
+Even though JCR-348 made easier to start a Jackrabbit repository with default configuration, the user still needs to take care of the JAAS configuration. It would be more user-friendly to log a warning and default to superuser access rather than throwing a LoginException when JAAS has not been configured. This behaviour should be limited to only default credential logins (Session.login() with null Credentials) and it should be possible to disable it with a configuration option. We could even have this behaviour disabled by default, but enabled in the configuration file used with the JCR-348 automatic configuration.
+
+This is a case against the "secure by default" design principle, but I think that in this case the benefits in easier setup outweight the security drawbacks, especially if coupled with the above restrictions and a clear documentation note about the insecure default.
+
+[Update: As mentioned by Stefan, this is  not a JAAS configuration issue but a problem in handling null Credentials. A more proper alternative for superuser access would be to default to anonymous access when credentials are not given.]

@@ -1,0 +1,44 @@
+incorrect HTML excerpt generation for queries on japanese text content 
+
+
+
+Description:
+The generated excerpt highlights single characters instead of full words. Test case (to be added to FullTextQueryTest):
+
+     public void testJapaneseAndHighlight() throws RepositoryException {
+        // http://translate.google.com/#auto|en|%E3%82%B3%E3%83%B3%E3%83%86%E3%83%B3%E3%83%88
+        String jContent = "\u30b3\u30fe\u30c6\u30f3\u30c8";
+        // http://translate.google.com/#auto|en|%E3%83%86%E3%82%B9%E3%83%88
+        String jTest = "\u30c6\u30b9\u30c8";
+        
+        String content = "some text with japanese: " + jContent
+                + " ('content')" + " and " + jTest + " ('test').";
+
+        // expected excerpt; note this may change if excerpt providers change
+        String expectedExcerpt = "<div><span>some text with japanese: " + jContent
+                + " ('content') and <strong>" + jTest
+                + "</strong> ('test').</span></div>";
+        
+        Node n = testRootNode.addNode("node1");
+        n.setProperty("title", content);
+        testRootNode.getSession().save();
+        
+        String xpath = "/jcr:root" + testRoot + "/element(*, nt:unstructured)"
+                + "[jcr:contains(., '" + jTest + "')]/rep:excerpt(.)";
+        Query q = superuser.getWorkspace().getQueryManager()
+                .createQuery(xpath, Query.XPATH);
+        
+        QueryResult qr = q.execute();
+        RowIterator it = qr.getRows();
+        int cnt = 0;
+        while (it.hasNext()) {
+            cnt++;
+            Row found = it.nextRow();
+            assertEquals(n.getPath(), found.getPath());
+            String excerpt = found.getValue("rep:excerpt(.)").getString();
+            assertEquals(expectedExcerpt, excerpt);
+        }
+        
+        assertEquals(1, cnt);
+    }
+

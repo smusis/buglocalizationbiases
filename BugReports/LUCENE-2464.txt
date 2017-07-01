@@ -1,0 +1,6 @@
+FastVectorHighlighter: add a FragmentBuilder to return entire field contents
+
+
+
+Description:
+In Highlightrer, there is a Nullfragmenter. There is a requirement its counterpart in FastVectorhighlighter.

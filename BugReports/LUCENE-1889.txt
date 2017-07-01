@@ -1,0 +1,27 @@
+FastVectorHighlighter: support for additional queries
+
+
+
+Description:
+I am using fastvectorhighlighter for some strange languages and it is working well! 
+
+One thing i noticed immediately is that many query types are not highlighted (multitermquery, multiphrasequery, etc)
+Here is one thing Michael M posted in the original ticket:
+
+{quote}
+I think a nice [eventual] model would be if we could simply re-run the
+scorer on the single document (using InstantiatedIndex maybe, or
+simply some sort of wrapper on the term vectors which are already a
+mini-inverted-index for a single doc), but extend the scorer API to
+tell us the exact term occurrences that participated in a match (which
+I don't think is exposed today).
+{quote}
+
+Due to strange requirements I am using something similar to this (but specialized to our case).
+I am doing strange things like forcing multitermqueries to rewrite into boolean queries so they will be highlighted,
+and flattening multiphrasequeries into boolean or'ed phrasequeries.
+I do not think these things would be 'fast', but i had a few ideas that might help:
+
+* looking at contrib/highlighter, you can support FilteredQuery in flatten() by calling getQuery() right?
+* maybe as a last resort, try Query.extractTerms() ?
+

@@ -1,0 +1,7 @@
+cache module generates exceptions for non-compliant responses without consuming response bodies
+
+
+
+Description:
+In the ResponseProtocolCompliance class, the caching module checks the incoming origin response to attempt to make it compliant with RFC2616. However, if there are instances where this is not possible, it currently throws an exception without consuming the origin response body; this causes a connection leak if the general try..catch..finally pattern documented on the HttpClient interface Javadoc is followed.
+

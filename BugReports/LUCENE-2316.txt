@@ -1,0 +1,28 @@
+Define clear semantics for Directory.fileLength
+
+
+
+Description:
+On this thread: http://mail-archives.apache.org/mod_mbox/lucene-java-dev/201003.mbox/%3C126142c1003121525v24499625u1589bbef4c0792e7@mail.gmail.com%3E it was mentioned that Directory's fileLength behavior is not consistent between Directory implementations if the given file name does not exist. FSDirectory returns a 0 length while RAMDirectory throws FNFE.
+
+The problem is that the semantics of fileLength() are not defined. As proposed in the thread, we'll define the following semantics:
+
+* Returns the length of the file denoted by <code>name</code> if the file exists. The return value may be anything between 0 and Long.MAX_VALUE.
+* Throws FileNotFoundException if the file does not exist. Note that you can call dir.fileExists(name) if you are not sure whether the file exists or not.
+
+For backwards we'll create a new method w/ clear semantics. Something like:
+
+{code}
+/**
+ * @deprecated the method will become abstract when #fileLength(name) has been removed.
+ */
+public long getFileLength(String name) throws IOException {
+  long len = fileLength(name);
+  if (len == 0 && !fileExists(name)) {
+    throw new FileNotFoundException(name);
+  }
+  return len;
+}
+{code}
+
+The first line just calls the current impl. If it throws exception for a non-existing file, we're ok. The second line verifies whether a 0 length is for an existing file or not and throws an exception appropriately.

@@ -1,0 +1,45 @@
+NRT reader/writer over RAMDirectory memory leak
+
+
+
+Description:
+with NRT reader/writer, emptying an index using:
+writer.deleteAll()
+writer.commit()
+doesn't release all allocated memory.
+
+for example the following code will generate a memory leak:
+
+/**
+	 * Reveals a memory leak in NRT reader/writer<br>
+	 * 
+	 * The following main() does 10K cycles of:
+	 * <ul>
+	 * <li>Add 10K empty documents to index writer</li>
+	 * <li>commit()</li>
+	 * <li>open NRT reader over the writer, and immediately close it</li>
+	 * <li>delete all documents from the writer</li>
+	 * <li>commit changes to the writer</li>
+	 * </ul>
+	 * 
+	 * Running with -Xmx256M results in an OOME after ~2600 cycles
+	 */
+	public static void main(String[] args) throws Exception {
+		RAMDirectory d = new RAMDirectory();
+		IndexWriter w = new IndexWriter(d, new IndexWriterConfig(Version.LUCENE_33, new KeywordAnalyzer()));
+		Document doc = new Document();
+		
+		for(int i = 0; i < 10000; i++) {
+			for(int j = 0; j < 10000; ++j) {
+				w.addDocument(doc);
+			}
+			w.commit();
+			IndexReader.open(w, true).close();
+
+			w.deleteAll();
+			w.commit();
+		}
+		
+		w.close();
+		d.close();
+	}	

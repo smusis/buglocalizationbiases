@@ -1,0 +1,6 @@
+upgrade icu jar to 4.8.1.1 / remove lucenetestcase hack
+
+
+
+Description:
+This bug fix release fixes problems with icu under java7: http://bugs.icu-project.org/trac/ticket/8734

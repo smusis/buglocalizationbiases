@@ -1,0 +1,36 @@
+TestFSTs.testRandomWords failure
+
+
+
+Description:
+Was running some while(1) tests on the docvalues branch (r1103705) and the following test failed:
+
+{code}
+    [junit] Testsuite: org.apache.lucene.util.automaton.fst.TestFSTs
+    [junit] Testcase: testRandomWords(org.apache.lucene.util.automaton.fst.TestFSTs):	FAILED
+    [junit] expected:<771> but was:<TwoLongs:771,771>
+    [junit] junit.framework.AssertionFailedError: expected:<771> but was:<TwoLongs:771,771>
+    [junit] 	at org.apache.lucene.util.automaton.fst.TestFSTs$FSTTester.verifyUnPruned(TestFSTs.java:540)
+    [junit] 	at org.apache.lucene.util.automaton.fst.TestFSTs$FSTTester.doTest(TestFSTs.java:496)
+    [junit] 	at org.apache.lucene.util.automaton.fst.TestFSTs$FSTTester.doTest(TestFSTs.java:359)
+    [junit] 	at org.apache.lucene.util.automaton.fst.TestFSTs.doTest(TestFSTs.java:319)
+    [junit] 	at org.apache.lucene.util.automaton.fst.TestFSTs.testRandomWords(TestFSTs.java:940)
+    [junit] 	at org.apache.lucene.util.automaton.fst.TestFSTs.testRandomWords(TestFSTs.java:915)
+    [junit] 	at org.apache.lucene.util.LuceneTestCase$LuceneTestCaseRunner.runChild(LuceneTestCase.java:1282)
+    [junit] 	at org.apache.lucene.util.LuceneTestCase$LuceneTestCaseRunner.runChild(LuceneTestCase.java:1211)
+    [junit] 
+    [junit] 
+    [junit] Tests run: 7, Failures: 1, Errors: 0, Time elapsed: 7.628 sec
+    [junit] 
+    [junit] ------------- Standard Error -----------------
+    [junit] NOTE: Ignoring nightly-only test method 'testBigSet'
+    [junit] NOTE: reproduce with: ant test -Dtestcase=TestFSTs -Dtestmethod=testRandomWords -Dtests.seed=-269475578956012681:0
+    [junit] NOTE: test params are: codec=PreFlex, locale=ar, timezone=America/Blanc-Sablon
+    [junit] NOTE: all tests run in this JVM:
+    [junit] [TestToken, TestCodecs, TestIndexReaderReopen, TestIndexWriterMerging, TestNoDeletionPolicy, TestParallelReaderEmptyIndex, TestParallelTermEnum, TestPerSegmentDeletes, TestSegmentReader, TestSegmentTermDocs, TestStressAdvance, TestTermVectorsReader, TestSurrogates, TestMultiFieldQueryParser, TestAutomatonQuery, TestBooleanScorer, TestFuzzyQuery, TestMultiTermConstantScore, TestNumericRangeQuery64, TestPositiveScoresOnlyCollector, TestPrefixFilter, TestQueryTermVector, TestScorerPerf, TestSloppyPhraseQuery, TestSpansAdvanced, TestWindowsMMap, TestRamUsageEstimator, TestSmallFloat, TestUnicodeUtil, TestFSTs]
+    [junit] NOTE: Linux 2.6.37-gentoo amd64/Sun Microsystems Inc. 1.6.0_25 (64-bit)/cpus=8,threads=1,free=137329960,total=208207872
+    [junit] ------------- ---------------- ---------------
+    [junit] TEST org.apache.lucene.util.automaton.fst.TestFSTs FAILED
+{code}
+
+I am not able to reproduce

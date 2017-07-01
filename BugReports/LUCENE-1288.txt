@@ -1,0 +1,10 @@
+Add getVersion method to IndexCommit
+
+
+
+Description:
+Returns the equivalent of IndexReader.getVersion for IndexCommit
+
+{code}
+public abstract long getVersion();
+{code}

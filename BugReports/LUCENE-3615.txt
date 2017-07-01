@@ -1,0 +1,10 @@
+Make it easier to run Test2BTerms
+
+
+
+Description:
+Currently, Test2BTerms has an @Ignore annotation which means that the only way to run it as a test is to edit the file.
+
+There are a couple of options to fix this:
+# Add a main() so it can be invoked via the command line outside of the test framework
+# Add some new annotations that mark it as slow or weekly or something like that and have the test target ignore @slow (or whatever) by default, but can also turn it on.

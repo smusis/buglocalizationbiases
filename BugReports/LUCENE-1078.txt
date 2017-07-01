@@ -1,0 +1,6 @@
+Cleanup some unused and unnecessary code
+
+
+
+Description:
+Several classes in trunk have some unused and unnecessary code. This includes unused fields, unused automatic variables, unused imports and unnecessary assignments. Attached it a patch to clean these up.

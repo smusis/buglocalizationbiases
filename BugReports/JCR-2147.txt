@@ -1,0 +1,7 @@
+Remove deprecated classes in jackrabbit-core
+
+
+
+Description:
+similar to JCR-2109 i think i would be favorable to get rid of stuff that has been marked deprecated for 1.x releases.
+

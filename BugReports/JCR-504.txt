@@ -1,0 +1,37 @@
+TCK: DocumentViewImportTest does not call refresh after direct-to-workspace import
+
+
+
+Description:
+After performing a direct-to-workspace import, the test does not call refresh to ensure the transient layer doesn't contain stale data.
+
+Proposal: call refresh(false) after performing direct-to-workspace imports.
+
+--- DocumentViewImportTest.java (revision 422074)
++++ DocumentViewImportTest.java (working copy)
+@@ -106,6 +106,12 @@
+             SAXException, NotExecutableException {
+  
+         importXML(target, createSimpleDocument(), uuidBehaviour, withWorkspace);
++
++        if (withWorkspace)
++        {
++          session.refresh(false);
++        }
++
+         performTests();
+     }
+  
+@@ -127,6 +133,12 @@
+             SAXException, IOException, NotExecutableException {
+  
+         importWithHandler(target, createSimpleDocument(), uuidBehaviour, withWorkspace);
++
++        if (withWorkspace)
++        {
++          session.refresh(false);
++        }
++
+         performTests();
+     }
+

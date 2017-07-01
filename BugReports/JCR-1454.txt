@@ -1,0 +1,6 @@
+NullPointerException may be thrown when trying to enumerate observation event listeners
+
+
+
+Description:
+When calling the ObservationManager.getRegisteredEventListeners() a NullPointerException may be thrown if no event listener has been registered (yet). The reason for this is, that in the ClientObservationManager.getRegisteredEventListener method an internal field is access directly, which is created on demand and thus may be null.

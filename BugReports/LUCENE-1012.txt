@@ -1,0 +1,54 @@
+Problems with maxMergeDocs parameter
+
+
+
+Description:
+I found two possible problems regarding IndexWriter's maxMergeDocs value. I'm using the following code to test maxMergeDocs:
+
+{code:java} 
+  public void testMaxMergeDocs() throws IOException {
+    final int maxMergeDocs = 50;
+    final int numSegments = 40;
+    
+    MockRAMDirectory dir = new MockRAMDirectory();
+    IndexWriter writer  = new IndexWriter(dir, new WhitespaceAnalyzer(), true);      
+    writer.setMergePolicy(new LogDocMergePolicy());
+    writer.setMaxMergeDocs(maxMergeDocs);
+
+    Document doc = new Document();
+    doc.add(new Field("field", "aaa", Field.Store.YES, Field.Index.TOKENIZED, Field.TermVector.WITH_POSITIONS_OFFSETS));
+    for (int i = 0; i < numSegments * maxMergeDocs; i++) {
+      writer.addDocument(doc);
+      //writer.flush();      // uncomment to avoid the DocumentsWriter bug
+    }
+    writer.close();
+    
+    new SegmentInfos.FindSegmentsFile(dir) {
+
+      protected Object doBody(String segmentFileName) throws CorruptIndexException, IOException {
+
+        SegmentInfos infos = new SegmentInfos();
+        infos.read(directory, segmentFileName);
+        for (int i = 0; i < infos.size(); i++) {
+          assertTrue(infos.info(i).docCount <= maxMergeDocs);
+        }
+        return null;
+      }
+    }.run();
+  }
+{code} 
+  
+- It seems that DocumentsWriter does not obey the maxMergeDocs parameter. If I don't flush manually, then the index only contains one segment at the end and the test fails.
+
+- If I flush manually after each addDocument() call, then the index contains more segments. But still, there are segments that contain more docs than maxMergeDocs, e. g. 55 vs. 50. The javadoc in IndexWriter says:
+{code:java}
+   /**
+   * Returns the largest number of documents allowed in a
+   * single segment.
+   *
+   * @see #setMaxMergeDocs
+   */
+  public int getMaxMergeDocs() {
+    return getLogDocMergePolicy().getMaxMergeDocs();
+  }
+{code}

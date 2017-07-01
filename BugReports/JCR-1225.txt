@@ -1,0 +1,6 @@
+ReadOnlyIndexReaders are re-created on every access
+
+
+
+Description:
+AbstractIndex.getReadOnlyIndexReader() creates a new instance on every call. The returned index reader should instead be cached and kept open as long as there are no changes on the underlying index.

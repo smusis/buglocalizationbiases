@@ -1,0 +1,10 @@
+CorruptIndexException on indexing after a failure occurs after segments file creation but before any bytes are written
+
+
+
+Description:
+FSDirectory.createOutput(..) uses a RandomAccessFile to do its work.  On my system the default FSDirectory.open(..) creates an NIOFSDirectory.  If createOutput is called on a segments_* file and a crash occurs between RandomAccessFile creation (file system shows a segments_* file exists but has zero bytes) but before any bytes are written to the file, subsequent IndexWriters cannot proceed.  The difficulty is that it does not know how to clear the empty segments_* file.  None of the file deletions will happen on such a segment file because the opening bytes cannot not be read to determine format and version.
+
+An initial proposed patch file is attached below.
+
+

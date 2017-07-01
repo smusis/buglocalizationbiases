@@ -1,0 +1,8 @@
+Change superclass of TrieRangeQuery
+
+
+
+Description:
+This patch changes the superclass of TrieRangeQuery to ConstantScoreQuery. The current implementation is using rewrite() and was copied from early RangeQueries. But this is not needed, the TrieRangeQuery can easily subclassed from ConstantScoreQuery.
+
+If LUCENE-1345 is solved, the whole TrieRangeQuery can be removed, as TrieRangeFilter can be added to BooleanQueries. The whole TrieRangeQuery class is just a convenience class for easier usage of the trie contrib.

@@ -1,0 +1,15 @@
+Move text extraction into a background thread
+
+
+
+Description:
+Even though text extraction is not done right on save() most of the extraction work is later done by a client thread. There is a mechanism in place that commits the deferred work in a background thread. But the background thread is only triggered by a timer and does not constantly write back pending index changes. For regular index changes this is done on purpose and should not be changed. However text extraction work should be moved completely into a background thread because it often takes a fair amount of time to index a large document.
+
+Outline of a possible solution:
+- all text filtering is tasks are put into a work queue
+- the work queue is processed by a background thread
+- basic indexing of nt:resource without text filtering takes place
+- the background thread updates the index when text filtering completed for a nt:resource
+
+There should be a configuration parameter that allows to execute text filtering without the background thread. This way it is possible to get the existing behaviour of Jackrabbit: the fulltext index is always up-to-date and can be used.
+With the background process this is no longer the case.

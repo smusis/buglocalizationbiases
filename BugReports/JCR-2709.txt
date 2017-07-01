@@ -1,0 +1,24 @@
+Missing XPath escape in query.jsp
+
+
+
+Description:
+As reported by Canberk Bolat of ADEO Security in a private communication, there search.jsp script in jackrabbit-webapp is missing an escape when it injects the path of a "related:" query into the constructed XPath statement. Further analysis showed that this issue has no security implications, so we can treat this as a normal bug report.
+
+search.jsp
+...
+String q = request.getParameter("q");
+...
+      if (q != null && q.length() > 0) {
+           String stmt;
+           if (q.startsWith("related:")) {
+               String path = q.substring("related:".length());
+               stmt = "//element(*, nt:file)[rep:similar(jcr:content,
+'" + path + "/jcr:content')]/rep:excerpt(.) order by @jcr:score
+descending";
+               queryTerms = "similar to <b>" +
+Text.encodeIllegalXMLCharacters(path) + "</b>";
+           }
+...
+
+

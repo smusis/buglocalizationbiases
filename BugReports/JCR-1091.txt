@@ -1,0 +1,14 @@
+more lenient behavior of Node#addMixin if mixin is already present 
+
+
+
+Description:
+Change implementation of addMixin() so that it doesn't fail when the mixin is already present.
+
+See also:
+
+jackrabbit core change: <http://svn.apache.org/viewvc?view=rev&revision=570149>
+
+JSR-283 issue: <https://jsr-283.dev.java.net/issues/show_bug.cgi?id=353>
+
+(this affects both the TCK and JCR2SPI, so I didn't specify a component)

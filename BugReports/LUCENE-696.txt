@@ -1,0 +1,6 @@
+Scorer.skipTo() doesn't always work if called before next()
+
+
+
+Description:
+skipTo() doesn't work for all scorers if called before next().

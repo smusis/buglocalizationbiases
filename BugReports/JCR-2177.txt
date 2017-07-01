@@ -1,0 +1,10 @@
+Node.getWeakReferences throws UnsupportedOperationException if not referenceable
+
+
+
+Description:
+.... while Node.getReferences() doesn't and returns an empty propertyiterator.
+
+From my point of view both methods should behave the same way and i prefer not throwing.
+
+

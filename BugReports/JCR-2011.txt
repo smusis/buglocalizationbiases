@@ -1,0 +1,13 @@
+Replacing mixin type doesn't preserve properties
+
+
+
+Description:
+NodeImpl.setPrimaryType(String) attempts to "redefine" nodes and properties that were defined by the previous node type if they also appear in the new type. If there is no matching definition for a node/property in the new type - or value conversion for matched node/property fails - only then are children removed. For example, say I have a node "harry", with a primary type "Human" that defines a "bloodgroup" property. If I set the primary type to be an unrelated type "Animal" that has a similar "bloodgroup" property, then its property value will survive the call to setPrimaryType("Animal").
+
+The same is apparently not possible with mixins. NodeImpl.removeMixin(Name) immediately removes all children that were defined by the mixin (strictly, those that are not present in the effective node type resulting from the mixin being removed). In addition, NodeImpl.addMixin(Name) immediately throws a NodeTypeConflictException if you attempt to add a mixin defining an identically-named property prior to calling removeMixin. For example, say I have a node "matrix", with a mixin type "movie" that defines a "title" property. If I wish to replace the "movie" mixin on that node with another "jcr:title" mixin type, the existing "title" property will be deleted.
+
+This occurs regardless of the order in which removeMixin and addMixin are called, and without session.save() being called between them. One option for coding this is to defer validation (and possible node/property removal) until session.save() is called.
+
+This is not strictly a bug, as JSR-283 seems to leave the details of assigning node types (section 5.5) unspecified. However, it does say for Node.removeMixin(String) that "Both the semantic change in effective node type and the persistence of the
+change to the jcr:mixinTypes property occur on save" and ideally we could emulate the nice behaviour in NodeImpl.setPrimaryType(String) for mixin types.

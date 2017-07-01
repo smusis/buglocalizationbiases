@@ -1,0 +1,34 @@
+HttpClient loops endlessly while trying to retrieve status line
+
+
+
+Description:
+When fed with the wrong URL, for example http://localhost:19/ (chargen port),
+HttpClient will loop endlessly while attempting to read the status line.
+
+This is caused by a bug in HttpMethodBase.readStatusLine(HttpState, HttpConnection)
+
+(while loop without any exceptional abort condition).
+
+wire log excerpt:
+
+2003/11/10 12:33:04:085 CET [DEBUG] HttpMethodDirector - -Execute loop try 1
+2003/11/10 12:33:04:312 CET [DEBUG] wire - ->> "GET / HTTP/1.1[\r][\n]"
+2003/11/10 12:33:04:351 CET [DEBUG] HttpMethodBase - -Adding Host request header
+2003/11/10 12:33:04:532 CET [DEBUG] wire - ->> "User-Agent: Jakarta
+Commons-HttpClient[\r][\n]"
+2003/11/10 12:33:04:554 CET [DEBUG] wire - ->> "Host: localhost:19[\r][\n]"
+2003/11/10 12:33:04:559 CET [DEBUG] wire - ->> "[\r][\n]"
+2003/11/10 12:33:04:639 CET [DEBUG] wire - -<<
+"!"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\]^_`abcdefgh[\r][\n]"
+2003/11/10 12:33:04:669 CET [DEBUG] wire - -<<
+""#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\]^_`abcdefghi[\r][\n]"
+2003/11/10 12:33:04:673 CET [DEBUG] wire - -<<
+"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\]^_`abcdefghij[\r][\n]"
+2003/11/10 12:33:04:692 CET [DEBUG] wire - -<<
+"$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\]^_`abcdefghijk[\r][\n]"
+2003/11/10 12:33:04:698 CET [DEBUG] wire - -<<
+"%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\]^_`abcdefghijkl[\r][\n]"
+2003/11/10 12:33:04:703 CET [DEBUG] wire - -<<
+"&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\]^_`abcdefghijklm[\r][\n]"
+<snip>

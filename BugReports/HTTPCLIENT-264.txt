@@ -1,0 +1,31 @@
+Crashes when it gets a redirect
+
+
+
+Description:
+I get the following crash when VFS (not my code) calls HttpClient. This code 
+worked with some older version of HttpClient (is my belief) but doesn't appear 
+to work with CVS HEAD, hence this posting.
+
+Note: I'm sorry, but I don't know which Method it was calling, but hopefully a 
+redirect is a redirect and the bug stands irrespective of that.
+
+This is major to me (and Ruper) 'cos it is the first thing it does before 
+attempting to read the contents of that location.
+
+regards,
+
+Adam
+
+java.lang.NullPointerException
+	at 
+org.apache.commons.httpclient.HttpMethodDirector.processRedirectResponse
+(HttpMethodDirector.java:454)
+	at org.apache.commons.httpclient.HttpMethodDirector.isRetryNeeded
+(HttpMethodDirector.java:639)
+	at org.apache.commons.httpclient.HttpMethodDirector.executeMethod
+(HttpMethodDirector.java:145)
+	at org.apache.commons.httpclient.HttpClient.executeMethod
+(HttpClient.java:378)
+	at org.apache.commons.httpclient.HttpClient.executeMethod
+(HttpClient.java:268

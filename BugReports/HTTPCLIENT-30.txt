@@ -1,0 +1,15 @@
+should allow receiving secure cookies from non-secure chanel
+
+
+
+Description:
+Currently, httpclient will throw an exception if a secure cookie is received 
+from a non-secure chanel. Although RFC doesn't specify explicitly on if the 
+client should allow receiving secure cookie from non-secure channel, the 
+default setting in browser seems to allow it.
+
+Try the following link in IE:
+
+http://www.snapfish.com
+
+The default cookie policy in httpclient should be the same.

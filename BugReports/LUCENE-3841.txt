@@ -1,0 +1,35 @@
+CloseableThreadLocal does not work well with Tomcat thread pooling
+
+
+
+Description:
+We tracked down a large memory leak (effectively a leak anyway) caused
+by how Analyzer users CloseableThreadLocal.
+CloseableThreadLocal.hardRefs holds references to Thread objects as
+keys.  The problem is that it only frees these references in the set()
+method, and SnowballAnalyzer will only call set() when it is used by a
+NEW thread.
+
+The problem scenario is as follows:
+
+The server experiences a spike in usage (say by robots or whatever)
+and many threads are created and referenced by
+CloseableThreadLocal.hardRefs.  The server quiesces and lets many of
+these threads expire normally.  Now we have a smaller, but adequate
+thread pool.  So CloseableThreadLocal.set() may not be called by
+SnowBallAnalyzer (via Analyzer) for a _long_ time.  The purge code is
+never called, and these threads along with their thread local storage
+(lucene related or not) is never cleaned up.
+
+I think calling the purge code in both get() and set() would have
+avoided this problem, but is potentially expensive.  Perhaps using 
+WeakHashMap instead of HashMap may also have helped.  WeakHashMap 
+purges on get() and set().  So this might be an efficient way to
+clean up threads in get(), while set() might do the more expensive
+Map.keySet() iteration.
+
+Our current work around is to not share SnowBallAnalyzer instances
+among HTTP searcher threads.  We open and close one on every request.
+
+Thanks,
+Matt

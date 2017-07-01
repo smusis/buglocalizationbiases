@@ -1,0 +1,12 @@
+EventConsumer.canRead() should rely on AccessManager.isGranted()
+
+
+
+Description:
+The current implementation of EventConsumer.canRead() uses
+AccessManager.canRead(), which might cause issues if the item
+does not exist anymore. AccessManager.isGranted() explicitly
+mentions and supports checks on paths for items that do not
+yet exist or not exist anymore.
+
+See also JCR-3271.

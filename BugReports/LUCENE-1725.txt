@@ -1,0 +1,10 @@
+Benchmark package uses new TopFieldCollector but also still uses AUTO without resolving it - result is, our sort algorithms won't run
+
+
+
+Description:
+AUTO does not work with TopFieldCollector. If you want to use AUTO with TopFieldCollector, we have a convienence method called detectType on SortField, but it is package protected and so cannot be used here as a stop gap or by users if they wanted to mix AUTO with TopFieldCollector. Lucene does still handle this for back compat internally. Solr got bit here when it was switched to use TopFieldCollector - no auto resolution was added (detectType help couldn't have been used due to visibility), and the result was that plugin code that used to be able to use AUTO would now blow up. You shouldn't use AUTO in Solr anyway though.
+
+The Benchmark package got bit as well  when it moved to TopFieldCollector. Sort algorithms allowed auto if you specified it, or if you left off the type. Now our sort algs fail because they didn't specify a type.
+
+I'll change to require the type to be specified to get the algs working again. I was thinking of just putting auto resolution in as a stop gap till 3.0 (when auto is removed), but since detectFieldType is package protected and I don't want to repeat it, disallowing auto seems the best way to go.

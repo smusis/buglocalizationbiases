@@ -1,0 +1,54 @@
+when a test Assume fails, display information
+
+
+
+Description:
+Currently if a test uses Assume.assumeTrue, it silently passes.
+
+I think we should output something, at *least* if you have VERBOSE set, maybe always.
+
+Here's an example of what the output might look like:
+{noformat}
+junit-sequential:
+    [junit] Testsuite: org.apache.solr.servlet.SolrRequestParserTest
+    [junit] Tests run: 4, Failures: 0, Errors: 0, Time elapsed: 1.582 sec
+    [junit]
+    [junit] ------------- Standard Error -----------------
+    [junit] NOTE: testStreamURL Assume failed (ignored):
+    [junit] org.junit.internal.AssumptionViolatedException: got: <java.io.FileNotFoundException: http://www.apdfgdfgache
+.org/dist/lucene/solr/>, expected: null
+    [junit]     at org.junit.Assume.assumeThat(Assume.java:70)
+    [junit]     at org.junit.Assume.assumeNoException(Assume.java:92)
+    [junit]     at org.apache.solr.servlet.SolrRequestParserTest.testStreamURL(SolrRequestParserTest.java:123)
+    [junit]     at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+    [junit]     at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:39)
+    [junit]     at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:25)
+    [junit]     at java.lang.reflect.Method.invoke(Method.java:597)
+    [junit]     at org.junit.runners.model.FrameworkMethod$1.runReflectiveCall(FrameworkMethod.java:44)
+    [junit]     at org.junit.internal.runners.model.ReflectiveCallable.run(ReflectiveCallable.java:15)
+    [junit]     at org.junit.runners.model.FrameworkMethod.invokeExplosively(FrameworkMethod.java:41)
+    [junit]     at org.junit.internal.runners.statements.InvokeMethod.evaluate(InvokeMethod.java:20)
+    [junit]     at org.junit.rules.TestWatchman$1.evaluate(TestWatchman.java:48)
+    [junit]     at org.junit.internal.runners.statements.RunBefores.evaluate(RunBefores.java:28)
+    [junit]     at org.junit.internal.runners.statements.RunAfters.evaluate(RunAfters.java:31)
+    [junit]     at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:76)
+    [junit]     at org.apache.lucene.util.LuceneTestCase$LuceneTestCaseRunner.runChild(LuceneTestCase.java:802)
+    [junit]     at org.apache.lucene.util.LuceneTestCase$LuceneTestCaseRunner.runChild(LuceneTestCase.java:775)
+    [junit]     at org.junit.runners.ParentRunner$3.run(ParentRunner.java:193)
+    [junit]     at org.junit.runners.ParentRunner$1.schedule(ParentRunner.java:52)
+    [junit]     at org.junit.runners.ParentRunner.runChildren(ParentRunner.java:191)
+    [junit]     at org.junit.runners.ParentRunner.access$000(ParentRunner.java:42)
+    [junit]     at org.junit.runners.ParentRunner$2.evaluate(ParentRunner.java:184)
+    [junit]     at org.junit.internal.runners.statements.RunBefores.evaluate(RunBefores.java:28)
+    [junit]     at org.junit.internal.runners.statements.RunAfters.evaluate(RunAfters.java:31)
+    [junit]     at org.junit.runners.ParentRunner.run(ParentRunner.java:236)
+    [junit]     at junit.framework.JUnit4TestAdapter.run(JUnit4TestAdapter.java:39)
+    [junit]     at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.run(JUnitTestRunner.java:420)
+    [junit]     at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.launch(JUnitTestRunner.java:911)
+    [junit]     at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.main(JUnitTestRunner.java:768)
+    [junit] Caused by: java.io.FileNotFoundException: http://www.apdfgdfgache.org/dist/lucene/solr/
+    [junit]     at sun.net.www.protocol.http.HttpURLConnection.getInputStream(HttpURLConnection.java:1311)
+    [junit]     at org.apache.solr.servlet.SolrRequestParserTest.testStreamURL(SolrRequestParserTest.java:120)
+    [junit]     ... 26 more
+    [junit] ------------- ---------------- ---------------
+{noformat}

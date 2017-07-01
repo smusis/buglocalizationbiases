@@ -1,0 +1,20 @@
+Unable to login with two different Credentials to same workspace in one Transaction
+
+
+
+Description:
+I'm using the Jackrabbit 1.2.1 JCA adapter and trying to access in a SessionBean-Method with Container Transaction a Workspace with 2 different Credentials. 
+The Method takes about 400ms to finish but no commit on TransactionContextr occurs (Debugging ..) only the prepare was called 2 times .
+The Container hangs on the PostInvoke Method about 5 seconds and then i get a "javax.transaction.xa.XAException" 
+with the Warn Message: Transaction rolled back because timeout expired
+
+The code ..
+Context ctx = new InitialContext(); 
+Repository repository = (Repository) ctx.lookup("java:comp/env/jackrabbit"); 
+Credentials credentials = new SimpleCredentials("user1", "password1".toCharArray()); 
+Credentials credentials2 = new SimpleCredentials("user2", "password2".toCharArray()); 
+Session session1 = repository.login(credentials, "default"); 
+Session session2 = repository.login(credentials2, "default"); 
+
+Session1 adds a node to the workspace .. and with the session2 i do nothing except the login !
+If i make no second login the Method works fine.

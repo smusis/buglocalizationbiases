@@ -1,0 +1,13 @@
+Log creation impairs performance
+
+
+
+Description:
+Running JProfiler on a program that uses HttpClient with a ThreadSafeClientConnManager, revealed that 5% of the time was spent constructing Log instances in class ClientParamsStack.
+
+Oleg did some further investigation and found that DefaultRequestDirector also has the same problem.
+
+A simple solution would be to make the Log a static member variable, and do this on all classes for consistency.  However this might not be the best solution for interoperating with some frameworks (see http://wiki.apache.org/jakarta-commons/Logging/StaticLog)
+
+Another solution would be to simply remove the Log from the affected classes, although they are presumably there for a reason...
+

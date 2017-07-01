@@ -1,0 +1,11 @@
+clean up serialization in the codebase
+
+
+
+Description:
+We removed contrib/remote, but forgot to cleanup serialization hell everywhere.
+
+this is no longer needed, never really worked (e.g. across versions), and slows 
+development (e.g. i wasted a long time debugging stupid serialization of 
+Similarity.idfExplain when trying to make a patch for the scoring system).
+

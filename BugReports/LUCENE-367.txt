@@ -1,0 +1,13 @@
+Can not subscribe
+
+
+
+Description:
+Hello, 
+I have sent email to lucene-dev-subscribe@jakarta.apache.org and it always 
+returns failed: 
+ 
+<lucene-dev-subscribe@jakarta.apache.org>: 
+Sorry, no mailbox here by that name. (#5.1.1) 
+ 
+Please help me subscribe.

@@ -1,0 +1,8 @@
+Deprecate/remove unused FileSystem features such as RandomAccessOutputStream
+
+
+
+Description:
+Currently the FileSystem interface includes a method getRandomAccessOutputStream.
+It looks like this method and the class RandomAccessOutputStream is no longer used.
+If this is the case, I suggest we remove the method everywhere and deprecate the class.

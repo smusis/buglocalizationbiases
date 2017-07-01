@@ -1,0 +1,6 @@
+Prevent logins during repository shutdown
+
+
+
+Description:
+Related to the last comment in JCR-445, should we prevent new sessions from being created during repository shutdown? It is an odd chance to run into a problem like that, but it seems like the issue could be easily solved by making getWorkspaceInfo() synchronized and adding sanityCheck() calls to the createSession() methods.

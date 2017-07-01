@@ -1,0 +1,47 @@
+ShingleMatrixFilter eaily throws StackOverFlow as the complexity of a matrix grows
+
+
+
+Description:
+ShingleMatrixFilter#next makes a recursive function invocation when the current permutation iterator is exhausted or if the current state of the permutation iterator already has produced an identical shingle. In a not too complex matrix this will require a gigabyte sized stack per thread.
+
+My solution is to avoid the recursive invocation by refactoring like this:
+
+{code:java}
+public Token next(final Token reusableToken) throws IOException {
+    assert reusableToken != null;
+    if (matrix == null) {
+      matrix = new Matrix();
+      // fill matrix with maximumShingleSize columns
+      while (matrix.columns.size() < maximumShingleSize && readColumn()) {
+        // this loop looks ugly
+      }
+    }
+
+    // this loop exists in order to avoid recursive calls to the next method
+    // as the complexity of a large matrix
+    // then would require a multi gigabyte sized stack.
+    Token token;
+    do {
+      token = produceNextToken(reusableToken);
+    } while (token == request_next_token);
+    return token;
+  }
+
+  
+  private static final Token request_next_token = new Token();
+
+  /**
+   * This method exists in order to avoid reursive calls to the method
+   * as the complexity of a fairlt small matrix then easily would require
+   * a gigabyte sized stack per thread.
+   *
+   * @param reusableToken
+   * @return null if exhausted, instance request_next_token if one more call is required for an answer, or instance parameter resuableToken.
+   * @throws IOException
+   */
+  private Token produceNextToken(final Token reusableToken) throws IOException {
+
+{code}
+
+

@@ -1,0 +1,9 @@
+Findbugs reports and fixes
+
+
+
+Description:
+Ran findbugs 0.94.rc1 on 3.0RC4. 
+Fixed a few of the obvious ones (patches to follow) and made notes on the 
+remainder - see the //TODO markers in code.
+Also created a findbugs target in build.xml - see appropriate patch file

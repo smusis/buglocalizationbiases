@@ -1,0 +1,28 @@
+Incorrect support for java interfaces in typed collection fields
+
+
+
+Description:
+If a typed collection field is defined with an Interface as the type, the following exception is thrown when the main object is inserted : 
+
+org.apache.jackrabbit.ocm.exception.JcrMappingException: Cannot load class interface [name of the interface];
+
+Here is a example : 
+
+@Node
+public class EntityA {
+       @Field(path=true) String path;
+       @Collection List<MyInterface> entityB;
+       ....
+}
+
+When inserting a new instance of EntityA with a not null entityB, the exception is thrown. 
+A workaround is to add the elementClassName on the annotation @Collection. ex. : 
+
+@Collection (elementClassName=MyInterface.class) List<MyInterface> entityB;
+
+elementClassName is used only for untyped collections but if you specify it for a typed collection, the ObjectContentManager will not use reflexion to check the collection class name. 
+ 
+This should be nice to avoid the usage of elementClassName for typed collections. 
+
+

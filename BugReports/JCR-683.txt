@@ -1,0 +1,8 @@
+Bad transitive dependencies in commons-httpclient
+
+
+
+Description:
+As reported in HTTPCLIENT-605, the commons-httpclient 3.0 dependency introduces junit as a transitive "compile" scope dependency. The library also uses commons-logging, which sidesteps Jackrabbit's use of slf4j for logging.
+
+To avoid these issues we should locally override the junit dependency in commons-httpclient and replace the commons-logging dependency with jcl104-over-slf4j.

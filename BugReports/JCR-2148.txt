@@ -1,0 +1,6 @@
+Move extensions to the JSR 283 security API  from jackrabbit-core to jackrabbit-api
+
+
+
+Description:
+For the 2.0.0 release i'd like to have the jackrabbit-specific extensions to the JSR 283 security API being part of jackrabbit-api.

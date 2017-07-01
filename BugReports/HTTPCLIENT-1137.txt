@@ -1,0 +1,8 @@
+The values for the Via header are created by httpclient-cache for each cached and backend request
+
+
+
+Description:
+The Via header that gets generated and inserted by the caching layer is done repeatedly in the HTTP conversation, even if the constructed string is constant for each protocol version that is involved.
+
+The proposed patch constructs a map of generated values held in memory with the associated ProtocolVersion as a key and uses read/write locks to access the data. This  solution minimizes the time to generate such a value from several milliseconds to 40-50 microseconds.

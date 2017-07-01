@@ -1,0 +1,9 @@
+Text.isDescendant returns false if parent is '/'
+
+
+
+Description:
+the method isDescendant(String, String) of the Text utility class returns false if the 
+passed potential parent-path represents the root node ("/").
+
+

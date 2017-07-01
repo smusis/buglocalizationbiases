@@ -1,0 +1,12 @@
+GData Server MileStone 1 Revision
+
+
+
+Description:
+Some Improvements to the GData Server.
+CRUD actions for Entries implemented / tested 
+StorageComponent storing entries / feeds / users
+Dynamic Feed elements like links added.
+Decoupled all server components (storage / ReqeustHandler etc) using lookup service
+
+Added some JavaDoc 

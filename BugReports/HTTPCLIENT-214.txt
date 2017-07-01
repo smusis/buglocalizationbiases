@@ -1,0 +1,16 @@
+HttpClient drops connection to the proxy when an invalid 'connection: close' directive is encountered in 'connection established' response
+
+
+
+Description:
+One of our customer is using our application to connect to our servlet using 
+https.  We are using httpClient for http protocol handling.  The customer has a 
+IBM proxy (see log file).  The connect failed with a null pointer exception.
+
+The log seem to indicate that the proxy server is returning 200 for "CONNECT", 
+but the proxy also sends a "Connection:close" header.  The httpClient closed 
+the connection and then tried to create the SSL socket.  If the proxy server is 
+incorrect in sending 200 with "Connection:close", then httpClient should throw 
+exception for invalid state (IllegalStateException ?).
+
+I will attach the log file.

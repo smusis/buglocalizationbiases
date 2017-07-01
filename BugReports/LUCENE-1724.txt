@@ -1,0 +1,17 @@
+Analysis package calls Java 1.5 API
+
+
+
+Description:
+I found compile errors when I tried to compile trunk with 1.4 JVM.
+org.apache.lucene.analysis.NormalizeCharMap
+org.apache.lucene.analysis.MappingCharFilter
+
+uses Character.valueOf() which has been added in 1.5.
+I added a CharacterCache (+ testcase) with a valueOf method as a replacement for that quite useful method.
+
+org.apache.lucene.analysis.BaseTokenTestCase
+
+uses StringBuilder instead of the synchronized version StringBuffer (available in 1.4)
+
+I will attach a patch shortly.

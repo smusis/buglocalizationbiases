@@ -1,0 +1,7 @@
+BLOBFileValue.read(byte[] b, long pos) ignores return value of InputStream.skip
+
+
+
+Description:
+InputStream.skip(long n) returns a long, which may be different from the parameter n (possibly lower).
+Currently in BLOBFileValue.read(byte[] b, long pos) the return value is ignored.

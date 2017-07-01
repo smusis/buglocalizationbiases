@@ -1,0 +1,10 @@
+Clustering configuration documentation for syncDelay doesn't match
+
+
+
+Description:
+There is a bit of mismatch in the current documentation that is available on configuring a Cluster node for a repository.  If you look at the DTD for repository.xml[1] it states that the syncDelay attribute of the Cluster element is in seconds.  However if you read the Javadoc for the ClusterConfig[2] object it states the syncDelay is in milliseconds.  I'm guessing that the value is actually in milliseconds but at the very least the two documents should be telling the same story.
+
+
+[1] -http://jackrabbit.apache.org/dtd/repository-1.4.dtd
+[2] - http://jackrabbit.apache.org/api/1.4/org/apache/jackrabbit/core/config/ClusterConfig.html

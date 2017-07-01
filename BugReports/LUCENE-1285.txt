@@ -1,0 +1,15 @@
+WeightedSpanTermExtractor incorrectly treats the same terms occurring in different query types
+
+
+
+Description:
+Given a BooleanQuery with multiple clauses, if a term occurs both in a Span / Phrase query, and in a TermQuery, the results of term extraction are unpredictable and depend on the order of clauses. Concequently, the result of highlighting are incorrect.
+
+Example text: t1 t2 t3 t4 t2
+Example query: t2 t3 "t1 t2"
+Current highlighting: [t1 t2] [t3] t4 t2
+Correct highlighting: [t1 t2] [t3] t4 [t2]
+
+The problem comes from the fact that we keep a Map<termText, WeightedSpanTerm>, and if the same term occurs in a Phrase or Span query the resulting WeightedSpanTerm will have a positionSensitive=true, whereas terms added from TermQuery have positionSensitive=false. The end result for this particular term will depend on the order in which the clauses are processed.
+
+My fix is to use a subclass of Map, which on put() always sets the result to the most lax setting, i.e. if we already have a term with positionSensitive=true, and we try to put() a term with positionSensitive=false, we set the result positionSensitive=false, as it will match both cases.

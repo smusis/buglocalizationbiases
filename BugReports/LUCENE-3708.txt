@@ -1,0 +1,19 @@
+codec postings api (finishDoc) is inconsistent
+
+
+
+Description:
+finishDoc says:
+
+{noformat}
+  /** Called when we are done adding positions & payloads
+   *  for each doc.  Not called  when the field omits term
+   *  freq and positions. */
+   public abstract void finishDoc() throws IOException;
+{noformat}
+
+But this is confusing (because a field can omit just positions, is it called then?!),
+and wrong (because merging calls it always, even if freq+positions is omitted).
+
+I think we should fix the javadoc and fix FreqProxTermsWriter to always call finish()
+

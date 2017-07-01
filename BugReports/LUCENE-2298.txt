@@ -1,0 +1,10 @@
+Polish Analyzer
+
+
+
+Description:
+Andrzej Bialecki has written a Polish stemmer and provided stemming tables for it under Apache License.
+
+You can read more about it here: http://www.getopt.org/stempel/
+
+In reality, the stemmer is general code and we could use it for more languages too perhaps.

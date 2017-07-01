@@ -1,0 +1,7 @@
+DefaultHttpMethodRetryHandler does not check whether the failed method has been aborted
+
+
+
+Description:
+DefaultHttpMethodRetryHandler does not check whether the failed method has been
+aborted.

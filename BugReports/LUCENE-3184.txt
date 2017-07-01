@@ -1,0 +1,34 @@
+add LuceneTestCase.rarely()/LuceneTestCase.atLeast()
+
+
+
+Description:
+in LUCENE-3175, the tests were sped up a lot by using reasonable number of iterations normally, but cranking up for NIGHTLY.
+we also do crazy things more 'rarely' for normal builds (e.g. simpletext, payloads, crazy merge params, etc)
+also, we found some bugs by doing this, because in general our parameters are too fixed.
+
+however, it made the code look messy... I propose some new methods:
+instead of some crazy code in your test like:
+{code}
+int numdocs = (TEST_NIGHTLY ? 1000 : 100) * RANDOM_MULTIPLIER;
+{code}
+
+you use:
+{code}
+int numdocs = atLeast(100);
+{code}
+
+this will apply the multiplier, also factor in nightly, and finally add some random fudge... so e.g. in local runs its sometimes 127 docs, sometimes 113 docs, etc.
+
+additionally instead of code like:
+{code}
+if ((TEST_NIGHTLY && random.nextBoolean()) || (random.nextInt(20) == 17)) {
+{code}
+
+you do
+{code}
+if (rarely()) {
+{code}
+
+which applies NIGHTLY and also the multiplier (logarithmic growth).
+

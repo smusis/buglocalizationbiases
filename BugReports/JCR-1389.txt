@@ -1,0 +1,8 @@
+setProperty("name", new Value[0], PropertyType.LONG) loses property type
+
+
+
+Description:
+Adding an empty multivalued property with a specific non-STRING type to an unstructured node (i.e. one with an UNDEFINED multivalued property definition) creates an empty multivalued property of type STRING.
+
+In some cases keeping the explicit type information is important, so we should avoid losing it.

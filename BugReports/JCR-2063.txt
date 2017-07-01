@@ -1,0 +1,8 @@
+FileDataStore: garbage collection can delete files that are still needed
+
+
+
+Description:
+It looks like the FileDataStore garbage collection (both regular scan and persistence manager scan) can delete files that are still needed.
+
+Currently it looks like the reason is the last access time resolution of the operating system. This is 2 seconds for FAT and Mac OS X, NTFS 100 ns, and 1 second for other file systems. That means file that are scanned at the very beginning are sometimes deleted, because they have a later last modified time then when the scan was started.

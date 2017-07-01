@@ -1,0 +1,6 @@
+jcr2spi: use Soft refs for hierarchy
+
+
+
+Description:
+stefan suggested to use soft refs for the hierarchy.

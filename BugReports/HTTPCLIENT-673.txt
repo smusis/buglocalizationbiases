@@ -1,0 +1,19 @@
+revise max-per-host configuration
+
+
+
+Description:
+Max-per-host settings for ThreadSafeClientConnManagers are currently stored in HttpParams, where the parameter value is a map from HttpRoute (formerly HostConfiguration) to Integer. This has several drawbacks:
+
+1) maintaining a map as a value in HttpParams doesn't match my understanding of how params should be used
+2) the maximums based on HttpRoute are really specific to the TSCCM implementation and not a generic parameterization
+
+some of the options are:
+
+a) revise to define a more generic parameterization approach
+b) revise into an implementation specific parameterization approach
+c) define an implementation (TSCCM) specific configuration interface and a default implementation keeping the map as run-time data
+
+cheers,
+  Roland
+

@@ -1,0 +1,14 @@
+Consolidate CustomScoreQuery, ValueSourceQuery and BoostedQuery 
+
+
+
+Description:
+Lucene's CustomScoreQuery and Solr's BoostedQuery do essentially the same thing: they boost the scores of Documents by the value from a ValueSource.  BoostedQuery does this in a direct fashion, by accepting a ValueSource. CustomScoreQuery on the other hand, accepts a series of ValueSourceQuerys.  ValueSourceQuery seems to do exactly the same thing as FunctionQuery.
+
+With Lucene's ValueSource being deprecated / removed, we need to resolve these dependencies and simplify the code.
+
+Therefore I recommend we do the following things:
+
+- Move CustomScoreQuery (and CustomScoreProvider) to the new Queries module and change it over to use FunctionQuerys instead of ValueSourceQuerys.  
+- Deprecate Solr's BoostedQuery in favour of the new CustomScoreQuery.  CSQ provides a lot of support for customizing the scoring process.
+- Move and consolidate all tests of CSQ and BoostedQuery, to the Queries module and have them test CSQ instead.

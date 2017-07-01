@@ -1,0 +1,45 @@
+Workspace.clone throws ItemNotFoundException on a referenceable node with children
+
+
+
+Description:
+An ItemNotFoundException is thrown when a referenceable node with children is cloned, this happens after the first time the node is cloned.
+            
+Example:
+
+            Node root = session.getRootNode();   
+            Node parent = root.addNode("parent");
+            parent.addMixin("mix:referenceable");
+            session.save();
+            
+// clone parent
+            WS2.clone("default", "/parent", "/parent", true);
+            
+            Node child = parent.addNode("child");
+// add child
+            child.addMixin("mix:referenceable");
+            session.save();
+
+// clone parent with child            
+            WS2.clone("default", "/parent", "/parent", true); 
+
+// clone parent again,   ItemNotFoundException - from now on can't clone parent node.
+            WS2.clone("default", "/parent", "/parent", true);
+
+
+Stacktrace:
+javax.jcr.ItemNotFoundException: failed to build path of 229083e5-5f24-4102-b007-785f43be983a: cafebabe-cafe-babe-cafe-babecafebabe has no child entry for 229083e5-5f24-4102-b007-785f43be983a
+	at org.apache.jackrabbit.core.HierarchyManagerImpl.buildPath(HierarchyManagerImpl.java:308)
+	at org.apache.jackrabbit.core.CachingHierarchyManager.buildPath(CachingHierarchyManager.java:159)
+	at org.apache.jackrabbit.core.HierarchyManagerImpl.getPath(HierarchyManagerImpl.java:357)
+	at org.apache.jackrabbit.core.CachingHierarchyManager.getPath(CachingHierarchyManager.java:221)
+	at org.apache.jackrabbit.core.BatchedItemOperations.checkRemoveNode(BatchedItemOperations.java:700)
+	at org.apache.jackrabbit.core.BatchedItemOperations.recursiveRemoveNodeState(BatchedItemOperations.java:1514)
+	at org.apache.jackrabbit.core.BatchedItemOperations.removeNodeState(BatchedItemOperations.java:1216)
+	at org.apache.jackrabbit.core.BatchedItemOperations.copyNodeState(BatchedItemOperations.java:1642)
+	at org.apache.jackrabbit.core.BatchedItemOperations.copy(BatchedItemOperations.java:311)
+	at org.apache.jackrabbit.core.WorkspaceImpl.internalCopy(WorkspaceImpl.java:294)
+	at org.apache.jackrabbit.core.WorkspaceImpl.clone(WorkspaceImpl.java:401)
+	at test.CloneTest.main(CloneTest.java:64)
+
+            

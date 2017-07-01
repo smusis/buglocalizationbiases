@@ -1,0 +1,6 @@
+jackrabbit-jcr-client tests fail (and are disabled in pom)
+
+
+
+Description:
+I suggest to enable the tests and fix the issues causing them to fail. 

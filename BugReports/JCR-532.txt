@@ -1,0 +1,6 @@
+Incorrect iterator position in JCR-RMI when skipping large number of entries
+
+
+
+Description:
+The positionOfBuffer variable in ClientIterator gets out of sync more than ServerAdapter.bufferLength items.

@@ -1,0 +1,16 @@
+Add shutdown method to SimpleHttpConnectionManager
+
+
+
+Description:
+It would be useful to be able to close the connection in the
+SimpleHttpConnectionManager. This could be achieved by adding a shutdown()
+method as per the MultiThreadedConnectionManager.
+
+Ideally this would be added to the HttpConnection interface, but this could
+break existing implementations.
+
+To avoid this, perhaps consider introducing a sub-interface with the method in it.
+
+[Could also create an AbstractConnectionManager class - this would make it
+easier to add more functions later]

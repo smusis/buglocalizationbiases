@@ -1,0 +1,14 @@
+Binary field content lost during optimize
+
+
+
+Description:
+Scenario:
+
+* create an index with arbitrary content, and close it
+* open IndexWriter again, and add a document with binary field (stored but not compressed)
+* close IndexWriter _without_ optimizing, so that the new document is in a separate segment.
+* open IndexReader. You can read the last document and its binary field just fine.
+* open IndexWriter, optimize the index, close IndexWriter
+* open IndexReader. Now the field is still present (not null) and is marked as binary, but the data is not there - Field.getBinaryLength() returns 0.
+

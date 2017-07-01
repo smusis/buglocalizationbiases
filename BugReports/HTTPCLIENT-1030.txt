@@ -1,0 +1,10 @@
+Implement "ignoreCookies" CookieSpec
+
+
+
+Description:
+It would be useful to Implement an "ignoreCookies" CookieSpec, as was done in Commons HC 3.1
+
+This should be registered by DefaultHttpClient.createCookieSpecRegistry().
+
+Patch to follow.

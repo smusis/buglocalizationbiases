@@ -1,0 +1,9 @@
+NamespaceRegistryTest makes assumptions about legal names
+
+
+
+Description:
+org.apache.jackrabbit.test.api.NamespaceRegistryTest.testRegisterNamespace() makes the assumption that once a namespace is registered, it can be used in a node name. In practice, many repositories have their own restrictions on node naming, in particular may not support namespace prefixes in node names at all.
+
+Proposal: change the test case so that it's independant of the repository's ability to create new nodes in that namespace.
+

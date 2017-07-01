@@ -1,0 +1,8 @@
+Rename BaseMultiReader class to BaseCompositeReader and make public
+
+
+
+Description:
+Currently the abstract DirectoryReader and MultiReader and ParallelCompositeReader extend a package private class. Users that want to implement a composite reader, should be able to subclass this pkg-private class, as it implements lots of abstract methods, useful for own implementations. In fact MultiReader is a shallow subclass only implementing correct closing&refCounting.
+
+By making it public after the rename, the generics problems (type parameter R is not correctly displayed) in the JavaDocs are solved, too.

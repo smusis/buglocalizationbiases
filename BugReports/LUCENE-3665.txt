@@ -1,0 +1,6 @@
+Make WeightedSpanTermExtractor extensible to handle custom query implemenations
+
+
+
+Description:
+Currently if I have a custom query which subclasses query directly I can't use the QueryScorer for highlighting since it does explicit instanceof checks. In some cases its is possible to rewrite the query before passing it to the highlighter to obtain a primitive query. However I had the usecase where this was not possible ie. the original index was not available on the machine which highlights the results. To still use the highlighter I had to copy a bunch of code due to visibility issues in those classes. I think we can make this extensible with minor effort to allow this usecase without massive code duplication.

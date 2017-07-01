@@ -1,0 +1,6 @@
+improve test coverage of multi-segment indices
+
+
+
+Description:
+Simple patch that adds a test-only helper class, RandomIndexWriter, that lets you add docs, but it will randomly do things like use a different merge policy/scheduler, flush by doc count instead of RAM, flush randomly (so we get multi-segment indices) but also randomly optimize in the end (so we also sometimes test single segment indices).

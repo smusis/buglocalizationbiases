@@ -1,0 +1,22 @@
+Failures during contrib builds, when classes in core were changed without ant clean
+
+
+
+Description:
+From java-dev by Shai Erera:
+
+{quote}
+I've noticed that sometimes, after I run test-core and test-contrib, and then change core code, test-contrib fail on NoSuchMethodError and stuff like that. I've noticed that core.jar exists under build, and I assumed it's used by test-contrib, and probably is not recreated after core code has changed.
+
+I verified it when looking in contrib-build.xml, which defines a property lucene.jar.present which is set to true if the jar is ... well, present. Which I believe is the reason for these failures. I've been thinking how to resolve that, and I can think of two ways:
+
+(1) have test-core always delete that file, but that has two issues:
+(1.1) It's redundant if the code hasn't changed.
+(1.2) It forces you to either jar-core or test-core before you test-contrib, if you want to make sure you run w/ the latest jar.
+
+or
+
+(2) have test-contrib always call jar-core, which will first delete the file and then re-create it by compiling first. Compiling should not do anything if the code hasn't changed. So the only waste would be to create the .jar, but I think that's quite fast?
+
+Does anyone, with more Ant skills than me, know of a better way to detect from test-contrib that core code has changed and only then rebuild the jar?
+{quote}

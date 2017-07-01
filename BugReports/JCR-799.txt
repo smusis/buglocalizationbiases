@@ -1,0 +1,6 @@
+AbstractJournal doesn't create deep paths for revision files
+
+
+
+Description:
+AbstractJournal throws when trying to create the revision file if the directory the revision file is in doesn't already exist. When initializing a repository during its startup, the create fails is you use a revision param like <param name="revision" value="${rep.home}/repository/revision" /> because the repository directory hasn't been created yet. Attached is a repository.xml that demonstrates. It uses Oracle for FS and PMs.

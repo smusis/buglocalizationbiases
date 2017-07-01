@@ -1,0 +1,40 @@
+Provide possibility to import protected items using Session import functionality
+
+
+
+Description:
+SessionImporter and WorkspaceImporter currently skip all protected items encountered during import except for some special cases
+(see JCR-2172 and WorkspaceImporter#postProcessNode).
+The specification only mandates that protected content is treated in a consistent manner, but allows the implementation to either import or ignore it.
+
+Find attached a patch containing some initials steps to allow to extend the default import behavior:
+Instead of skipping protected items (and in case of nodes the complete tree below it), they should be passed to a separate handler,
+that may or may not be able to deal with them and needs to assert, that they are in a valid format.
+
+The patch includes:
+
+- Abstract classes for that protected item import
+- Default implementations that never import protected nodes (same behavior as we have today)
+- An example implementation for the AC-content (just to see if it works for simple cases) + some trivial tests.
+- Changes to SessionImporter to demonstrate how import of protected items would be enabled.
+
+The patch doesn't include yet:
+
+- Changes to WorkspaceImporter (would +- be according to SessionImporter)
+- Changes to WorkspaceImpl/SessionImpl as well as configuration that would allow to modify the default behavior.
+- Examples for import of protected properties.
+- Examples for workspace import.
+
+The patch has the following limitations or TODOs:
+
+- Proper handling of protected references properties or non-protected ref properties with the tree defined by a protected node.
+- Test / Careful review if the various ImportUUIDBehaviors are/can properly be covered, specially in case of "replace-existing".
+
+The patch in addition addresses:
+
+- An inconsistency in the SessionImporter:
+  > Attempt to import protected content below an existing protected node => skipped
+  > Attempt to import protected content that doesn't yet exist => first node is imported, ConstraintViolationException for child-nodes.
+  > This behavior is also reflected in the Node-stack... where in the first case 'null' is pushed, in the second case the first protected node.
+     (see also JCR-2172 for details).
+

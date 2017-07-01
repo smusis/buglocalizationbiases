@@ -1,0 +1,8 @@
+QueryHandler should use lucene Input-/OutputStream implementations
+
+
+
+Description:
+Currently the QueryHandler uses a jackrabbit specific implementation of the lucene Directory interface to make use of the jackrabbit FileSystem abstraction. Lucene operations on the file system however requires quite often random access on the index files. With the current FileSystem interface / abstraction random access is not possible on a FileSystemResource, therefore it is simulated by re-aquiring the InputStream and then seeking to the desired position. This it not efficient at all.
+
+With respect to performance any other use than file based index storage does not make sense with lucene. Hence, the current abstraction using FileSystem should be dropped in favour of direct file access.

@@ -1,0 +1,47 @@
+Support for OpenOffice text extraction
+
+
+
+Description:
+Hi, here is the patch.
+
+>hi nicolas,
+>
+>thanks for your offer to contribute your openoffice textfilter, that's greatly appreciated!
+>
+>i suggest you post a jira 'Improvement' or "New Feature' issue and attach your code as an svn patch. somebody will take care 
+>of it (i assume marcel), i.e. review your contribution and provide feedback/further instructions.
+
+>cheers
+>stefan
+
+>On 2/2/06, Nicolas Jouanin <nicolas.jouanin@gmail.com> wrote:
+>>
+>>
+>>
+>> Hi Stefan,
+>>
+>>
+>>
+>> I work with Martin Perez, main developper of jLibrary.
+>>
+>> Therefore, I developed a class which extracts metadata and text 
+>> content from any openoffice file (that was not the hardest job). This 
+>> class is already used into jLibrary.
+>>
+>> As Martin suggested me, I used this class to create a new TextFilter 
+>> subclass into textfilters contrib project. I downloaded textfilters 
+>> project from svn, created my class into the project tree and tested it 
+>> with a test class , just like it was done with the other extractors.
+>>
+>> I can send you the code if you want to review it, or just tell me how 
+>> I can commit it.
+>>
+>>
+>>
+>> Regards,
+>>
+>>
+>>
+>> Nicolas.
+

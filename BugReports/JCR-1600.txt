@@ -1,0 +1,8 @@
+Remove noLockHack in SharedItemStateManager
+
+
+
+Description:
+With the increased test coverage, specifically the recently added multi-threaded tests, I'm reasonably confident that the noLockHack in SharedItemStateManager is not needed anymore.
+
+Attached patch removes the hack. All tests still pass, including the daily integration tests.

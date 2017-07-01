@@ -1,0 +1,25 @@
+Add IndexReader.acquire() and release() methods using IndexReader's ref counting
+
+
+
+Description:
+From: http://mail-archives.apache.org/mod_mbox/lucene-java-dev/200807.mbox/%3cPine.OSX.4.64.0807170752080.1708@c5850-a3-2-62-147-22-102.dial.proxad.net%3e
+
+I have a server where a bunch of threads are handling search requests. I
+have a another process that updates the index used by the search server and
+that asks the searcher server to reopen its index reader after the updates
+completed.
+
+When I reopen() the index reader, I also close the old one (if the reopen()
+yielded a new instance). This causes problems for the other threads that
+are currently in the middle of a search request.
+
+I'd like to propose the addition of two methods, acquire() and release() 
+(attached to this bug report), that increment/decrement the ref count that IndexReader 
+instances currently maintain for related purposes. That ref count prevents 
+the index reader from being actually closed until it reaches zero.
+
+My server's search threads, thus acquiring and releasing the index reader 
+can be sure that the index reader they're currently using is good until 
+they're done with the current request, ie, until they release() it.
+

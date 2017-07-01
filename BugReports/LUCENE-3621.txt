@@ -1,0 +1,6 @@
+switch appendingcodec to use appending blocktree
+
+
+
+Description:
+currently it still uses block terms + fixed gap index

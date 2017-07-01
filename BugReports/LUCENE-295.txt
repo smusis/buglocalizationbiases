@@ -1,0 +1,38 @@
+[PATCH] MultiSearcher problems with Similarity.docFreq()
+
+
+
+Description:
+When MultiSearcher invokes its subsearchers, it is the subsearchers' docFreq()
+that is accessed by Similarity.docFreq().  This causes idf's to be computed
+local to each index rather than globally, which causes ranking across multiple
+indices to not be equivalent to ranking across the entire global collection.
+
+The attached files (if I can figure out how to attach them) provide a potential
+partial solution for this.  They properly fix a simple test case, RankingTest,
+that was provided by Daniel Naber.
+
+The changes are:
+  1.  Searcher:  Add topmostSearcher() field with getter and setter to record
+the outermost Searcher.  Default to this.
+  2.  MultiSearcher:  Pass down the topmostSearcher when creating the subsearchers.
+  3.  IndexSearcher:  Call Query.weight() everywhere with the topmostSearcher
+instead of this.
+  4.  Query:  Provide a default implementation of Query.combine() so that
+MultiSearcher works with all queries.
+
+Problems or possible problems I see:
+  1.  This does not address the same issue with RemoteSearchable. 
+RemoteSearchable is not a Searcher, nor can it be due to lack of multiple
+inheritance in Java, but Query.weight() requires a Searcher.  Perhaps
+Query.weight() should be changed to take a Searchable, but this requires
+changing many places and I suspect would break apps.
+  2.  There may be other places that topmostSearcher should be used instead of this.
+  3.  The default implementation for Query.combine() is a guess on my part - it
+works for TermQuery.  It's fragile in that the default implementation will hide
+bugs caused by queries that inadvertently omit a more precise Query.combine()
+method.
+  4.  The prior comment on Query.combine() indicates that whoever wrote it was
+fully aware of this problem and so probably had another usage in mind, so the
+whole issue may just be Daniel's usage in the test case.  It's not apparent to
+me, so I probably don't understand something.

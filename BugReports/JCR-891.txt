@@ -1,0 +1,6 @@
+Add import-export tool
+
+
+
+Description:
+We at <GX> creative online development would like to contribute our command-line import-export tool to the Apache Jackrabbit project. This tool is capable of exporting and importing all kinds of repository content (including custom nodetypes and namespace mappings) in a persistence-layer independent way. 

@@ -1,0 +1,23 @@
+RepositoryFactory implementation for jcr2spi
+
+
+
+Description:
+There should be a RepositoryFactory implementation in jcr2spi that also covers acquiring the underlying RepositoryService.
+
+For this purpose I suggest to create:
+-  a RepositoryServiceFactory in jackrabbit-spi, which encapsulates the spi implementation specifc instantiation of the RepositoryService. the factory probably just needs a single method that takes a parameters map.
+- a RepositoryFactory implementation in jcr2spi, which works with a URI that contains all required information to connect/acquired the RepositoryService.
+
+To use jcr2spi/spi2jcr/jackrabbit-core:
+- jcr+file://path/to/repository/home?config=repository.xml
+
+To use jcr2spi/spi2dav:
+- jcr+dav://localhost:8080/server/repository/?br=4
+
+To use jcr2spi/spi2davex:
+- jcr+davex://localhost:8080/server/repository/
+
+An implementation of RepositoryServiceFactory must check the scheme and decide if it can handle it and create a RepositoryService instance with it, otherwise it must return null. This means there would be a single name for the connect URI for all RepositoryServiceFactory implementations.
+
+

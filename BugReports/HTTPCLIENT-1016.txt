@@ -1,0 +1,6 @@
+Adding a custom location header extractor method for RedirectStrategy.
+
+
+
+Description:
+Sometimes Web Servers respond to http requests with non-standard location response headers during a server side redirect. (302)  ADding a convenience method to over come this.

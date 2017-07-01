@@ -1,0 +1,6 @@
+JSR 283: QOM and SQL2
+
+
+
+Description:
+Adjusted title. This issue now covers all query changes and enhancements in JSR 283.

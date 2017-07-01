@@ -1,0 +1,6 @@
+Highlighter Documentation updates
+
+
+
+Description:
+Various places in the Highlighter documentation refer to bytes (i.e. SimpleFragmenter) when it should be chars.  See http://www.gossamer-threads.com/lists/lucene/java-user/56986

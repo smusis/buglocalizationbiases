@@ -1,0 +1,40 @@
+[PATCH] MultiFieldQueryParser and BooleanQuery do not provide adequate support for queries across multiple fields
+
+
+
+Description:
+The attached test case demonstrates this problem and provides a fix:
+  1.  Use a custom similarity to eliminate all tf and idf effects, just to 
+isolate what is being tested.
+  2.  Create two documents doc1 and doc2, each with two fields title and 
+description.  doc1 has "elephant" in title and "elephant" in description.  
+doc2 has "elephant" in title and "albino" in description.
+  3.  Express query for "albino elephant" against both fields.
+Problems:
+      a.  MultiFieldQueryParser won't recognize either document as containing 
+both terms, due to the way it expands the query across fields.
+      b.  Expressing query as "title:albino description:albino title:elephant 
+description:elephant" will score both documents equivalently, since each 
+matches two query terms.
+  4.  Comparison to MaxDisjunctionQuery and my method for expanding queries 
+across fields.  Using notation that () represents a BooleanQuery and ( | ) 
+represents a MaxDisjunctionQuery, "albino elephant" expands to:
+        ( (title:albino | description:albino)
+          (title:elephant | description:elephant) )
+This will recognize that doc2 has both terms matched while doc1 only has 1 
+term matched, score doc2 over doc1.
+
+Refinement note:  the actual expansion for "albino query" that I use is:
+        ( (title:albino | description:albino)~0.1
+          (title:elephant | description:elephant)~0.1 )
+This causes the score of each MaxDisjunctionQuery to be the score of highest 
+scoring MDQ subclause plus 0.1 times the sum of the scores of the other MDQ 
+subclauses.  Thus, doc1 gets some credit for also having "elephant" in the 
+description but only 1/10 as much as doc2 gets for covering another query term 
+in its description.  If doc3 has "elephant" in title and both "albino" 
+and "elephant" in the description, then with the actual refined expansion, it 
+gets the highest score of all (whereas with pure max, without the 0.1, it 
+would get the same score as doc2).
+
+In real apps, tf's and idf's also come into play of course, but can affect 
+these either way (i.e., mitigate this fundamental problem or exacerbate it).

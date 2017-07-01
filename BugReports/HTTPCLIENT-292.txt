@@ -1,0 +1,8 @@
+NTLM Proxy and basic host authorization
+
+
+
+Description:
+Using a Microsoft proxy with NTLM validation enabled the authorization against a
+remote host does not work. This, of course, assuming that the page is correctly
+fetched (which currently is not), see the NTLM authentication bug number 24327

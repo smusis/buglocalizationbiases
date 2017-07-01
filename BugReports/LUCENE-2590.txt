@@ -1,0 +1,19 @@
+Enable access to the freq information in a Query's sub-scorers
+
+
+
+Description:
+The ability to gather more details than just the score, of how a given
+doc matches the current query, has come up a number of times on the
+user's lists.  (most recently in the thread "Query Match Count" by
+Ryan McV on java-user).
+
+EG if you have a simple TermQuery "foo", on each hit you'd like to
+know how many times "foo" occurred in that doc; or a BooleanQuery +foo
++bar, being able to separately see the freq of foo and bar for the
+current hit.
+
+Lucene doesn't make this possible today, which is a shame because
+Lucene in fact does compute exactly this information; it's just not
+accessible from the Collector.
+

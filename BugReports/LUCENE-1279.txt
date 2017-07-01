@@ -1,0 +1,8 @@
+RangeQuery and RangeFilter should use collation to check for range inclusion
+
+
+
+Description:
+See [this java-user discussion|http://www.nabble.com/lucene-farsi-problem-td16977096.html] of problems caused by Unicode code-point comparison, instead of collation, in RangeQuery.
+
+RangeQuery could take in a Locale via a setter, which could be used with a java.text.Collator and/or CollationKey's, to handle ranges for languages which have alphabet orderings different from those in Unicode.

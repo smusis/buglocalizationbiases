@@ -1,0 +1,7 @@
+API surface of caching module can be reduced
+
+
+
+Description:
+While the caching module can currently be considered functional and useful for folks as-is, there are several near-term enhancements planned that could change the exposed binary API of the caching module (although it is not yet clear whether they would or not). In an effort to allow the 4.1 GA release to go forward while hedging bets against future development, we should consider drastically reducing the exposed binary API of the caching module, and not exposing extension points until someone explicitly asks for them.
+

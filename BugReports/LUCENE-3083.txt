@@ -1,0 +1,8 @@
+MockRandomMergePolicy optimizes segments not in the Set passed in
+
+
+
+Description:
+The test class MockRandomMergePolicy shuffles the whole SegmentInfos passed to the optimize callback and returns random segments for optimizing. This is fine, but it also returns segments, that are not listed in the Set<SegmentInfo> that is also passed in, containing the subset of segments to optimize.
+
+This bug was found when writing a testcase for LUCENE-3082: The wrapper MergePolicy (when wrapped around MockRandomMergePolicy) only passes a subset of the segments to the delegate (the ones that are in old index format). But MockRandom created OneMerge in its return MergeSpecification having segments outside this set.

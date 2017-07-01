@@ -1,0 +1,11 @@
+Update dependency versions for commons-collections, slf4j and derby
+
+
+
+Description:
+Some of the dependencies used by the 2.0-beta1 could be upgraded:
+commons-collections from 3.1 to 3.2.1
+slf4j from 1.5.3 to 1.5.8
+derby from 10.2.1.6 to 10.5.3.0
+
+Not sure about derby but the other two seems to be just drop in replacements for their older verisons.

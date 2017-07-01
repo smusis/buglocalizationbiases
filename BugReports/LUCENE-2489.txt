@@ -1,0 +1,6 @@
+promote TestExternalCodecs.PerFieldCodecWrapper to core
+
+
+
+Description:
+PerFieldCodecWrapper lets you set the Codec for each field; I'll promote to core & mark experimental.

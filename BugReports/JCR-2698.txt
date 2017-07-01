@@ -1,0 +1,6 @@
+Consolidate type safe wrappers for commons-collection classes
+
+
+
+Description:
+Various places define their own type safe wrappers for classes from commons-collections (i.e. FilterIterator, TransformIterator and the like). I would like to consolidate them into one single place. 

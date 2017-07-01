@@ -1,0 +1,16 @@
+IndexCommit.getFileNames() should not return dups
+
+
+
+Description:
+If the index was created with autoCommit false, and more than 1
+segment was flushed during the IndexWriter session, then the shared
+doc-store files are incorrectly duplicated in
+IndexCommit.getFileNames().  This is because that method is walking
+through each SegmentInfo, appending its files to a list.  Since
+multiple SegmentInfo's may share the doc store files, this causes dups.
+
+To fix this, I've added a SegmentInfos.files(...) method, and
+refactored all places that were computing their files one SegmentInfo
+at a time to use this new method instead.
+

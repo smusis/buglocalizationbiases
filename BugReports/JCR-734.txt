@@ -1,0 +1,12 @@
+Update namespace uri for prefix fn
+
+
+
+Description:
+The SearchManager class still uses an outdated namespace uri for the 'fn' prefix: http://www.w3.org/2004/10/xpath-functions
+
+The prefix should be re-mapped to the now offical namespace: http://www.w3.org/2005/xpath-functions
+
+See: http://www.w3.org/TR/xquery-operators/#namespace-prefixes
+
+To keep a minimum of backward compatibility, the existing namespace uri should still exist in the namespace registry, but refer to another prefix. E.g. fn_old.

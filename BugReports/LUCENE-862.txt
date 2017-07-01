@@ -1,0 +1,23 @@
+Contrib query org.apache.lucene.search.BoostingQuery sets boost on constructor Query, not cloned copy
+
+
+
+Description:
+BoostingQuery sets the boost value on the passed context Query
+
+    public BoostingQuery(Query match, Query context, float boost) {
+      this.match = match;
+      this.context = (Query)context.clone();        // clone before boost
+      this.boost = boost;
+
+      context.setBoost(0.0f);                      // ignore context-only matches
+    }
+
+This should be 
+      this.context.setBoost(0.0f);                      // ignore context-only matches
+
+Also, boost value of 0.0 may have wrong effect - see discussion at
+
+http://www.mail-archive.com/java-user@lucene.apache.org/msg12243.html 
+
+

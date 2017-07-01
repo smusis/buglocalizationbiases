@@ -1,0 +1,6 @@
+Spellchecker should implement java.io.Closable
+
+
+
+Description:
+As the most of the lucene classes implement Closable (IndexWriter) Spellchecker should do too. 

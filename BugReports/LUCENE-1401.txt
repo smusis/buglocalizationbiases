@@ -1,0 +1,19 @@
+Deprecation of autoCommit in 2.4 leads to compile problems, when autoCommit should be false
+
+
+
+Description:
+I am currently changing my code to be most compatible with 2.4. I switched on deprecation warnings and got a warning about the autoCommit parameter in IndexWriter constructors.
+
+My code *should* use autoCommit=false, so I want to use the new semantics. The default of IndexWriter is still autoCommit=true. My problem now: How to disable autoCommit whithout deprecation warnings?
+
+Maybe, the "old" constructors, that are deprecated should use autoCommit=true. But there are new constructors with this "IndexWriter.MaxFieldLength mfl" in it, that appear new in 2.4 but are deprecated:
+
+IndexWriter(Directory d, boolean autoCommit, Analyzer a, boolean create, IndexDeletionPolicy deletionPolicy, IndexWriter.MaxFieldLength mfl) 
+          Deprecated. This will be removed in 3.0, when autoCommit will be hardwired to false. Use IndexWriter(Directory,Analyzer,boolean,IndexDeletionPolicy,MaxFieldLength) instead, and call commit() when needed.
+
+What the hell is meant by this, a new constructor that is deprecated? And the hint is wrong. If I use the other constructor in the warning, I get autoCommit=true.
+
+There is something completely wrong.
+
+It should be clear, which constructors set autoCommit=true, which set it per default to false (perhaps new ones), and the Deprecated text is wrong, if autoCommit does not default to false.

@@ -1,0 +1,33 @@
+GData's TestGdataIndexer.testDestroy() intermittently hits spin loop & causes build timeout
+
+
+
+Description:
+Several nightly builds (at least #136, #143 and #144) have failed due
+to timeout at 45 minutes while running the TestGdataIndexer.testDestroy()
+test case.
+
+I tracked it down to this line:
+
+      // wait active for the commit
+      while(this.indexer.writer != null){}
+
+Intermittently, that while loop will spin forever.  I can only get the
+failure to happen on Linux: it doesn't happen on Mac OS X (haven't
+tried windows).  The nightly build runs on Solaris 10, so it also
+happens there.
+
+It turns out, this is due to the fact that "writer" is not declared as
+"volatile".  This is because one thread is closing the indexer, which
+sets writer to null, but another thread is running the while loop.
+If this.indexer.writer was set to null before that while loop starts,
+the test will run through fine; else, it won't.
+
+I plan to fix this by adding this method to GDataIndexer class:
+
+    // Used only for testing
+    protected synchronized IndexWriter getWriter() {
+      return this.writer;
+    }
+
+and changing unit test to call that method.

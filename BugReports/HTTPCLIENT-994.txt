@@ -1,0 +1,7 @@
+cache does not allow client to override origin-specified freshness using max-stale
+
+
+
+Description:
+According to the RFC, the default freshness lifetime is supposed to be the LEAST restrictive of that specified by the origin, the client, and the cache. Right now, a client can't use 'max-stale' to relax the freshness constraints to get a cache hit without validation occuring first.
+

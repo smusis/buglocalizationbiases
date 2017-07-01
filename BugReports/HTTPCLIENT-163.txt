@@ -1,0 +1,42 @@
+HttpClient does not compile 'out of the box' in IBM's VisualAge IDE
+
+
+
+Description:
+This was observed with IBM VisualAge 3.5, which runs JDK1.2.2:
+
+Importing the HTTPClient source code into the IDE brings up a
+compilation error in 
+
+org.apache.commons.httpclient.HttpMethodBase.
+
+The initialization of "private ResponseConsumedWatcher m_responseWatcher"
+using an anyonymous inner class seems to cause some trouble. Implicated code:
+
+private ResponseConsumedWatcher m_responseWatcher = new ResponseConsumedWatcher
+() {
+	public void responseConsumed() {
+		responseBodyConsumed();
+	}
+};
+
+The error message is: "Field initialization: The constructor invoked to create
+org.apache.commons.httpclient.HttpMethodBase$1 with arguments () is not defined"
+
+...but only in the context of HttpMethodBase(String uri) constructor, i.e.
+the HttpMethodBase() constructor *can* be compiled, HttpMethodBase(String uri)
+*cannot* be compiled with error "Cannot create constructor due to incorrect
+field initialization".
+
+I interpret this to mean that the compiler is looking for a parameterless
+constructor for the anonymous class in the context of 
+HttpMethodBase(String uri). The message did not really make sense to me. 
+Checked the syntax, checked in the Language Definition whether setting up an
+anonymous class like that is permitted; found nothing obviously wrong.
+
+Fix:
+
+The code above is equivalent to constructing the instance at the beginning
+of each constructor of the enclosing class. A copy and paste of the
+construction code into each of the two constructors fixes things...until
+the next update.

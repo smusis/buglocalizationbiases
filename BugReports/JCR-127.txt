@@ -1,0 +1,10 @@
+Speedup Startup
+
+
+
+Description:
+jackrabbit startup gets slower the more items are in the repository.
+
+possible reasons:
+- versioning
+- search index

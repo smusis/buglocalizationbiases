@@ -1,0 +1,16 @@
+Possible Memory Leak in StoredFieldsWriter
+
+
+
+Description:
+StoredFieldsWriter creates a pool of PerDoc instances
+
+this pool will grow but never be reclaimed by any mechanism
+
+furthermore, each PerDoc instance contains a RAMFile.
+this RAMFile will also never be truncated (and will only ever grow) (as far as i can tell)
+
+When feeding documents with large number of stored fields (or one large dominating stored field) this can result in memory being consumed in the RAMFile but never reclaimed. Eventually, each pooled PerDoc could grow very large, even if large documents are rare.
+
+Seems like there should be some attempt to reclaim memory from the PerDoc[] instance pool (or otherwise limit the size of RAMFiles that are cached) etc
+

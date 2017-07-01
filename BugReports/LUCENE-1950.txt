@@ -1,0 +1,6 @@
+Remove autoCommit from IndexWriter
+
+
+
+Description:
+IndexWriter's autoCommit is deprecated; in 3.0 it will be hardwired to false.

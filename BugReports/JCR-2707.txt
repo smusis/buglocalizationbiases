@@ -1,0 +1,8 @@
+improve performance when saving a node with a large number of child nodes (e.g. > 10k child node entries)
+
+
+
+Description:
+JCR-307 brought a significant improvement WRT saving nodes with a large number of child nodes
+
+unfortunately JCR-2579 broke part of the optimization (see NodeState.setChildNodeEntries(List)).

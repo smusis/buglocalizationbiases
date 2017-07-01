@@ -1,0 +1,6 @@
+Skip deployment of jackrabbit-standalone
+
+
+
+Description:
+The jackrabbit-standalone jar currently can't be deployed to the repository.apache.org server probably because of its size. I'm not sure if there are any good use cases where you'd want to use the standalone jar as a Maven dependency, so having it on Maven central doesn't seem that important. I'd like to make this explicit by configuring the deploy plugin to skip deploying the standalone jar.

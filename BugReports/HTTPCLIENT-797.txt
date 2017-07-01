@@ -1,0 +1,8 @@
+o.a.h.conn.scheme.PlainSocketFactory is not a true Singleton
+
+
+
+Description:
+The class "org.apache.http.conn.scheme.PlainSocketFactory" has a factory method, getSocketFactory(), and clearly indicates in the Javadocs that it expects to be a Singleton; however, the presence of public constructors makes it quite possible that this is not the case.
+
+To protect the Singleton status of the class, the constructors should be private, or, at the very least, default (package) access. This will force access to the single instance through the factory method.

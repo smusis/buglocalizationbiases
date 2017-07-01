@@ -1,0 +1,15 @@
+Stats for the PersistenceManager
+
+
+
+Description:
+Statistics for the PersistenceManager impl that cover: 
+ - bundle cache access count, 
+ - bundle cache miss count, 
+ - bundle cache miss avg duration (this avg includes the penalty of having to load from the underlying storage / can be interpreted as avg read latency as there is no cache involved) 
+ - bundle writes per second
+
+What it doesn't cover is :
+ - number of bundles
+ - size of workspace
+as these are values that are expensive to compute on demand, and caching them would imply being able to store the values (which is not possible currently).

@@ -1,0 +1,6 @@
+Remove redundant RepositoryService.executeQuery() method 
+
+
+
+Description:
+There are currently two executeQuery() methods on RepositoryService. For simplicity we should remove the one that assumes default values for limit, offset and bind variable values.

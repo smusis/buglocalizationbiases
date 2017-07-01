@@ -1,0 +1,8 @@
+Workspace.move() and Session.move()  allow moves to an invalid path
+
+
+
+Description:
+When calling Workspace.move() with an invalid destination path, which is a child of the source path, e.g. move("/path", "/path/path2"), results in the source path nodes being removed. When calling Session.move() the failure is a StackOverflowError when save is called.
+
+

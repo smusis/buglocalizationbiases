@@ -1,0 +1,26 @@
+httpClient failed to reconnect after keep-alive connection timed out
+
+
+
+Description:
+Description:
+
+When using httpClient with https tunnelling througha proxy server, after keep-
+alive connection timed out on server side.  The httpClient code was unable to 
+establish the connection again.
+
+Cause:
+
+The HttpMethodBase.processRequest's retry loop retries the connection without 
+going through the "CONNECT" request to the proxy server.  Our proxy server 
+returns 407 error code.  In case of tunnelling connection, proper reconnect 
+should be done by first doing the "CONNECT" sequence to get authenticated 
+throught the proxy.
+
+Temp fix and Work around:
+
+We implemented some work around to do the retry from the application layer.  In 
+order to detect the situation, we have to rely on the error message contained 
+in the HttpRecoverableException.  We are checking the text "Connection aborted 
+by peer: socket write error".  We also have to modify the HttpMethodBase code 
+to throw the HttpRecoverableException out to the application.

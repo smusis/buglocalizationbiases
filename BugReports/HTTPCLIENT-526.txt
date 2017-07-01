@@ -1,0 +1,20 @@
+warn on invalid set-cookie header
+
+
+
+Description:
+I had a problem on a WS server that comes from some proxy misconfiguration...
+resulting in this reponse beeing received by HTTPclient :
+17:26:36,489 DEBUG [header] << "HTTP/1.1 200 OK[\r][\n]"
+17:26:36,489 DEBUG [header] << "Set-Cookie: =f448bb59feedbaaabaee; path=/[\r][\n]"
+17:26:36,489 DEBUG [header] << "Date: Tue, 15 Nov 2005 16:26:36 GMT[\r][\n]"
+17:26:36,489 DEBUG [header] << "Server: Apache[\r][\n]"
+17:26:36,489 DEBUG [header] << "Connection: close[\r][\n]"
+17:26:36,489 DEBUG [header] << "Transfer-Encoding: chunked[\r][\n]"
+17:26:36,489 DEBUG [header] << "Content-Type: text/xml;charset=utf-8[\r][\n]"
+
+The set-cookie header is malformed, as cookie has no name, so the HTTP head may
+be considered invalid.
+
+This results in an error when building the NEXT request. I'd expect httpclient
+to WARN on malformed header and drop it.

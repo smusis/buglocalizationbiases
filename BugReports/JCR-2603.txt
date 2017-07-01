@@ -1,0 +1,8 @@
+DefaultLoginModule performs anonymous login in case of unsupported Credentials implementation
+
+
+
+Description:
+If Repository.login in called with an unsupported Credentials implementation the DefaultLoginModule#getCredentials returns null
+and thus an anonymous login. The expected behavior from my point of view however was, that login with unsupported credentials 
+would not be handled by the LoginModule and - if no other module is able to handle it -  login would consequently fails.

@@ -1,0 +1,8 @@
+Core Test should not have dependencies on the Demo code
+
+
+
+Description:
+The TestDoc.java Test file has a dependency on the Demo FileDocument code.  Some of us don't keep the Demo code around after downloading, so this breaks the build.
+
+Patch will be along shortly

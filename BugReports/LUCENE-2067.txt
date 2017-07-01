@@ -1,0 +1,13 @@
+Czech Stemmer
+
+
+
+Description:
+Currently, the CzechAnalyzer is merely stopwords, and there isn't a czech stemmer in snowball.
+
+This patch implements the light stemming algorithm described in: http://portal.acm.org/citation.cfm?id=1598600
+
+In their measurements, it improves MAP 42%
+
+The analyzer does not use this stemmer if LUCENE_VERSION <= 3.0, for back compat.
+

@@ -1,0 +1,12 @@
+Override method MultipartEntity.addPart so that applications may use FormBodyPart
+
+
+
+Description:
+FormBodyPart is similar to Part in HttpClient 3.x in that it couples the form name with the value.  Some applications may find this useful, but cannot really utilize these objects since there is only MultipartEntity.addPart(String name,ContentBody) and FormBodyPart does not have a getContent method:
+
+  entity.addPart(part.getName(), part.getContent()); // Almost but there is no getContent method
+
+How about overriding addPart to take a FormBodyPart object:
+
+  entity.addPart(part);

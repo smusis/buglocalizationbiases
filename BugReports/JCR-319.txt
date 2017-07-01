@@ -1,0 +1,6 @@
+Improve docs for deployment Models 1 and 2 on Tomcat 5.5.x and provide an example webapp.
+
+
+
+Description:
+New users would find a small webapp and associated documentation that walks them through the process of setting up a model 1 or model 2 (or both) deployment scheme.

@@ -1,0 +1,25 @@
+AssertionError on creating doc containing field with empty string as field name
+
+
+
+Description:
+Spinoff from here:
+
+  http://www.gossamer-threads.com/lists/lucene/java-user/58496
+
+Pre-2.3 you were allowed to add Fields to a Document where the field name is the empty string.  In 2.3.0 it broke: you hit this during flush:
+
+{code}
+java.lang.AssertionError
+    at org.apache.lucene.index.TermInfosWriter.add(TermInfosWriter.java:143)
+    at org.apache.lucene.index.DocumentsWriter.appendPostings(DocumentsWriter.java:2290)
+    at org.apache.lucene.index.DocumentsWriter.writeSegment(DocumentsWriter.java:1985)
+    at org.apache.lucene.index.DocumentsWriter.flush(DocumentsWriter.java:539)
+    at org.apache.lucene.index.IndexWriter.doFlush(IndexWriter.java:2497)
+    at org.apache.lucene.index.IndexWriter.flush(IndexWriter.java:2397)
+    at org.apache.lucene.index.IndexWriter.closeInternal(IndexWriter.java:1204)
+    at org.apache.lucene.index.IndexWriter.close(IndexWriter.java:1178)
+    at org.apache.lucene.index.IndexWriter.close(IndexWriter.java:1153) 
+{code}
+
+The bug is just an over-aggressive assert statement.  I'll commit a fix shortly & port to 2.3 branch for 2.3.1 release.

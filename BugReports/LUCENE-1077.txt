@@ -1,0 +1,8 @@
+New Analysis  Contributions
+
+
+
+Description:
+With the advent of the new TeeTokenFilter and SinkTokenizer, there now exists some interesting new things that can be done in the analysis phase of indexing.  See LUCENE-1058.
+
+This patch provides some new implementations of SinkTokenizer that may be useful.

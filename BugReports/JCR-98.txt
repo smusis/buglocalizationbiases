@@ -1,0 +1,7 @@
+extensibility patch for simple WebDAV servlet
+
+
+
+Description:
+attaching a patch that makes the simple WebDAV servlet more extensible - subclasses can now provide their own support objects such as DavResourceFactory and DavLocatorFactory. also patches DavResourceImpl to make importXml and importFile methods protected, for subclass use.
+

@@ -1,0 +1,6 @@
+Configure occurrence of property value in excerpt
+
+
+
+Description:
+Jackrabbit currently includes all indexed property values as potential content in an excerpt. This is not always desirable because there may be properties that need to be full-text indexed but should not show up in an excerpt.

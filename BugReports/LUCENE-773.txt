@@ -1,0 +1,38 @@
+Deprecate "create" method in FSDirectory.getDirectory in favor of IndexWriter's "create"
+
+
+
+Description:
+It's confusing that there is a create=true|false at the FSDirectory
+level and then also another create=true|false at the IndexWriter
+level.  Which one should you use when creating an index?
+
+Our users have been confused by this in the past:
+
+  http://www.gossamer-threads.com/lists/lucene/java-user/4792
+
+I think in general we should try to have one obvious way to achieve
+something (like Python: http://en.wikipedia.org/wiki/Python_philosophy).
+
+And the fact that there are now two code paths that are supposed to do
+the same (similar?) thing, can more easily lead to sneaky bugs.  One
+case of LUCENE-140 (already fixed in trunk but not past releases),
+which inspired this issue, can happen if you send create=false to the
+FSDirectory and create=true to the IndexWriter.
+
+Finally, as of lockless commits, it is now possible to open an
+existing index for "create" while readers are still using the old
+"point in time" index, on Windows.  (At least one user had tried this
+previously and failed).  To do this, we use the IndexFileDeleter class
+(which retries on failure) and we also look at the segments file to
+determine the next segments_N file to write to.
+
+With future issues like LUCENE-710 even more "smarts" may be required
+to know what it takes to "create" a new index into an existing
+directory.  Given that we have have quite a few Directory
+implemenations, I think these "smarts" logically should live in
+IndexWriter (not replicated in each Directory implementation), and we
+should leave the Directory as an interface that knows how to make
+changes to some backing store but does not itself try to make any
+changes.
+

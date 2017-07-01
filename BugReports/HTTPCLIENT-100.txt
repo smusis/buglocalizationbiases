@@ -1,0 +1,10 @@
+Add possibility to disable automatic authentication header processing.
+
+
+
+Description:
+In the application I'm working on I need the possibility to manually get the 
+WWW-Authenticate header instead of letting the HttpClient process it 
+automatically. Instead of rewriting the execute() method in a subclass I added 
+a configuration setting, similar to the followRedirects flag. Diffs below for 
+anyone interested.

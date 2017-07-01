@@ -1,0 +1,6 @@
+Correct 2 minor javadoc mistakes in core, javadoc.access=private
+
+
+
+Description:
+Patches Token.java and TermVectorsReader.java

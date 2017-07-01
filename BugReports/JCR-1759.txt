@@ -1,0 +1,15 @@
+Simplify the usage of OCM annotations
+
+
+
+Description:
+If we are using more reflections during the OCM init phase (class descriptor loading), some OCM annotation settings are not necessary : 
+
+@Node(isAbtract=true) : used to specify an abstract classes
+@Node(extend=....) : used to specify the ancestor class
+@Node(isInterface= ...) : used to specify the entity as an interface
+@implement  : used to specify the associated interfaces
+
+If this refactoring is done, we can set them as deprecated.
+
+The performances will not suffer because this is done only once during the application startup (when the ObjectContentManager is initialized). 

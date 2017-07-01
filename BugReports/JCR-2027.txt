@@ -1,0 +1,9 @@
+Remove background initialization of hierarchy cache
+
+
+
+Description:
+This is a follow up to JCR-1998.
+
+Rethinking the initialization in a background thread again, I now come to the conclusion that it should be initialized either completely on startup or not at all. A background thread puts additional load on the process, possibly fighting for I/O with other startup procedures.
+

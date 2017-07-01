@@ -1,0 +1,6 @@
+webapp doesn't compile (use of enum keyword)
+
+
+
+Description:
+AbstractConfig.java and JNDIConfig.java have local variables named 'enum' that aren't allowed when using JDK5 or later compilers.

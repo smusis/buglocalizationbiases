@@ -1,0 +1,20 @@
+CoordConstrainedBooleanQuery + QueryParser support
+
+
+
+Description:
+Attached 2 new classes:
+
+1) CoordConstrainedBooleanQuery
+A boolean query that only matches if a specified number of the contained clauses
+match. An example use might be a query that returns a list of books where ANY 2
+people from a list of people were co-authors, eg:
+"Lucene In Action" would match ("Erik Hatcher" "Otis Gospodneti&#263;" "Mark Harwood"
+"Doug Cutting") with a minRequiredOverlap of 2 because Otis and Erik wrote that.
+The book "Java Development with Ant" would not match because only 1 element in
+the list (Erik) was selected.
+
+2) CustomQueryParserExample
+A customised QueryParser that allows definition of
+CoordConstrainedBooleanQueries. The solution (mis)uses fieldnames to pass
+parameters to the custom query.

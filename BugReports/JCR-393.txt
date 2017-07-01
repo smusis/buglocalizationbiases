@@ -1,0 +1,10 @@
+WebDAV Library: VersionControlledResource constant lists wrong method
+
+
+
+Description:
+VersionControlledResource .methods_checkedIn constant lists UNCHECKOUT which is obviously
+wrong.
+
+RFC3253 lists the UNCHECKOUT method as mandatory method for checked-out vc-resource
+for the 'checkout-in-place'  feature.

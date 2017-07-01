@@ -1,0 +1,32 @@
+IP address of the server of a HttpConnection
+
+
+
+Description:
+AFAIK it's not possible to get the IP address of the server of a HttpConnection.
+
+I propose to add a getServerAddress() method to the HttpConnection class that returns the IP address of the server, if the connection has been opened.
+And either returns null or throws an Exception if the IP address is not available, i.e. the connection is not open.
+
+Below is a workaround for getting the IP address in current versions.
+
+-----------------------
+package org.apache.commons.httpclient;
+
+import java.io.IOException;
+import java.net.InetAddress;
+
+public class InetAddressFetcher {
+	private HttpConnection hc;
+
+	public InetAddressFetcher(HttpConnection hc) {
+		this.hc = hc;
+	}
+
+	public InetAddress getInetAddress() throws IOException {
+		if (!hc.isOpen()) {
+			hc.open();
+		}
+		return hc.getSocket().getInetAddress();
+	}
+}

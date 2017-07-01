@@ -1,0 +1,70 @@
+Add a simple FST impl to Lucene
+
+
+
+Description:
+
+I implemented the algo described at
+http://citeseerx.ist.psu.edu/viewdoc/summary?doi=10.1.1.24.3698 for
+incrementally building a finite state transducer (FST) from sorted
+inputs.
+
+This is not a fully general FST impl -- it's only able to build up an
+FST incrementally from input/output pairs that are pre-sorted.
+
+Currently the inputs are BytesRefs, and the outputs are pluggable --
+NoOutputs gets you a simple FSA, PositiveIntOutputs maps to a long,
+ByteSequenceOutput maps to a BytesRef.
+
+The implementation has a low memory overhead, so that it can handle a
+fairly large set of terms.  For example, it can build the FSA for the
+9.8M terms from a 10M document wikipedia index in ~8 seconds (on
+beast), using ~256 MB peak RAM, resulting in an FSA that's ~60 MB.
+
+It packs the FST as-it-builds into a compact byte[], and then exposes
+the API to read nodes/arcs directly from the byte[].  The FST can be
+quickly saved/loaded to/from a Directory since it's just a big byte[].
+
+The format is similar to what Morfologik uses
+(http://sourceforge.net/projects/morfologik/).
+
+I think there are a number of possible places we can use this in
+Lucene.  For example, I think many apps could hold the entire terms
+dict in RAM, either at the multi-reader level or maybe per-segment
+(mapping to file offset or to something else custom to the app), which
+may possibly be a good speedup for certain MTQs (though, because the
+format is packed into a byte[], there is a decode cost when visiting
+arcs).
+
+The builder can also prune as it goes, so you get a prefix trie pruned
+according to how many terms run through the nodes, which makes it
+faster and even less memory consuming.  This may be useful as a
+replacement for our current binary search terms index since it can
+achieve higher term density for the same RAM consumption of our
+current index.
+
+As an initial usage to make sure this is exercised, I cutover the
+SimpleText codec, which currently fully loads all terms into a
+TreeMap (and has caused intermittent OOME in some tests), to use an FST
+instead.  SimpleText uses a PairOutputs which is able to "pair up" any
+two other outputs, since it needs to map each input term to an int
+docFreq and long filePosition.
+
+All tests pass w/ SimpleText forced codec, and I think this is
+committable except I'd love to get some help w/ the generics
+(confession to the policeman: I had to add
+@SuppressWarnings({"unchecked"})) all over!!  Ideally an FST is
+parameterized by its output type (Integer, BytesRef, etc.).
+
+I even added a new @nightly test that makes a largeish set of random
+terms and tests the resulting FST on different outputs :)
+
+I think it would also be easy to make a variant that uses char[]
+instead of byte[] as its inputs, so we could eg use this during analysis
+(Robert's idea).  It's already be easy to have a CharSequence
+output type since the outputs are pluggable.
+
+Dawid Weiss (author of HPPC -- http://labs.carrotsearch.com/hppc.html -- and
+Morfologik -- http://sourceforge.net/projects/morfologik/)
+was very helpful iterating with me on this (thank you!).
+

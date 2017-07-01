@@ -1,0 +1,11 @@
+DefaultSimilarity.queryNorm() should never return Infinity
+
+
+
+Description:
+Currently DefaultSimilarity.queryNorm() returns Infinity if sumOfSquaredWeights=0.
+This can result in a score of NaN (e. g. in TermScorer) if boost=0.0f.
+
+A simple fix would be to return 1.0f in case zero is passed in.
+
+See LUCENE-698 for discussions about this.

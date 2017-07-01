@@ -1,0 +1,11 @@
+Copy/Paste-Typo in toString() for SpanQueryFilter
+
+
+
+Description:
+   public String toString() {
+-    return "QueryWrapperFilter(" + query + ")";
++    return "SpanQueryFilter(" + query + ")";
+   }
+
+says it all.

@@ -1,0 +1,6 @@
+Repository does not release all resources on shutdown
+
+
+
+Description:
+When Jackrabbit is shutdown some java.util.Timer threads are still running in the background even though no tasks are scheduled. This prevents the GC from collecting the classes when Jackrabbit is redeployed within a web application.

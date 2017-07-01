@@ -1,0 +1,19 @@
+JcrUtils.getRepository(...) for simple repository access
+
+
+
+Description:
+As discussed on the mailing list, it would be nice to have a trivially simple way (one line of code) to connect to a repository. The RepositoryFactory interface in JCR 2.0 defines a way for clients to get a repository reference without a direct implementation dependency, but a client still needs extra code to handle the Service Provider lookup and the iteration through all the available repository factories.
+
+To simplify client code I'd like to introduce a JcrUtils.getRepository(Map<String, String>) method that takes care of the tasks mentioned above:
+
+    Map<String, String> parameters = ...; // repository settings
+    Repository repository = JcrUtils.getRepository(parameters);
+
+As a further simplification, I'd also like to introduce a JcrUtils.getRepository(String) method that builds the parameter map based on a given "repository URI".
+
+    Repository repository = JcrUtils.getRepository("file:///path/to/repository");
+
+    Repository repository = JcrUtils.getRepository("http://localhost:8080/server");
+
+The set of supported URI types is still to be defined.

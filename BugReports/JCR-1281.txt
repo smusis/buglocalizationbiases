@@ -1,0 +1,8 @@
+Move ocm documentation to jackrabbit-site
+
+
+
+Description:
+The OCM documentation from jackrabbit-ocm/xdocs should be moved to jackrabbit-site.
+
+Also all old references to Graffito should be replaced with Jackrabbit.

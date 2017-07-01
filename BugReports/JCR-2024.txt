@@ -1,0 +1,6 @@
+Bundle cache is not cleared when *BundlePersistenceManager is closed
+
+
+
+Description:
+Close method of persistence managers is responsible for releasing all acquired resources. In case of BundlePersistenceManager it should also free memory by clearing the bundle cache.

@@ -1,0 +1,9 @@
+create a simple test that indexes and searches byte[] terms
+
+
+
+Description:
+Currently, the only good test that does this is Test2BTerms (disabled by default)
+
+I think we should test this capability, and also have a simpler example for how to do this.
+

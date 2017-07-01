@@ -1,0 +1,6 @@
+TestCompoundFile fails on windows
+
+
+
+Description:
+ant test-core -Dtestcase=TestCompoundFile -Dtestmethod=testReadNestedCFP -Dtests.seed=-61cb66ec0d71d1ac:-46685c36ec38fd32:568c63299214892c

@@ -1,0 +1,12 @@
+ConjunctionScorer tune-up
+
+
+
+Description:
+I just recently ran a load test on the latest code from lucene , which is using a new BooleanScore and noticed the ConjunctionScorer was crunching through objects , especially while sorting as part of the skipTo call. It turns a linked list into an array, sorts the array, then converts the array back to a linked list for further processing by the scoring engines below.
+
+'m not sure if anyone else is experiencing this as I have a very large index (> 4 million items) and I am issuing some heavily nested queries
+
+Anyway, I decide to change the link list into an array and use a first and last marker to "simulate" a linked list.
+
+This scaled much better during my load test as the java gargbage collector was less - umm - virulent 

@@ -1,0 +1,43 @@
+Errors in character entities in Javadoc for HttpVersion
+
+
+
+Description:
+There are some errors in the Javadoc for the HttpVersion class. This is the
+class comment:
+
+ *  <p>HTTP version, as specified in RFC 2616.</p>
+ *  <p>
+ *  HTTP uses a "&ltmajor&gt.&ltminor&gt" numbering scheme to indicate versions
+ *  of the protocol. The protocol versioning policy is intended to allow
+ *  the sender to indicate the format of a message and its capacity for
+ *  understanding further HTTP communication, rather than the features
+ *  obtained via that communication. No change is made to the version
+ *  number for the addition of message components which do not affect
+ *  communication behavior or which only add to extensible field values.
+ *  The &ltminor&gt number is incremented when the changes made to the
+ *  protocol add features which do not change the general message parsing
+ *  algorithm, but which may add to the message semantics and imply
+ *  additional capabilities of the sender. The &ltmajor&gt number is
+ *  incremented when the format of a message within the protocol is
+ *  changed. See RFC 2145 [36] for a fuller explanation.
+ *  </p>
+ *  <p>
+ *  The version of an HTTP message is indicated by an HTTP-Version field
+ *  in the first line of the message.
+ *  </p>
+ *  <pre>
+ *     HTTP-Version   = "HTTP" "/" 1*DIGIT "." 1*DIGIT
+ *  </pre>
+ *  <p>
+ *   Note that the major and minor numbers MUST be treated as separate
+ *   integers and that each MAY be incremented higher than a single digit.
+ *   Thus, HTTP/2.4 is a lower version than HTTP/2.13, which in turn is
+ *   lower than HTTP/12.3. Leading zeros MUST be ignored by recipients and
+ *   MUST NOT be sent.
+ *  </p>
+
+Note that the character entities for less-than and greater-than are not properly
+ended with a semi-colon.
+
+I will attach a proposed fix.

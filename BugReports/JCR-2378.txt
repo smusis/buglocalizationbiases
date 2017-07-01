@@ -1,0 +1,42 @@
+Avoid exceptions thrown in finalize handler of RepositoryImpl constructor
+
+
+
+Description:
+If an exception happens during initialization of the repository, it might be overlayed by an exception thrown in the finalize handler of the RepositoryImpl constructor (see line 382 ff in [1]). The latter exception wins and the original exception is lost (if you don't have a log). This makes it hard to figure out the real problem.
+
+This problem is actually a bit self-enforcing: if something goes wrong during startup, the code in the shutdown() method that is called is actually very prone to fail as it might not expect such a broken-startup state. In my case the overlaying NPE happened in ObservationManagerImpl.getRegisteredEventListeners, where this.dispatcher was unexpectedly null [2].
+
+I think both places should be fixed (NPE guard in ObservationManagerImpl constructor for "dispatcher") and a try/catch block in the finalizer, just logging the exception:
+
+    } finally {
+        if (!succeeded) {
+            try {
+                // repository startup failed, clean up...
+                shutdown();
+            } catch (Throwable t) {
+                // shutdown() likely to fail now, as startup was broken...
+                log.error("In addition to startup fail, another problem occurred while shutting down the repository again.", e);
+            }
+        }
+    }
+
+
+[1] http://svn.apache.org/viewvc/jackrabbit/trunk/jackrabbit-core/src/main/java/org/apache/jackrabbit/core/RepositoryImpl.java?view=markup
+
+[2] Overlaying exception's stacktrace:
+Caused by: java.lang.NullPointerException
+	at org.apache.jackrabbit.core.observation.ObservationManagerImpl.getRegisteredEventListeners(ObservationManagerImpl.java:143)
+	at org.apache.jackrabbit.core.SessionImpl.removeRegisteredEventListeners(SessionImpl.java:1190)
+	at org.apache.jackrabbit.core.SessionImpl.logout(SessionImpl.java:1215)
+	at org.apache.jackrabbit.core.RepositoryImpl$WorkspaceInfo.doDispose(RepositoryImpl.java:2153)
+	at com.day.crx.core.CRXRepositoryImpl$CRXWorkspaceInfo.doDispose(CRXRepositoryImpl.java:1095)
+	at org.apache.jackrabbit.core.RepositoryImpl$WorkspaceInfo.dispose(RepositoryImpl.java:2108)
+	at org.apache.jackrabbit.core.RepositoryImpl.doShutdown(RepositoryImpl.java:1146)
+	at com.day.crx.core.CRXRepositoryImpl.doShutdown(CRXRepositoryImpl.java:845)
+	at org.apache.jackrabbit.core.RepositoryImpl.shutdown(RepositoryImpl.java:1098)
+	at org.apache.jackrabbit.core.RepositoryImpl.<init>(RepositoryImpl.java:387)
+	at com.day.crx.core.CRXRepositoryImpl.<init>(CRXRepositoryImpl.java:201)
+	at com.day.crx.core.CRXRepositoryImpl.create(CRXRepositoryImpl.java:190)
+	... 28 more
+

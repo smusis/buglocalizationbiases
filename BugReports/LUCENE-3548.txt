@@ -1,0 +1,6 @@
+CharsRef#append broken on trunk & 3.x
+
+
+
+Description:
+Current impl. for append on CharsRef is broken - it overrides the actual content rather than append. its used in many places especially in solr so we might have some broken 

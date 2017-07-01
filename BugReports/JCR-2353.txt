@@ -1,0 +1,24 @@
+Poor performance in range queries using dates
+
+
+
+Description:
+I am evaluating migrating from 1.5 to 1.6. I created several test cases that prove the query performance of 1.6 is the same or better than 1.5. That is until I add a date property into my query. The repository has 400,000 nodes. Each node as several string based properties (@property, @property2, ...) and a date based property (@datestart). Every node has a relatively unique datestart and the total date range spans 6 years.
+
+In my tests, my base query is:
+//element(*,my:namespace)[@property='value'] order by @datestart descending
+
+The time to run this query in 1.5 and 1.6 is:
+1.5 = 1.5 seconds
+1.6 = 1.5 seconds
+
+If I add a date property:
+//element(*,my:namespace)[@property='value' and @datestart<=xs:dateTime('2009-09-24T11:53:23.293-05:00')] order by @datestart descending
+
+the results are:
+1.5 = 1.5 seconds
+1.6 = 3.5 seconds 
+
+I have isolated the slow down to the implementation of SortedLuceneQueryHits. SortedLuceneQueryHits is not present in 1.5. I have run versions of the test where the query is run 20 times simultaneously and a different time where the query is run 20 times sequentially. In both tests I do see evidence that caching is taking place, but it provides only very minor performance gains. Also, running the 1.6 query multiple times does not decrease the query time dramatically.
+
+http://www.nabble.com/Date-Property-Performance-in-1.6-td25704607.html

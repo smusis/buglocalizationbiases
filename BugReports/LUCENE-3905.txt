@@ -1,0 +1,6 @@
+BaseTokenStreamTestCase should test analyzers on real-ish content
+
+
+
+Description:
+We already have LineFileDocs, that pulls content generated from europarl or wikipedia... I think sometimes BTSTC should test the analyzers on that as well.

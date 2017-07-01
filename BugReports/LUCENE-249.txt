@@ -1,0 +1,59 @@
+Demo: DeleteFiles doesn't delete files by their path names
+
+
+
+Description:
+It appears that delete(term) fails to delete the last document containing term, which
+for a unique match means that you can't remove an individual document.
+
+Code attempting to remove document with specific 'path' (slightly modified version of demo code):
+
+Directory directory = FSDirectory.getDirectory("index", false);
+IndexReader reader = IndexReader.open(directory);
+Term term = new Term("path", args[0]);  // path passed via command line arg
+int deleted = reader.delete(term);
+reader.close();
+directory.close();
+
+System.out.println("deleted " + deleted + " documents containing " + term);
+
+Executing this always returns "deleted 0 documents containing <path entered>"
+
+In IndexReader.java, delete() has:
+
+public final int delete(Term term) throws IOException {
+  TermDocs docs = termDocs(term);
+  if (docs == null) return 0;
+  int n = 0;
+  try {
+    while (docs.next()) {
+      delete(docs.doc());
+      n++;
+    }
+  } finally {
+    docs.close();
+  }
+  return n;
+}
+
+It appears that docs.next() always returns false when there is only one doc, hence
+delete() is never called and 0 is always returned.  I assume that this also means that
+if there are multiple matches, the last doc will not be deleted either, but I have not tested
+that.
+
+I modified the code as follows:
+
+    boolean more = true;
+    try {
+      docs.next();
+      while (more) {
+        delete(docs.doc());
+        n++;
+        more = docs.next();
+      }
+    } finally {
+      docs.close();
+    }
+
+and then it worked as expected (at least attempts to delete a single document from the
+index succeeded whereas previously they did not).

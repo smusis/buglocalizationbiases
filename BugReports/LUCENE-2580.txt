@@ -1,0 +1,6 @@
+MultiPhraseQuery throws AIOOBE
+
+
+
+Description:
+See thread "MultiPhraseQuery throws ArrayIndexOutOfBounds Exception" on dev@ by Jayendra Patil.

@@ -1,0 +1,6 @@
+move nrtcachingdir to core in 4.0
+
+
+
+Description:
+in 4.0 with the IOContext changes this implementation is clean and I think we should move it to core and use it in our tests etc.

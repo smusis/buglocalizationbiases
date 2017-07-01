@@ -1,0 +1,12 @@
+BaseTestRangeFilter can be extremely slow
+
+
+
+Description:
+The tests that extend BaseTestRangeFilter can sometimes be very slow:
+TestFieldCacheRangeFilter, TestMultiTermConstantScore, TestTermRangeFilter
+
+for example, TestFieldCacheRangeFilter just ran for 10 minutes on my computer before I killed it,
+but i noticed these tests frequently run for over a minute.
+
+I think at the least we should change these to junit4 so the index is built once in @beforeClass

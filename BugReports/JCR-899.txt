@@ -1,0 +1,6 @@
+Rename package names
+
+
+
+Description:
+Rename package names  *graffito* into *jackrabbit*

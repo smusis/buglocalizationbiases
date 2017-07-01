@@ -1,0 +1,10 @@
+Allow setting arbitrary objects on PerfRunData
+
+
+
+Description:
+PerfRunData is used as the intermediary objects between PerfRunTasks. Just like we can set IndexReader/Writer on it, it will be good if it allows setting other arbitrary objects that are e.g. created by one task and used by another.
+
+A recent example is the enhancement to the benchmark package following the addition of the facet module. We had to add TaxoReader/Writer.
+
+The proposal is to add a HashMap<String, Object> that custom PerfTasks can set()/get(). I do not propose to move IR/IW/TR/TW etc. into that map. If however people think that we should, I can do that as well.

@@ -1,0 +1,19 @@
+Occasional IndexingQueueTest failures
+
+
+
+Description:
+Every now and then, when doing a clean build of the latest jackrabbit trunk I see the following test failure in jackrabbit-core:
+
+-------------------------------------------------------------------------------
+Test set: org.apache.jackrabbit.core.query.lucene.TestAll
+-------------------------------------------------------------------------------
+Tests run: 1, Failures: 1, Errors: 0, Skipped: 0, Time elapsed: 1.665 sec <<< FAILURE!
+testQueue(org.apache.jackrabbit.core.query.lucene.IndexingQueueTest)  Time elapsed: 1.654 sec  <<< FAILURE!
+junit.framework.AssertionFailedError
+        at junit.framework.Assert.fail(Assert.java:47)
+        at junit.framework.Assert.assertTrue(Assert.java:20)
+        at junit.framework.Assert.assertTrue(Assert.java:27)
+        at org.apache.jackrabbit.core.query.lucene.IndexingQueueTest.testQueue(IndexingQueueTest.java:69)
+
+Typically the problem disappears when I rebuild, but the test should still not have failed.

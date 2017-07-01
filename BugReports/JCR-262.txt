@@ -1,0 +1,38 @@
+In AbstractImportXmlTest, a bug in getUnusedUri() causes URI length to grow too quickly, causing test to fail when using ORM-PM
+
+
+
+Description:
+Test fails when using ORM-PM because the URI exceeds the column size in the database.
+
+Here is the current implementation:
+
+    protected String getUnusedURI() throws RepositoryException {
+        Set uris = new HashSet(Arrays.asList(nsp.getURIs()));
+        String uri = TEST_URI;
+        int i = 0;
+        while (uris.contains(uri)) {
+            uri += i++;
+        }
+        return uri;
+    }
+
+When running the test, the URI grows to become something like this:
+
+When i=50,
+"www.apache.org/jackrabbit/test/namespaceImportTest01234567891011121314151617181920212223242526272829303132333435363738394041424344454647484950"
+
+Here is the proposed fix:
+
+    protected String getUnusedURI() throws RepositoryException {
+        Set uris = new HashSet(Arrays.asList(nsp.getURIs()));
+        String uri = TEST_URI;
+        int i = 0;
+        while (uris.contains(uri)) {
+            uri = TEST_URI + i++;
+        }
+        return uri;
+    }
+
+When i=50,
+"www.apache.org/jackrabbit/test/namespaceImportTest50"

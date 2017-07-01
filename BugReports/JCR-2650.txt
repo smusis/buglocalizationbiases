@@ -1,0 +1,8 @@
+don't silently merge session-local transient changes with external changes before save().
+
+
+
+Description:
+currently, external changes (i.e. changes committed by other sessions) are silently merged with transient changes. this might potentially cause concurrency issues/inconsistent transient state (see e.g. JCR-2632).
+
+it would probably be better to isolate transient changes from external changes until they're saved (true copy-on-write). 

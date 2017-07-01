@@ -1,0 +1,6 @@
+Snowball package contains BSD licensed code with ASL header
+
+
+
+Description:
+All classes in org.tartarus.snowball (but not in org.tartarus.snowball.ext) has for some reason been given an ASL header. These classes are licensed with BSD. Thus the ASL header should be removed. I suppose this a misstake or possible due to the ASL header automation tool.

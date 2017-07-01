@@ -1,0 +1,6 @@
+UserManagement: Limit set of properties exposed by AuthorizableImpl
+
+
+
+Description:
+AuthorizableImpl currently exposes all properties present on the Node representing the user/group. This should be limited to the properties set through the API (i.e. the non-protected props defined by the rep:Authorizable node type)

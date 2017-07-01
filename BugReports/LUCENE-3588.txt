@@ -1,0 +1,14 @@
+Try harder to prevent SIGSEGV on cloned MMapIndexInputs
+
+
+
+Description:
+We are unmapping mmapped byte buffers which is disallowed by the JDK, because it has the risk of SIGSEGV when you access the mapped byte buffer after unmapping.
+
+We currently prevent this for the main IndexInput by setting its buffer to null, so we NPE if somebody tries to access the underlying buffer. I recently fixed also the stupid curBuf (LUCENE-3200) by setting to null.
+
+The big problem are cloned IndexInputs which are generally not closed. Those still contain references to the unmapped ByteBuffer, which lead to SIGSEGV easily. The patch from Mike in LUCENE-3439 prevents most of this in Lucene 3.5, but its still not 100% safe (as it uses non-volatiles).
+
+This patch will fix the remaining issues by also setting the buffers of clones to null when the original is closed. The trick is to record weak references of all clones created and close them together with the original. This uses a ConcurrentHashMap<WeakReference<MMapIndexInput>,?> as store with the logic borrowed from WeakHashMap to cleanup the GCed references (using ReferenceQueue).
+
+If we respin 3.5, we should maybe also get this in.

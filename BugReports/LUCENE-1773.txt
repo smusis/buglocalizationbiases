@@ -1,0 +1,6 @@
+Add benchmark task for FastVectorHighlighter
+
+
+
+Description:
+

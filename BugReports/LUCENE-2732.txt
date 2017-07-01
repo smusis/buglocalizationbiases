@@ -1,0 +1,8 @@
+Fix charset problems in XML loading in HyphenationCompoundWordTokenFilter (also Solr's loader from schema)
+
+
+
+Description:
+As said in LUCENE-2731, the handling of XML in HyphenationCompoundWordTokenFilter is broken and breaks XML 1.0 (5th edition) spec totally. You should never supply a Reader to any XML api, unless you have internal character data (e.g. created programmatically). Also you should supply a system id, as resolving external entities does not work. The loader from files is much more broken, it always open the file as a Reader and then passes it to InputSource. Instead it should point filename directly to InputSource.
+
+This issue will fix it in trunk and use InputSource in Solr, but will still supply the Reader possibility in previous versions (deprecated).

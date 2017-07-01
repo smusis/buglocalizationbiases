@@ -1,0 +1,13 @@
+fix more position corrumptions in 4.0 codecs
+
+
+
+Description:
+Spinoff of LUCENE-3876.
+
+Some codecs have invalid asserts, wrong shift operators etc.
+
+If a position exceeds Integer.MAX_VALUE/2 and then also has a payload,
+it will produce corrumpt indexes or other strange errors.
+
+Easiest way to trigger the bugs is to sometimes add a payload to the test from LUCENE-3876.

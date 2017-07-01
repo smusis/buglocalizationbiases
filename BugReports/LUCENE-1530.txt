@@ -1,0 +1,12 @@
+Support inclusive/exclusive for TrieRangeQuery/-Filter, remove default trie variant setters/getters
+
+
+
+Description:
+TrieRangeQuery/Filter is missing one thing: Ranges that have exclusive bounds. For TrieRangeQuery this may not be important for ranges on long or Date (==long) values (because [1..5] is the same like ]0..6[ or ]0..5]). This is not so simple for doubles because you must add/substract 1 from the trie encoded unsigned long.
+
+To be conform with the other range queries, I will submit a patch that has two additional boolean parameters in the ctors to support inclusive/exclusive ranges for both ends. Internally it will be implemented using TrieUtils.incrementTrieCoded/decrementTrieCoded() but makes life simplier for double ranges (a simple exclusive replacement for the floating point range [0.0..1.0] is not possible without having the underlying unsigned long).
+
+In December, when trie contrib was included (LUCENE-1470), 3 trie variants were supplied by TrieUtils. For new APIs a statically configureable default Trie variant does not conform to an API we want in Lucene (currently we want to deprecate all these static setters/getters). The important thing: It does not make code shorter or easier to understand, its more error prone. Before release of 2.9 it is a good time to remove the default trie variant and always force the parameter in TrieRangeQuery/Filter. It is better to choose the variant in the application and do not automatically manage it.
+
+As Lucene 2.9 was not yet released, I will change the ctors and not preserve the old ones.

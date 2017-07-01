@@ -1,0 +1,19 @@
+make it easier to access default stopwords for language analyzers
+
+
+
+Description:
+DM Smith made the following comment: (sometimes it is hard to dig out the stop set from the analyzers)
+
+Looking around, some of these analyzers have very different ways of storing the default list.
+One idea is to consider generalizing something like what Simon did with LUCENE-1965, LUCENE-1962,
+and having all stopwords lists stored as .txt files in resources folder.
+
+{code}
+  /**
+   * Returns an unmodifiable instance of the default stop-words set.
+   * @return an unmodifiable instance of the default stop-words set.
+   */
+  public static Set<String> getDefaultStopSet()
+{code}
+

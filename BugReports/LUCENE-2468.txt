@@ -1,0 +1,7 @@
+reopen on NRT reader should share readers w/ unchanged segments
+
+
+
+Description:
+A repoen on an NRT reader doesn't seem to share readers for those segments that are unchanged.
+http://search.lucidimagination.com/search/document/9f0335d480d2e637/nrt_and_caching_based_on_indexreader

@@ -1,0 +1,10 @@
+port url+email tokenizer to standardtokenizerinterface (or similar)
+
+
+
+Description:
+We should do this so that we can fix the LUCENE-3358 bug there, and preserve backwards.
+We also want this mechanism anyway, for upgrading to new unicode versions in the future.
+
+We can regenerate the new TLD list for 3.4 but, we should ensure the existing one is used for the urlemail33 or whatever,
+so that its exactly the same.

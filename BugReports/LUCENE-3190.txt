@@ -1,0 +1,54 @@
+TestStressIndexing2 testMultiConfig failure
+
+
+
+Description:
+trunk: r1134311
+
+reproducible
+
+{code}
+    [junit] Testsuite: org.apache.lucene.index.TestStressIndexing2
+    [junit] Tests run: 1, Failures: 2, Errors: 0, Time elapsed: 0.882 sec
+    [junit] 
+    [junit] ------------- Standard Error -----------------
+    [junit] java.lang.AssertionError: ram was 460908 expected: 408216 flush mem: 395100 active: 65808
+    [junit]     at org.apache.lucene.index.DocumentsWriterFlushControl.assertMemory(DocumentsWriterFlushControl.java:102)
+    [junit]     at org.apache.lucene.index.DocumentsWriterFlushControl.doAfterDocument(DocumentsWriterFlushControl.java:164)
+    [junit]     at org.apache.lucene.index.DocumentsWriter.updateDocument(DocumentsWriter.java:380)
+    [junit]     at org.apache.lucene.index.IndexWriter.updateDocument(IndexWriter.java:1473)
+    [junit]     at org.apache.lucene.index.IndexWriter.updateDocument(IndexWriter.java:1445)
+    [junit]     at org.apache.lucene.index.TestStressIndexing2$IndexingThread.indexDoc(TestStressIndexing2.java:723)
+    [junit]     at org.apache.lucene.index.TestStressIndexing2$IndexingThread.run(TestStressIndexing2.java:757)
+    [junit] NOTE: reproduce with: ant test -Dtestcase=TestStressIndexing2 -Dtestmethod=testMultiConfig -Dtests.seed=2571834029692482827:-8116419692655152763
+    [junit] NOTE: reproduce with: ant test -Dtestcase=TestStressIndexing2 -Dtestmethod=testMultiConfig -Dtests.seed=2571834029692482827:-8116419692655152763
+    [junit] The following exceptions were thrown by threads:
+    [junit] *** Thread: Thread-0 ***
+    [junit] junit.framework.AssertionFailedError: java.lang.AssertionError: ram was 460908 expected: 408216 flush mem: 395100 active: 65808
+    [junit]     at junit.framework.Assert.fail(Assert.java:47)
+    [junit]     at org.apache.lucene.index.TestStressIndexing2$IndexingThread.run(TestStressIndexing2.java:762)
+    [junit] NOTE: test params are: codec=RandomCodecProvider: {f33=Standard, f57=MockFixedIntBlock(blockSize=649), f11=Standard, f41=MockRandom, f40=Standard, f62=MockRandom, f75=Standard, f73=MockSep, f29=MockFixedIntBlock(blockSize=649), f83=MockRandom, f66=MockSep, f49=MockVariableIntBlock(baseBlockSize=9), f72=Pulsing(freqCutoff=7), f54=Standard, id=MockFixedIntBlock(blockSize=649), f80=MockRandom, f94=MockSep, f93=Pulsing(freqCutoff=7), f95=Standard}, locale=en_SG, timezone=Pacific/Palau
+    [junit] NOTE: all tests run in this JVM:
+    [junit] [TestStressIndexing2]
+    [junit] NOTE: Linux 2.6.39-gentoo amd64/Sun Microsystems Inc. 1.6.0_25 (64-bit)/cpus=8,threads=1,free=133324528,total=158400512
+    [junit] ------------- ---------------- ---------------
+    [junit] Testcase: testMultiConfig(org.apache.lucene.index.TestStressIndexing2):     FAILED
+    [junit] r1.numDocs()=17 vs r2.numDocs()=16
+    [junit] junit.framework.AssertionFailedError: r1.numDocs()=17 vs r2.numDocs()=16
+    [junit]     at org.apache.lucene.index.TestStressIndexing2.verifyEquals(TestStressIndexing2.java:308)
+    [junit]     at org.apache.lucene.index.TestStressIndexing2.verifyEquals(TestStressIndexing2.java:278)
+    [junit]     at org.apache.lucene.index.TestStressIndexing2.testMultiConfig(TestStressIndexing2.java:124)
+    [junit]     at org.apache.lucene.util.LuceneTestCase$LuceneTestCaseRunner.runChild(LuceneTestCase.java:1403)
+    [junit]     at org.apache.lucene.util.LuceneTestCase$LuceneTestCaseRunner.runChild(LuceneTestCase.java:1321)
+    [junit] 
+    [junit] 
+    [junit] Testcase: testMultiConfig(org.apache.lucene.index.TestStressIndexing2):     FAILED
+    [junit] Some threads threw uncaught exceptions!
+    [junit] junit.framework.AssertionFailedError: Some threads threw uncaught exceptions!
+    [junit]     at org.apache.lucene.util.LuceneTestCase.tearDown(LuceneTestCase.java:603)
+    [junit]     at org.apache.lucene.util.LuceneTestCase$LuceneTestCaseRunner.runChild(LuceneTestCase.java:1403)
+    [junit]     at org.apache.lucene.util.LuceneTestCase$LuceneTestCaseRunner.runChild(LuceneTestCase.java:1321)
+    [junit] 
+    [junit] 
+    [junit] Test org.apache.lucene.index.TestStressIndexing2 FAILED
+{code}

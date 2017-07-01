@@ -1,0 +1,9 @@
+ParallelReader is now atomic, rename to ParallelAtomicReader and also add a ParallelCompositeReader (that requires LogDocMergePolicy to have identical subreader structure)
+
+
+
+Description:
+The plan is:
+- Move all subreaders to ctor (builder-like API. First build reader-set, then call build)
+- Rename ParallelReader to ParallelAtomicReader
+- Add a ParallelCompositeReader with same builder API, but taking any CompositeReader-set and checks them that they are aligned (docStarts identical). The subreaders are ParallelAtomicReaders.

@@ -1,0 +1,6 @@
+Data store garbage collection: log deleted files and total size
+
+
+
+Description:
+The data store garbage collection should list the names and the total size of all deleted files.

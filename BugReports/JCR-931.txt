@@ -1,0 +1,49 @@
+cluster synchronization NPE
+
+
+
+Description:
+we have a 4 machines setup and encountered the following NPE in one of the nodes. After restarting tomcat, the problem seems to go away. But it would be nice to find out why.
+
+
+java.lang.NullPointerException
+        at org.apache.jackrabbit.core.query.lucene.NodeIndexer.createDoc(NodeInd
+exer.java:146)
+        at org.apache.jackrabbit.core.query.lucene.SearchIndex.createDocument(Se
+archIndex.java:566)
+        at org.apache.jackrabbit.core.query.lucene.SearchIndex$2.next(SearchInde
+x.java:368)
+        at org.apache.jackrabbit.core.query.lucene.MultiIndex.update(MultiIndex.
+java:354)
+        at org.apache.jackrabbit.core.query.lucene.SearchIndex.updateNodes(Searc
+hIndex.java:356)
+        at org.apache.jackrabbit.core.SearchManager.onEvent(SearchManager.java:4
+23)
+        at org.apache.jackrabbit.core.observation.EventConsumer.consumeEvents(Ev
+entConsumer.java:231)
+        at org.apache.jackrabbit.core.observation.ObservationDispatcher.dispatch
+Events(ObservationDispatcher.java:201)
+        at org.apache.jackrabbit.core.observation.EventStateCollection.dispatch(
+EventStateCollection.java:424)
+        at org.apache.jackrabbit.core.state.SharedItemStateManager.externalUpdat
+e(SharedItemStateManager.java:882)
+        at org.apache.jackrabbit.core.RepositoryImpl$WorkspaceInfo.externalUpdat
+e(RepositoryImpl.java:1957)
+        at org.apache.jackrabbit.core.cluster.ClusterNode.end(ClusterNode.java:8
+34)
+        at org.apache.jackrabbit.core.cluster.ClusterNode.consume(ClusterNode.ja
+va:929)
+        at org.apache.jackrabbit.core.journal.AbstractJournal.doSync(AbstractJou
+rnal.java:191)
+        at org.apache.jackrabbit.core.journal.AbstractJournal.sync(AbstractJourn
+al.java:166)
+        at org.apache.jackrabbit.core.cluster.ClusterNode.sync(ClusterNode.java:
+283)
+        at org.apache.jackrabbit.core.cluster.ClusterNode.start(ClusterNode.java
+:229)
+        at org.apache.jackrabbit.core.RepositoryImpl.<init>(RepositoryImpl.java:
+308)
+        at org.apache.jackrabbit.core.RepositoryImpl.create(RepositoryImpl.java:
+584)
+        at org.apache.jackrabbit.core.jndi.BindableRepository.createRepository(B
+indableRepository.java:174)

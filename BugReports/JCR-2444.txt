@@ -1,0 +1,11 @@
+Exception executing SQL2/JQOM with non-admin session
+
+
+
+Description:
+Constraints are correctly handled when session does not have access to a node:
+
+Caused by: javax.jcr.ItemNotFoundException: 21232f29-7a57-35a7-8389-4a0e4a801fc3
+        at org.apache.jackrabbit.core.SessionImpl.getNodeById(SessionImpl.java:545)
+        at org.apache.jackrabbit.core.query.lucene.constraint.NodeLocalNameOperand.getValues(NodeLocalNameOperand.java:44)
+        at org.apache.jackrabbit.core.query.lucene.constraint.ComparisonConstraint.evaluate(ComparisonConstraint.java:80)

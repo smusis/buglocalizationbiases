@@ -1,0 +1,8 @@
+Improve read/write concurrency
+
+
+
+Description:
+I'd like to set up a few performance tests to help identify our worst bottlenecks for various kinds of concurrent read-only and read-write access patterns.
+
+Once identified, I'm hoping to fix at least some of those bottlenecks.

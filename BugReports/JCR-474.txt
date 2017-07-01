@@ -1,0 +1,6 @@
+Introduce 'SecurityConfig' for better extensability.
+
+
+
+Description:
+the current repository configuration parser parses the security confguration (inluding appName, AccessManagerConfig and LoginModuleconfig) internally and the passes those 3 values to the repository config. i suggest to add a new 'SecurityConfig' object that encapsulates those 3 values and is parsed in a seperate method, in order to allow for better extensability. this also reduces the size of the alredy bloated repository config constructor.

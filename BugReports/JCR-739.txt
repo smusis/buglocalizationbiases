@@ -1,0 +1,12 @@
+String literal must not interpret entity references
+
+
+
+Description:
+The ampersand character in a string literal is interpreted as a start character for an entity reference. This is because Jackrabbit uses an XQuery parser where a string literal is slightly more constraint than in XPath.
+
+Example:
+
+//element(*, nt:base)[jcr:contains(., 'max&moritz')]
+
+throws a parse exception. Instead the parser should simply recognize the ampersand as regular character.

@@ -1,0 +1,50 @@
+Problem with IndexWriter.mergeFinish
+
+
+
+Description:
+I'm getting a (very) infrequent assert in IndexWriter.mergeFinish from TestIndexWriter.testAddIndexOnDiskFull. The problem occurs during the rollback when the merge hasn't been registered. I'm not 100% sure this is the correct fix, because it's such an infrequent event. 
+
+{code:java}
+  final synchronized void mergeFinish(MergePolicy.OneMerge merge) throws IOException {
+    
+    // Optimize, addIndexes or finishMerges may be waiting
+    // on merges to finish.
+    notifyAll();
+
+    if (merge.increfDone)
+      decrefMergeSegments(merge);
+
+    assert merge.registerDone;
+
+    final SegmentInfos sourceSegments = merge.segments;
+    final int end = sourceSegments.size();
+    for(int i=0;i<end;i++)
+      mergingSegments.remove(sourceSegments.info(i));
+    mergingSegments.remove(merge.info);
+    merge.registerDone = false;
+  }
+{code}
+
+Should  be something like:
+
+{code:java}
+  final synchronized void mergeFinish(MergePolicy.OneMerge merge) throws IOException {
+    
+    // Optimize, addIndexes or finishMerges may be waiting
+    // on merges to finish.
+    notifyAll();
+
+    if (merge.increfDone)
+      decrefMergeSegments(merge);
+
+    if (merge.registerDone) {
+      final SegmentInfos sourceSegments = merge.segments;
+      final int end = sourceSegments.size();
+      for(int i=0;i<end;i++)
+        mergingSegments.remove(sourceSegments.info(i));
+      mergingSegments.remove(merge.info);
+      merge.registerDone = false;
+    }
+  }
+{code}

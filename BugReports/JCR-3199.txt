@@ -1,0 +1,6 @@
+workspace-wide default for lock timeout
+
+
+
+Description:
+There should be a way to define a workspace-wide default for JCR lock timeouts (in case the code creating the lock did not specify one).

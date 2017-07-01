@@ -1,0 +1,15 @@
+specialize payload processing from of DocsAndPositionsEnum
+
+
+
+Description:
+In LUCENE-2760 i started working to try to improve the speed of a few spanqueries.
+In general the trick there is to avoid processing positions if you dont have to.
+
+But, we can improve queries that read lots of positions further by cleaning up SegmentDocsAndPositionsEnum, 
+in nextPosition() this has no less than 3 payloads-related checks.
+
+however, a large majority of users/fields have no payloads at all.
+I think we should specialize this case into a separate implementation and speed up the common case.
+
+edit: dyslexia with the jira issue number.

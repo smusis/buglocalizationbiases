@@ -1,0 +1,11 @@
+support array/offset/ length setters for Field with binary data
+
+
+
+Description:
+currently Field/Fieldable interface supports only compact, zero based byte arrays. This forces end users to create and copy content of new objects before passing them to Lucene as such fields are often of variable size. Depending on use case, this can bring far from negligible  performance  improvement. 
+
+this approach extends Fieldable interface with 3 new methods   
+getOffset(); gettLenght(); and getBinaryValue() (this only returns reference to the array)
+
+   

@@ -1,0 +1,9 @@
+TCK: AbstractImportXmlTest incorrectly assumes mix:referenceable can be added to created node
+
+
+
+Description:
+isMixRefRespected() assumes that if the NodeTypeManager contains mix:referenceable, addMixin can be called to add mix:referenceable to a created node.  This assumption is incorrect for at least two reasons.  First, the created node might already be mix:referenceable, either because its primary node type is a subtype of mix:referenceable or because the implementation added mix:referenceable as a mixin type in creating the node.  Second, a repository may restrict the nodes to which mix:referenceable can be added.  In the extreme case, the repository may not allow mix:referenceable to be added to any node using addMixin, in which case the only referenceable nodes would be those which are mix:referenceable by virtue of primary type or the implementation's adding mix:referenceable as a mixin type at node creation.
+
+Proposal: test canAddMixin before calling addMixin.
+

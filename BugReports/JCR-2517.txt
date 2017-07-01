@@ -1,0 +1,10 @@
+UserImporter should use User.changePassword
+
+
+
+Description:
+the UserImporter lists a limitation that the password value is expected to be hashed already as it writes the
+value as it was retrieved from the xml-import.
+
+Instead it could make use of User#changePassword that (in the implementation present with JR) creates a 
+pw-hash if the password is found to be plain text.

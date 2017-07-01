@@ -1,0 +1,6 @@
+pass liveDocs Bits down in scorercontext, instead of Weights pulling from the reader 
+
+
+
+Description:
+Spinoff from LUCENE-1536, this would allow filters to work in a more flexible way (besides just cleaning up)

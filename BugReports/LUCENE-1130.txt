@@ -1,0 +1,17 @@
+Hitting disk full during DocumentWriter.ThreadState.init(...) can cause hang
+
+
+
+Description:
+More testing of RC2 ...
+
+I found one case, if you hit disk full during init() in
+DocumentsWriter.ThreadState, when we first create the term vectors &
+fields writer, such that subsequent calls to
+IndexWriter.add/updateDocument will then hang forever.
+
+What's happening in this case is we are incrementing nextDocID even
+though we never call finishDocument (because we "thought" init did not
+succeed).  Then, when we finish the next document, it will never
+actually write because missing finishDocument call never happens.
+

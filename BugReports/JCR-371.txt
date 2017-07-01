@@ -1,0 +1,24 @@
+ItemStateException on concurrently committing transactions of versioning operations
+
+
+
+Description:
+see tests in JCR-335
+
+
+org.apache.jackrabbit.core.state.ItemStateException: Unable to resolve path for item: 69d80165-7ef5-4b6b-8aa9-be9c9be1f994
+	at org.apache.jackrabbit.core.observation.EventStateCollection.getPath(EventStateCollection.java:525)
+	at org.apache.jackrabbit.core.observation.EventStateCollection.createEventStates(EventStateCollection.java:377)
+	at org.apache.jackrabbit.core.state.SharedItemStateManager$Update.begin(SharedItemStateManager.java:547)
+	at org.apache.jackrabbit.core.state.SharedItemStateManager.beginUpdate(SharedItemStateManager.java:668)
+	at org.apache.jackrabbit.core.state.XAItemStateManager.prepare(XAItemStateManager.java:151)
+	at org.apache.jackrabbit.core.version.XAVersionManager.prepare(XAVersionManager.java:431)
+	at org.apache.jackrabbit.core.TransactionContext.prepare(TransactionContext.java:129)
+	at org.apache.jackrabbit.core.XASessionImpl.prepare(XASessionImpl.java:309)
+	at test.JCRUserTransaction.commit(JCRUserTransaction.java:74)
+	at org.apache.jackrabbit.JRTestDeadlock.run(JRTestDeadlock.java:110)
+Caused by: javax.jcr.ItemNotFoundException: failed to build path of 69d80165-7ef5-4b6b-8aa9-be9c9be1f994: a0ecd4b0-a442-4b1e-a2f6-51441f40d452 has no child entry for 69d80165-7ef5-4b6b-8aa9-be9c9be1f994
+	at org.apache.jackrabbit.core.HierarchyManagerImpl.buildPath(HierarchyManagerImpl.java:308)
+	at org.apache.jackrabbit.core.HierarchyManagerImpl.getPath(HierarchyManagerImpl.java:357)
+	at org.apache.jackrabbit.core.observation.EventStateCollection.getPath(EventStateCollection.java:520)
+	... 9 more

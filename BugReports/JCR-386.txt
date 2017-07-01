@@ -1,0 +1,23 @@
+Query dump failed with deep query tree
+
+
+
+Description:
+With a big query (more than 400 OR operands) the query dump failed.
+The query dump is made at QueryImpl.execute (line 136)
+
+It failed because of the constant PADDING at QueryTreeDump.visit(line 85).
+The constant PADDING is a 255 character array, but in my program it would need it to be bigger.
+I think putting it to 65535 would not be a problem : it would only take a little bit more memory.
+
+This is the top of the stacktract for info:
+java.lang.ArrayIndexOutOfBoundsException
+	at java.lang.System.arraycopy(Native Method)
+	at java.lang.StringBuffer.append(StringBuffer.java:499)
+	at org.apache.jackrabbit.core.query.QueryTreeDump.visit(QueryTreeDump.java:85)
+	at org.apache.jackrabbit.core.query.OrQueryNode.accept(OrQueryNode.java:50)
+	at org.apache.jackrabbit.core.query.QueryTreeDump.traverse(QueryTreeDump.java:263)
+                     ...
+
+This is not critical because I can avoid the dump by unactivating debug logs.
+

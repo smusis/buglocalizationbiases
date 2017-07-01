@@ -1,0 +1,6 @@
+Java 5 port phase II 
+
+
+
+Description:
+LUCENE-1257 addresses the public API changes ( generics , mainly ) and other j.u.c. package changes related to the API .  The changes are frozen and closed for 3.0 . This would be a placeholder JIRA for 3.0+ version to address the pending changes ( tests for generics etc.) and any other internal API changes as necessary. 

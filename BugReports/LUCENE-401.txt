@@ -1,0 +1,21 @@
+[PATCH] fixes for gcj target.
+
+
+
+Description:
+I've modified the Makefile so that it compiles with GCJ-4.0.
+
+This involved fixing the CORE_OBJ macro to match the generated jar file as well
+as excluding FieldCacheImpl from being used from its .java source (GCJ has
+problems with anonymous inner classes, I guess).
+
+Also, I changed the behaviour of FieldInfos.fieldInfo(int). It depended on
+catching IndexOutOfBoundsException exception. I've modified it to test the
+bounds first, returning -1 in that case. This helps with gcj since we build with
+-fno-bounds-check.
+
+I compiled with;
+
+GCJ=gcj-4.0 GCJH=gcjh-4.0 GPLUSPLUS=g++-4.0 ant clean gcj
+
+patch to follow.

@@ -1,0 +1,9 @@
+Improve the documentation of Version
+
+
+
+Description:
+In my opinion, we should elaborate more on the effects of changing the Version parameter.
+Particularly, changing this value, even if you recompile your code, likely involves reindexing your data.
+I do not think this is adequately clear from the current javadocs.
+

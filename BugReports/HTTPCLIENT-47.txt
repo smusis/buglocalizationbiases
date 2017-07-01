@@ -1,0 +1,8 @@
+User definable default headers support
+
+
+
+Description:
+Provide the ability to set default headers to be sent on every request.  Should
+be used whenever an object is created or recycled.  Needs to be user
+configurable.

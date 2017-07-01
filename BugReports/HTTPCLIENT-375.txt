@@ -1,0 +1,60 @@
+Chunked Stream Encoding Problems Fails to throw Exceptions
+
+
+
+Description:
+Using the HttpClient 2.0.1 with Sun's JDK 1.4.1_01 and connecting to a site 
+that appareantly has problems generating proper chunked output causes the http 
+client to catch and log an exception then return null data. Ideally the http 
+client should throw the IOException to the calling class so that it can be 
+handled by the programmer. It's not a problem that an exception is being 
+generated it is a bug that the exception is being trapped in the somewhere in 
+the httpclient code.
+
+2004-08-27 21:19:01,013 main HttpMethodBase [ERROR]: I/O failure reading 
+response body
+java.io.IOException: chunked stream ended unexpectedly
+        at 
+org.apache.commons.httpclient.ChunkedInputStream.getChunkSizeFromInputStream
+(ChunkedInputStream.java:234)
+        at org.apache.commons.httpclient.ChunkedInputStream.nextChunk
+(ChunkedInputStream.java:205)
+        at org.apache.commons.httpclient.ChunkedInputStream.read
+(ChunkedInputStream.java:160)
+        at java.io.FilterInputStream.read(FilterInputStream.java:111)
+        at org.apache.commons.httpclient.AutoCloseInputStream.read
+(AutoCloseInputStream.java:110)
+        at java.io.FilterInputStream.read(FilterInputStream.java:90)
+        at org.apache.commons.httpclient.AutoCloseInputStream.read
+(AutoCloseInputStream.java:129)
+        at org.apache.commons.httpclient.HttpMethodBase.getResponseBody
+(HttpMethodBase.java:685)
+        at com.algorim.ei.cets.EmailPreProcessor.processMessage
+(EmailPreProcessor.java:565)
+        at com.algorim.ei.cets.EmailUpdate.run(EmailUpdate.java:332)
+        at com.algorim.ei.cets.EmailUpdate.main(EmailUpdate.java:89)
+
+Request and response that are causing the error:
+GET /aeq.aspx?k=32226&k=sb1313@xcorp5.com HTTP/1.1
+User-Agent: Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.0; .NET CLR 
+1.1.4322)
+Host: 38.117.227.56
+
+HTTP/1.1 200 OK
+Date: Fri, 27 Aug 2004 20:55:27 GMT
+Server: Microsoft-IIS/6.0
+X-Powered-By: ASP.NET
+X-AspNet-Version: 1.1.4322
+Transfer-Encoding: chunked
+Cache-Control: private
+Content-Type: text/html; charset=utf-8
+
+179
+<html><head><META HTTP-EQUIV=Refresh CONTENT="1; 
+URL=http://www.datingresults.com/default.asp?
+p=7090&PRM=38664"</head><body><script>win2=win
+dow.open('http://m.qmct.com/images/d.html?
+a=1', 'newwin','toolbar=0,width=730,height=500');if (win2 != null) win2.blur
+();window.focus();wind
+ow.location = 'http://www.datingresults.com/default.asp?
+p=7090&PRM=38664';</script></body></html>

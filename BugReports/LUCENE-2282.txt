@@ -1,0 +1,8 @@
+Expose IndexFileNames as public, and make use of its methods in the code
+
+
+
+Description:
+IndexFileNames is useful for applications that extend Lucene, an in particular those who extend Directory or IndexWriter. It provides useful constants and methods to query whether a certain file is a core Lucene file or not. In addition, IndexFileNames should be used by Lucene's code to generate segment file names, or query whether a certain file matches a certain extension.
+
+I'll post the patch shortly.

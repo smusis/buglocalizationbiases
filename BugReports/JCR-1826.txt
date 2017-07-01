@@ -1,0 +1,8 @@
+Change default value of SearchIndex extractorPoolSize
+
+
+
+Description:
+The current default value for the extractorPoolSize is 0, which means it is disabled by default. I think we should change that default because it is a useful feature and people should not have to dig through documentation to make use of it.
+
+The new default should be computed based on the available processors. I suggest we use: 2 * Runtime.availableProcessors()

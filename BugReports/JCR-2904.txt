@@ -1,0 +1,9 @@
+Uncaught AbstractMethodError exception in in DomUtil.createFactory()
+
+
+
+Description:
+DomUtil.createFactory() throws an uncaught AbstractMethodError exception when xerces is on the classpath and the jackrabbit webdav module is used. 
+
+This can render the class unusable when used in conjunction with the xerces library. 
+

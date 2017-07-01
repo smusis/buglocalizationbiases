@@ -1,0 +1,6 @@
+Add a method public boolean hasNodeType(String name) in NodeTypeManagerImpl
+
+
+
+Description:
+As seen in the ML, we plan to add this method and update this class and the interface JackrabbitNodeTypeManager

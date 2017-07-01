@@ -1,0 +1,46 @@
+[PATCH] Decouple locking implementation from Directory implementation
+
+
+
+Description:
+This is a spinoff of http://issues.apache.org/jira/browse/LUCENE-305.
+
+I've opened this new issue to capture that it's wider scope than
+LUCENE-305.
+
+This is a patch originally created by Jeff Patterson (see above link)
+and then modified as described here:
+
+  http://issues.apache.org/jira/browse/LUCENE-305#action_12418493
+
+with some small additional changes:
+
+  * For each FSDirectory.getDirectory(), I made a corresponding
+    version that also accepts a LockFactory instance.  So, you can
+    construct an FSDirectory with your own LockFactory.
+
+  * Cascaded defaulting for FSDirectory's LockFactory implementation:
+    if you pass in a LockFactory instance, it's used; else if
+    setDisableLocks was called, we use NoLockFactory; else, if the
+    system property "org.apache.lucene.store.FSDirectoryLockFactoryClass"
+    is defined, we use that; finally, we'll use the original locking
+    implementation (SimpleFSLockFactory).
+
+The gist is that all locking code has been moved out of *Directory and
+into subclasses of a new abstract LockFactory class.  You can now set
+the LockFactory of a Directory to change how it does locking.  For
+example, you can create an FSDirectory but set its locking to
+SingleInstanceLockFactory (if you know all writing/reading will take
+place a single JVM).
+
+The changes pass all unit tests (on Ubuntu Linux Sun Java 1.5 and
+Windows XP Sun Java 1.4), and I added another TestCase to test the
+LockFactory code.
+
+Note that LockFactory defaults are not changed: FSDirectory defaults
+to SimpleFSLockFactory and RAMDirectory defaults to
+SingleInstanceLockFactory.
+
+Next step (separate issue) is to create a LockFactory that uses the OS
+native locks (through java.nio).
+

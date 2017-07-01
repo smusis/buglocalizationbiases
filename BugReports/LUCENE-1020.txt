@@ -1,0 +1,12 @@
+Basic tool for checking & repairing an index
+
+
+
+Description:
+This has been requested a number of times on the mailing lists.  Most
+recently here:
+
+  http://www.gossamer-threads.com/lists/lucene/java-user/53474
+
+I think we should provide a basic tool out of the box.
+

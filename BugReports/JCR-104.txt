@@ -1,0 +1,23 @@
+Contrib/Jcr-Server: Improve package structure
+
+
+
+Description:
++ org
+  + apache
+    + jackrabbit
+       + webdav
+         + <dav-specific packages as currently present>
+         + spi_jcr (formerly spi)
+         + spi_simple (formerly dav-package below server/simple        
+         + client (webdav-client lib)
+
+       + server
+         + jcr (jcr-server-classes formerly below server)
+         + simple
+   
+       + client
+         + jcr (client-side jcr impl. without dav-dependency)
+    
+         
+

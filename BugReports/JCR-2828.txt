@@ -1,0 +1,45 @@
+InternalVersionManager deadlock
+
+
+
+Description:
+The changes in JCR-2753 exposed the InternalVersionManager classes to the following deadlock scenario:
+
+   java.lang.Thread.State: WAITING (on object monitor)
+	at java.lang.Object.wait(Native Method)
+	- waiting on <0x0000000085edb5a0> (a org.apache.jackrabbit.core.state.DefaultISMLocking)
+	at java.lang.Object.wait(Object.java:485)
+	at org.apache.jackrabbit.core.state.DefaultISMLocking.acquireReadLock(DefaultISMLocking.java:92)
+	- locked <0x0000000085edb5a0> (a org.apache.jackrabbit.core.state.DefaultISMLocking)
+	at org.apache.jackrabbit.core.version.InternalVersionManagerBase.acquireReadLock(InternalVersionManagerBase.java:192)
+	at org.apache.jackrabbit.core.version.InternalVersionManagerImpl.getItem(InternalVersionManagerImpl.java:324)
+	at org.apache.jackrabbit.core.version.InternalVersionManagerBase.createInternalVersionItem(InternalVersionManagerBase.java:761)
+	at org.apache.jackrabbit.core.version.InternalVersionManagerImpl.getItem(InternalVersionManagerImpl.java:329)
+	- locked <0x0000000085edb770> (a org.apache.commons.collections.map.ReferenceMap)
+	at org.apache.jackrabbit.core.version.InternalVersionManagerBase.getVersionHistory(InternalVersionManagerBase.java:130)
+	at org.apache.jackrabbit.core.version.InternalVersionManagerImpl.getVersionHistory(InternalVersionManagerImpl.java:70)
+	at org.apache.jackrabbit.core.version.InternalVersionManagerImpl$4.run(InternalVersionManagerImpl.java:415)
+	at org.apache.jackrabbit.core.version.InternalVersionManagerImpl$DynamicESCFactory.doSourced(InternalVersionManagerImpl.java:720)
+	at org.apache.jackrabbit.core.version.InternalVersionManagerImpl.checkin(InternalVersionManagerImpl.java:407)
+	at org.apache.jackrabbit.core.version.InternalXAVersionManager.checkin(InternalXAVersionManager.java:251)
+	at org.apache.jackrabbit.core.version.VersionManagerImplBase.checkoutCheckin(VersionManagerImplBase.java:190)
+	at org.apache.jackrabbit.core.VersionManagerImpl.access$100(VersionManagerImpl.java:72)
+	at org.apache.jackrabbit.core.VersionManagerImpl$1.perform(VersionManagerImpl.java:121)
+	at org.apache.jackrabbit.core.VersionManagerImpl$1.perform(VersionManagerImpl.java:114)
+	at org.apache.jackrabbit.core.session.SessionState.perform(SessionState.java:200)
+	at org.apache.jackrabbit.core.VersionManagerImpl.perform(VersionManagerImpl.java:95)
+	at org.apache.jackrabbit.core.VersionManagerImpl.checkin(VersionManagerImpl.java:114)
+	at org.apache.jackrabbit.core.VersionManagerImpl.checkin(VersionManagerImpl.java:100)
+
+   java.lang.Thread.State: BLOCKED (on object monitor)
+	at org.apache.jackrabbit.core.version.InternalVersionManagerImpl.getItem(InternalVersionManagerImpl.java:327)
+	- waiting to lock <0x0000000085edb770> (a org.apache.commons.collections.map.ReferenceMap)
+	at org.apache.jackrabbit.core.version.InternalXAVersionManager.getItem(InternalXAVersionManager.java:442)
+	at org.apache.jackrabbit.core.version.InternalVersionManagerBase.getVersionHistory(InternalVersionManagerBase.java:130)
+	at org.apache.jackrabbit.core.version.InternalXAVersionManager.getVersionHistory(InternalXAVersionManager.java:58)
+	at org.apache.jackrabbit.core.version.VersionHistoryImpl.getInternalVersionHistory(VersionHistoryImpl.java:78)
+	at org.apache.jackrabbit.core.version.VersionHistoryImpl.isSame(VersionHistoryImpl.java:278)
+	at org.apache.jackrabbit.core.version.VersionHistoryImpl.checkOwnVersion(VersionHistoryImpl.java:326)
+	at org.apache.jackrabbit.core.version.VersionHistoryImpl.getVersionLabels(VersionHistoryImpl.java:218)
+
+The problem is the ReferenceMap synchronization (object 0x0000000085edb770) that now interferes with the more general read/write locking mechanism.

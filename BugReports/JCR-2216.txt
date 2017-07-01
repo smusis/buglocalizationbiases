@@ -1,0 +1,14 @@
+Append-only index updates
+
+
+
+Description:
+Currently index updates modify some existing files. This is troublesome in scenarios like a backup or when an index will be shared in a cluster (though this is not yet the case).
+
+Requirements are:
+
+- index segments need a custom (lucene) IndexDeletionPolicy to keep index commits for a given time.
+- index segments are not only referenced by their name, but also with their generation
+- the segments file must now also record the generation of a segment. the file itself must be generational itself.
+- purging of outdated index segment commits
+

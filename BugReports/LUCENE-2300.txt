@@ -1,0 +1,8 @@
+IndexWriter should never pool readers for external segments
+
+
+
+Description:
+EG when addIndexes is called, it enrolls external segment infos, which are then merged.  But merging will simply ask the pool for the readers, and if writer is pooling (NRT reader has been pooled) it incorrectly pools these readers.
+
+It shouldn't break anything but it's a waste because these readers are only used for merging, once, and they are not opened by NRT reader.

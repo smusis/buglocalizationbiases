@@ -1,0 +1,6 @@
+Malformed excerpt if content contains markup and no highlights found
+
+
+
+Description:
+Any markup in content that is used in an excerpt is encoded with corresponding entity references. However, this process is broken when there are no highlights in the excerpt. In this case, the content is provided as is in the excerpt, which may lead to malformed HTML/XML.

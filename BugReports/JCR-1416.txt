@@ -1,0 +1,6 @@
+[PATCH] No need to call toString on a String
+
+
+
+Description:
+code calls toString on a String

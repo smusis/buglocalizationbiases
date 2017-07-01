@@ -1,0 +1,6 @@
+QueryHandler.init() should take a context argument
+
+
+
+Description:
+Currently the QueryHandler.init() method takes a bunch of arguments which are needed by the single jackrabbit implementation for the query handler. To make further extensions easier the arguments should be packaged into a context class which can be extended without effect on the QueryHandler interface.

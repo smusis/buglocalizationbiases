@@ -1,0 +1,6 @@
+Removed version is not invalidated
+
+
+
+Description:
+when a version is removed, it's internal represenation is not evicted from the cache. this can leed to unexpected behaviours. XATest.removeVersion() tests this. this also happens in a non-transactional environment.

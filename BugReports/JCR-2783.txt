@@ -1,0 +1,6 @@
+ItemManager.toString() causes StackOverflowError
+
+
+
+Description:
+

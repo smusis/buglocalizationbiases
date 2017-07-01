@@ -1,0 +1,17 @@
+Port to Java5
+
+
+
+Description:
+For my needs I've updated Lucene so that it uses Java 5 constructs. I know Java 5 migration had been planned for 2.1 someday in the past, but don't know when it is planned now. This patch against the trunk includes :
+
+- most obvious generics usage (there are tons of usages of sets, ... Those which are commonly used have been generified)
+- PriorityQueue generification
+- replacement of indexed for loops with for each constructs
+- removal of unnececessary unboxing
+
+The code is to my opinion much more readable with those features (you actually *know* what is stored in collections reading the code, without the need to lookup for field definitions everytime) and it simplifies many algorithms.
+
+Note that this patch also includes an interface for the Query class. This has been done for my company's needs for building custom Query classes which add some behaviour to the base Lucene queries. It prevents multiple unnnecessary casts. I know this introduction is not wanted by the team, but it really makes our developments easier to maintain. If you don't want to use this, replace all /Queriable/ calls with standard /Query/.
+
+

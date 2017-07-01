@@ -1,0 +1,10 @@
+Constructor of IndexWriter let's runtime exceptions pop up, while keeping the writeLock obtained
+
+
+
+Description:
+Constructor of IndexWriter let's runtime exceptions pop up, while keeping the writeLock obtained.
+
+The init method in IndexWriter catches IOException only (I got NegativeArraySize by reading up a _corrupt_ index), and now, there is no way to recover, since the writeLock will be kept obtained. Moreover, I don't have IndexWriter instance either, to "grab" the lock somehow, since the init() method is called from IndexWriter constructor.
+
+Either broaden the catch to all exceptions, or at least provide some circumvention to clear up. In my case, I'd like to "fallback", just delete the corrupted index from disk and recreate it, but it is impossible, since the LOCK_HELD NativeFSLockFactory's entry about obtained WriteLock is _never_ cleaned out and is no (at least apparent) way to clean it out forcibly. I can't create new IndexWriter, since it will always fail with LockObtainFailedException.

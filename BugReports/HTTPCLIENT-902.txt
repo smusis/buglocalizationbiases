@@ -1,0 +1,6 @@
+In case of ConnectTimeoutException : HttpRequestRetryHandler is not used.
+
+
+
+Description:
+

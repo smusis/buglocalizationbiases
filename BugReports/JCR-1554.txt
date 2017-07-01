@@ -1,0 +1,83 @@
+StaleItemStateException with distributed transactions
+
+
+
+Description:
+There seams to be a serious bug in jackrabbit when used in distributed transactions. It does not occur with local transactions! And it seams to be related to JCR-566.
+
+There are 2 scenarios where a StaleItemStateException occurs reproducible that causes transactions to fail. All my operations (implemented in a custom ServiceBean) such as setProperty() or deleteNode() run in separate transactions. The transactions are configured through Spring Annotations (@Transactional).
+
+Scenario A (setProperty):
+(1) multiple setProperty() with same property name on the same node (newly created or already existent)
+=> With the 3. setProperty() (and sometimes also the 5.), a StaleItemStateException for the property state is raised when the transaction is commited. Following setProperty invocations will not fail!
+
+Scenario B (deleteNode):
+(1) iterate 10 times:
+(1.1) create new node n and a subnode for n
+(1.2) delete node n
+=> Deletion of node n raises a StaleItemStateException for node n in iteration 1, 3 and (6 or 7), when the related transaction is commited. Following deletions of node n will also fail with a predictable pattern.
+
+The Exception trace for scenario A (it's the same for scenario B, with one difference: StaleItemStateException is raised for the node and not for the property):
+
+org.springframework.transaction.UnexpectedRollbackException: JTA transaction unexpectedly rolled back (maybe due to a timeout); nested exception is javax.transaction.RollbackException: Error during one-phase commit
+	at org.springframework.transaction.jta.JtaTransactionManager.doCommit(JtaTransactionManager.java:1031)
+	at org.springframework.transaction.support.AbstractPlatformTransactionManager.processCommit(AbstractPlatformTransactionManager.java:709)
+	at org.springframework.transaction.support.AbstractPlatformTransactionManager.commit(AbstractPlatformTransactionManager.java:678)
+	at org.springframework.transaction.interceptor.TransactionAspectSupport.commitTransactionAfterReturning(TransactionAspectSupport.java:321)
+	at org.springframework.transaction.interceptor.TransactionInterceptor.invoke(TransactionInterceptor.java:116)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:171)
+	at org.springframework.aop.framework.JdkDynamicAopProxy.invoke(JdkDynamicAopProxy.java:204)
+	at $Proxy9.setNodeProperty(Unknown Source)
+	at de.zeb.control.prototype.jrTxBug.test.TestJackrabbitTxBug.testTransactionBug001(TestJackrabbitTxBug.java:97)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:39)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:25)
+	at java.lang.reflect.Method.invoke(Method.java:585)
+	at org.testng.internal.MethodHelper.invokeMethod(MethodHelper.java:580)
+	at org.testng.internal.Invoker.invokeMethod(Invoker.java:478)
+	at org.testng.internal.Invoker.invokeTestMethod(Invoker.java:607)
+	at org.testng.internal.Invoker.invokeTestMethods(Invoker.java:874)
+	at org.testng.internal.TestMethodWorker.invokeTestMethods(TestMethodWorker.java:125)
+	at org.testng.internal.TestMethodWorker.run(TestMethodWorker.java:109)
+	at org.testng.TestRunner.runWorkers(TestRunner.java:689)
+	at org.testng.TestRunner.privateRun(TestRunner.java:566)
+	at org.testng.TestRunner.run(TestRunner.java:466)
+	at org.testng.SuiteRunner.runTest(SuiteRunner.java:301)
+	at org.testng.SuiteRunner.runSequentially(SuiteRunner.java:296)
+	at org.testng.SuiteRunner.privateRun(SuiteRunner.java:276)
+	at org.testng.SuiteRunner.run(SuiteRunner.java:191)
+	at org.testng.TestNG.createAndRunSuiteRunners(TestNG.java:808)
+	at org.testng.TestNG.runSuitesLocally(TestNG.java:776)
+	at org.testng.TestNG.run(TestNG.java:701)
+	at org.testng.remote.RemoteTestNG.run(RemoteTestNG.java:73)
+	at org.testng.remote.RemoteTestNG.main(RemoteTestNG.java:124)
+Caused by: javax.transaction.RollbackException: Error during one-phase commit
+	at org.apache.geronimo.transaction.manager.TransactionImpl.commit(TransactionImpl.java:281)
+	at org.apache.geronimo.transaction.manager.TransactionManagerImpl.commit(TransactionManagerImpl.java:143)
+	at org.apache.geronimo.transaction.context.InheritableTransactionContext.complete(InheritableTransactionContext.java:196)
+	at org.apache.geronimo.transaction.context.InheritableTransactionContext.commit(InheritableTransactionContext.java:146)
+	at org.apache.geronimo.transaction.context.OnlineUserTransaction.commit(OnlineUserTransaction.java:80)
+	at org.jencks.factory.UserTransactionFactoryBean$GeronimoUserTransaction.commit(UserTransactionFactoryBean.java:118)
+	at org.springframework.transaction.jta.JtaTransactionManager.doCommit(JtaTransactionManager.java:1028)
+	... 30 more
+Caused by: javax.transaction.xa.XAException
+	at org.apache.jackrabbit.core.TransactionContext.prepare(TransactionContext.java:155)
+	at org.apache.jackrabbit.core.XASessionImpl.commit(XASessionImpl.java:337)
+	at org.apache.jackrabbit.jca.TransactionBoundXAResource.commit(TransactionBoundXAResource.java:39)
+	at org.apache.geronimo.transaction.manager.WrapperNamedXAResource.commit(WrapperNamedXAResource.java:47)
+	at org.apache.geronimo.transaction.manager.TransactionImpl.commit(TransactionImpl.java:272)
+	... 36 more
+Caused by: org.apache.jackrabbit.core.TransactionException: Unable to prepare transaction.
+	at org.apache.jackrabbit.core.state.XAItemStateManager.prepare(XAItemStateManager.java:150)
+	at org.apache.jackrabbit.core.TransactionContext.prepare(TransactionContext.java:138)
+	... 40 more
+Caused by: org.apache.jackrabbit.core.state.StaleItemStateException: bef3c056-bc91-4195-a35c-aa184182b5ad/{}TEST_PROPERTY has been modified externally
+	at org.apache.jackrabbit.core.state.SharedItemStateManager$Update.begin(SharedItemStateManager.java:620)
+	at org.apache.jackrabbit.core.state.SharedItemStateManager.beginUpdate(SharedItemStateManager.java:843)
+	at org.apache.jackrabbit.core.state.XAItemStateManager.prepare(XAItemStateManager.java:144)
+	... 41 more
+
+
+When debugging into jackrabbit you will see, that the cause of the StaleItemStateException is, that the local state und the overlayed state differ in the value of the 'modCount' attribute: modCount of local state is lower than modCount of overlayed state. Perhaps its a state caching problem...
+	
+I'm attaching a simple java application configured with maven and ready to run standalone. The JCA container of JBoss is therefore replaced with jencks in order to support distributed transactions. The configured repository uses the InMemPersistenceManager. Both scenarios are implemented in a TestNG - test, that catches the occuring TransactionExceptions and prints out the stacktrace. Therefore you will see the exceptions, but the tests will not fail.

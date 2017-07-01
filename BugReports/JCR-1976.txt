@@ -1,0 +1,6 @@
+Text.unescape() should should preserve 'unicode' characters
+
+
+
+Description:
+When an input to Text.unescape() contains characters > \u00ff, the most significant byte is lost resulting in garbled output. The unescape() function should preserve such characters in order to be useful to decode Internationalized Resource Identifiers (RFC 3987). 

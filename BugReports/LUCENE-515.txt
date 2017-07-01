@@ -1,0 +1,10 @@
+Using ConstantScoreQuery on a RemoteSearchable throws java.io.NotSerializableException
+
+
+
+Description:
+Using a ConstantScoreQuery through a MultiSearcher on a Searchable obtained through RMI (RemoteSearchable) will throw a java.io.NotSerializableException
+
+The problem seems to be the fact that the ConstantScoreQuery.ConstantWeight has a Searcher member variable which is not serializable. Keeping a reference to the Searcher does not seem to be required: the fix seems trivial.
+
+I've created the TestCase to reproduce the issue and the patch to fix it.

@@ -1,0 +1,20 @@
+Make BooleanWeight and DisjunctionMaxWeight protected
+
+
+
+Description:
+Currently, BooleanWeight is private, yet it has 2 protected members (similarity, weights) which are unaccessible from custom code
+
+i have some use cases where it would be very useful to crawl a BooleanWeight to get at the sub Weight objects
+
+however, since BooleanWeight is private, i have no way of doing this
+
+If BooleanWeight is protected, then i can subclass BooleanQuery to hook in and wrap BooleanWeight with a subclass to facilitate this walking of the Weight objects
+
+Would also want DisjunctionMaxWeight to be protected, along with its "weights" member
+
+Would be even better if these Weights were made public with accessors to their sub "weights" objects (then no subclassing would be necessary on my part)
+
+this should be really trivial and would be great if it can get into 2.9
+
+more generally, it would be nice if all Weight classes were public with nice accessors to relevant "sub weights"/etc so custom code can get its hooks in where and when desired

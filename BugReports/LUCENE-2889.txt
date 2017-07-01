@@ -1,0 +1,8 @@
+Remove @lucene.experimental from Numeric*
+
+
+
+Description:
+NumericRangeQuery and NumericField are now there since 2.9. It is still marked as experimental. The API stabilized and there are no changes in the public parts (even in Lucene trunk no changes). Also lot's of people ask, if "experimental" means "unstable" in general, but it means only "unstable API".
+
+I will remove the @lucene.experimental from Numeric* classes. NumericUtils* stays with @lucene.internal, as it is not intended for public use. Some people use it to make "TermQuery" on a numeric field, but this should be done using a NRQ with upper==lower and included=true, which does not affect scoring (applies also to Solr).

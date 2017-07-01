@@ -1,0 +1,21 @@
+Unsynchronized access to MultiIndex#indexes
+
+
+
+Description:
+This may result in a concurrent modification exception:
+
+java.util.ConcurrentModificationException
+	at java.util.AbstractList$Itr.checkForComodification(AbstractList.java:372)
+	at java.util.AbstractList$Itr.next(AbstractList.java:343)
+	at org.apache.jackrabbit.core.query.lucene.MultiIndex.getIndexReader(MultiIndex.java:744)
+	at org.apache.jackrabbit.core.query.lucene.MultiIndex.getIndexReader(MultiIndex.java:712)
+	at org.apache.jackrabbit.core.query.lucene.SearchIndex.getIndexReader(SearchIndex.java:1024)
+	at org.apache.jackrabbit.core.query.lucene.SearchIndex.executeQuery(SearchIndex.java:820)
+	at org.apache.jackrabbit.core.query.lucene.SingleColumnQueryResult.executeQuery(SingleColumnQueryResult.java:78)
+	at org.apache.jackrabbit.core.query.lucene.QueryResultImpl.getResults(QueryResultImpl.java:293)
+	at org.apache.jackrabbit.core.query.lucene.SingleColumnQueryResult.<init>(SingleColumnQueryResult.java:70)
+	at org.apache.jackrabbit.core.query.lucene.QueryImpl.execute(QueryImpl.java:132)
+	at org.apache.jackrabbit.core.query.QueryImpl.execute(QueryImpl.java:127)
+
+This is usually very unlikely but with the recent changes to our tests, index flushes are very frequent and may cause the above exception.

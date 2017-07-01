@@ -1,0 +1,19 @@
+[PATCH] ClassDescriptor.hasIdField uses faulty logic
+
+
+
+Description:
+hasIdField tries to compare a FieldDescriptor to an empty string, which doesn't make sense, here:
+
+     public boolean hasIdField() {
+        return (this.idFieldDescriptor != null && ! this.idFieldDescriptor.equals(""));
+     }
+
+
+i'm assuming it should be
+
+       return (this.idFieldDescriptor != null && this.idFieldDescriptor.isId());
+
+patch does this
+
+

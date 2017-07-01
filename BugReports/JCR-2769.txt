@@ -1,0 +1,6 @@
+Avoid String.intern() for UUID terms
+
+
+
+Description:
+Creating Lucene terms is somewhat expensive, because it will usually call String.intern() on the field String. Jackrabbit uses UUID terms quite heavily to resolve hierarchy constraints. Lucene also provides a factory method on a Term that will create a new term instance with a given value and the same field name, avoiding the String.intern(). Jackrabbit should use the factory method whenever it creates a term for a UUID field.

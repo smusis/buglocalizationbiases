@@ -1,0 +1,8 @@
+Highlight fragment does not extend to maxDocCharsToAnalyze
+
+
+
+Description:
+The current highlighter code checks whether the total length of the text to highlight is strictly smaller than maxDocCharsToAnalyze before adding any text remaining after the last token to the fragment. This means that if maxDocCharsToAnalyse is set to exactly the length of the text and the last token of the text is the term to highlight and is followed by non-token text, this non-token text will not be highlighted.
+
+For example, consider the phrase "this is a text with searchterm in it". "In" and "it" are not tokenized because they're stopwords. Setting maxDocCharsToAnalyze to 36 (the length of the sentence) and searching for "searchterm" gives a fragment ending in "searchterm". The expected behaviour is to have "in it" at the end of the fragment, since maxDocCharsToAnalyse explicitely states that the whole phrase should be considered.

@@ -1,0 +1,11 @@
+allow automatontermsenum to work on full byte range
+
+
+
+Description:
+AutomatonTermsEnum is really agnostic to whats in your byte[], only that its in binary order.
+so if you wanted to use this on some non-utf8 terms, thats just fine.
+
+the patch just does some code cleanup and removes "utf8" references, etc.
+additionally i changed the pkg-private, lucene-internal byte-oriented ctor, to public, lucene.experimental.
+

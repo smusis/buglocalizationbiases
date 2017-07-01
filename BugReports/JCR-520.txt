@@ -1,0 +1,6 @@
+Contributed ClassLoader project still uses commons-logging for logging.
+
+
+
+Description:
+As of JCR-215 Jackrabbit core code has been migrated from Log4J to SLF4J. The ClassLoader contribution always used commons-logging. It is about time, to also migrate that project to proper SLF4J.

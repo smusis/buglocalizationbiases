@@ -1,0 +1,14 @@
+In 3.x branch (starting with 3.4) the IndexFormatTooOldException was backported, but the error message was not modified for 3.x
+
+
+
+Description:
+In 3.x branch (starting with 3.4) the IndexFormatTooOldException was backported, but the error message was not modified for 3.x:
+
+bq. This version of Lucene only supports indexes created with release 3.0 and later.
+
+In 3.x it must be:
+
+bq. This version of Lucene only supports indexes created with release 1.9 and later.
+
+Indexes before 1.9 will throw this exception on reading SegmentInfos (LUCENE-3255).

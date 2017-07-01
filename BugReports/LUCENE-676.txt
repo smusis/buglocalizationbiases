@@ -1,0 +1,7 @@
+Promote solr's PrefixFilter into Java Lucene's core
+
+
+
+Description:
+Solr's PrefixFilter class is not specific to Solr and seems to be of interest to core lucene users (PyLucene in this case).
+Promoting it into the Lucene core would be helpful.

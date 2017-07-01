@@ -1,0 +1,7 @@
+[PATCH] Error in GermanStemmer.java,v 1.11
+
+
+
+Description:
+GermanStemmer.java,v 1.11 in  lucene-1.4-final
+Ã at the end of a word is not replaced by ss

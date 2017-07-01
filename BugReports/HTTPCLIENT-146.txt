@@ -1,0 +1,12 @@
+Error from maven when generating the task list
+
+
+
+Description:
+This message scrolls by when runing the site:generate goal.
+
+tasklist:generate:
+Non-fatal error while parsing file:
+/home/jsdever/cvs-commit/jakarta-commons/httpclient/src/java/org/apache/commons/httpclient/HeaderElement.java
+Non-fatal error while parsing file:
+/home/jsdever/cvs-commit/jakarta-commons/httpclient/src/java/org/apache/commons/httpclient/URI.java

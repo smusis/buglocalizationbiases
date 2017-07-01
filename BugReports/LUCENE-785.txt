@@ -1,0 +1,23 @@
+RAMDirectory not Serializable
+
+
+
+Description:
+The current implementation of RAMDirectory throws a NotSerializableException when trying to serialize, due to the inner class KeySet of HashMap not being serializable (god knows why)
+
+java.io.NotSerializableException: java.util.HashMap$KeySet
+        at java.io.ObjectOutputStream.writeObject0(ObjectOutputStream.java:1081)
+
+Caused by line 43:
+
+private Set fileNames = fileMap.keySet();
+
+EDIT:
+
+while we're at it: same goes for inner class Values 
+
+java.io.NotSerializableException: java.util.HashMap$Values
+        at java.io.ObjectOutputStream.writeObject0(ObjectOutputStream.java:1081)
+
+Collection files = fileMap.values();
+

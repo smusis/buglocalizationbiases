@@ -1,0 +1,17 @@
+In XA transaction session.addLockToken() does not have effect
+
+
+
+Description:
+Following sequence does not work as expected:
+1. first tx (and first session)
+  create node
+  make it lockable
+2. second tx (and second session)
+  lock this node and save lock token
+3. third tx (and third session)
+  add saved lock token to session
+  modify this locked node -> fails as if lock token was not added to session3
+
+The same sequence works as expected without transactions.
+I had to separate transactions 1 and 2 because JCR-1633 prevents node from being locked in same tx in which it was created.

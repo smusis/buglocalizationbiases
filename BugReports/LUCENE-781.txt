@@ -1,0 +1,6 @@
+NPE in MultiReader.isCurrent() and getVersion()
+
+
+
+Description:
+I'm attaching a fix for the NPE in MultiReader.isCurrent() plus a testcase. For getVersion(), we should throw a better exception that NPE. I will commit unless someone objects or has a better idea.

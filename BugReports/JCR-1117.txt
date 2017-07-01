@@ -1,0 +1,7 @@
+Bundle cache is not rolled back when the storage of a ChangeLog fails
+
+
+
+Description:
+The bundle cache in the bundle persistence managers is not restored to its old state when the AbstractBundlePersistenceManager.store(ChangeLog changeLog) method throws an exception. If, for instance, the storage of references fails then the AbstractBundlePersistenceManager.putBundle(NodePropBundle bundle) method has already been called for all modified bundles. Because of the connection rollback, the bundle cache will be out-of-sync with the persistent state. As a result, the SharedItemStateManager will have an incorrect view of the persistent state.
+Furthermore, if the blockOnConnectionLoss property is set to true, then the BundleDbPersistenceManager can be caught in an infinite loop because of invalid SQL inserts because of an incorrect bundle cache; see attached stacktrace.

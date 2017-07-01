@@ -1,0 +1,13 @@
+Garbage collection deletes temporary files in FileDataStore
+
+
+
+Description:
+In FileDataStore.addRecord(InputStream), a temporary file is created. The data is written to the file and then it is moved to its final location (based on the contents hash).
+
+If the garbage collector runs whilst this temp file is present, it deletes it (on Solaris 10 at least), and the addRecord fails at the attempt to rename the now non-existent temp file.
+
+I am attaching a minimal patch that prevents these temp files being deleted by deleteOlderRecursive(..), regardless of their lastModified() value.
+
+I have made this a Minor priority, since there is the obvious workaround of disabling the GC.
+

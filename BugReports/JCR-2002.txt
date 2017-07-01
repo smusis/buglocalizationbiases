@@ -1,0 +1,6 @@
+Support system property to define the DefaultTransactionTimeout for a XASession
+
+
+
+Description:
+It should be possible to define the DefaultTransactionTimeout for a XASession by a SystemProperty

@@ -1,0 +1,27 @@
+authentication order has changed from 1.4.x to 1.5.x
+
+
+
+Description:
+In 1.4.x inside RepositoryImpl.login(...) at first the local configuration is checked for configured LoginModules and after it was unsuccessful, the JAAS component is asked:
+
+          AuthContext authCtx;
+            LoginModuleConfig lmc = repConfig.getLoginModuleConfig();
+            if (lmc == null) {
+                        authCtx = new AuthContext.JAAS(repConfig.getAppName(), credentials);
+            } else {
+...
+
+With 1.5.x this behaviour has moved to SimpleSecurityManager.init(..) and is changed:
+        LoginModuleConfig loginModConf = config.getLoginModuleConfig();
+        authCtxProvider = new AuthContextProvider(config.getAppName(), loginModConf);
+        if (authCtxProvider.isJAAS()) {
+            log.info("init: using JAAS LoginModule configuration for " + config.getAppName());
+        } else if (authCtxProvider.isLocal()) {
+...
+
+The problem is with JBoss JAAS implemantation, that authCtxProvider.isJAAS()  is always true.
+Because for any reason, the result of Configuration.getAppConfigurationEntry(appName) is never empty,
+when a jaas.config is specified for Liferay. Using different appName takes no effect, always the configuration inside the jaas.config is used.
+
+I think still first the local configuration should be concerned, before using JAAS.

@@ -1,0 +1,8 @@
+FastVectorHighlighter: AIOOBE occurs if one PhraseQuery is contained by another PhraseQuery
+
+
+
+Description:
+I'm very sorry but this is another one. If q="a b c d" OR "b c", then ArrayIndexOutOfBoundsException occurs in FieldQuery.checkOverlap(). I'm working on this and fix with test case soon to be posted.
+Thank you for your patient!
+

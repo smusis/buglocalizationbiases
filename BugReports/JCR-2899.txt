@@ -1,0 +1,6 @@
+[patch] fix uppercase/lowercase handling for not equal to
+
+
+
+Description:
+code is missing breaks in switch statements, which causes both uppercase and lowercase terms to the not equal to lucene search. patch fixes.

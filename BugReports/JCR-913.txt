@@ -1,0 +1,65 @@
+DatabaseJournal.checkSchema generates "Cannot call commit when autocommit=true" Exception
+
+
+
+Description:
+When I tried to activate clustering with adding the following XML to repository.xml, 
+
+    <Cluster id="node_1" syncDelay="5">
+		<Journal class="org.apache.jackrabbit.core.journal.DatabaseJournal">
+			<param name="revision" value="${rep.home}/revision"/>
+			<param name="driver" value="com.mysql.jdbc.Driver"/>
+			<param name="url" value="jdbc:mysql://localhost/jcr"/>
+			<param name="user" value="userX"/>
+			<param name="password" value="passWordC"/>
+			<param name="schema" value="mysql"/>
+			<param name="schemaObjectPrefix" value="J_C_"/>
+		</Journal>
+    </Cluster>
+
+Databse Journal threw the following exception:
+
+....
+Caused by: javax.jcr.RepositoryException: Unable to initialize connection.: Unable to initialize connection.
+        at org.apache.jackrabbit.core.RepositoryImpl.createClusterNode(RepositoryImpl.java:677)
+        at org.apache.jackrabbit.core.RepositoryImpl.<init>(RepositoryImpl.java:276)
+        at org.apache.jackrabbit.core.RepositoryImpl.create(RepositoryImpl.java:584)
+        at org.apache.jackrabbit.core.TransientRepository$2.getRepository(TransientRepository.java:245)
+        at org.apache.jackrabbit.core.TransientRepository.startRepository(TransientRepository.java:265)
+        at org.apache.jackrabbit.core.TransientRepository.login(TransientRepository.java:333)
+        at com.liferay.portal.jcr.jackrabbit.JCRFactoryImpl.createSession(JCRFactoryImpl.java:71)
+        at com.liferay.portal.jcr.JCRFactoryUtil.createSession(JCRFactoryUtil.java:53)
+        at com.liferay.portal.jcr.JCRFactoryUtil.createSession(JCRFactoryUtil.java:57)
+        at com.liferay.documentlibrary.util.IndexerImpl.reIndex(IndexerImpl.java:258)
+        ... 17 more
+Caused by: org.apache.jackrabbit.core.cluster.ClusterException: Unable to initialize connection.
+        at org.apache.jackrabbit.core.cluster.ClusterNode.init(ClusterNode.java:218)
+        at org.apache.jackrabbit.core.cluster.ClusterNode.init(ClusterNode.java:189)
+        at org.apache.jackrabbit.core.RepositoryImpl.createClusterNode(RepositoryImpl.java:674)
+        ... 26 more
+Caused by: java.sql.SQLException: Can't call commit when autocommit=true
+        at com.mysql.jdbc.Connection.commit(Connection.java:2161)
+        at org.apache.jackrabbit.core.journal.DatabaseJournal.checkSchema(DatabaseJournal.java:437)
+        at org.apache.jackrabbit.core.journal.DatabaseJournal.init(DatabaseJournal.java:168)
+        at org.apache.jackrabbit.core.cluster.ClusterNode.init(ClusterNode.java:213)
+        ... 28 more
+
+When I examined the source code of the release jackrabbit 1.3, I saw that the init() method for DatabaseJournal class is:
+
+			...
+			Class.forName(driver);
+			con = DriverManager.getConnection(url, user, password);
+			con.setAutoCommit(true);
+
+			checkSchema();
+			prepareStatements();
+			...
+
+and just before checkSchema() method's finally block:
+
+			...
+			// commit the changes
+			con.commit();
+			...
+
+So, it seemed normal to see the mentioned exception. I just commented out the commit expression and continued my development. Am I missing something?

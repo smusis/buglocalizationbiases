@@ -1,0 +1,22 @@
+add spanquery support for all multitermqueries
+
+
+
+Description:
+I set fix version: 4.0, but possibly we could do this for 3.x too
+
+Currently, we have a special SpanRegexQuery in contrib, and issues like LUCENE-522 open for SpanFuzzyQuery.
+The SpanRegexQuery in contrib is a little messy additionally.
+
+For any arbitrary MultiTermQueries to work as a SpanQuery, there are only 3 requirements:
+# The un-rewritten query must extend SpanQuery so it can be included in Span clauses
+# The rewritten query should be SpanOrQuery instead of BooleanQuery
+# The rewritten term clauses should be SpanTermQueries.
+
+Instead of having logic like this for each query, i suggest adding two rewrite methods:
+* ScoringSpanBoolean rewrite
+* TopTermsSpanBoolean rewrite
+
+as a start i wrote these up, and added a SpanMultiTermQueryWrapper that can be used to wrap any multitermquery this way.
+there are a few kinks, but I think the MTQ policeman can probably help get through them.
+

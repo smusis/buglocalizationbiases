@@ -1,0 +1,35 @@
+"Socket Closed" IOException thrown by HttpConnection
+
+
+
+Description:
+HttpClient.java was modified in version 2.0 Final in method executeMethod().
+The call to connection.setSoTimeout() used to be in RC3 after the call to
+connection.isOpen(), but in the final version the call happens before the call 
+to isOpen(). The result of the change is that the setSoTimeout() call could 
+throw IOException because of closed socket.
+
+I would fix the problem by adding to HttpConnection.setSoTimeout() (and to 
+other similar methods in HttpConnection) an explicit check (a call to isOpen
+()) whether the socket is closed as the existence of socket object does not 
+guarantee it. I.e the following code:
+
+    public void setSoTimeout(int timeout)
+        throws SocketException, IllegalStateException {
+        LOG.debug("HttpConnection.setSoTimeout(" + timeout + ")");
+        soTimeout = timeout;
+        if (socket != null) {
+            socket.setSoTimeout(timeout);
+        }
+    }
+
+would be changed to
+
+    public void setSoTimeout(int timeout)
+        throws SocketException, IllegalStateException {
+        LOG.debug("HttpConnection.setSoTimeout(" + timeout + ")");
+        soTimeout = timeout;
+        if (isOpen()) {
+            socket.setSoTimeout(timeout);
+        }
+    }

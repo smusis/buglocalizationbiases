@@ -1,0 +1,6 @@
+IndexReader.lastModified - throws NPE
+
+
+
+Description:
+IndexReader.lastModified(String dir) or its variants always return NPE on 2.3, perhaps something to do with SegmentInfo.

@@ -1,0 +1,9 @@
+Root exception not logged in ClusterNode for ClusterException
+
+
+
+Description:
+When our MySQL server is down or failed queries we have the following log :
+ERROR (ClusterNode-node1) [org.apache.jackrabbit.core.cluster.ClusterNode] Periodic sync of journal failed: Unable to return record iterater.
+
+So the root exception (SQLException in my case) is missing from the log and this prevent me from quickly finding the reason.

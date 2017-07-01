@@ -1,0 +1,9 @@
+DisjunctionScorer
+
+
+
+Description:
+This disjunction scorer can match a minimum nr. of docs, 
+it provides skipTo() and it uses skipTo() on the subscorers. 
+The score() method is abstract in DisjunctionScorer and implemented 
+in DisjunctionSumScorer as an example.

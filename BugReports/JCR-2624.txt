@@ -1,0 +1,8 @@
+Reduce memory usage of ParentAxisScorer
+
+
+
+Description:
+The ParentAxisScorer keeps a map of non-default scores while it calculates the parent matches of the context scorer. In most cases the scores are not equal to the default score, but still may be all the same.
+
+The scorer should therefore use the first score value as the default instead of the currently used 1.0f.

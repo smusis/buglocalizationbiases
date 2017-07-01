@@ -1,0 +1,6 @@
+Namespace handling in AbstractSession should be synchronized
+
+
+
+Description:
+The AbstractSession base class in o.a.j.commons implicitly assume that the session is never accessed concurrently from more than one thread and thus doesn't synchronize access to the namespace map. This causes problems when the session *is* accessed concurrently. Instead of relying on client code we should enforce thread-safety by explicitly synchronizing potentially unsafe operations on the session instance.

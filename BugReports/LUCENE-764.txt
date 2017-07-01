@@ -1,0 +1,14 @@
+Document the temporary free space requirements of IndexWriter methods
+
+
+
+Description:
+Just opening an issue to track fixes to javadocs around Directory
+space usage of optimize(), addIndexes(*), addDocument.
+
+This came out of a recent thread on the users list around unexpectedly
+high temporary disk usage during optimize():
+
+  http://www.gossamer-threads.com/lists/lucene/java-user/43475
+
+

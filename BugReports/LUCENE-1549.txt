@@ -1,0 +1,6 @@
+Strengthen CheckIndex a bit
+
+
+
+Description:
+A few small improvements to CheckIndex to detect possible "docs out of order" cases.

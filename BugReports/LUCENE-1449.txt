@@ -1,0 +1,17 @@
+IndexDeletionPolicy.delete behaves incorrectly when deleting latest generation 
+
+
+
+Description:
+I have been looking to provide the ability to rollback committed transactions and encountered some issues.
+I appreciate IndexDeletionPolicy's main motivation is to handle cleaning away OLD commit points but it does not explicitly state that it can or cannot be used to clean NEW commit points.
+
+If this is not supported then the documentation should ideally state this. If the intention is to support this behaviour then read on .......
+
+There seem to be 2 issues so far:
+1) The first attempt to call IndexCommit.delete on the latest commit point fails to remove any contents. The subsequent call succeeds however
+2) Deleting the latest commit point fails to update the segments.gen file to point to segments_N-1. New IndexReaders that are opened are then misdirected to open segments_N which has been deleted
+
+Junit test to follow...
+
+

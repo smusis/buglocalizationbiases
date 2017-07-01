@@ -1,0 +1,23 @@
+Updates to connectionStaleCheckingEnabled docs.
+
+
+
+Description:
+Comments from Itai Brickner:
+
+In the Threading section of the UserGuide
+(
+http://jakarta.apache.org/commons/httpclient/threading.html
+)
+
+There is no mentioning of the
+'setConnectionStaleCheckingEnabled'
+I also felt that it wasn't clear from the APIDOC
+(http://jakarta.apache.org/commons/httpclient/apidocs/org/apache/commons/httpclient/MultiThreadedHttpConnectionManager.html)
+that staleCheckingEnabled will cause a stale
+connection to be reconnected by the
+MultiThreadedHttpConnectionManager
+
+thanks,
+
+Itai

@@ -1,0 +1,25 @@
+Removal of a node with shared subnodes fails
+
+
+
+Description:
+A simple testcase:
+
+Set up (first transaction):
+Node a1 = testRootNode.addNode("a1");
+Node a2 = testRootNode.addNode("a2");
+a2.addMixin("mix:shareable");
+session.save();
+// now we have a shareable node N with path a2
+
+Workspace workspace = session.getWorkspace();
+String path = a1.getPath() + "/b1";
+workspace.clone(workspace.getName(), a2.getPath(), path, false);
+session.save();
+// now we have another shareable node N' in the same shared set as N with path a1/b1
+
+Test(second transaction):
+testRootNode.remove("a1");
+session.save();
+
+At least in a transactional repository the node will not be removed, an error will be thrown instead.

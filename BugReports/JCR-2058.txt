@@ -1,0 +1,14 @@
+JSR 283: VersionManager and new versioning methods
+
+
+
+Description:
+JSR 283 introduces a new interface "VersionManager" that exposes all versioning functionality that was formerly present on Node and Workspace. 
+
+In addition the following new methods:
+
+- checkpoint(String absPath) Version 
+- merge(String absPath, String srcWorkspace, boolean bestEffort, boolean isShallow) NodeIterator 
+- merge(Node activityNode) NodeIterator 
+
+See Issue #JCR-1592 for Activity and Configuration feature.

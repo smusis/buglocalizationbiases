@@ -1,0 +1,11 @@
+Instantiated/IndexWriter discrepanies
+
+
+
+Description:
+ * RAMDirectory seems to do a reset on tokenStreams the first time, this permits to initialise some objects before starting streaming, InstantiatedIndex does not.
+ * I can Serialize a RAMDirectory but I cannot on a InstantiatedIndex because of : java.io.NotSerializableException: org.apache.lucene.index.TermVectorOffsetInfo
+
+http://www.nabble.com/InstatiatedIndex-questions-to20576722.html
+
+

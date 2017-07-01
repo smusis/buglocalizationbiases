@@ -1,0 +1,19 @@
+Intermittent failure in TestIndexWriterMergePolicy.testMaxBufferedDocsChange
+
+
+
+Description:
+Last night's build failed from it: http://hudson.zones.apache.org/hudson/job/Lucene-trunk/1019/changes
+
+Here's the exc:
+
+{code}
+    [junit] Testcase: testMaxBufferedDocsChange(org.apache.lucene.index.TestIndexWriterMergePolicy):	FAILED
+    [junit] maxMergeDocs=2147483647; numSegments=11; upperBound=10; mergeFactor=10
+    [junit] junit.framework.AssertionFailedError: maxMergeDocs=2147483647; numSegments=11; upperBound=10; mergeFactor=10
+    [junit] 	at org.apache.lucene.index.TestIndexWriterMergePolicy.checkInvariants(TestIndexWriterMergePolicy.java:234)
+    [junit] 	at org.apache.lucene.index.TestIndexWriterMergePolicy.testMaxBufferedDocsChange(TestIndexWriterMergePolicy.java:164)
+    [junit] 	at org.apache.lucene.util.LuceneTestCase.runBare(LuceneTestCase.java:208)
+{code}
+
+Test doesn't fail if I run on opensolaris nor os X machines...

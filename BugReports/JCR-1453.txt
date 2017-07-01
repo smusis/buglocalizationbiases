@@ -1,0 +1,6 @@
+Allow access to journal inside ClusterNode
+
+
+
+Description:
+JCR-757 added support multiple consumers/producers to be attached to the same journal. In order to access this journal, however, o.a.j.core.cluster.ClusterNode has to allow access to the journal it has created.

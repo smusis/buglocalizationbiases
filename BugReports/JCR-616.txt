@@ -1,0 +1,20 @@
+Completeness/Freshness of NamespaceRegistry and NodeTypeRegistry
+
+
+
+Description:
+We need to define the requirements on completeness and freshness of RepositoryService.getRegisteredNamespaces().
+
+Right now the optimistic assumption seems to be that an SPI provider is able to report all namespaces that can occur in a repository beforehand. Even if it can do that (and I know of potential targets for SPI that simply can't), this seems to be quite a waste of time if these namespace prefixes aren't actually used later on.
+
+Furthermore, in SPI namespace prefixes aren't really relevant, except to enable the transient layer to return "meaningful" prefixes instead of automatically generated ones.
+
+Therefore my propoal would be to:
+
+1) Clarify that the Map returned from getRegisteredNamespaces() isn't required to be complete,
+
+2) Enhance JCR2SPI to auto-generate prefixes when it encounters namespaces not in the registry.
+
+I expect this to also affect RepositoryService.(un)registerNamespace(...), but let's discuss the underlying issue first...
+
+

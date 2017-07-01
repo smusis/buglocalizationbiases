@@ -1,0 +1,50 @@
+AccessManager asks for property (jcr:created) permissions before the actual creation of the object
+
+
+
+Description:
+
+When implementing a custom AccessManager for Jackrabbit v1.5+ there a bug when creating a new object.
+
+I perform an addNode() and my own accessmanager the isGranted() method is override'd and performs the following code;
+
+            ......
+            String perm = null;
+            NodeId     nodeId = mHierMgr.resolveNodePath( pPath );
+            PropertyId propId = null;
+            if (nodeId==null) {
+              propId = mHierMgr.resolvePropertyPath( pPath );
+     System.out.println("path = " + pPath.toString() );
+              // **** TODO is this ok?... it happens when a new object is created and the accessmanager ask for read access on a property.
+//              if (propId==null) return true;
+              nodeId = propId.getParentId();
+            }
+
+this is the System.out.println result
+
+path = {}        {}JeCARS        {}default        {}Groups        {}testGroup        {http://www.jcp.org/jcr/1.0}created
+
+
+and the stacktrace
+
+
+	at org.jecars.CARS_AccessManager.isGranted(CARS_AccessManager.java:844)
+	at org.jecars.CARS_AccessManager.isGranted(CARS_AccessManager.java:806)
+	at org.apache.jackrabbit.core.ItemManager.canRead(ItemManager.java:339)
+	at org.apache.jackrabbit.core.ItemManager.canRead(ItemManager.java:326)
+	at org.apache.jackrabbit.core.ItemManager.createItemData(ItemManager.java:696)
+	at org.apache.jackrabbit.core.ItemManager.getItemData(ItemManager.java:291)
+	at org.apache.jackrabbit.core.ItemManager.getItem(ItemManager.java:228)
+	at org.apache.jackrabbit.core.ItemManager.getItem(ItemManager.java:493)
+	at org.apache.jackrabbit.core.NodeImpl.createChildProperty(NodeImpl.java:479)
+	at org.apache.jackrabbit.core.NodeImpl.createChildNode(NodeImpl.java:535)
+	at org.apache.jackrabbit.core.NodeImpl.internalAddChildNode(NodeImpl.java:795)
+	at org.apache.jackrabbit.core.NodeImpl.internalAddNode(NodeImpl.java:729)
+	at org.apache.jackrabbit.core.NodeImpl.internalAddNode(NodeImpl.java:677)
+	at org.apache.jackrabbit.core.NodeImpl.addNode(NodeImpl.java:2110)
+
+
+It seems that READ permission for the jcr:created property is requested before the object is actually created
+
+
+

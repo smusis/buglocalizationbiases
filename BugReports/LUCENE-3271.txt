@@ -1,0 +1,26 @@
+Move 'good' contrib/queries classes to Queries module
+
+
+
+Description:
+With the Queries module now filled with the FunctionQuery stuff, we should look at closing down contrib/queries.  While not a huge contrib, it contains a number of pretty useful classes and some that should go elsewhere.
+
+Heres my proposed plan:
+
+- similar.* -> suggest module
+- regex.* -> queries module
+- BooleanFilter -> queries module under .filters package
+- BoostingQuery -> queries module
+- ChainedFilter -> queries module under .filters package
+- DuplicateFilter -> queries module under .filters package
+- FieldCacheRewriteMethod -> This doesn't belong in this contrib or the queries module.  I think we should push it to contrib/misc for the time being.  It seems to have quite a few constraints on when its useful.  If indeed CONSTANT_SCORE_AUTO rewrite is better, then I dont see a purpose for it.
+- FilterClause -> class inside BooleanFilter
+- FuzzyLikeThisQuery -> suggest module. This class seems a mess with its Similarity hardcoded.  With all that said, it does seem to do what it claims and with some cleanup, it could be good.
+- TermsFilter -> queries module under .filters package
+- SlowCollated* -> They can stay in the module till we have a better place to nuke them.
+
+One of the implications of the above moves, is that the xml-query-parser, which supports many of the queries, will need to have a dependency on the queries module.  But that seems unavoidable at this stage.
+
+
+
+

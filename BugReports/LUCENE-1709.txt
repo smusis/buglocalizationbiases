@@ -1,0 +1,21 @@
+Parallelize Tests
+
+
+
+Description:
+The Lucene tests can be parallelized to make for a faster testing system.  
+
+This task from ANT can be used: http://ant.apache.org/manual/CoreTasks/parallel.html
+
+Previous discussion: http://www.gossamer-threads.com/lists/lucene/java-dev/69669
+
+Notes from Mike M.:
+{quote}
+I'd love to see a clean solution here (the tests are embarrassingly
+parallelizable, and we all have machines with good concurrency these
+days)... I have a rather hacked up solution now, that uses
+"-Dtestpackage=XXX" to split the tests up.
+
+Ideally I would be able to say "use N threads" and it'd do the right
+thing... like the -j flag to make.
+{quote}

@@ -1,0 +1,8 @@
+When A URL is redirected, there is no easy way to encode the new url before HC tries to execute it/
+
+
+
+Description:
+When you implement your custom RedirectHandler, there is no easy way to encode the new URL being redirected to.
+
+A public method to access the location string prior to the URI generation would be useful.

@@ -1,0 +1,6 @@
+Stale connections are never detected when wireLog.isDebugEnabled() == true
+
+
+
+Description:
+When wireLog.isDebugEnabled() == true SessionInputBuffer is wrapped with LoggingSessionInputBuffer which doesn't implement EofSensor that AbstractHttpClientConnection.isStale() is relying on. This causes stale connections to be never detected and attempted to use.

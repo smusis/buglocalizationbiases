@@ -1,0 +1,8 @@
+Move listeners from item state to item state managers
+
+
+
+Description:
+Clients interested in item state modifications directly subscribe to the item states, which is a very flexible approach. On the other side, it increases the memory consumption of an item state, because every item state holds a collection of its listeners. It further increases complexity, because item state listeners can potentially have a shorter life and might be garbage collected.
+
+Listeners should therefore be moved to their associated item state manager. At the same time, this enables an item state manager to completely remove an item state from its cache and resurrect it at a later time without losing the listeners interested in notifications.

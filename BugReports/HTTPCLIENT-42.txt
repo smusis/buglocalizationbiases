@@ -1,0 +1,15 @@
+Open up org.apache.commons.httpclient.Base64 please
+
+
+
+Description:
+I have had several problems lately where I needed to truck backwards and
+forwards between bytes and base64. As I am using HttpClient, I know I have the
+code in my proect, but I need to duplicate it into my own heirarchy to get
+access rights. 
+
+Please make appropriate changes to Base64 (can be as simple as marking the
+encode and decode methods public) to allow outside use of Base64.
+
+Would be nice to extend Base64 to deal with multi-line Base64 content too - but
+I know this is outside of Base64 original intended use. But it would be useful. :)

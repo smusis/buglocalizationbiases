@@ -1,0 +1,34 @@
+TestSort testParallelMultiSort reproducible seed failure
+
+
+
+Description:
+trunk r1202157
+{code}
+    [junit] Testsuite: org.apache.lucene.search.TestSort
+    [junit] Tests run: 1, Failures: 1, Errors: 0, Time elapsed: 0.978 sec
+    [junit] 
+    [junit] ------------- Standard Error -----------------
+    [junit] NOTE: reproduce with: ant test -Dtestcase=TestSort -Dtestmethod=testParallelMultiSort -Dtests.seed=-2996f3e0f5d118c2:32c8e62dd9611f63:7a90f44586ae8263 -Dargs="-Dfile.encoding=UTF-8"
+    [junit] WARNING: test method: 'testParallelMultiSort' left thread running: Thread[pool-1-thread-1,5,main]
+    [junit] WARNING: test method: 'testParallelMultiSort' left thread running: Thread[pool-1-thread-2,5,main]
+    [junit] WARNING: test method: 'testParallelMultiSort' left thread running: Thread[pool-1-thread-3,5,main]
+    [junit] NOTE: test params are: codec=Lucene40: {short=Lucene40(minBlockSize=98 maxBlockSize=214), contents=PostingsFormat(name=MockSep), byte=PostingsFormat(name=SimpleText), int=Pulsing40(freqCutoff=4 minBlockSize=58 maxBlockSize=186), string=PostingsFormat(name=NestedPulsing), i18n=Lucene40(minBlockSize=98 maxBlockSize=214), long=PostingsFormat(name=Memory), double=Pulsing40(freqCutoff=4 minBlockSize=58 maxBlockSize=186), parser=MockVariableIntBlock(baseBlockSize=88), float=Lucene40(minBlockSize=98 maxBlockSize=214), custom=PostingsFormat(name=MockRandom)}, sim=RandomSimilarityProvider(queryNorm=false,coord=false): {short=BM25(k1=1.2,b=0.75), tracer=DFR I(ne)B2, byte=DFR I(ne)B3(800.0), contents=IB LL-LZ(0.3), int=DFR I(n)BZ(0.3), string=IB LL-D3(800.0), i18n=DFR GB2, double=DFR I(ne)B2, long=DFR GB1, parser=DFR GL2, float=BM25(k1=1.2,b=0.75), custom=DFR I(ne)Z(0.3)}, locale=ga_IE, timezone=America/Louisville
+    [junit] NOTE: all tests run in this JVM:
+    [junit] [TestSort]
+    [junit] NOTE: Linux 3.0.6-gentoo amd64/Sun Microsystems Inc. 1.6.0_29 (64-bit)/cpus=8,threads=4,free=78022136,total=125632512
+    [junit] ------------- ---------------- ---------------
+    [junit] Testcase: testParallelMultiSort(org.apache.lucene.search.TestSort): FAILED
+    [junit] expected:<[ZJ]I> but was:<[JZ]I>
+    [junit] junit.framework.AssertionFailedError: expected:<[ZJ]I> but was:<[JZ]I>
+    [junit]     at org.apache.lucene.search.TestSort.assertMatches(TestSort.java:1245)
+    [junit]     at org.apache.lucene.search.TestSort.assertMatches(TestSort.java:1216)
+    [junit]     at org.apache.lucene.search.TestSort.runMultiSorts(TestSort.java:1202)
+    [junit]     at org.apache.lucene.search.TestSort.testParallelMultiSort(TestSort.java:855)
+    [junit]     at org.apache.lucene.util.LuceneTestCase$3$1.evaluate(LuceneTestCase.java:523)
+    [junit]     at org.apache.lucene.util.LuceneTestCaseRunner.runChild(LuceneTestCaseRunner.java:149)
+    [junit]     at org.apache.lucene.util.LuceneTestCaseRunner.runChild(LuceneTestCaseRunner.java:51)
+    [junit] 
+    [junit] 
+    [junit] Test org.apache.lucene.search.TestSort FAILED
+{code}

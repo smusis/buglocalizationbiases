@@ -1,0 +1,10 @@
+Improve Spatial Utility like classes
+
+
+
+Description:
+- DistanceUnits can be improved by giving functionality to the enum, such as being able to convert between different units, and adding tests.  
+
+- GeoHashUtils can be improved through some code tidying, documentation, and tests.
+
+- SpatialConstants allows us to move all constants, such as the radii and circumferences of Earth, to a single consistent location that we can then use throughout the contrib.  This also allows us to improve the transparency of calculations done in the contrib, as users of the contrib can easily see the values being used.  Currently this issues does not migrate classes to use these constants, that will happen in issues related to the appropriate classes.

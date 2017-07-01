@@ -1,0 +1,32 @@
+auto close idle connections
+
+
+
+Description:
+This has been mentioned several times on the mailing list (most recently here:
+http://nagoya.apache.org/eyebrowse/ReadMsg?listName=commons-httpclient-dev@jakarta.apache.org&msgNo=5191
+)
+It is desirable for the http client to close it's connection after some
+configurable idle time. Failing to do so causes the server (and every TCP
+resource in between) to keep the socket open and possibly run out of resources
+under load.
+
+The HTTP 1.1 RFC has this to say under section 8.1.4:
+Servers will usually have some time-out value beyond which they will
+   no longer maintain an inactive connection. Proxy servers might make
+   this a higher value since it is likely that the client will be making
+   more connections through the same server. The use of persistent
+   connections places no requirements on the length (or existence) of
+   this time-out for either the client or the server.
+
+   When a client or server wishes to time-out it SHOULD issue a graceful
+   close on the transport connection. Clients and servers SHOULD both
+   constantly watch for the other side of the transport close, and
+   respond to it as appropriate. If a client or server does not detect
+   the other side's close promptly it could cause unnecessary resource
+   drain on the network.
+
+The first sentence of the 2nd paragraph is interesting: how is the client
+supposed to do a "graceful close"? Does it simply mean closing the socket?
+One possiblity may be to issue a HTTP/OPTIONS * request with a Connection:close
+header.

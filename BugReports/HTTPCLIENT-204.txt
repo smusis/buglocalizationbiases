@@ -1,0 +1,68 @@
+StackOverflowError in HttpConnection
+
+
+
+Description:
+When the HttpConnection#WrappedOutputStream.flush () encounters IOException 
+druign write, it is calling HttpConnection.close which calls 
+HttpConnection.closeSocketAndStreams and which eventually calls 
+HttpConnection#WrappedOutputStream.flush again.  The circular calls will cause 
+StackOverflowError.
+
+I run into this accidentally when I was trying to extend HttpConnection.  But 
+looking through the code, I believe any IOException may cause the same 
+problem.  The circular calls should be either removed or controlled.  Below is 
+part of teh stack trace
+
+java.lang.StackOverflowError
+        at java.lang.Exception.<init>(Unknown Source)
+        at java.io.IOException.<init>(Unknown Source)
+        at java.net.SocketException.<init>(Unknown Source)
+        at java.net.SocketOutputStream.socketWrite(Native Method)
+        at java.net.SocketOutputStream.write(Unknown Source)
+        at org.apache.commons.httpclient.HttpConnection$WrappedOutputStream.writ
+e(HttpConnection.java:1273)
+        at java.io.BufferedOutputStream.flushBuffer(Unknown Source)
+        at java.io.BufferedOutputStream.flush(Unknown Source)
+        at java.io.FilterOutputStream.close(Unknown Source)
+        at org.apache.commons.httpclient.HttpConnection.closeSocketAndStreams(Ht
+tpConnection.java:1083)
+        at org.apache.commons.httpclient.HttpConnection.close(HttpConnection.jav
+a:1024)
+        at org.apache.commons.httpclient.HttpConnection$WrappedOutputStream.hand
+leException(HttpConnection.java:1235)
+        at org.apache.commons.httpclient.HttpConnection$WrappedOutputStream.writ
+e(HttpConnection.java:1275)
+        at java.io.BufferedOutputStream.flushBuffer(Unknown Source)
+        at java.io.BufferedOutputStream.flush(Unknown Source)
+        at java.io.FilterOutputStream.close(Unknown Source)
+        at org.apache.commons.httpclient.HttpConnection.closeSocketAndStreams(Ht
+tpConnection.java:1083)
+        at org.apache.commons.httpclient.HttpConnection.close(HttpConnection.jav
+a:1024)
+        at org.apache.commons.httpclient.HttpConnection$WrappedOutputStream.hand
+leException(HttpConnection.java:1235)
+        at org.apache.commons.httpclient.HttpConnection$WrappedOutputStream.writ
+e(HttpConnection.java:1275)
+        at java.io.BufferedOutputStream.flushBuffer(Unknown Source)
+        at java.io.BufferedOutputStream.flush(Unknown Source)
+        at java.io.FilterOutputStream.close(Unknown Source)
+        at org.apache.commons.httpclient.HttpConnection.closeSocketAndStreams(Ht
+tpConnection.java:1083)
+        at org.apache.commons.httpclient.HttpConnection.close(HttpConnection.jav
+a:1024)
+        at org.apache.commons.httpclient.HttpConnection$WrappedOutputStream.hand
+leException(HttpConnection.java:1235)
+        at org.apache.commons.httpclient.HttpConnection$WrappedOutputStream.writ
+e(HttpConnection.java:1275)
+        at java.io.BufferedOutputStream.flushBuffer(Unknown Source)
+        at java.io.BufferedOutputStream.flush(Unknown Source)
+        at java.io.FilterOutputStream.close(Unknown Source)
+        at org.apache.commons.httpclient.HttpConnection.closeSocketAndStreams(Ht
+tpConnection.java:1083)
+        at org.apache.commons.httpclient.HttpConnection.close(HttpConnection.jav
+a:1024)
+        at org.apache.commons.httpclient.HttpConnection$WrappedOutputStream.hand
+leException(HttpConnection.java:1235)
+        at org.apache.commons.httpclient.HttpConnection$WrappedOutputStream.writ
+e(HttpConnection.java:1275)

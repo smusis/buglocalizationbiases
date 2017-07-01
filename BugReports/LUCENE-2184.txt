@@ -1,0 +1,6 @@
+CartesianPolyFilterBuilder doesn't properly account for which tiers actually exist in the index 
+
+
+
+Description:
+In the CartesianShapeFilterBuilder, there is logic that determines the "best fit" tier to create the Filter against.  However, it does not account for which fields actually exist in the index when doing so.  For instance, if you index tiers 1 through 10, but then choose a very small radius to restrict the space to, it will likely choose a tier like 15 or 16, which of course does not exist.

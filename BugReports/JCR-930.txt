@@ -1,0 +1,7 @@
+[OCM] rename o.a.j.ocm.persistence.PersistenceManager to avoid confusion with core component
+
+
+
+Description:
+PersistenceManager is a well known and established interface in jackrabbit's architecture. the same-named class in the
+jcr-mapping contrib project should IMO be renamed in order to avoid confusion in mailing list threads and jira issues,

@@ -1,0 +1,9 @@
+XPath query with child axis predicates
+
+
+
+Description:
+Executing a query using a long child path in a child axis predicate (like //*[a/b/c/d/e/@prop='something']) may return too many or not enough nodes.
+
+I'll attach a zip file containing 2 tests cases showing this issue (I apologize but the test data are in French).
+

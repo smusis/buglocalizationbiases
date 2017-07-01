@@ -1,0 +1,29 @@
+norms file can become unexpectedly enormous
+
+
+
+Description:
+
+Spinoff from this user thread:
+
+   http://www.gossamer-threads.com/lists/lucene/java-user/46754
+
+Norms are not stored sparsely, so even if a doc doesn't have field X
+we still use up 1 byte in the norms file (and in memory when that
+field is searched) for that segment.  I think this is done for
+performance at search time?
+
+For indexes that have a large # documents where each document can have
+wildly varying fields, each segment will use # documents times # fields
+seen in that segment.  When optimize merges all segments, that product
+grows multiplicatively so the norms file for the single segment will
+require far more storage than the sum of all previous segments' norm
+files.
+
+I think it's uncommon to have a huge number of distinct fields (?) so
+we would need a solution that doesn't hurt the more common case where
+most documents have the same fields.  Maybe something analogous to how
+bitvectors are now optionally stored sparsely?
+
+One simple workaround is to disable norms.
+

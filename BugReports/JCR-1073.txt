@@ -1,0 +1,6 @@
+Add getTotalSize() to QueryResults
+
+
+
+Description:
+As discussed in http://www.nabble.com/Total-size-of-a-query-result-and-setLimit%28%29-tf4280909.html#a12185543 a getTotalSize() method should be added to QueryResults.

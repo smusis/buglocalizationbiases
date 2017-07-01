@@ -1,0 +1,18 @@
+Cloning a tree containing shareable nodes into another workspace throws ItemExistsException
+
+
+
+Description:
+There's a problem when trying to clone a tree in another workspace, when this tree contains shareable nodes.
+
+Let ws1 be one workspace, which contains one node A. This node has two sub-nodes B and C. B and C share a shareable sub-node D :
+
+A 
+|   \
+B  C
+|    |
+D  D
+
+Let ws2 be a second workspace. Then calling ws2.clone("ws1" , "/A" , "/A" , false) throws an ItemExistsException ( copyNodeState line 1628 ) . This is done when the copyNodeState is checking if the nodeId is already present in the workspace - which is the case when copying the second instance of the shareable node. I can't find in the specification something about this case - but it would be logical to add a share to the node when coming across this situation - at least in the CLONE ( and probable COPY too ) cases. I don't know what would be expected in the CLONE_REMOVE_EXISTING case - we might not want to remove the node if it's shareable, and also add a share here.
+
+I fixed the issue by handling the case the node is shareable in the COPY and CLONE cases of copyNodeState - you'll find attached the corresponding patch. Do you think this solution is ok ?

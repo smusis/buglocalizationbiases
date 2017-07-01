@@ -1,0 +1,10 @@
+build.xml: result of "dist-src" should support "build-contrib"
+
+
+
+Description:
+Currently the packed src distribution would fail to run "ant build-contrib".
+It would be much nicer if that work.
+In fact, would be nicer if you could even "re-pack" with it.
+
+For now I marked this for 2.1, although I am not yet sure if this is a stopper.

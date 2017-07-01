@@ -1,0 +1,6 @@
+Omit positions but keep termFreq
+
+
+
+Description:
+it would be useful to have an option to discard positional information but still keep the term frequency - currently setOmitTermFreqAndPositions discards both. Even though position-dependent queries wouldn't work in such case, still any other queries would work fine and we would get the right scoring.

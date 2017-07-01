@@ -1,0 +1,28 @@
+TCK: NamespaceRegistryTest#testUnregisterNamespaceExceptions doesn't fail if expected exception isn't thrown
+
+
+
+Description:
+In two places, the test doesn't fail if an expected exception isn't thrown.
+
+Proposal: test should fail if expected exception isn't thrown.
+
+--- NamespaceRegistryTest.java  (revision 422074)
++++ NamespaceRegistryTest.java  (working copy)
+@@ -150,6 +154,7 @@
+         for (int t = 0; t < SYSTEM_PREFIXES.length; t++) {
+             try {
+                 nsp.unregisterNamespace(SYSTEM_PREFIXES[t]);
++                fail("Trying to unregister " + SYSTEM_PREFIXES[t] + " must fail");
+             } catch (NamespaceException e) {
+                 // expected behaviour
+             }
+@@ -159,6 +164,7 @@
+         // must throw a NamespaceException.
+         try {
+             nsp.unregisterNamespace("ThisNamespaceIsNotCurrentlyRegistered");
++            fail("Trying to unregister an unused prefix must fail");
+         } catch (NamespaceException e) {
+             // expected behaviour
+         }
+

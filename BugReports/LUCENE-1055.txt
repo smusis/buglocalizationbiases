@@ -1,0 +1,10 @@
+Remove GData from trunk 
+
+
+
+Description:
+GData doesn't seem to be maintained anymore. We're going to remove it before we cut the 2.3 release unless there are negative votes.
+
+In case someones jumps in in the future and starts to maintain it, we can re-add it to the trunk.
+
+If anyone is using GData and needs it to be in 2.3 please let us know soon!

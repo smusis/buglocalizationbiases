@@ -1,0 +1,8 @@
+uploading large streams through rmi
+
+
+
+Description:
+when I try to upload a file of 35 Meg, I get an out of memory error.
+
+This is caused because the whole file is read into memory instead of buffering

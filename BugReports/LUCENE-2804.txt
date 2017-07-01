@@ -1,0 +1,26 @@
+check all tests that use FSDirectory.open
+
+
+
+Description:
+In LUCENE-2471 we were discussing the copyBytes issue, and Shai and I had a discussion about how we could prevent such bugs in the future.
+
+One thing that lead to the bug existing in our code for so long, was that it only happened on windows (e.g. never failed in hudson!)
+This was because the bug only happened if you were copying from SimpleFSDirectory, and the test used FSDirectory.open
+
+Today the situation is improving: most tests use newDirectory() which is random by default and never use FSDir.open,
+it always uses SimpleFS or NIOFS so that the same random seed will reproduce across both windows and unix.
+
+So I think we need to review all uses of FSDirectory.open in our tests, and minimize these.
+In general tests should use newDirectory().
+If the test comes with say a zip-file and wants to explicitly open stuff from disk, I think it should open the contents with say SimpleFSDir,
+and then call newDirectory(Directory) to copy into a new "random" implementation for actual testing. This method already exists:
+{noformat}
+  /**
+   * Returns a new Dictionary instance, with contents copied from the
+   * provided directory. See {@link #newDirectory()} for more
+   * information.
+   */
+  public static MockDirectoryWrapper newDirectory(Directory d) throws IOException {
+{noformat}
+

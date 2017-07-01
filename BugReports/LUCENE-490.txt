@@ -1,0 +1,20 @@
+JavaCC 4.0 fails to generate QueryParser.java
+
+
+
+Description:
+When generating the Java source for QueryParser via the ant task 'javacc-QueryParser' against Subversion trunk (updated Jan. 25, 2006), JavaCC 4.0 gives the following error:
+
+javacc-QueryParser:
+   [javacc] Java Compiler Compiler Version 4.0 (Parser Generator)
+   [javacc] (type "javacc" with no arguments for help)
+   [javacc] Reading from file [...]/src/java/org/apache/lucene/queryParser/QueryParser.jj . . .
+   [javacc] org.javacc.parser.ParseException: Encountered "<<" at line 754, column 3.
+   [javacc] Was expecting one of:
+   [javacc]     <STRING_LITERAL> ...
+   [javacc]     "<" ...
+   [javacc]     
+   [javacc] Detected 1 errors and 0 warnings.
+
+BUILD FAILED
+

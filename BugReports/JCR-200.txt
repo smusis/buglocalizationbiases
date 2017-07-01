@@ -1,0 +1,8 @@
+move log4j initialization out of RepositoryStartupServlet
+
+
+
+Description:
+the RepositoryStartupServlet initializes/configures the Log4J environment. this might not be desirable since other applications might already done so.
+
+

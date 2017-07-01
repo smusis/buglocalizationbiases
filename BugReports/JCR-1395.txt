@@ -1,0 +1,8 @@
+Use Commons IO 1.4
+
+
+
+Description:
+Commons IO contains a number of utility classes and methods for working with files and streams. Many of those utilities would be quite useful in Jackrabbit, so I'd like to introduce commons-io 1.4 as a dependency to jackrabbit-core.
+
+

@@ -1,0 +1,30 @@
+ConcurrentModificationException in FineGrainedISMLocking
+
+
+
+Description:
+We have a report where the FineGrainedISMLocking throws a ConcurrentModificationException (stacktrace
+from a Jackrabbit 2.2.x):
+
+java.util.ConcurrentModificationException
+	at java.util.HashMap$HashIterator.nextEntry(HashMap.java:793)
+	at java.util.HashMap$KeyIterator.next(HashMap.java:828)
+	at org.apache.jackrabbit.core.state.FineGrainedISMLocking$LockMap.hasDependency(FineGrainedISMLocking.java:388)
+	at org.apache.jackrabbit.core.state.FineGrainedISMLocking.acquireWriteLock(FineGrainedISMLocking.java:138)
+	at org.apache.jackrabbit.core.state.SharedItemStateManager.acquireWriteLock(SharedItemStateManager.java:1848)
+	at org.apache.jackrabbit.core.state.SharedItemStateManager.access$200(SharedItemStateManager.java:113)
+	at org.apache.jackrabbit.core.state.SharedItemStateManager$Update.begin(SharedItemStateManager.java:563)
+	at org.apache.jackrabbit.core.state.SharedItemStateManager.beginUpdate(SharedItemStateManager.java:1457)
+	at org.apache.jackrabbit.core.state.SharedItemStateManager.update(SharedItemStateManager.java:1487)
+	at org.apache.jackrabbit.core.state.LocalItemStateManager.update(LocalItemStateManager.java:351)
+	at org.apache.jackrabbit.core.state.XAItemStateManager.update(XAItemStateManager.java:354)
+	at org.apache.jackrabbit.core.state.LocalItemStateManager.update(LocalItemStateManager.java:326)
+	at org.apache.jackrabbit.core.state.SessionItemStateManager.update(SessionItemStateManager.java:289)
+	at org.apache.jackrabbit.core.ItemSaveOperation.perform(ItemSaveOperation.java:258)
+	at org.apache.jackrabbit.core.session.SessionState.perform(SessionState.java:200)
+	at org.apache.jackrabbit.core.ItemImpl.perform(ItemImpl.java:91)
+	at org.apache.jackrabbit.core.ItemImpl.save(ItemImpl.java:329)
+	at org.apache.jackrabbit.core.session.SessionSaveOperation.perform(SessionSaveOperation.java:42)
+	at org.apache.jackrabbit.core.session.SessionState.perform(SessionState.java:200)
+	at org.apache.jackrabbit.core.SessionImpl.perform(SessionImpl.java:355)
+	at org.apache.jackrabbit.core.SessionImpl.save(SessionImpl.java:758)

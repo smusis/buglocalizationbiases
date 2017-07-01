@@ -1,0 +1,23 @@
+JackrabbitParser and tika 0.7 parser
+
+
+
+Description:
+Hi,
+
+I was trying to implement a custom parser and found the following problem.
+Since tika 0.7 it is possible to implement your custom parser and specify it into a service provider configuration file (META-INF/services/org.apache.tika.parser.Parser). In this way there would be no need to maintain a custom tika-config.xml file if you'd like to implement a custom parser.
+
+The problem that I had was in the JackrabbitParser because I wasn't able to instantiate the AutoDetectParser with the default constructor is will be instantiated using the default TikaConfig constructor.
+Basically from tika 0.7, the TikaConfig.getTikaConfig() is instantiating the TikaConfig using the default constructor instead of accessing the tika-config.xml file from withing the package, and reads the service provider configuration files and populate the parsers map.
+
+What I'm proposing is to change the JackrabbitParser to instantiate the AutoDetectParser using the default constructor, in this way the using tika version >= 0.7 we could easily implement our own parsers and there won't be a reason to maintain the tika-config.xml, also a sort of "backward" compatibility would be maintained because using the AutoDetectParser default constructor the TikaConfig is instantiated using TikaConfig.getTikaConfig() wich for tika versions < 0.7 calls the TikaConfig(InputStream) constructor whcih reads the configuration directly from the package.
+
+Basically the JackrabbitParser should look like this:
+
+    public JackrabbitParser() {
+            	parser = new AutoDetectParser();
+    }
+ 
+Thanks,
+Dan

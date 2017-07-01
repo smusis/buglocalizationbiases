@@ -1,0 +1,57 @@
+HttpMime StringBody constructor throws specification unnecessarily declares UnsupportedEncodingException
+
+
+
+Description:
+The string body constructors that take a charset unnecessarily throw UnsupportedEncodingException - if you have Charset, the encoding is by definition supported:
+
+    public StringBody(
+            final String text, 
+            final String mimeType, 
+            Charset charset) throws UnsupportedEncodingException {
+        super(mimeType);
+        if (text == null) {
+            throw new IllegalArgumentException("Text may not be null");
+        }
+        if (charset == null) {
+            charset = Charset.defaultCharset();
+        }
+        this.content = text.getBytes(charset.name());
+        this.charset = charset;
+    }
+    
+    public StringBody(final String text, Charset charset) throws UnsupportedEncodingException {
+        this(text, "text/plain", charset);
+    }
+    
+I suggest to change this to
+
+    public StringBody(
+            final String text, 
+            final String mimeType, 
+            Charset charset)  {
+        super(mimeType);
+        if (text == null) {
+            throw new IllegalArgumentException("Text may not be null");
+        }
+        if (charset == null) {
+            charset = Charset.defaultCharset();
+        }
+        this.content = text.getBytes(charset);
+        this.charset = charset;
+    }
+    
+    public StringBody(final String text, Charset charset) {
+        this(text, "text/plain", charset);
+    }
+
+The important change is to change
+
+        this.content = text.getBytes(charset.name());
+
+to 
+
+        this.content = text.getBytes(charset);
+
+which will not throw and hence the throws specifications can be removed.
+

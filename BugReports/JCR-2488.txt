@@ -1,0 +1,10 @@
+Add the ability to disable inheriting ancestor ACLs
+
+
+
+Description:
+The current ACL implementation will walk the tree from the item being accessed, up to the root, collecting ACL entries for all the ancestors. With this system, there is no easy way to restrict access to subnodes except by adding DENY entries to negate the entries inherited from the parent nodes.
+
+I'd like to request a way to turn this behavior off either at a node level or global level.
+
+The place where recursion is happening is in org.apache.jackrabbit.core.security.authorization.acl.ACLProvider$Entries.collectEntries(NodeImpl node). Inside this method, it could perhaps check a global parameter or the existence of property of the ACL policy node to determine whether to recurse up the tree.

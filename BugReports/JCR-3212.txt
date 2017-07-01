@@ -1,0 +1,6 @@
+add TCK test for Info map of NODE_MOVED event on node reordering
+
+
+
+Description:
+add the TCK test for this problem, and mark this as known test failure for now

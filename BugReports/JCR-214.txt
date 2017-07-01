@@ -1,0 +1,40 @@
+NullPointerException in LuceneQueryBuilder
+
+
+
+Description:
+after setting up the following query:
+
+//mycoreclass[@ID= 'ArchNachl_class_003']//label[@* = 'A']
+
+I get a NullPointerException:
+
+
+java.lang.NullPointerException
+        at org.apache.jackrabbit.core.query.lucene.LuceneQueryBuilder.visit(LuceneQueryBuilder.java:553)
+        at org.apache.jackrabbit.core.query.RelationQueryNode.accept(RelationQueryNode.java:157)
+        at org.apache.jackrabbit.core.query.NAryQueryNode.acceptOperands(NAryQueryNode.java:131)
+        at org.apache.jackrabbit.core.query.lucene.LuceneQueryBuilder.visit(LuceneQueryBuilder.java:421)
+        at org.apache.jackrabbit.core.query.LocationStepQueryNode.accept(LocationStepQueryNode.java:156)
+        at org.apache.jackrabbit.core.query.lucene.LuceneQueryBuilder.visit(LuceneQueryBuilder.java:400)
+        at org.apache.jackrabbit.core.query.PathQueryNode.accept(PathQueryNode.java:47)
+        at org.apache.jackrabbit.core.query.lucene.LuceneQueryBuilder.visit(LuceneQueryBuilder.java:200)
+        at org.apache.jackrabbit.core.query.QueryRootNode.accept(QueryRootNode.java:112)
+        at org.apache.jackrabbit.core.query.lucene.LuceneQueryBuilder.createLuceneQuery(LuceneQueryBuilder.java:190)
+        at org.apache.jackrabbit.core.query.lucene.LuceneQueryBuilder.createQuery(LuceneQueryBuilder.java:172)
+        at org.apache.jackrabbit.core.query.lucene.QueryImpl.execute(QueryImpl.java:152)
+        at org.apache.jackrabbit.core.query.QueryImpl.execute(QueryImpl.java:132)
+
+I don't really know if it's a valid query. I should search for every label that has a property value (what ever name the property may have) that is  somewhere under a specific "mycoreclass" node. Either way Jackrabbit should of cause not exit with a NullPointerExeption here.
+
+I'm using the very current svn snapshot of jackrabbit. For the records line 550-557 of LuceneQueryBuilder.java look like this now:
+
+        String field = "";
+        try {
+            field = node.getProperty().toJCRName(nsMappings);
+        } catch (NoPrefixDeclaredException e) {
+            // should never happen
+            exceptions.add(e);
+        }
+
+

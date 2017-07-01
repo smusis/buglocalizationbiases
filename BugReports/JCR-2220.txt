@@ -1,0 +1,6 @@
+Use the remote-resources-plugin to add LICENSE and NOTICE files to binaries
+
+
+
+Description:
+Since JCRSITE-13 the remote resources plugin is configured to automatically add LICENSE and NOTICE files to all of our binary artifacts (including -sources and -javadoc jars). We should adapt the configuration so that these files get to include all the correct licensing metadata we currently maintain in src/main/resources/META-INF.

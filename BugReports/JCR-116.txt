@@ -1,0 +1,10 @@
+JavaCC grammar generation to ${maven.build.dir}/generated-src
+
+
+
+Description:
+Currently the JavaCC grammars in src/grammar/{xpath,sql} are processed into Java source files in src/java/org/apache/jacrabbit/core/query/{xpath,sql} where we also have normal version controlled source files. This leads to the need to maintain special svn:ignore properties and also the more general issue of mixing manually written and automatically generated source files. Because of this the "maven clean" command does not (at the moment) truly restore your source tree to a "fresh checkout" state.
+
+I'm proposing (as a wish, you are free to disagree) that the JavaCC grammars be generated into Java files within the Maven build directory. The attached patch modifies the javacc maven goals to generate files into ${maven.build.dir}/generated-src. The modified prepare-filesystem goal also adds the generated source path ${maven.build.dir}/generated-src/main/java into the maven compile set so that the generated sources are included in the normal builds.
+
+PS. There are a couple of JavaCC generated files that have been intentionally modified for Jackrabbit. The ant:delete commands at the end of the jacrabbit:generate-*-parser goals specifically remove these generated files. It would however be nicer if custom modifications would not be needed.

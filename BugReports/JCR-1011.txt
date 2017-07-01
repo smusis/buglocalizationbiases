@@ -1,0 +1,7 @@
+JCR2SPI: add configurable cache for Item instances (ItemManager)
+
+
+
+Description:
+Currently the ItemManager implementation uses a simple map with weak keys (ItemState) and weak values (Item) as cache.
+Marcel recently suggested to replace this with a more sophisticated cache mechanism that can be configured.

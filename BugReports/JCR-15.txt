@@ -1,0 +1,14 @@
+PersistentNode.store() ignores status when storing
+
+
+
+Description:
+While looking for a performance bottle neck I came across this issue: When a PersistentNodeState is asked to store itself in the PersistentNodeState.store() method, it calls its PersistenceManager to store it.
+
+This is not a problem in itself. The problem is, that if the PersistentNodeState has not been modified, the object does not need to be stored. Doiing it anyway just consumes cycles ! In the case of a deep, unmodified hierarchy, this just results in nodes being written to persistence for nothing.
+
+Comes to it, that this method sends an event, which in the case of an unmodified node state will be notifyStateUpdated(), which is complete nonsense, because nothing has actually been updated.
+
+I suggest to modify the PersistentNodeState.store() method to only do work if modified.
+
+Note: I encountered this issue, whily tracking down performance problems when creating versionable nodes, which turned out to be located somewhere within the PersistentVersionManager.createVersionHistory(NodeImpl) method. And there, predominantly the store() methods consume time.

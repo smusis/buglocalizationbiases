@@ -1,0 +1,47 @@
+TestIndexWriterExceptions reproducible AOOBE in MockVariableIntBlockCodec
+
+
+
+Description:
+{code}
+  [junit] Testsuite: org.apache.lucene.index.TestIndexWriterExceptions
+    [junit] Tests run: 1, Failures: 0, Errors: 1, Time elapsed: 0.739 sec
+    [junit]
+    [junit] ------------- Standard Error -----------------
+    [junit] NOTE: reproduce with: ant test -Dtestcase=TestIndexWriterExceptions -Dtestmethod=testDocumentsWriterAbort -Dtests.seed=4579947455
+682149564:-7960989923752018504
+    [junit] NOTE: test params are: codec=RandomCodecProvider: {content=MockVariableIntBlock(baseBlockSize=32)}, locale=bg_BG, timezone=Brazil
+/Acre
+    [junit] NOTE: all tests run in this JVM:
+    [junit] [TestIndexWriterExceptions]
+    [junit] NOTE: Linux 2.6.37-gentoo amd64/Sun Microsystems Inc. 1.6.0_25 (64-bit)/cpus=8,threads=1,free=94363216,total=125632512
+    [junit] ------------- ---------------- ---------------
+    [junit] Testcase: testDocumentsWriterAbort(org.apache.lucene.index.TestIndexWriterExceptions):      Caused an ERROR
+    [junit] 66
+    [junit] java.lang.ArrayIndexOutOfBoundsException: 66
+    [junit]     at org.apache.lucene.index.codecs.mockintblock.MockVariableIntBlockCodec$MockIntFactory$2.add(MockVariableIntBlockCodec.java:
+114)
+    [junit]     at org.apache.lucene.index.codecs.intblock.VariableIntBlockIndexOutput.close(VariableIntBlockIndexOutput.java:118)
+    [junit]     at org.apache.lucene.index.codecs.sep.SepPostingsWriterImpl.close(SepPostingsWriterImpl.java:320)
+    [junit]     at org.apache.lucene.index.codecs.BlockTermsWriter.close(BlockTermsWriter.java:137)
+    [junit]     at org.apache.lucene.index.PerFieldCodecWrapper$FieldsWriter.close(PerFieldCodecWrapper.java:81)
+    [junit]     at org.apache.lucene.index.FreqProxTermsWriter.flush(FreqProxTermsWriter.java:103)
+    [junit]     at org.apache.lucene.index.TermsHash.flush(TermsHash.java:118)
+    [junit]     at org.apache.lucene.index.DocInverter.flush(DocInverter.java:80)
+    [junit]     at org.apache.lucene.index.DocFieldProcessor.flush(DocFieldProcessor.java:75)
+    [junit]     at org.apache.lucene.index.DocumentsWriterPerThread.flush(DocumentsWriterPerThread.java:457)
+    [junit]     at org.apache.lucene.index.DocumentsWriter.doFlush(DocumentsWriter.java:417)
+    [junit]     at org.apache.lucene.index.DocumentsWriter.postUpdate(DocumentsWriter.java:309)
+    [junit]     at org.apache.lucene.index.DocumentsWriter.updateDocument(DocumentsWriter.java:381)
+    [junit]     at org.apache.lucene.index.IndexWriter.updateDocument(IndexWriter.java:1469)
+    [junit]     at org.apache.lucene.index.IndexWriter.addDocument(IndexWriter.java:1229)
+    [junit]     at org.apache.lucene.index.IndexWriter.addDocument(IndexWriter.java:1210)
+    [junit]     at org.apache.lucene.index.TestIndexWriterExceptions.testDocumentsWriterAbort(TestIndexWriterExceptions.java:555)
+    [junit]     at org.apache.lucene.util.LuceneTestCase$LuceneTestCaseRunner.runChild(LuceneTestCase.java:1333)
+    [junit]     at org.apache.lucene.util.LuceneTestCase$LuceneTestCaseRunner.runChild(LuceneTestCase.java:1251)
+    [junit]
+    [junit]
+    [junit] Test org.apache.lucene.index.TestIndexWriterExceptions FAILED
+{code}
+
+trunk: r1127871

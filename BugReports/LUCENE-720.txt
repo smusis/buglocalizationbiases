@@ -1,0 +1,14 @@
+Unit tests TestBackwardsCompatibility and TestIndexFileDeleter might fail depending on JVM
+
+
+
+Description:
+In the two units tests TestBackwardsCompatibility and TestIndexFileDeleter several index file names are hardcoded. For example, in TestBackwardsCompatibility.testExactFileNames() it is tested if the index directory contains exactly the expected files after several operations like addDocument(), deleteDocument() and setNorm() have been performed. Apparently the unit tests pass on the nightly build machine, but in my environment (Windows XP, IBM JVM 1.5) they fail for the following reason:
+
+When IndexReader.setNorm() is called a new norm file for the specified field is created with the file  ending .sx, where x is the number of the field. The problem is that the SegmentMerger can not guarantee to keep the order of the fields, in other words after a merge took place a field can have a different field number. This specific testcase fails, because it expects the file ending .s0, but the file has the ending .s1.
+
+The reason why the field numbers can be different on different JVMs is the use of HashSet in SegmentReader.getFieldNames(). Depending on the HashSet implementation an iterator might not iterate over the entries in insertion order. When I change HashSet to LinkedHashSet, the two testcases pass.
+
+However, even with a LinkedHashSet the order of the field numbers might change during a merge, because the order in which the SegmentMerger merges the FieldInfos depends on the field options like TERMVECTOR, INDEXED... (see SegmentMerger.mergeFields() for details). 
+
+So I think we should not use LinkedHashSet but rather change the problematic testcases. Furthermore I'm not sure if we should have hardcoded filenames in the tests anyway, because if we change the index format or file names in the future these test cases would fail without modification.

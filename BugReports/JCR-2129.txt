@@ -1,0 +1,24 @@
+Prevent data inconsistencies due to incorrect or missed merges in the ItemStateManagers
+
+
+
+Description:
+There are two places where transient state changes are merged with persisted state: (i) in the SessionISM.stateModified call back method (typically called by a saving thread after it's changes have been saved) and (ii) in the SharedISM.Update.begin method. Sometimes the merge strategy fails in the sense that corrupt data is written to database. 
+
+How to reproduce:
+The attached test program contains steps to reproduce the issue. The testInconsistency1 method concurrently adds a node D to a node A and moves child node B of A to another place. This sometimes results in a situation in which node A still has a child reference to node B whereas B has another parent. In this situation, Jackrabbit cannot be started anymore if the search index is missing: 
+
+Jun 8, 2009 2:16:23 PM org.apache.jackrabbit.core.query.OnWorkspaceInconsistency$1 handleMissingChildNode
+SEVERE: Node /A (a7a29e8c-8d13-4fbd-b0ca-4f93f9c0ef42) has missing child 'B' (80aa13c5-1db6-4f62-b576-5e7f626d90c1)
+Jun 8, 2009 2:16:23 PM org.apache.jackrabbit.core.RepositoryImpl initStartupWorkspaces
+SEVERE: Failed to initialize workspace 'wm9'
+
+The testInconsistency2 method concurrently adds a reference property to a node B (the threads do exactly the same). This sometimes results in a situation in which the referenced node can never be removed anymore because there is a "ghost" reference to it which cannot be removed. (It gives a ReferentialIntegrityException).
+
+Jun 8, 2009 2:19:51 PM org.apache.jackrabbit.core.state.MLRUItemStateCache cache
+WARNING: overwriting cached entry bc28ff87-216d-4ccd-bd73-03e7499ab54e/{}ref to B
+Exception in thread "main" javax.jcr.ReferentialIntegrityException: 9f025634-d3e1-448e-904c-1c285f6b1bf6: the node cannot be removed because it is still being referenced.
+
+It seems the first problem (the parent-child relation) is caused by an incorrect merge in the NodeStateMerger class. The second problem might also be caused by an incorrect or missed merge, but I am not sure whether that's the real problem.
+
+

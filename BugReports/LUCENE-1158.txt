@@ -1,0 +1,18 @@
+DateTools UTC/GMT mismatch
+
+
+
+Description:
+Post from Antony Bowesman on java-user:
+
+-----
+
+I just noticed that although the Javadocs for Lucene 2.2 state that the dates 
+for DateTools use UTC as a timezone, they are actually using GMT.
+
+Should either the Javadocs be corrected or the code corrected to use UTC instead.
+
+-----
+
+I'm attaching a patch that changes the javadoc and will commit it, unless someone knows a reason the javadoc is correct and the code should be changed to UTC. To my understanding, there's no significant difference between UTC and GMT.
+

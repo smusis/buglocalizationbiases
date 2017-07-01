@@ -1,0 +1,6 @@
+Implement getDistance() on DirectSpellChecker.INTERNAL_LEVENSHTEIN
+
+
+
+Description:
+DirectSpellChecker.INTERNAL_LEVENSHTEIN is currently not a full-fledged implementation of StringDistance.  But an full implementation is needed for Solr's SpellCheckComponent.finishStage(), and also would be helpful for those trying to take the advice given in LIA 2nd ed section sect8.5.3.

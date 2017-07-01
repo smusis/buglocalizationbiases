@@ -1,0 +1,8 @@
+Exclude PrecedenceQueryParser from build or disable failing test cases
+
+
+
+Description:
+As Erik commented in LUCENE-885 the PrecendenceQueryParser is currently
+unmaintained. Since some tests are failing we should either exclude PQP from the 
+build or simply disable the failing tests.

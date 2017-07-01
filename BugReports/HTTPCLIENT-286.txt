@@ -1,0 +1,8 @@
+Manually set 'Cookie' & 'Authorization' headers get discarded
+
+
+
+Description:
+HttpClient discards all the 'Cookie' & 'Authorization' headers including those
+manually set when populating request header collection with automatically
+generated headers.

@@ -1,0 +1,10 @@
+Node type documentation tool (NTDoc)
+
+
+
+Description:
+This is the first time I post a contrib here on Jira. Hope I do this the right way :-) 
+
+Some weeks ago I postet a message on the forum about a node type documentation tool I had made. Now, finally I have cleaned up the code and fixed some bugs. It is now useful for the majority out there. I do not guarantee it to be bug-free, but will do my best to fix any bugs that is reported. 
+
+A readme file is included in the distribution. Must build using maven 2. Have not done it maven 1 compliant.

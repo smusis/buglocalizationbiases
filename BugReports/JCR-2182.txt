@@ -1,0 +1,6 @@
+LockableFileRevision not thread-safe
+
+
+
+Description:
+LockableFileRevision works well across process boundaries, but does not within the same JVM. The methods lock() and unlock() must be synchronized similar to DatabaseRevision.

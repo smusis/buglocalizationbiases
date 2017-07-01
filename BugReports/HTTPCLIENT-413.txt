@@ -1,0 +1,24 @@
+Cookie with domain .mydomain.com not sent to host mydomain.com
+
+
+
+Description:
+A cookie with for example 
+  .mydomain.com 
+as domain property is not sent to the host
+  mydomain.com
+(without www. or anything else before "mydomain.com")
+
+This concern all CookieSpec as the relevant code is located in CookieSpecBase:
+
+    public boolean domainMatch(final String host, final String domain) {
+        return host.endsWith(domain);
+    }
+
+It should be changed for instance to something like:
+
+    public boolean domainMatch(final String host, final String domain) {
+        // take care of host "myDomain.com" and domain ".myDomain.com"
+        return host.endsWith(domain)
+	|| _host.equals(_domain.substring(1));
+    }

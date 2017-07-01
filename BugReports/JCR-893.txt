@@ -1,0 +1,6 @@
+More query classes with missing extractTerms()
+
+
+
+Description:
+The query classes DerefQuery, RangeQuery and WildcardQuery do not overwrite the method extractTerms().

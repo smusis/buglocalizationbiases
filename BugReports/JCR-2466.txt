@@ -1,0 +1,7 @@
+jcr2spi: versionmanager#checkout(NodeState) should not forward to checkout(NodeState, NodeId)
+
+
+
+Description:
+VersionManager#checkout(NodeState nodeState) is called if activity is not supported and thus should call the
+corresponding SPI method instead of checkout(NodeState, NodeId activityId)

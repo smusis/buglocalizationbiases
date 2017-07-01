@@ -1,0 +1,6 @@
+HttpState should have methods for clearing all cookies and credentials
+
+
+
+Description:
+ 

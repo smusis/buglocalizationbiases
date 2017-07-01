@@ -1,0 +1,10 @@
+Implement caching mechanism for ItemInfo batches
+
+
+
+Description:
+Currently all ItemInfos returned by RepositoryService#getItemInfos are placed into the hierarchy right away. For big batch sizes this is prohibitively expensive. The overhead is so great (*), that it quickly outweighs the overhead of network round trips. Moreover, SPI implementations usually choose the batch in a way determined by the backing persistence store and not by the requirements of the consuming application on the JCR side. That is, many of the items in the batch might never be actually needed. 
+
+I suggest to implement a cache for ItemInfo batches. Conceptually such a cache would live inside jcr2spi right above the SPI API. The actual implementation would be provided by SPI implementations. This approach allows for fine tuning cache/batch sizes to a given persistence store and network environment. This would also better separate different concerns: the purpose of the existing item cache is to optimize for the requirement of the consumer of the JCR API ('the application'). The new ItemInfo cache is to optimize for the specific network environment and backing persistence store. 
+
+(*) Numbers follow 

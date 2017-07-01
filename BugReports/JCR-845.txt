@@ -1,0 +1,6 @@
+Links Pointing to Javadocs Are Incorrect and Return 404
+
+
+
+Description:
+There are various links on the "Configuring Jackrabbit"  page (http://jackrabbit.apache.org/doc/config.html) that are invalid.  For example, I wanted to read the "PersistenceManager javadocs" link, but it returns a 404.  This will decrease the confidence in the project and hinder its adoption.

@@ -1,0 +1,28 @@
+After IW.addIndexesNoOptimize, IW.close may hang
+
+
+
+Description:
+Spinoff from here:
+
+  http://mail-archives.apache.org/mod_mbox/lucene-java-user/200804.mbox/%3c43128.192.168.1.71.1208561409.webmail@192.168.1.71%3e
+
+The addIndexesNoOptimize method first merges eligible segments
+according to the MergePolicy, and then copies over one by one any
+remaining "external" segments.
+
+That copy can possibly (rather rarely) result in new merges becoming
+eligible because its size can change if the index being added was
+created with autoCommit=false.
+
+However, we fail to then invoke the MergeScheduler to run these
+merges.  As a result, in close, where we wait until all running and
+pending merges complete, we will never return.
+
+The fix is simple: invoke the merge scheduler inside
+copyExternalSegments() if any segments were copied.  I also added
+defensive invocation of the merge scheduler during close, just in case
+other code paths could allow for a merge to be added to the pending
+queue but not scheduled.
+
+

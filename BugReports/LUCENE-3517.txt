@@ -1,0 +1,12 @@
+Fix pulsingcodec to reuse its enums
+
+
+
+Description:
+PulsingCodec currently doesnt always reuse its enums, which could lead to behavior like LUCENE-3515.
+
+The problem is sometimes it returns the 'wrapped' enum, but other times it returns its 'pulsingenum' depending upon
+whether terms are pulsed...
+
+we can use the fact that these enums allow attributes to keep the reuse information for both so it can reuse when stepping through terms.
+

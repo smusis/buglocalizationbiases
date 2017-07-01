@@ -1,0 +1,44 @@
+TCK: TextNodeTest and jcr:xmltext/jcr:xmlcharacters
+
+
+
+Description:
+Test creates jcr:xmltext nodes without jcr:xmlcharacters properties.  Some repositories may require jcr:xmltext nodes to have jcr:xmlcharacters properties, causing this test to fail.
+
+Proposal: add a jcr:xmlcharacters property to each jcr:xmltext node.
+
+--- TextNodeTest.java   (revision 422074)
++++ TextNodeTest.java   (working copy)
+@@ -62,6 +62,7 @@
+      */
+     public void testTextNodeTest() throws RepositoryException {
+         Node text1 = testRootNode.addNode(jcrXMLText);
++        text1.setProperty(jcrXMLCharacters, "foo");
+         testRootNode.save();
+         String xpath = "/" + jcrRoot + testRoot + "/text()";
+         executeXPathQuery(superuser, xpath, new Node[]{text1});
+@@ -73,7 +74,9 @@
+      */
+     public void testTextNodeTestMultiNodes() throws RepositoryException {
+         Node text1 = testRootNode.addNode(jcrXMLText);
++        text1.setProperty(jcrXMLCharacters, "foo");
+         Node text2 = testRootNode.addNode(nodeName1, testNodeType).addNode(jcrXMLText);
++        text2.setProperty(jcrXMLCharacters, "foo");
+         testRootNode.save();
+         String xpath = "/" + jcrRoot + testRoot + "//text()";
+         executeXPathQuery(superuser, xpath, new Node[]{text1, text2});
+@@ -105,11 +108,13 @@
+             throw new NotExecutableException("Repository does not support position index");
+         }
+         Node text1 = testRootNode.addNode(jcrXMLText);
++        text1.setProperty(jcrXMLCharacters, "foo");
+         if (!text1.getDefinition().allowsSameNameSiblings()) {
+             throw new NotExecutableException("Node at path: " + testRoot + " does not allow same name siblings with name: " + jcrXMLText);
+         }
+         testRootNode.addNode(nodeName1, testNodeType);
+         Node text2 = testRootNode.addNode(jcrXMLText);
++        text1.setProperty(jcrXMLCharacters, "foo");
+         testRootNode.save();
+         String xpath = "/" + jcrRoot + testRoot + "/text()[2]";
+         executeXPathQuery(superuser, xpath, new Node[]{text2});
+

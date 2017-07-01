@@ -1,0 +1,51 @@
+Credentials ignored if realm specified in preemptive authentication
+
+
+
+Description:
+When you specifiy credentials for a specific realm using preemptive 
+authentication, the credentials are ignored during the first try (error 401 
+back).
+
+...
+HttpClient client = new HttpClient(manager);
+client.getState().setCredentials("myRealm","myHost",
+			new UsernamePasswordCredentials(
+				"user","password"));
+client.getState().setAuthenticationPreemptive(true); 
+...
+
+"myRealm" will be ignored in HttpState's matchCredentials() private method 
+because during preemptive authentication, it is called with a null realm:
+
+ private static Credentials matchCredentials(HashMap map, String realm, String 
+host) {
+        HttpAuthRealm entry = new HttpAuthRealm(host, realm);
+	// no possible match here, map only contains the version with the realm
+        Credentials creds = (Credentials) map.get(entry);
+        if (creds == null && host != null && realm != null) {
+            entry = new HttpAuthRealm(host, null);
+            creds = (Credentials) map.get(entry);
+            if (creds == null) {
+                entry = new HttpAuthRealm(null, realm);
+                creds = (Credentials) map.get(entry);
+            }
+        }
+        if (creds == null) {
+            creds = (Credentials) map.get(DEFAULT_AUTH_REALM);
+        }
+        return creds;
+    } 
+
+This is quite logical since the realm comes from the server and you don't 
+contact the server first during preemptive authentication.
+
+But, it should not be possible to set a realm when using preemptive mode, or at 
+least it should not be silently ignored.
+
+The current workaround is to set the realm to null in setCredential(), no 
+elegant but works.
+
+Regards,
+
+Philippe

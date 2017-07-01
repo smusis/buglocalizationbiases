@@ -1,0 +1,11 @@
+when checking tvx/fdx size mismatch, also include whether the file exists
+
+
+
+Description:
+IndexWriter checks, during flush and during merge, that the size of the index file for stored fields (*.fdx) and term vectors (*.tvx) matches how many bytes it has just written.
+
+This originally was added for LUCENE-1282, ie, as a safety to catch the nasty "off by 1" JRE hotspot bug that would otherwise silently corrupt the index.
+
+However, this check also seems to catch a different case, where the size of the file is zero.   The most recent example is LUCENE-1521.  I'd like to improve the message in the exception to include whether or not the file exists, to help understand why users are sometimes hitting this exception.  My best theory at this point is something external is removing the file out from under the IndexWriter.
+

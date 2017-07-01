@@ -1,0 +1,8 @@
+Add Google Analytics to Jackrabbit web site
+
+
+
+Description:
+I'd like to add Google Analytics to our web site to better track how the site is used and how much traffic we are generating.
+
+Currently the best stats we have are at http://people.apache.org/~vgritsenko/stats/projects/jackrabbit.html, which is nice but not nearly as good as we could have.

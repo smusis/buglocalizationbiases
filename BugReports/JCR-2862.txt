@@ -1,0 +1,6 @@
+Jackrabbit logs a NullPointerException on shutdown if the version manager wasn't initialized
+
+
+
+Description:
+If opening the repository fails, and the version manager was not initialized, then the shutdown method logs a NullPointerException when trying to close the version manager. This is a nuisance.

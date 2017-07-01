@@ -1,0 +1,29 @@
+Fully decouple IndexWriter from analyzers
+
+
+
+Description:
+IndexWriter only needs an AttributeSource to do indexing.
+
+Yet, today, it interacts with Field instances, holds a private
+analyzers, invokes analyzer.reusableTokenStream, has to deal with a
+wide variety (it's not analyzed; it is analyzed but it's a Reader,
+String; it's pre-analyzed).
+
+I'd like to have IW only interact with attr sources that already
+arrived with the fields.  This would be a powerful decoupling -- it
+means others are free to make their own attr sources.
+
+They need not even use any of Lucene's analysis impls; eg they can
+integrate to other things like [OpenPipeline|http://www.openpipeline.org].
+Or make something completely custom.
+
+LUCENE-2302 is already a big step towards this: it makes IW agnostic
+about which attr is "the term", and only requires that it provide a
+BytesRef (for flex).
+
+Then I think LUCENE-2308 would get us most of the remaining way -- ie, if the
+FieldType knows the analyzer to use, then we could simply create a
+getAttrSource() method (say) on it and move all the logic IW has today
+onto there.  (We'd still need existing IW code for back-compat).
+

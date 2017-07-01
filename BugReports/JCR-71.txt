@@ -1,0 +1,10 @@
+WorkspaceConfig.init() throws NullPointerException if Search configuration is missing
+
+
+
+Description:
+When the search configuration is missing from the repository.xml configuration, the WorkspaceConfig.sc field is null and consequently the WorkspaceConfig.init() method throws a NullPointerException.
+
+This is by itself a bug, especially since missing search configuration is perfectly ok resulting in Jackrabbit not building the search index (which is - believe it or - what really want).
+
+On that matter, since the configuration file structure seems to be implied by the configuration framework but the DTD is inlined into the configuration file, the configuration framework should act very gracefully to missing or wrong or unexpected configuration elements. Thus, for example, if the file system configuration (WorkspaceConfig.fsc) would be missing, the WorkspaceConfig should probably hint at this point and not throw a NullPointerException without further explanations (of course throwing anything at all is still better than going wild).

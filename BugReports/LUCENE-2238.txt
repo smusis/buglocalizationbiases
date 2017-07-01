@@ -1,0 +1,8 @@
+deprecate ChineseAnalyzer
+
+
+
+Description:
+The ChineseAnalyzer, ChineseTokenizer, and ChineseFilter (not the smart one, or CJK) indexes chinese text as individual characters and removes english stopwords, etc.
+
+In my opinion we should simply deprecate all of this in favor of StandardAnalyzer, StandardTokenizer, and StopFilter, which does the same thing.

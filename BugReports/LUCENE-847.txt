@@ -1,0 +1,6 @@
+Factor merge policy out of IndexWriter
+
+
+
+Description:
+If we factor the merge policy out of IndexWriter, we can make it pluggable, making it possible for apps to choose a custom merge policy and for easier experimenting with merge policy variants.

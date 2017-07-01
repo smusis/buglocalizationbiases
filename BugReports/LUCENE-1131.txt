@@ -1,0 +1,11 @@
+Add numDeletedDocs to IndexReader
+
+
+
+Description:
+Add numDeletedDocs to IndexReader. Basically, the implementation is as simple as doing:
+public int numDeletedDocs() {
+  return deletedDocs == null ? 0 : deletedDocs.count();
+}
+in SegmentReader.
+Patch to follow to include in all IndexReader extensions.

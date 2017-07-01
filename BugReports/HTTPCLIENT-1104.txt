@@ -1,0 +1,10 @@
+Add way to check for release of connections back into pool
+
+
+
+Description:
+As the documentation emphasizes, its important to clean up HttpEntities after use, so they don't tie up the default very small number of connections in the pool.
+
+However, nothing is provided to HttpClient users with the default classes that allows them to unit test their code to help verify that they are in fact properly releasing the connections under all circumstances. One way this could be done is for the API to expose the number of current leased (taken) connections in the pool, which would be connManager.pool.leasedConnections.size() if not for the necessary fields being protected. If this statistic were published through the API, user unit tests could check that it is zero when they finish.
+
+A workaround is for the user to subclass both the connection manager and ConnPoolByRoute and add getter methods. But its kind of a clunky solution, and I think the API should be written to encourage its users to perform this check.

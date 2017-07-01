@@ -1,0 +1,6 @@
+TermVectorAccessor, transparent vector space access 
+
+
+
+Description:
+This class visits TermVectorMapper and populates it with information transparent by either passing it down to the default terms cache (documents indexed with Field.TermVector) or by resolving the inverted index.

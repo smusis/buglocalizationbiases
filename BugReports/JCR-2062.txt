@@ -1,0 +1,14 @@
+JSR 283: Repository Compliance
+
+
+
+Description:
+JSR 283 defines a huge set of new (or changed) repository descriptors as well as a couple of new methods on the
+Repository interface that allows the API consumer to determine the feature set exposed by an implementation.
+
+The new methods are
+
+- Repository.isStandardDescriptor(String key)
+- Repository.isSingleValueDescriptor(String key)
+- Repository.getDescriptorValue(String key) Value
+- Repository.getDescriptorValues(String key) Value[]

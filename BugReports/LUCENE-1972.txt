@@ -1,0 +1,6 @@
+Remove (deprecated) ExtendedFieldCache and Auto/Custom caches and lot's of deprecated sort logic
+
+
+
+Description:
+Remove (deprecated) ExtendedFieldCache and Auto/Custom caches and sort

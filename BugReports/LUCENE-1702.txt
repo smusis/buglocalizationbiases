@@ -1,0 +1,13 @@
+Thai token type() bug
+
+
+
+Description:
+While adding tests for offsets & type to ThaiAnalyzer, i discovered it does not type Thai numeric digits correctly.
+ThaiAnalyzer uses StandardTokenizer, and this is really an issue with the grammar, which adds the entire [:Thai:] block to ALPHANUM.
+
+i propose that alphanum be described a little bit differently in the grammar.
+Instead, [:letter:] should be allowed to have diacritics/signs/combining marks attached to it.
+
+this would allow the [:thai:] hack to be completely removed, would allow StandardTokenizer to parse complex writing systems such as Indian languages, and would fix LUCENE-1545.
+

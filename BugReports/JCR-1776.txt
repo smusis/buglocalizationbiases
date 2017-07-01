@@ -1,0 +1,6 @@
+Some unit tests are not well configured
+
+
+
+Description:
+Some unit tests used for the annotation support are not well defined. There are inherited from DigesterTestBase instead of AnnotationTestBase

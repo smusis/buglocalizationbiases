@@ -1,0 +1,9 @@
+Command line access to remote repositories
+
+
+
+Description:
+A few years ago Edgar Poce implemented a nice command line JCR access tool called jcr-commands. We haven't really been using it much and the code is currently parked in sandbox/inactive.
+
+I'd like to resurrect this codebase and integrate it to jackrabbit-standalone to implement command line access to remote repositories. The idea would be to have an easy-to-use tool for simple testing and administration tasks.
+

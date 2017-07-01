@@ -1,0 +1,8 @@
+Remove shared doc stores
+
+
+
+Description:
+With per-thread DocumentsWriters sharing doc stores across segments doesn't make much sense anymore.
+
+See also LUCENE-2324.

@@ -1,0 +1,7 @@
+Use NIO positional read to avoid synchronization in FSIndexInput
+
+
+
+Description:
+As suggested by Doug, we could use NIO pread to avoid synchronization on the underlying file.
+This could mitigate any MT performance drop caused by reducing the number of files in the index format.

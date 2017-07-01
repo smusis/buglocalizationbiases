@@ -1,0 +1,17 @@
+Signature changes in AttributeSource for better Generics support of AddAttribute/getAttribute
+
+
+
+Description:
+The last update of Attribute API using AttributeImpl as implementation oif Attributes changed the API a little bit. This change leads to the fact, that in Java 1.5 using generics we are no longer able to add Attributes without casting. addAttribute and getAttribute should return the Attribute interface because the implementation of the attribute is not interesting to the caller. By that in 1.5 using generics, one could add a TermAttribute without casting using:
+{code}
+TermAttribute termAtt = addAttribute(TermAttribute.class);
+{code}
+The signature to do this is:
+{code}
+public <T extends Attribute> T addAttribute(Class<T>)
+{code}
+
+The attached patch applies the mentioned change to the signature (without generic, only returning Attribute). No other code changes are needed, as current code always casts the result to the requested interface. I also added the 1.5 method signature for all these methods to the javadocs.
+
+All tests pass.

@@ -1,0 +1,6 @@
+The DisjunctionMaxQuery lacks an implementation of extractTerms().
+
+
+
+Description:
+The DisjunctionMaxQuery lacks an implementation of extractTerms(). 

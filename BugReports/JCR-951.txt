@@ -1,0 +1,12 @@
+OracleFileSystem uses getClass().getResourceAsStream to load schema file
+
+
+
+Description:
+org.apache.jackrabbit.core.fs.db.OracleFileSystem loads the schema via getClass().getResourceAsStream(...).
+This makes it impossible to extend the class without either copying the schema ddl file, or overwriting checkSchema(...),
+as the schema file is not accessible.
+
+The solution is to use OracleFilesystem.class.getResourceAsStream(...).
+
+See JCR-595 which fixed this already for org.apache.jackrabbit.core.persistence.db.DatabasePersistenceManager.

@@ -1,0 +1,7 @@
+error handling duplicate connection headers
+
+
+
+Description:
+HttpMethodBase.shouldCloseConnection() does not correctly handle the case when
+more than one connection header exists.  Reported by Ross Rankin.

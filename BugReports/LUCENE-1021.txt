@@ -1,0 +1,11 @@
+Unit tests do not fail if a ConcurrentMergeScheduler thread hits an exception
+
+
+
+Description:
+Now that CMS is the default, it's important to fail any unit test that
+hits an exception in a CMS thread.  But they do not fail now.  The
+preferred solution (thanks to Erik Hatcher) is to fix all Lucene unit
+tests to subclass from a new LuceneTestCase (in o.a.l.util) base that
+asserts that there were no such exceptions during the test.
+

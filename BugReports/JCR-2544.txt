@@ -1,0 +1,6 @@
+spi2dav : list of known issues in the pom.xml
+
+
+
+Description:
+

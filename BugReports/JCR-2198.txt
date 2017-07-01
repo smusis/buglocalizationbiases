@@ -1,0 +1,6 @@
+Text.escapeIllegalJCRChars should be adjusted to match the 2.0 set of illegal chars
+
+
+
+Description:
+Text.escapeIllegalJCRChars still contains chars that were illegal in JCR 1.0 but were removed from the set for JCR 2.0

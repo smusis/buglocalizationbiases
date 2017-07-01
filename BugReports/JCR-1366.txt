@@ -1,0 +1,32 @@
+DbDataStore: tablePrefix not accomodated during init test for existing DATASTORE table
+
+
+
+Description:
+we are providing a test db deployment with prepopulated data, including jackrabbit DataStore. I tried specifying the tablePrefix when creating the initial repository, and tables are created properly.
+
+However, when a clean installation is run with a fresh database that has an existing DataStore (stored at JACKRABBIT_DS_DATASTORE table), the startup fails, because during init, the meta data only checks for tables name matching the tableSQL property:
+ResultSet rs = meta.getTables(null, null, tableSQL, null);
+
+but the tableSQL property is never modified based on the tablePrefix property (other uses of tableSQL modify queries based on the prefix).
+
+I think the init method should modify the tested table name based on the tablePrefix.
+
+Note: I assume different JDBC drivers may handle this differently (we are using SQL Server 2007 and jTDS driver), since the DatabaseMetaData is API is unclear on the parameter to getTables being a "tableNamePattern" - should wildcards work? Or should a specific table be specified? 
+
+My DataStore config is below:
+
+    <DataStore class="org.apache.jackrabbit.core.data.db.DbDataStore">
+      <param name="className" value="org.apache.jackrabbit.core.data.db.DbDataStore"/>
+      <param name="url" value="jdbc:jtds:SQLServer://localhost:1433/nga_admin;prepareSQL=2;responseBuffering=adaptive"/>
+      <param name="user" value="sa"/>
+      <param name="password" value=""/>
+      <param name="databaseType" value="sqlserver"/>
+      <param name="driver" value="net.sourceforge.jtds.jdbc.Driver"/>
+      <!-- a bug in jackrabbit makes tablePrefix not work -->
+      <param name="tablePrefix" value="JACKRABBIT_DS_">
+      <param name="minRecordLength" value="1"/>
+      <param name="maxConnections" value="2"/>
+      <param name="copyWhenReading" value="true"/>         
+    </DataStore>
+

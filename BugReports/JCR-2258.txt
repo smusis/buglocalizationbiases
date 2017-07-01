@@ -1,0 +1,6 @@
+Unclosed sessions in test cases
+
+
+
+Description:
+Some tests may throw exceptions in the setUp() method and leave the session open that was opened in the super class setUp() method. For jackrabbit-core, this is not really a problem, because the memory footprint of a session is quite small, but in jcr2spi the memory footprint is considerable higher, which may lead to out of memory errors when running the tests.

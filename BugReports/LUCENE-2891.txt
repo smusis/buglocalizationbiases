@@ -1,0 +1,8 @@
+IndexWriterConfig does not allow readerTermsIndexDivisor to be -1, while the latest indicates the terms index should not be loaded
+
+
+
+Description:
+While you can pass -1 to IR.open(), and it's documented, you cannot do the same for IndexWriter's readers (b/c IWC blocks it). Need to allow this setting as well as add support for it in our tests, e.g. we should randomly set it to -1. Robert also suggested RandomIW use -1 randomly when it opens readers.
+
+I'll work on a patch

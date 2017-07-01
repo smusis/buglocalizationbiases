@@ -1,0 +1,23 @@
+User-defined ProtocolSocketFactory for secure connection through proxy
+
+
+
+Description:
+I use a custom socket implementation with HttpClient, and am having problems 
+getting secure connections through a proxy working.
+
+HttpClient requires that my SecureProtocolSocketFactory be able to create a 
+secure socket layered over an existing insecure socket, but does not specify 
+how that insecure socket is created. Currently, for secure proxied 
+connections, the insecure connection is always created using a 
+DefaultProtocolSocketFactory (HttpConnection.java, line 702). I wish to be 
+able to override this behaviour, so that I can create the insecure socket 
+using my own custom implementation.
+
+The problem with the default behaviour is that my custom socket implementation 
+is written in C++ using JNI, and the SSL implementation is handled at the 
+native level. Hence, layering over an existing JDK socket will not work.
+
+My proposed solution is to add an HTTP connection parameter to specify the 
+socket factory to use, perhaps http.connection.insecuresocketfactory of type 
+Class.

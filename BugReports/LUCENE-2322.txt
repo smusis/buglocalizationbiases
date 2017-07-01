@@ -1,0 +1,6 @@
+Remove verbosity from tests and make configureable
+
+
+
+Description:
+The parent issue added the functionality to LuceneTestCase(J4), this patch applies it to most tests.

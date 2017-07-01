@@ -1,0 +1,6 @@
+Support for boost factor in MoreLikeThis
+
+
+
+Description:
+This is a patch I made to be able to boost the terms with a specific factor beside the relevancy returned by MoreLikeThis. This is helpful when having more then 1 MoreLikeThis in the query, so words in the field A (i.e. Title) can be boosted more than words in the field B (i.e. Description).

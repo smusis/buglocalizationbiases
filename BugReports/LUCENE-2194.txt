@@ -1,0 +1,9 @@
+improve efficiency of snowballfilter
+
+
+
+Description:
+snowball stemming currently creates 2 new strings and 1 new stringbuilder for every word.
+
+all of this is unnecessary, so don't do it.
+

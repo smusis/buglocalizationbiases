@@ -1,0 +1,8 @@
+Wrong exeption returned from Repository.login(Credentials, String)
+
+
+
+Description:
+According to specification, calling Repository.login(Credentials, String) with a non-existent wokspaceName should return NoSuchWorkspaceException.
+
+In fact it returns RepositoryException.

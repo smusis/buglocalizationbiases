@@ -1,0 +1,6 @@
+Optimize FixedStraightBytes for bytes size == 1
+
+
+
+Description:
+Currently we read all the bytes in a PagedBytes instance wich is unneeded for single byte values like norms. For fast access this should simply be a straight array.

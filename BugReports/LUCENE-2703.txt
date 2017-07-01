@@ -1,0 +1,11 @@
+multitermquery scoring differences between 3x and trunk
+
+
+
+Description:
+try this patch with a test, that applies clean to both 3x and trunk, but fails on trunk.
+
+if you modify the test-data-generator to use TopTerms*BoostOnly* rewrite, then it acts like TestFuzzyQuery2, and passes.
+
+So the problem is in TopTermsScoringBooleanRewrite, or BooleanQuery, or somewhere else.
+

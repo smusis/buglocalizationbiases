@@ -1,0 +1,14 @@
+javacc on Win32 (cygwin) creates wrong line endings - fix them with 'ant replace'
+
+
+
+Description:
+"ant javacc" in Windows/Cygwin generates files with wrong line endings (\r  or \r\n instead of *Nix's \n). 
+I managed to get rid of those using    perl -p -e 's/(\r\n|\n|\r)/\n/g'
+Some useful info on line ending issues is in http://en.wikipedia.org/wiki/Newline
+
+After wasting some time to get rid of those, I modified javacc-QueryParser build.xml task to take care of that.
+So now QueryParser files created with "ant javacc" are fixed (if required) to have \n as line ends.
+
+Should probably do that also for the other javacc targets: javacc-HTMLParser and javacc-StandardAnalyzer(?)
+

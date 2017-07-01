@@ -1,0 +1,62 @@
+DataStore: changing the modified date fails if the file is open for reading (Windows only)
+
+
+
+Description:
+If the file is open for reading, Windows doesn't allow to change the last modified time using File.setLastModified():
+
+org.apache.jackrabbit.core.data.DataStoreException: Failed to update record
+modified date: 2ac72495fd1e270777821b8a872903c79c84a8d9
+        at org.apache.jackrabbit.core.data.FileDataStore.addRecord(FileDataStore.java:250)
+        at org.apache.jackrabbit.core.value.BLOBInDataStore.getInstance(BLOBInDataStore.java:119)
+        at org.apache.jackrabbit.core.value.InternalValue.getBLOBFileValue(InternalValue.java:619)
+        at org.apache.jackrabbit.core.value.InternalValue.create(InternalValue.java:369)
+        at org.apache.jackrabbit.core.value.InternalValueFactory.create(InternalValueFactory.java:94)
+        at org.apache.jackrabbit.core.value.ValueFactoryImpl.createBinary(ValueFactoryImpl.java:74)
+
+Test case and possible workaround:
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.RandomAccessFile;
+public class Test {
+    public static void main(String... args) throws Exception {
+        String name = "test.txt";
+        File test = new File(name);
+        RandomAccessFile r = new RandomAccessFile(name, "rw");
+        r.write(0);
+        r.close();
+        long mod = test.lastModified();
+        Thread.sleep(3000);
+        FileInputStream in = new FileInputStream(name);
+        if (!test.setLastModified(test.lastModified()+1)) {
+        	if (!test.canWrite()) {
+        		System.out.println("Can't write to " + name);
+        	} else {
+            	System.out.println("canWrite ok");
+            	r = new RandomAccessFile(name, "rw");
+            	int old = r.read();
+            	r.seek(0);
+            	r.write(old);
+            	r.close();
+        	}
+        } else {
+        	System.out.println("setLastModified ok");
+        }
+        System.out.println("Modified old: " + mod);
+        System.out.println("Modified now: " + test.lastModified());
+        in.close();
+        System.out.println("input closed");
+        if (!test.setLastModified(test.lastModified()+1)) {
+        	if (!test.canWrite()) {
+        		System.out.println("Can't write to " + name);
+        	} else {
+            	System.out.println("canWrite ok");
+        	}
+        } else {
+        	System.out.println("setLastModified ok");
+        }
+        new File(name).delete();
+    }
+}
+

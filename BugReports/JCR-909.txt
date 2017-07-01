@@ -1,0 +1,50 @@
+checkIfNodeLocked()  in jcr mapping layer  does not behave properly when open scoped locks are used
+
+
+
+Description:
+I am planning to use open-scoped lock.  For which , I need to persist the locktoken along with the node  so that it can be used by another session for unlocking.Tested with Jackrabbit RMI client and it works fine.
+
+But I am using jcr-mapping layer to achieve the above in my project.Here I want that  as soon as a node is checked out, it gets locked by the session and the lock is stored in "lockToken" property of node "Document". For that I need to update the Document node after locking .
+
+*public void checkout(String path)throws CMSException {
+       pm = getPersistenceManager();
+        try{
+           pm.checkout(path);*
+*            String lockToken = pm.lock(path,true,false);   **        
+    Document doc = this.getDocument(path);**           
+  doc.setLockToken(lockToken);     //for persisting lockToken
+           doc.update();
+        }catch(LockedException le){
+          System.out.println(le.getLockedNodePath() + "is locked by" + le.getLockOwner());         }catch(Exception e){
+            throw new CMSException(e.getMessage(),e.getCause());
+        }
+   }*
+
+
+Here doc.update() fails with Locked Exception.  The problem here is PersistenceManagerImpl has a method checkIfNodeLocked(path)  which returns LockException if node is locked. This method is checked before every update/insert. So, I am not able to update a locked node. I need to persist the locktoken in the node . What is the reason of checking  for a lock before saving ? Ideally , it should throw error only if node is locked and session does not hold the lockToken .
+
+If the session who has locked the node tries to save the node without unlocking, it should be allowed .
+
+p.s.
+I am able to achieve the above by simple Jackrabbit RMI client.
+<code>
+               ClientRepositoryFactory factory = new ClientRepositoryFactory();
+               Repository repository = factory.getRepository("rmi://localhost:1101/jackrabbit");
+               Session session = repository.login(new SimpleCredentials("superuser", "superuser".toCharArray()),"Portal");                        String user = session.getUserID();
+               String name = repository.getDescriptor(Repository.REP_NAME_DESC);
+               System.out.println(
+                       "Logged in as " + user + " to a " + name + " repository.");
+
+               /* Testing the locks functionality */
+               Node n = session.getRootNode().getNode("cms/childfolder1/check.txt");
+
+              * Lock lck = n.lock(true, false); // deeplock,open-scoped
+               n.setProperty("ps:locktoken",lck.getLockToken());
+               n.setProperty("ps:language", "sanskrit");
+*
+               System.out.println("Lock#isLive=" + lck.isLive());
+               System.out.println("Node#isLocked=" +  session.getRootNode().getNode("cms/childfolder1/check.txt").isLocked());
+               session.save();
+               session.logout();
+     <code> 

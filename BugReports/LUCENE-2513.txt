@@ -1,0 +1,14 @@
+IndexReader overwrites future commits when you open it on a past commit
+
+
+
+Description:
+Hit this on trying to build up a test index for perf testing...
+
+IndexReader (and Writer) accept an IndexCommit on open.
+
+This is quite powerful, because, if you use a deletion policy that keeps multiple commits around, you can open a not-current commit, make some changes, write a new commit, all without altering the "future" commits.
+
+I use this to first build up a big wikipedia index, including one commit w/ multiple segments, then another commit after optimize(), and then I open an writable IR to perform deletions off of both those commits.  This gives me a single test index that has all four combinations (single vs multi segment; deletions vs no deletions).
+
+But IndexReader has a bug whereby it overwrites the segments_N file.  (IndexWriter works correctly).

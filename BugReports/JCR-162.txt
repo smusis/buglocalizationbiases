@@ -1,0 +1,6 @@
+bad project.xml
+
+
+
+Description:
+project.xml in the "api" module actually contains an error (nested comment) and can't be read by maven.

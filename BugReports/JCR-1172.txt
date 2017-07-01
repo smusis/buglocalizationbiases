@@ -1,0 +1,13 @@
+Better MimeType Handling
+
+
+
+Description:
+After saving a Excel File through WebDAV the mimetype will be changed.
+The mimetype for a Win2000 Exel File is application/vnd.ms-excel. This will be changed to application/msexcel.
+Also problems makes the new office 07 format (docx,xlsx,pptx). They will also be changed to application/octet-stream (default mimetype).
+We have a lot of file types that we store in jackrabbit that are not in the properties file (MSInfoPath-, OutlookMsg-, MsAccess-Files, ...)
+I think it will be better to let the mimetype property untouched if a mimetype is present so we must not put all the possible mimetypes in the property file.
+
+BR
+claus

@@ -1,0 +1,52 @@
+AbstractHttpClient.determineTarget(HttpUriRequest)
+
+
+
+Description:
+Issue with 4.1 beta1 fails to parse the right host from the URL, eg. http://my.site.com/search/?for=http://other.site.com
+This fails request for eg. REST that has a param value with ':' or '?' or '/'.
+
+AbstractHttpClient.determineTarget(HttpUriRequest)
+httpcomponents-client-4.0.3:
+    private HttpHost determineTarget(HttpUriRequest request) {
+        // A null target may be acceptable if there is a default target.
+        // Otherwise, the null target is detected in the director.
+        HttpHost target = null;
+
+        URI requestURI = request.getURI();
+        if (requestURI.isAbsolute()) {
+            target = new HttpHost(
+                    requestURI.getHost(),
+                    requestURI.getPort(),
+                    requestURI.getScheme());
+        }
+        return target;
+    }
+
+
+httpcomponents-client-4.1-beta1:
+    private HttpHost determineTarget(HttpUriRequest request) throws ClientProtocolException {
+        // A null target may be acceptable if there is a default target.
+        // Otherwise, the null target is detected in the director.
+        HttpHost target = null;
+
+        URI requestURI = request.getURI();
+        if (requestURI.isAbsolute()) {
+            String ssp = requestURI.getSchemeSpecificPart();
+            ssp = ssp.substring(2, ssp.length()); //remove "//" prefix
+            int end = ssp.indexOf(':') > 0 ? ssp.indexOf(':') :
+                    ssp.indexOf('/') > 0 ? ssp.indexOf('/') :
+                    ssp.indexOf('?') > 0 ? ssp.indexOf('?') : ssp.length();
+            String host = ssp.substring(0, end);
+
+            int port = requestURI.getPort();
+            String scheme = requestURI.getScheme();
+            if (host == null || "".equals(host)) {
+                throw new ClientProtocolException(
+                        "URI does not specify a valid host name: " + requestURI);
+            }
+            target = new HttpHost(host, port, scheme);
+        }
+        return target;
+    }
+

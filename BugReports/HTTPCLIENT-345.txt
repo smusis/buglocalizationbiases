@@ -1,0 +1,15 @@
+[CONTRIB] SSL authenticating protocol socket factory
+
+
+
+Description:
+Here's the long promised SSL client/server authenticating socket factory. This
+socket factory can be used to enforce client/server authentication during the
+SSL context negotiation. Let me know what you think. Please, please someone
+proof-read the accompanying javadocs and let me know if the text is comprehensible 
+
+I have also tweaked EasySSLProtocolSocketFactory a little
+
+The patch is against HTTPCLIENT_2_0_BRANCH
+
+Oleg

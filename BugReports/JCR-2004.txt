@@ -1,0 +1,23 @@
+Update SPI locking to match JCR 2.0
+
+
+
+Description:
+jcr2spi currently uses the JSR 170 way to determine whether a given Session owns the lock by checking of the lock token is null.
+with JSR 283 a new Lock method has been defined for this, while on the other hand the lock token is always null for session-scoped
+locks.
+
+In addition 283-locking allows to specify a timeout hint and hint about the owner info that should be displayed
+for information purpose.
+
+Proposed changes to SPI:
+
+- extend org.apache.jackrabbit.spi.LockInfo to cover the new functionality added with JSR 283
+- add an variant of RepositoryService.lock that allows to specify timeout and owner hint.
+
+Proposed changes to JCR2SPI:
+- change jcr2spi to make use of the new functionality and modify the test for session being lock holder.
+  this mainly affects
+  > LockOperation
+  > LockManager impl
+  > Lock impl

@@ -1,0 +1,12 @@
+javadoc often has <code> without </code>
+
+
+
+Description:
+Just to mention it:
+there are a lot of javadoc comments that read like
+ <tt>false</ff> otherwise.
+which prints the rest of the document in <tt>
+can't give a complete list, it happens very often.
+To check, just go to the bottom of a page and see if it appears in <tt> or 
+<code>

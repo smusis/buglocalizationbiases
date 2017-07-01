@@ -1,0 +1,6 @@
+Add Highlighting benchmark support to contrib/benchmark
+
+
+
+Description:
+I would like to be able to test the performance (speed, initially) of the Highlighter in a standard way.  Patch to follow that adds the Highlighter as a dependency benchmark and adds in tasks extending the ReadTask to perform highlighting on retrieved documents.

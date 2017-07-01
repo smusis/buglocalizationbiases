@@ -1,0 +1,6 @@
+tests for verifying that assertions are enabled do nothing since they ignore AssertionError
+
+
+
+Description:
+Follow-up from LUCENE-3501

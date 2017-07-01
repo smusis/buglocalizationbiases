@@ -1,0 +1,9 @@
+String.intern() faster alternative
+
+
+
+Description:
+By using our own interned string pool on top of default, String.intern() can be greatly optimized.
+
+On my setup (java 6) this alternative runs ~15.8x faster for already interned strings, and ~2.2x faster for 'new String(interned)'
+For java 5 and 4 speedup is lower, but still considerable.

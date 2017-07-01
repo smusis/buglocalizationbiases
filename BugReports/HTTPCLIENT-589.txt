@@ -1,0 +1,15 @@
+Do not consume the remaining response content if the connection is to be closed
+
+
+
+Description:
+I am working on a HttpClient-based application to send and receive potentially large files (up to Gigabytes). When receiving large files the application allows the user to cancel the download, at which time it closes the response input stream behind the scenes.
+
+The input stream currently provided by HttpMethodBase.getResponseBody() for un-chunked responses with a known content length is a ContentLengthInputStream, which automatically reads the remainder of the wrapped response instead of closing it straight away. This behaviour does not work well with very large files as the data is downloaded unnecessarily and the connection is held open for long very periods.
+
+Per the HTTP 1.1 spec section 14.10 it seems to me that either a server or a client in an HTTP 1.1 connection can use the Connection:close directive to signal that a connection will be non-persistent, and will therefore not require that all data be read before the connection can be released (the cleaning up ContentLengthInputStream performs for persistent connections).
+
+http://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.10
+
+Could HttpMethodBase be modified to check for this directive, from the server or client, and avoid wrapping the response input stream in ContentLengthInputStream when it is present? It seems straight-forward, though there may be side-effects I am not aware of. 
+

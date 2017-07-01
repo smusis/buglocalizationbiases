@@ -1,0 +1,13 @@
+Improve StandardTokenizer's understanding of non ASCII punctuation and quotes
+
+
+
+Description:
+In the vein of LUCENE-1126 and LUCENE-1390, StandardTokenizerImpl.jflex should do a better job at understanding non-ASCII punctuation characters.
+
+For example, its understanding of the single-quote character "'" is currently limited to that character only. It will set a token's type to APOSTROPHE only if the "'" was used.
+In the patch attached, I added all the characters that ASCIIFoldingFilter would change into "'".
+
+I'm not sure that this is the right approach so I didn't write a complete patch for all the other hardcoded characters used in jflex rules such as ".", "-" which have some variants in ASCIIFoldingFilter that could be used as well.
+
+Maybe a better approach would be to make it possible to have an ASCIIFoldingFilter-like reader as a character filter that could be in inserted in front of StandardTokenizer ?

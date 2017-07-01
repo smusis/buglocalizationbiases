@@ -1,0 +1,9 @@
+MemcachedHttpCacheStorage should throw IOExceptions instead of Runtime Exceptions
+
+
+
+Description:
+The MemcachedHttpCacheStorage class implements HttpCacheStorage which defines that methods will throw IOExceptions, but the underlying net.spy.memcached.MemcachedClientIF throws runtime exceptions. These exceptions are not caught in the code where IOExceptions are expected causing these exception bubble up to the calling code. It seems like the MemcachedHttpCacheStorage class should treat at least some of these runtime exceptions as IOExceptions so that normal code execution paths can be followed.  
+
+I'm proposing that MemcachedHttpCacheStorage treat a OperationTimeoutException from the memcached client as an IOException. This would allow the existing CachingHttpClient code to catch and log the exception as a warning, instead of bubbling the exception up the calling code.
+

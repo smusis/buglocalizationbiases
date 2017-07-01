@@ -1,0 +1,25 @@
+NodeIdImpl is not really serializable 
+
+
+
+Description:
+I've been trying to get jcr2spi - rmi - spi2jcr to work. 
+
+The error I'm seeing is reported as:
+java.io.NotSerializableException: org.apache.jackrabbit.spi.commons.identifier.IdFactoryImpl
+
+I believe I tracked this down.  It is because NodeIdImpl is implicitly referencing its containing instance IdFactoryImpl which is not serializable.
+
+NodeIdImpl is attempted to be serialized, in my case, with the following stack:
+
+at org.apache.jackrabbit.spi.rmi.client.ClientRepositoryService.getItemInfos(ClientRepositoryService.java:258)
+at org.apache.jackrabbit.jcr2spi.state.WorkspaceItemStateFactory.createNodeState(WorkspaceItemStateFactory.java:94)
+at org.apache.jackrabbit.jcr2spi.state.TransientISFactory.createNodeState(TransientISFactory.java:99)
+at org.apache.jackrabbit.jcr2spi.hierarchy.NodeEntryImpl.doResolve(NodeEntryImpl.java:972)
+at org.apache.jackrabbit.jcr2spi.hierarchy.HierarchyEntryImpl.resolve(HierarchyEntryImpl.java:95)
+at org.apache.jackrabbit.jcr2spi.hierarchy.HierarchyEntryImpl.getItemState(HierarchyEntryImpl.java:212)
+at org.apache.jackrabbit.jcr2spi.ItemManagerImpl.getItem(ItemManagerImpl.java:170)
+at org.apache.jackrabbit.jcr2spi.SessionImpl.getRootNode(SessionImpl.java:216)
+
+I think I must be doing something wrong, because it seems like this is a fundamental problem with doing jcr2spi - rmi - spi2jcr, and looking at the SVN history I don't see how this ever could have worked.  
+So either session.getRootNode() has never been tested using jcr2spi - rmi - spi2jcr, or I've got something setup wrong.

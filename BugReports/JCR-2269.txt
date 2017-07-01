@@ -1,0 +1,168 @@
+Possible concurrency bug with Workspace.copy() 
+
+
+
+Description:
+Hi,
+
+Enclosed below is a test case that can be used to reproduce a
+concurrency bug. This test case uses two con-current threads to
+execute Workspace.copy() to copy a node to same destination. The
+parent node has set its allowSameNameSiblings to false. According to
+the javadoc of Workspace.copy(String srcAbsPath, String destAbsPath) :
+"This method copies the node at srcAbsPath to the new location at
+destAbsPath. If successful, the change is persisted immediately, there
+is no need to call save.".  "An ItemExistException is thrown if a
+property already exists at destAbsPath or a node already exist there,
+and same name siblings are not allowed. "
+
+However in reality this is not the case.  The test case can end up
+with two child nodes with same names. Please note, not every run can
+reproduce the problem, but generally I can get the problem within 3 to
+10 iterations. I also got an InvalidItemStateException once (only
+once).  Can someone kindly help to confirm if this is a bug in
+Jackrabbit or maybe I am using JackRabbit in a wrong way? The test
+case has been tested on Jackrabbit 1.6 branch
+(http://svn.apache.org/repos/asf/jackrabbit/tags/1.6.0), Windows
+Vista, JDK 1.5.0_14.
+
+The test case is also attached for your convenience.
+
+Thanks,
+Jervis Liu
+
+package org.apache.jackrabbit.core;
+
+import org.apache.jackrabbit.test.AbstractJCRTest;
+import javax.jcr.ItemExistsException;
+import javax.jcr.Node;
+import javax.jcr.Session;
+import javax.jcr.Value;
+import javax.jcr.NodeIterator;
+import java.util.Random;
+import java.util.ArrayList;
+import java.util.Iterator;
+import javax.jcr.nodetype.NodeType;
+
+import org.apache.jackrabbit.test.NotExecutableException;
+import javax.jcr.RepositoryException;
+import javax.jcr.nodetype.NodeTypeManager;
+
+
+public class ConcurrentCopyTest extends AbstractJCRTest {
+
+    private static final int NUM_ITERATIONS = 40;
+    private static final int NUM_SESSIONS = 2;
+
+    String sourcePath;
+    String destPath;
+
+    public void testConcurrentCopy() throws Exception {
+        for (int n = 0; n < NUM_ITERATIONS; n++) {
+            System.out.println("---Iteration---- " + n);
+
+            // clean up testRoot first
+            if (testRootNode.hasNode("ConcurrentCopyTestNode")) {
+                Node testNode = testRootNode.getNode("ConcurrentCopyTestNode");
+                testNode.remove();
+                testRootNode.save();
+                System.out.println("---old node removed---");
+            }
+
+            // create a parent node where allowSameNameSiblings is set to false
+            Node snsfNode = testRootNode.addNode("ConcurrentCopyTestNode",
+                    "nt:folder");
+            testRootNode.save();
+            sourcePath = snsfNode.getPath();
+            destPath = sourcePath + "/" + "CopiedFromConcurrentCopyTestNode";
+            System.out.println("---sourcePath-----------------" + sourcePath);
+            System.out.println("---destPath-----------------" + destPath);
+
+            // firstly we verify it works with single thread.
+            Session rootSession = helper.getSuperuserSession();
+            rootSession.getWorkspace().copy(sourcePath, destPath + "test");
+
+            // copy again to same destPath, expect an ItemExistsException
+            try {
+                rootSession.getWorkspace().copy(sourcePath, destPath + "test");
+                fail("Node exists below '" + destPath + "'. Test should fail.");
+            } catch (ItemExistsException e) {
+            }
+
+            Thread[] threads = new Thread[NUM_SESSIONS];
+            for (int i = 0; i < threads.length; i++) {
+                // create new session
+                Session session = helper.getSuperuserSession();
+                TestSession ts = new TestSession("s" + i, session);
+                Thread t = new Thread(ts);
+                t.setName((NUM_ITERATIONS - n) + "-s" + i);
+                t.start();
+                log.println("Thread#" + i + " started");
+                threads[i] = t;
+                // Thread.yield();
+                // Thread.sleep(100);
+            }
+            for (int i = 0; i < threads.length; i++) {
+                threads[i].join();
+            }
+
+            NodeIterator results = testRootNode.getNode(
+                    "ConcurrentCopyTestNode").getNodes(
+                    "CopiedFromConcurrentCopyTestNode");
+            while (results.hasNext()) {
+                Node node = results.nextNode();
+                System.out.println("--result node- " + node.getName());
+            }
+
+            assertEquals(1, results.getSize());
+        }
+    }
+
+    // --------------------------------------------------------< inner classes >
+    class TestSession implements Runnable {
+
+        Session session;
+        String identity;
+        Random r;
+
+        TestSession(String identity, Session s) {
+            session = s;
+            this.identity = identity;
+            r = new Random();
+        }
+
+        private void randomSleep() {
+            long l = r.nextInt(90) + 20;
+            try {
+                Thread.sleep(l);
+            } catch (InterruptedException ie) {
+            }
+        }
+
+        public void run() {
+
+            log.println("started.");
+            String state = "";
+            try {
+                this.session.getWorkspace().copy(sourcePath, destPath);
+                session.save();
+                Node newNode =
+testRootNode.getNode("ConcurrentCopyTestNode/CopiedFromConcurrentCopyTestNode");
+                System.out.println("--Added node- " + newNode.getName());
+
+                session.save();
+                randomSleep();
+            } catch (Exception e) {
+                log.println("Exception while " + state + ": " + e.getMessage());
+                e.printStackTrace();
+            } finally {
+                session.logout();
+            }
+
+            log.println("ended.");
+        }
+    }
+
+}
+
+

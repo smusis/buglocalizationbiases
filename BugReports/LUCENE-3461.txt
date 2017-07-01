@@ -1,0 +1,10 @@
+Adding same IndexDocValuesField twice trips assert
+
+
+
+Description:
+Doc values fields are single-valued by design, ie a given field name can only occur once in the document.
+
+But if you accidentally add it more than once, you get an assert error, which is spooky because if you run w/o asserts maybe something eviler happens.
+
+I think we should explicitly check for this and throw clear exc since user could easily do this by accident.

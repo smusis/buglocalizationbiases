@@ -1,0 +1,6 @@
+Cluster Node ID should be trimmed
+
+
+
+Description:
+If the cluster node ID is not configured in repository.xml, it is read from the file cluster_node.id instead. In case this file is edited by hand, some editors (e.g. vi) insert a trailing newline character ("\n"). This leads to the cluster node ID to contain a blank character. While I don't expect this to cause any issues, it is inconvenient for debugging and also introduces line-breaks in log files. I suggest to trim the cluster node ID, so only non-blank characters are used.

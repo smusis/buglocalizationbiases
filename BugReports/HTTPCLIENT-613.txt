@@ -1,0 +1,16 @@
+https should check CN of x509 cert
+
+
+
+Description:
+https should check CN of x509 cert
+
+Since we're essentially rolling our own "HttpsURLConnection",  the checking provided by "javax.net.ssl.HostnameVerifier" is no longer in place.
+
+I have a patch I'm about to attach which caused both createSocket() methods on o.a.h.conn.ssl.SSLSocketFactory to blowup:
+
+test1: javax.net.ssl.SSLException: hostname in certificate didn't match: <vancity.com> != <www.vancity.com>
+test2: javax.net.ssl.SSLException: hostname in certificate didn't match: <vancity.com> != <www.vancity.com>
+
+Hopefully people agree that this is desirable.
+

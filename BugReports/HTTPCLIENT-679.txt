@@ -1,0 +1,21 @@
+URI Absolutization does not follow browser behavior
+
+
+
+Description:
+This was encountered using Heritrix to crawl a prominent website.
+
+The URI resulting from the HttpClient URI constructor (base, relative) does not follow browser behavior:
+URI newUrl = new URI(new URI("http://www.theirwebsite.com/browse/results?type=browse&att=1"), "?sort=0&offset=11&pageSize=10")
+
+Results in newUrl:
+http://www.theirwebsite.com/browse/?sort=0&offset=11&pageSize=10
+
+The desired behavior based on Firefox and IE should be:
+http://www.theirwebsite.com/browse/results?sort=0&offset=11&pageSize=10
+
+These browsers treat the question mark similar to a directory separator and do not require a file to be specified before the query.
+
+HttpClient's current behavior does not correspond to current browser behavior and leads to an inability to crawl certain websites if HttpClient's URI class is used.
+
+

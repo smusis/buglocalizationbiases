@@ -1,0 +1,6 @@
+DbDataStore keeps ResultSets open
+
+
+
+Description:
+The DbDataStore does not always close the ResultSet which can lead to memory leaks and/or large memory usage. It seems that  this already has been fixed in trunk and 1.5.

@@ -1,0 +1,6 @@
+Remove unused "numSlotsFull" from FieldComparator.setNextReader
+
+
+
+Description:
+This param is a relic from older optimizations that we've since turned off, and it's quite confusing.  I don't think we need it, and we haven't released the API yet so we're free to remove it now.

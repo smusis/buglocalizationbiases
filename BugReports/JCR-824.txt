@@ -1,0 +1,6 @@
+Problems with File Copy using WebDAV
+
+
+
+Description:
+When i make a copy of files from one workspace to other (CTRL-C -> CTRL-V). The file isnt copied, but the original file is deleted.

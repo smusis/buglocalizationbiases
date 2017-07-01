@@ -1,0 +1,11 @@
+Visibility of Scorer.score(Collector, int, int) is wrong
+
+
+
+Description:
+The method for scoring subsets in Scorer has wrong visibility, its marked protected, but protected methods should not be called from other classes. Protected methods are intended for methods that should be overridden by subclasses and are called by (often) final methods of the same class. They should never be called from foreign classes.
+
+This method is called from another class out-of-scope: BooleanScorer(2) - so it must be public, but it's protected. This does not lead to a compiler error because BS(2) is in same package, but may lead to problems if subclasses from other packages override it. When implementing LUCENE-2838 I hit a trap, as I thought tis method should only be called from the class or Scorer itsself, but in fact its called from outside, leading to bugs, because I had not overridden it. As ConstantScorer did not use it I have overridden it with throw UOE and suddenly BooleanQuery was broken, which made it clear that it's called from outside (which is not the intention of protected methods).
+
+We cannot fix this in 3.x, as it would break backwards for classes that overwrite this method, but we can fix visibility in trunk.
+

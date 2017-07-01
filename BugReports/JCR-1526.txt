@@ -1,0 +1,15 @@
+Various improvment to Path and PathImpl
+
+
+
+Description:
+There are various issues with Path and PathImpl which the following patch addresses:
+- Fixed problem with normalization of some paths in PathImpl. 
+- Fixed handling of relative paths in PathImpl. 
+- Fixed wrong return value for depth and ancestor count in PathImpl. 
+- Added method for determining equivalence of paths in PathImpl.
+- Fixed subPath method in PathImpl. 
+- Clarified blurry contract for Path.
+- Added many new test cases
+
+For many of the fixes credits are due to Angela.

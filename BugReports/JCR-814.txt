@@ -1,0 +1,8 @@
+Oracle bundle PM fails checking schema if 2 users use the same database
+
+
+
+Description:
+When using the OracleBundlePersistenceManager there is an issue when two users use the same database for persistence. In  that case, the checkSchema() method of the BundleDbPersistenceManager  does not work like it should. More precisely, the call "metaData.getTables(null,  null, tableName, null);" will also includes table names of other  schemas/users. Effectively, only the first user of a database is able to create  the schema.
+
+probably same issue as here: JCR-582

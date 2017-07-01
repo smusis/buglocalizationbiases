@@ -1,0 +1,9 @@
+Build environment configuration: Mavenize the build process
+
+
+
+Description:
+- ease of building. HttpClient should be buildable without the user needing to
+go away and download extra jars. Maven does a good job of this.
+- automated site and build on a nightly basis to pick up changes
+- move to j2sdk1.4

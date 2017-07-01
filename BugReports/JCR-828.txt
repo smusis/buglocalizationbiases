@@ -1,0 +1,7 @@
+CheckPermissionTest-testCheckPermission() doesn't allow config of node type to be created
+
+
+
+Description:
+CheckPermissionTest-testCheckPermission() doesn't allow configuration of node type to be created. Proposal to re-use the testNodeType config property.
+

@@ -1,0 +1,12 @@
+Jcr-Server: BasicCredentialsProviderTest throws NPE if defaultAuthHeader init param misses the password
+
+
+
+Description:
+issue reported by dominique jaeggi:
+
+a missing-auth-header init param that has the form "uid" instead of "uid:pw" or "uid:" results in NPE upon SimpleCredentials creation.
+
+
+
+

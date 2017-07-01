@@ -1,0 +1,24 @@
+NullPointerException when deleting a property of type REFERENCE
+
+
+
+Description:
+In method org.apache.jackrabbit.rmi.value.SerialValueFactory#createValue a NPE is thrown when parameter value is null.
+
+Solution:
+
+Change:
+
+   public final Value createValue(Node value) throws RepositoryException {
+        return createValue(value.getUUID(), PropertyType.REFERENCE);
+    }
+
+to
+
+   public final Value createValue(Node value) throws RepositoryException {
+        if (value == null) {
+           return null;
+        }
+        
+        return createValue(value.getUUID(), PropertyType.REFERENCE);
+    }

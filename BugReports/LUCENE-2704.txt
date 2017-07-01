@@ -1,0 +1,24 @@
+TestIndexWriter.testOptimizeTempSpaceUsage fails w/ SimpleText codec
+
+
+
+Description:
+{noformat}
+   [junit] Testsuite: org.apache.lucene.index.TestIndexWriter
+   [junit] Testcase: testOptimizeTempSpaceUsage(org.apache.lucene.index.TestIndexWriter):      FAILED
+   [junit] optimized used too much temporary space: starting usage was 117867 bytes; max temp usage was 363474 but should have been 353601 (= 3X starting usage)
+   [junit] junit.framework.AssertionFailedError: optimized used too much temporary space: starting usage was 117867 bytes; max temp usage was 363474 but should have been 353601 (= 3X starting usage)
+   [junit]     at org.apache.lucene.index.TestIndexWriter.testOptimizeTempSpaceUsage(TestIndexWriter.java:662)
+   [junit]     at org.apache.lucene.util.LuceneTestCase$LuceneTestCaseRunner.runChild(LuceneTestCase.java:795)
+   [junit]     at org.apache.lucene.util.LuceneTestCase$LuceneTestCaseRunner.runChild(LuceneTestCase.java:768)
+   [junit]
+   [junit]
+   [junit] Tests run: 1, Failures: 1, Errors: 0, Time elapsed: 5.284 sec
+   [junit]
+   [junit] ------------- Standard Output ---------------
+   [junit] NOTE: reproduce with: ant test -Dtestcase=TestIndexWriter -Dtestmethod=testOptimizeTempSpaceUsage -Dtests.seed=-3299990090561349208:2824386407253661541
+   [junit] NOTE: test params are: codec=SimpleText, locale=el_GR, timezone=Africa/Dar_es_Salaam
+{noformat}
+
+It's not just SimpleText (because -Dtests.codec=SimpleText, alone, sometimes passes)... there must be something else about the RIWC settings.
+

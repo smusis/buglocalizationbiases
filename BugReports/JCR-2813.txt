@@ -1,0 +1,12 @@
+"overwriting cached entry" warnings
+
+
+
+Description:
+when using multiple concurrent sessions you'll find *lots* of log entries like:
+
+    03.11.2010 21:17:03 *WARN * ItemStateReferenceCache: overwriting cached entry ad79ca57-5eb1-4b7d-a439-a9fd73cc8c5a (ItemStateReferenceCache.java, line 176)
+
+those are actually legitimate warnings since there's a siginificant risk of data loss/inconsistency involved.
+
+this is apparently a regression of changes introduced by JCR-2699, specifically svn r1004223

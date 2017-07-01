@@ -1,0 +1,11 @@
+investigate solr test failures using flex
+
+
+
+Description:
+We have a branch of Solr located here: https://svn.apache.org/repos/asf/lucene/solr/branches/solr
+
+Currently all the tests pass with lucene trunk jars.
+
+I plopped in the flex jars and they do not, so I thought these might be interesting to look at.
+

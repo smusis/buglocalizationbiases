@@ -1,0 +1,15 @@
+davex remoting has  a performance bottleneck due limit of 2 http connections
+
+
+
+Description:
+The spi2dav service implementation use of HttpClient did not support configuration of the maximum amount of http connections to the server.  The default value, in the HttpClient code, is two. This was a performance bottleneck.  This work makes the number of connections configurable via a parameter to the map passed to the repository factory.  
+
+It also fixes a concurrency issue which was exposed by the increased concurrency effected by this work.  This fix is a replacement of a HashMap cache of client connections with a ConcurrentHashMap, thanks to the java 1.5 available in Jackrabbit 2.x
+
+USAGE: 
+Set the number of connections (Spi2davRepositoryServiceFactory.PARAM_MAX_HTTP_CONNECTIONS) when creating a factory via the dav or davex rep factories.  Default is 20.
+
+NOTE: 
+See also the server side fixes: JCR-3027  The patch on that ticket allows configuration of the concurrency level on the server, which should be tuned in conjunction with the client side connection levels.  
+ 

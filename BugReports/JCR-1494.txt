@@ -1,0 +1,10 @@
+[PATCH] XPathQueryBuilder reports misleading column numbers for faulty queries
+
+
+
+Description:
+XPathQueryBuilder returns an error string with the column offset where a parsing error occurred. Unfortunately this value is difficult to correlate to the users query string, as XPathQueryBuilder embellishes the query by doing
+
+statement = "for $v in " + statement + " return $v";
+
+This patch appends the modified statement to the query message so that the user can get the real position of the error.

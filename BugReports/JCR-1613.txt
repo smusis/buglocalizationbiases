@@ -1,0 +1,6 @@
+REMOVE access is not checked when moving a node
+
+
+
+Description:
+When a node cannot be removed because AccessManager does not allow this, it still can be moved (using Session.move()).

@@ -1,0 +1,8 @@
+some jcr-client tests fail if a server runs on localhost:80 
+
+
+
+Description:
+This is caused by RepositoryFactoryImplTest.testGetSpi2davRepository() and probably RepositoryFactoryImplTest.testGetSpi2davexRepository(). 
+
+To fix this the tests should set up the required webDav servers for the test runs. Currently the tests just try to connect to localhost:80 expecting the connection to fail in a specific way. 

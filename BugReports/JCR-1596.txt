@@ -1,0 +1,20 @@
+search.jsp doesn't handle utf-8 parameters correctly
+
+
+
+Description:
+
+1.  I  cannot use WebDav client to uploaded a file whose name is in Chinese.  The file name I had is ''éƒ­å?¯ä¸º.txt'  and the uploaded command by the WebDav client did something like:
+
+  ========= Outbound Message =========
+PUT /op/%ED%EF%3A.txt HTTP/1.1
+Host: localhost:8080
+-----
+
+ The server didn't decode it correctly -- the result is the file name got screwed and the file content was not uploaded.
+
+2. In the default web.war module,  there is search.jsp for rendering the search page. If I type Chinese text in the search box,  search.jsp does not decode the input parameter from ISO-8859-1 to utf-8 and in turn the search engine searches wrong string.
+
+3. The search engine does do search correctly if I hardcode the query  variable in search.jsp or do decoding the query parameter from ISO-885901 to utf-8.
+
+

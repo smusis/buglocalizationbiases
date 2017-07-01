@@ -1,0 +1,9 @@
+[PATCH] Use filter bits for next() and skipTo() in FilteredQuery
+
+
+
+Description:
+This improves performance of FilteredQuery by not calling score() 
+on documents that do not pass the filter. 
+This passes the current tests for FilteredQuery, but these tests 
+have not been adapted/extended.

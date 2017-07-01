@@ -1,0 +1,14 @@
+spi2davex: unspecific BadRequest error instead of error code matching the RepositoryException
+
+
+
+Description:
+the JsonDiffHandler#NodeHandler in the server part of the jcr remoting may only throw IOException
+if an error occurs. this results in unspecific BadRequest responses even if the problem source was
+something very specific such as e.g. a locked node.
+
+after having a first glance at this i think that making DiffException a subclass of IOException would
+allow to generate much more specific responses codes that even include the original exception
+details.
+
+i will attach a patch as i didn't had time to carefully test it.  [the conformance tests passed].

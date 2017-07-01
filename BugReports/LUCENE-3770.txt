@@ -1,0 +1,6 @@
+Rename FilterIndexReader to FilterAtomicReader
+
+
+
+Description:
+This class has to be renamed to be consistent with the new naming.

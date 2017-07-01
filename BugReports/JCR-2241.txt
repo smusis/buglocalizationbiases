@@ -1,0 +1,27 @@
+Data Store: garbage collection should ignore removed items
+
+
+
+Description:
+The GCConcurrentTest fails sometimes. The problem is that
+the garbage collector stops if a node or property was removed
+while scanning. Instead, the garbage collector should ignore the
+removed item and continue.
+
+-------------------------------------------------------------------------------
+Test set: org.apache.jackrabbit.core.data.TestAll
+-------------------------------------------------------------------------------
+Tests run: 19, Failures: 0, Errors: 1, Skipped: 0, Time elapsed: 21.282 sec <<< FAILURE!
+testGC(org.apache.jackrabbit.core.data.GCConcurrentTest)  Time elapsed: 0.578 sec  <<< ERROR!
+javax.jcr.InvalidItemStateException: 5fc4130b-aee4-4bef-b51d-21420d78f315/{}data: the item does not exist anymore
+	at org.apache.jackrabbit.core.ItemImpl.sanityCheck(ItemImpl.java:144)
+	at org.apache.jackrabbit.core.PropertyImpl.getPropertyState(PropertyImpl.java:89)
+	at org.apache.jackrabbit.core.PropertyImpl.getType(PropertyImpl.java:773)
+	at org.apache.jackrabbit.core.data.GarbageCollector.recurse(GarbageCollector.java:310)
+	at org.apache.jackrabbit.core.data.GarbageCollector.recurse(GarbageCollector.java:327)
+	at org.apache.jackrabbit.core.data.GarbageCollector.recurse(GarbageCollector.java:327)
+	at org.apache.jackrabbit.core.data.GarbageCollector.scanNodes(GarbageCollector.java:193)
+	at org.apache.jackrabbit.core.data.GarbageCollector.scan(GarbageCollector.java:177)
+	at org.apache.jackrabbit.core.data.GCThread.run(GCThread.java:52)
+	at java.lang.Thread.run(Thread.java:619)
+

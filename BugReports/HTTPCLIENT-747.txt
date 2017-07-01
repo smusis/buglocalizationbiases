@@ -1,0 +1,27 @@
+No entry created for this pool.
+
+
+
+Description:
+Followup to https://issues.apache.org/jira/browse/HTTPCLIENT-741, as reported by Sam Berlin:
+
+java.lang.IllegalStateException: No entry created for this pool. HttpRoute[{}->http://74.160.66.42:14561]
+    at org.apache.http.impl.conn.tsccm.RouteSpecificPool.freeEntry(RouteSpecificPool.java:137)
+    at org.apache.http.impl.conn.tsccm.ConnPoolByRoute.freeEntry(ConnPoolByRoute.java:337)
+    at org.apache.http.impl.conn.tsccm.ThreadSafeClientConnManager.releaseConnection(ThreadSafeClientConnManager.java:230)
+    at org.apache.http.impl.client.DefaultClientRequestDirector.execute(DefaultClientRequestDirector.java:427)
+    at org.apache.http.impl.client.AbstractHttpClient.execute(AbstractHttpClient.java:500)
+    at org.apache.http.impl.client.AbstractHttpClient.execute(AbstractHttpClient.java:455)
+    at org.apache.http.impl.client.AbstractHttpClient.execute(AbstractHttpClient.java:421)
+    at com.limegroup.gnutella.http.DefaultHttpExecutor.performRequest(DefaultHttpExecutor.java:97)
+    at com.limegroup.gnutella.http.DefaultHttpExecutor.access$000(DefaultHttpExecutor.java:26)
+    at com.limegroup.gnutella.http.DefaultHttpExecutor$MultiRequestor.run(DefaultHttpExecutor.java:139)
+    at org.limewire.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1006)
+    at org.limewire.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:549)
+    at java.lang.Thread.run(Thread.java:613)
+---
+
+DefaultHttpExecutor$MultiRequestor basically is just a Runnable / Cancellable [exposes a cancel() method] that can be cancelled from any thread. cancel just calls abort() on the current AbortableHttpRequest, but is called on a thread other than the one that's doing the client.execute(request).
+
+The last one is the most common exception, and seems to happen with some regularity. The other two we've only seen once, so may just be a memory quirk (we've seen some crazy bugs, including recursive NPEs while constructing an NPE.)
+

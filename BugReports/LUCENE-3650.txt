@@ -1,0 +1,10 @@
+move o.a.l.index.codecs.* -> o.a.l.codecs.*
+
+
+
+Description:
+These package names are getting pretty long, e.g.:
+
+org.apache.lucene.index.codecs.lucene40.values.XXXXYYYY
+
+I think we should move it to just the codecs package now while it won't cause anyone any trouble.

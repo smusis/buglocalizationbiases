@@ -1,0 +1,24 @@
+Extend the IndexingConfiguration to allow configuration of reuseable analyzers
+
+
+
+Description:
+To the indexing_configuration.xml a xml block of analyzers should be configurable. In each <index-rule> to a property an analyzer can be assigned. This means, that property will be analyzed with that specific analyzer. In the first place, it enables multilingual indexing. 
+
+Documentation needs to be added explaining the difference in searching in the node scope [jcr:contains(.,'foo')] and in some property [jcr:contains(@myprop,'foo')]. The node scope will always be searched and indexed with the default analyzer, which can be configured in the workspace.xml in  the  <SearchIndex> element.
+
+Below a possible indexing_configuration.xml snippet is shown. Also node the possible enhancement (not sure wether this implementation will have it, because it requires a lot of filter Factories and is probably out of scope). Adding custom filters which do not need a factory might be easier.
+
+<analyzers>
+	<analyzer name="fr" class="org.apache.lucene.analysis.fr.FrenchAnalyzer"/>
+	<analyzer name="de" class="org.apache.lucene.analysis.de.GermanAnalyzer"/>
+        <analyzer name="compound" class="org.apache.lucene.analysis.SimpleAnalyzer">
+             <filter class="jr.StopFilterFactory" words="stopwords.txt"/>
+             <filter class="jr.EdgeNGramTokenizerFactory" side="front" minGram="1" maxGram="2"/>
+        </analyzer>
+</analyzers>
+
+<index-rule nodeType="nt:unstructured">
+       <property analyzer="fr">bode_fr</property>
+       <property analyzer="de">bode_de</property>
+</index-rule>

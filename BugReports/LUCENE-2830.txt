@@ -1,0 +1,8 @@
+Use StringBuilder instead of StringBuffer in benchmark
+
+
+
+Description:
+Minor change - use StringBuilder instead of StringBuffer in benchmark's code. We don't need the synchronization of StringBuffer in all the places that I've checked.
+
+The only place where it _could_ be a problem is in HtmlParser's API - one method accepts a StringBuffer and it's an interface. But I think it's ok to change benchmark's API, back-compat wise and so I'd like to either change it to accept a String, or remove the method altogether -- no code in benchmark uses it, and if anyone needs it, he can pass StringReader to the other method.

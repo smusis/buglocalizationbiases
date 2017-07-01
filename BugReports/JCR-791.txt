@@ -1,0 +1,8 @@
+Improve performance of MatchAllScorer
+
+
+
+Description:
+The BitSets created in MatchAllScorer should be cached per IndexReader. This enhancement should also take care that the supplied IndexReader may in fact be a CombinedIndexReader or a CachingMultiReader with multiple contained IndexReaders. To achieve a good cache efficiency the BitSets must be cached per contained IndexReader and combined later.
+
+See also thread on dev list: http://thread.gmane.org/gmane.comp.apache.jackrabbit.devel/10976

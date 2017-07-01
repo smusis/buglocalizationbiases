@@ -1,0 +1,6 @@
+CacheEntryUpdater does not properly update cache entry resource
+
+
+
+Description:
+CacheEntryUpdater#updateCacheEntry() copies the old cache entry's resource, though I believe it should only do so if the response is a 304.  Otherwise it should take the response from the server to update the entry.  This method gets called when validating a cache entry and the server returns a 200 or 304.

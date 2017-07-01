@@ -1,0 +1,8 @@
+Make Lucene - Java 1.9.1 Available in Maven2 repository in iBibilio.org
+
+
+
+Description:
+Please upload 1.9.1 release to iBiblio so that Maven users can easily use the latest release.  Currently 1.4.3 is the most recently available version: http://www.ibiblio.org/maven2/lucene/lucene/
+
+Please read the following FAQ for more information: http://maven.apache.org/project-faq.html

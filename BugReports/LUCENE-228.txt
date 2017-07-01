@@ -1,0 +1,15 @@
+encoding of GermanAnalyzer.java and GermanStemmer.java isn't utf-8
+
+
+
+Description:
+For PyLucene, the gcj/swig - based python integration of java lucene, it would
+be good if java source files didn't use encodings other than utf-8.
+On Windows - and systems without iconv support in general - compiling code  
+with gcj where the java source text is in another encoding than utf-8 is    
+difficult if not impossible.
+
+To change the encoding on these files:
+
+ iconv -f iso-8859-1 -t utf-8 GermanAnalyzer.java > GermanAnalyzer.java.utf-8
+ iconv -f iso-8859-1 -t utf-8 GermanStemmer.java > GermanStemmer.java.utf-8

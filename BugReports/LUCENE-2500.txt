@@ -1,0 +1,14 @@
+A Linux-specific Directory impl that bypasses the buffer cache
+
+
+
+Description:
+I've been testing how we could prevent Lucene's merges from evicting
+pages from the OS's buffer cache.  I tried fadvise/madvise (via JNI)
+but (frustratingly), I could not get them to work (details at
+http://chbits.blogspot.com/2010/06/lucene-and-fadvisemadvise.html).
+
+The only thing that worked was to use Linux's O_DIRECT flag, which
+forces all IO to bypass the buffer cache entirely... so I created a
+Linux-specific Directory impl to do this.
+

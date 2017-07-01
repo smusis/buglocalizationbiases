@@ -1,0 +1,26 @@
+TermVectors index files can become corrupt when autoCommit=false
+
+
+
+Description:
+Spinoff from this thread:
+
+  http://www.gossamer-threads.com/lists/lucene/java-dev/55951
+
+There are actually 2 separate cases here, both only happening when
+autoCommit=false:
+
+  * First issue was caused by LUCENE-843 (sigh): if you add a bunch of
+    docs with no term vectors, such that 1 or more flushes happen;
+    then you add docs that do have term vectors, the tvx file will not
+    have enough entries (= corruption).
+
+  * Second issue was caused by bulk merging of term vectors
+    (LUCENE-1120 -- only in trunk) and bulk merging of stored fields
+    (LUCENE-1043, in 2.3), and only shows when autoCommit=false, and,
+    the bulk merging optimization runs.  In this case, the code that
+    reads the rawDocs tries to read too far in the tvx/fdx files (it's
+    not really index corruption but rather a bug in the rawDocs
+    reading).
+
+

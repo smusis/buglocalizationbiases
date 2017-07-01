@@ -1,0 +1,7 @@
+RFC4918 feature: PROPFIND/include
+
+
+
+Description:
+RFC4918, Section 14.8 (<http://greenbytes.de/tech/webdav/rfc4918.html#rfc.section.14.8>) defines an extension to PROPFIND that allows clients to retrieve all RFC2518 properties, the dead properties, plus a set of additional live properties. This can help avoiding a second roundtrip to retrieve really all properties.
+

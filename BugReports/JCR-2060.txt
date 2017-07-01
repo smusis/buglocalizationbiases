@@ -1,0 +1,11 @@
+JSR 283: Access Nodes and Properties by Array of "NameGlob"
+
+
+
+Description:
+The proposed final draft contains new variants of Node.getNodes and Node.getProperties:
+
+- Node.getNodes(String[] nameGlobs)
+- Node.getProperties(String[] nameGlobs)
+
+see section 5.2.2 Iterating Over Child Items and 5.2.2.2 Name Globs

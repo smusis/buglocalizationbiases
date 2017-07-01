@@ -1,0 +1,6 @@
+Merge jcr-benchmark into the performance test suite
+
+
+
+Description:
+The jackrabbit-jcr-benchmark component currently lives in the JCR Commons area, but there have been no active plans to release the component and AFAIUI it's so far only been used for the performance test suite we set up in JCR-2695. To avoid the extra complexity of spreading the test code over multiple components and trunks, I'd like to merge the jcr-benchmark component back to Jackrabbit trunk into the performance test suite we have in tests/performance.

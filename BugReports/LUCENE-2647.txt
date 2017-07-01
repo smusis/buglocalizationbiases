@@ -1,0 +1,29 @@
+Move & rename the terms dict, index, abstract postings out of oal.index.codecs.standard
+
+
+
+Description:
+The terms dict components that current live under Standard codec
+(oal.index.codecs.standard.*) are in fact very generic, and in no way
+particular to the Standard codec.  Already we have many other codecs
+(sep, fixed int block, var int block, pulsing, appending) that re-use
+the terms dict writer/reader components.
+
+So I'd like to move these out into oal.index.codecs, and rename them:
+
+  * StandardTermsDictWriter/Reader -> PrefixCodedTermsWriter/Reader
+  * StandardTermsIndexWriter/Reader -> AbstractTermsIndexWriter/Reader
+  * SimpleStandardTermsIndexWriter/Reader -> SimpleTermsIndexWriter/Reader
+  * StandardPostingsWriter/Reader -> AbstractPostingsWriter/Reader
+  * StandardPostingsWriterImpl/ReaderImple -> StandardPostingsWriter/Reader
+
+With this move we have a nice reusable terms dict impl.  The terms
+index impl is still well-decoupled so eg we could [in theory] explore
+a variable gap terms index.
+
+Many codecs, I expect, don't need/want to implement their own terms
+dict....
+
+There are no code/index format changes here, besides the renaming &
+fixing all imports/usages of the renamed class.
+

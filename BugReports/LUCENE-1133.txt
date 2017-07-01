@@ -1,0 +1,12 @@
+WikipediaTokenizer needs a way of not tokenizing certain parts of the text
+
+
+
+Description:
+It would be nice if the WikipediaTokenizer had a way of, via a flag, leaving categories, links, etc. as single tokens (or at least some parts of them)
+
+Thus, if we came across [[Category:My Big Idea]] there would be a way of outputting, as a single token "My Big Idea".  
+
+Optionally, it would be good to output both "My Big Idea" and the individual tokens as well.
+
+I am not sure of how to do this in JFlex, so any insight would be appreciated.

@@ -1,0 +1,18 @@
+Absorb NIOFSDirectory into FSDirectory
+
+
+
+Description:
+I think whether one uses java.io.* vs java.nio.* or eventually
+java.nio2.*, or some other means, is an under-the-hood implementation
+detail of FSDirectory and doesn't merit a whole separate class.
+
+I think FSDirectory should be the core class one uses when one's index
+is in the filesystem.
+
+So, I'd like to deprecate NIOFSDirectory, absorbing it into
+FSDirectory, and add a setting "useNIO" to FSDirectory.  It should
+default to "true" for non-Windows OSs, because it gives far better
+concurrent performance on all platforms but Windows (due to known Sun
+JRE issue http://bugs.sun.com/bugdatabase/view_bug.do?bug_id=6265734).
+

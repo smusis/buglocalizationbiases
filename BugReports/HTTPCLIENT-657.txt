@@ -1,0 +1,6 @@
+TestBasicCookieAttribHandlers fails on non-english Locale systems
+
+
+
+Description:
+The Test checks for written dates in the format for cookies which unfortunately includes a two character abbreviation of the day. This differs by locale, so the dateformat has to be constructed with Locale.US (as in DateUtils)

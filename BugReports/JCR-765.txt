@@ -1,0 +1,10 @@
+DatabasePersistenceManager: don't log exceptions for each statement when a connection needs to be reestablished
+
+
+
+Description:
+This is just a "cosmetic" fix: when reestablishConnection() is called in DatabasePersistenceManager all the statements are closed but if an error occurs two exceptions are logged for each statement.
+Since reestablishConnection() is already called when an exception has been caught and its only purpose is to cleanup an existing connection and to reopen a new one is pretty common that the connection is already not valid and that each statement close will throw an exception.
+
+For example if the connection has been broken due to a network problem DatabasePersistenceManager  will log *40* exceptions (2 for each statement) before trying to establish a connection, and that's pretty annoying (expecially if you use a mail appender for log4j....)
+

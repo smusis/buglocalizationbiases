@@ -1,0 +1,13 @@
+improve termquery "pk lookup" performance
+
+
+
+Description:
+For things that are like primary keys and don't exist in some segments (worst case is primary/unique key that only exists in 1)
+we do wasted seeks.
+
+While LUCENE-2694 tries to solve some of this issue with TermState, I'm concerned we could every backport that to 3.1 for example.
+
+This is a simpler solution here just to solve this one problem in termquery... we could just revert it in trunk when we resolve LUCENE-2694,
+but I don't think we should leave things as they are in 3.x
+

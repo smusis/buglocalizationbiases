@@ -1,0 +1,8 @@
+implement PERSIST events for the EventJournal
+
+
+
+Description:
+See <http://www.day.com/specs/jcr/2.0/12_Observation.html#12.6.3%20Event%20Bundling%20in%20Journaled%20Observation>
+
+

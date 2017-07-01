@@ -1,0 +1,12 @@
+PlainTextExtractor returns an empty reader when encoding is unsupported
+
+
+
+Description:
+PlainTextExtractor is failing to index text files.  Searching for content in text files is not coming back with results.
+
+On the extractText(InputStream stream, String type, String encoding) method, the encoding is coming in as an empty string, and it throws the java.io.UnsupportedEncodingException at line 40 ( return new InputStreamReader(stream, encoding); ).
+
+modifying the following statement fixes the problem:
+before:  if (encoding != null) {
+after:  if (encoding != null && !encoding.equals("")) {

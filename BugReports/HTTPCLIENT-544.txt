@@ -1,0 +1,25 @@
+Digest auth uses incorrect URI
+
+
+
+Description:
+This bug seems to be strongly related to #36918. But in this case, I don't have 
+proxy and it is GET method.
+
+The problem is that when a GET request with query parameters is sent to the 
+server, uri does not count in the parameters.  The server (Apache 1.3) then 
+responds with HTTP/1.1 400 Bad Request. In the error log, the server writes:  
+Digest: uri mismatch - </query.cgi> does not match request-uri 
+</query.cgi?format=advanced&js=1&rememberjs=1>
+
+As far as I can tell, the problem is with the following line of code:
+------------ cut DigestScheme.java
+public String authenticate(Credentials credentials, HttpMethod method)
+....
+getParameters().put("uri", method.getPath());
+....
+------------ cut
+
+I am inclined to quick-hack this and add method.getQueryString() to the uri; 
+but to make it right it probably needs some refactoring, esp. considering issue 
+#36918.

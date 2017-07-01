@@ -1,0 +1,13 @@
+[PATCH] Enable application-level management of IndexWriter.ramDirectory size
+
+
+
+Description:
+IndexWriter currently only supports bounding of in the in-memory index cache using maxBufferedDocs, which limits it to a fixed number of documents.  When document sizes vary substantially, especially when documents cannot be truncated, this leads either to inefficiencies from a too-small value or OutOfMemoryErrors from a too large value.
+
+This simple patch exposes IndexWriter.flushRamSegments(), and provides access to size information about IndexWriter.ramDirectory so that an application can manage this based on total number of bytes consumed by the in-memory cache, thereby allow a larger number of smaller documents or a smaller number of larger documents.  This can lead to much better performance while elimianting the possibility of OutOfMemoryErrors.
+
+The actual job of managing to a size constraint, or any other constraint, is left up the applicatation.
+
+The addition of synchronized to flushRamSegments() is only for safety of an external call.  It has no significant effect on internal calls since they all come from a sychronized caller.
+

@@ -1,0 +1,13 @@
+Realm from authentication challenge unavailable
+
+
+
+Description:
+There is currently no way to extract the authentication realm from HttpClient 
+except to extract the authentication challenge header and parse it manually.
+
+Either the realm needs to be available to the client or a method in 
+Authenticator should extract the realm from a given authentication header.
+
+The same problems occurs with determining which type of authentication is 
+being used and what other options there are (basic, digest, NTLM, others).

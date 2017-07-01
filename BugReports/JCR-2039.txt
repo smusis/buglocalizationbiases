@@ -1,0 +1,6 @@
+Add log information when node/property type determination fails
+
+
+
+Description:
+getQNodeDefinition() and getQPropertyDefinition() of o.a.j.jcr2spi.nodetype.ItemDefinitionProviderImpl silently ignore errors which might occur on determination of node and property types. Instead these methods use RepositoryService.getNodeDefinition() and RepositoryService.getPropertyDefinition(), respectively to determine the types. This might lead to difficult to track down problems when the RepositoryService call occurs because of an error in the node type definition. I suggest to add logging statements to these methods. 

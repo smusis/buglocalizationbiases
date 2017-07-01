@@ -1,0 +1,34 @@
+MultipartPostMethod does not check for error messages
+
+
+
+Description:
+If a MultipartPost request is sent to a server which requires authentication, 
+the server may respond to the request with an unauthorized header and close the 
+connection before all of the data is sent.  HttpClient should monitor the 
+incoming stream and cease transmitting the body if an error message is received 
+(section 8.2.2 of rfc2616, see below).
+
+At the very least HttpClient should check for a response when catching the 
+HttpRecoverableException and retrying.  This probably should be done in 
+HttpMethodBase so that we are in a known state when starting to retry the 
+connection (ie: there isn't an existing response in the socket buffer to cause 
+problems).
+
+Ideally, HttpClient should also implement the 100 (Continue) status as 
+specified in section 8.2.3 of rfc2616.
+
+Finally, PostMethod should be tested to ensure that it does not exhibit this 
+bug as well.
+
+-------------
+8.2.2 Monitoring Connections for Error Status Messages
+
+   An HTTP/1.1 (or later) client sending a message-body SHOULD monitor
+   the network connection for an error status while it is transmitting
+   the request. If the client sees an error status, it SHOULD
+   immediately cease transmitting the body. If the body is being sent
+   using a "chunked" encoding (section 3.6), a zero length chunk and
+   empty trailer MAY be used to prematurely mark the end of the message.
+   If the body was preceded by a Content-Length header, the client MUST
+   close the connection.

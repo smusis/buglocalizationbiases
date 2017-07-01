@@ -1,0 +1,12 @@
+apply delete-by-Term and docID immediately to newly flushed segments
+
+
+
+Description:
+Spinoff from LUCENE-2324.
+
+When we flush deletes today, we keep them as buffered Term/Query/docIDs that need to be deleted.  But, for a newly flushed segment (ie fresh out of the DWPT), this is silly, because during flush we visit all terms and we know their docIDs.  So it's more efficient to apply the deletes (for this one segment) at that time.
+
+We still must buffer deletes for all prior segments, but these deletes don't need to map to a docIDUpto anymore; ie we just need a Set.
+
+This issue should wait until LUCENE-1076 is in since that issue cuts over buffered deletes to a transactional stream.

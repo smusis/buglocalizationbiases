@@ -1,0 +1,33 @@
+if a filter can support random access API, we should use it
+
+
+
+Description:
+I ran some performance tests, comparing applying a filter via
+random-access API instead of current trunk's iterator API.
+
+This was inspired by LUCENE-1476, where we realized deletions should
+really be implemented just like a filter, but then in testing found
+that switching deletions to iterator was a very sizable performance
+hit.
+
+Some notes on the test:
+
+  * Index is first 2M docs of Wikipedia.  Test machine is Mac OS X
+    10.5.6, quad core Intel CPU, 6 GB RAM, java 1.6.0_07-b06-153.
+
+  * I test across multiple queries.  1-X means an OR query, eg 1-4
+    means 1 OR 2 OR 3 OR 4, whereas +1-4 is an AND query, ie 1 AND 2
+    AND 3 AND 4.  "u s" means "united states" (phrase search).
+
+  * I test with multiple filter densities (0, 1, 2, 5, 10, 25, 75, 90,
+    95, 98, 99, 99.99999 (filter is non-null but all bits are set),
+    100 (filter=null, control)).
+
+  * Method high means I use random-access filter API in
+    IndexSearcher's main loop.  Method low means I use random-access
+    filter API down in SegmentTermDocs (just like deleted docs
+    today).
+
+  * Baseline (QPS) is current trunk, where filter is applied as iterator up
+    "high" (ie in IndexSearcher's search loop).

@@ -1,0 +1,7 @@
+Remove remaining @author references
+
+
+
+Description:
+$ find . -name \*.java | xargs grep '@author' | cut -d':' -f1 | xargs perl -pi -e 's/ \@author.*//'
+

@@ -1,0 +1,18 @@
+SPI: Introduce NodeInfo.getChildInfos()
+
+
+
+Description:
+Improvement suggested by Marcel:
+
+ChildInfo is basically a stripped down NodeInfo. With little effort it would even be possible to have NodeInfo extends ChildInfo. Not sure how useful that is, but since we don't have that inheritance in code and at the same time nearly a 100% overlap it makes me suspicious.
+
+Here's another idea:
+
+introduce a method ChildInfo[] NodeInfo.getChildInfos(). The method either returns:
+
+- all child infos, which also gives the correct number of child nodes. this may also mean that an empty array is returned to indicate there are no child nodes.
+- null, to indicate that there are *lots* of child nodes and the method RepositoryService.getChildInfos() with the iterator should be used. 
+
+
+

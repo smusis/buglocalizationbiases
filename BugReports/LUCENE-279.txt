@@ -1,0 +1,9 @@
+[PATCH] Javadoc improvements and minor fixes
+
+
+
+Description:
+Javadoc improvements for Scorer.java and Weight.java. 
+This also fixes some recent changes introduced minor warnings when building 
+the javadocs and adds a small comment in Similarity.java. 
+The individual patches will be attached.

@@ -1,0 +1,8 @@
+Review the use of BaiscHttpParams and HttpProtocolProcessor in HttpClient
+
+
+
+Description:
+Review the use of BaiscHttpParams and HttpProtocolProcessor in HttpClient and replace with thread-safe implementations where necessary.
+
+Oleg

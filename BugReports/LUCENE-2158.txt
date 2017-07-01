@@ -1,0 +1,25 @@
+NRT can temporarily lose deletions at high indexing rates
+
+
+
+Description:
+OK, I found a sneaky case where NRT can temporarily lose deletions.
+The deletions aren't permanently lost - they are seen on the next
+opened NRT reader.
+
+It happens like this (in IW.getReader):
+
+  * First flush() is called, to flush added docs & materialize the
+    deletes.
+
+  * The very next statement enters a sync'd block to open the reader,
+    but, if indexing rate is very high, and threads get scheduled
+    "appropriately", a "natural" flush (due to RAM buffer being full
+    or flush doc count being reached) could be hit before the sync
+    block is entered, in which case that 2nd flush won't materialize
+    the deletes associated with it, and the returned NRT reader will
+    only see its adds until it's next reopened.
+
+The fix is simple -- we should materialize deletes inside the sync
+block, not during the flush.
+

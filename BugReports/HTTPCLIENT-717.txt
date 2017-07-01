@@ -1,0 +1,25 @@
+NPE in SimpleHttpConnectionManager.shutdown()
+
+
+
+Description:
+SimpleHttpConnectionManager.shutdown() causes NPE if no connection has been created, whereas MultiThreadedHttpConnectionManager.shutdown() does not.
+
+Simple test case:
+
+	MultiThreadedHttpConnectionManager cm = new MultiThreadedHttpConnectionManager();
+	cm.shutdown(); // OK
+		
+	SimpleHttpConnectionManager sm = new SimpleHttpConnectionManager();
+	sm.shutdown(); // NPE
+
+
+I came across this in JMeter - a sample was using Post with AutoRedirect, which (correctly) caused an IllegalArgumentException, and so the connection was not created. 
+
+The JMeter code could try to keep track of this, but it would be tedious, and it seems to me that SimpleHttpConnectionManager should ignore the shutdown() if the connection is null.
+
+The problem does not arise when using closeIdleConnections(timeout) - unless one uses the special value:
+
+      closeIdleConnections(System.currentTimeMillis() - Long.MAX_VALUE)
+
+but it would probably be sensible to protect against this as well.

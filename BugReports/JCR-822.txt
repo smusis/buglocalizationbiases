@@ -1,0 +1,7 @@
+TCK: Transfer of lock token should be tested using open-scoped locks
+
+
+
+Description:
+despite the fact that jsr170 does not limit the usage of Session.removeLockToken(String) and Session.addLockToken(String) to tokens obtained from open-scoped locks, i don't see too much benefit of it. Therefore (and due to the fact that this issue will be addressed within the scope of jsr283), i would  like to suggest to modify those test-cases dealing with transfer of lock tokens and create open-scoped locks.
+

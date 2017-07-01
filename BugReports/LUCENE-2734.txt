@@ -1,0 +1,6 @@
+Use IndexWriterConfig in benchmark
+
+
+
+Description:
+We should use IndexWriterConfig instead of deprecated methods in benchmark. 

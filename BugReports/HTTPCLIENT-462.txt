@@ -1,0 +1,23 @@
+ProtocolException thrown on slightly broken headers
+
+
+
+Description:
+HTTPClient throws an exception when parsing headers returned by GET from the
+following URL:
+
+ http://butler.cit.nih.gov/hembase/hembase.taf
+
+The headers returned are as follows:
+
+HTTP/1.0 200 OK\r\nServer: WebSTAR/1.0 ID/ACGI\r\nMIME-Version:
+1.0\r\nContent-Type: text/html\r\nSet-Cookie:
+Tango_UserReference=ADC5871C57FABEDEC63DD47B; path=/\n\r\r\n\r\n<!DOCTYPE HTML
+PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">...
+
+Please note the superfluous \r in the line separating headers from the body.
+IMHO this type of error should generate a warning, but then it should cause a
+graceful recovery. Currently a ProtocolException is thrown.
+
+Standard java.net.HttpURLConnection handles this just fine, without giving any
+warning.

@@ -1,0 +1,11 @@
+remove custom encoding support in Greek/Russian Analyzers
+
+
+
+Description:
+The Greek and Russian analyzers support custom encodings such as KOI-8, they define things like Lowercase and tokenization for these.
+
+I think that analyzers should support unicode and that conversion/handling of other charsets belongs somewhere else. 
+
+I would like to deprecate/remove the support for these other encodings.
+

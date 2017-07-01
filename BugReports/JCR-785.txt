@@ -1,0 +1,10 @@
+Updates to multiple workspaces (e.g. in a transaction) locked in cluster journal
+
+
+
+Description:
+Running a transaction that updates multiple workspaces (e.g. a versioning operation) will be locked, as they all try to acquire a non-reentrant lock in the cluster's journal. Short-term fix is to make the lock re-entrant. In the long run, a transaction context sensitive lock may be more appropriate.
+
+How to reproduce: enable clustering in the test environment and let the test o.a.j.core.XATest.testSetVersionLabel() run. This will result in a deadlock when committing the operation.
+
+This was initially reported by Rafał Kwiecień as a problem when using springmodules and clustering but turned out to be general problem with transactions and clustering. Thanks for reporting it!

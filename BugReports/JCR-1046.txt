@@ -1,0 +1,15 @@
+Non-versionable children of a versionable node should not be updated when a merge fails
+
+
+
+Description:
+The JCR specification (JSR-170) includes a merge algorithm that is inconsistent with the functionality described elsewhere in the JCR specification. Specifically from JSR-170 section 8.2.10 Merge:
+
+"In either case, (regardless of whether bestEffort is true or false) for each non-versionable node (including both referenceable and non-referenceable), if the merge result of its nearest versionable ancestor is update, or if it has no versionable ancestor, then it is updated to reflect the state of its corresponding node. Otherwise, it is left unchanged."
+
+The algorithm presented in 8.2.10.1 of the specification goes against the above statement as it does not take into consideration the merge result of the nearest versionable ancestor.
+
+One solution would be to have the doLeave(n) call that dofail(n, v') calls altered to only perform a merge on the versionable children rather than all of the children. The merging of all children (versionable and non-versionable) should only be done if the nearest parent is not in a failed merge state regardless of whether the failure occurred from the current merge operation or a previous merge operation.
+
+I will attach a patch file that makes what I think is the required change.
+

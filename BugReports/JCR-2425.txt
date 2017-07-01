@@ -1,0 +1,19 @@
+Session.save() and Session.refresh(boolean) rely on accessibility of the root node
+
+
+
+Description:
+follow-up issue to JCR-2418:
+
+an editing session that is only allowed to write in a subtree but isn't allowed to access the root node will not be
+able to save or revert changes made in the transient space within that subtree.
+
+the reason for this is, that both SessionImpl.save() and SessionImpl.refresh(boolean) access the root node
+in order to execute the call. since it's the regular call READ permissions are checked, although the user
+made no attempt to *look* at the root.
+
+A workaround would be to call Item.save() on the modified tree itself that obviously was visible for the 
+user... unfortunately that method is deprecated as of JCR 2.0. Therefore, I have the impression that we
+should fix the methods mentioned above.
+
+

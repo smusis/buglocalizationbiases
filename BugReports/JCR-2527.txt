@@ -1,0 +1,19 @@
+Fix and simplify CryptedSimpleCredentials
+
+
+
+Description:
+the credentials retrieved from UserImpl and used to validate the simplecredentials passed to the repository login is overly complex
+and buggy as it tries to match all kind credentials variants with and without hashed password.
+in particular it contains the following problems:
+- simplecredentials containing the hashed pw are considered valid
+- passwords startign with {something} cause inconsistencies and may even prevent the user from login
+
+it should be improved as follows:
+- simplecredentials are always expected to contain the plain text password both for creation and
+  comparison with the cryptedsimplecredentials.
+- creating cryptedsimplecredentials from uid/pw however is left unchanged: the specified pw is
+  hashed with the default algorithm if it turns out not to be in the hashed format.
+- in addition the pw should also be hashed if it has the form {something}whatever but something
+  is an invalid algorithm.
+

@@ -1,0 +1,29 @@
+Occasional "Host connection pool not found"
+
+
+
+Description:
+I'm using HttpClient with MultiThreadedHttpConnectionManager in a crawler
+application. The application issues requests to many hosts, in 10-20 parallel
+request threads. Each thread creates a new GetMethod, but all threads use the
+same instance of HttpClient, created once with a multi-threaded manager.
+
+The code in each thread looks like this:
+
+GetMethod get = new GetMethod(url);
+try {
+  int code = getSharedHttpClient().executeMethod(get);
+  // ... read response, do stuff
+} finally {
+  get.releaseConnection();
+}
+
+
+From time to time I get an error like this:
+
+Host connection pool not found, hostConfig=HostConfiguration[host=http://a.b.c]
+
+where the url is a random url from my fetch list. I looked into the source code
+of the nightly release (MultiThreadedHttpConnectionManager.java:979), but the
+comment there is not enlightening... ;-) Any help or suggestions for further
+debugging would be appreciated.

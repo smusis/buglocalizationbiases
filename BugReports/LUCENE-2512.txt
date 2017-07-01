@@ -1,0 +1,6 @@
+DeleteByPercentTask hits NPE
+
+
+
+Description:
+I'm building up Wiki indices for testing search perf across 3.x/4.0, but hit NPE when creating deletions in 4.0 due to flex cutover...

@@ -1,0 +1,21 @@
+IndexWriter.synced  field accumulates data leading to a Memory Leak
+
+
+
+Description:
+I am running into a strange OutOfMemoryError. My small test application does
+index and delete some few files. This is repeated for 60k times. Optimization
+is run from every 2k times a file is indexed. Index size is 50KB. I did analyze
+the HeapDumpFile and realized that IndexWriter.synced field occupied more than
+half of the heap. That field is a private HashSet without a getter. Its task is
+to hold files which have been synced already.
+
+There are two calls to addAll and one call to add on synced but no remove or
+clear throughout the lifecycle of the IndexWriter instance.
+
+According to the Eclipse Memory Analyzer synced contains 32618 entries which
+look like file names "_e065_1.del" or "_e067.cfs"
+
+The index directory contains 10 files only.
+
+I guess synced is holding obsolete data 

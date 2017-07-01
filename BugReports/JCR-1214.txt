@@ -1,0 +1,18 @@
+DocId.UUIDDocId should not have a string attr uuid
+
+
+
+Description:
+After JCR-1213 will be solved, lots of DocId.UUIDDocId can be cached, and not being cleaned after every gc(). The number of cached UUIDDocId can grow very large, depending on the size of the repository.  Therefor, instead of storing the private String uuid; we can make it more memory efficient by storing 2 long's, the lsb and msb of the uuid.  Storing 1.000.000 of parent UUIDDocId might differ about 100Mb of memory. 
+
+I even did test by removing the entire uuid string, and not use msb or lsb, because, when everything works properly (with references to index reader segments (See JCR-1213)), the uuid is never needed again: in 
+
+UUIDDocId getDocumentNumber(IndexReader reader) throws IOException {
+
+we could set uuid = null just before the return. It works perfectly well, because when an index reader is recreated, the CachingIndexReader will be recreated, hence DocId[] parents will be recreated. 
+
+So, IMO, I think we might be able to remove the uuid entirely when the docNumber is found in DocId.UUIDDocId (obviously after JCR-1213)
+
+WDOT?
+
+

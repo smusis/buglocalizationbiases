@@ -1,0 +1,13 @@
+Analyzer for preventing overload of search service by queries with common terms in large indexes
+
+
+
+Description:
+An analyzer used primarily at query time to wrap another analyzer and provide a layer of protection
+which prevents very common words from being passed into queries. For very large indexes the cost
+of reading TermDocs for a very common word can be  high. This analyzer was created after experience with
+a 38 million doc index which had a term in around 50% of docs and was causing TermQueries for 
+this term to take 2 seconds.
+
+Use the various "addStopWords" methods in this class to automate the identification and addition of 
+stop words found in an already existing index.

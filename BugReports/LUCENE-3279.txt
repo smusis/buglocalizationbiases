@@ -1,0 +1,35 @@
+Allow CFS be empty
+
+
+
+Description:
+since we changed CFS semantics slightly closing a CFS directory on an error can lead to an exception. Yet, an empty CFS is still a valid CFS so for consistency we should allow CFS to be empty.
+here is an example:
+
+{noformat}
+1 tests failed.
+REGRESSION:  org.apache.lucene.index.TestIndexWriterOnDiskFull.testAddDocumentOnDiskFull
+
+Error Message:
+CFS has no entries
+
+Stack Trace:
+java.lang.IllegalStateException: CFS has no entries
+       at org.apache.lucene.store.CompoundFileWriter.close(CompoundFileWriter.java:139)
+       at org.apache.lucene.store.CompoundFileDirectory.close(CompoundFileDirectory.java:181)
+       at org.apache.lucene.store.DefaultCompoundFileDirectory.close(DefaultCompoundFileDirectory.java:58)
+       at org.apache.lucene.index.SegmentMerger.createCompoundFile(SegmentMerger.java:139)
+       at org.apache.lucene.index.IndexWriter.mergeMiddle(IndexWriter.java:4252)
+       at org.apache.lucene.index.IndexWriter.merge(IndexWriter.java:3863)
+       at org.apache.lucene.index.SerialMergeScheduler.merge(SerialMergeScheduler.java:37)
+       at org.apache.lucene.index.IndexWriter.maybeMerge(IndexWriter.java:2715)
+       at org.apache.lucene.index.IndexWriter.maybeMerge(IndexWriter.java:2710)
+       at org.apache.lucene.index.IndexWriter.maybeMerge(IndexWriter.java:2706)
+       at org.apache.lucene.index.IndexWriter.flush(IndexWriter.java:3513)
+       at org.apache.lucene.index.IndexWriter.addDocument(IndexWriter.java:2064)
+       at org.apache.lucene.index.IndexWriter.addDocument(IndexWriter.java:2031)
+       at org.apache.lucene.index.TestIndexWriterOnDiskFull.addDoc(TestIndexWriterOnDiskFull.java:539)
+       at org.apache.lucene.index.TestIndexWriterOnDiskFull.testAddDocumentOnDiskFull(TestIndexWriterOnDiskFull.java:74)
+       at org.apache.lucene.util.LuceneTestCase$LuceneTestCaseRunner.runChild(LuceneTestCase.java:1277)
+       at org.apache.lucene.util.LuceneTestCase$LuceneTestCaseRunner.runChild(LuceneTestCase.java:1195)
+{noformat}

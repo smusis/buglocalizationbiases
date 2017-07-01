@@ -1,0 +1,30 @@
+FNFE hit when creating an empty index and infoStream is on
+
+
+
+Description:
+Shai just reported this on the dev list.  Simple test:
+{code}
+Directory dir = new RAMDirectory();
+IndexWriter writer = new IndexWriter(dir, new SimpleAnalyzer(), MaxFieldLength.UNLIMITED);
+writer.setInfoStream(System.out);
+writer.addDocument(new Document());
+writer.commit();
+writer.close();
+{code}
+
+hits this:
+
+{code}
+Exception in thread "main" java.io.FileNotFoundException: _0.prx
+    at org.apache.lucene.store.RAMDirectory.fileLength(RAMDirectory.java:149)
+    at org.apache.lucene.index.DocumentsWriter.segmentSize(DocumentsWriter.java:1150)
+    at org.apache.lucene.index.DocumentsWriter.flush(DocumentsWriter.java:587)
+    at org.apache.lucene.index.IndexWriter.doFlushInternal(IndexWriter.java:3572)
+    at org.apache.lucene.index.IndexWriter.doFlush(IndexWriter.java:3483)
+    at org.apache.lucene.index.IndexWriter.flush(IndexWriter.java:3474)
+    at org.apache.lucene.index.IndexWriter.addDocument(IndexWriter.java:1940)
+    at org.apache.lucene.index.IndexWriter.addDocument(IndexWriter.java:1894)
+{code}
+
+Turns out it's just silly -- this is actually an issue I've already fixed on the flex (LUCENE-1458) branch.  DocumentsWriter has its own method to enumerate the flushed files and compute their size, but really it shouldn't do that -- it should use SegmentInfo's method, instead.

@@ -1,0 +1,37 @@
+Optimize PhraseQuery
+
+
+
+Description:
+Looking the scorers for PhraseQuery, I think there are some speedups
+we could do:
+
+  * The AND part of the scorer (which advances to the next doc that
+    has all the terms), in PhraseScorer.doNext, should do the same
+    optimizing as BooleanQuery's ConjunctionScorer, ie sort terms from
+    rarest to most frequent.  I don't think it should use a linked
+    list/firstToLast() that it does today.
+
+  * We do way too much work now when .score() is not called, because
+    we go and find all occurrences of the phrase in the doc, whereas
+    we should stop only after finding the first and then go and count
+    the rest if .score() is called.
+
+  * For the exact case, I think we can use two int arrays to find the
+    matches.  The first array holds the count of how many times a term
+    in the phrase "matched" a phrase starting at that position.  When
+    that count == the number of terms in the phrase, it's a match.
+    The 2nd is a "gen" array (holds docID when that count was last
+    touched), to avoid clearing.  Ie when incrementing the count, if
+    the docID != gen, we reset count to 0.  I think this'd be faster
+    than the PQ we now use.  Downside of this is if you have immense
+    docs (position gets very large) we'd need 2 immense arrays.
+
+It'd be great to do LUCENE-1252 along with this, ie factor
+PhraseScorer into two AND'd sub-scorers (LUCENE-1252 is open for
+this).  The first one should be ConjunctionScorer, and the 2nd one
+checks the positions (ie, either the exact or sloppy scorers).  This
+would mean if the PhraseQuery is AND'd w/ other clauses (or, a filter
+is applied) we would save CPU by not checking the positions for a doc
+unless all other AND'd clauses accepted the doc.
+

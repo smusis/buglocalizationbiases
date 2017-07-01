@@ -1,0 +1,9 @@
+Exception handling in HttpClient requires redesign
+
+
+
+Description:
+When I use httpclient2.0-alpha3 and setTimeout(60000), after the specified 
+time, I would like to see InterruptedIOException thrown, but I got 
+HttpRecoverableException instead, which is pretty general. I would like to see 
+the original exception. Thanks

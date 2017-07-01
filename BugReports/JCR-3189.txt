@@ -1,0 +1,18 @@
+JCARepositoryManager.createNonTransientRepository throws NPE with no JCAManagedConnectionFactory.CONFIGFILE_KEY
+
+
+
+Description:
+JCARepositoryManager.createNonTransientRepository fails if
+
+String configFile = parameters.get(JCAManagedConnectionFactory.CONFIGFILE_KEY);
+
+is null, because
+
+config = RepositoryConfig.create(configFile, homeDir);
+
+will always throw an NPE, perhaps the call should just be
+
+config = RepositoryConfig.create(homeDir);
+
+

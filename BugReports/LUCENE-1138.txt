@@ -1,0 +1,24 @@
+SpellChecker.clearIndex calls unlock inappropriately
+
+
+
+Description:
+As noted in LUCENE-1050, fixing a bug in SimpleLockFactory related to not reporting success/filure of lock file deletion has surfaced bad behavior in SpellChecker.clearIndex...
+
+Grant...
+{quote}
+It seems the SpellChecker is telling the IndexReader to delete the lockFile, but the lockFile doesn't exist.
+  ...
+I don't know much about the locking mechanism, but it seems like this should check to see if the lockFile exists before trying to delete it.
+{quote}
+
+Hoss...
+{quote}
+Grant: my take on this is that SpellChecker.clearIndex is in the wrong. it shouldn't be calling unlock unless it has reason to think there is a "stale lock" that needs to be closed - ie: this is a bug in SpellChecker that you have only discovered because this bug LUCENE-1050 was fixed.
+
+I would suggest a new issue for tracking, and a patch in which SpellChecker.clearIndex doesn't call unlock unless isLocked returns true. Even then, it might make sense to catch and ignore LockReleaseFailedException and let whatever resulting exception may originate from "new IndexWriter" be returned.
+{quote}
+
+marking for 2.3 since it seems like a fairly trivial fix, and if we don't deal with it now it will be a bug introduced in 2.3.
+
+

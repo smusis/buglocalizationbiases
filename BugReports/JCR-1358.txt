@@ -1,0 +1,6 @@
+Cluster revision file not closed on repository shutdown.
+
+
+
+Description:
+After having shut down a repository that has configured clustering, the cluster revision file is still open.

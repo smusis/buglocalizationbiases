@@ -1,0 +1,48 @@
+Clover setup currently has some problems
+
+
+
+Description:
+(tracking as a bug before it get lost in email...
+  http://www.nabble.com/Clover-reports-missing-from-hudson--to15510616.html#a15510616
+)
+
+The clover setup for Lucene currently has some problems, 3 i think...
+
+1) instrumentation fails on contrib/db/ because it contains java packages the ASF Clover lscence doesn't allow instrumentation of.  i have a patch for this.
+
+2) running instrumented contrib tests for other contribs produce strange errors...
+
+{{monospaced}}
+    [junit] Testsuite: org.apache.lucene.analysis.el.GreekAnalyzerTest
+    [junit] Tests run: 1, Failures: 0, Errors: 1, Time elapsed: 0.126 sec
+    [junit]
+    [junit] ------------- Standard Error -----------------
+    [junit] [CLOVER] FATAL ERROR: Clover could not be initialised. Are you sure you have Clover
+in the runtime classpath? (class
+java.lang.NoClassDefFoundError:com_cenqua_clover/CloverVersionInfo)
+    [junit] ------------- ---------------- ---------------
+    [junit] Testcase: testAnalyzer(org.apache.lucene.analysis.el.GreekAnalyzerTest):    Caused
+an ERROR
+    [junit] com_cenqua_clover/g
+    [junit] java.lang.NoClassDefFoundError: com_cenqua_clover/g
+    [junit]     at org.apache.lucene.analysis.el.GreekAnalyzer.<init>(GreekAnalyzer.java:157)
+    [junit]     at
+org.apache.lucene.analysis.el.GreekAnalyzerTest.testAnalyzer(GreekAnalyzerTest.java:60)
+    [junit]
+    [junit]
+    [junit] Test org.apache.lucene.analysis.el.GreekAnalyzerTest FAILED
+{{monospaced}}
+
+...i'm not sure what's going on here.  the error seems to happen both when
+trying to run clover on just a single contrib, or when doing the full
+build ... i suspect there is an issue with the way the batchtests fork
+off, but I can't see why it would only happen to contribs (the regular
+tests fork as well)
+
+3) according to Grant...
+
+{{quote}}
+...There is also a bit of a change on Hudson during the migration to the new servers that needs to be ironed  out. 
+{{quote}}
+

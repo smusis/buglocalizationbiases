@@ -1,0 +1,9 @@
+Too many open files when merging large index segments
+
+
+
+Description:
+When large index segments are merged it may happen that lots of smaller index segments are created but have to wait until the large
+index merge has completed. This may lead to a 'too many open files' exception on some system.
+
+We should find a solution where large index merges are better decoupled from regular index operations.

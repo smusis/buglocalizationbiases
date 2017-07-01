@@ -1,0 +1,20 @@
+IW#nrtIsCurrent retruns true if changes are in del queue but not in bufferedDeleteStream yet
+
+
+
+Description:
+spinnoff from SOLR-2861 - since the delete queue is not necessarily applied entirely on each request there is a chance that there are changes in the delete queue but not yet in buffered deletes. this can prevent NRT readers from reopen when they should... this shows the problematic code:
+
+{code}
+Index: java/org/apache/lucene/index/IndexWriter.java
+===================================================================
+--- java/org/apache/lucene/index/IndexWriter.java	(revision 1195214)
++++ java/org/apache/lucene/index/IndexWriter.java	(working copy)
+@@ -4074,7 +4074,7 @@
+   synchronized boolean nrtIsCurrent(SegmentInfos infos) {
+     //System.out.println("IW.nrtIsCurrent " + (infos.version == segmentInfos.version && !docWriter.anyChanges() && !bufferedDeletesStream.any()));
+     ensureOpen();
+-    return infos.version == segmentInfos.version && !docWriter.anyChanges() && !bufferedDeletesStream.any();
++    return infos.version == segmentInfos.version && !docWriter.anyChanges() && !docWriter.deleteQueue.anyChanges();
+   }
+{code}

@@ -1,0 +1,6 @@
+NearSpans skipTo bug
+
+
+
+Description:
+NearSpans appears to have a bug in skipTo that causes it to skip over some matching documents completely.  I discovered this bug while investigating problems with SpanWeight.explain, but as far as I can tell the Bug is not specific to Explanations ... it seems like it could potentially result in incorrect matching in some situations where a SpanNearQuery is nested in another query such thatskipTo will be used ... I tried to create a high level test case to exploit the bug when searching, but i could not.  TestCase exploiting the class using NearSpan and SpanScorer will follow...

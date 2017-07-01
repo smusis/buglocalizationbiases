@@ -1,0 +1,6 @@
+Optimize runs forever if you keep deleting docs at the same time
+
+
+
+Description:
+Because we "cascade" merges for an optimize... if you also delete documents while the merges are running, then the merge policy will see the resulting single segment as still not optimized (since it has pending deletes) and do a single-segment merge, and will repeat indefinitely (as long as your app keeps deleting docs).

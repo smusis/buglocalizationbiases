@@ -1,0 +1,6 @@
+Improve Memory Consumption for merging DocValues SortedBytes variants
+
+
+
+Description:
+Currently SortedBytes are loaded into memory during merge which could be a potential trap. Instead of loading them into Heap memory we can merge those sorted values with much smaller memory and without loading all values into ram.

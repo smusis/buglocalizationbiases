@@ -1,0 +1,35 @@
+CompoundFileWriter should pre-set its file length
+
+
+
+Description:
+I've read that if you are writing a large file, it's best to pre-set
+the size of the file in advance before you write all of its contents.
+This in general minimizes fragmentation and improves IO performance
+against the file in the future.
+
+I think this makes sense (intuitively) but I haven't done any real
+performance testing to verify.
+
+Java has the java.io.File.setLength() method (since 1.2) for this.
+
+We can easily fix CompoundFileWriter to call setLength() on the file
+it's writing (and add setLength() method to IndexOutput).  The
+CompoundFileWriter knows exactly how large its file will be.
+
+Another good thing is: if you are going run out of disk space, then,
+the setLength call should fail up front instead of failing when the
+compound file is actually written.  This has two benefits: first, you
+find out sooner that you will run out of disk space, and, second, you
+don't fill up the disk down to 0 bytes left (always a frustrating
+experience!).  Instead you leave what space was available
+and throw an IOException.
+
+My one hesitation here is: what if out there there exists a filesystem
+that can't handle this call, and it throws an IOException on that
+platform?  But this is balanced against possible easy-win improvement
+in performance.
+
+Does anyone have any feedback / thoughts / experience relevant to
+this?
+

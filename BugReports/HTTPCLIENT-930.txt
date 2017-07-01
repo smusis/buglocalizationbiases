@@ -1,0 +1,8 @@
+Unencoded redirect URI causes exception when following redirects
+
+
+
+Description:
+When HttpClient is set to follow redirects, the DefaultRedirectHandler gets the redirect location from the appropriate request header and attempts to create a new java.net.URI from it. If the location contains an invalid URI character, creating the URI fails. For example, if the redirect location were "/foo?bar=<baz/>", it would fail because the '<' and '>' are not legal in a URI.
+
+I'm not sure if this should actually be considered a bug in HttpClient, since the website in question should probably be responsible for encoding the URI appropriately; however, browsers handle the situation gracefully, and it would be nice if this excellent library would do so as well.

@@ -1,0 +1,6 @@
+Consolidate Solr  & Lucene FunctionQuery into modules
+
+
+
+Description:
+Spin-off from the [dev list | http://www.mail-archive.com/dev@lucene.apache.org/msg13261.html]  

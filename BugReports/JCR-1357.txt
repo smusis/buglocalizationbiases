@@ -1,0 +1,7 @@
+Create "quick start" developer bundles for model 1,2,3 deployment
+
+
+
+Description:
+Please create "quick start" developer bundles for deployment models 1,2,3 with all dependance libs and application startup code. Some kind of "Hello, world" app on models 1,2,3.
+Tomcat and jetty bundles would be nice.

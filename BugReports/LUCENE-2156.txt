@@ -1,0 +1,6 @@
+use AtomicInteger/Boolean to track IR.refCount and IW.closed
+
+
+
+Description:
+Less costly than synchronized methods we have now...

@@ -1,0 +1,8 @@
+Add configuration path to SynonymProvider
+
+
+
+Description:
+This is an enhancement to the SynonymProvider, which will be included in the 1.4 release. The current interface only has a getSynonyms() method but does not allow to initialize the SynonymProvider. It should be possible to initialize the provider with a configuration file. The configuration may then include the synonym definitions or a pointer to a location where the synonyms are defined. The configuration will be implementation dependent.
+
+In addition there should be a simple default implementation in jackrabbit-core. The wordnet-synonyms in the sandbox are only of limited use and must be built manually.

@@ -1,0 +1,6 @@
+Improve aggregate node indexing code
+
+
+
+Description:
+Currently the aggregate nodes indexing code uses a sub-optimal way of copying and sorting the aggregated fields.

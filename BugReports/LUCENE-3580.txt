@@ -1,0 +1,26 @@
+Most 4.0 PostingsReaders don't obey DISI contract
+
+
+
+Description:
+While trying to do some refactoring, I noticed funky things going on with some codecs.
+
+One problem is that DocIdSetIterator says the following:
+{noformat}
+Returns the following:
+   * <ul>
+   * <li>-1 or {@link #NO_MORE_DOCS} if {@link #nextDoc()} or
+   * {@link #advance(int)} were not called yet.
+{noformat}
+
+But most 4.0 Docs/DocsAndPositionsEnums don't actually do this (e.g. return 0). instead we 
+are relying on Scorers to 'cover' for them, which is inconsistent. Some scorers actually rely
+upon this behavior, for example look at ReqExclScorer.toNonExcluded(), it calls docId() on the
+excluded part before it calls nextDoc()
+
+So we need to either fix these enums, change these enums to not extend DocIdSetIterator (and redefine
+what the actual contract should be for these enums), change DocIdSetIterator, or something else.
+
+Fixing the enums to return -1 here when they are uninitialized kinda sucks for the ones summing up
+document deltas...
+

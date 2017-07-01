@@ -1,0 +1,6 @@
+I/O exceptions can cause loss of buffered deletes
+
+
+
+Description:
+Some I/O exceptions that result in segmentInfos rollback operations can cause buffered deletes that existed before the rollback creation point to be incorrectly lost when the IOException triggers a rollback.

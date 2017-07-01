@@ -1,0 +1,13 @@
+remove MultiTermQuery get/inc/clear totalNumberOfTerms
+
+
+
+Description:
+This method is not correct if the index has more than one segment.
+Its also not thread safe, and it means calling query.rewrite() modifies
+the original query. 
+
+All of these things add up to confusion, I think we should remove this 
+from multitermquery, the only thing that "uses" it is the NRQ tests, which 
+conditionalizes all the asserts anyway.
+

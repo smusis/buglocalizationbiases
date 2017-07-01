@@ -1,0 +1,8 @@
+Replace spatial contrib module with LSP's spatial-lucene module
+
+
+
+Description:
+I propose that Lucene's spatial contrib module be replaced with the spatial-lucene module within Lucene Spatial Playground (LSP).  LSP has been in development for approximately 1 year by David Smiley, Ryan McKinley, and Chris Male and we feel it is ready.  LSP is here: http://code.google.com/p/lucene-spatial-playground/  and the spatial-lucene module is intuitively in svn/trunk/spatial-lucene/.
+
+I'll add more comments to prevent the issue description from being too long.

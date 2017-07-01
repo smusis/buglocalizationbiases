@@ -1,0 +1,16 @@
+When sorting by field, IndexSearcher should not compute scores by default
+
+
+
+Description:
+In 2.9 we've added the ability to turn off scoring (maxScore &
+trackScores, separately) when sorting by field.
+
+I expect most apps don't use the scores when sorting by field, and
+there's a sizable performance gain when scoring is off, so I think for
+2.9 we should not score by default, and add show in CHANGES how to
+enable scoring if you rely on it.
+
+If there are no objections, I'll commit that change in a day or two
+(it's trivial).
+

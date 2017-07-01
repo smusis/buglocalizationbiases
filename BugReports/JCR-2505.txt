@@ -1,0 +1,8 @@
+High memory usage on node with multi-valued string properties
+
+
+
+Description:
+Multi-valued string properties are tokenized per value, which may consume quite some memory when there are lots of small values in on a property. The memory footprint is 2k per value, because each value is tokenized with a separate tokenizer instance. That tokenizer uses a stream buffer of 2k bytes.
+
+Instead the values should be concatenated (whitespace separated) and then tokenized in one go.

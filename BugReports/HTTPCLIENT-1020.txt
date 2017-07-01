@@ -1,0 +1,12 @@
+Please add maven-notice-plugin to gump-trunk
+
+
+
+Description:
+Hi,
+
+the httpclient build currently fails in Gump because it cannot find the maven-notice-plugin.  We could grab it from http://svn.apache.org/repos/asf/httpcomponents/maven-notice-plugin/trunk/ but since you have a directory with externals just for Gump it would be a lot easier if you added an external for it as well.
+
+Thanks
+
+Stefan

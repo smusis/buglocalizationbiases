@@ -1,0 +1,11 @@
+QValueFactory improvements
+
+
+
+Description:
+1) Allow all create methods to throw RepositoryException.
+
+2) Further document that create(value,type) can throw ValueFormatException.
+
+3) Remove special case create(File)
+

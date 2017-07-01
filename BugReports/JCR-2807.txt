@@ -1,0 +1,42 @@
+ConcurrentModificationException in SessionItemStateManager.getIdOfRootTransientNodeState()
+
+
+
+Description:
+SessionItemStateManager.getIdOfRootTransientNodeState() is throwing a ConcurrentModificationException on line 607:
+
+Here's a snippet of the code:
+{code}
+                    for (NodeId id : candidateIds) {
+                        if (nodeId.equals(id) || hierMgr.isAncestor(id, nodeId)) {
+                            // already a candidate or a descendant thereof
+                            // => skip
+                            skip = true;
+                            break;
+                        }
+                        if (hierMgr.isAncestor(nodeId, id)) {
+                            // candidate is a descendant => remove
+                            candidateIds.remove(id);
+                        }
+                    }
+{code}
+
+Can't use Collection.remove(Object) in the middle of iterating. It should probably be changed to use Iterator.remove():
+{code}
+                    Iterator<NodeId> nodeIdItor = candidateIds.iterator();
+                    while (nodeIdItor.hasNext()) {
+                        NodeId id = nodeIdItor.next();
+                        if (nodeId.equals(id) || hierMgr.isAncestor(id, nodeId)) {
+                            // already a candidate or a descendant thereof
+                            // => skip
+                            skip = true;
+                            break;
+                        }
+                        if (hierMgr.isAncestor(nodeId, id)) {
+                            // candidate is a descendant => remove
+                            nodeIdItor.remove();
+                        }
+                    }
+{code}
+
+Any idea what I could do differently to workaround the issue?

@@ -1,0 +1,8 @@
+Searchability settings in PropertyDefinition
+
+
+
+Description:
+Related to JCR-1591, the new JCR 2.0 property definitions contain settings for searchability of properties.
+
+I'm not sure how deeply we want to implement these settings (perhaps we should just hard-code the values), but in any case the relevant methods need to be implemented.

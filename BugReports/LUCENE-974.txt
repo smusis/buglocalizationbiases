@@ -1,0 +1,6 @@
+Remove Author tags from code
+
+
+
+Description:
+Remove all author tags from the code.

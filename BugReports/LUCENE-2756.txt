@@ -1,0 +1,17 @@
+MultiSearcher.rewrite() incorrectly rewrites queries
+
+
+
+Description:
+This was reported on the userlist, in the context of range queries.
+
+Its also easy to make our existing tests fail with my patch on LUCENE-2751:
+{noformat}
+ant test-core -Dtestcase=TestBoolean2 -Dtestmethod=testRandomQueries -Dtests.seed=7679849347282878725:-903778383189134045
+{noformat}
+
+The fundamental problem is that MultiSearcher first rewrites against individual subs, 
+then uses Query.combine() which simply OR's these sub-clauses.
+
+This is incorrect for expanded MUST_NOT queries (e.g. from wildcard), as it violates demorgan's law.
+

@@ -1,0 +1,6 @@
+Cookie class cannot handle IPv6 literals
+
+
+
+Description:
+When performing requests using IPv6 literals, Cookie.setDomain() will attempt to trim the port number by cutting off the domain string at the first colon. This leads to MalformedCookieExceptions being thrown by CookieSpecBase later on.

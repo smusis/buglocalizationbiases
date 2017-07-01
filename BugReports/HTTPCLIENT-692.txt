@@ -1,0 +1,7 @@
+ClientConnectionManager should throw InterruptedException
+
+
+
+Description:
+For historical reasons, ThreadSafeClientConnectionManager throws an IllegalThreadStateException instead of an InterruptedException if the waiting thread is interrupted from outside. This design was chosen since adding InterruptedException to the HttpConnectionManager in 3.x would have broken the API. This is not a concern for HttpClient 4.0.
+

@@ -1,0 +1,12 @@
+IndexWriter does not properly account for the RAM consumed by pending deletes
+
+
+
+Description:
+IndexWriter, with autoCommit false, is able to carry buffered deletes for quite some time before materializing them to docIDs (thus freeing up RAM used).
+
+It's only on triggering a merge (or, commit/close) that the deletes are materialized and the RAM is freed.
+
+I expect this in practice is a smallish amount of RAM, but we should still fix it.
+
+I don't have a patch yet so if someone wants to grab this, feel free!!

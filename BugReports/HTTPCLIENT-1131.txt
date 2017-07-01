@@ -1,0 +1,6 @@
+Support http URL inline authentication
+
+
+
+Description:
+If you try to execute a method with the httpClient using a valid url, conform to the schema http://username:password@host:port/ the authentication will fail, and you will get a 401 error.

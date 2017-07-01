@@ -1,0 +1,45 @@
+Small speedups to DocumentsWriter's quickSort
+
+
+
+Description:
+In working on LUCENE-510 I found that DocumentsWriter's quickSort can
+be further optimized to handle the common case of sorting only 2
+values.
+
+I ran with this alg:
+
+  analyzer=org.apache.lucene.analysis.standard.StandardAnalyzer
+  
+  doc.maker=org.apache.lucene.benchmark.byTask.feeds.LineDocMaker
+  
+  docs.file=/Volumes/External/lucene/wiki.txt
+  doc.stored = true
+  doc.term.vector = true
+  doc.add.log.step=2000
+  doc.maker.forever = false
+  
+  directory=FSDirectory
+  autocommit=false
+  compound=false
+  
+  ram.flush.mb=64
+  
+  { "Rounds"
+    ResetSystemErase
+    { "BuildIndex"
+      CreateIndex
+      { "AddDocs" AddDoc > : 200000
+      - CloseIndex
+    }
+    NewRound
+  } : 5
+  
+  RepSumByPrefRound BuildIndex
+
+Best of 5 was 857.3 docs/sec before the optimization and 881.6 after =
+2.8% speedup, on a quad-core Mac Pro with 4-drive RAID 0 array.
+
+The fix is trivial.  I will commit shortly.
+
+

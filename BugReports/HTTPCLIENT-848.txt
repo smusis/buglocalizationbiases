@@ -1,0 +1,12 @@
+HttpClient:- Connections not released when SSL Tunneling fails.
+
+
+
+Description:
+Trying to use HTTPS, and SSL tunneling fails as expected because the host is not accepted by the squid proxy, so squid proxy return 403. 
+
+The problem I am seeing is that, when ever this happens the connections are not released to the pool. I traced the code and it appears that in 
+HttpMethidDirector.java:  executeWithRetry()
+when executeConnect() return false and there is no retry, the connections are not released.
+
+Is this expected? Or am I doing something wrong.

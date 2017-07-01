@@ -1,0 +1,10 @@
+Scorer.skipTo(current) remains on current for some scorers
+
+
+
+Description:
+Background in http://www.nabble.com/scorer.skipTo%28%29-contr-tf3880986.html
+
+It appears that several scorers do not strictly follow the spec of Scorer.skipTo(n), and skip to current location remain in current location whereas the spec says: "beyond current". 
+
+We should (probably) either relax the spec or fix the implementations.

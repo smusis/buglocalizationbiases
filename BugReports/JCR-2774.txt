@@ -1,0 +1,19 @@
+Access control for repository level API operations
+
+
+
+Description:
+it is a open issue (i guess since jackrabbit 1.0) that the repository level write operations lack any kind of permission check.
+this issues has been raised during specification of jsr 283 [1] but didn't made it into the specification (left to implementation).
+
+in jackrabbit 2.0 this affects the following parts of the API
+
+- namespace registration
+- node type registration
+- workspace creation/removal
+
+based on a issue reported by david ("currently an anonymous user can write the namespace registry which is probably
+undesirable [...]"), we could at least add some minimal restrictions. In addition i would like to take up this discussion
+for jsr 333.
+
+[1] https://jsr-283.dev.java.net/issues/show_bug.cgi?id=486

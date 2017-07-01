@@ -1,0 +1,10 @@
+PersistenceManager API change breaks backward compatibility
+
+
+
+Description:
+Persistence Manager API change introduced in JCR-1428 breaks backward compatibility. although this is not a public visible API it renders 3rd party PMs invalid that do not extend from AbstractPersistenceManager.
+at least for the 1.4.3 patch release, we should not do this.
+
+suggest to revert the API change for the next 1.4.4 release, but leave the method on the abstract pm, and introduce it only for 1.5.
+

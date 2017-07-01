@@ -1,0 +1,17 @@
+DataStore: garbage collection can fail when using workspace maxIdleTime
+
+
+
+Description:
+The GarbageCollectorTest fails because some workspaces have an idle timeout. The data store garbage collector should prevent workspace close-on-idle.
+
+Proposed solution: instead of using the 'regular' system sessions in the garbage collector, use special 'registered system sessions'. The sessions get garbage collected when no longer used, that means this patch requires that JCR-1216 "Unreferenced sessions should get garbage collected" is applied. So for each workspace, the code is:
+
+// this will initialize the workspace if required
+wspInfo.getSystemSession();
+
+SessionImpl session = SystemSession.create(rep, wspInfo.getConfig());
+// mark this session as 'active' for so the workspace does
+// not get disposed by workspace-janitor until the garbage collector is done
+rep.onSessionCreated(session);            
+

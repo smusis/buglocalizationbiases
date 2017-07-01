@@ -1,0 +1,7 @@
+provide an ehcache implementation for HttpCache
+
+
+
+Description:
+Provide an implementation of the HttpCache interface that stores cache entries in ehcache.
+

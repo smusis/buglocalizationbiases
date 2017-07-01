@@ -1,0 +1,6 @@
+Use inheritance rather than delegation for SPI ValueFactoryImpl
+
+
+
+Description:
+The ValueFactoryImpl now has a protected constructor and the SPI variant of the value factory can use it.

@@ -1,0 +1,6 @@
+[PATCH] Mention RangeFilter in javadoc for maxClauseCount
+
+
+
+Description:
+ 

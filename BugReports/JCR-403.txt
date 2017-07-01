@@ -1,0 +1,6 @@
+add shutdown() or logoutAll() method to TransientRepository
+
+
+
+Description:
+It would be usefull to be able to explicitly ask a TransientRepository to shut down, instead of relying on all sessions to be closed by session.logout().

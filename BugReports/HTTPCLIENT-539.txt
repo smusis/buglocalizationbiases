@@ -1,0 +1,115 @@
+UserInfo disapears after creating URI
+
+
+
+Description:
+I tested this using firefox (Where I have configured our proxy server)
+I run the following URI: ftp://username:password@ftp.mytest.test/testdir/
+
+I use a sniffer to look at the GET commond send to the proxy server. It looks as
+follows:
+
+GET ftp://username:password@ftp.mytest.test/testdir/ HTTP/1.1
+Host: ftp.mytest.test
+User-Agent: Mozilla/5.0 (Windows; U; Windows NT 5.0; en-US; rv:1.7.12)
+Gecko/20050915 Firefox/1.0.7
+Accept:
+text/xml,application/xml,application/xhtml+xml,text/html;q=0.9,text/plain;q=0.8,image/png,*/*;q=0.5
+Accept-Language: en-us,en;q=0.5
+Accept-Encoding: gzip,deflate
+Accept-Charset: ISO-8859-1,utf-8;q=0.7,*;q=0.7
+Keep-Alive: 300
+Proxy-Connection: keep-alive
+
+Using this request we get access to the directory and see the contents displayed.
+However, when I try the same in Java (using HttpClient) I get the following GET
+request (Java code included below):
+
+GET ftp://ftp.mytest.test/testdir/ HTTP/1.1
+User-Agent: Jakarta Commons-HttpClient/3.0-rc3
+Host: ftp.mytest.test
+Proxy-Connection: Keep-Alive
+
+Finally I get a ACCESS DENIED error. 
+This seems to be because the GET request does not contain the USER / PASSWORD
+info in the URL.
+
+/// JAVA CODE:
+
+package nl.essent.test.ftp.httptest;
+
+import java.io.IOException;
+
+import org.apache.commons.httpclient.Credentials;
+import org.apache.commons.httpclient.DefaultHttpMethodRetryHandler;
+import org.apache.commons.httpclient.HostConfiguration;
+import org.apache.commons.httpclient.HttpClient;
+import org.apache.commons.httpclient.HttpException;
+import org.apache.commons.httpclient.HttpMethod;
+import org.apache.commons.httpclient.HttpStatus;
+import org.apache.commons.httpclient.NTCredentials;
+import org.apache.commons.httpclient.UsernamePasswordCredentials;
+import org.apache.commons.httpclient.auth.AuthScope;
+import org.apache.commons.httpclient.methods.GetMethod;
+import org.apache.commons.httpclient.params.HttpMethodParams;
+import org.apache.commons.httpclient.protocol.DefaultProtocolSocketFactory;
+import org.apache.commons.httpclient.protocol.Protocol;
+
+public class TestClient {
+
+    public static void main(String[] args) {
+        new TestClient().testFtpViaHttp();
+    }
+    
+    public void testFtpViaHttp() {
+        
+        HttpClient client = new HttpClient();
+        
+        HostConfiguration hostConfig = client.getHostConfiguration();
+        hostConfig.setProxy("proxy", 8080);
+        client.setHostConfiguration(hostConfig);
+        
+        Protocol protol = new Protocol("ftp", new
+DefaultProtocolSocketFactory(), 21);
+        Protocol.registerProtocol("ftp", protol);
+        
+        Credentials proxyCreds = new NTCredentials("xxxx", "xxxxx","", "xxxx" );
+        client.getState().setProxyCredentials(AuthScope.ANY, proxyCreds);
+        
+        GetMethod gmethod = new
+GetMethod("ftp://username:password@ftp.mytest.test/testdir/");
+        
+        gmethod.getParams().setParameter(HttpMethodParams.RETRY_HANDLER, 
+                new DefaultHttpMethodRetryHandler(3, false));
+       
+        try {
+            // Execute the method.
+            int statusCode = client.executeMethod(gmethod);
+
+            if (statusCode != HttpStatus.SC_OK) {
+              System.err.println("Method failed: " + gmethod.getStatusLine());
+            }
+
+            // Read the response body.
+            byte[] responseBody = gmethod.getResponseBody();
+
+            // Deal with the response.
+            // Use caution: ensure correct character encoding and is not binary data
+            System.out.println(new String(responseBody));
+
+          } catch (HttpException e) {
+            System.err.println("Fatal protocol violation: " + e.getMessage());
+            e.printStackTrace();
+          } catch (IOException e) {
+            System.err.println("Fatal transport error: " + e.getMessage());
+            e.printStackTrace();
+          } finally {
+            // Release the connection.
+            gmethod.releaseConnection();
+          } 
+
+    }
+
+}
+
+//// END JAVA CODE

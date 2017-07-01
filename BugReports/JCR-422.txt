@@ -1,0 +1,21 @@
+charset in Content-Type header shouldn't be in quotes
+
+
+
+Description:
+The charset value in the Content-Type header returned from IOUtil.buildContentType is enclosed in quotes. This value should be a token which does not include double quotes.
+
+Index: C:/jprojects/eclipse/jackrabbit/jcr-server/server/src/java/org/apache/jackrabbit/server/io/IOUtil.java
+===================================================================
+--- C:/jprojects/eclipse/jackrabbit/jcr-server/server/src/java/org/apache/jackrabbit/server/io/IOUtil.java	(revision 397215)
++++ C:/jprojects/eclipse/jackrabbit/jcr-server/server/src/java/org/apache/jackrabbit/server/io/IOUtil.java	(working copy)
+@@ -112,7 +112,7 @@
+     public static String buildContentType(String mimeType, String encoding) {
+         String contentType = mimeType;
+         if (contentType != null && encoding != null) {
+-            contentType += "; charset=\"" + encoding + "\"";
++            contentType += "; charset=" + encoding;
+         }
+         return contentType;
+     }
+

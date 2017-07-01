@@ -1,0 +1,10 @@
+NRTCachingDir has invalid asserts (if same file name is written twice)
+
+
+
+Description:
+Normally Lucene is write-once (except for segments.gen file, which NRTCachingDir never caches), but in some tests (TestDoc, TestCrash) we can write the same file more than once.
+
+I don't think NRTCachingDir should have these asserts, and I think on createOutput it should remove any old file if present.
+
+I also found & fixed a possible concurrency issue (if more than one thread syncs at the same time; IndexWriter doesn't ever do this today but it has in the past).

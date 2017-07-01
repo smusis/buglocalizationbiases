@@ -1,0 +1,10 @@
+FileSwitchDirectory should uniqueify the String file names returned by listAll
+
+
+
+Description:
+Right now we blindly concatenate what's returned from primary & secondary.
+
+But a legit use of FSD is pointing to the same underlying FSDir but w/ different impls for opening the inputs/outputs.
+
+I have simple patch that just uniqueifies using Set<String>.

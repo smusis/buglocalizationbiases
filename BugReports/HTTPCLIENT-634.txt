@@ -1,0 +1,10 @@
+HostConfiguration socketFactory is ignored
+
+
+
+Description:
+HostConfiguration doesn't use its host.protocol to execute an HttpMethod with an absolute URL.  It should, if the Protocol's scheme is the same as the method's URL scheme.
+
+This bug makes it difficult to integrate a specialized SSL connection algorithm (in a SecureProtocolSocketFactory) with a module implemented on top of HttpClient.  The latter module must not execute methods with absolute URLs.  Of course, this is difficult when one doesn't control that module.  For example, I recently tried to integrate SSL certificate-based client authentication with XFire.  XFire provides a reasonable API for replacing its HttpClient, but one must hack its source code to prevent it from executing methods with absolute URLs.
+
+Protocol.registerProtocol is a possible answer, but it can't support two or more SSL connection algorithms for one HTTPS host and port.

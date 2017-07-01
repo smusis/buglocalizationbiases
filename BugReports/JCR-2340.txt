@@ -1,0 +1,13 @@
+CacheBehaviour Observation broken
+
+
+
+Description:
+While trying to fix JCR-2293 I discovered that CacheBehaviour Observation is broken:
+
+- HierarchyEventListener.onEvent ignores local event (despite the comment saying otherwise). Not sure which way it should be. However with local events being ignored, JCR-2293 will most probably also occur with CacheBehaviour Observation. 
+
+- NodeEntryImpl.refresh(Event) does not set its child node entries to incomplete when a node/property was added.
+
+- After tentatively fixing above issues, I discovered that NodeEntryImpl.refresh(Event) and my own event listener operate on different NodeEntryImpl and ChildNodeEntryImpl instances. That is, even though I set childNodeEntries.complete to false in NodeEntryImpl.refresh(Event), when my own event listener retrieves that node (entry), it gets a different instance which has childNodeEntries.complete still set to true.
+

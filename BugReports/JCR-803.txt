@@ -1,0 +1,6 @@
+Improve performance of DescendantSelfAxisQuery
+
+
+
+Description:
+Instead of calculating the full result of the sub query, the DescendantSelfAxisQuery should make use of the skipTo() method on the sub scorer.

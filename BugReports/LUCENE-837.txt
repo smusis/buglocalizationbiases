@@ -1,0 +1,10 @@
+contrib/benchmark QueryMaker and Task Refactorings
+
+
+
+Description:
+Introduce an abstract QueryMaker implementation that shares much of the common code between the various QueryMaker implementations.
+
+Add in a new QueryMaker for reading queries from a file that is specified in the properties.
+
+Patch shortly, and if no concerns, will commit tomorrow or Wed.

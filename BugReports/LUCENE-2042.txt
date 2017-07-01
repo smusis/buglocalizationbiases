@@ -1,0 +1,6 @@
+Allow controllable printing of the hits
+
+
+
+Description:
+Adds "print.hits.field" property to the alg.  If set, then the hits retrieved by Search* tasks are printed, along with the value of the specified field, for each doc.

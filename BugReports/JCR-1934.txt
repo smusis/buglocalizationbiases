@@ -1,0 +1,8 @@
+DbDataStore: delete temporary files using finalize()
+
+
+
+Description:
+Currently, reading from the DbDataStore creates a temporary file by default. If the application doesn't fully read or close the input stream, the file is not deleted. The best solution is to use finally { in.close() } in the application, but this is easily forgotten.
+
+I suggest to delete the temp file using finalize(). There is a small performance penalty when creating the temporary object, but compared to I/O it is very small. Note that FileInputStream and FileOutputStream also use finalize().

@@ -1,0 +1,14 @@
+add suggester that uses shortest path/wFST instead of buckets
+
+
+
+Description:
+Currently the FST suggester (really an FSA) quantizes weights into buckets (e.g. single byte) and puts them in front of the word.
+This makes it fast, but you lose granularity in your suggestions.
+
+Lately the question was raised, if you build lucene's FST with positiveintoutputs, does it behave the same as a tropical semiring wFST?
+
+In other words, after completing the word, we instead traverse min(output) at each node to find the 'shortest path' to the 
+best suggestion (with the highest score).
+
+This means we wouldnt need to quantize weights at all and it might make some operations (e.g. adding fuzzy matching etc) a lot easier.

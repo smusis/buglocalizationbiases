@@ -1,0 +1,65 @@
+Cookie.java blowing up on cookies from "country code" domains
+
+
+
+Description:
+The following exception is thrown from Cookie.java when receiving a cookie from
+a "country code" domain such as amazon.ca.
+
+     [java] INFO: Cookie.parse(): Rejecting set cookie header
+"session-id=702-1613649-9326458; path=/; domain=
+.amazon.ca; expires=Tuesday, 29-Oct-2002 08:00:00 GMT,
+session-id-time=1035878400; path=/; domain=.amazon.ca;
+expires=Tuesday, 29-Oct-2002 08:00:00 GMT" because "session-id" has an illegal
+domain attribute (".amazon.ca")
+ for the given domain "www.amazon.ca".  It violoates the Netscape cookie
+specification for non-special TLDs.
+     [java] Oct 22, 2002 9:32:37 AM org.apache.commons.httpclient.HttpMethodBase
+processResponseHeaders
+     [java] SEVERE: Exception processing response headers
+     [java] org.apache.commons.httpclient.HttpException: Bad Set-Cookie header:
+session-id=702-1613649-9326458
+; path=/; domain=.amazon.ca; expires=Tuesday, 29-Oct-2002 08:00:00 GMT,
+session-id-time=1035878400; path=/; do
+main=.amazon.ca; expires=Tuesday, 29-Oct-2002 08:00:00 GMT Illegal domain
+attribute .amazon.ca
+     [java]     at org.apache.commons.httpclient.Cookie.parse(Cookie.java:944)
+     [java]     at
+org.apache.commons.httpclient.HttpMethodBase.processResponseHeaders(HttpMethodBase.java:141
+9)
+     [java]     at
+org.apache.commons.httpclient.HttpMethodBase.readResponse(HttpMethodBase.java:1504)
+     [java]     at
+org.apache.commons.httpclient.HttpMethodBase.processRequest(HttpMethodBase.java:2128)
+     [java]     at
+org.apache.commons.httpclient.HttpMethodBase.execute(HttpMethodBase.java:790)
+     [java]     at
+org.apache.commons.httpclient.HttpClient.executeMethod(HttpClient.java:442)
+
+
+The http response that caused this exception is below.
+
+HTTP/1.1 302 Found
+Date: Tue, 22 Oct 2002 13:30:11 GMT
+Server: Stronghold/2.4.2 Apache/1.3.6 C2NetEU/2412 (Unix)
+Set-Cookie: session-id=702-8591055-5561622; path=/; domain=.amazon.ca;
+expires=Tuesday, 29-Oct-2002 08:00:00 GMT
+Set-Cookie: session-id-time=1035878400; path=/; domain=.amazon.ca;
+expires=Tuesday, 29-Oct-2002 08:00:00 GMT
+Location: http://www.amazon.ca/exec/obidos/tg/browse/-/915398/702-8591055-5561622
+Connection: close
+Transfer-Encoding: chunked
+Content-Type: text/html
+
+I've seen this problem with other .ca domains so this isn't a problem unique to
+amazon.ca.
+
+My guess would be that the problem is on line 929 of Cookie.java:
+
+int domainParts = new StringTokenizer(cookie.getDomain(), ".").countTokens();
+
+Where domainParts would be 2 for a domain like ".amazon.ca" instead of the 3
+that the code is expecting.  I'm not that familiar with the cookie spec so I
+could be completely wrong ;-)
+
+The results above were done with the Oct 20/2002 gump build.

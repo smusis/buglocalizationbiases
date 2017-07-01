@@ -1,0 +1,8 @@
+Javadoc of TokenStream.end() somehow confusing
+
+
+
+Description:
+The Javadocs of TokenStream.end() are somehow confusing, because they also refer to the old TokenStream API ("after next() returned null"). But one who implements his TokenStream with the old API cannot make use of the end() feature, as he would not use attributes and so cannot update the end offsets (he could, but then he should rewrite the whole TokenStream). To be conform to the old API, there must be an end(Token) method, which we will not add.
+
+I would drop the old API from this docs.

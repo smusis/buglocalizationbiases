@@ -1,0 +1,35 @@
+EasyX509TrustManager no longer checks cert expiry
+
+
+
+Description:
+EasyX509TrustManager was made even "easier" by the last commit:  a socket will
+now be created when talking to a server with an expired certificate.
+
+2 commits ago it looked like this (notice "return false" on line 107):
+
+102             try {
+103                 certificate.checkValidity();
+104             }
+105             catch (CertificateException e) {
+106                 LOG.error(e.toString());
+107                 return false;
+108             }
+
+
+Now it looks like this:
+
+102             try {
+103                 certificate.checkValidity();
+104             }
+105             catch (CertificateException e) {
+106                 LOG.error(e.toString());
+107             }
+
+
+I'm proposing we just do:
+
+102             certificate.checkValidity();
+
+Now that we're using Java 1.4 in the contrib code, we'll just let the
+CertificateException fly up the stack.

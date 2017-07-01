@@ -1,0 +1,6 @@
+Upgrade to SLF4J 1.3
+
+
+
+Description:
+Version 1.1 of the SLF4J logging facade was recently released. It contains no functional improvements that we'd need, but is split to a separate slf4j-api library and a set of backend-specic logging adapters. This would allow us to avoid exposing log4j as a transitive dependency for projects that depend on Jackrabbit.

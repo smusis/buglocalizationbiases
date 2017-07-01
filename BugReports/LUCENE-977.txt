@@ -1,0 +1,20 @@
+internal hashing improvements
+
+
+
+Description:
+Internal power-of-two closed hashtable traversal in DocumentsWriter and CharArraySet could be better.
+
+Here is the current method of resolving collisions:
+    if (text2 != null && !equals(text, len, text2)) {
+      final int inc = code*1347|1;
+      do {
+        code += inc;
+        pos = code & mask;
+        text2 = entries[pos];
+      } while (text2 != null && !equals(text, len, text2));
+
+The problem is that two different hashCodes with the same lower bits will keep picking the same slots (the upper bits will be ignored).
+This is because multiplication (*1347) only really shifts bits to the left... so given that the two codes already matched on the right, they will both pick the same increment, and this will keep them on the same path through the table (even though it's being added to numbers that differ on the left).  To resolve this, some bits need to be moved to the right when calculating the increment.
+
+

@@ -1,0 +1,8 @@
+DelimitedPayloadTokenFilter copies the bufer over itsself. Instead it should only set the length. Also optimize logic.
+
+
+
+Description:
+This is a small improvement I found when looking around. It is also a bad idea to copy a array over itsself.
+
+All tests pass, will commit later!

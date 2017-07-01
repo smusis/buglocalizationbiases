@@ -1,0 +1,23 @@
+JCR-RMI UnmarshalException when calling getProperty()
+
+
+
+Description:
+I've been trying to get the JCR-RMI adaptors going to talk to my noddy test repository. It seems I can successfully login and traverse the nodes (getNode etc..) but whenever I try to get something from a nt:resource (actually I've subclassed nt:resource to add our own properties) I get the following exception:
+
+org.apache.jackrabbit.rmi.client.RemoteRepositoryException: error unmarshalling return; nested exception is: 
+	java.io.WriteAbortedException: writing aborted; java.io.NotSerializableException: org.apache.jackrabbit.value.BinaryValue: error unmarshalling return; nested exception is: 
+	java.io.WriteAbortedException: writing aborted; java.io.NotSerializableException: org.apache.jackrabbit.value.BinaryValue
+	at org.apache.jackrabbit.rmi.client.ClientProperty.getValue(ClientProperty.java:139)
+	at org.apache.jackrabbit.rmi.client.ClientProperty.getString(ClientProperty.java:131)
+	at ClientTest.main(ClientTest.java:20)
+Caused by: java.rmi.UnmarshalException: error unmarshalling return; nested exception is: 
+	java.io.WriteAbortedException: writing aborted; java.io.NotSerializableException: org.apache.jackrabbit.value.BinaryValue
+	at sun.rmi.server.UnicastRef.invoke(UnicastRef.java:164)
+	at org.apache.jackrabbit.rmi.server.ServerProperty_Stub.getValue(Unknown Source)
+	at org.apache.jackrabbit.rmi.client.ClientProperty.getValue(ClientProperty.java:137)
+	... 2 more
+
+My svn is up-to-date as of this morning 2005/7/5 although the maven builds don't inspire much confidence as it falls over with Jelly exceptions at various points and there's a couple of dozen unit tests that fail. Don't know if this is the norm, the maven reports on the jackrabbit main site reports suggest not? But calling the same code with an in-process repository works fine.
+
+

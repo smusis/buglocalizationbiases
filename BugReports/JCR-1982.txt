@@ -1,0 +1,6 @@
+Exception root cause is swallowed in various places
+
+
+
+Description:
+When re-throwing an exception, the root cause is swallowed in some places in Jackrabbit, mainly when converting to an IOException.

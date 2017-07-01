@@ -1,0 +1,10 @@
+EchoHandler:104 possible NPE
+
+
+
+Description:
+Line 104 of EchoHandler is
+
+    bae.setContentType(entity.getContentType());
+
+a few lines previously, entity is checked for null, so it appears that entity can be null.

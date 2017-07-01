@@ -1,0 +1,30 @@
+Incorrect node position after import
+
+
+
+Description:
+I have found a behavior that does not seem to be consistent with the
+spec:
+
+After replacing a node with importXML using IMPORT_UUID_COLLISION_REPLACE_EXISTING the new node is not at the position of the replaced node (talking about the position among the siblings).
+
+The origininal node is removed, but the new node is created as the last child of the parent node, and not spec-compliant at the position of the replaced node.
+
+Here how I use it:
+
+// assume Session s, Node n, String text (holding XML data)
+
+s.importXML(
+	n.getPath(), 
+	new ByteArrayInputStream (text.getBytes("UTF-8")),
+	ImportUUIDBehavior.IMPORT_UUID_COLLISION_REPLACE_EXISTING
+);
+s.save();
+ 
+
+And here a quote from the spec section 7.3.6
+
+ImportUUIDBehavior.IMPORT_UUID_COLLISION_REPLACE_EXISTING: 
+If an incoming referenceable node has the same UUID as a node already existing in the workspace then the already existing node is replaced by the incoming node in the same position as the existing node.
+[note "same position"]
+

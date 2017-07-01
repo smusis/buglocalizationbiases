@@ -1,0 +1,6 @@
+Improve logging in NodeTypeRegistry.persistCustomNodeTypeDefs
+
+
+
+Description:
+When the closing of out in the finally block of persistCustomNodeTypeDefs throws an IOException this is ignored. At least some logging should take place, because an IOException here might still mean that the custom nodetype definitions were not stored correctly. This is the case, for instance, when a DatabaseFileSystem is used: the call to out.close triggers the SQL statement execution which causes an IOException if it fails. 

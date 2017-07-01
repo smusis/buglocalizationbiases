@@ -1,0 +1,28 @@
+FST Builder methods need fixing,documentation,or improved type safety
+
+
+
+Description:
+Its confusing the way an FST Builder has 4 add() methods, and you get assertion errors (what happens if assertions are disabled?) if you use the wrong one:
+
+For reference we have 3 FST input types:
+* BYTE1 (byte)
+* BYTE2 (char)
+* BYTE4 (int)
+
+For the builder add() method signatures we have:
+* add(BytesRef)
+* add(char[], int offset, int len)
+* add(CharSequence)
+* add(IntsRef)
+
+But certain methods only work with certain FST input types, and these mappings are not the ones you think. 
+
+For example, you would think that if you have a char-based FST you should use add(char[]) or add(CharSequence), but this is not the case: those add methods actually only work with int-based FST (they use codePointAt() to extract codepoints). Instead, you have to use add(IntsRef) for the char-based one.
+
+The worst is if you use the wrong one, you get an assertion error, but i'm not sure what happens if assertions are disabled.
+
+Maybe the ultimate solution is to parameterize FST's generics on input too (FST<input,output>) and just require BytesRef/CharsRef/IntsRef as the parameter? Then you could just have add(), and this might clean up FSTEnum too (it would no longer need that InputOutput class but maybe could use Map.Entry<input,output> or something?
+ 
+I think the documentation is improving but i still notice add(BytesRef) has no javadoc at all, and it only works with BYTE1, so I think we still have some work to do even if we want to just pursue a documentation fix.
+

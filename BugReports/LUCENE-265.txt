@@ -1,0 +1,15 @@
+[PATCH] to remove synchronized code from TermVectorsReader
+
+
+
+Description:
+Otis,
+
+here the latest and last patch to get rid of all synchronized code from
+TermVectorsReader. It should include at least 3 files, TermVectorsReader.diff,
+SegmentReader.diff and the new junit test case TestMultiThreadTermVectors.java.
+The patch was generated against the current CVS version of TermVectorsReader and
+SegmentReader. All lucene related junit tests pass fine.
+
+best regards
+Bernhard

@@ -1,0 +1,8 @@
+Lock.getNode() does not return lock holder
+
+
+
+Description:
+spec: " N.getLock().getNode() (where N is a locked node) ... If N is in the subtree of the lock holder, H, then this call will return H."
+
+now N is returned.

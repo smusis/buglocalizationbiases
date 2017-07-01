@@ -1,0 +1,9 @@
+Deadlock  on concurrent read & transactional write operations
+
+
+
+Description:
+Isuue has been introduced by resolving JCR-1755 (Transaction-safe versioning). This fixed changed sequence of commits, but at the same time order of acquiring locks has been disturbed.
+
+
+

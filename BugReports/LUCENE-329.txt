@@ -1,0 +1,21 @@
+Fuzzy query scoring issues
+
+
+
+Description:
+Queries which automatically produce multiple terms (wildcard, range, prefix, 
+fuzzy etc)currently suffer from two problems:
+
+1) Scores for matching documents are significantly smaller than term queries 
+because of the volume of terms introduced (A match on query Foo~ is 0.1 
+whereas a match on query Foo is 1).
+2) The rarer forms of expanded terms are favoured over those of more common 
+forms because of the IDF. When using Fuzzy queries for example, rare mis-
+spellings typically appear in results before the more common correct spellings.
+
+
+I will attach a patch that corrects the issues identified above by 
+1) Overriding Similarity.coord to counteract the downplaying of scores 
+introduced by expanding terms.
+2) Taking the IDF factor of the most common form of expanded terms as the 
+basis of scoring all other expanded terms.

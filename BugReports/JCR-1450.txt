@@ -1,0 +1,8 @@
+move method of the MemoryFileSystem may accept invalid destination path resulting in invalid entries in FS
+
+
+
+Description:
+It seems there can be a problem with the move method of the MemoryFileSystem class: when looking at its code it looks that it can accept destinations, specifying folders that do not exist in the file system.
+For example, if there is a "somefolder/somefile" file and I call the method passing, say "somefolder/someotherfolder/somefile" as the destination. The destination will be accepted by the code even if "somefolder/someotherfolder" is not an existing folder and the function execution will result in a file having the "somefolder/someotherfolder/somefile" path within a file system having no "somefolder/someotherfolder" folder - the code should probably check whether the destination path is really a valid one. Such  validation could be performed , for example, in the following way: take all path elements from the destination path except the last one and insure that the resulting path points to an existing folder, throw an exception otherwise.
+Currently I have no JackRabbit build/test environment set up and could not verify practically whether the issue described can really take place, the supposition is made after looking at the move method implementation.

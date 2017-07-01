@@ -1,0 +1,23 @@
+make the build more friendly to apache harmony
+
+
+
+Description:
+as part of improved testing, i thought it would be a good idea to make the build (ant test) more friendly
+to working under apache harmony.
+
+i'm not suggesting we de-optimize code for sun jvms or anything crazy like that, only use it as a tool.
+
+for example:
+* bugs in tests/code: for example i found a test that expected ArrayIOOBE 
+  when really the javadoc contract for the method is just IOOBE... it just happens to
+  pass always on sun jvm because thats the implementation it always throws.
+* better reproduction of bugs: for example [2 months out of the year|http://en.wikipedia.org/wiki/Unusual_software_bug#Phase_of_the_Moon_bug]
+  it seems TestQueryParser fails with thai locale in a difficult-to-reproduce way.
+  but i *always* get similar failures like this with harmony for this test class.
+* better stability and portability: we should try (if reasonable) to avoid depending
+  upon internal details. the same kinds of things that fail in harmony might suddenly
+  fail in a future sun jdk. because its such a different impl, it brings out a lot of interesting stuff.
+
+at the moment there are currently a lot of failures, I think a lot might be caused by this: http://permalink.gmane.org/gmane.comp.java.harmony.devel/39484
+

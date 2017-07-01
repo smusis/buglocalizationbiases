@@ -1,0 +1,16 @@
+remove _X.fnx
+
+
+
+Description:
+Currently we store a global (not per-segment) field number->name mapping in _X.fnx
+
+However, it doesn't actually save us any performance e.g on IndexWriter's init because
+since LUCENE-2984 we are to loading the fieldinfos anyway to compute files() for IFD, etc, 
+as thats where hasProx/hasVectors is.
+
+Additionally in the past global files like shared doc stores have caused us problems,
+(recently we just fixed a bug related to this file in LUCENE-3601).
+
+Finally this is trouble for backwards compatibility as its difficult to handle a global
+file with the codecs mechanism.

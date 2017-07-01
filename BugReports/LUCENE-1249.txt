@@ -1,0 +1,19 @@
+Bugs in org.apache.lucene.index.TermVectorsReader.clone()
+
+
+
+Description:
+A couple of things:
+
+- The implementation can return null which is not allowed.  It should throw a CloneNotSupportedException if that's the case.
+
+- Part of the code reads:
+
+    TermVectorsReader clone = null;
+    try {
+      clone = (TermVectorsReader) super.clone();
+    } catch (CloneNotSupportedException e) {}
+
+    clone.tvx = (IndexInput) tvx.clone();
+
+If a CloneNotSupportedException is caught then "clone" will be null and the assignment to clone.tvx will fail with a null pointer exception.

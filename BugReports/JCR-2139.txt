@@ -1,0 +1,27 @@
+Registering NodeType with defaultvalues fails with IndexOutOfBounds
+
+
+
+Description:
+When trying to register more than one nodetpye with default values I get the following exception:
+
+Caused by: java.lang.ArrayIndexOutOfBoundsException: 4
+	at org.apache.jackrabbit.core.nodetype.NodeTypeManagerImpl.toNodeTypeDef(NodeTypeManagerImpl.java:790)
+	at org.apache.jackrabbit.core.nodetype.NodeTypeManagerImpl.registerNodeTypes(NodeTypeManagerImpl.java:560)
+
+I assume there is an index missmatch in the implementation
+
+                Value[] values = pdefs[i].getDefaultValues();
+                if (values != null) {
+                    InternalValue[] qvalues = new InternalValue[values.length];
+                    for (int j = 0; j < values.length; j++) {
+                        try {
+-->                            qvalues[j] = InternalValue.create(values[i], session);
+                        } catch (ValueFormatException e) {
+                            throw new InvalidNodeTypeDefinitionException(
+                                    "Invalid default value format", e);
+                        }
+                    }
+                    qpdef.setDefaultValues(qvalues);
+                }
+

@@ -1,0 +1,6 @@
+Make license checking/maintenance easier/automated
+
+
+
+Description:
+Instead of waiting until release to check licenses are valid, we should make it a part of our build process to ensure that all dependencies have proper licenses, etc.

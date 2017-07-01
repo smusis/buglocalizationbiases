@@ -1,0 +1,6 @@
+Session#move doesn't trigger rebuild of parent node aggregation
+
+
+
+Description:
+The summary says it all.

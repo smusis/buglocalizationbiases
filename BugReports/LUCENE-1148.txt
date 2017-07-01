@@ -1,0 +1,7 @@
+Create a new sub-class of SpanQuery to enable use of a RangeQuery within a SpanQuery
+
+
+
+Description:
+Our users express queries using a syntax which enables them to embed various query types within SpanQuery instances.  One feature they've been asking for is the ability to embed a numeric range query so they could, for example, find documents matching "[2.0 2.75]MHz".  The attached patch adds the capability and I hope others will find it useful.
+

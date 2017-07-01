@@ -1,0 +1,14 @@
+Provide query support  for WEAKREFERENCE reverse lookup
+
+
+
+Description:
+the current implementation of Node.getWeakReferences() and getWeakReferences(String) uses a fulltext query in order to find weak references to a particular node.
+
+this requires the PlainTextExtractor to be enabled in the Search config, e.g. :
+
+    <param name="textFilterClasses" value="org.apache.jackrabbit.extractor.PlainTextExtractor"/>
+
+providing 'native' WEAKREFERNCE reverse lookup in Jackrabbit's QOM implementation would be certainly more efficient.
+
+

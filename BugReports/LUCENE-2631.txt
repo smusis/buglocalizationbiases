@@ -1,0 +1,6 @@
+Fix small perf issues with String/TermOrdValComparator
+
+
+
+Description:
+Uncovered some silliness when working on LUCENE-2504, eg we are doing unnecessary binarySearch on a single-segment reader.

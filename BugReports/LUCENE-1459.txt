@@ -1,0 +1,6 @@
+CachingWrapperFilter crashes if you call both bits() and getDocIdSet()
+
+
+
+Description:
+CachingWrapperFilter uses only a single cache, so calling bits() after calling getDocIdSet() will result in a type error. Additionally, more code than is necessary is wrapped in the @synchronized blocks.

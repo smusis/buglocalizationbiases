@@ -1,0 +1,6 @@
+Add link to irc channel #lucene on the website
+
+
+
+Description:
+We should add a link to #lucene IRC channel on chat.freenode.org. 

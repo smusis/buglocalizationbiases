@@ -1,0 +1,10 @@
+Provide BestMatch cookie policy
+
+
+
+Description:
+Presently HttpClient uses a single cookie policy for all target hosts, which is suboptimal for two reasons:
+(1) the user needs to know beforehand what kind of HTTP cookie support the target host provides
+(2) does not work well with multiple sites with different level of HTTP cookie support 
+
+Introduce new cookie policy that dynamically picks up a CookieSpec (browser compatibility | Netscape draft | RFC2109 | RFC2965) based on properties of the response received from the target host

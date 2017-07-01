@@ -1,0 +1,16 @@
+httpClient does not support installation of different SSLSocketFactory
+
+
+
+Description:
+Description:
+
+The SSLProtocolSocketFactory class had hard-
+coded "javax.net.ssl.SSLSocketFactory" as the socket factory.  It does not 
+support installation of other socket factory.
+
+Proposed Fix:
+
+We added a setDefaultSSLSocketFactory method to the SSLProtocolSocketFactory 
+and modified the code to use the factory it it is set.  The code falls back on 
+using "javax.net.ssl.SSLSocketFactory" if a default is not set.

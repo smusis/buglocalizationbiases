@@ -1,0 +1,57 @@
+RTF text extractor fails on Java 1.4 in some environments
+
+
+
+Description:
+I've seen the RTF text extractor fail with the following errors with Java 1.4 on Unix platforms. Both are platform issues, but Jackrabbit should be prepared for such cases and for example just log a warning and return an empty text stream when encountering these errors.
+
+java.lang.UnsatisfiedLinkError: /home/jukka/bin/java/j2sdk1.4.2_18/jre/lib/i386/libawt.so: libXp.so.6: cannot open shared object file: No such file or directory
+        at java.lang.ClassLoader$NativeLibrary.load(Native Method)
+        at java.lang.ClassLoader.loadLibrary0(ClassLoader.java:1586)
+        at java.lang.ClassLoader.loadLibrary(ClassLoader.java:1503)
+        at java.lang.Runtime.loadLibrary0(Runtime.java:788)
+        at java.lang.System.loadLibrary(System.java:834)
+        at sun.security.action.LoadLibraryAction.run(LoadLibraryAction.java:50)
+        at java.security.AccessController.doPrivileged(Native Method)
+        at sun.awt.NativeLibLoader.loadLibraries(NativeLibLoader.java:38)
+        at sun.awt.DebugHelper.<clinit>(DebugHelper.java:29)
+        at java.awt.EventQueue.<clinit>(EventQueue.java:83)
+        at javax.swing.SwingUtilities.isEventDispatchThread(SwingUtilities.java:1238)
+        at javax.swing.text.StyleContext.reclaim(StyleContext.java:419)
+        at javax.swing.text.StyleContext.addAttribute(StyleContext.java:276)
+        at javax.swing.text.StyleContext$NamedStyle.addAttribute(StyleContext.java:1468)
+        at javax.swing.text.StyleContext$NamedStyle.setName(StyleContext.java:1278)
+        at javax.swing.text.StyleContext$NamedStyle.<init>(StyleContext.java:1226)
+        at javax.swing.text.StyleContext.addStyle(StyleContext.java:88)
+        at javax.swing.text.StyleContext.<init>(StyleContext.java:68)
+        at javax.swing.text.DefaultStyledDocument.<init>(DefaultStyledDocument.java:88)
+        at org.apache.jackrabbit.extractor.RTFTextExtractor.extractText(RTFTextExtractor.java:60)
+        at org.apache.jackrabbit.extractor.RTFTextExtractorTest.testExtractor(RTFTextExtractorTest.java:35)
+
+java.lang.InternalError: Can't connect to X11 window server using ':0.0' as the value of the DISPLAY variable.
+	at sun.awt.X11GraphicsEnvironment.initDisplay(Native Method)
+	at sun.awt.X11GraphicsEnvironment.<clinit>(X11GraphicsEnvironment.java:134)
+	at java.lang.Class.forName0(Native Method)
+	at java.lang.Class.forName(Class.java:141)
+	at java.awt.GraphicsEnvironment.getLocalGraphicsEnvironment(GraphicsEnvironment.java:62)
+	at sun.awt.motif.MToolkit.<clinit>(MToolkit.java:81)
+	at java.lang.Class.forName0(Native Method)
+	at java.lang.Class.forName(Class.java:141)
+	at java.awt.Toolkit$2.run(Toolkit.java:748)
+	at java.security.AccessController.doPrivileged(Native Method)
+	at java.awt.Toolkit.getDefaultToolkit(Toolkit.java:739)
+	at java.awt.Toolkit.getEventQueue(Toolkit.java:1519)
+	at java.awt.EventQueue.isDispatchThread(EventQueue.java:676)
+	at javax.swing.SwingUtilities.isEventDispatchThread(SwingUtilities.java:1238)
+	at javax.swing.text.StyleContext.reclaim(StyleContext.java:419)
+	at javax.swing.text.StyleContext.addAttribute(StyleContext.java:276)
+	at javax.swing.text.StyleContext$NamedStyle.addAttribute(StyleContext.java:1468)
+	at javax.swing.text.StyleContext$NamedStyle.setName(StyleContext.java:1278)
+	at javax.swing.text.StyleContext$NamedStyle.<init>(StyleContext.java:1226)
+	at javax.swing.text.StyleContext.addStyle(StyleContext.java:88)
+	at javax.swing.text.StyleContext.<init>(StyleContext.java:68)
+	at javax.swing.text.DefaultStyledDocument.<init>(DefaultStyledDocument.java:88)
+	at org.apache.jackrabbit.extractor.RTFTextExtractor.extractText(RTFTextExtractor.java:60)
+	at org.apache.jackrabbit.extractor.RTFTextExtractorTest.testExtractor(RTFTextExtractorTest.java:35)
+
+

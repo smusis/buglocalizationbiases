@@ -1,0 +1,8 @@
+Setting CONNECTION_TIMEOUT and SO_TIMEOUT on a per-method basis
+
+
+
+Description:
+The capability of setting connection timeout and socket timeout on a per-method
+basis should be provided. This would enable different threads, sharing the same
+HttpClient, to set different timeouts for their methods executions.

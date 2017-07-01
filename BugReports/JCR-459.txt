@@ -1,0 +1,24 @@
+Add JMX support to register a JCR RMI Server into Jboss
+
+
+
+Description:
+ I added two classes and one descriptor file to the jcr-rmi project. These files provide support to make the generated jar deployable into a Jboss server. 
+
+ The deployment descriptor contains two parameters, the address of the local repository instance, and the target address where the rmi server should be registered. 
+
+e.g.
+
+<server>
+ <mbean code="org.apache.jackrabbit.rmi.server.jmx.JCRServer"
+     name="Jackrabbit.services:RMIServer = JCR RMI Server">
+    <attribute name="Local">java:jcr/local</attribute>
+    <attribute name="Target">jnp://localhost:1099/jcrServer</attribute>	
+<depends>jboss.jca:service=ManagedConnectionFactory,name=jcr/local</depends>					
+  </mbean>
+</server>	
+
+this configuration registers an RMI server at /jcrServer that wraps the local repository at java:jcr/local.
+
+br,
+Edgar

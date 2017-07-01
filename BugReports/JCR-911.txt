@@ -1,0 +1,14 @@
+Remove sanityCheck() from ItemImpl.getSession()
+
+
+
+Description:
+The following code causes an InvalidItemStateException to be thrown for no good reason:
+
+    Property property = ...;
+    property.setValue((Value) null);
+    property.getSession();
+
+There are cases (I'm looking at one right now) where it's good to be able to access the session of an Item even if it has already been invalidated.
+
+The simple fix is to remove the sanityCheck() call from ItemImpl.getSession(). I'll do that unless someone has a good reason why the sanity check should be kept.

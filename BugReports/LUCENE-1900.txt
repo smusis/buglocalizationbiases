@@ -1,0 +1,12 @@
+Confusing Javadoc in Searchable.java
+
+
+
+Description:
+In Searchable.java, the javadoc for maxdoc() is:
+
+  /** Expert: Returns one greater than the largest possible document number.
+   * Called by search code to compute term weights.
+   * @see org.apache.lucene.index.IndexReader#maxDoc()
+
+The qualification "expert" and the statement "called by search code to compute term weights" is a bit confusing, It implies that maxdoc() somehow computes weights, which is obviously not true (what it does is explained in the other sentence). Maybe it is used as one factor of the weight, but do we really need to mention this here? 

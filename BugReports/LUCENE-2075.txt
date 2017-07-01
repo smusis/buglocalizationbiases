@@ -1,0 +1,24 @@
+Share the Term -> TermInfo cache across threads
+
+
+
+Description:
+Right now each thread creates its own (thread private) SimpleLRUCache,
+holding up to 1024 terms.
+
+This is rather wasteful, since if there are a high number of threads
+that come through Lucene, you're multiplying the RAM usage.  You're
+also cutting way back on likelihood of a cache hit (except the known
+multiple times we lookup a term within-query, which uses one thread).
+In NRT search we open new SegmentReaders (on tiny segments) often
+which each thread must then spend CPU/RAM creating & populating.
+
+Now that we are on 1.5 we can use java.util.concurrent.*, eg
+ConcurrentHashMap.  One simple approach could be a double-barrel LRU
+cache, using 2 maps (primary, secondary).  You check the cache by
+first checking primary; if that's a miss, you check secondary and if
+you get a hit you promote it to primary.  Once primary is full you
+clear secondary and swap them.
+
+Or... any other suggested approach?
+

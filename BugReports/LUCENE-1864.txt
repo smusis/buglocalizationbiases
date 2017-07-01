@@ -1,0 +1,30 @@
+bogus javadocs for FieldValueHitQuery.fillFields
+
+
+
+Description:
+FieldValueHitQuery.fillFields has javadocs that seem to be left over from a completely different method...
+
+{code}
+  /**
+   * Given a FieldDoc object, stores the values used to sort the given document.
+   * These values are not the raw values out of the index, but the internal
+   * representation of them. This is so the given search hit can be collated by
+   * a MultiSearcher with other search hits.
+   * 
+   * @param doc
+   *          The FieldDoc to store sort values into.
+   * @return The same FieldDoc passed in.
+   * @see Searchable#search(Weight,Filter,int,Sort)
+   */
+  FieldDoc fillFields(final Entry entry) {
+    final int n = comparators.length;
+    final Comparable[] fields = new Comparable[n];
+    for (int i = 0; i < n; ++i) {
+      fields[i] = comparators[i].value(entry.slot);
+    }
+    //if (maxscore > 1.0f) doc.score /= maxscore;   // normalize scores
+    return new FieldDoc(entry.docID, entry.score, fields);
+  }
+
+{code}

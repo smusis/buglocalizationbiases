@@ -1,0 +1,45 @@
+Intermittent thread safety issue with EnwikiDocMaker
+
+
+
+Description:
+Intermittent thread safety issue with EnwikiDocMaker
+
+When I run the conf/wikipediaOneRound.alg, sometimes it gets started
+OK, other times (about 1/3rd the time) I see this:
+
+     Exception in thread "Thread-0" java.lang.RuntimeException: java.io.IOException: Bad file descriptor
+     	at org.apache.lucene.benchmark.byTask.feeds.EnwikiDocMaker$Parser.run(EnwikiDocMaker.java:76)
+     	at java.lang.Thread.run(Thread.java:595)
+     Caused by: java.io.IOException: Bad file descriptor
+     	at java.io.FileInputStream.readBytes(Native Method)
+     	at java.io.FileInputStream.read(FileInputStream.java:194)
+     	at org.apache.xerces.impl.XMLEntityManager$RewindableInputStream.read(Unknown Source)
+     	at org.apache.xerces.impl.io.UTF8Reader.read(Unknown Source)
+     	at org.apache.xerces.impl.XMLEntityScanner.load(Unknown Source)
+     	at org.apache.xerces.impl.XMLEntityScanner.scanQName(Unknown Source)
+     	at org.apache.xerces.impl.XMLNSDocumentScannerImpl.scanStartElement(Unknown Source)
+     	at org.apache.xerces.impl.XMLDocumentFragmentScannerImpl$FragmentContentDispatcher.dispatch(Unknown Source)
+     	at org.apache.xerces.impl.XMLDocumentFragmentScannerImpl.scanDocument(Unknown Source)
+     	at org.apache.xerces.parsers.XML11Configuration.parse(Unknown Source)
+     	at org.apache.xerces.parsers.XML11Configuration.parse(Unknown Source)
+     	at org.apache.xerces.parsers.XMLParser.parse(Unknown Source)
+     	at org.apache.xerces.parsers.AbstractSAXParser.parse(Unknown Source)
+     	at org.apache.lucene.benchmark.byTask.feeds.EnwikiDocMaker$Parser.run(EnwikiDocMaker.java:60)
+     	... 1 more
+
+The problem is that the thread that pulls the XML docs is started as
+soon as EnwikiDocMaker class is instantiated.  When it's started, it
+uses the fileIS (FileInputStream) to feed the XML Parser.  But,
+openFile is actually called twice on starting the alg, if you use any
+task deriving from ResetInputsTask, which closes the original fileIS
+that the XML parser may be using.
+
+I changed the thread to instead start on-demand the first time next()
+is called.  I also removed a redundant resetInputs() call (which was
+opening the file more frequently than needed).  Finally, I added logic
+in the thread to detect that the input stream was closed (because
+LineDocMaker.resetInputs() was called, eg, if we are not running the
+doc maker to exhaustion).
+
+

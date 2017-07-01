@@ -1,0 +1,11 @@
+WorkspaceRestoreTest extends RestoreTest
+
+
+
+Description:
+WorkspaceRestoreTest extends RestoreTest in order to re-use variables and setUp/tearDown code. 
+
+On the other hand, this causes all tests from RestoreTest that aren't overriden by WorkspaceRestoreTest to be run twice.
+
+Proposal: decouple the classes, copying over the interesting parts from RestoreTest into WorkspaceRestoreTest.
+

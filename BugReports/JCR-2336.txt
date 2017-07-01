@@ -1,0 +1,30 @@
+Automatic type conversion no longer works
+
+
+
+Description:
+String values are no longer converted to binary when required. Example:
+
+Node n = testRootNode.addNode("testConvert", "nt:file");
+Node content = n.addNode("jcr:content", "nt:resource");
+content.setProperty("jcr:lastModified", Calendar.getInstance());
+content.setProperty("jcr:mimeType", "text/html");
+content.setProperty("jcr:data", "Hello");
+n.getSession().save();
+
+This used to work in a previous 2.0 build, but now throws:
+
+javax.jcr.nodetype.ConstraintViolationException: no matching property definition found for {http://www.jcp.org/jcr/1.0}data
+at org.apache.jackrabbit.core.nodetype.EffectiveNodeType.getApplicablePropertyDef(EffectiveNodeType.java:782)
+at org.apache.jackrabbit.core.NodeImpl.getApplicablePropertyDefinition(NodeImpl.java:747)
+at org.apache.jackrabbit.core.ItemManager.getDefinition(ItemManager.java:241)
+at org.apache.jackrabbit.core.ItemData.getDefinition(ItemData.java:101)
+at org.apache.jackrabbit.core.ItemManager.canRead(ItemManager.java:409)
+at org.apache.jackrabbit.core.ItemManager.getItemData(ItemManager.java:383)
+at org.apache.jackrabbit.core.ItemManager.getItem(ItemManager.java:316)
+at org.apache.jackrabbit.core.ItemManager.getItem(ItemManager.java:595)
+at org.apache.jackrabbit.core.NodeImpl.removeChildProperty(NodeImpl.java:554)
+at org.apache.jackrabbit.core.NodeImpl.removeChildProperty(NodeImpl.java:534)
+at org.apache.jackrabbit.core.NodeImpl.setProperty(NodeImpl.java:2303)
+at org.apache.jackrabbit.core.nodetype.ConvertDataTypeTest.testStringToBinary(ConvertDataTypeTest.java:36)
+at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)

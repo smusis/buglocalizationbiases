@@ -1,0 +1,12 @@
+Workspace is shut down while creating initial index
+
+
+
+Description:
+This only happens when a maxIdleTime is configured for the workspaces in the repository.xml and the workspace to index is not the default workspace.
+
+The idle check considers a workspace as idle when there only a system session is open and the configured idle time elapsed. This is also the case when the workspace is initializing.
+
+The repository should either check if a workspace is still initializing or we need to move the search manager initialization into the WorkspaceInfo.doInitialize() method.
+
+

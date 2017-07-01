@@ -1,0 +1,34 @@
+Charset omitted from UrlEncodedFormEntity Content-Type header
+
+
+
+Description:
+UrlEncodedFormEntity sets the Content-Type header to:
+   "application/x-www-form-urlencoded"
+
+It should set the header to:
+   "application/x-www-form-urlencoded; charset=" + charset
+
+As a result, content can be misinterpreted by the recipient (e.g. if the entity content includes multibyte Unicode characters encoded with the "UTF-8" charset).
+
+For a correct example of specifying the charset in the Content-Type header, see StringEntity.java.
+
+Here's the fix:
+
+    public UrlEncodedFormEntity (
+        final List <? extends NameValuePair> parameters, 
+        final String encoding) throws UnsupportedEncodingException {
+        super(URLEncodedUtils.format(parameters, encoding),  encoding);
+-        setContentType(URLEncodedUtils.CONTENT_TYPE);
++        setContentType(URLEncodedUtils.CONTENT_TYPE + HTTP.CHARSET_PARAM +
++            (encoding != null ? encoding : HTTP.DEFAULT_CONTENT_CHARSET));
+    }
+
+    public UrlEncodedFormEntity (
+        final List <? extends NameValuePair> parameters) throws UnsupportedEncodingException {
+-        super(URLEncodedUtils.format(parameters, HTTP.DEFAULT_CONTENT_CHARSET), 
+-            HTTP.DEFAULT_CONTENT_CHARSET);
+-        setContentType(URLEncodedUtils.CONTENT_TYPE);
++        this(parameters, HTTP.DEFAULT_CONTENT_CHARSET);
+    }
+

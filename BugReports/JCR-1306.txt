@@ -1,0 +1,46 @@
+Reduce number of different repository.xml present with jackrabbit-core
+
+
+
+Description:
+while taking a look at the repository configuration and the related test-cases, i saw that there are quite some repository.xml files around... which i think is a bit confusion and probably hard to maintain once we make
+changes to the config.
+
+i would to suggest to consolidate that and - if possible - get rid of some of them.
+if we can't i would suggest to put some comment in every of the different configuration files indicating
+what they are used for.
+
+from what i've seen so far (still missing complete overview)
+
+1) http://svn.apache.org/repos/asf/jackrabbit/trunk/jackrabbit-core/src/main/config/repository.xml
+
+    Current comment: <!-- Example Repository Configuration File -->
+    Usage: ??
+
+2) http://svn.apache.org/repos/asf/jackrabbit/trunk/jackrabbit-core/src/main/resources/org/apache/jackrabbit/core/test-repository.xml
+
+   current comment: -  
+   Used as repository configuration in org.apache.jackrabbit.core.TestRepository.java
+   
+
+3) http://svn.apache.org/repos/asf/jackrabbit/trunk/jackrabbit-core/src/main/resources/org/apache/jackrabbit/core/repository.xml
+  
+   current comment: <!-- Example Repository Configuration File -->
+
+   Used by org.apache.jackrabbit.core.config.RepositoryConfigTest.java in order to create another repository.xml 
+   under target/test-repository.xml. a bit confusing given the fact, that a test-repository.xml exists as well. I would
+   suggest to rename the REPOSITORY_XML constant in RepositoryConfigTest.
+
+
+4) http://svn.apache.org/repos/asf/jackrabbit/trunk/jackrabbit-core/src/test/repository/repository.xml
+
+   current comment: <!-- Example Repository Configuration File -->
+   Usage: i assume, that is the one referenced in test/resources/repositoryStubImpl.properties
+
+5) http://svn.apache.org/repos/asf/jackrabbit/trunk/jackrabbit-core/src/test/resources/org/apache/jackrabbit/core/config/repository.xml
+
+   current comment: <!-- Example Repository Configuration File -->
+   Usage: ?? 
+
+
+

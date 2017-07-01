@@ -1,0 +1,9 @@
+msoffice text extractor for office 2007 files
+
+
+
+Description:
+i created a patch that provides a mstextextractor for jackrabbit. this patch will entirely replace all existing ms extractors.
+this patch can be applied as soon as poi-3.5 is available. the ms text extractor supports: doc, docx, ppt, pptx,
+xls, xlsx. the patch is not fully tested and uses poi code which is not yet available on the maven repo (needs to be 
+build locally)

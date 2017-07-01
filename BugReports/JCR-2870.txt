@@ -1,0 +1,101 @@
+Transient Repository cannot be used more than once when configured with DataSources
+
+
+
+Description:
+The TransientRepository cannot be used more than once when the repository is configured with the DataSources construct. This has been verified with both Oracle and Derby configurations. Once the TransientRepository closes for the first time, the ConnectionFactory class sets a boolean value named closed to 'true'.  Thereafter, any use of the ConnectionFactory throws a runtime exception.
+
+The following stacktrace is thrown on the second attempt to utilize the repository:
+
+2011-01-25 08:12:14 DatabaseFileSystem [ERROR] failed to initialize file system
+java.lang.IllegalStateException: this factory has already been closed
+	at org.apache.jackrabbit.core.util.db.ConnectionFactory.sanityCheck(ConnectionFactory.java:213)
+	at org.apache.jackrabbit.core.util.db.ConnectionFactory.getDataBaseType(ConnectionFactory.java:134)
+	at org.apache.jackrabbit.core.fs.db.DbFileSystem.getDataSource(DbFileSystem.java:228)
+	at org.apache.jackrabbit.core.fs.db.DatabaseFileSystem.init(DatabaseFileSystem.java:190)
+	at org.apache.jackrabbit.core.config.RepositoryConfigurationParser$6.getFileSystem(RepositoryConfigurationParser.java:1057)
+	at org.apache.jackrabbit.core.config.RepositoryConfig.getFileSystem(RepositoryConfig.java:892)
+	at org.apache.jackrabbit.core.RepositoryImpl.<init>(RepositoryImpl.java:284)
+	at org.apache.jackrabbit.core.RepositoryImpl.create(RepositoryImpl.java:602)
+	at org.apache.jackrabbit.core.TransientRepository$1.getRepository(TransientRepository.java:179)
+	at org.apache.jackrabbit.core.TransientRepository.startRepository(TransientRepository.java:279)
+	at org.apache.jackrabbit.core.TransientRepository.login(TransientRepository.java:375)
+	at org.apache.jackrabbit.commons.AbstractRepository.login(AbstractRepository.java:123)
+	...
+	at com.intellij.rt.execution.application.AppMain.main(AppMain.java:115)
+2011-01-25 08:12:14 RepositoryImpl [ERROR] failed to start Repository: File system initialization failure.
+javax.jcr.RepositoryException: File system initialization failure.
+	at org.apache.jackrabbit.core.config.RepositoryConfigurationParser$6.getFileSystem(RepositoryConfigurationParser.java:1060)
+	at org.apache.jackrabbit.core.config.RepositoryConfig.getFileSystem(RepositoryConfig.java:892)
+	at org.apache.jackrabbit.core.RepositoryImpl.<init>(RepositoryImpl.java:284)
+	at org.apache.jackrabbit.core.RepositoryImpl.create(RepositoryImpl.java:602)
+	at org.apache.jackrabbit.core.TransientRepository$1.getRepository(TransientRepository.java:179)
+	at org.apache.jackrabbit.core.TransientRepository.startRepository(TransientRepository.java:279)
+	at org.apache.jackrabbit.core.TransientRepository.login(TransientRepository.java:375)
+	at org.apache.jackrabbit.commons.AbstractRepository.login(AbstractRepository.java:123)
+	at TransientRepositoryTest.addNodeToRepository(TransientRepositoryTest.java:32)
+	at TransientRepositoryTest.shouldNotFailWhenUsingTransientRepositoryTwice(TransientRepositoryTest.java:26)
+	...
+	at com.intellij.rt.execution.application.AppMain.main(AppMain.java:115)
+Caused by: org.apache.jackrabbit.core.fs.FileSystemException: failed to initialize file system
+	at org.apache.jackrabbit.core.fs.db.DatabaseFileSystem.init(DatabaseFileSystem.java:210)
+	at org.apache.jackrabbit.core.config.RepositoryConfigurationParser$6.getFileSystem(RepositoryConfigurationParser.java:1057)
+	... 42 more
+Caused by: java.lang.IllegalStateException: this factory has already been closed
+	at org.apache.jackrabbit.core.util.db.ConnectionFactory.sanityCheck(ConnectionFactory.java:213)
+	at org.apache.jackrabbit.core.util.db.ConnectionFactory.getDataBaseType(ConnectionFactory.java:134)
+	at org.apache.jackrabbit.core.fs.db.DbFileSystem.getDataSource(DbFileSystem.java:228)
+	at org.apache.jackrabbit.core.fs.db.DatabaseFileSystem.init(DatabaseFileSystem.java:190)
+	... 43 more
+2011-01-25 08:12:14 RepositoryImpl [ERROR] Error while closing Version Manager.
+java.lang.NullPointerException
+	at org.apache.jackrabbit.core.RepositoryImpl.doShutdown(RepositoryImpl.java:1117)
+	at org.apache.jackrabbit.core.RepositoryImpl.shutdown(RepositoryImpl.java:1063)
+	at org.apache.jackrabbit.core.RepositoryImpl.<init>(RepositoryImpl.java:388)
+	at org.apache.jackrabbit.core.RepositoryImpl.create(RepositoryImpl.java:602)
+	at org.apache.jackrabbit.core.TransientRepository$1.getRepository(TransientRepository.java:179)
+	at org.apache.jackrabbit.core.TransientRepository.startRepository(TransientRepository.java:279)
+	at org.apache.jackrabbit.core.TransientRepository.login(TransientRepository.java:375)
+	at org.apache.jackrabbit.commons.AbstractRepository.login(AbstractRepository.java:123)
+	at TransientRepositoryTest.addNodeToRepository(TransientRepositoryTest.java:32)
+	at TransientRepositoryTest.shouldNotFailWhenUsingTransientRepositoryTwice(TransientRepositoryTest.java:26)
+	...
+	at com.intellij.rt.execution.application.AppMain.main(AppMain.java:115)
+2011-01-25 08:12:14 RepositoryImpl [ERROR] In addition to startup fail, another unexpected problem occurred while shutting down the repository again.
+java.lang.NullPointerException
+	at org.apache.jackrabbit.core.RepositoryImpl.doShutdown(RepositoryImpl.java:1136)
+	at org.apache.jackrabbit.core.RepositoryImpl.shutdown(RepositoryImpl.java:1063)
+	at org.apache.jackrabbit.core.RepositoryImpl.<init>(RepositoryImpl.java:388)
+	at org.apache.jackrabbit.core.RepositoryImpl.create(RepositoryImpl.java:602)
+	at org.apache.jackrabbit.core.TransientRepository$1.getRepository(TransientRepository.java:179)
+	at org.apache.jackrabbit.core.TransientRepository.startRepository(TransientRepository.java:279)
+	at org.apache.jackrabbit.core.TransientRepository.login(TransientRepository.java:375)
+	at org.apache.jackrabbit.commons.AbstractRepository.login(AbstractRepository.java:123)
+	at TransientRepositoryTest.addNodeToRepository(TransientRepositoryTest.java:32)
+	at TransientRepositoryTest.shouldNotFailWhenUsingTransientRepositoryTwice(TransientRepositoryTest.java:26)
+	...
+	at com.intellij.rt.execution.application.AppMain.main(AppMain.java:115)
+
+javax.jcr.RepositoryException: File system initialization failure.
+	at org.apache.jackrabbit.core.config.RepositoryConfigurationParser$6.getFileSystem(RepositoryConfigurationParser.java:1060)
+	at org.apache.jackrabbit.core.config.RepositoryConfig.getFileSystem(RepositoryConfig.java:892)
+	at org.apache.jackrabbit.core.RepositoryImpl.<init>(RepositoryImpl.java:284)
+	at org.apache.jackrabbit.core.RepositoryImpl.create(RepositoryImpl.java:602)
+	at org.apache.jackrabbit.core.TransientRepository$1.getRepository(TransientRepository.java:179)
+	at org.apache.jackrabbit.core.TransientRepository.startRepository(TransientRepository.java:279)
+	at org.apache.jackrabbit.core.TransientRepository.login(TransientRepository.java:375)
+	at org.apache.jackrabbit.commons.AbstractRepository.login(AbstractRepository.java:123)
+	at TransientRepositoryTest.addNodeToRepository(TransientRepositoryTest.java:32)
+	at TransientRepositoryTest.shouldNotFailWhenUsingTransientRepositoryTwice(TransientRepositoryTest.java:26)
+	...
+	at com.intellij.rt.execution.application.AppMain.main(AppMain.java:115)
+Caused by: org.apache.jackrabbit.core.fs.FileSystemException: failed to initialize file system
+	at org.apache.jackrabbit.core.fs.db.DatabaseFileSystem.init(DatabaseFileSystem.java:210)
+	at org.apache.jackrabbit.core.config.RepositoryConfigurationParser$6.getFileSystem(RepositoryConfigurationParser.java:1057)
+	... 42 more
+Caused by: java.lang.IllegalStateException: this factory has already been closed
+	at org.apache.jackrabbit.core.util.db.ConnectionFactory.sanityCheck(ConnectionFactory.java:213)
+	at org.apache.jackrabbit.core.util.db.ConnectionFactory.getDataBaseType(ConnectionFactory.java:134)
+	at org.apache.jackrabbit.core.fs.db.DbFileSystem.getDataSource(DbFileSystem.java:228)
+	at org.apache.jackrabbit.core.fs.db.DatabaseFileSystem.init(DatabaseFileSystem.java:190)
+	... 43 more

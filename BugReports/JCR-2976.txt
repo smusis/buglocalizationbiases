@@ -1,0 +1,6 @@
+Allow parent path to be set explicitly in NodeInfoBuilder
+
+
+
+Description:
+Currently there is no way to explicitly set the parent of an NodeInfo build by NodeInfoBuilder. I suggest to add a setParentPath() method to NodeInfoBuilder to fix this.

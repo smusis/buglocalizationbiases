@@ -1,0 +1,12 @@
+Enforce TokenStream impl / Analyzer finalness by an assertion
+
+
+
+Description:
+As noted in LUCENE-1753 and other issues, TokenStream and Analyzers are based on the decorator pattern. At least all TokenStream and Analyzer implementations in Lucene and Solr should be final.
+
+The attached patch adds an assertion to the ctors of both classes that does the corresponding checks:
+- Analyzers must be final or private classes or anonymous inner classes
+- TokenStreams must be final or private classes or anonymous inner classes or have a final incrementToken()
+
+I will commit this after robert have fixed solr streams.

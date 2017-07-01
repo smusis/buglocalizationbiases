@@ -1,0 +1,17 @@
+ThaiAnalyzer assumes things about your jre
+
+
+
+Description:
+The ThaiAnalyzer/ThaiWordFilter depends on the fact that BreakIterator.getWordInstance(new Locale("th")) returns a dictionary-based break iterator that can segment thai phrases into words (it does not use whitespace).
+
+But this is non-standard that the JRE will specialize this locale in this way, its nice, but you can't depend on it.
+For example, if you are running on IBM JRE, this analyzer/wordfilter is completely "broken" in the sense it won't do what it claims to do.
+
+At the minimum, we need to document this and suggest users look at ICUTokenizer for thai, which always has this breakiterator and is not jre-dependent.
+
+Better, would be to check statically that the thing actually works.
+when creating a new ThaiWordFilter we could clone() the BreakIterator, which is often cheaper than making a new one anyway.
+we could throw an exception, if its not supported, and add a boolean so the user knows it works.
+and we could refer to this boolean with Assert.assume in its tests.
+

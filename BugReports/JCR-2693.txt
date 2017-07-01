@@ -1,0 +1,8 @@
+Logging per test case
+
+
+
+Description:
+Thanks to the switch to Logback a while ago (JCR-2584) we can start taking advantage of some nice new features like the one described in [1]. With this trick we'll be able to split the currently pretty large jcr.log test log file we have to separate log files per each test case. This will make it much easier to review the logs written during any particular test.
+
+[1] http://www.nalinmakar.com/2010/07/28/logging-tests-to-separate-files/

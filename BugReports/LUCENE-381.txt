@@ -1,0 +1,7 @@
+Contributing a High-performance single-document main memory Apache Lucene fulltext search index.
+
+
+
+Description:
+Here is my contribution: a High-performance single-document main memory Apache Lucene fulltext 
+search index. I'll try to attach the files, hoping for comments on how to proceed with this...

@@ -1,0 +1,76 @@
+AbstractClientConnAdapter doesn't ensure that only one of ConnectionReleaseTrigger.abortConnection, .releaseConnection has effect
+
+
+
+Description:
+If HttpUriRequest.abort() is called at about the same time that the request completes, it's possible for an aborted connection to be returned to the pool.  The next time the connection is used, HttpClient.execute fails without retrying, throwing this exception:
+
+java.io.IOException: Connection already shutdown
+	at org.apache.http.impl.conn.DefaultClientConnection.opening(DefaultClientConnection.java:112)
+	at org.apache.http.impl.conn.DefaultClientConnectionOperator.openConnection(DefaultClientConnectionOperator.java:120)
+	at org.apache.http.impl.conn.AbstractPoolEntry.open(AbstractPoolEntry.java:147)
+	at org.apache.http.impl.conn.AbstractPooledConnAdapter.open(AbstractPooledConnAdapter.java:101)
+	at org.apache.http.impl.client.DefaultRequestDirector.execute(DefaultRequestDirector.java:381)
+	at org.apache.http.impl.client.AbstractHttpClient.execute(AbstractHttpClient.java:641)
+	at org.apache.http.impl.client.AbstractHttpClient.execute(AbstractHttpClient.java:576)
+
+Steps to reproduce:
+1) Set a breakpoint in ThreadSafeClientConnManager.releaseConnection just after "reusable" is set (and found to be true).
+2) Run to the breakpoint in releaseConnection.
+3) Call HttpUriRequest.abort.
+4) Let releaseConnection complete.
+
+When the connection is next used, the exception will be thrown.
+
+Snippet from ThreadSafeClientConnManager:
+    public void releaseConnection(ManagedClientConnection conn, long validDuration, TimeUnit timeUnit) {
+		...
+            boolean reusable = hca.isMarkedReusable();
+            if (log.isDebugEnabled()) {                             // breakpoint here
+                if (reusable) {
+                    log.debug("Released connection is reusable.");
+                } else {
+                    log.debug("Released connection is not reusable.");
+                }
+            }
+            hca.detach();
+            if (entry != null) {
+                connectionPool.freeEntry(entry, reusable, validDuration, timeUnit);
+            }
+        }
+    }
+
+
+I think that AbstractClientConnAdapter should be modified as follows:
+
+1) Add "released" flag:
+
+    /** True if the connection has been released. */
+    private boolean released;
+
+2) Modify abortConnection:
+
+    public void abortConnection() {
+        synchronized(this) {
+            if (aborted || released) {
+                return;
+            }
+            aborted = true;
+        }
+        unmarkReusable(); // this line and all that follow unchanged
+
+3) Modify releaseConnection:
+
+    public void releaseConnection() {
+        synchronized(this) {
+            if (aborted || released) {
+                return;
+            }
+            released = true;
+        }
+        if (connManager != null) {
+            connManager.releaseConnection(this, duration, TimeUnit.MILLISECONDS);
+        }
+    }
+
+

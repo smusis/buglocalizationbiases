@@ -1,0 +1,6 @@
+HttpParams doesn't document its key values
+
+
+
+Description:
+http://hc.apache.org/httpcomponents-core/httpcore/apidocs/org/apache/http/params/HttpParams.html should either list the meaningful parameter names with the meanings of their values, or should link to the other classes like HttpClientParams and AuthParams that make it usable. Probably, each class that uses HttpParams should also describe the meaningful values so that human readers find the descriptions however we look for them.

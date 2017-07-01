@@ -1,0 +1,6 @@
+Create ScoreNode on demand in SortedLuceneQueryHits
+
+
+
+Description:
+ScoreNodes are current created for the full result fetch. Instead, the ScoreNodes should be created on demand when requested in nextScoreNode().

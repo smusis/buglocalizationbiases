@@ -1,0 +1,7 @@
+jcr-commons: Add utility to translate a string to a AuthorizableQuery and execute it on the user manager 
+
+
+
+Description:
+it would be convenient if jackrabbit-jcr-commons would provide a utility to generate authorizable
+queries from a string.

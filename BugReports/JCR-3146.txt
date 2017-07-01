@@ -1,0 +1,6 @@
+Text extraction may congest thread pool in the repository
+
+
+
+Description:
+Text extraction congests the thread pool in the repository when e.g. many PDFs are loaded into the workspace. Tasks submitted by the index merger are delayed because of that and will result in many index segment folders.

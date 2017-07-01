@@ -1,0 +1,25 @@
+Remove benchmark/lib/xml-apis.jar - JVM 1.5 already contains the required JAXP 1.3 implementation
+
+
+
+Description:
+On [LUCENE-2957|https://issues.apache.org/jira/browse/LUCENE-2957?focusedCommentId=13004991&page=com.atlassian.jira.plugin.system.issuetabpanels:comment-tabpanel#comment-13004991], Uwe wrote:
+{quote}
+xml-apis.jar is not needed with xerces-2.9 and Java 5, as Java 5 already has these interface classes (JAXP 1.3). Xerces 2.11 needs it, because it ships with Java 6's JAXP release (containing STAX & Co. not available in Java 5).
+{quote}
+
+On the #lucene IRC channel, Uwe also wrote:
+{noformat}
+since we are on java 5 since 3.0
+we have the javax APIs already available in the JVM
+xerces until 2.9.x only needs JAXP 1.3
+so the only thing you need is xercesImpl.jar
+and serializer.jar
+serializer.jar is shared between all apache xml projects, dont know the exact version number
+ok you dont need it whan you only parse xml
+as soon as you want to serialize a dom tree or result of an xsl transformation you need it
+[...]
+but if we upgrade to latest xerces we need it [the xml-apis jar] again unless we are on java 6
+so the one shipped with xerces 2.11 is the 1.4 one
+because xerces 2.11 supports Stax
+{noformat}

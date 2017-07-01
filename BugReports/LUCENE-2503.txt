@@ -1,0 +1,11 @@
+light/minimal stemming for euro languages
+
+
+
+Description:
+The snowball stemmers are very aggressive and it would be nice if there were lighter alternatives.
+
+Some applications may want to perform less aggressive stemming, for example:
+http://www.lucidimagination.com/search/document/5d16391e21ca6faf/plural_only_stemmer
+
+Good, relevance tested algorithms exist and I think we should provide these alternatives.

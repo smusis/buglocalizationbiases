@@ -1,0 +1,10 @@
+[HttpClient] Better proxy support in HttpMultiClient
+
+
+
+Description:
+If proxy requires authentication, it sends status 407 (Proxy Authentication 
+Required) and the response header "Proxy-Authenticate" (see RFC2616; e.g. Squid 
+can be configured to do so).
+HttpClient doesn't yet process this response.
+Behavior should be similar to processing of status 401 (Unauthorized).

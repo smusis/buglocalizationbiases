@@ -1,0 +1,12 @@
+CustomScoreQuery (function query) is broken (due to per-segment searching)
+
+
+
+Description:
+Spinoff from here:
+
+  http://lucene.markmail.org/message/psw2m3adzibaixbq
+
+With the cutover to per-segment searching, CustomScoreQuery is not really usable anymore, because the per-doc custom scoring method (customScore) receives a per-segment docID, yet there is no way to figure out which segment you are currently searching.
+
+I think to fix this we must also notify the subclass whenever a new segment is switched to.  I think if we copy Collector.setNextReader, that would be sufficient.  It would by default do nothing in CustomScoreQuery, but a subclass could override.

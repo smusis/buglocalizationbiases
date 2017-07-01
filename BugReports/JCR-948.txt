@@ -1,0 +1,6 @@
+Support for JNDI configuration of BundleDbPersistenceManager
+
+
+
+Description:
+It would be nice to have the option to configure BundleDbPersistenceManager database specifying a JNDI name of a DataSource.

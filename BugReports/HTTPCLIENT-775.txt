@@ -1,0 +1,6 @@
+download section of website down
+
+
+
+Description:
+maybe you know this, but http://hc.apache.org/downloads.cgi (the downloads for httpcomponents and for httpclient) is broken (500 internal server error)...

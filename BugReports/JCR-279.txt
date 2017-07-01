@@ -1,0 +1,17 @@
+IllegalStateException thrown when consuming events
+
+
+
+Description:
+i assume, when session is closed, or beeing closed, the observation still tries to deliver some events:
+
+[java] 2005-11-24 22:58:41,764 [ObservationManager] WARN  org.apache.jackrabbit.core.observation.ObservationManagerFactory - EventConsumer threw exception: java.lang.IllegalStateException: not in
+itialized
+[java] 2005-11-24 22:58:41,764 [ObservationManager] DEBUG org.apache.jackrabbit.core.observation.ObservationManagerFactory - Stacktrace:
+[java] java.lang.IllegalStateException: not initialized
+[java]     at org.apache.jackrabbit.core.security.SimpleAccessManager.isGranted(SimpleAccessManager.java:119)
+[java]     at org.apache.jackrabbit.core.observation.EventConsumer.consumeEvents(EventConsumer.java:231)
+[java]     at org.apache.jackrabbit.core.observation.ObservationManagerFactory.run(ObservationManagerFactory.java:161)
+[java]     at java.lang.Thread.run(Thread.java:595)
+
+

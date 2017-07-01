@@ -1,0 +1,13 @@
+addIndexes(IndexReader) incorrectly applies existing deletes
+
+
+
+Description:
+If you perform these operations:
+# deleteDocuments(Term) for all the new documents
+# addIndexes(IndexReader)
+# commit
+
+Then addIndexes applies the previous deletes on the incoming indexes as well, which is incorrect. If you call addIndexes(Directory) instead, the deletes are applied beforehand, as they should. The solution, as Mike indicated here: http://osdir.com/ml/general/2011-03/msg20876.html is to add *flush(false,true)* to addIndexes(IndexReader).
+
+I will create a patch with a matching unit test shortly.

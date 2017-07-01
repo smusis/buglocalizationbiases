@@ -1,0 +1,8 @@
+Standard analyzer does not correctly tokenize combining character U+0364 COMBINING LATIN SMALL LETTRE E
+
+
+
+Description:
+Standard analyzer does not correctly tokenize combining character U+0364 COMBINING LATIN SMALL LETTRE E.
+The word "moͤchte" is incorrectly tokenized into "mo" "chte", the combining character is lost.
+Expected result is only on token "moͤchte".

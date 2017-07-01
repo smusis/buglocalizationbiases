@@ -1,0 +1,6 @@
+Improvement in comment of QValue.getLength() 
+
+
+
+Description:
+The comment of QValue.getLength() should document -1 return values.

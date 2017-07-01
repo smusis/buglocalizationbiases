@@ -1,0 +1,13 @@
+HttpConnection.isOpen() logging is not accurate
+
+
+
+Description:
+isOpen() does not differentiate between stale and closed.  If the connection is closed isStale() will return 
+true.  The logs will then indicate that the connection was stale, even though it was really just closed.  
+close() is also called a second time unnecessarily.
+
+This should be fixed for 3.0, and perhaps even 2.0.1.
+
+<http://nagoya.apache.org/eyebrowse/ReadMsg?listName=commons-httpclient-
+dev@jakarta.apache.org&msgNo=7205>

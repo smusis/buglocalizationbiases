@@ -1,0 +1,8 @@
+Specialize BooleanQuery if all clauses are TermQueries
+
+
+
+Description:
+During work on LUCENE-3319 I ran into issues with BooleanQuery compared to PhraseQuery in the exact case. If I disable scoring on PhraseQuery and bypass the position matching, essentially doing a conjunction match, ExactPhraseScorer beats plain boolean scorer by 40% which is a sizeable gain. I converted a ConjunctionScorer to use DocsEnum directly but still didn't get all the 40% from PhraseQuery. Yet, it turned out with further optimizations this gets very close to PhraseQuery. The biggest gain here came from converting the hand crafted loop in ConjunctionScorer#doNext to a for loop which seems to be less confusing to hotspot. In this particular case I think code specialization makes lots of sense since BQ with TQ is by far one of the most common queries.
+
+I will upload a patch shortly

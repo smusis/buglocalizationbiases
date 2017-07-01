@@ -1,0 +1,12 @@
+Hardening of NativeFSLock
+
+
+
+Description:
+NativeFSLock create a test lock file which its name might collide w/ another JVM that is running. Very unlikely, but still it happened a couple of times already, since the tests were parallelized. This may result in a false exception thrown from release(), when the lock file's delete() is called and returns false, because the file does not exist (deleted by another JVM already). In addition, release() should give a second attempt to delete() if it fails, since the file may be held temporarily by another process (like AntiVirus) before it fails. The proposed changes are:
+
+1) Use ManagementFactory.getRuntimeMXBean().getName() as part of the test lock name (should include the process Id)
+2) In release(), if delete() fails, check if the file indeed exists. If it is, let's attempt a re-delete() few ms later.
+3) If (3) still fails, throw an exception. Alternatively, we can attempt a deleteOnExit.
+
+I'll post a patch later today.

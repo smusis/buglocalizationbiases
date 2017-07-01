@@ -1,0 +1,6 @@
+Parsing mixed inclusive/exclusive range queries
+
+
+
+Description:
+The current query parser doesn't handle parsing a range query (i.e. ConstantScoreRangeQuery) with mixed inclusive/exclusive bounds.

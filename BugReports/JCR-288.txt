@@ -1,0 +1,30 @@
+inconsistent session state after Item/Session.save() throwing ReferentialIntegrityException
+
+
+
+Description:
+issue reported by Tomasz.Dabrowski@cognifide.com on jackrabbit dev list.
+
+code fragment to reproduce issue:
+
+// setup test case
+
+Node parent = root.addNode("a", "nt:unstructured");
+Node child1 = parent.addNode("b", "nt:unstructured");
+child1.addMixin("mix:referenceable");
+Node child2 = parent.addNode("c", "nt:unstructured");
+child2.setProperty("ref", child1);
+root.save();
+
+// perform test
+
+try {
+    child1.remove();
+    parent.save();
+} catch (ReferentialIntegrityException rie) {
+    // expected since child1 is still being referenced by property "ref" of child2
+}
+
+parent.remove();     // ==> should succeed but throws ItemNotFoundException 
+
+

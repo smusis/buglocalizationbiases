@@ -1,0 +1,210 @@
+deadlock in TestIndexWriterExceptions
+
+
+
+Description:
+    [junit] 2012-01-18 18:18:16
+    [junit] Full thread dump Java HotSpot(TM) 64-Bit Server VM (19.1-b02 mixed mode):
+    [junit] 
+    [junit] "Indexer 3" prio=10 tid=0x0000000041b9b800 nid=0x6291 waiting for monitor entry [0x00007f7e8868f000]
+    [junit]    java.lang.Thread.State: BLOCKED (on object monitor)
+    [junit] 	at org.apache.lucene.index.DocumentsWriterFlushQueue.innerPurge(DocumentsWriterFlushQueue.java:118)
+    [junit] 	- waiting to lock <0x00000000e40ff2a8> (a org.apache.lucene.index.DocumentsWriterFlushQueue)
+    [junit] 	at org.apache.lucene.index.DocumentsWriterFlushQueue.tryPurge(DocumentsWriterFlushQueue.java:141)
+    [junit] 	at org.apache.lucene.index.DocumentsWriter.doFlush(DocumentsWriter.java:439)
+    [junit] 	at org.apache.lucene.index.DocumentsWriter.postUpdate(DocumentsWriter.java:317)
+    [junit] 	at org.apache.lucene.index.DocumentsWriter.updateDocument(DocumentsWriter.java:390)
+    [junit] 	at org.apache.lucene.index.IndexWriter.updateDocument(IndexWriter.java:1534)
+    [junit] 	at org.apache.lucene.index.IndexWriter.updateDocument(IndexWriter.java:1506)
+    [junit] 	at org.apache.lucene.index.TestIndexWriterExceptions$IndexerThread.run(TestIndexWriterExceptions.java:187)
+    [junit] 
+    [junit] "Indexer 2" prio=10 tid=0x0000000041b9b000 nid=0x6290 waiting on condition [0x00007f7e8838c000]
+    [junit]    java.lang.Thread.State: WAITING (parking)
+    [junit] 	at sun.misc.Unsafe.park(Native Method)
+    [junit] 	- parking to wait for  <0x00000000e4103100> (a org.apache.lucene.index.DocumentsWriterStallControl$Sync)
+    [junit] 	at java.util.concurrent.locks.LockSupport.park(LockSupport.java:158)
+    [junit] 	at java.util.concurrent.locks.AbstractQueuedSynchronizer.parkAndCheckInterrupt(AbstractQueuedSynchronizer.java:811)
+    [junit] 	at java.util.concurrent.locks.AbstractQueuedSynchronizer.doAcquireShared(AbstractQueuedSynchronizer.java:941)
+    [junit] 	at java.util.concurrent.locks.AbstractQueuedSynchronizer.acquireShared(AbstractQueuedSynchronizer.java:1261)
+    [junit] 	at org.apache.lucene.index.DocumentsWriterStallControl.waitIfStalled(DocumentsWriterStallControl.java:115)
+    [junit] 	at org.apache.lucene.index.DocumentsWriterFlushControl.waitIfStalled(DocumentsWriterFlushControl.java:591)
+    [junit] 	at org.apache.lucene.index.DocumentsWriter.preUpdate(DocumentsWriter.java:302)
+    [junit] 	at org.apache.lucene.index.DocumentsWriter.updateDocument(DocumentsWriter.java:362)
+    [junit] 	at org.apache.lucene.index.IndexWriter.updateDocument(IndexWriter.java:1534)
+    [junit] 	at org.apache.lucene.index.IndexWriter.updateDocument(IndexWriter.java:1506)
+    [junit] 	at org.apache.lucene.index.TestIndexWriterExceptions$IndexerThread.run(TestIndexWriterExceptions.java:187)
+    [junit] 
+    [junit] "Indexer 1" prio=10 tid=0x0000000042500000 nid=0x628f waiting for monitor entry [0x00007f7e8858e000]
+    [junit]    java.lang.Thread.State: BLOCKED (on object monitor)
+    [junit] 	at org.apache.lucene.index.DocumentsWriterFlushQueue.addSegment(DocumentsWriterFlushQueue.java:84)
+    [junit] 	- waiting to lock <0x00000000e40ff2a8> (a org.apache.lucene.index.DocumentsWriterFlushQueue)
+    [junit] 	at org.apache.lucene.index.DocumentsWriter.doFlush(DocumentsWriter.java:424)
+    [junit] 	at org.apache.lucene.index.DocumentsWriter.postUpdate(DocumentsWriter.java:317)
+    [junit] 	at org.apache.lucene.index.DocumentsWriter.updateDocument(DocumentsWriter.java:390)
+    [junit] 	at org.apache.lucene.index.IndexWriter.updateDocument(IndexWriter.java:1534)
+    [junit] 	at org.apache.lucene.index.IndexWriter.updateDocument(IndexWriter.java:1506)
+    [junit] 	at org.apache.lucene.index.TestIndexWriterExceptions$IndexerThread.run(TestIndexWriterExceptions.java:187)
+    [junit] 
+    [junit] "Indexer 0" prio=10 tid=0x0000000041508000 nid=0x628d waiting on condition [0x00007f7e8848d000]
+    [junit]    java.lang.Thread.State: WAITING (parking)
+    [junit] 	at sun.misc.Unsafe.park(Native Method)
+    [junit] 	- parking to wait for  <0x00000000e414b408> (a java.util.concurrent.locks.ReentrantLock$NonfairSync)
+    [junit] 	at java.util.concurrent.locks.LockSupport.park(LockSupport.java:158)
+    [junit] 	at java.util.concurrent.locks.AbstractQueuedSynchronizer.parkAndCheckInterrupt(AbstractQueuedSynchronizer.java:811)
+    [junit] 	at java.util.concurrent.locks.AbstractQueuedSynchronizer.acquireQueued(AbstractQueuedSynchronizer.java:842)
+    [junit] 	at java.util.concurrent.locks.AbstractQueuedSynchronizer.acquire(AbstractQueuedSynchronizer.java:1178)
+    [junit] 	at java.util.concurrent.locks.ReentrantLock$NonfairSync.lock(ReentrantLock.java:186)
+    [junit] 	at java.util.concurrent.locks.ReentrantLock.lock(ReentrantLock.java:262)
+    [junit] 	at org.apache.lucene.index.DocumentsWriterFlushQueue.forcePurge(DocumentsWriterFlushQueue.java:130)
+    [junit] 	at org.apache.lucene.index.DocumentsWriterFlushQueue.addDeletesAndPurge(DocumentsWriterFlushQueue.java:50)
+    [junit] 	- locked <0x00000000e40ff2a8> (a org.apache.lucene.index.DocumentsWriterFlushQueue)
+    [junit] 	at org.apache.lucene.index.DocumentsWriter.applyAllDeletes(DocumentsWriter.java:179)
+    [junit] 	at org.apache.lucene.index.DocumentsWriter.doFlush(DocumentsWriter.java:460)
+    [junit] 	at org.apache.lucene.index.DocumentsWriter.postUpdate(DocumentsWriter.java:317)
+    [junit] 	at org.apache.lucene.index.DocumentsWriter.updateDocument(DocumentsWriter.java:390)
+    [junit] 	at org.apache.lucene.index.IndexWriter.updateDocument(IndexWriter.java:1534)
+    [junit] 	at org.apache.lucene.index.IndexWriter.updateDocument(IndexWriter.java:1506)
+    [junit] 	at org.apache.lucene.index.TestIndexWriterExceptions$IndexerThread.run(TestIndexWriterExceptions.java:187)
+    [junit] 
+    [junit] "Low Memory Detector" daemon prio=10 tid=0x00007f7e84025800 nid=0x6003 runnable [0x0000000000000000]
+    [junit]    java.lang.Thread.State: RUNNABLE
+    [junit] 
+    [junit] "CompilerThread1" daemon prio=10 tid=0x00007f7e84022800 nid=0x6002 waiting on condition [0x0000000000000000]
+    [junit]    java.lang.Thread.State: RUNNABLE
+    [junit] 
+    [junit] "CompilerThread0" daemon prio=10 tid=0x00007f7e8401f800 nid=0x6001 waiting on condition [0x0000000000000000]
+    [junit]    java.lang.Thread.State: RUNNABLE
+    [junit] 
+    [junit] "Signal Dispatcher" daemon prio=10 tid=0x00007f7e8401d800 nid=0x6000 waiting on condition [0x0000000000000000]
+    [junit]    java.lang.Thread.State: RUNNABLE
+    [junit] 
+    [junit] "Finalizer" daemon prio=10 tid=0x00007f7e84001000 nid=0x5ffa in Object.wait() [0x00007f7e8961b000]
+    [junit]    java.lang.Thread.State: WAITING (on object monitor)
+    [junit] 	at java.lang.Object.wait(Native Method)
+    [junit] 	- waiting on <0x00000000e2ece380> (a java.lang.ref.ReferenceQueue$Lock)
+    [junit] 	at java.lang.ref.ReferenceQueue.remove(ReferenceQueue.java:118)
+    [junit] 	- locked <0x00000000e2ece380> (a java.lang.ref.ReferenceQueue$Lock)
+    [junit] 	at java.lang.ref.ReferenceQueue.remove(ReferenceQueue.java:134)
+    [junit] 	at java.lang.ref.Finalizer$FinalizerThread.run(Finalizer.java:159)
+    [junit] 
+    [junit] "Reference Handler" daemon prio=10 tid=0x000000004101e000 nid=0x5ff9 in Object.wait() [0x00007f7e8971c000]
+    [junit]    java.lang.Thread.State: WAITING (on object monitor)
+    [junit] 	at java.lang.Object.wait(Native Method)
+    [junit] 	- waiting on <0x00000000e2ece318> (a java.lang.ref.Reference$Lock)
+    [junit] 	at java.lang.Object.wait(Object.java:485)
+    [junit] 	at java.lang.ref.Reference$ReferenceHandler.run(Reference.java:116)
+    [junit] 	- locked <0x00000000e2ece318> (a java.lang.ref.Reference$Lock)
+    [junit] 
+    [junit] "main" prio=10 tid=0x0000000040fb2000 nid=0x5fe2 in Object.wait() [0x00007f7e8ecc1000]
+    [junit]    java.lang.Thread.State: WAITING (on object monitor)
+    [junit] 	at java.lang.Object.wait(Native Method)
+    [junit] 	- waiting on <0x00000000e4105080> (a org.apache.lucene.index.TestIndexWriterExceptions$IndexerThread)
+    [junit] 	at java.lang.Thread.join(Thread.java:1186)
+    [junit] 	- locked <0x00000000e4105080> (a org.apache.lucene.index.TestIndexWriterExceptions$IndexerThread)
+    [junit] 	at java.lang.Thread.join(Thread.java:1239)
+    [junit] 	at org.apache.lucene.index.TestIndexWriterExceptions.testRandomExceptionsThreads(TestIndexWriterExceptions.java:286)
+    [junit] 	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+    [junit] 	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:39)
+    [junit] 	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:25)
+    [junit] 	at java.lang.reflect.Method.invoke(Method.java:597)
+    [junit] 	at org.junit.runners.model.FrameworkMethod$1.runReflectiveCall(FrameworkMethod.java:44)
+    [junit] 	at org.junit.internal.runners.model.ReflectiveCallable.run(ReflectiveCallable.java:15)
+    [junit] 	at org.junit.runners.model.FrameworkMethod.invokeExplosively(FrameworkMethod.java:41)
+    [junit] 	at org.junit.internal.runners.statements.InvokeMethod.evaluate(InvokeMethod.java:20)
+    [junit] 	at org.junit.rules.TestWatchman$1.evaluate(TestWatchman.java:48)
+    [junit] 	at org.apache.lucene.util.LuceneTestCase$3$1.evaluate(LuceneTestCase.java:528)
+    [junit] 	at org.junit.internal.runners.statements.RunBefores.evaluate(RunBefores.java:28)
+    [junit] 	at org.junit.internal.runners.statements.RunAfters.evaluate(RunAfters.java:31)
+    [junit] 	at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:76)
+    [junit] 	at org.apache.lucene.util.LuceneTestCaseRunner.runChild(LuceneTestCaseRunner.java:165)
+    [junit] 	at org.apache.lucene.util.LuceneTestCaseRunner.runChild(LuceneTestCaseRunner.java:57)
+    [junit] 	at org.junit.runners.ParentRunner$3.run(ParentRunner.java:193)
+    [junit] 	at org.junit.runners.ParentRunner$1.schedule(ParentRunner.java:52)
+    [junit] 	at org.junit.runners.ParentRunner.runChildren(ParentRunner.java:191)
+    [junit] 	at org.junit.runners.ParentRunner.access$000(ParentRunner.java:42)
+    [junit] 	at org.junit.runners.ParentRunner$2.evaluate(ParentRunner.java:184)
+    [junit] 	at org.junit.internal.runners.statements.RunBefores.evaluate(RunBefores.java:28)
+    [junit] 	at org.junit.internal.runners.statements.RunAfters.evaluate(RunAfters.java:31)
+    [junit] 	at org.junit.runners.ParentRunner.run(ParentRunner.java:236)
+    [junit] 	at junit.framework.JUnit4TestAdapter.run(JUnit4TestAdapter.java:39)
+    [junit] 	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.run(JUnitTestRunner.java:420)
+    [junit] 	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.launch(JUnitTestRunner.java:911)
+    [junit] 	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.main(JUnitTestRunner.java:743)
+    [junit] 
+    [junit] "VM Thread" prio=10 tid=0x0000000041017800 nid=0x5fef runnable 
+    [junit] 
+    [junit] "GC task thread#0 (ParallelGC)" prio=10 tid=0x0000000040fc5000 nid=0x5fe3 runnable 
+    [junit] 
+    [junit] "GC task thread#1 (ParallelGC)" prio=10 tid=0x0000000040fc7000 nid=0x5fe4 runnable 
+    [junit] 
+    [junit] "GC task thread#2 (ParallelGC)" prio=10 tid=0x0000000040fc9000 nid=0x5fe5 runnable 
+    [junit] 
+    [junit] "GC task thread#3 (ParallelGC)" prio=10 tid=0x0000000040fca800 nid=0x5fe6 runnable 
+    [junit] 
+    [junit] "GC task thread#4 (ParallelGC)" prio=10 tid=0x0000000040fcc800 nid=0x5fe7 runnable 
+    [junit] 
+    [junit] "GC task thread#5 (ParallelGC)" prio=10 tid=0x0000000040fce800 nid=0x5fe8 runnable 
+    [junit] 
+    [junit] "GC task thread#6 (ParallelGC)" prio=10 tid=0x0000000040fd0000 nid=0x5fe9 runnable 
+    [junit] 
+    [junit] "GC task thread#7 (ParallelGC)" prio=10 tid=0x0000000040fd2000 nid=0x5fea runnable 
+    [junit] 
+    [junit] "VM Periodic Task Thread" prio=10 tid=0x00007f7e84030000 nid=0x6004 waiting on condition 
+    [junit] 
+    [junit] JNI global references: 1578
+    [junit] 
+    [junit] 
+    [junit] Found one Java-level deadlock:
+    [junit] =============================
+    [junit] "Indexer 3":
+    [junit]   waiting to lock monitor 0x0000000041477498 (object 0x00000000e40ff2a8, a org.apache.lucene.index.DocumentsWriterFlushQueue),
+    [junit]   which is held by "Indexer 0"
+    [junit] "Indexer 0":
+    [junit]   waiting for ownable synchronizer 0x00000000e414b408, (a java.util.concurrent.locks.ReentrantLock$NonfairSync),
+    [junit]   which is held by "Indexer 3"
+    [junit] 
+    [junit] Java stack information for the threads listed above:
+    [junit] ===================================================
+    [junit] "Indexer 3":
+    [junit] 	at org.apache.lucene.index.DocumentsWriterFlushQueue.innerPurge(DocumentsWriterFlushQueue.java:118)
+    [junit] 	- waiting to lock <0x00000000e40ff2a8> (a org.apache.lucene.index.DocumentsWriterFlushQueue)
+    [junit] 	at org.apache.lucene.index.DocumentsWriterFlushQueue.tryPurge(DocumentsWriterFlushQueue.java:141)
+    [junit] 	at org.apache.lucene.index.DocumentsWriter.doFlush(DocumentsWriter.java:439)
+    [junit] 	at org.apache.lucene.index.DocumentsWriter.postUpdate(DocumentsWriter.java:317)
+    [junit] 	at org.apache.lucene.index.DocumentsWriter.updateDocument(DocumentsWriter.java:390)
+    [junit] 	at org.apache.lucene.index.IndexWriter.updateDocument(IndexWriter.java:1534)
+    [junit] 	at org.apache.lucene.index.IndexWriter.updateDocument(IndexWriter.java:1506)
+    [junit] 	at org.apache.lucene.index.TestIndexWriterExceptions$IndexerThread.run(TestIndexWriterExceptions.java:187)
+    [junit] "Indexer 0":
+    [junit] 	at sun.misc.Unsafe.park(Native Method)
+    [junit] 	- parking to wait for  <0x00000000e414b408> (a java.util.concurrent.locks.ReentrantLock$NonfairSync)
+    [junit] 	at java.util.concurrent.locks.LockSupport.park(LockSupport.java:158)
+    [junit] 	at java.util.concurrent.locks.AbstractQueuedSynchronizer.parkAndCheckInterrupt(AbstractQueuedSynchronizer.java:811)
+    [junit] 	at java.util.concurrent.locks.AbstractQueuedSynchronizer.acquireQueued(AbstractQueuedSynchronizer.java:842)
+    [junit] 	at java.util.concurrent.locks.AbstractQueuedSynchronizer.acquire(AbstractQueuedSynchronizer.java:1178)
+    [junit] 	at java.util.concurrent.locks.ReentrantLock$NonfairSync.lock(ReentrantLock.java:186)
+    [junit] 	at java.util.concurrent.locks.ReentrantLock.lock(ReentrantLock.java:262)
+    [junit] 	at org.apache.lucene.index.DocumentsWriterFlushQueue.forcePurge(DocumentsWriterFlushQueue.java:130)
+    [junit] 	at org.apache.lucene.index.DocumentsWriterFlushQueue.addDeletesAndPurge(DocumentsWriterFlushQueue.java:50)
+    [junit] 	- locked <0x00000000e40ff2a8> (a org.apache.lucene.index.DocumentsWriterFlushQueue)
+    [junit] 	at org.apache.lucene.index.DocumentsWriter.applyAllDeletes(DocumentsWriter.java:179)
+    [junit] 	at org.apache.lucene.index.DocumentsWriter.doFlush(DocumentsWriter.java:460)
+    [junit] 	at org.apache.lucene.index.DocumentsWriter.postUpdate(DocumentsWriter.java:317)
+    [junit] 	at org.apache.lucene.index.DocumentsWriter.updateDocument(DocumentsWriter.java:390)
+    [junit] 	at org.apache.lucene.index.IndexWriter.updateDocument(IndexWriter.java:1534)
+    [junit] 	at org.apache.lucene.index.IndexWriter.updateDocument(IndexWriter.java:1506)
+    [junit] 	at org.apache.lucene.index.TestIndexWriterExceptions$IndexerThread.run(TestIndexWriterExceptions.java:187)
+    [junit] 
+    [junit] Found 1 deadlock.
+    [junit] 
+    [junit] Heap
+    [junit]  PSYoungGen      total 67136K, used 4647K [0x00000000f5560000, 0x00000000fbc60000, 0x0000000100000000)
+    [junit]   eden space 65792K, 5% used [0x00000000f5560000,0x00000000f58a5e10,0x00000000f95a0000)
+    [junit]   from space 1344K, 96% used [0x00000000f9740000,0x00000000f98840a0,0x00000000f9890000)
+    [junit]   to   space 19840K, 0% used [0x00000000fa900000,0x00000000fa900000,0x00000000fbc60000)
+    [junit]  PSOldGen        total 171392K, used 66868K [0x00000000e0000000, 0x00000000ea760000, 0x00000000f5560000)
+    [junit]   object space 171392K, 39% used [0x00000000e0000000,0x00000000e414d080,0x00000000ea760000)
+    [junit]  PSPermGen       total 21248K, used 14733K [0x00000000dae00000, 0x00000000dc2c0000, 0x00000000e0000000)
+    [junit]   object space 21248K, 69% used [0x00000000dae00000,0x00000000dbc635a8,0x00000000dc2c0000)
+    [junit] 
+

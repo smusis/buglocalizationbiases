@@ -1,0 +1,29 @@
+Decouple Filter from BitSet
+
+
+
+Description:
+{code}
+package org.apache.lucene.search;
+
+public abstract class Filter implements java.io.Serializable 
+{
+  public abstract AbstractBitSet bits(IndexReader reader) throws IOException;
+}
+
+public interface AbstractBitSet 
+{
+  public boolean get(int index);
+}
+
+{code}
+
+It would be useful if the method =Filter.bits()= returned an abstract interface, instead of =java.util.BitSet=.
+
+Use case: there is a very large index, and, depending on the user's privileges, only a small portion of the index is actually visible.
+Sparsely populated =java.util.BitSet=s are not efficient and waste lots of memory. It would be desirable to have an alternative BitSet implementation with smaller memory footprint.
+
+Though it _is_ possibly to derive classes from =java.util.BitSet=, it was obviously not designed for that purpose.
+That's why I propose to use an interface instead. The default implementation could still delegate to =java.util.BitSet=.
+
+

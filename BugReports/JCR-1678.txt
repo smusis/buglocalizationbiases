@@ -1,0 +1,14 @@
+NullPointerException in constructor of JcrDavException
+
+
+
+Description:
+within DavSessionProviderImpl.attachSession() a org.apache.jackrabbit.rmi.client.RemoteRepositoryException is thrown, catched as RepositoryException and passed into the 
+ctor of JcrDavException
+
+the lookup for the class in the static HashMap codeMap for the class fails and a NPE is thrown 
+
+suggested fix:
+The static lookup by the javax.jcr.*Exception classed must be fixed to include derived exception classes.
+
+

@@ -1,0 +1,9 @@
+Preemptive authentication causes NTLM auth scheme to fail
+
+
+
+Description:
+The NTLM authentication scheme does not work when the preemptive authentication
+is enabled.
+
+Reported by Dave Seidel <dave at mindreef.com>

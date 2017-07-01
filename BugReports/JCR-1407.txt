@@ -1,0 +1,8 @@
+[PATCH] Trivial Javadoc fix for RepositoryConfig
+
+
+
+Description:
+Yes, this is really trivial, but i keep coming to this class, trying to figure out it works, and the javadoc parms are scrambled.
+
+patch 'fixes' this.

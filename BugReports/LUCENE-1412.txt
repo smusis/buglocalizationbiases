@@ -1,0 +1,10 @@
+FileNotFoundException thrown by Directory.copy()
+
+
+
+Description:
+java.io.FileNotFoundException: segments_bu
+        at org.apache.lucene.store.RAMDirectory.openInput(RAMDirectory.java:234)
+        at org.apache.lucene.store.Directory.copy(Directory.java:190)
+
+

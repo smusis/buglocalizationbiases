@@ -1,0 +1,7 @@
+[PATCH] PerFieldAnalyzerWrapper fails to implement getPositionIncrementGap()
+
+
+
+Description:
+The attached patch causes PerFieldAnalyzerWrapper to delegate calls to getPositionIncrementGap() to the analyzer that is appropriate for the field in question.  The current behavior without this patch is to always use the default value from Analyzer, which is a bug because PerFieldAnalyzerWrapper should behave just as if it was the analyzer for the selected field.
+

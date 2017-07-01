@@ -1,0 +1,9 @@
+changes-to-html: better handling of bulleted lists in CHANGES.txt
+
+
+
+Description:
+- bulleted lists
+- should be rendered
+- as such
+- in output HTML

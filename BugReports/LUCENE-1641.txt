@@ -1,0 +1,11 @@
+Correct spatial and trie documentation links in JavaDocs and site
+
+
+
+Description:
+After updating myself in the site docs, I have some changes to the site and javadocs of Lucene 2.9:
+- Add spatial contrib to javadocs
+- Add trie package to the contrib/queries package
+Both changes prevent these pacakges from a apearing in core's pacakge list on the javadocs/all homepage. I also adjusted the documentation page to reflect the changes.
+
+I will commit the attached patch, if nobody objects.

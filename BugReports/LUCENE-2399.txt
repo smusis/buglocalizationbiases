@@ -1,0 +1,11 @@
+Add support for ICU's Normalizer2
+
+
+
+Description:
+While there are separate Case Folding, Normalization, and Ignorable-removal filters in LUCENE-1488,
+the new ICU Normalizer2 API does this all at once with nfkc_cf (based on the new NFKC_Casefold property in Unicode).
+
+This is great, because it provides a ton of unicode functionality that is really needed.
+And the new Normalizer2 API takes CharSequence and writes to Appendable...
+

@@ -1,0 +1,12 @@
+Remove FieldMaskingSpanQuery (or fix its scoring)
+
+
+
+Description:
+In Lucene 4.0 we added new scoring mechanisms, but FieldMaskingSpanQuery is a serious problem:
+
+Because it lies about the fields of its terms, this sometimes results in totally bogus
+statistics, cases where a single terms totalTermFreq exceeds sumTotalTermFreq for the entire field (since its lying about it).
+
+Such lying could result in NaN/Inf/Negative scores, exceptions, divide by zero, and other problems,
+because the statistics are impossibly bogus.

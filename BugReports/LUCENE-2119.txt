@@ -1,0 +1,12 @@
+If you pass Integer.MAX_VALUE as 2nd param to search(Query, int) you hit unexpected NegativeArraySizeException
+
+
+
+Description:
+Note that this is a nonsense value to pass in, since our PQ impl allocates the array up front.
+
+It's because PQ takes 1+ this value (which wraps to -1), and attempts to allocate that.  We should bounds check it, and drop PQ size by one in this case.
+
+Better, maybe: in IndexSearcher, if that n is ever > maxDoc(), set it to maxDoc().
+
+This trips users up fairly often because they assume our PQ doesn't statically pre-allocate (a reasonable assumption...).

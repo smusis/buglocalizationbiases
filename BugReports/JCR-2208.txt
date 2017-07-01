@@ -1,0 +1,8 @@
+update tests so that both Query.XPATH and Query:SQL are treated as optional features
+
+
+
+Description:
+In JCR 2.0, both Query.XPATH and Query.SQL are optional (or, actually, deprecated).
+
+We either need to modify the tests so that they pass on a repository that doesn't support them (-> NotExecutableException), or remove them altogether.

@@ -1,0 +1,14 @@
+Add top-down version of BlockJoinQuery
+
+
+
+Description:
+Today, BlockJoinQuery can join from child docIDs up to parent docIDs.
+EG this works well for product (parent) + many SKUs (child) search.
+
+But the reverse, which BJQ cannot do, is also useful in some cases.
+EG say you index songs (child) within albums (parent), but you want to
+search and present by song not album while involving some fields from
+the album in the query.  In this case you want to wrap a parent query
+(against album), joining down to the child document space.
+

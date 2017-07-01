@@ -1,0 +1,6 @@
+PackedInts does not support structures above 256MB
+
+
+
+Description:
+The PackedInts Packed32 and Packed64 fails when the internal structure exceeds 256MB. This is due to a missing cast that results in the bit position calculation being limited by Integer.MAX_VALUE (256MB * 8 = 2GB).

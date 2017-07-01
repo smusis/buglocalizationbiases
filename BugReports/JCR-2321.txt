@@ -1,0 +1,41 @@
+ZombieHierarchyManager can return wrong child node entries for replaced nodes
+
+
+
+Description:
+The ZombieHierarchyManager currently implements the two getChildNodeEntry methods like this:
+
+1) look up child node in old, overlayed state, which might contain removed child nodes
+2) if not found, ask the super implementation (ie. get the child node from the up-to-date list)
+
+The purpose of the ZombieHM is to be able to return removed item ids from the attic. However, the behavior above is IMO wrong, as it should first find an existing child node with the given name (or id):
+
+1) look up child node in super implementation (ie. get the child node from the up-to-date list)
+2) if not found, look in the old, overlayed state if it might have been removed
+
+I was able to reproduce this issue when replacing a node (but note the custom access manager in 1.4.x used as explained below): create /replaced/subnode structure, save the session, remove the replaced node and add /replaced and then /replaced/subnode again:
+
+        Node rootNode = session.getRootNode();
+        
+        // 1. create structure /replaced/subnode
+        Node test = rootNode.addNode("replaced", NT);
+        test.addNode("subnode", NT);
+        // 2. persist changes
+        session.save();
+
+        // 3. remove node and recreate it
+        test.remove();
+        test = rootNode.addNode("replaced", NT);
+        
+        // 4. create previous child with same name
+        test.addNode("subnode", NT);
+        
+        // 5. => gives exception
+        test.getNode("subnode").getNodes();
+
+To complicate things further, this was only triggered by a custom access manager, and all based upon Jackrabbit 1.4.x. Back then (pre-1.5 and new security stuff era), the access manager would get a ZombieHM as its hierarchy manager. If its implementation called resolvePath() on the HM for checking read-access in the final getNodes() call, where the tree will be traversed using the getChildNdeEntry(NodeState, Name, int) method, it would get the old node id and hence fail if it would try to retrieve it from the real item state manager.
+
+Thus with a Jackrabbit >= 1.5 and 2.0 the above code will work fine, because the ZombieHM is not used.
+
+However, we might want to fix it for 1.4.x and also check the other uses of the ZombieHM in the current trunk, which I couldn't test. These are (explicit and implicit): ChangeLogBasedHierarchyMgr, SessionItemStateManager.getDescendantTransientItemStates(NodeId), ItemImpl.validateTransientItems(Iterable<ItemState>, Iterable<ItemState>) and SessionItemStateManager.getDescendantTransientItemStatesInAttic(NodeId).
+

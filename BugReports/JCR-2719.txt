@@ -1,0 +1,12 @@
+Incorrect outer join TCK tests
+
+
+
+Description:
+The TCK test cases for outer joins seem to be incorrect. More specifically the expected result sets for the testRightOuterJoin1() and testLeftOuterJoin2() test cases in EquiJoinConditionTest are invalid, as shown below:
+
+* testRightOuterJoin1() result set {{null, n1}, {n1, n2}, {n2, n2}} --> The n1 node does not have the propertyName2 property set, so the first tuple can never occur regardless of the join type. And since n2 already matches existing nodes, even {null, n2} can not be included in the result set. The correct result set for this query seems to be {{n1, n2}, {n2, n2}}.
+
+* testLeftOuterJoin2() result set {{n1, null}, {n2, n1}, {n2, n2}} --> Same as above, a tuple with n1 as the leftmost node is not possible. The correct result set would be {{n2, n1}, {n2, n2}}.
+
+Unfortunately the correct result sets here don't actually exercise the outer join functionality, i.e. none of the nodes in the returned tuples are null. We'll need to modify the test case setup to fix this.

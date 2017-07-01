@@ -1,0 +1,9 @@
+[PATCH] Efficiently retrieve sizes of field values
+
+
+
+Description:
+Sometimes an application would like to know how large a document is before retrieving it.  This can be important for memory management or choosing between algorithms, especially in cases where documents might be very large.
+
+This patch extends the existing FieldSelector mechanism with two new FieldSelectorResults:  SIZE and SIZE_AND_BREAK.  SIZE creates fields on the retrieved document that store field sizes instead of actual values.  SIZE_AND_BREAK is especially efficient if one field comprises the bulk of the document size (e.g., the body field) and can thus be used as a reasonable size approximation.
+

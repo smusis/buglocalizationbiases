@@ -1,0 +1,10 @@
+DefaultHttpRequestRetryHandler is not handling PUT as an idempotent method for retries, though RFC2616 section 9.1.2 clearly defines it to be one.
+
+
+
+Description:
+See attached patch file for a fix:
+
+Fix treats PUT requests as idempotent, marking them to be retried when their enclosed HttpEntity is either null or repeatable.
+
+

@@ -1,0 +1,20 @@
+DateParser refactoring; Stateful cookie specs
+
+
+
+Description:
+Presently DateParser is tightly coupled with the DefaultHttpParams class. I find
+this sub-optimal from the design standpoint. Moreover, I believe that date
+patterns should be specifiable at the method, host, and client levels, not only
+global one. Currently this is not the case, and out of sync with the rest of the
+preference framework, which can result in quite a bit of confusion.
+
+When refactoring the DateParser class I also realized that the cookie specs were
+shared by all the HttpMethod instances and as such had to be stateless. Even
+though it is presently the case, technically there's nothing that prevents the
+user from implementing a stateful cookie spec, plugging it into HttpClient, and
+by doing so potentially causing quite unpleasant concurrency issues. Therefore,
+I believe pluggable cookie specs MAY NOT be shared. There should be a cookie
+spec instance created per method invocation 
+
+Oleg

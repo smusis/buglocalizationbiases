@@ -1,0 +1,11 @@
+MANIFEST.MF cleanup (main jar and luci customizations)
+
+
+
+Description:
+there are several problems with the MANIFEST.MF file used in the core jar, and some inconsistencies in th luci jar:
+
+Lucli's build.xml has an own "jar" target and does not use the jar target from common-build.xml. The result
+is that the MANIFEST.MF file is not consistent and the META-INF dir does not contain LICENSE.TXT and NOTICE.TXT.
+
+Is there a reason why lucli behaves different in this regard? If not I think we should fix this.

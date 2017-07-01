@@ -1,0 +1,10 @@
+BasicOperations.concatenate creates invariants
+
+
+
+Description:
+I started writing a test for LUCENE-2716, and i found a problem with BasicOperations.concatenate(Automaton, Automaton):
+it creates automata with invariant representation (which should never happen, unless you manipulate states/transitions manually).
+
+strangely enough the BasicOperations.concatenate(List<Automaton>) does not have this problem.
+

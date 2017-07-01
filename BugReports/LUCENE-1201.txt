@@ -1,0 +1,15 @@
+Add getIndexCommit method to IndexReader
+
+
+
+Description:
+Spinoff from this thread:
+
+  http://markmail.org/message/bojgqfgyxkkv4fyb
+
+I think it makes sense ask an IndexReader for the commit point it has
+open.  This enables the use case described in the above thread, which
+is to create a deletion policy that is able to query all open readers
+for what commit points they are using, and prevent deletion of them.
+
+

@@ -1,0 +1,6 @@
+Some code still compares string equality instead using equals
+
+
+
+Description:
+I found a couple of places where we still use string == otherstring which don't look correct. I will attache a patch soon.

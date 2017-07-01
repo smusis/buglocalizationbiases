@@ -1,0 +1,8 @@
+Add FixedBitSet.and(other/DISI), andNot(other/DISI)
+
+
+
+Description:
+For the parent issue, and() and andNot() on DISIs and other FixedBitSets are missing. This issue will add those methods.
+
+The DISI methods (also the already existing or(DISI)) method will check for OpenBitSetIterator and do an inplace operation using the bits as optimization.

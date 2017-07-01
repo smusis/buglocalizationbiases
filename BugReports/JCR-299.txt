@@ -1,0 +1,9 @@
+errors in text filters can cause indexing to fail without warning the client
+
+
+
+Description:
+i've opened this issue to track the discussion at <http://thread.gmane.org/gmane.comp.apache.jackrabbit.devel/5086>. briefly, exceptions thrown by text filters are logged and swallowed by jackrabbit; there's no way for a text filter to signal to the jcr client that indexing failed.
+
+some solutions have been proposed, including throwing an unchecked exception, which doesn't allow jackrabbit to maintain transactional integrity, and giving filters veto power over the observed repository operation. depending on the difficulty of the solution that is eventually determined to be correct, it may be sufficient for 1.0 to document the issue and perhaps improve the warning/error logging.
+

@@ -1,0 +1,14 @@
+UUID compareTo and hashCode
+
+
+
+Description:
+The current UUID.compareTo implementation is not correct. Usually, 'equals' is used so this is not a big problem, but I need to create an ordered list of UUIDs and for this I need compareTo. The current implementation is based on subtraction, but this doesn't always work. Example:
+
+//long a = 10, b = 20, c = 0;
+long a = Long.MAX_VALUE, b = Long.MIN_VALUE, c = 0;
+System.out.println((a - b) < 0 ? "a < b" : "a >= b");
+System.out.println((c - a) < 0 ? "c < a" : "c >= a");
+System.out.println((b - c) < 0 ? "b < c" : "b >= c");
+
+The hashCode implementation is OK, but the multiplication is not required.

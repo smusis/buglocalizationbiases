@@ -1,0 +1,56 @@
+Deadlock in DBCP when accessing node
+
+
+
+Description:
+I found a deadlock situation using JR 2.2.10, the problem is with DBCP 1.2.2 and is fixed in DBCP 1.3, JR trunk also uses DBCP 1.2.2 and should also be updated
+
+The ticket in dbcp is #DBCP-270, related tickets are #DBCP-65 #DBCP-281 #DBCP-271
+
+Stack trace of where my call is stalled:
+{code}
+main@1, prio=5, in group 'main', status: 'MONITOR'
+	 blocks Timer-1@2545
+	 waiting for Timer-1@2545 to release lock on {1}
+	  at org.apache.commons.pool.impl.GenericObjectPool.addObjectToPool(GenericObjectPool.java:1137)
+	  at org.apache.commons.pool.impl.GenericObjectPool.returnObject(GenericObjectPool.java:1076)
+	  at org.apache.commons.dbcp.PoolableConnection.close(PoolableConnection.java:87)
+	  at org.apache.commons.dbcp.PoolingDataSource$PoolGuardConnectionWrapper.close(PoolingDataSource.java:181)
+	  at org.apache.jackrabbit.core.util.db.DbUtility.close(DbUtility.java:75)
+	  at org.apache.jackrabbit.core.util.db.ResultSetWrapper.invoke(ResultSetWrapper.java:63)
+	  at $Proxy12.close(Unknown Source:-1)
+	  at org.apache.jackrabbit.core.persistence.pool.BundleDbPersistenceManager.loadBundle(BundleDbPersistenceManager.java:1042)
+	  at org.apache.jackrabbit.core.persistence.bundle.AbstractBundlePersistenceManager.getBundle(AbstractBundlePersistenceManager.java:669)
+	  at org.apache.jackrabbit.core.persistence.bundle.AbstractBundlePersistenceManager.load(AbstractBundlePersistenceManager.java:415)
+	  at org.apache.jackrabbit.core.state.SharedItemStateManager.loadItemState(SharedItemStateManager.java:1830)
+	  at org.apache.jackrabbit.core.state.SharedItemStateManager.getNonVirtualItemState(SharedItemStateManager.java:1750)
+	  at org.apache.jackrabbit.core.state.SharedItemStateManager.getItemState(SharedItemStateManager.java:265)
+	  at org.apache.jackrabbit.core.state.LocalItemStateManager.getNodeState(LocalItemStateManager.java:109)
+	  at org.apache.jackrabbit.core.state.LocalItemStateManager.getItemState(LocalItemStateManager.java:174)
+	  at org.apache.jackrabbit.core.state.XAItemStateManager.getItemState(XAItemStateManager.java:260)
+	  at org.apache.jackrabbit.core.state.SessionItemStateManager.getItemState(SessionItemStateManager.java:161)
+	  at org.apache.jackrabbit.core.ItemManager.getItemData(ItemManager.java:382)
+	  at org.apache.jackrabbit.core.ItemManager.getNode(ItemManager.java:669)
+	  at org.apache.jackrabbit.core.ItemManager.getNode(ItemManager.java:647)
+	  at org.apache.jackrabbit.core.LazyItemIterator.prefetchNext(LazyItemIterator.java:120)
+	  at org.apache.jackrabbit.core.LazyItemIterator.next(LazyItemIterator.java:257)
+	  at info.magnolia.jcr.iterator.DelegatingNodeIterator.next(DelegatingNodeIterator.java:79)
+{code}
+
+This is the offending thread:
+{code}
+Timer-1@2545 daemon, prio=5, in group 'main', status: 'MONITOR'
+	 blocks main@1
+	 waiting for main@1 to release lock on {1}
+	  at org.apache.commons.dbcp.AbandonedTrace.addTrace(AbandonedTrace.java:176)
+	  at org.apache.commons.dbcp.AbandonedTrace.init(AbandonedTrace.java:92)
+	  at org.apache.commons.dbcp.AbandonedTrace.<init>(AbandonedTrace.java:82)
+	  at org.apache.commons.dbcp.DelegatingStatement.<init>(DelegatingStatement.java:61)
+	  at org.apache.commons.dbcp.DelegatingConnection.createStatement(DelegatingConnection.java:224)
+	  at org.apache.commons.dbcp.PoolableConnectionFactory.validateConnection(PoolableConnectionFactory.java:331)
+	  at org.apache.commons.dbcp.PoolableConnectionFactory.validateObject(PoolableConnectionFactory.java:312)
+	  at org.apache.commons.pool.impl.GenericObjectPool.evict(GenericObjectPool.java:1217)
+	  at org.apache.commons.pool.impl.GenericObjectPool$Evictor.run(GenericObjectPool.java:1341)
+	  at java.util.TimerThread.mainLoop(Timer.java:512)
+	  at java.util.TimerThread.run(Timer.java:462)
+{code}

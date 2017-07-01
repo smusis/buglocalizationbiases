@@ -1,0 +1,6 @@
+Change contrib tests to use the special LuceneTestCase(J4) constant for the current version used a matchVersion parameter
+
+
+
+Description:
+Sub issue for contrib changes

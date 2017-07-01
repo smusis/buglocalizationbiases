@@ -1,0 +1,10 @@
+Refactoring config handling
+
+
+
+Description:
+As discussed on the mailing list:
+
+   * Move all XML handling to a separate ConfigurationParser class
+   * Clean up and document the *Config classes
+   * Get rid of the messy AbstractConfig class

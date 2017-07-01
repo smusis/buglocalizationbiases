@@ -1,0 +1,16 @@
+FuzzyLikeThisQuery should set MaxNonCompetitiveBoost for faster speed
+
+
+
+Description:
+FuzzyLikeThisQuery uses FuzzyTermsEnum directly, and maintains 
+a priority queue for its purposes.
+
+Just like TopTermsRewrite method, it should set the 
+MaxNonCompetitiveBoost attribute, so that FuzzyTermsEnum can
+run faster. Its already tracking the minScore, just not updating
+the attribute.
+
+This would be especially nice as it appears to have nice defaults
+already (pq size of 50)
+

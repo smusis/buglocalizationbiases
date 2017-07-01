@@ -1,0 +1,9 @@
+Add LocalLucene
+
+
+
+Description:
+Local Lucene (Geo-search) has been donated to the Lucene project, per https://issues.apache.org/jira/browse/INCUBATOR-77.  This issue is to handle the Lucene portion of integration.
+
+See http://lucene.markmail.org/message/orzro22sqdj3wows?q=LocalLucene
+

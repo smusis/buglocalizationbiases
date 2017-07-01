@@ -1,0 +1,9 @@
+Add sort missing first/last ability to SortField and ValueComparator
+
+
+
+Description:
+When SortField and ValueComparator use EntryCreators (from LUCENE-2649) they use a special sort value when the field is missing.
+
+This enables lucene to implement 'sort missing last' or 'sort missing first' for numeric values from the FieldCache.
+

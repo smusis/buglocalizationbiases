@@ -1,0 +1,6 @@
+Bundle consistency check does not work
+
+
+
+Description:
+The consistencyCheck feature in the database bundle persistence manager does not work because the correct table prefix is not used when loading all bundles.

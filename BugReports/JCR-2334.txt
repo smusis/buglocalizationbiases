@@ -1,0 +1,6 @@
+Tika-based type detection in jcr-server
+
+
+
+Description:
+As discussed on dev@, I'd like to make the jackrabbit-jcr-server component use Apache Tika for automatic media type detection.

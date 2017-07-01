@@ -1,0 +1,59 @@
+FileDataStore Garbage Collector and empty directories
+
+
+
+Description:
+When the org.apache.jackrabbit.core.data.GarbageCollector is called for a FileDataStore the file objects are correctly deleted.
+But the (sub)directories aren't removed.
+In time this will result in a huge tree of unused empty directories
+
+I've created a small chance in method FileDataStore.deleteOlderRecursive()
+It will remove a directory when it hasn't any files entries. Please note that currently the file objects are stored three levels deep, so it
+will take three gc calls remove all directories. Which I think is no problem because the currently implementation is lightweighted.
+
+>>>>> CURRENT FileDataStore.java
+
+    private int deleteOlderRecursive(File file, long min) {
+        int count = 0;
+        if (file.isFile() && file.exists() && file.canWrite()) {
+            if (file.lastModified() < min) {
+                DataIdentifier id = new DataIdentifier(file.getName());
+                if (!inUse.containsKey(id)) {
+                    file.delete();
+                    count++;
+                }
+            }
+        } else if (file.isDirectory()) {
+            File[] list = file.listFiles();
+            for (int i = 0; i < list.length; i++) {
+                count += deleteOlderRecursive(list[i], min);
+            }
+        }
+        return count;
+    }
+
+>>>>>>> NEW
+
+    private int deleteOlderRecursive(File file, long min) {
+        int count = 0;
+        if (file.isFile() && file.exists() && file.canWrite()) {
+            if (file.lastModified() < min) {
+                DataIdentifier id = new DataIdentifier(file.getName());
+                if (!inUse.containsKey(id)) {
+                    file.delete();
+                    count++;
+                }
+            }
+        } else if (file.isDirectory()) {
+            File[] list = file.listFiles();
+            if (list.length==0) {
+              file.delete();
+            } else {
+              for (int i = 0; i < list.length; i++) {
+                count += deleteOlderRecursive(list[i], min);
+              }
+            }
+        }
+        return count;
+    }
+

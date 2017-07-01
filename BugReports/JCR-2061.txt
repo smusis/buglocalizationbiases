@@ -1,0 +1,31 @@
+JSR 283: References and Dereferencing of Property Values
+
+
+
+Description:
+References
+--------------------------------------------------------------------------------------------------------------------------
+new methods are:
+
+- Node.getReferences(String name) PropertyIterator 
+- Node.getWeakReferences() PropertyIterator 
+- Node.getWeakReferences(String name) PropertyIterator
+
+
+Derferencing
+--------------------------------------------------------------------------------------------------------------------------
+As of JSR 283 the following property types may be dereferenced to a Node:
+
+- REFERENCE
+- WEAKREFERENCE
+- PATH
+- any type that can be converted to either of the types above
+
+The new method
+- Property.getProperty() returns the Property pointed to by a PATH value.
+- any type that can be converted to PATH
+
+
+
+
+

@@ -1,0 +1,96 @@
+[HttpClient] Authenticator() - ability to perform alternate authentication
+
+
+
+Description:
+My post to the user group.  The developer replied suggesting I enter an 
+enhancement request.
+
+-----Original Message-----
+From: Gustafson, Vicki [mailto:vicki.gustafson@us.didata.com]
+Sent: Thursday, 12 December 2002 5:03 AM
+To: Jakarta Commons Users List
+Subject: [HttpClient] Authentication using Basic
+
+Is there a way to specify which authentication scheme you would like the client 
+to use if several schemes are returned in the www-auth header?
+
+I'm performing a simple post using the httpClient.  The server returns a 401 at 
+which point the httpClient tries to authenticate with the server.  The 
+following header is received:
+
+Attempting to parse authenticate header: 'WWW-Authenticate: Negotiate, NTLM, 
+Basic realm="XXXwhateverXXX"
+
+I need to authenticate using Basic, but the Authenticator class will only try 
+the most secure scheme:  NTLM.  Is there a setting or parameter I can set to 
+force the httpClient to use Basic?
+
+thanks,
+Vicki
+
+// determine the most secure request header to add
+Header requestHeader = null;
+if (challengeMap.containsKey("ntlm")) {
+    String challenge = (String) challengeMap.get("ntlm");
+    requestHeader = Authenticator.ntlm(challenge, method, state,
+    responseHeader);
+} else if (challengeMap.containsKey("digest")) {
+    String challenge = (String) challengeMap.get("digest");
+    String realm = parseRealmFromChallenge(challenge);
+    requestHeader = Authenticator.digest(realm, method, state,
+    responseHeader);
+} else if (challengeMap.containsKey("basic")) {
+    String challenge = (String) challengeMap.get("basic");
+    String realm = parseRealmFromChallenge(challenge);
+    requestHeader = Authenticator.basic(realm, state, responseHeader);
+} else if (challengeMap.size() == 0) {
+    throw new HttpException("No authentication scheme found in '"
+    + authenticateHeader + "'");
+} else {
+    throw new UnsupportedOperationException(
+    "Requested authentication scheme " + challengeMap.keySet()
+    + " is unsupported");
+}
+
+--
+To unsubscribe, e-mail:   <mailto:commons-user-unsubscribe@jakarta.apache.org>
+For additional commands, e-mail: <mailto:commons-user-help@jakarta.apache.org>
+
+
+--
+To unsubscribe, e-mail:   <mailto:commons-user-unsubscribe@jakarta.apache.org>
+For additional commands, e-mail: <mailto:commons-user-help@jakarta.apache.org>
+
+**********developer response**********************************
+
+
+
+Currently there isn't, however we probably should be more intelligent about 
+falling back to other authentication schemes based on the type of credentials 
+provided.  Having said this I'm not sure it conforms to the HTTP spec strictly 
+(which states that the client must use the strongest authentication scheme it 
+supports, there's a grey area here because if your application doesn't provide 
+a dialog or similar for the user to enter NTLM credentials it can only support 
+basic or digest authentication, despite HTTPClient supporting NTLM).
+
+What I'd like to see happen is:
+
+When NTLM authentication is requested as top priority but only 
+UsernamePasswordCredentials are available instead of NTLMCredentials we fall 
+back to one of the other schemes.  In general this would mean that:
+
+if an authentication scheme is requested and a credentials object of the wrong 
+type is provided, HTTPClient should assume (probably optionally or only in non-
+strict mode) that the requested authentication scheme is not supported and fall 
+through to other options.
+
+Achieving this would require a reasonably amount of refactoring of the 
+Authenticator class but shouldn't be impossible.  Unfortunately I don't have 
+time to do it myself at the moment but I'd be happy to help out if you felt 
+like doing it, otherwise logging an enhancement bug in Bugzilla would be a good 
+way to record this request until someone has time to actually implement it.
+
+Adrian Sutton, Software Engineer
+Ephox Corporation
+www.ephox.com

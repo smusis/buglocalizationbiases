@@ -1,0 +1,10 @@
+AutoCloseInputStream.available() throws IOException when auto-closed
+
+
+
+Description:
+ACIS auto-close itself as soon as EOF is detected. That leads to IOExceptions being throw in response to calls that are valid for a stream that has reached EOF.
+ACIS should instead close the _underlying_ stream and switch itself into an EOF mode that does not throw exceptions until it is closed explicitly.
+
+reported by Tom Lipkis on the developer mailing list
+http://mail-archives.apache.org/mod_mbox/jakarta-httpcomponents-dev/200702.mbox/%3c200702101905.l1AJ5MeK027997@fw3.pss.com%3e

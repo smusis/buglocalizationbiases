@@ -1,0 +1,6 @@
+Allow o.a.j.jca.JCARepositoryManager to load repository configuration from the classpath.
+
+
+
+Description:
+The current implementation of o.a.j.jca.JCARepositoryManager is only able to load configuration files from the file system. It would be useful to allow the configuration to be loaded from the classpath also.

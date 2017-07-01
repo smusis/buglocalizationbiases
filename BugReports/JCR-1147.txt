@@ -1,0 +1,8 @@
+spi2jcr: RepositoryServiceImpl.getRootId returns bad NodeId 
+
+
+
+Description:
+I think org.apache.jackrabbit.spi2jcr.RepositoryServiceImpl.getRootId() should not return getIdFactory().createNodeId((String) null, Path.ROOT). Rather should it do a round trip to the wrapped repository and return a UUID based NodeId if the root node of the wrapped repository is mix:referenceable.
+
+The javadoc reads: "If the root node can be identified with a unique ID the returned NodeId simply has a uniqueID part and the path part is null. If the root node cannot be identified with a unique ID the uniqueID part is null and the path part will be set to "/"."

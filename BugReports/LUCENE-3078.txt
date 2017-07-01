@@ -1,0 +1,6 @@
+Add generics to DocumentsWriterDeleteQueue.Node
+
+
+
+Description:
+DocumentsWriterDeleteQueue.Note should be generic as the subclasses hold different types of items. This generification is a little bit tricks, but the generics policeman can't wait to fix this *g*.

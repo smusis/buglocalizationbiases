@@ -1,0 +1,13 @@
+Invert IR.getDelDocs -> IR.getLiveDocs
+
+
+
+Description:
+Spinoff from LUCENE-1536, where we need to fix the low level filtering
+we do for deleted docs to "match" Filters (ie, a set bit means the doc
+is accepted) so that filters can be pushed all the way down to the
+enums when possible/appropriate.
+
+This change also inverts the meaning first arg to
+TermsEnum.docs/AndPositions (renames from skipDocs to liveDocs).
+

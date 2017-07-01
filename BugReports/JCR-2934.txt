@@ -1,0 +1,7 @@
+SQL2 queries are not logged
+
+
+
+Description:
+SQL2 queries are constructed via QueryObjectModel, and ran via QueryObjectModelImpl which does not log the run time.
+I'll attach a run time log similar to the old one.

@@ -1,0 +1,6 @@
+Allow importing of ACL with unknown principals
+
+
+
+Description:
+It should be possible to import ACLs with principals that are not known to the principal provider, yet.

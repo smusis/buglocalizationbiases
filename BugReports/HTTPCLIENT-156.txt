@@ -1,0 +1,14 @@
+NullPointerException thrown when invalid header encountered
+
+
+
+Description:
+If a server returns a header with no name but with a value (ie: an invalid line in the headers), HttpClient throws a NullPointerException instead of just skipping that header line or perhaps treating it as a continuation of the previous header (need to consult the RFC to confirm this).
+
+Problem reported by Eduardo Francos on the commons-user list.
+
+A good test URL for this problem is:
+
+http://www.pc.ibm.com/us/accessories/monitors/p_allmodelos.html
+
+which should return a 404 error but throws the NullPointerException instead.

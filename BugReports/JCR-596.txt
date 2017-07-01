@@ -1,0 +1,6 @@
+Keep jackrabbit jar/pom's updated at ibiblio
+
+
+
+Description:
+Please keep jackrabbit updated on ibiblio or some other maven repository.  jackrabbit-1.1 needs to be added.

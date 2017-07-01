@@ -1,0 +1,6 @@
+"ant dist" no longer generates md5's for the top-level artifacts
+
+
+
+Description:
+Mark hit this for 2.9.0, and I just hit it again for 2.9.1.  It used to work...

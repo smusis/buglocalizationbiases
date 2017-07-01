@@ -1,0 +1,6 @@
+BTreeManager needs more flexible mechanism for ignoring (internal) properties
+
+
+
+Description:
+The current BTreeManager implementation has some hard coded logic to ignore jcr:primaryType properties. There should be a mechanism to parametrize BTreeManager with a set of properties to ignore.

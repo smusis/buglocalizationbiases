@@ -1,0 +1,11 @@
+RepositoryService.checkin should return information about newly created version
+
+
+
+Description:
+We have a mismatch between Node.checkin(), which returns a new Version object, and RepositoryService.checkin(), which returns void.
+
+Client of SPI, such as JCR2SPI, thus will have to make an additional request for the base version property, with the obvious drawbacks (another call, and a potential cause for a race condition).
+
+Proposal: change the return code to NodeId.
+ 

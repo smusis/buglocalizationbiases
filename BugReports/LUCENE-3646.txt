@@ -1,0 +1,13 @@
+throw exception for fieldcache on a non-atomic reader
+
+
+
+Description:
+In Lucene 4.0, we go through a lot of effort to prevent slow uses of non-atomic readers:
+
+DirectoryReader/MultiReader etc throw exception if you don't try to access postings or docvalues apis per-segment, etc.
+
+But the biggest trap of all is still too easy to fall into, we don't do the same for FieldCache.
+
+I think we should throw exception, forcing the user to either change their code or use a SlowMultiReaderWrapper.
+

@@ -1,0 +1,25 @@
+Very inefficient implementation of MultiTermDocs.skipTo
+
+
+
+Description:
+In our application anytime the index was unoptimized/contained more than one segment there was a sharp drop in performance, which amounted to over 50ms per search on average.  We would consistently see this drop anytime an index went from an optimized state to an unoptimized state.
+
+I tracked down the issue to the implementation of MultiTermDocs.skipTo function (found in MultiReader.java).  Optimized indexes do not use this class during search but unoptimized indexes do.  The comment on this function even explicitly states 'As yet unoptimized implementation.'  It was implemented just by calling 'next' over and over so even if it knew it could skip ahead hundreds of thousands of hits it would not.
+
+So I re-implemented the function very similar to how the MultiTermDocs.next function was implemented and tested it out on or application for correctness and performance and it passed all our tests and the performance penalty of having multiple segments vanished.  We have already put the new jar onto our production machines.
+
+Here is my implementation of skipTo, which closely mirrors the accepted implementation of 'next', please feel free to test it and commit it.
+
+  /** Much more optimized implementation. Could be
+   * optimized fairly easily to skip entire segments */
+  public boolean skipTo(int target) throws IOException {
+    if (current != null && current.skipTo(target-base)) {
+      return true;
+    } else if (pointer < readers.length) {
+      base = starts[pointer];
+      current = termDocs(pointer++);
+      return skipTo(target);
+    } else
+      return false;
+  }

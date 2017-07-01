@@ -1,0 +1,24 @@
+DictionaryCompoundWordTokenFilter does not properly add tokens from the end compound word.
+
+
+
+Description:
+Due to an off-by-one error, a subword placed at the end of a compound word will not get a token added to the token stream.
+
+
+For example (from the unit test in the attached patch):
+Dictionary: {"ab", "cd", "ef"}
+Input: "abcdef"
+Created tokens: {"abcdef", "ab", "cd"}
+Expected tokens: {"abcdef", "ab", "cd", "ef"}
+
+
+Additionally, it could produce tokens that were shorter than the minSubwordSize due to another off-by-one error. For example (again, from the attached patch):
+
+
+Dictionary: {"abc", "d", "efg"}
+Minimum subword length: 2
+Input: "abcdefg"
+Created tokens: {"abcdef", "abc", "d", "efg"}
+Expected tokens: {"abcdef", "abc", "efg"}
+

@@ -1,0 +1,10 @@
+fix reverseStringFilter for unicode 4.0
+
+
+
+Description:
+ReverseStringFilter is not aware of supplementary characters: when it reverses it will create unpaired surrogates, which will be replaced by U+FFFD by the indexer (but not at query time).
+The wrong words will conflate to each other, and the right words won't match, basically the whole thing falls apart.
+
+This patch implements in-place reverse with the algorithm from apache harmony AbstractStringBuilder.reverse0()
+

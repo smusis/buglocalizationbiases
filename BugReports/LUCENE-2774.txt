@@ -1,0 +1,21 @@
+ant generate-maven-artifacts target broken for contrib
+
+
+
+Description:
+When executing 'ant generate-maven-artifacts' from a pristine checkout of branch_3x/lucene or trunk/lucene the following error is encountered:
+
+{code}
+dist-maven:
+     [copy] Copying 1 file to /home/drew/lucene/branch_3x/lucene/build/contrib/analyzers/common
+[artifact:install-provider] Installing provider: org.apache.maven.wagon:wagon-ssh:jar:1.0-beta-2:runtime
+[artifact:pom] An error has occurred while processing the Maven artifact tasks.
+[artifact:pom]  Diagnosis:
+[artifact:pom] 
+[artifact:pom] Unable to initialize POM pom.xml.template: Cannot find parent: org.apache.lucene:lucene-contrib for project: org.apache.lucene:lucene-analyzers:jar:3.1-SNAPSHOT for project org.apache.lucene:lucene-analyzers:jar:3.1-SNAPSHOT
+[artifact:pom] Unable to download the artifact from any repository
+{code}
+
+
+The contrib portion of the ant build is executed in a subant task which does not pick up the pom definitions for lucene-parent and lucene-contrib from the main build.xml, so the lucene-parent and lucene-controb poms must be loaded specifically as a part of the contrib build using the artifact:pom task.
+

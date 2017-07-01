@@ -1,0 +1,28 @@
+CookiePolicy.registerCookieSpec(CookiePolicy.DEFAULT, <Some CookieSpec>); does not work as documented
+
+
+
+Description:
+I use HtmlUnit to access some quote information. Cookies shall be ignored,so I
+set the default policy to CookiePolicy.IGNORE_COOKIES. Nevertheless I get error
+messages after starting my program. 
+
+The code reads:
+---------------------------------------
+CookiePolicy.registerCookieSpec(CookiePolicy.DEFAULT, IgnoreCookiesSpec.class);
+final WebClient webClient = new WebClient();
+final URL url = new URL("http://de.finance.yahoo.com/q?s=CB3569.SG");
+final HtmlPage page = (HtmlPage) webClient.getPage(url);
+----------------------------------------
+
+The error messages are:
+----------------------------------------
+WARNUNG: Cookie rejected: "$Version=0; PRF=&t=CB3569.SG; $Domain=finance.yahoo.c
+om; $Path=/". Domain attribute "finance.yahoo.com" violates RFC 2109: domain mus
+t start with a dot
+30.11.2005 10:28:20 org.apache.commons.httpclient.HttpMethodBase processResponse
+Headers
+WARNUNG: Cookie rejected: "$Version=0; B=7fkoh9l1oqs4h&b=3&s=hb; $Domain=.yahoo.
+com; $Path=/". Domain attribute ".yahoo.com" violates RFC 2109: host minus domai
+n may not contain any dots
+----------------------------------------

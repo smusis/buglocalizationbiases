@@ -1,0 +1,19 @@
+Add unit test showing how to do a "live backup" of an index
+
+
+
+Description:
+The question of how to backup an index comes up every so often on the
+lists.  Backing up and index is also clearly an important fundamental
+admin task that many applications need to do for fault tolerance.
+
+In the past you were forced to stop & block all changes to your index,
+perform the backup, and then resume changes.  But many applications
+cannot afford a potentially long pause in their indexing.
+
+With the addition of DeletionPolicy (LUCENE-710), it's now possible to
+do a "live backup", which means backup your index in the background
+without pausing ongoing changes to the index.  This
+SnapshotDeletionPolicy just has to mark the chosen commit point as not
+deletable, until the backup finishes.
+

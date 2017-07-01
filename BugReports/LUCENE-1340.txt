@@ -1,0 +1,14 @@
+Make it posible not to include TF information in index
+
+
+
+Description:
+Term Frequency is typically not needed  for all fields, some CPU (reading one VInt less and one X>>>1...) and IO can be spared by making pure boolen fields possible in Lucene. This topic has already been discussed and accepted as a part of Flexible Indexing... This issue tries to push things a bit faster forward as I have some concrete customer demands.
+
+benefits can be expected for fields that are typical candidates for Filters, enumerations, user rights, IDs or very short "texts", phone  numbers, zip codes, names...
+
+Status: just passed standard test (compatibility), commited for early review, I have not tried new feature, missing some asserts and one two unit tests
+
+Complexity: simpler than expected
+
+can be used via omitTf() (who used omitNorms() will know where to find it :)  

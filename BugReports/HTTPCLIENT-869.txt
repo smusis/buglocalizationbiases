@@ -1,0 +1,19 @@
+Incorrect/incomplete product name in META-INF/NOTICE file
+
+
+
+Description:
+The NOTICE file in the HttpClient jars is incorrect.
+
+It states:
+
+=====
+
+HttpClient
+Copyright 1999-2009 Apache Software Foundation
+<snip/>
+======
+
+The leading blank line should be deleted, and "HttpClient" should be "Apache HttpComponents Client - HttpClient"  (or similar) as is the case for the source archive.
+
+Similarly for HttpMime

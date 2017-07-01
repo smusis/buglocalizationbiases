@@ -1,0 +1,6 @@
+Deadlock when executing Version operations
+
+
+
+Description:
+This only happens when a XA transaction is committed without changes. In XAVersionManager there is a check in the InternalXAResource returned by getXAResourceBegin(), which only acquires the write lock on the version manager if there are version related changes in the transaction. This kind of check is missing in the methods XAVersionManager.prepare/commit/rollback().

@@ -1,0 +1,14 @@
+Performance improvement for SegmentMerger.mergeNorms()
+
+
+
+Description:
+This patch makes two improvements to SegmentMerger.mergeNorms():
+
+1) When the SegmentMerger merges the norm values it allocates a new byte array to buffer the values for every field of every segment. The size of such an array equals the size of the corresponding segment, so if large segments are being merged, those arrays become very large, too.
+We can easily reduce the number of array allocations by reusing a byte array to buffer the norm values that only grows, if a segment is larger than the previous one.
+
+2) Before a norm value is written it is checked if the corresponding document is deleted. If not, the norm is written using IndexOutput.writeByte(byte[]). This patch introduces an optimized case for segments that do not have any deleted docs. In this case the frequent call of IndexReader.isDeleted(int) can be avoided and the more efficient method IndexOutput.writeBytes(byte[], int) can be used.
+
+
+This patch only changes the method SegmentMerger.mergeNorms(). All unit tests pass.

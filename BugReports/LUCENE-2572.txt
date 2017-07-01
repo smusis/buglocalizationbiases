@@ -1,0 +1,11 @@
+Maven artifacts for Lucene 4 are not stored in the correct path
+
+
+
+Description:
+Hello,
+
+I would like to use the maven artifacts for Lucene 4.0 produced by the Hudson build machine. The artifacts are correctly produced (http://hudson.zones.apache.org/hudson/view/Lucene/job/Lucene-trunk/lastSuccessfulBuild/artifact/maven_artifacts/lucene/).
+However, the artifacts which should be stored under the path "org/apache/lucene/" are currently stored under "lucene" which prevents a project using maven to correctly download the Lucene 4.0 artifacts.
+
+Thanks again for your help.  

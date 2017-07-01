@@ -1,0 +1,6 @@
+Allow separate control over whether body is stored or analyzed
+
+
+
+Description:
+Simple enhancement to DocMaker.

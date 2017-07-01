@@ -1,0 +1,10 @@
+Remove duplicate code in InternalValueFactory
+
+
+
+Description:
+After JCR-2245 has been applied some of the duplicate code in InternaValueFactory can be removed.
+
+Namely:
+- create(String, int)
+- all other create methods that are non-binary ?

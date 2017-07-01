@@ -1,0 +1,18 @@
+Spellchecker should take IndexWriterConfig... deprecate old methods?
+
+
+
+Description:
+When looking at LUCENE-3490, i realized there was no way to specify the codec for the spellchecker to use.
+
+It has the following current methods:
+* indexDictionary(Dictionary dict): this causes optimize!
+* indexDictionary(Dictionary dict, int mergeFactory, int ramMB): this causes optimize!
+* indexDictionary(Dictionary dict, int mergeFactor, int ramMB, boolean optimize)
+
+But no way to specify an IndexwriterConfig. Additionally, I don't like that several of these ctors force an optimize in a tricky way,
+even though it was like this all along.
+
+So I think we should add indexDictionary(Dictionary dict, IndexWriterConfig config, boolean optimize).
+
+We should either deprecate all the other ctors in 3.x and nuke in trunk, or at least add warnings to the ones that optimize.

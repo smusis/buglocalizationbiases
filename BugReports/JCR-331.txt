@@ -1,0 +1,22 @@
+RepositoryConfig instance can not be reused once it has been passed to RepositoryImpl constructor
+
+
+
+Description:
+RepositoryConfig and other *Config classes maintain state apart from parsed configuration information;
+specifically they instantiate FileSystem implementations based on their configurations. this makes it
+for the config consumers very hard to control the lifecycle of such FileSystem instances as they need
+to close the file systems on repository shutdown.
+
+the following code illustrates the issue:
+
+RepositoryConfig repConf = RepositoryConfig.create(configFile, repHomeDir);
+RepositoryImpl rep = RepositoryImpl.create(repConf);
+// ...
+rep.shutdown();
+
+rep = RepositoryImpl.create(repConf);   
+// ==> repConfig (et al) contains references to FileSystem objects 
+// that have been closed by previous rep.shutdown() call
+
+

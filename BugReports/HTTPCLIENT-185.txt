@@ -1,0 +1,32 @@
+Ordering of methods in PostMethod changes behaviour
+
+
+
+Description:
+I have just spent the best part of two days trying to work out why
+a servlet running in Tomcat was not getting UTF-8 when I had set my
+client to send UTF-8. It turns out that if I set my PostMethod request
+header after setting the request body the content does not get sent as
+UTF-8.
+
+The following gets sent as UTF-8:
+
+      PostMethod post = new PostMethod(destinationUrl.toString());
+      post.setStrictMode(false);
+      post.setRequestHeader("Content-Type","text/xml; charset=UTF-8");
+      post.setRequestHeader("user-agent", "myAgent");
+      post.setRequestBody(content);
+      post.setFollowRedirects(true);
+
+the following doesn't:
+
+      PostMethod post = new PostMethod(destinationUrl.toString());
+      post.setStrictMode(false);
+      post.setRequestBody(content);
+      post.setRequestHeader("Content-Type","text/xml; charset=UTF-8");
+      post.setRequestHeader("user-agent", "myAgent");
+      post.setFollowRedirects(true);
+
+In a live execution I would understand that order makes a big difference, but
+when you fill out an object that feels like defining the values of a Java Bean
+this likely to be less obvious.

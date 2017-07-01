@@ -1,0 +1,35 @@
+nonce-count in digest auth should not be quoted
+
+
+
+Description:
+In 3.0rc3 nonce-count (nc) is enclosed in quote marks. According to rfc2617 this
+is wrong, nonce-count shouldn't be enclosed in quote marks.
+
+> 3.2.2 The Authorization Request Header
+> 
+>    The client is expected to retry the request, passing an Authorization
+>    header line, which is defined according to the framework above,
+>    utilized as follows.
+> 
+>        credentials      = "Digest" digest-response
+>        digest-response  = 1#( username | realm | nonce | digest-uri
+>                        | response | [ algorithm ] | [cnonce] |
+>                        [opaque] | [message-qop] |
+>                            [nonce-count]  | [auth-param] )
+> 
+>        username         = "username" "=" username-value
+>        username-value   = quoted-string
+>        digest-uri       = "uri" "=" digest-uri-value
+>        digest-uri-value = request-uri   ; As specified by HTTP/1.1
+>        message-qop      = "qop" "=" qop-value
+>        cnonce           = "cnonce" "=" cnonce-value
+>        cnonce-value     = nonce-value
+>        nonce-count      = "nc" "=" nc-value
+>        nc-value         = 8LHEX
+>        response         = "response" "=" request-digest
+>        request-digest = <"> 32LHEX <">
+>        LHEX             =  "0" | "1" | "2" | "3" |
+>                            "4" | "5" | "6" | "7" |
+>                            "8" | "9" | "a" | "b" |
+>                            "c" | "d" | "e" | "f"

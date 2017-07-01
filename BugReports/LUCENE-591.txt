@@ -1,0 +1,29 @@
+Add meta keywords to HTMLParser
+
+
+
+Description:
+
+It would be good if the HTMLParser could give us the keywords specified in the meta tags, so that we can index them.
+
+In HTMLParser.jj:
+
+  void addMetaTag() {
+      metaTags.setProperty(currentMetaTag, currentMetaContent);
+      currentMetaTag = null;
+      currentMetaContent = null;
+      return;
+  }
+
+One way to do it:
+
+  void addMetaTag() throws IOException {
+      metaTags.setProperty(currentMetaTag, currentMetaContent);
+      if (currentMetaTag.equalsIgnoreCase("keywords")) {
+          pipeOut.write(currentMetaContent);
+      }
+      currentMetaTag = null;
+      currentMetaContent = null;
+      return;
+  }
+

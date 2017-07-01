@@ -1,0 +1,26 @@
+Remove/deprecate Tokenizer's default ctor
+
+
+
+Description:
+I was working on a new Tokenizer... and I accidentally forgot to call super(input) (and super.reset(input) from my reset method)... which then meant my correctOffset() calls were silently a no-op; this is very trappy.
+
+Fortunately the awesome BaseTokenStreamTestCase caught this (I hit failures because the offsets were not in fact being corrected).
+
+One minimal thing we can do (but it sounds like from Robert there may be reasons why we can't) is add {{assert input != null}} in Tokenizer.correctOffset:
+
+{noformat}
+Index: lucene/core/src/java/org/apache/lucene/analysis/Tokenizer.java
+===================================================================
+--- lucene/core/src/java/org/apache/lucene/analysis/Tokenizer.java	(revision 1242316)
++++ lucene/core/src/java/org/apache/lucene/analysis/Tokenizer.java	(working copy)
+@@ -82,6 +82,7 @@
+    * @see CharStream#correctOffset
+    */
+   protected final int correctOffset(int currentOff) {
++    assert input != null: "subclass failed to call super(Reader) or super.reset(Reader)";
+     return (input instanceof CharStream) ? ((CharStream) input).correctOffset(currentOff) : currentOff;
+   }
+{noformat}
+
+But best would be to remove the default ctor that leaves input null...

@@ -1,0 +1,15 @@
+principalbased ACL editing fails if principalName differs from the authorizableID
+
+
+
+Description:
+this issue has been reported by alexK:
+
+editing the permissions for a principal whose name differs from the id of the corresponding user/group fails with AccessControlException.
+
+i quickly had a look at it and the main problem is caused by the ACEditor that assumes that the last segment of the 
+path corresponds to the principal name. this isn't true if the principalName differs from the id.
+
+
+
+

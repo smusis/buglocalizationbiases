@@ -1,0 +1,8 @@
+switch MultiTermQuery to "constant score auto" rewrite by default
+
+
+
+Description:
+Right now it defaults to scoring BooleanQuery, and that's inconsistent w/ QueryParser which does constant score auto.
+
+The new multi-term queries already set this default, so the only core queries this will impact are PrefixQuery and WildcardQuery.  FuzzyQuery, which has its own rewrite to BooleanQuery, will keep doing so.

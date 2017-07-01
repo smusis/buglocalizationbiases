@@ -1,0 +1,54 @@
+TestAddIndexes reproducible test failure on turnk
+
+
+
+Description:
+trunk: r1133385
+
+{code}
+    [junit] Testsuite: org.apache.lucene.index.TestAddIndexes
+    [junit] Tests run: 2843, Failures: 1, Errors: 0, Time elapsed: 137.121 sec
+    [junit]
+    [junit] ------------- Standard Output ---------------
+    [junit] java.io.FileNotFoundException: _cy.fdx
+    [junit]     at org.apache.lucene.store.RAMDirectory.fileLength(RAMDirectory.java:121)
+    [junit]     at org.apache.lucene.store.MockDirectoryWrapper.fileLength(MockDirectoryWrapper.java:606)
+    [junit]     at org.apache.lucene.index.SegmentInfo.sizeInBytes(SegmentInfo.java:294)
+    [junit]     at org.apache.lucene.index.TieredMergePolicy.size(TieredMergePolicy.java:633)
+    [junit]     at org.apache.lucene.index.TieredMergePolicy.useCompoundFile(TieredMergePolicy.java:611)
+    [junit]     at org.apache.lucene.index.IndexWriter.addIndexes(IndexWriter.java:2459)
+    [junit]     at org.apache.lucene.index.TestAddIndexes$CommitAndAddIndexes3.doBody(TestAddIndexes.java:847)
+    [junit]     at org.apache.lucene.index.TestAddIndexes$RunAddIndexesThreads$1.run(TestAddIndexes.java:675)
+    [junit] java.io.FileNotFoundException: _cx.fdx
+    [junit]     at org.apache.lucene.store.RAMDirectory.fileLength(RAMDirectory.java:121)
+    [junit]     at org.apache.lucene.store.MockDirectoryWrapper.fileLength(MockDirectoryWrapper.java:606)
+    [junit]     at org.apache.lucene.index.SegmentInfo.sizeInBytes(SegmentInfo.java:294)
+    [junit]     at org.apache.lucene.index.TieredMergePolicy.size(TieredMergePolicy.java:633)
+    [junit]     at org.apache.lucene.index.TieredMergePolicy.useCompoundFile(TieredMergePolicy.java:611)
+    [junit]     at org.apache.lucene.index.IndexWriter.addIndexes(IndexWriter.java:2459)
+    [junit]     at org.apache.lucene.index.TestAddIndexes$CommitAndAddIndexes3.doBody(TestAddIndexes.java:847)
+    [junit]     at org.apache.lucene.index.TestAddIndexes$RunAddIndexesThreads$1.run(TestAddIndexes.java:675)
+    [junit] ------------- ---------------- ---------------
+    [junit] ------------- Standard Error -----------------
+    [junit] NOTE: reproduce with: ant test -Dtestcase=TestAddIndexes -Dtestmethod=testAddIndexesWithRollback -Dtests.seed=9026722750295014952:2645762923088581043 -Dtests.multiplier=3
+    [junit] NOTE: test params are: codec=RandomCodecProvider: {id=SimpleText, content=SimpleText, d=MockRandom, c=SimpleText}, locale=fr, timezone=Africa/Kigali
+    [junit] NOTE: all tests run in this JVM:
+    [junit] [TestAddIndexes]
+    [junit] NOTE: Linux 2.6.39-gentoo amd64/Sun Microsystems Inc. 1.6.0_25 (64-bit)/cpus=8,threads=1,free=68050392,total=446234624
+    [junit] ------------- ---------------- ---------------
+    [junit] Testcase: testAddIndexesWithRollback(org.apache.lucene.index.TestAddIndexes):       FAILED
+    [junit]
+    [junit] junit.framework.AssertionFailedError:
+    [junit]     at org.apache.lucene.index.TestAddIndexes.testAddIndexesWithRollback(TestAddIndexes.java:932)
+    [junit]     at org.apache.lucene.util.LuceneTestCase$LuceneTestCaseRunner.runChild(LuceneTestCase.java:1362)
+    [junit]     at org.apache.lucene.util.LuceneTestCase$LuceneTestCaseRunner.runChild(LuceneTestCase.java:1280)
+    [junit]
+    [junit]
+    [junit] Test org.apache.lucene.index.TestAddIndexes FAILED
+{code}
+
+
+Fails randomly in my while(1) test run, and Fails after a few min of running: 
+{code}
+ant test -Dtestcase=TestAddIndexes -Dtests.seed=9026722750295014952:2645762923088581043 -Dtests.multiplier=3 -Dtests.iter=200 -Dtests.iter.min=1
+{code}

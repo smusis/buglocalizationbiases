@@ -1,0 +1,16 @@
+HttpState.clearCookies() should be synchronized
+
+
+
+Description:
+The HttpState class has a clearCookies method that is not synchronized but
+should be considering it modifies an ArrayList (which is unsynchronized). All
+other methods which modify or read from the ArrayList are synchronized except
+the clearCookies method. 
+
+I stumbled upon this fact because a webapp I am working on that uses HttpClient
+threw an IllegalArgumentException indicating that one of the cookies in the
+array returned from HttpState.getCookies() was null, which shouldn't be
+possible.  Upon further inspection and testing, the only possible option is that
+the threadsafety hole left by the unsynchronized clearCookies method caused the
+issue.

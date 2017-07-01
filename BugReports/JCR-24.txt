@@ -1,0 +1,22 @@
+ClassCastException bei unregisterNodeType
+
+
+
+Description:
+I have a NodeType with various childnodes which I want to unregister. If I call:
+
+    
+      NodeTypeManager ndmg = session.getWorkspace().getNodeTypeManager();
+      NodeTypeRegistry ntReg = ((NodeTypeManagerImpl) ndmg).getNodeTypeRegistry();
+      ntReg.unregisterNodeType(new QName("testURI","Page"));
+
+
+I get a 
+
+java.lang.ClassCastException
+ at org.apache.jackrabbit.core.nodetype.NodeTypeRegistry.getDependentNodeTypes(NodeTypeRegistry.java:1242)
+ at org.apache.jackrabbit.core.nodetype.NodeTypeRegistry.unregisterNodeType(NodeTypeRegistry.java:1120)
+ at de.freaquac.test.JCRTest.main(JCRTest.java:80)
+
+It looks to me like there are QNames in the Iterator but NodeTyeDefs are expected.
+

@@ -1,0 +1,29 @@
+short circuit FuzzyQuery.rewrite when input token length is small compared to minSimilarity
+
+
+
+Description:
+I found this (unreplied to) email floating around in my Lucene folder from during the holidays...
+
+{noformat}
+From: Timo Nentwig
+To: java-dev
+Subject: Fuzzy makes no sense for short tokens
+Date: Mon, 31 Dec 2007 16:01:11 +0100
+Message-Id: <200712311601.12255.lucene@nitwit.de>
+
+Hi!
+
+it generally makes no sense to search fuzzy for short tokens because changing
+even only a single character of course already results in a high edit
+distance. So it actually only makes sense in this case:
+
+           if( token.length() > 1f / (1f - minSimilarity) )
+
+E.g. changing one character in a 3-letter token (foo) results in an edit
+distance of 0.6. And if minSimilarity (which is by default: 0.5 :-) is higher
+we can save all the expensive rewrite() logic.
+{noformat}
+
+I don't know much about FuzzyQueries, but this reasoning seems sound ... FuzzyQuery.rewrite should be able to completely skip all TermEnumeration in the event that the input token is shorter then some simple math on the minSimilarity.  (i'm not smart enough to be certain that the math above is right however ... it's been a while since i looked at Levenstein distances ... tests needed)
+

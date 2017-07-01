@@ -1,0 +1,8 @@
+Investigate ways to compile the refactored jcr-mapping for Java 1.4
+
+
+
+Description:
+The last refactoring of the jcr-mapping project included the annotation based mapping description into the main code based thus requiring compilation with Java 5 or higher.
+
+There are still some use cases, which require Java 1.4. The goal is to investigate, whether it would be possible to define a build profile in the pom, which compiles for 1.4 by ignoring the annotation classes.

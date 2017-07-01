@@ -1,0 +1,26 @@
+Add UserManager.createGroup(String groupID) method
+
+
+
+Description:
+As discussed on the dev list [1] I think it would be useful (and consistent inside the API) to have a UserManager.createGroup(String groupID) method.
+
+The specification of the method would be:
+
+    /**
+     * Creates a Group for the given groupID must not be <code>null</code>.
+     * <br>
+     * Same as {@link #createGroup(Principal,String)} where the specified groupID
+     * is the name of a simple <code>Principal</code> implementation and the
+     * intermediate path is <code>null</code>.
+     *
+     * @param groupID The id of the new group, must not be <code>null</code>.
+     * @return The new <code>Group</code>.
+     * @throws AuthorizableExistsException in case the given groupID is already
+     * in use or another {@link Authorizable} with the same
+     * {@link Authorizable#getID() ID} exists.
+     * @throws RepositoryException If another error occurs.
+     */
+    Group createGroup(String groupID) throws AuthorizableExistsException, RepositoryException;
+
+[1] http://markmail.org/message/rjofzg4t3kiht7xv

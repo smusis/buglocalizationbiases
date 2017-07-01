@@ -1,0 +1,6 @@
+Remove references to older versions of Lucene in "per-release" documentation
+
+
+
+Description:
+Some of the documentation that is "per release" contains references to older versions, which is often confusing.  This is most noticeable in the file formats docs, but there might be other places too.

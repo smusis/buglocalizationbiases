@@ -1,0 +1,8 @@
+Some improvements to Benchmark
+
+
+
+Description:
+I've noticed that WriteLineDocTask declares it does not support multi-threading, but taking a closer look I think this is really for no good reason. Most of the work is done by reading from the ContentSource and constructing the document. If those two are mult-threaded (and I think all ContentSources are), then we can synchronize only around writing the actual document to the line file.
+
+While investigating that, I've noticed some 1.5 TODOs and some other minor improvements that can be made. If you've wanted to make some minor improvements to benchmark, let me know :). I intend to include only minor and trivial ones.

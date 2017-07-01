@@ -1,0 +1,6 @@
+Typo in repository.xml
+
+
+
+Description:
+The extractorPoolSize parameter name has a trailing white space, which makes jackrabbit ignore it.

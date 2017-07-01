@@ -1,0 +1,15 @@
+Core: WEAKREFERENCE properties object have type REFERENCE when being read from the persistent layer
+
+
+
+Description:
+it seems to me that WEAKREFERENCE properties are properly created and stored as such but are read as REFERENCE 
+properties when built again from the persistent layer.
+
+how to reproduce:
+
+- create a new WEAKREFERENCE property and save the changes
+- force reading from the persistent layer  (in my case I used Day's CRX and restartet the server)
+- the former WEAKREFERENCE will now be displayed as REFERENCE.
+
+

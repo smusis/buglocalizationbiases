@@ -1,0 +1,8 @@
+AccessControlImporter does not import repo level ac content
+
+
+
+Description:
+the implementation of the ProtectedNodeImporter responsible for dealing with access control content should be
+adjusted such that it can properly cope with repository level access control that may be stored together with
+the root node (by using access control API with null path).

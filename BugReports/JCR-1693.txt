@@ -1,0 +1,25 @@
+JNDIDatabaseJournal doesn't work with "oracle" schema (or: unable to use OracleDatabaseJournal with a jndi datasource)
+
+
+
+Description:
+Database journal works fine on oracle when using the OracleDatabaseJournal implementation; but when you need to use a jndi datasource you actually need to use org.apache.jackrabbit.core.journal.JNDIDatabaseJournal which doesn't work fine with the "oracle" schema.
+
+With the following configuration:
+<Cluster id="node1" syncDelay="10">
+    <Journal class="org.apache.jackrabbit.core.journal.JNDIDatabaseJournal">
+      <param name="schema" value="oracle" />
+
+jackrabbit crashes at startup with a not well defined sql error. Investigating on the problem I see that the "oracle.ddl" file contains a "tablespace" variable that is replaced only by the OracleDatabaseJournal implementation.
+
+As a workaround users can create a different ddl without a tablespace variable, but this should probably work better out of the box.
+
+WDYT about one of the following solutions?
+- make the base DatabaseJournal implementation support jndi datasource just like PersistenceManagers do (without a specific configuration property but specifying a jndi location in the url property)
+- move the replacement of the tablespace variable (and maybe: add a generic replacement of *any* parameter found in the databaseJournal configuration) to the main DatabaseJournal implementation. This could be handy and it will make the OracleDatabaseJournal extension useless, but I see that at the moment there can be a problem with the MsSql implementation, since it adds "on " to the tablespace name only when it's not set to an empty string.
+
+
+
+
+
+

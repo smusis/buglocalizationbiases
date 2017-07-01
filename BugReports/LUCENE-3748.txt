@@ -1,0 +1,6 @@
+EnglishPossessiveFilter should work with Unicode right single quotation mark
+
+
+
+Description:
+The current EnglishPossessiveFilter (used in EnglishAnalyzer) removes possessives using only the '\'' character (plus 's' or 'S'), but some common systems (German?) insert the Unicode "\u2019" (RIGHT SINGLE QUOTATION MARK) instead and this is not removed when processing UTF-8 text. I propose to change EnglishPossesiveFilter to support '\u2019' as an alternative to '\''.

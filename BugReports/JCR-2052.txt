@@ -1,0 +1,16 @@
+XPath QueryFormat may produce malformed XPath statement
+
+
+
+Description:
+When the query tree contains select properties *and* an order by clause, then the XPath QueryFormat will produce a malformed XPath statement.
+
+E.g.:
+
+//element(*, foo)/(@a|@b) order by @bar
+
+round trips to:
+
+//element(*, foo) order by @bar/(@a|@b)
+
+

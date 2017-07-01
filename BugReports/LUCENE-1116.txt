@@ -1,0 +1,16 @@
+contrib.benchmark.quality package improvements
+
+
+
+Description:
+Few fixes and improvements for the search quality benchmark package:
+- flush report and logger at the end (otherwise long submission reports might miss last lines).
+- add run-tag-name to submission report (API change).
+- add control over max-#queries to run (useful at debugging a quality evaluation setup).
+- move control over max-docs-to-retrieve from benchmark constructor to a setter method (API change).
+- add computation of Mean Reciprocal Rank (MRR) in QualityStats.
+- QualityStats fixed to not fail if there are no results to average.
+- Add a TREC queries reader adequate for the 1MQ track (track started 2007).
+
+All tests pass, will commit this in 1-2 days if there is no objection.
+

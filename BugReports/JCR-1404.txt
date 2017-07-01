@@ -1,0 +1,13 @@
+javadoc writing and generation with mvn
+
+
+
+Description:
+"mvn -source 1.5 javadoc:javadoc" does not work because following lines must be added to pom.xml
+<plugin>
+      <artifactId>maven-javadoc-plugin</artifactId>
+      <configuration>
+        <source>1.5</source>
+      </configuration>
+    </plugin> 
+Please also write more comprehensive javadocs to allow better source understanding and developer co-operation

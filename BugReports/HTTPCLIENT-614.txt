@@ -1,0 +1,32 @@
+allow different strategies when checking CN of x509 cert
+
+
+
+Description:
+We're now doing a decent job for checking the CN of the x509 cert with https:
+
+http://issues.apache.org/jira/browse/HTTPCLIENT-613
+
+I think the patch for HTTPCLIENT-613 should cover 99.9% of the users out there.  But there are some more esoteric possibilities, so I think Oleg is right.  We need to let the user change the strategy, or provide their own strategy if they want to. 
+
+Some additional things to think about:
+
+- http://wiki.cacert.org/wiki/VhostTaskForce !!!   CN is depreciated?!?!   (I am not able to find a popular website on HTTPS that isn't using CN!)
+
+- [*.example.com] matches subdomains [a.b.example.com] on Firefox, but not IE6.  The patch for HTTPCLIENT-613 allows subdomains.
+
+- Should we support multiple CN's in the subject?
+
+- Should we support "subjectAltName=DNS:www.example.com" ?  Should we support lots of them in a single cert?
+
+- Should we support a mix of CN and subjectAltName?
+
+
+If we do create some alternate strategies for people to try, I'd probably lean towards something like this:
+
+X509NameCheckingStrategy.SUN_JAVA_6  (default)
+X509NameCheckingStrategy.FIREFOX2
+X509NameCheckingStrategy.IE7
+X509NameCheckingStrategy.FIRST_CN_AND_NO_WILDCARDS   (aka "STRICT")
+
+

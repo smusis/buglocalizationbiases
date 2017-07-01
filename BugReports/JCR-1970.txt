@@ -1,0 +1,7 @@
+populate.jsp uses Java 1.5 method
+
+
+
+Description:
+The method is URLConnection.setReadTimeout()
+

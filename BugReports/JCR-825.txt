@@ -1,0 +1,6 @@
+WebDAV: LocatorFactoryImplEx doesn't properly evaluate resource path...
+
+
+
+Description:
+... if the item path happens to start with the workspace name.

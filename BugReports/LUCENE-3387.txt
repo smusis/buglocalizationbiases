@@ -1,0 +1,8 @@
+Get javadoc for the similarities package in shape
+
+
+
+Description:
+1. Create a package.html in the similarities package.
+2. Update the javadoc of the search package (package.html mentions Similarity)?
+3. Compile the javadoc to see if there are any warnings.

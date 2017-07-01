@@ -1,0 +1,6 @@
+WorkspaceInfo.dispose() does not deregister SharedItemStateManager from virtual item state providers
+
+
+
+Description:
+Automatic disposal of idle workspaces frees unused workspaces but corresponding SharedItemStateManager (and releated PersistenceManager) is still kept in memory referenced by virtual item state providers,  this can lead to memory leaks.

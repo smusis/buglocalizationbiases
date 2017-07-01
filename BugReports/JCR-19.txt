@@ -1,0 +1,41 @@
+package org.apache.xml.utils does not exist (JDK 1.5.0)
+
+
+
+Description:
+Executing "maven jar" on a freshly checked out source tree fails with the following error messages when using JDK 1.5.0:
+
+/home/jukkaz/src/jackrabbit/src/java/org/apache/jackrabbit/core/xml/DocViewSAXEventGenerator.java:24: package org.apache.xml.utils does not exist
+import org.apache.xml.utils.XMLChar;
+                            ^
+/home/jukkaz/src/jackrabbit/src/java/org/apache/jackrabbit/core/xml/DocViewSAXEventGenerator.java:142: cannot find symbol
+symbol  : variable XMLChar
+location: class org.apache.jackrabbit.core.xml.DocViewSAXEventGenerator
+            if (!XMLChar.isValidName(elemName)) {
+                 ^
+/home/jukkaz/src/jackrabbit/src/java/org/apache/jackrabbit/core/xml/DocViewSAXEventGenerator.java:162: cannot find symbol
+symbol  : variable XMLChar
+location: class org.apache.jackrabbit.core.xml.DocViewSAXEventGenerator
+                if (!XMLChar.isValidName(attrName)) {
+
+The same build succeeds without problems on JDK 1.4.2_06.
+
+I found some reports about similar problems after upgrading from JDK 1.4 to 1.5. It seems that the org.apache.xml.utils.XMLChar was a part (undocumented?) of the standard JDK classpath, but that it has been dropped from JDK 1.5.
+
+A similar (the same?) XMLChar utility class can be found in the org.apache.xerces.utils package, which is automatically included by the Xerces dependency. The following change fixes the problem on JDK 1.5.0 and seems to work fine also on JDK 1.4.2_06.
+
+Index: src/java/org/apache/jackrabbit/core/xml/DocViewSAXEventGenerator.java
+===================================================================
+--- src/java/org/apache/jackrabbit/core/xml/DocViewSAXEventGenerator.java      (revision 57540)
++++ src/java/org/apache/jackrabbit/core/xml/DocViewSAXEventGenerator.java      (working copy)
+@@ -21,7 +21,7 @@
+ import org.apache.jackrabbit.core.state.PropertyState;
+ import org.apache.jackrabbit.core.util.Base64;
+ import org.apache.log4j.Logger;
+-import org.apache.xml.utils.XMLChar;
++import org.apache.xerces.util.XMLChar;
+ import org.xml.sax.ContentHandler;
+ import org.xml.sax.SAXException;
+ import org.xml.sax.helpers.AttributesImpl;
+
+

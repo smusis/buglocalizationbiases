@@ -1,0 +1,17 @@
+New Preferences Architecture
+
+
+
+Description:
+An architectural solution is needed to configure various aspects of HttpClient,
+Methods and Connections. 
+
+Features:
+- can configure certain properties per request / per connection
+- all configuration is done in a consistant way 
+- do not use system properties
+- configuration is completely optional: default values should be used if no
+configuration is made
+
+This is a refactoring request / reminder. File configuration issues as
+dependencies of this bug.

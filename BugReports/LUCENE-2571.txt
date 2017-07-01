@@ -1,0 +1,10 @@
+Indexing performance tests with realtime branch
+
+
+
+Description:
+We should run indexing performance tests with the DWPT changes and compare to trunk.
+
+We need to test both single-threaded and multi-threaded performance.
+
+NOTE:  flush by RAM isn't implemented just yet, so either we wait with the tests or flush by doc count.

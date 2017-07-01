@@ -1,0 +1,12 @@
+Port to Generics - test cases in contrib 
+
+
+
+Description:
+LUCENE-1257 in Lucene 3.0 addressed porting to generics across public api-s . LUCENE-2065 addressed across src/test . 
+
+This would be a placeholder JIRA for any remaining pending generic conversions across the code base. 
+
+Please keep it open after commiting and we can close it when we are near a 3.1 release , so that this could be a placeholder ticket. 
+
+

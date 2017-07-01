@@ -1,0 +1,6 @@
+Fix javadocs after deprecation removal
+
+
+
+Description:
+There are a lot of @links in Javadocs to methods/classes that no longer exist. javadoc target prints tons of warnings. We should fix that.

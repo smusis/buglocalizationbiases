@@ -1,0 +1,10 @@
+Cutover remaining usage of pre-flex APIs
+
+
+
+Description:
+A number of places still use the pre-flex APIs.
+
+This is actually healthy, since it gives us ongoing testing of the back compat emulation layer.
+
+But we should at some point cut them all over to flex.  Latest we can do this is 4.0, but I'm not sure we should do them all for 3.1... still marking this as 3.1 to "remind us" :)

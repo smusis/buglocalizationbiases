@@ -1,0 +1,14 @@
+highlighting exact phrase with overlapping tokens fails.
+
+
+
+Description:
+Fields with overlapping token are not highlighted in search results when searching exact phrases, when using TermVector.WITH_OFFSET.
+
+The document builded in MemoryIndex for highlight does not preserve positions of tokens in this case. Overlapping tokens get "flattened" (position increment always set to 1), the spanquery used for searching relevant fragment will fail to identify the correct token sequence because the position shift.
+
+I corrected this by adding a position increment calculation in sub class StoredTokenStream. I added junit test covering this case.
+
+I used the eclipse codestyle from trunk, but style add quite a few format differences between repository and working copy files. I tried to reduce them, but some linewrapping rules still doesn't match.
+
+Correction patch joined

@@ -1,0 +1,12 @@
+always apply position increment gap between values
+
+
+
+Description:
+I'm doing some fancy stuff with span queries that is very sensitive to term positions.  I discovered that the position increment gap on indexing is only applied between values when there are existing terms indexed for the document.  I suspect this logic wasn't deliberate, it's just how its always been for no particular reason.  I think it should always apply the gap between fields.  Reference DocInverterPerField.java line 82:
+
+if (fieldState.length > 0)
+          fieldState.position += docState.analyzer.getPositionIncrementGap(fieldInfo.name);
+
+This is checking fieldState.length.  I think the condition should simply be:  if (i > 0).
+I don't think this change will affect anyone at all but it will certainly help me.  Presently, I can either change this line in Lucene, or I can put in a hack so that the first value for the document is some dummy value which is wasteful.

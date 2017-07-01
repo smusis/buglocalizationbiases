@@ -1,0 +1,12 @@
+reorganize contrib modules
+
+
+
+Description:
+it would be nice to reorganize contrib modules, so that they are bundled together by functionality.
+
+For example:
+* the wikipedia contrib is a tokenizer, i think really belongs in contrib/analyzers
+* there are two highlighters, i think could be one highlighters package.
+* there are many queryparsers and queries in different places in contrib
+

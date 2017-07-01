@@ -1,0 +1,17 @@
+FileInputStream never closed in HTMLParser
+
+
+
+Description:
+HTMLParser.java contains this code: 
+ 
+  public HTMLParser(File file) throws FileNotFoundException { 
+    this(new FileInputStream(file)); 
+  } 
+ 
+This FileInputStream should be closed with the close() method, as there's no 
+guarantee that the garbage collection will run and do this for you. I don't 
+know how to fix this without changing the API to take a FileInputStream 
+instead of a File, as the call to this() must be the first thing in the 
+constructor, i.e. you cannot create the stream, call this(...), and then close 
+the stream.

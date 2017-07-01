@@ -1,0 +1,42 @@
+SSL does not seem to work at all
+
+
+
+Description:
+Whenever I try to request content via https I get this exception:
+
+
+Exception in thread "main" javax.net.ssl.SSLException: hostname in certificate didn't match: <140.211.11.131> != <*.apache.org>
+	at org.apache.http.conn.ssl.AbstractVerifier.verify(AbstractVerifier.java:220)
+	at org.apache.http.conn.ssl.BrowserCompatHostnameVerifier.verify(BrowserCompatHostnameVerifier.java:54)
+	at org.apache.http.conn.ssl.AbstractVerifier.verify(AbstractVerifier.java:149)
+	at org.apache.http.conn.ssl.AbstractVerifier.verify(AbstractVerifier.java:130)
+	at org.apache.http.conn.ssl.SSLSocketFactory.createSocket(SSLSocketFactory.java:399)
+	at org.apache.http.impl.conn.DefaultClientConnectionOperator.openConnection(DefaultClientConnectionOperator.java:143)
+	at org.apache.http.impl.conn.AbstractPoolEntry.open(AbstractPoolEntry.java:149)
+	at org.apache.http.impl.conn.AbstractPooledConnAdapter.open(AbstractPooledConnAdapter.java:108)
+	at org.apache.http.impl.client.DefaultRequestDirector.execute(DefaultRequestDirector.java:415)
+	at org.apache.http.impl.client.AbstractHttpClient.execute(AbstractHttpClient.java:641)
+	at org.apache.http.impl.client.AbstractHttpClient.execute(AbstractHttpClient.java:576)
+	at org.apache.http.impl.client.AbstractHttpClient.execute(AbstractHttpClient.java:554)
+	at HttpsTest.fails(HttpsTest.java:25)
+	at HttpsTest.main(HttpsTest.java:12)
+
+
+I can reproduce this whith the following code:
+
+
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.impl.client.DefaultHttpClient;
+
+public class HttpsTest {
+
+    public static void main(final String[] args) throws Exception {
+        final HttpClient client = new DefaultHttpClient();
+        final HttpGet req = new HttpGet("https://www.apache.org");
+        client.execute(req);
+    }
+
+}
+

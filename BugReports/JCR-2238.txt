@@ -1,0 +1,20 @@
+Binary throws NullPointerException 
+
+
+
+Description:
+Precondition: repository with datastore disabled!
+
+Steps to reproduce:
+
+1) create binary from stream
+2) set binary on property
+3) dispose binary
+4) get binary from property and dispose it immediately
+5) go to 4)
+
+Binary.dispose() will throw a NullPointerException when 4) is executed the second time.
+
+The exception is not thrown if the property is saved after 2).
+
+See also attached test.

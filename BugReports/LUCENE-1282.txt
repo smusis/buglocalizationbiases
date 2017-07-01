@@ -1,0 +1,91 @@
+Sun hotspot compiler bug in 1.6.0_04/05 affects Lucene
+
+
+
+Description:
+This is not a Lucene bug.  It's an as-yet not fully characterized Sun
+JRE bug, as best I can tell.  I'm opening this to gather all things we
+know, and to work around it in Lucene if possible, and maybe open an
+issue with Sun if we can reduce it to a compact test case.
+
+It's hit at least 3 users:
+
+  http://mail-archives.apache.org/mod_mbox/lucene-java-user/200803.mbox/%3c8c4e68610803180438x39737565q9f97b4802ed774a5@mail.gmail.com%3e
+  http://mail-archives.apache.org/mod_mbox/lucene-solr-user/200804.mbox/%3c4807654E.7050900@virginia.edu%3e
+  http://mail-archives.apache.org/mod_mbox/lucene-java-user/200805.mbox/%3c733777220805060156t7fdb8fectf0bc984fbfe48a22@mail.gmail.com%3e
+
+It's specific to at least JRE 1.6.0_04 and 1.6.0_05, that affects
+Lucene.  Whereas 1.6.0_03 works OK and it's unknown whether 1.6.0_06
+shows it.
+
+The bug affects bulk merging of stored fields.  When it strikes, the
+segment produced by a merge is corrupt because its fdx file (stored
+fields index file) is missing one document.  After iterating many
+times with the first user that hit this, adding diagnostics &
+assertions, its seems that a call to fieldsWriter.addDocument some
+either fails to run entirely, or, fails to invoke its call to
+indexStream.writeLong.  It's as if when hotspot compiles a method,
+there's some sort of race condition in cutting over to the compiled
+code whereby a single method call fails to be invoked (speculation).
+
+Unfortunately, this corruption is silent when it occurs and only later
+detected when a merge tries to merge the bad segment, or an
+IndexReader tries to open it.  Here's a typical merge exception:
+
+{code}
+Exception in thread "Thread-10" 
+org.apache.lucene.index.MergePolicy$MergeException: 
+org.apache.lucene.index.CorruptIndexException:
+    doc counts differ for segment _3gh: fieldsReader shows 15999 but segmentInfo shows 16000
+        at org.apache.lucene.index.ConcurrentMergeScheduler$MergeThread.run(ConcurrentMergeScheduler.java:271)
+Caused by: org.apache.lucene.index.CorruptIndexException: doc counts differ for segment _3gh: fieldsReader shows 15999 but segmentInfo shows 16000
+        at org.apache.lucene.index.SegmentReader.initialize(SegmentReader.java:313)
+        at org.apache.lucene.index.SegmentReader.get(SegmentReader.java:262)
+        at org.apache.lucene.index.SegmentReader.get(SegmentReader.java:221)
+        at org.apache.lucene.index.IndexWriter.mergeMiddle(IndexWriter.java:3099)
+        at org.apache.lucene.index.IndexWriter.merge(IndexWriter.java:2834)
+        at org.apache.lucene.index.ConcurrentMergeScheduler$MergeThread.run(ConcurrentMergeScheduler.java:240)
+{code}
+
+and here's a typical exception hit when opening a searcher:
+
+{code}
+org.apache.lucene.index.CorruptIndexException: doc counts differ for segment _kk: fieldsReader shows 72670 but segmentInfo shows 72671
+        at org.apache.lucene.index.SegmentReader.initialize(SegmentReader.java:313)
+        at org.apache.lucene.index.SegmentReader.get(SegmentReader.java:262)
+        at org.apache.lucene.index.SegmentReader.get(SegmentReader.java:230)
+        at org.apache.lucene.index.DirectoryIndexReader$1.doBody(DirectoryIndexReader.java:73)
+        at org.apache.lucene.index.SegmentInfos$FindSegmentsFile.run(SegmentInfos.java:636)
+        at org.apache.lucene.index.DirectoryIndexReader.open(DirectoryIndexReader.java:63)
+        at org.apache.lucene.index.IndexReader.open(IndexReader.java:209)
+        at org.apache.lucene.index.IndexReader.open(IndexReader.java:173)
+        at org.apache.lucene.search.IndexSearcher.<init>(IndexSearcher.java:48)
+{code}
+
+Sometimes, adding -Xbatch (forces up front compilation) or -Xint
+(disables compilation) to the java command line works around the
+issue.
+
+Here are some of the OS's we've seen the failure on:
+
+{code}
+SuSE 10.0
+Linux phoebe 2.6.13-15-smp #1 SMP Tue Sep 13 14:56:15 UTC 2005 x86_64 
+x86_64 x86_64 GNU/Linux 
+
+SuSE 8.2
+Linux phobos 2.4.20-64GB-SMP #1 SMP Mon Mar 17 17:56:03 UTC 2003 i686 
+unknown unknown GNU/Linux 
+
+Red Hat Enterprise Linux Server release 5.1 (Tikanga)
+Linux lab8.betech.virginia.edu 2.6.18-53.1.14.el5 #1 SMP Tue Feb 19 
+07:18:21 EST 2008 i686 i686 i386 GNU/Linux
+{code}
+
+I've already added assertions to Lucene to detect when this bug
+strikes, but since assertions are not usually enabled, I plan to add a
+real check to catch when this bug strikes *before* we commit the merge
+to the index.  This way we can detect & quarantine the failure and
+prevent corruption from entering the index.
+
+

@@ -1,0 +1,11 @@
+Extend FieldCache architecture to multiple Values
+
+
+
+Description:
+I would consider this a bug. It appears lots of people are working around this limitation, 
+why don't we just change the underlying data structures to natively support multiValued fields in the FieldCache architecture?
+
+Then functions() will work properly, and we can do things like easily geodist() on a multiValued field.
+
+Thoughts?

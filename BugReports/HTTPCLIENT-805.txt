@@ -1,0 +1,21 @@
+Pass ClientConnectionManager to DefaultHttpClient constructor
+
+
+
+Description:
+Copied from my mailing list post, Oleg suggested I post it to JIRA for 4.1 fix.
+
+I'm trying to find the least verbose way of configuring a DefaultHttpClient with a ThreadSafeClientConnManager.
+
+The example code given for this goes through a manual process of configuring HttpParams and SchemeRegistry objects, which is more or less copied from the DefaultHttpClient.createHttpParams() and createClientConnectionManager() methods.
+
+It's a bit of a chicken and egg situation - DefaultHttpClient can create its own HttpParams and SchemeRegistry, which are themselves fine, but only once its been constructed, and the constructor requires the ThreadSafeClientConnManager, but that in turn requires the HttpParams and SchemeRegistry objects.  The only way out is to manually construct the HttpParams and SchemeRegistry, which is a waste.
+
+It seems to me that DefaultHttpClient's constructor should take a ClientConnectionManagerFactory instead of a ClientConnectionManager. That way, the createClientConnectionManager() method already has the factory reference, and doesn't have to grub around in the HttpParams object to find it.
+
+The code would then become:
+
+new DefaultHttpClient(new ThreadSafeClientConnManagerFactory(), null);
+
+where ThreadSafeClientConnManagerFactory.newInstance() just constructs ThreadSafeClientConnManager.  There's no manual construction of HttpParams and SchemeRegistry, you just leave it up to DefaultHttpClient.
+

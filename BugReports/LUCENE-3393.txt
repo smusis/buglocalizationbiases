@@ -1,0 +1,6 @@
+Rename EasySimilarity to SimilarityBase
+
+
+
+Description:
+

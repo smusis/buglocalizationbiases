@@ -1,0 +1,22 @@
+[PATCH] FSDirectory create() method deletes all files
+
+
+
+Description:
+hi all,
+
+the current implementation of FSDirectory.create(...) silently deletes all files
+(even empty directories) within the index directory when setting up a new index
+with create option enabled. Lucene doesn't care when deleting files in the index
+directory if they  belong to lucene or not. I don't think that this is a real
+bug, but it can be a pain if somebody whants to store some private information
+in the lucene index directory, e.g some configuration files.
+
+Therefore i implemented a FileFilter which knows about the internal lucene file
+extensions, so that all other files would never get touched when creating a new
+index. The current patch is an enhancement in FSDirectory only. I don't think
+that there is a need to make it available in the Directory class and change all
+it's depending classes.
+
+regards
+Bernhard

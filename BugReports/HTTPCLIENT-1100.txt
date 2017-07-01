@@ -1,0 +1,6 @@
+Missing Content-Length header makes cached entry invalid
+
+
+
+Description:
+A cached entry whose original response didn't carry a Content-Length header, should not be rejected for considered invalid because the length of its cached content is different from the non-existing Content-Length header value. The attached patch only verifies the lengths if the header was originally present.

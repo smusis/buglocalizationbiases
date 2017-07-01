@@ -1,0 +1,9 @@
+CachingHttpClient leaks connections with stale-if-error
+
+
+
+Description:
+If you are using the "stale-if-error" Cache-control header and CachingHttpClient decides to use a stale cached response it does not clean up the existing backend response.
+
+This bug causes connections to leak from the connection pool each time the stale-if-error flow is executed.
+

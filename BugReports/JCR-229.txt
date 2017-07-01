@@ -1,0 +1,8 @@
+Decouple packages in core.query
+
+
+
+Description:
+The packages o.a.j.c.query has cyclic dependencies to sub packages lucene, sql, xpath.
+
+Decoupling the packages will allow to better extend the query implementation with additional query languages.

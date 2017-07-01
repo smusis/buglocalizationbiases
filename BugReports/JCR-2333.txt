@@ -1,0 +1,23 @@
+ItemImpl#validateTransientItems: Incomplete validation of mandatory child item
+
+
+
+Description:
+ItemImpl#validateTransientItems iterates over all mandatory child node/property definitions in order to assert that those items have
+been created. However, it only checks if an item with the name defined by the mandatory item definition is present and not if that
+existing item really has the mandatory definition.
+
+the example i had:
+- mandatory single-value property.
+- there is the possibility to add residual props
+- added a residual property with the name of the mandatory prop but with multiple values
+
+-> changes are saved without exception.
+-> the node doesn't have a property with the mandatory definition.
+
+((without having tried it out, i think the same would be possible with child nodes))
+
+suggested fix:
+if there is a child item with the mandatory-item-name -> make sure it's definition is mandatory (or the expected one...)
+patch will follow.
+

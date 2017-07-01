@@ -1,0 +1,13 @@
+nightly build failed
+
+
+
+Description:
+javadoc tasked failed due to new project structure in contrib/gdata-server
+added correct package structure to java/trunk/build.xml
+
+javadoc creation successful.
+
+Patch added as attachment.
+
+regards simon

@@ -1,0 +1,19 @@
+Range Query works only with lower case terms
+
+
+
+Description:
+I am performing a range query that returns results if the terms are lower 
+case, but does not return result when the terms are mixed case.
+
+In my collection, I have terms alpha, beta, delta, gamma.  I am using the 
+StandardAnalyzer for both indexing and searching.
+
+The query [alpha TO gamma] returns all four terms.  When I perform the query 
+[Alpha TO Gamma], no results are returned.
+
+It appears the lowerCaseFilter(), which is a part of the StandardAnalyzer, 
+does not work properly on the search terms.  I've used Luke to peek at my 
+collection, and the terms are all lower case in the collection.
+
+I'm fairly new to Lucene, so I hope I'm not making a "common mistake".

@@ -1,0 +1,43 @@
+Things to be done now that Filter is independent from BitSet
+
+
+
+Description:
+(Aside: where is the documentation on how to mark up text in jira comments?)
+
+The following things are left over after LUCENE-584 :
+
+For Lucene 3.0  Filter.bits() will have to be removed.
+
+There is a CHECKME in IndexSearcher about using ConjunctionScorer to have the boolean behaviour of a Filter.
+
+I have not looked into Filter caching yet, but I suppose there will be some room for improvement there.
+Iirc the current core has moved to use OpenBitSetFilter and that is probably what is being cached.
+In some cases it might be better to cache a SortedVIntList instead.
+
+Boolean logic on DocIdSetIterator is already available for Scorers (that inherit from DocIdSetIterator) in the search package. This is currently implemented by ConjunctionScorer, DisjunctionSumScorer,
+ReqOptSumScorer and ReqExclScorer.
+Boolean logic on BitSets is available in contrib/misc and contrib/queries
+
+DisjunctionSumScorer calls score() on its subscorers before the score value actually needed.
+This could be a reason to introduce a DisjunctionDocIdSetIterator, perhaps as a superclass of DisjunctionSumScorer.
+
+To fully implement non scoring queries a TermDocIdSetIterator will be needed, perhaps as a superclass of TermScorer.
+
+The javadocs in org.apache.lucene.search using matching vs non-zero score:
+I'll investigate this soon, and provide a patch when necessary.
+
+An early version of the patches of LUCENE-584 contained a class Matcher,
+that differs from the current DocIdSet in that Matcher has an explain() method.
+It remains to be seen whether such a Matcher could be useful between
+DocIdSet and Scorer.
+
+The semantics of scorer.skipTo(scorer.doc()) was discussed briefly.
+This was also discussed at another issue recently, so perhaps it is wortwhile to open a separate issue for this.
+
+Skipping on a SortedVIntList is done using linear search, this could be improved by adding multilevel skiplist info much like in the Lucene index for documents containing a term.
+
+One comment by me of 3 Dec 2008:
+
+A few complete (test) classes are deprecated, it might be good to add the target release for removal there.
+

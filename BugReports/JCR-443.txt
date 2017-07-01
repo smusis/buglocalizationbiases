@@ -1,0 +1,23 @@
+Deadlock when concurrently committing and reading versioning states
+
+
+
+Description:
+there is a rear occation when one thread commits a transaction and another thread reads versioing related information, so that a deadlock can occurr. 
+
+example:
+
+Thread1:
+                        ut.begin();
+                        session.getWorkspace().clone("default", "/content", "/content", true);
+                        ut.commit();
+
+Thread2:
+                        VersionHistory vh = folder.getVersionHistory();
+                        VersionIterator iter = vh.getAllVersions();
+                        while (iter.hasNext()) {
+                            Version v = iter.nextVersion();
+                        }
+
+
+to fix this issue we must ensure, that methods below the shareditemstatemgr do not call higher instances (like itemmgr) again.

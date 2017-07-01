@@ -1,0 +1,6 @@
+rep:excerpt() may return malformed XML
+
+
+
+Description:
+The rep:excerpt() function does not encode the prefined XML entities but writes them as is into the excerpt XML. This may produce malformed XML.

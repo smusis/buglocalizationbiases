@@ -1,0 +1,10 @@
+change jdk & icu collation to use byte[]
+
+
+
+Description:
+Now that term is byte[], we should switch collation to use byte[] instead of 'indexablebinarystring'.
+
+This is faster and results in much smaller sort keys.
+
+I figure we can work it out here, and fix termrangequery to use byte in parallel, but we can already test sorting etc now.

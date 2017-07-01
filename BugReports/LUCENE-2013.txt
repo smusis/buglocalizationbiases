@@ -1,0 +1,18 @@
+QueryScorer and SpanRegexQuery are incompatible.
+
+
+
+Description:
+Since the resolution of #LUCENE-1685, users are not supposed to rewrite their queries before submitting them to QueryScorer:
+
+bq.------------------------------------------------------------------------
+bq.r800796 | markrmiller | 2009-08-04 06:56:11 -0700 (Tue, 04 Aug 2009) | 1 line
+bq.
+bq.LUCENE-1685: The position aware SpanScorer has become the default scorer for Highlighting. The SpanScorer implementation has replaced QueryScorer and the old term highlighting QueryScorer has been renamed to QueryTermScorer. Multi-term queries are also now expanded by default. If you were previously rewritting the query for multi-term query highlighting, you should no longer do that (unless you switch to using QueryTermScorer). The SpanScorer API (now QueryScorer) has also been improved to more closely match the API of the previous QueryScorer implementation.
+bq.------------------------------------------------------------------------
+
+This is a great convenience for the most part, but it's causing me difficulties with SpanRegexQuerys, as the WeightedSpanTermExtractor uses Query.extractTerms() to collect the fields used in the query, but SpanRegexQuery does not implement this method, so highlighting any query with a SpanRegexQuery throws an UnsupportedOpertationException.  If this issue is circumvented, there is still the issue of SpanRegexQuery throwing an exception when someone calls its getSpans() method.
+
+I can provide the patch that I am currently using, but I'm not sure that my solution is optimal.  It adds two methods to SpanQuery: extractFields(Set<String> fields) which is equivalent to fields.add(getField()) except when MaskedFieldQuerys get involved, and mustBeRewrittenToGetSpans() which returns true for SpanQuery, false for SpanTermQuery, and is overridden in each composite SpanQuery to return a value depending on its components.  In this way SpanRegexQuery (and any other custom SpanQuerys) do not need to be adjusted.
+
+Currently the collection of fields and non-weighted terms are done in a single step.  In the proposed patch the WeightedSpanTerm extraction from a SpanQuery proceeds in two steps.  First, if the QueryScorer's field is null, then the fields are collected from the SpanQuery using the extractFields() method.  Second the terms are collected using extractTerms(), rewriting the query for each field if mustBeRewrittenToGetSpans() returns true.

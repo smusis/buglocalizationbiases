@@ -1,0 +1,8 @@
+Corrupted segment file not detected and wipes index contents
+
+
+
+Description:
+Lucene will happily wipe an existing index if presented with a latest generation segments_n file of all zeros. File format documentation says segments_N files should start with a format of -9 but SegmentInfos.read accepts >=0 as valid for backward compatibility reasons.
+
+

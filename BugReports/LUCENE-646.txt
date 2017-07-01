@@ -1,0 +1,33 @@
+[PATCH] fix various small issues with the "getting started" demo pages
+
+
+
+Description:
+
+This patch contains numerous small fixes for the "getting started"
+pages on the Lucene Java web site.  Here are the rough fixes:
+
+  * To results.jsp:
+
+    - changed StopAnalyzer -> StandardAnalyzer
+
+    - changed references of "url" to "path" (field "url" is never set
+      and was therefore always null)
+
+    - remove prefix of "../webapps" from path so clicking through works
+
+  * Fixed typos, grammar and other cosmetic things.
+
+  * Modernized some things that have changed with time (names of JAR
+    files, which languages have analyzers, etc.)
+
+  * Added outbound links to Javadocs, Wiki, Lucene static web site,
+    external sites, when appropriate.
+
+  * Removed exact version of Tomcat for the demo web app (I think all
+    recent versions of Tomcat will work as described)
+
+  * Other small changes...
+
+Net/net I think this is an improved version of what's available on the
+site today.

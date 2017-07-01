@@ -1,0 +1,6 @@
+Add the Data Store to the Jackrabbit API
+
+
+
+Description:
+Currently, the garbage collection is not part of the Jackrabbit API. However, the data store garbage collection must be used once in a while if the data store is enabled. I propose to add the required interfaces to the Jackrabbit API. This will also allow to call garbage collection using RMI.

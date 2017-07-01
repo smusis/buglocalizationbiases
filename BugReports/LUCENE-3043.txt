@@ -1,0 +1,8 @@
+o.a.l.analysis.de.GermanStemmer crashes on some inputs
+
+
+
+Description:
+See the tests from LUCENE-2560. 
+
+GermanAnalyzer no longer uses this stemmer by default, but we should fix it.

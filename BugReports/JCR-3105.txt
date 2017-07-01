@@ -1,0 +1,53 @@
+NPE when versioning operations are concurrent
+
+
+
+Description:
+InternalVersionManagerBase.getParentNode occasionally throws an NPE:
+
+    protected static NodeStateEx getParentNode(NodeStateEx parent, String uuid, Name interNT)
+            throws RepositoryException {
+        NodeStateEx n = parent;
+        for (int i = 0; i < 3; i++) {
+            Name name = getName(uuid.substring(i * 2, i * 2 + 2));
+            if (n.hasNode(name)) {
+                n = n.getNode(name, 1);
+                assert n != null;
+            } else if (interNT != null) {
+                n.addNode(name, interNT, null, false);
+                n.store();
+                n = n.getNode(name, 1);
+                assert n != null;
+            } else {
+                return null;
+            }
+        }
+        return n;
+    }
+
+Apparently getNode occasionally returns null due to race conditions.
+
+Changing the code to what's below appears to fix it:
+
+
+
+    protected static NodeStateEx getParentNode(NodeStateEx parent, String uuid, Name interNT)
+            throws RepositoryException {
+        NodeStateEx n = parent;
+        for (int i = 0; i < 3; i++) {
+            Name name = getName(uuid.substring(i * 2, i * 2 + 2));
+            NodeStateEx n2 = n.getNode(name, 1);
+            if (n2 != null) {
+                n = n2;
+            } else if (interNT != null) {
+                n2 = n.addNode(name, interNT, null, false);
+                n.store();
+                n = n2;
+            } else {
+                return null;
+            }
+        }
+        return n;
+    }
+
+(but likely moves the race condition somewhere else)

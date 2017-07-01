@@ -1,0 +1,10 @@
+implement reusableTokenStream for all contrib analyzers
+
+
+
+Description:
+most contrib analyzers do not have an impl for reusableTokenStream
+
+regardless of how expensive the back compat reflection is for indexing speed, I think we should do this to mitigate any performance costs. hey, overall it might even be an improvement!
+
+the back compat code for non-final analyzers is already in place so this is easy money in my opinion.

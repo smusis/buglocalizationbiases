@@ -1,0 +1,10 @@
+move PerFieldCodecWrapper into codecs package
+
+
+
+Description:
+PerFieldCodecWrapper is a codec, but its 'hardwired' as lucene's only codec currently (except for PreFlex/3.x case)
+
+it lets you choose a format for the postings lists per-field.
+
+I think we should move this to the codecs package as a start... just a rote refactor.

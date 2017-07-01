@@ -1,0 +1,8 @@
+haversine() is broken / misdocumented
+
+
+
+Description:
+DistanceUtils.haversine() is coded in a way that is erroneous based on the documented order of the parameters.  The parameters are defined as (x1,y1,x2,y2,radius)  -- i.e. lon,lat order.  The code implementing the algorithm, however, is as if the meaning of x and y are transposed, which means that if you supply the arguments in lat,lon (y,x) order, you will get the correct behavior.  It turns out that all callers of this method do this!
+
+FYI I found out about this bug since it is inherited code in LSP (lucene-spatial-playground) and I have been supplying parameters according to its documented order.  Apparently I shouldn't do that ;-)

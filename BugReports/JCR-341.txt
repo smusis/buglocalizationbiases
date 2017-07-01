@@ -1,0 +1,11 @@
+Jcr-Server: registration of ReportTypes fails
+
+
+
+Description:
+Registration of ReportType(s) using 
+
+ReportType.register(String localName, Namespace namespace, Class reportClass)  [ReportType]
+
+fails due to wrong evaluation of interfaces implemented by the given class object.
+

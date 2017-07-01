@@ -1,0 +1,9 @@
+Move common node type functionality to jackrabbit-spi-commons
+
+
+
+Description:
+now, that jackrabbit-core has a dependency to jackrabbit-spi-commons it would be possible to have the common functionality shared by core and jcr2spi in the spi-commons project.
+
+the node type package offers quite some potential for that.
+

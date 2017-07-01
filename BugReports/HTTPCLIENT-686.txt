@@ -1,0 +1,6 @@
+Maven 2 POM includes junit in default "compile" scope, rather than "test" scope
+
+
+
+Description:
+The POM at the URL above declares a dependency on JUnit in the default scope, rather than the "test" scope.

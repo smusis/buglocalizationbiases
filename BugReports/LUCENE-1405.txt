@@ -1,0 +1,21 @@
+Support for new Resources model in ant 1.7 in Lucene ant task.
+
+
+
+Description:
+Ant Task for Lucene should use modern Resource model (not only FileSet child element).
+There is a patch with required changes.
+
+Supported by old (ant 1.6) and new (ant 1.7) resources model:
+<index ....> <!-- Lucene Ant Task -->
+  <fileset ... />
+</index> 
+
+Supported only by new (ant 1.7) resources model:
+<index ....> <!-- Lucene Ant Task -->
+  <filelist ... />
+</index> 
+
+<index ....> <!-- Lucene Ant Task -->
+  <userdefinied-filesource ... />
+</index> 

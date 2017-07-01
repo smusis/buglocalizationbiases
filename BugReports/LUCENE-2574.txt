@@ -1,0 +1,12 @@
+Optimize copies between IndexInput and Output
+
+
+
+Description:
+We've created an optimized copy of files from Directory to Directory. We've also optimized copyBytes recently. However, we're missing the opposite side of the copy - from IndexInput to Output. I'd like to mimic the FileChannel API by having copyTo on IndexInput and copyFrom on IndexOutput. That way, both sides can optimize the copy process, depending on the type of the IndexInput/Output that they need to copy to/from.
+
+FSIndexInput/Output can use FileChannel if the two are FS types. RAMInput/OutputStream can copy to/from the buffers directly, w/o going through intermediate ones. Actually, for RAMIn/Out this might be a big win, because it doesn't care about the type of IndexInput/Output given - it just needs to copy to its buffer directly.
+
+If we do this, I think we can consolidate all Dir.copy() impls down to one (in Directory), and rely on the In/Out ones to do the optimized copy. Plus, it will enable someone to do optimized copies between In/Out outside the scope of Directory.
+
+If this somehow turns out to be impossible, or won't make sense, then I'd like to optimize RAMDirectory.copy(Dir, src, dest) to not use an intermediate buffer.

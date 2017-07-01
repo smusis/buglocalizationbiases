@@ -1,0 +1,16 @@
+DateValue.equals() relies on Calendar.equals()
+
+
+
+Description:
+JSR170 states regarding Date values:
+"The text format of dates must follow the following ISO 8601:2000-compliant format".
+
+While DateValue.valueOf(String) and DateValue.getString() both rely on the functionality provided by the org.apache.jackrabbit.util.ISO8601, DateValue.equals() compares the equality of the internal Calendar object (DateValue line 89). This may return false even if the Iso-format of both values are equal.
+
+In other words: Creating a new DateValue using the ValueFactory from the String representation of an existing DateValue will return an object, that is not equal to the original DateValue. The reason for this is, that the String does not contain all infomation, that is used during Calendar.equals.
+
+regards
+angela
+
+

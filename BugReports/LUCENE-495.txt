@@ -1,0 +1,59 @@
+Suggested Patches to MultiPhraseQuery and QueryTermExtractor (for use with HighLighter)
+
+
+
+Description:
+I encountered a problem with the Highlighter, where it was not recognizing MultiPhraseQuery.
+To fix this, I developed the following two patches:
+
+=====================================================
+1. Addition to org.apache.lucene.search.MultiPhraseQuery:
+
+Add the following method:
+
+/** Returns the set of terms in this phrase. */
+public Term[] getTerms() {
+  ArrayList allTerms = new ArrayList();
+  Iterator iterator = termArrays.iterator();
+  while (iterator.hasNext()) {
+    Term[] terms = (Term[])iterator.next();
+    for (int i = 0, n = terms.length; i < n; ++i) {
+      allTerms.add(terms[i]);
+    }
+  }
+  return (Term[])allTerms.toArray(new Term[0]);
+}
+
+=====================================================
+2. Patch to org.apache.lucene.search.highlight.QueryTermExtractor:
+
+a) Add the following import:
+import org.apache.lucene.search.MultiPhraseQuery;
+
+b) Add the following code to the end of the getTerms(...) method:
+      else  if(query instanceof MultiPhraseQuery)
+              getTermsFromMultiPhraseQuery((MultiPhraseQuery) query, terms, fieldName);
+  }
+
+c) Add the following method:
+ private static final void getTermsFromMultiPhraseQuery(MultiPhraseQuery query, HashSet terms, String fieldName)
+ {
+   Term[] queryTerms = query.getTerms();
+   int i;
+
+   for (i = 0; i < queryTerms.length; i++)
+   {
+       if((fieldName==null)||(queryTerms[i].field()==fieldName))
+       {
+           terms.add(new WeightedTerm(query.getBoost(),queryTerms[i].text()));
+       }
+   }
+ }
+
+
+=====================================================
+
+Can the team update the repository?
+
+Thanks
+Michael Harhen 

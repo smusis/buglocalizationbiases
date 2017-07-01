@@ -1,0 +1,13 @@
+HTTP Version configuration and tracking
+
+
+
+Description:
+HTTP version tracking is currently oversimplified with a single http11 boolean. 
+Extend this to handle any http version simply, and efficiently.
+
+Possible suggestion:
+> get rid of setHttp11() an isHttp11
+> void setHttpVersion(String version)
+> String getHttpVersion()
+> boolean isHttpVersion(String version)

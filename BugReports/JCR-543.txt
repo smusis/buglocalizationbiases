@@ -1,0 +1,20 @@
+DocViewSAXEventGenerator produces invalid SAX stream
+
+
+
+Description:
+ISO9075.encode() is called twice in DocViewSAXEventGenerator.leaving(), which produces invalid endElement events.
+
+Faulty block of code (note the encode method called twice):
+
+        // encode node name to make sure it's a valid xml name
+        name = ISO9075.encode(name);
+        // element name
+        String elemName;
+        if (node.getDepth() == 0) {
+            // root node needs a name
+            elemName = jcrRoot;
+        } else {
+            // encode node name to make sure it's a valid xml name
+            elemName = ISO9075.encode(name);
+        }

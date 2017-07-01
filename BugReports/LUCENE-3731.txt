@@ -1,0 +1,6 @@
+Create a analysis/uima module for UIMA based tokenizers/analyzers
+
+
+
+Description:
+As discussed in SOLR-3013 the UIMA Tokenizers/Analyzer should be refactored out in a separate module (modules/analysis/uima) as they can be used in plain Lucene. Then the solr/contrib/uima will contain only the related factories.

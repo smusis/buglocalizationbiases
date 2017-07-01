@@ -1,0 +1,6 @@
+FST should allow more than one output for the same input
+
+
+
+Description:
+For the block tree terms dict, it turns out I need this case.

@@ -1,0 +1,37 @@
+Provide access to port of Host header
+
+
+
+Description:
+We use a load balancer that connects to the HTTP server and the HTTP server
+connects to the application server. We use port translation in our load
+balancer. So when e.g. a client connects to 90 of the load balancer, the load
+balancer connects to port 100 of the HTTP server. The load balancer doesn't
+change the Host request header, so in the host request header is still the
+original virtual host name and port, in this case port 90. For this reason, the
+virtual hosts of the HTTP server and application server are configured based on
+the external port numbers, so in this case port 90.
+ 
+For test purposes, we sometimes want to connect directly to the HTTP server or
+the application server, bypassing the load balancer. To do this, we need to
+connect to the same port as the load balancer would, in this example port 100,
+but the host header of this request should be the same as if the request would
+go through the load balancer, so in this example port 90, because the HTTP
+server and application server's virtual hosts are configured for this port.
+
+The attached patch adds the possibility to specify the port number for virtual
+hosts.
+
+Here's a code snippet that uses the patched code:
+
+HttpClient httpClient = new HttpClient();
+HttpMethod method = new GetMethod();
+HostConfiguration hostConfiguration = new HostConfiguration();
+hostConfiguration.setHost("localhost", 80, "http");
+HostParams params = new HostParams();
+params.setVirtualHost("localhost");
+params.setVirtualHostPort(100);
+hostConfiguration.setParams(params);
+httpClient.executeMethod(hostConfiguration, method);
+System.out.println(method.getResponseBodyAsString());
+method.releaseConnection();

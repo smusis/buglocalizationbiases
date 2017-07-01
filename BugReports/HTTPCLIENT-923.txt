@@ -1,0 +1,12 @@
+NetscapeDraftSpec is too strict about cookie expires date format
+
+
+
+Description:
+The Netscape Draft specification (http://curl.haxx.se/rfc/cookie_spec.html) specifies clearly that the date format for Set-Cookie expires is "Wdy, DD-Mon-YYYY HH:MM:SS GMT". But on the other hand, in the examples section of the same document, the only example header that contains "Expires" is the following:
+
+Set-Cookie: CUSTOMER=WILE_E_COYOTE; path=/; expires=Wednesday, 09-Nov-99 23:12:40 GMT
+
+Note that the weekday is fully spelled out and that the year is written as two digits only. I would say that the specification therefore makes the 2 or 4 digit year optional. I think NetscapeDraftSpec should reflect this. An example of a product that uses the 2 digit version is jetty 6 and 7. When using httpclient 4 talking to a jetty server, any Set-Cookie headers for persistent cookies will be interpreted as a 4 digit year in the date and the cookie will immediately be disregarded as expired by some 2,000 years or so. Httpclient 3 on the other hand had no problem understanding the persistent cookies from jetty. I filed a bug report https://bugs.eclipse.org/bugs/show_bug.cgi?id=304698 on jetty to change their date format, but on the other hand I also think httpclient 4 is too strict about the date format when even the original specification uses two alternatives.
+
+Workaround is easy by setting CookieSpecPNames.DATE_PATTERNS, but I really think that projects like jetty and httpclient should be compatible by default. Also, since the date format used by jetty is parsable but misinterpreted and disregarded by httpclient makes it especially hard to detect the first time on encounters the problem.

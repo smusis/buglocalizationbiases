@@ -1,0 +1,25 @@
+Add narrow API for loading stored fields, to replace FieldSelector
+
+
+
+Description:
+I think we should "invert" the FieldSelector API, with a "push" API
+whereby FieldsReader invokes this API once per field in the document
+being visited.
+
+Implementations of the API can then do arbitrary things like save away
+the field's size, load the field, clone the IndexInput for later lazy
+loading, etc.
+
+This very thin API would be a mirror image of the very thin index time
+API we now have (IndexableField) and, importantly, it would have no
+dependence on our "user space" Document/Field/FieldType impl, so apps
+are free to do something totally custom.
+
+After we have this, we should build the "sugar" API that rebuilds a
+Document instance (ie IR.document(int docID)) on top of this new thin
+API.  This'll also be a good test that the API is sufficient.
+
+Relevant discussions from IRC this morning at
+http://colabti.org/irclogger/irclogger_log/lucene-dev?date=2011-07-13#l76
+

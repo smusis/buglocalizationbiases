@@ -1,0 +1,8 @@
+Add TopDocs.merge to merge multiple TopDocs
+
+
+
+Description:
+It's not easy today to merge TopDocs, eg produced by multiple shards,
+supporting arbitrary Sort.
+

@@ -1,0 +1,6 @@
+[PATCH] retain exception stack traces
+
+
+
+Description:
+Code catches one exception, and throws another, losing the stack trace information of the causal exception. This makes it more difficult to understand what happened when an exception occurs. This patch retains all stack traces that occur that causes a thrown exception.

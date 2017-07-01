@@ -1,0 +1,10 @@
+UserManagement: Add Membership Cache
+
+
+
+Description:
+due to weakreference nature of the group members, retrieving the groups a given authorizable is member is expensive as the corresponding
+API call (Node#getWeakReferences) executes a query [fallback if search is disabled: traversing the complete group tree, which isn't for free either].
+
+i would therefore suggest to add a cache (authorizable nodeId -> group nodeids) that is gets cleared upon any modification to group membership or
+group removal and doesn't need any extra observation. this cache may potentially obsolete the principal-based cache in DefaultPrincipalProvider... 

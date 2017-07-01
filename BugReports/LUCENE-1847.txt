@@ -1,0 +1,11 @@
+PhraseQuery/TermQuery/SpanQuery use IndexReader specific stats in their explains
+
+
+
+Description:
+PhraseQuery uses IndexReader in explainfor top level stats - as mentioned by Mike McCandless in LUCENE-1837.
+TermQuery uses IndexReader in explain for top level stats
+
+Always been a bug with MultiSearcher, but per segment search makes it worse.
+
+

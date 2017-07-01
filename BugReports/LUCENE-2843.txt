@@ -1,0 +1,29 @@
+Add variable-gap terms index impl.
+
+
+
+Description:
+PrefixCodedTermsReader/Writer (used by all "real" core codecs) already
+supports pluggable terms index impls.
+
+The only impl we have now is FixedGapTermsIndexReader/Writer, which
+picks every Nth (default 32) term and holds it in efficient packed
+int/byte arrays in RAM.  This is already an enormous improvement (RAM
+reduction, init time) over 3.x.
+
+This patch adds another impl, VariableGapTermsIndexReader/Writer,
+which lets you specify an arbitrary IndexTermSelector to pick which
+terms are indexed, and then uses an FST to hold the indexed terms.
+This is typically even more memory efficient than packed int/byte
+arrays, though, it does not support ord() so it's not quite a fair
+comparison.
+
+I had to relax the terms index plugin api for
+PrefixCodedTermsReader/Writer to not assume that the terms index impl
+supports ord.
+
+I also did some cleanup of the FST/FSTEnum APIs and impls, and broke
+out separate seekCeil and seekFloor in FSTEnum.  Eg we need seekFloor
+when the FST is used as a terms index but seekCeil when it's holding
+all terms in the index (ie which SimpleText uses FSTs for).
+

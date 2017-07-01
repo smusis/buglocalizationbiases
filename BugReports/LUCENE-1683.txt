@@ -1,0 +1,39 @@
+RegexQuery matches terms the input regex doesn't actually match
+
+
+
+Description:
+I was writing some unit tests for our own wrapper around the Lucene regex classes, and got tripped up by something interesting.
+
+The regex "cat." will match "cats" but also anything with "cat" and 1+ following letters (e.g. "cathy", "catcher", ...)  It is as if there is an implicit .* always added to the end of the regex.
+
+Here's a unit test for the behaviour I would expect myself:
+
+    @Test
+    public void testNecessity() throws Exception {
+        File dir = new File(new File(System.getProperty("java.io.tmpdir")), "index");
+        IndexWriter writer = new IndexWriter(dir, new StandardAnalyzer(), true);
+        try {
+            Document doc = new Document();
+            doc.add(new Field("field", "cat cats cathy", Field.Store.YES, Field.Index.TOKENIZED));
+            writer.addDocument(doc);
+        } finally {
+            writer.close();
+        }
+
+        IndexReader reader = IndexReader.open(dir);
+        try {
+            TermEnum terms = new RegexQuery(new Term("field", "cat.")).getEnum(reader);
+            assertEquals("Wrong term", "cats", terms.term());
+            assertFalse("Should have only been one term", terms.next());
+        } finally {
+            reader.close();
+        }
+    }
+
+This test fails on the term check with terms.term() equal to "cathy".
+
+Our workaround is to mangle the query like this:
+
+    String fixed = String.format("(?:%s)$", original);
+

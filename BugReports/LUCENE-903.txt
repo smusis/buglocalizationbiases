@@ -1,0 +1,9 @@
+FilteredQuery explanation inaccuracy with boost
+
+
+
+Description:
+The value of explanation is different than the product of its part if boost > 1.
+This is exposed after tightening the explanation check (part of LUCENE-446).
+
+

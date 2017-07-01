@@ -1,0 +1,6 @@
+Implement Query.getBindVariableNames()
+
+
+
+Description:
+

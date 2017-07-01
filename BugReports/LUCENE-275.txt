@@ -1,0 +1,7 @@
+Occur incompletely implemented for remote use.
+
+
+
+Description:
+Occur does not implement readResolve() creating problems for
+ParallelMultiSearcher y.

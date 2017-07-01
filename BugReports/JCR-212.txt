@@ -1,0 +1,6 @@
+decorator enhancements
+
+
+
+Description:
+added some decorating enhancements as we discussed on the mailing list (apparently there is nothing yet in the gmane /marc archives).

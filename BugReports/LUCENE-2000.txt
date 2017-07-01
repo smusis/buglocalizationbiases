@@ -1,0 +1,27 @@
+Use covariant clone() return types
+
+
+
+Description:
+*Paul Cowan wrote in LUCENE-1257:*
+
+OK, thought I'd jump in and help out here with one of my Java 5 favourites. Haven't seen anyone discuss this, and don't believe any of the patches address this, so thought I'd throw a patch out there (against SVN HEAD @ revision 827821) which uses Java 5 covariant return types for (almost) all of the Object#clone() implementations in core. 
+i.e. this:
+
+public Object clone() {
+changes to:
+public SpanNotQuery clone() {
+
+which lets us get rid of a whole bunch of now-unnecessary casts, so e.g.
+
+if (clone == null) clone = (SpanNotQuery) this.clone();
+becomes
+if (clone == null) clone = this.clone();
+
+Almost everything has been done and all downcasts removed, in core, with the exception of
+
+Some SpanQuery stuff, where it's assumed that it's safe to cast the clone() of a SpanQuery to a SpanQuery - this can't be made covariant without declaring "abstract SpanQuery clone()" in SpanQuery itself, which breaks those SpanQuerys that don't declare their own clone() 
+Some IndexReaders, e.g. DirectoryReader - we can't be more specific than changing .clone() to return IndexReader, because it returns the result of IndexReader.clone(boolean). We could use covariant types for THAT, which would work fine, but that didn't follow the pattern of the others so that could be a later commit. 
+Two changes were also made in contrib/, where not making the changes would have broken code by trying to widen IndexInput#clone() back out to returning Object, which is not permitted. contrib/ was otherwise left untouched.
+
+Let me know what you think, or if you have any other questions.

@@ -1,0 +1,99 @@
+Contribute Pluggable Permission and User Management to Jackrabbit
+
+
+
+Description:
+Working with a Jackrabbit based appliction I had to extend its security handling.
+The aim of this extension has been to allow for a eitable resource based authorization.
+The solution ended up in beeing plugable and extendable.
+As there have been some questions in the Jackrabbit Developper-list about custom implementation of security or the management of privileges in Jackrabbit, I like to suggest my implementation as contribution with attached patches. 
+
+Below you can find some high-level explanation of the contained files and concepts
+
+I hope the prove to be usable and enhance this great repository.
+I welcome your feed-back and like to thank for your kind inspection
+
+Regards
+Christian Keller
+
+The patch contains the following:
+=========================
+
+1) API [jackrabbit-core-changes.20071010.patch]
+-------------------------------------------------------------------
+API which allows to implement and configure a mechanisms for Authentication and Authorization. 
+The API is ACL- and Principal-based.
+ACL and Principals Management is independent of the JCR api, to allow implementations to use different back-end systems like a Directory Server.
+
+2) Changes to current core [jackrabbit-core-changes.20071010.patch]
+-----------------------------------------------------------------------------------------------
+Some small changes have been necessary to core to enable configuration and access of Management, like session access to UserManager.
+
+3) Implementation [jackrabbit-core-implementation.20071010.patch]
+-----------------------------------------------------------------------------------------------
+Additionally an implemenation is contained. It is not dependent on any back-end system, and may therefore be used as a default.
+
+
+Description:
+==========
+The extensions hook into Jackrabbit bei implementations of the Intefaces: AccessManager and LoginModule. 
+Additionally there are changes for configuration, set-up and access of the used Object.
+
+The patch extends the API, in order to allow client inspections of Users and Permission. These are contained in the api.patch
+
+See a short Introduction below:
+=========================
+
+The Security extensions of this Patch contain both, Authentication and Authorization extensions for which the follwoing two modells are introduced:
+
+I) The Authorizable
+----------------------------
+These are User's and Groups of Users. Users can authenticate. 
+Authentication in Jackrabbit is done by LoginModules which issue Principals as result of an Authentication.
+The Users are the objects which can be represented by such an Principal
+They are therfore are the base for the Authorization.
+
+II) The ACL
+----------------
+The ACL is the Policy for Authorziation. 
+The ACL grants or denies a Principal Privileges which are called Actions.
+
+Additional ther is a Management for Principals:
+
+The Principal is the link between User and permission.
+A User may related to multiple Principals. As this dependes on the LoginModules verfiying the Idendity of the login-attemp.
+The LoginModules may expose their Principals to the Repository via a Provider interface, to allow for usage in ACEs.
+
+All Modells and their Managing Classes API's are abstracted from the fact, that they are used in a JC-Repository. Aka there is no reference to javax.jcr.Items, Sessions etc.
+This should allow to implement both for external sources for both without imposing any JCR specific methods. Taken an LDAP as UserBase for example.
+
+The managing classes are UserManger, PrincpalManager and ACLManager. 
+They are set-up and maintained by a repsoitory singular SecurityManger. 
+Session specific versions of this Managers are exposed via Session.
+
+PrincipalManger and ACLManger are feed by one to multiple Providers. 
+PrincipalProviders may exist per LoginModule, ACLProvider per Workspace.
+
+Authentication:
+--------------------
+The User will be used by the LoginModule. It will be resolved based on the given Credentials. If the Credentials can be validated, the User will be used to resolve Principals according its Group-Membership. As a result the Session's Subject will be extended by this principals.
+
+Authorization:
+-------------------
+The ACL will be use be an Implementation of the AccessManager-Interface
+An ACLManger relates Items to ACLs and the ACL evaluates the Permission for the current Subject's Principals.
+
+Default Implementation
+===================
+The Default Implementation uses the Repository itself to store its security data.
+The Users are stored within a dedicated workspace. 
+The ACL are attached to the Nodes they relate to.
+The ACLs are inherited along the Item-Hierarchy.
+The Principals are taken from the Authorables.
+
+Configuration
+===========
+The LoginModules may declare their PrincipalProvider class via a property key with the name "principal_provider.class"
+
+The Workspace specific ACL Providers may be added via a configuration element in Worskspace.xml, called WorkspaceSecurity.
+A Factory class can be configured there.

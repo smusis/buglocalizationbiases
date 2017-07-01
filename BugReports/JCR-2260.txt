@@ -1,0 +1,6 @@
+MemoryFileSystem.deleteFolder deletes all folders starting with this name 
+
+
+
+Description:
+MemoryFileSystem.deleteFolder deletes not only the folder requested but all folders that start with the given name.

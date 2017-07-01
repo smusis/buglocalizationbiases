@@ -1,0 +1,17 @@
+Transfer-Encoding: identity not supported + possible patch
+
+
+
+Description:
+In HttpMethodBase.readResponseBody only chunked transfer encoding is 
+supported.  Some proxy servers like Privoxy, etc send a Transfer-Encoding: 
+identity header and HttpClient fails quietly and returns a null result input 
+stream.  At line 2037 in HttpMethodBase.java revision 1.160 I inserted the 
+following two lines and it appeared to work fine:
+
+} else if ("identity".equalsIgnoreCase(transferEncodingHeader.getValue())) {
+   result = is;
+
+I think it should at least throw an exception or do something when it 
+encounters an unsupported Transfer-Encoding instead of returning a null input 
+stream.

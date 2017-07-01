@@ -1,0 +1,13 @@
+divorce defaultsimilarityprovider from defaultsimilarity
+
+
+
+Description:
+In LUCENE-2236 as a start, we made DefaultSimilarity which implements the factory interface (SimilarityProvider), and also extends Similarity.
+
+Its factory interface just returns itself always by default.
+
+Doron mentioned it would be cleaner to split the two, and I thought it would be good to revisit it later.
+
+Today as I was looking at SOLR-2338, it became pretty clear that we should do this, it makes things a lot cleaner. I think currently its confusing to users to see the two apis mixed if they are trying to subclass.
+

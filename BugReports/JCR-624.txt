@@ -1,0 +1,56 @@
+OutOfMemoryError When repeat login and the logout many times
+
+
+
+Description:
+When repeat login and the logout many times, I encountered?OutOfMemoryError.
+
+javax.jcr.RepositoryException: Cannot instantiate persistence manager org.apache.jackrabbit.core.state.db.DerbyPersistenceManager: Java exception: 'Java heap space: java.lang.OutOfMemoryError'.: Java exception: 'Java heap space: java.lang.OutOfMemoryError'.
+	at org.apache.jackrabbit.core.RepositoryImpl.createPersistenceManager(RepositoryImpl.java:1095)
+	at org.apache.jackrabbit.core.RepositoryImpl.createVersionManager(RepositoryImpl.java:300)
+	at org.apache.jackrabbit.core.RepositoryImpl.<init>(RepositoryImpl.java:245)
+	at org.apache.jackrabbit.core.RepositoryImpl.create(RepositoryImpl.java:498)
+	at org.apache.jackrabbit.core.TransientRepository$2.getRepository(TransientRepository.java:245)
+	at org.apache.jackrabbit.core.TransientRepository.startRepository(TransientRepository.java:265)
+	at org.apache.jackrabbit.core.TransientRepository.login(TransientRepository.java:333)
+	at org.apache.jackrabbit.core.TransientRepository.login(TransientRepository.java:388)
+	at Test.tryLoginAndLogout(Test.java:19)
+	at Test.test1(Test.java:13)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:39)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:25)
+	at java.lang.reflect.Method.invoke(Method.java:585)
+	at junit.framework.TestCase.runTest(TestCase.java:164)
+	at junit.framework.TestCase.runBare(TestCase.java:130)
+	at junit.framework.TestResult$1.protect(TestResult.java:106)
+	at junit.framework.TestResult.runProtected(TestResult.java:124)
+	at junit.framework.TestResult.run(TestResult.java:109)
+	at junit.framework.TestCase.run(TestCase.java:120)
+	at junit.framework.TestSuite.runTest(TestSuite.java:230)
+	at junit.framework.TestSuite.run(TestSuite.java:225)
+	at org.eclipse.jdt.internal.junit.runner.junit3.JUnit3TestReference.run(JUnit3TestReference.java:128)
+	at org.eclipse.jdt.internal.junit.runner.TestExecution.run(TestExecution.java:38)
+	at org.eclipse.jdt.internal.junit.runner.RemoteTestRunner.runTests(RemoteTestRunner.java:460)
+	at org.eclipse.jdt.internal.junit.runner.RemoteTestRunner.runTests(RemoteTestRunner.java:673)
+	at org.eclipse.jdt.internal.junit.runner.RemoteTestRunner.run(RemoteTestRunner.java:386)
+	at org.eclipse.jdt.internal.junit.runner.RemoteTestRunner.main(RemoteTestRunner.java:196)
+Caused by: SQL Exception: Java exception: 'Java heap space: java.lang.OutOfMemoryError'.
+	at org.apache.derby.impl.jdbc.Util.newEmbedSQLException(Unknown Source)
+	at org.apache.derby.impl.jdbc.Util.newEmbedSQLException(Unknown Source)
+	at org.apache.derby.impl.jdbc.Util.javaException(Unknown Source)
+	at org.apache.derby.impl.jdbc.TransactionResourceImpl.wrapInSQLException(Unknown Source)
+	at org.apache.derby.impl.jdbc.TransactionResourceImpl.handleException(Unknown Source)
+	at org.apache.derby.impl.jdbc.EmbedConnection.handleException(Unknown Source)
+	at org.apache.derby.impl.jdbc.ConnectionChild.handleException(Unknown Source)
+	at org.apache.derby.impl.jdbc.EmbedPreparedStatement.<init>(Unknown Source)
+	at org.apache.derby.impl.jdbc.EmbedPreparedStatement20.<init>(Unknown Source)
+	at org.apache.derby.impl.jdbc.EmbedPreparedStatement30.<init>(Unknown Source)
+	at org.apache.derby.jdbc.Driver30.newEmbedPreparedStatement(Unknown Source)
+	at org.apache.derby.impl.jdbc.EmbedConnection.prepareStatement(Unknown Source)
+	at org.apache.derby.impl.jdbc.EmbedConnection.prepareStatement(Unknown Source)
+	at org.apache.jackrabbit.core.state.db.DatabasePersistenceManager.init(DatabasePersistenceManager.java:224)
+	at org.apache.jackrabbit.core.RepositoryImpl.createPersistenceManager(RepositoryImpl.java:1091)
+	... 27 more
+java.lang.OutOfMemoryError: Java heap space
+
+

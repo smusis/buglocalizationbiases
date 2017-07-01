@@ -1,0 +1,25 @@
+Make WordDelimiterFilter's instantiation more readable
+
+
+
+Description:
+Currently WordDelimiterFilter's constructor is:
+
+{code}
+public WordDelimiterFilter(TokenStream in,
+	                             byte[] charTypeTable,
+	                             int generateWordParts,
+	                             int generateNumberParts,
+	                             int catenateWords,
+	                             int catenateNumbers,
+	                             int catenateAll,
+	                             int splitOnCaseChange,
+	                             int preserveOriginal,
+	                             int splitOnNumerics,
+	                             int stemEnglishPossessive,
+	                             CharArraySet protWords) {
+{code}
+
+which means its instantiation is an unreadable combination of 1s and 0s.  
+
+We should improve this by either using a Builder, 'int flags' or an EnumSet.

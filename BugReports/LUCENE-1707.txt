@@ -1,0 +1,10 @@
+Don't use ensureOpen() excessively in IndexReader and IndexWriter
+
+
+
+Description:
+A spin off from here: http://www.nabble.com/Excessive-use-of-ensureOpen()-td24127806.html.
+
+We should stop calling this method when it's not necessary for any internal Lucene code. Currently, this code seems to hurt properly written apps, unnecessarily.
+
+Will post a patch soon

@@ -1,0 +1,14 @@
+integrate snowball stopword lists
+
+
+
+Description:
+The snowball project creates stopword lists as well as stemmers, example: http://svn.tartarus.org/snowball/trunk/website/algorithms/english/stop.txt?view=markup
+
+This patch includes the following:
+* snowball stopword lists for 13 languages in contrib/snowball/resources
+* all stoplists are unmodified, only added license header and converted each one from whatever encoding it was in to UTF-8
+* added getSnowballWordSet  to WordListLoader, this is because the format of these files is very different, for example it supports multiple words per line and embedded comments.
+
+I did not add any changes to SnowballAnalyzer to actually automatically use these lists yet, i would like us to discuss this in a future issue proposing integrating snowball with contrib/analyzers.
+

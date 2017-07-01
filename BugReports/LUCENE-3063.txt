@@ -1,0 +1,14 @@
+factor CharTokenizer/CharacterUtils into analyzers module
+
+
+
+Description:
+Currently these analysis components are in the lucene core, but should really
+be .util in the analyzers module.
+
+Also, with MockTokenizer extending Tokenizer directly, we can add some additional
+checks in the future to try to ensure our consumers are being good consumers (e.g. calling reset).
+
+This is mentioned in http://wiki.apache.org/lucene-java/TestIdeas, I didn't implement it here yet,
+this is just the factoring. I think we should try to do this before LUCENE-3040.
+

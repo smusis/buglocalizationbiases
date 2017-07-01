@@ -1,0 +1,9 @@
+AccessControlManager#getEffectivePolicies(String) may expose AC content without proper permissions
+
+
+
+Description:
+The implementation of AccessControlManager#getEffectivePolicies(String) in the DefaultAccessManager only checks if the session is allowed
+to read AC content at the specified path. However the result may also include policies effective at absPath that should not be visible to the editing
+session (read_AC permissions denied e.g. at an ancestor node) and could not be read by the editing session be means of #getPolicies().
+

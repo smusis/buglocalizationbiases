@@ -1,0 +1,12 @@
+preflex codec returns wrong terms if you use an empty field name
+
+
+
+Description:
+spinoff from LUCENE-3473.
+
+I have a standalone test for this... the termsenum is returning a bogus extra empty-term (I assume it has no postings, i didnt try).
+
+This causes the checkindex test in LUCENE-3473 to fail, because there are 4 terms instead of 3. 
+
+

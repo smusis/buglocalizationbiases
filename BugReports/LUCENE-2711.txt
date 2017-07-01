@@ -1,0 +1,10 @@
+BooleanScorer.nextDoc should also delegate to sub-scorer's bulk scoring method
+
+
+
+Description:
+BooleanScorer uses the bulk score methods of its sub scorers, asking them to score each chunk of 2048 docs.
+
+However, its .nextDoc fails to do this, instead manually walking through the sub's docs (calling .nextDoc()), which is slower (though this'd be tiny in practice).
+
+As far as I can tell it should delegate to the bulk scorer just like it does in its bulk scorer method.

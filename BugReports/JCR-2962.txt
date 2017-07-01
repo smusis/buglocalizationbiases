@@ -1,0 +1,40 @@
+InputStream not being explicitly closed
+
+
+
+Description:
+After deploying a j2ee artifact that uses jackrabbit and org.apache.jackrabbit.core.persistence.pool.MySqlPersistenceManager, Glassfish starts complaining there are input streams without being explicitly closed.
+The specific inputStream mey be found at org.apache.jackrabbit.core.persistence.pool.BundleDbPersistenceManager.createCheckSchemaOperation(BundleDbPersistenceManager.java:584).
+
+I've checked the code and in BundleDbPersistenceManager:530 the run method is invoked to the object CheckSchemaOperation.
+In run method CheckSchemaOperation:78, the finally block that calls IOUtils.closeQuietly(ddl); to close the stream is inside the condition if (!conHelper.tableExists(table)) (CheckSchemaOperation:79).
+So, if this condition is false, the inputStream will not be explicitly closed.
+
+In my opinion, there are two fix alternatives:
+The most robust should be:
+1 - insert a finalize() method:
+    @Override
+    protected void finalize() throws Throwable {
+	    if (ddl!=null){
+            IOUtils.closeQuietly(ddl);
+	    }
+		super.finalize();
+	}
+
+Another alternative:
+2 - Put the condition if (!conHelper.tableExists(table)) inside try-finally block.
+
+
+StackTrace:
+[#|2011-05-05T11:43:28.087-0300|WARNING|glassfish3.1|javax.enterprise.system.core.classloading.com.sun.enterprise.loader|_ThreadID=1233;_ThreadName=Thread-1;|Input stream has been finalized or forced closed without being explicitly closed; stream instantiation reported in following stack trace
+java.lang.Throwable
+        at com.sun.enterprise.loader.ASURLClassLoader$SentinelInputStream.<init>(ASURLClassLoader.java:1230)
+        at com.sun.enterprise.loader.ASURLClassLoader$InternalJarURLConnection.getInputStream(ASURLClassLoader.java:1338)
+        at java.net.URL.openStream(URL.java:1010)
+        at java.lang.ClassLoader.getResourceAsStream(ClassLoader.java:1195)
+        at com.sun.enterprise.loader.ASURLClassLoader.getResourceAsStream(ASURLClassLoader.java:872)
+        at java.lang.Class.getResourceAsStream(Class.java:2030)
+        at org.apache.jackrabbit.core.persistence.pool.BundleDbPersistenceManager.createCheckSchemaOperation(BundleDbPersistenceManager.java:584)
+        at org.apache.jackrabbit.core.persistence.pool.BundleDbPersistenceManager.init(BundleDbPersistenceManager.java:530)
+        at org.apache.jackrabbit.core.persistence.pool.MySqlPersistenceManager.init(MySqlPersistenceManager.java:51)
+        at org.apache.jackrabbit.core.RepositoryImpl.createPersistenceManager(RepositoryImpl.java:1353)

@@ -1,0 +1,12 @@
+add UnicodeUtil.nextValidUTF16String 
+
+
+
+Description:
+In flex branch, TermRef must not contain unpaired surrogates, etc.
+But in trunk/previous releases, people could (and do) seek to these.
+Also some lucene multitermqueries will generate these invalid seek locations, even now (which we should separately fix)
+I think the common case is already handled with a hack in SegmentReader.LegacyTermEnum, but we should clean up this hack and handle all cases.
+
+I would also like to use this nextValidUTF16String in LUCENE-1606, and there might be other places it could be used for better bw compat.
+

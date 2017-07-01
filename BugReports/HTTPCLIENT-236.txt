@@ -1,0 +1,26 @@
+URI.normalize() error
+
+
+
+Description:
+code:
+
+----------------------------
+import org.apache.commons.httpclient.URI;
+
+class Main {
+  publiñ static void main(String[] args) throws Exception {
+    URI uri = new URI("http", null, "host", -1, "/tmp/../yo", null, null);
+    uri.normalize();
+    System.out.println(uri);
+  }
+} /// end of Main
+----------------------------
+
+prints:
+
+http://host/tmp/../yo
+
+instead of
+
+http://host/yo

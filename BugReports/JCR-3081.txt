@@ -1,0 +1,6 @@
+Add UserManager#getAuthorizableByPath(String) for symmetry with JCR-3037
+
+
+
+Description:
+JCR-3037 added Authorizable#getPath. I would suggest to also add UserManager#getAuthorizableByPath that was symmetric to Authorizable#getPath

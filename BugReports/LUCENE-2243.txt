@@ -1,0 +1,6 @@
+FastVectorHighlighter: support DisjunctionMaxQuery
+
+
+
+Description:
+Add DisjunctionMaxQuery support in FVH. 

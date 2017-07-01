@@ -1,0 +1,21 @@
+MultiThreadedHttpConnectionManager does not properly respond to thread interrupts
+
+
+
+Description:
+MultiThreadedHttpConnectionManager uses interrupts to notify waiting threads when a connection is ready for them. Issues arise if the threads are interrupted by someone else while they are still waiting on a thread, because doGetConnection does not remove the threads from the queue of waiting threads when they are interrupted:
+
+                        connectionPool.wait(timeToWait);
+
+                        // we have not been interrupted so we need to remove ourselves from the 
+                        // wait queue
+                        hostPool.waitingThreads.remove(waitingThread);                        connectionPool.waitingThreads.remove(waitingThread);
+                    } catch (InterruptedException e) {
+                        // do nothing                    } finally {
+                        if (useTimeout) {
+                            endWait = System.currentTimeMillis();
+                            timeToWait -= (endWait - startWait);                        }                    }
+
+Under ordinary circumstances, the queue maintenance is done by the notifyWaitingThread method. However, if the thread is interrupted by any other part of the system, it will (1) not actually be released, since the loop in doGetConnection will force it back to the wait, and (2) will be added the waiting thread to the queue repeatedly, which basically means that the thread will eventually receive the interrupt from notifyWaitingThread at some later point, when it is no longer actually waiting for a connection.
+
+This code could probably be re-architected to make it less error-prone, but the fundamental issue seems to be the use of interrupts to signal waiting threads, as opposed to something like a notify. 

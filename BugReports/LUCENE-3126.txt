@@ -1,0 +1,12 @@
+IndexWriter.addIndexes can make any incoming segment into CFS if it isn't already
+
+
+
+Description:
+Today, IW.addIndexes(Directory) does not modify the CFS-mode of the incoming segments. However, if IndexWriter's MP wants to create CFS (in general), there's no reason why not turn the incoming non-CFS segments into CFS. We anyway copy them, and if MP is not against CFS, we should create a CFS out of them.
+
+Will need to use CFW, not sure it's ready for that w/ current API (I'll need to check), but luckily we're allowed to change it (@lucene.internal).
+
+This should be done, IMO, even if the incoming segment is large (i.e., passes MP.noCFSRatio) b/c like I wrote above, we anyway copy it. However, if you think otherwise, speak up :).
+
+I'll take a look at this in the next few days.

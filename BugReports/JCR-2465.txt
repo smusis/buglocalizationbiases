@@ -1,0 +1,9 @@
+Background threads should use jackrabbit classloader as thread context classloader
+
+
+
+Description:
+The RepositoryImpl uses a thread executor with a default thread factory for some background threads. These threads should use the jackrabbit class loader (the classloader used for loading jackrabbit)
+as thread context classloader. Currently the classloader is used which causes a new thread to be greated.
+For example in combination with Sling the following can happen: a jsp in sling initiates a save to jackrabbit, this causes the indexing to start which is done in a background thread. A new thread is taken from the pool and the thread context class loader is set to the thread context classloader of the jsp/sling. If now Sling is undeployed, jackrabbit still holds this class loader. This creates a hugh memory leak.
+

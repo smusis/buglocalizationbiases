@@ -1,0 +1,10 @@
+Optimize refresh operations 
+
+
+
+Description:
+With the current implementation (recursive) refresh operations cause a full traversal of the sub-tree rooted at the item causing the refresh. This is potentially expensive. 
+
+Instead of invalidating each item in the respective sub-tree I propose to mark the root of the sub-tree as invalidated. Such a mark would include a time stamp. Also individual items would be time stamped with their resolution time. When an item is accessed, it would check if its resolution time stamp is older than the latest invalidation time stamp. If so, it checks whether the invalidation applies to it at all (by traversing up the path) and if so it would re-resolve itself. In any case its resolution time stamp will be updated.
+
+This approach would make invalidation much cheaper without putting much additional load to simple item access. Moreover most of the additional load (traversing up the path) only applies when an invalidation is pending.

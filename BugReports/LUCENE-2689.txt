@@ -1,0 +1,8 @@
+remove NativeFSLockFactory's attempt to acquire a test lock
+
+
+
+Description:
+NativeFSLockFactory tries to acquire a test lock the first time a lock is created.  It's the only LF to do this, and, it's caused us hassle (LUCENE-2421,  LUCENE-2688).
+
+I think we should just remove it.  The caller of .makeLock will presumably immediately thereafter acquire the lock and at the point hit any exception that acquireTestLock would've hit.

@@ -1,0 +1,8 @@
+Poor performance race condition in FieldCacheImpl
+
+
+
+Description:
+A race condition exists in FieldCacheImpl that causes a significant performance degradation if multiple threads concurrently request a value that is not yet cached. The degradation is particularly noticable in large indexes and when there a many concurent requests for the cached value.
+
+For the full discussion see the mailing list thread 'Poor performance "race condition" in FieldSortedHitQueue' (http://www.gossamer-threads.com/lists/lucene/java-user/38717).

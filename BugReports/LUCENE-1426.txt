@@ -1,0 +1,27 @@
+Next steps towards flexible indexing
+
+
+
+Description:
+In working on LUCENE-1410 (PFOR compression) I tried to prototype
+switching the postings files to use PFOR instead of vInts for
+encoding.
+
+But it quickly became difficult.  EG we currently mux the skip data
+into the .frq file, which messes up the int blocks.  We inline
+payloads with positions which would also mess up the int blocks.
+Skipping offsets and TermInfo offsets hardwire the file pointers of
+frq & prox files yet I need to change these to block + offset, etc.
+
+Separately this thread also started up, on how to customize how Lucene
+stores positional information in the index:
+
+  http://www.gossamer-threads.com/lists/lucene/java-user/66264
+
+So I decided to make a bit more progress towards "flexible indexing"
+by first modularizing/isolating the classes that actually write the
+index format.  The idea is to capture the logic of each (terms, freq,
+positions/payloads) into separate interfaces and switch the flushing
+of a new segment as well as writing the segment during merging to use
+the same APIs.
+

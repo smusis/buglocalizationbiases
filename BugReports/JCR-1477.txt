@@ -1,0 +1,6 @@
+Incorrect link on Apache Jackrabbit Welcome homepage
+
+
+
+Description:
+Link to JSR283 in welcome text points to http://jcp.org/en/jsr/detail?id=170 instead of http://jcp.org/en/jsr/detail?id=283

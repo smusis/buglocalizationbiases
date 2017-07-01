@@ -1,0 +1,13 @@
+The repository-1.5.dtd is not well formed
+
+
+
+Description:
+The repository-1.5.dtd file at http://jackrabbit.apache.org/dtd/repository-1.5.dtd
+is not well formed at the time of this writing 200/05/23 19:30GMT
+
+1. It looks like a #REQUIRED is missing at line 173
+2. Detected this while trying the 5minutes with ocm tutorial
+
+Hope this helps,
+ S.

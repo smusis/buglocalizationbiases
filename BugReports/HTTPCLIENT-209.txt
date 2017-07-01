@@ -1,0 +1,21 @@
+Add set/getLocalAddress methods to HostConfiguration
+
+
+
+Description:
+On clustered or multi-homed systems, there's a need to specify the local bind
+address of sockets, to ensure that they're created on the right interface.  To
+do this, the local address needs to be passed to the 4-argument version of
+ProtcolSocketFactory.createSocket.
+
+After discussion on the mailing list, the best approach for this seems to be
+adding the local address as a property on HostConfiguration and HttpConnection.  
+
+I've attached a patch which does the following:
+- Add public set/getLocalAddress methods to HostConfiguration and HttpConnection.
+- HttpConnection uses the local address when opening connections.
+- Modify HostConfiguration.equals and hostEquals to compare the local address too.
+- SimpleHttpConnectionManager uses the local address from the provided config. 
+I also cleaned up its getConnection method a bit.
+- HttpClient.executeMethod uses the local address from its default
+HostConfiguration if the method's config doesn't specify one.

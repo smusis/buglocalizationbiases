@@ -1,0 +1,10 @@
+Possible hidden exception on SegmentInfos commit
+
+
+
+Description:
+I am not sure if this is that big of a deal, but I just ran into it and thought I might mention it.
+
+SegmentInfos.commit removes the Segments File if it hits an exception. If it cannot remove the Segments file (because its not there or on Windows something has a hold of it), another Exception is thrown about not being able to delete the Segments file. Because of this, you lose the first exception, which might have useful info, including why the segments file might not be there to delete.
+
+- Mark

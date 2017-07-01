@@ -1,0 +1,6 @@
+CustomScoreQuery calls weight() where it should call createWeight()
+
+
+
+Description:
+Thanks to Uwe for helping me track down this bug after I pulled my hair out for hours on LUCENE-3174.

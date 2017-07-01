@@ -1,0 +1,25 @@
+Redesign of HTTP authentication framework
+
+
+
+Description:
+The existing HTTP authentication framework has got a few glaring deficiencies:
+- Authentication headers management evolved (or degraded) into a some sort of
+black art and proved very error-prone.
+- Existing logic intended to deal with authentication failures and
+authentication failure recovery is flawed. The resolution of the HTTPCLIENT-213 did
+appear possible without a better approach than the one based on AuthScheme#getID.
+
+On top of that authentication logic got quite messy with the series of attempts
+to fix breakages in complex authentication schemes (the latest being NTLM proxy
++ basic host fix) 
+
+The patch I am about to attach is an attempt to address all the shortcomings
+mentioned above. It builds upon my previous patch that enabled authentication
+schemes to maintain authentication state and presents a complete redesign of the
+existing HTTP authentication framework.
+
+Basically there's no authentication code left untouched, so please do take a
+closer look. Critique, comments, suggestions welcome.
+
+Oleg

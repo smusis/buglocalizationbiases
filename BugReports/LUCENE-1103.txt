@@ -1,0 +1,16 @@
+WikipediaTokenizer
+
+
+
+Description:
+I have extended StandardTokenizer to recognize Wikipedia syntax and mark tokens with certain attributes.  It isn't necessarily complete, but it does a good enough job for it to be consumed and improved by others.
+
+It sets the Token.type() value depending on the Wikipedia syntax (links, internal links, bold, italics, etc.) based on my pass at http://en.wikipedia.org/wiki/Wikipedia:Tutorial
+
+I have only tested it with the benchmarking EnwikiDocMaker wikipedia stuff and it seems to do a decent job.
+
+Caveats:  I am not sure how to best handle testing, since the content is licensed under GNU Free Doc License, I believe I can't copy and paste a whole document into the unit test.  I have hand coded one doc and have another one that just generally runs over the benchmark Wikipedia download.
+
+One more question is where to put it.  It could go in analysis, but the tests at least will have a dependency on Benchmark.  I am thinking of adding a new contrib/wikipedia where this could grow to have other wikipedia things (perhaps we would move EnwikiDocMaker there????) and reverse the dependency on Benchmark.
+
+I will post a patch over the next few days.

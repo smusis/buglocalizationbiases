@@ -1,0 +1,6 @@
+Remove deprecated classes in jackrabbit-webdav and the corresponding impls in jcr-server
+
+
+
+Description:
+

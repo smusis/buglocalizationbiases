@@ -1,0 +1,9 @@
+Manage Lucene FieldCaches per index segment
+
+
+
+Description:
+Jackrabbit uses an IndexSearcher which searches on a single IndexReader which is most likely to be an instance of CachingMultiReader. On every search that does sorting or range queries a FieldCache is populated and associated with this instance of a CachingMultiReader. On successive queries which operate on this CachingMultiReader you will get a tremendous speedup for queries which can reuse  those associated FieldCache instances.
+The problem is that Jackrabbit creates a new CachingMultiReader _everytime_ one of the underlying indexes are modified. This means if you just change _one_ item in the repository you will need to rebuild all those FieldCaches because the existing FieldCaches are associated with the old instance of CachingMultiReader.
+This does not only lead to slow search response times for queries which contains range queries or are sorted by a field but also leads to massive memory consumption (depending on the size of your indexes) because there might be multiple instances of CachingMultiReaders in use if you have a scenario where a lot of queries and item modifications are executed concurrently.
+The goal is to keep those FieldCaches as long as possible.

@@ -1,0 +1,15 @@
+Indexing rules inheritance doesn't work
+
+
+
+Description:
+Indexing rules are supposed to be inherited by children node types.
+In org.apache.jackrabbit.core.query.lucene.IndexingConfigurationImpl.init, rules are registered for the declared node type and all its children. However, as the rule's node type is still the original one, the rule gets rejected in org.apache.jackrabbit.core.query.lucene.IndexingConfigurationImpl$IndexingRule.appliesTo.
+
+One simple solution would be to register not the original rule, but a copy where the original node type has been replaced by the child one.
+
+Please find corrected class attached.
+
+Sincerely,
+
+Stéphane

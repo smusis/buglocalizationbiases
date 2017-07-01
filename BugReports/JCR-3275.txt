@@ -1,0 +1,17 @@
+Audit log
+
+
+
+Description:
+JCR-2031 added the user name and path in debug logs for audit purposes. There are some problems with the fix that I had outlined in the comments for JCR-2031 and provided a patch. Additionally, it would use useful to add an update counter and size information to the debug log as well. Something like this:
+
+17.03.2009 14:43:37 [1] 18216140 admin@/apps/acme/templates/contentpage/thumbnail.png (12343) 
+17.03.2009 14:43:37 [2] 18216141 admin@/apps/acme/templates/contentpage/my.png (123) 
+17.03.2009 14:43:37 [3] 18216142 admin@/apps/acme/templates/contentpage/blah.png (1423) 
+17.03.2009 14:43:37 [4] 18216143 admin@/apps/acme/templates/contentpage/test.png (123423) 
+17.03.2009 14:43:37 [5] 18216144 admin@/apps/acme/templates/contentpage/test2.png (123423) 
+
+<date> <time> [<counter>] <txid> <userid>@<path> (<size>)
+
+We should also think about whether we want this log as part of regular jackrabbit log or in a separate audit log. 
+

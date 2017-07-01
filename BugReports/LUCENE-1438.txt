@@ -1,0 +1,25 @@
+StandardTokenizer splits host names with hyphens into multiple tokens
+
+
+
+Description:
+
+StandardTokenizer does not recognize host names with hyphens as a single HOST token. Specifically "www.m-w.com" is tokenized as "www.m" and "w.com", both of "<HOST>" type.
+
+StandardTokenizer should instead output a single HOST token for "www.m-w.com", since hyphens are a legitimate character in DNS host names.
+
+We've a local fix to the grammar file which also required us to significantly simplify the NUM type to get the behavior we needed for host names.
+
+here's a junit test for the desired behavior;
+
+	public void testWithHyphens() throws Exception {
+		final String host = "www.m-w.com";
+		final StandardTokenizer tokenizer = new StandardTokenizer(
+				new StringReader(host));
+		final Token token = new Token();
+		tokenizer.next(token);
+		assertEquals("<HOST>", token.type());
+		assertEquals("www.m-w.com", token.term());
+	}
+
+

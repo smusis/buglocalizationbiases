@@ -1,0 +1,7 @@
+ALLOW_CIRCULAR_REDIRECTS has no effect if references include query string
+
+
+
+Description:
+ALLOW_CIRCULAR_REDIRECTS parameter in HttpClientParameters has no effect if
+circular reference contains in URL parameters.

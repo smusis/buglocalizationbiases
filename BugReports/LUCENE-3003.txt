@@ -1,0 +1,42 @@
+Move UnInvertedField into Lucene core
+
+
+
+Description:
+Solr's UnInvertedField lets you quickly lookup all terms ords for a
+given doc/field.
+
+Like, FieldCache, it inverts the index to produce this, and creates a
+RAM-resident data structure holding the bits; but, unlike FieldCache,
+it can handle multiple values per doc, and, it does not hold the term
+bytes in RAM.  Rather, it holds only term ords, and then uses
+TermsEnum to resolve ord -> term.
+
+This is great eg for faceting, where you want to use int ords for all
+of your counting, and then only at the end you need to resolve the
+"top N" ords to their text.
+
+I think this is a useful core functionality, and we should move most
+of it into Lucene's core.  It's a good complement to FieldCache.  For
+this first baby step, I just move it into core and refactor Solr's
+usage of it.
+
+After this, as separate issues, I think there are some things we could
+explore/improve:
+
+  * The first-pass that allocates lots of tiny byte[] looks like it
+    could be inefficient.  Maybe we could use the byte slices from the
+    indexer for this...
+
+  * We can improve the RAM efficiency of the TermIndex: if the codec
+    supports ords, and we are operating on one segment, we should just
+    use it.  If not, we can use a more RAM-efficient data structure,
+    eg an FST mapping to the ord.
+
+  * We may be able to improve on the main byte[] representation by
+    using packed ints instead of delta-vInt?
+
+  * Eventually we should fold this ability into docvalues, ie we'd
+    write the byte[] image at indexing time, and then loading would be
+    fast, instead of uninverting
+

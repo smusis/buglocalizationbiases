@@ -1,0 +1,36 @@
+GetMethod.java checks the "used" flag which cannot be set at this time
+
+
+
+Description:
+GetMethod.getResponseBodyAsStream calls HttpMethodBase.checkUsed, which asserts
+the flag "used" is "true". But at this time, "used" cannot be true, as "used" is
+set to true in HttpMethodBase.processRequest, two lines after readResponse is
+called (which in turn calls readResponseBody / readResponseBodyAsStream).
+
+Maybe "requestSent" is the flag which should be checked instead of "used"?
+
+My stack trace: (fragment)
+
+java.lang.IllegalStateException: Not Used.
+        at
+org.apache.commons.httpclient.HttpMethodBase.checkUsed(HttpMethodBase.java:1642)
+        at
+org.apache.commons.httpclient.methods.GetMethod.getResponseBodyAsStream(GetMethod.java:309)
+        at
+org.apache.commons.httpclient.methods.GetMethod.readResponseBody(GetMethod.java:428)
+        at
+org.apache.commons.httpclient.HttpMethodBase.readResponse(HttpMethodBase.java:1893)
+        at
+org.apache.commons.httpclient.HttpMethodBase.processRequest(HttpMethodBase.java:2496)
+        at
+org.apache.commons.httpclient.HttpMethodBase.execute(HttpMethodBase.java:1062)
+        at
+org.apache.commons.httpclient.HttpClient.executeMethod(HttpClient.java:599)
+        at
+org.apache.commons.httpclient.HttpClient.executeMethod(HttpClient.java:497)
+        at
+org.apache.webdav.lib.WebdavResource.getMethodData(WebdavResource.java:2227)
+        at
+org.apache.webdav.lib.WebdavResource.getMethodData(WebdavResource.java:2206)
+[...]

@@ -1,0 +1,15 @@
+Make TrieRange completely independent from Document/Field with TokenStream of prefix encoded values
+
+
+
+Description:
+TrieRange has currently the following problem:
+- To add a field, that uses a trie encoding, you can manually add each term to the index or use a helper method from TrieUtils. The helper method has the problem, that it uses a fixed field configuration
+- TrieUtils currently creates per default a helper field containing the lower precision terms to enable sorting (limitation of one term/document for sorting)
+- trieCodeLong/Int() creates unnecessarily String[] and char[] arrays that is heavy for GC, if you index lot of numeric values. Also a lot of char[] to String copying is involved.
+
+This issue should improve this:
+- trieCodeLong/Int() returns a TokenStream. During encoding, all char[] arrays are reused by Token API, additional String[] arrays for the encoded result are not created, instead the TokenStream enumerates the trie values.
+- Trie fields can be added to Documents during indexing using the standard API: new Field(name,TokenStream,...), so no extra util method needed. By using token filters, one could also add payload and so and customize everything.
+
+The drawback is: Sorting would not work anymore. To enable sorting, a (sub-)issue can extend the FieldCache to stop iterating the terms, as soon as a lower precision one is enumerated by TermEnum. I will create a "hack" patch for TrieUtils-use only, that uses a non-checked Exceptionin the Parser to stop iteration. With LUCENE-831, a more generic API for this type can be used (custom parser/iterator implementation for FieldCache). I will attach the field cache patch (with the temporary solution, until FieldCache is reimplemented) as a separate patch file, or maybe open another issue for it.

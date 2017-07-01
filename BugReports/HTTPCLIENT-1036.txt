@@ -1,0 +1,10 @@
+StringBody has incorrect default for characterset
+
+
+
+Description:
+StringBody defaults to Charset.defaultCharset() if the charset is not provided.
+
+This means that the default depends on the current host.
+
+The default should be US-ASCII (as was the case with StringPart in Commons HttpClient 3.1).

@@ -1,0 +1,12 @@
+Inline nested jars in OSGi bundles
+
+
+
+Description:
+Eclipse doesn't support bundles with nested jars (https://bugs.eclipse.org/bugs/show_bug.cgi?id=111238). The workaround is to inline the contents of the nested jars. This is a simple fix that shouldn't impact non-Eclipse users:
+
+pom.xml
+===================================================================
+- <Embed-Dependency>*;scope=compile|runtime;inline=false</Embed-Dependency>
++ <Embed-Dependency>*;scope=compile|runtime;inline=true</Embed-Dependency>
+

@@ -1,0 +1,11 @@
+wildcardquery rewrite improvements
+
+
+
+Description:
+wildcardquery has logic to rewrite to termquery if there is no wildcard character, but
+* it needs to pass along the boost if it does this
+* if the user asked for a 'constant score' rewriteMethod, it should rewrite to a constant score query for consistency.
+
+additionally, if the query is really a prefixquery, it would be nice to rewrite to prefix query.
+both will enumerate the same number of terms, but prefixquery has a simpler comparison function.

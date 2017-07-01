@@ -1,0 +1,32 @@
+Logger (Category) names don't follow common pattern
+
+
+
+Description:
+The Wire class uses two loggers named unexpected. The "org.apache.commons."
+prefix is missing - so you can't mute all debug level statements with a
+one-liner in you log4j.properties for example:
+
+  log4j.logger.org.apache.commons.httpclient INFO
+
+You have to add this, too:
+
+  log4j.logger.httpclient INFO
+
+Please prepend the "org.apache.commons." before both names.
+
+Cheers,
+Christian
+
+<code>
+class Wire {
+
+    public static Wire HEADER_WIRE = new
+Wire(LogFactory.getLog("httpclient.wire.header"));
+    
+    public static Wire CONTENT_WIRE = new
+Wire(LogFactory.getLog("httpclient.wire.content"));
+
+</code>
+
+http://svn.apache.org/viewcvs.cgi/jakarta/commons/proper/httpclient/trunk/src/java/org/apache/commons/httpclient/Wire.java?rev=155418&view=markup

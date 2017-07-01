@@ -1,0 +1,6 @@
+CharReader should delegate reset/mark/markSupported
+
+
+
+Description:
+The final class CharReader should delegate reset/mark/markSupported to its wrapped reader. Otherwise clients will get "reset() not supported" exception.

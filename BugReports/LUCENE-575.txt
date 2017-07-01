@@ -1,0 +1,11 @@
+SpellChecker min score is increased by time
+
+
+
+Description:
+The minimum score, an instance variable, is modified in a search. That is wrong, since it makes it 1. thread unsafe and 2. not working. 
+
+Lucky enought it is only used from the one and same method call, so I simply compied the instance variable to a local method variable.
+
+        float min = this.min; 
+

@@ -1,0 +1,11 @@
+contrib/benchmark assumes Locale.US for parsing dates in Reuters collection
+
+
+
+Description:
+SimpleDateFormat used for parsing dates in Reuters documents is instantiated without specifying a locale. So it is using the default locale. If that happens to be US, it will work. But for another locale a parse exception is likely.
+
+Affects both StandardBenchmarker and ReutersDocMaker.
+
+Fix is trivial - specify Locale.US for SimpleDateFormat's constructor.
+

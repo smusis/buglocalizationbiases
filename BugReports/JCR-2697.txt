@@ -1,0 +1,12 @@
+Add support for encrpted db password in repository.xml
+
+
+
+Description:
+Basically this is same to the issue https://issues.apache.org/jira/browse/JCR-2673. I can not reopen JCR-2673, so I filed a new one instead. 
+
+The reason for this jira is because for a lot of companies it is not allowed to store password in a clear text. 
+
+Sorry, I dont know how this can be implemented yet. But I hope at least the requirement is clear. 
+
+Thanks.

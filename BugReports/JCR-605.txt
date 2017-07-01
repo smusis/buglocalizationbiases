@@ -1,0 +1,24 @@
+Error when registering node types on virgin repository
+
+
+
+Description:
+When a node type is registered on a repository that has never been started before an error is written to the log:
+
+26.10.2006 10:36:02 *ERROR* [main] VirtualNodeTypeStateManager: Unable to index new nodetype: javax.jcr.ItemNotFoundException (VirtualNodeTypeStateManager.java, line 159)
+
+Steps to reproduce:
+
+> maven test:clean
+> cp applications/test/repository/namespaces/ns_re.properties.install applications/test/repository/namespaces/ns_re.properties
+> cp applications/test/repository/nodetypes/custom_nodetypes.xml.install applications/test/repository/nodetypes/custom_nodetypes.xml
+
+Run test case o.a.j.init.NodeTypeData
+
+It seems that the workspace initialization creates node states for jcr:system and a child node jcr:nodeTypes. The latter however is overlayed by a virtual node state provided by the VirtualNodeTypeStateProvider.
+
+In case of an initial startup, the jcr:nodeTypes node is cached on creation and is not overlayed by the virtual twin from the VirtualNodeTypeStateProvider.
+
+IMO the jcr:nodeTypes node state shouldn't have been created in the first place because it is overlayed anyway. The workspace initialization routine should only create a child node entry in the jcr:system node state but no actual child node state for that entry.
+
+Opinions?

@@ -1,0 +1,6 @@
+make NamespaceContext#getPrefix(java.lang.String) iterative instead of recursive
+
+
+
+Description:
+Currently the method org.apache.jackrabbit.core.xml.NamespaceContext#getPrefix(java.lang.String) uses recursion. For very large XML files (50 MB Magnolia website exports) this causes a stack overflow. The method can easily be rewritten using iteration.

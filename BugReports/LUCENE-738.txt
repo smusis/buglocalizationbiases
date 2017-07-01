@@ -1,0 +1,14 @@
+read/write .del as d-gaps when the deleted bit vector is sufficiently sparse
+
+
+
+Description:
+.del file of a segment maintains info on deleted documents in that segment. The file exists only for segments having deleted docs, so it does not exists for newly created segments (e.g. resulted from merge). Each time closing an index reader that deleted any document, the .del file is rewritten. In fact, since the lock-less commits change a new (generation of) .del file is created in each such occasion.
+
+For small indexes there is no real problem with current situation. But for very large indexes, each time such an index reader is closed, creating such new bit-vector seems like unnecessary overhead in cases that the bit vector is sparse (just a few docs were deleted). For instance, for an index with a segment of 1M docs, the sequence: {open reader; delete 1 doc from that segment; close reader;} would write a file of ~128KB. Repeat this sequence 8 times: 8 new files of total size of 1MB are written to disk.
+
+Whether this is a bottleneck or not depends on the application deletes pattern, but for the case that deleted docs are sparse, writing just the d-gaps would save space and time. 
+
+I have this (simple) change to BitVector running and currently trying some performance tests to, yet, convince myself on the worthiness of this.
+
+

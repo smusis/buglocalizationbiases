@@ -1,0 +1,23 @@
+Change defaultValues format in NodeTypes XML to jcr value
+
+
+
+Description:
+currently, the defaultValues serialization in the nodetypes.xml is the only one that uses internal value serialization, rather than the jcr string serialization.
+eg:
+
+<propertyDef name="jcr:requiredPrimaryTypes" ..... >
+  <defaultValues>
+    <defaultValue>{http://www.jcp.org/jcr/nt/1.0}base</defaultValue>
+  </defaultValues>
+</propertyDef>
+
+this in not very handy, when the custom_nodetypes.xml should be written automatically.
+i suggest to change the serialization to use the jcr value one:
+
+<propertyDef name="jcr:requiredPrimaryTypes" ..... >
+  <defaultValues>
+    <defaultValue>nt:base</defaultValue>
+  </defaultValues>
+</propertyDef>
+

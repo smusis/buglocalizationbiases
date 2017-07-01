@@ -1,0 +1,7 @@
+Implement a cache to perform real request only when needed
+
+
+
+Description:
+Browsers may cache received content according to the values of different
+response headers. It would be great if HttpClient could do the same.

@@ -1,0 +1,31 @@
+BlockJoinQuery/Collector
+
+
+
+Description:
+I created a single-pass Query + Collector to implement nested docs.
+The approach is similar to LUCENE-2454, in that the app must index
+documents in "join order", as a block (IW.add/updateDocuments), with
+the parent doc at the end of the block, except that this impl is one
+pass.
+
+Once you join at indexing time, you can take any query that matches
+child docs and join it up to the parent docID space, using
+BlockJoinQuery.  You then use BlockJoinCollector, which sorts parent
+docs by provided Sort, to gather results, grouped by parent; this
+collector finds any BlockJoinQuerys (using Scorer.visitScorers) and
+retains the child docs corresponding to each collected parent doc.
+
+After searching is done, you retrieve the TopGroups from a provided
+BlockJoinQuery.
+
+Like LUCENE-2454, this is less general than the arbitrary joins in
+Solr (SOLR-2272) or parent/child from ElasticSearch
+(https://github.com/elasticsearch/elasticsearch/issues/553), since you
+must do the join at indexing time as a doc block, but it should be
+able to handle nested joins as well as joins to multiple tables,
+though I don't yet have test cases for these.
+
+I put this in a new Join module (modules/join); I think as we
+refactor join impls we should put them here.
+

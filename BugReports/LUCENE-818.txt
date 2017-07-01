@@ -1,0 +1,18 @@
+IndexWriter should detect when it's used after being closed
+
+
+
+Description:
+Spinoff from this thread on java-user:
+
+    http://www.gossamer-threads.com/lists/lucene/java-user/45986
+
+If you call addDocument on IndexWriter after it's closed you'll hit a
+hard-to-explain NullPointerException (because the RAMDirectory was
+closed).  Before 2.1, apparently you won't hit any exception and the
+IndexWrite will keep running but will have released it's write lock (I
+think).
+
+I plan to fix IndexWriter methods to throw an IllegalStateException if
+it has been closed.
+

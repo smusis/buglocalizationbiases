@@ -1,0 +1,10 @@
+Use of google-code-prettify for Lucene/Solr Javadoc
+
+
+
+Description:
+My company, RONDHUIT uses google-code-prettify (Apache License 2.0) in Javadoc for syntax highlighting:
+
+http://www.rondhuit-demo.com/RCSS/api/com/rondhuit/solr/analysis/JaReadingSynonymFilterFactory.html
+
+I think we can use it for Lucene javadoc (java sample code in overview.html etc) and Solr javadoc (Analyzer Factories etc) to improve or simplify our life.

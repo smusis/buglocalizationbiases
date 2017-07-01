@@ -1,0 +1,103 @@
+HttpMethodDirector fails when redirecting to a encoded URL location
+
+
+
+Description:
+When HttpMethodDirector handles the case of redirecting the incoming connection to the location specified in the header of the http caller method, if this location has any "special" charset encoding (extended charsets like ISO 8859-1,etc.) the redirection fails this way:
+
+dd-MMM-YYYY hh:mm:ss org.apache.commons.httpclient.HttpMethodDirector processRedirectResponse
+WARNING: Redirected location 'http://www.anyCharsetEncodedUrl.ko' is malformed
+
+
+You can test it using this class:
+
+
+public class SimpleHttpTestNotWorking {
+
+	public static int urlStatus(String pUrl) throws org.apache.commons.httpclient.HttpException,java.io.IOException{
+		org.apache.commons.httpclient.HttpClient client = new org.apache.commons.httpclient.HttpClient();
+		org.apache.commons.httpclient.HttpMethod method = new org.apache.commons.httpclient.methods.GetMethod(pUrl);
+		return client.executeMethod(method);
+	}
+		
+	public static void main(String[] args) {
+		try{
+			String url = "http://www.dipualba.es/municipios/F%E9rez"; //known problematic URL
+			System.out.println("Return code for ["+url+"]: "+SimpleHttpTestWorking.urlStatus(url));
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+	}
+}
+
+
+What I've done to solve it for my particular case has been:
+
+
+1) In the requester side, I've modified the calling:
+
+
+public class SimpleHttpTestWorking {
+
+	public static int urlStatus(String pUrl) throws org.apache.commons.httpclient.HttpException,java.io.IOException{
+		org.apache.commons.httpclient.HttpClient client = new org.apache.commons.httpclient.HttpClient();
+		org.apache.commons.httpclient.HttpMethod method;
+	    String encoding = (String)client.getParams().getParameter("http.protocol.content-charset");
+	    client.getParams().setParameter("http.protocol.element-charset", encoding);
+	    try{
+	    	method = new org.apache.commons.httpclient.methods.GetMethod(pUrl);
+	    }catch(IllegalArgumentException iae){
+		    try{
+		    	org.apache.commons.httpclient.URI uri = new org.apache.commons.httpclient.URI(pUrl,true);
+		    	method = new org.apache.commons.httpclient.methods.GetMethod(uri.getURI());
+		    }catch(org.apache.commons.httpclient.URIException ue){
+		    	org.apache.commons.httpclient.URI uri = new org.apache.commons.httpclient.URI(pUrl,false,encoding);
+			    method = new org.apache.commons.httpclient.methods.GetMethod(uri.getEscapedURI());
+		    }		    	
+	    }		
+		return client.executeMethod(method);
+	}
+			
+	public static void main(String[] args) {
+		try{
+			String url = "http://www.dipualba.es/municipios/Férez"; //the same problematic URL
+			System.out.println("Return code for ["+url+"]: "+SimpleHttpTestWorking.urlStatus(url));
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+	}
+}
+
+
+2) In org.apache.commons.httpclient.HttpMethodDirector.processRedirectResponse(HttpMethod method) , I've replaced
+
+
+...
+redirectUri = new URI(location, true);
+...
+
+
+for the following code:
+
+
+...
+/*
+ * [2006-11-14] 
+ * Handles redirections to encoded URI locations 
+ * (only if URI and Connection encoding charset has been properly setted)
+ * */ 
+try{
+	redirectUri = new URI(location, true);
+}catch(URIException ue){
+	Object encoding = this.conn.getParams().getParameter("http.protocol.element-charset");
+	if(encoding != null){
+		redirectUri = new URI(location, false, (String)encoding);
+	}else{
+		throw ue;
+	}
+}
+...
+
+
+
+Hope it helps!

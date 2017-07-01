@@ -1,0 +1,15 @@
+DocValues cleanup: constructor & getInnerArray()
+
+
+
+Description:
+DocValues constructor taking a numDocs parameter is not very clean.
+Get rid of this.
+
+Also, it's optional getInnerArray() method is not very clean.
+This is necessary for better testing, but currently tests will fail if it is not implemented.
+Modify it to throw UnSupportedOp exception (rather than returning an empty array).
+Modify tests to not fail but just warn if the tested iml does not override it.
+
+These changes should make it easier to implement DocValues for other ValueSource's, e.g. above payloads, with or without caching.
+

@@ -1,0 +1,11 @@
+SampleComparable doesn't work well in contrib/remote tests
+
+
+
+Description:
+As discovered in LUCENE-1749, when using identical instances of a SortComparator you get multiple entries in the FieldCache.
+
+demonstrating this bug currently requires the patches in LUCENE-1749.
+
+See markmiller's comment here...
+https://issues.apache.org/jira/browse/LUCENE-1749?focusedCommentId=12735190#action_12735190

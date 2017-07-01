@@ -1,0 +1,21 @@
+NullPointerException in ItemState
+
+
+
+Description:
+The following happens quite regularly when multiple threads are adding, retrieving and removing nodes simultaneously. Looking at the code of the pull method, this seems due to under-synchronization somewhere as overlayedState was tested at line 153 for null.
+
+java.lang.NullPointerException
+        at org.apache.jackrabbit.core.state.ItemState.pull(ItemState.java:156)
+        at org.apache.jackrabbit.core.state.LocalItemStateManager.stateModified(LocalItemStateManager.java:421)
+        at org.apache.jackrabbit.core.state.StateChangeDispatcher.notifyStateModified(StateChangeDispatcher.java:85)
+        at org.apache.jackrabbit.core.state.SharedItemStateManager.stateModified(SharedItemStateManager.java:434)
+        at org.apache.jackrabbit.core.state.ItemState.notifyStateUpdated(ItemState.java:241)
+        at org.apache.jackrabbit.core.state.ChangeLog.persisted(ChangeLog.java:271)
+        at org.apache.jackrabbit.core.state.SharedItemStateManager$Update.end(SharedItemStateManager.java:741)
+        at org.apache.jackrabbit.core.state.SharedItemStateManager.update(SharedItemStateManager.java:937)
+        at org.apache.jackrabbit.core.state.LocalItemStateManager.update(LocalItemStateManager.java:327)
+        at org.apache.jackrabbit.core.state.XAItemStateManager.update(XAItemStateManager.java:313)
+        at org.apache.jackrabbit.core.state.LocalItemStateManager.update(LocalItemStateManager.java:303)
+        at org.apache.jackrabbit.core.state.SessionItemStateManager.update(SessionItemStateManager.java:307)
+        at org.apache.jackrabbit.core.ItemImpl.save(ItemImpl.java:1374)

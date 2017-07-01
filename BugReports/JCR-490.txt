@@ -1,0 +1,6 @@
+TCK: ExportDocViewTest.exportValues fails on empty multivalued property
+
+
+
+Description:
+In ExportDocViewTest.exportValues, line 988 fails if the property being exported is empty (array of size 0, which is allowed by the spec) since there is no space to remove. This code should be skipped if the number of values is zero.

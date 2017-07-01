@@ -1,0 +1,23 @@
+JCA project tests assume Windows paths
+
+
+
+Description:
+The org.apache.jackrabbit.jca package in the top-level jca directory has unit tests that assume a Windows environment. It should be fixed to work in any environment. The best solution may be to use a test repository configuration file in the current directory.
+
+The following is the start of the test case failures that I got running on MacOS X.
+
+Testsuite: org.apache.jackrabbit.jca.test.ConnectionFactoryTest
+Tests run: 3, Failures: 0, Errors: 3, Time elapsed: 0.778 sec
+
+Testcase: testAllocation(org.apache.jackrabbit.jca.test.ConnectionFactoryTest): Caused an ERROR
+org.apache.jackrabbit.core.config.ConfigurationException: Configuration file could not be read.: /Users/mark/Documents/school/whisper/jackrabbit/jackrabbit-trunk/jca/c:\dev\jcr\repository.xml (N
+o such file or directory): /Users/mark/Documents/school/whisper/jackrabbit/jackrabbit-trunk/jca/c:\dev\jcr\repository.xml (No such file or directory)
+org.apache.jackrabbit.core.config.ConfigurationException: Configuration file could not be read.: /Users/mark/Documents/school/whisper/jackrabbit/jackrabbit-trunk/jca/c:\dev\jcr\repository.xml (N
+o such file or directory): /Users/mark/Documents/school/whisper/jackrabbit/jackrabbit-trunk/jca/c:\dev\jcr\repository.xml (No such file or directory)
+        at org.apache.jackrabbit.jca.JCAManagedConnectionFactory.createRepository(JCAManagedConnectionFactory.java:278)
+        at org.apache.jackrabbit.jca.JCAManagedConnectionFactory.createConnectionFactory(JCAManagedConnectionFactory.java:116)
+        at org.apache.jackrabbit.jca.JCAManagedConnectionFactory.createConnectionFactory(JCAManagedConnectionFactory.java:108)
+        at org.apache.jackrabbit.jca.test.ConnectionFactoryTest.testAllocation(ConnectionFactoryTest.java:43)
+        at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+

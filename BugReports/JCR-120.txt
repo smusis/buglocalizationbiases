@@ -1,0 +1,61 @@
+Jackrabbit fails to shutdown properly when tomcat is shutting down
+
+
+
+Description:
+This is the same issue already discudded in http://issues.apache.org/jira/browse/JCR-57
+
+The problem only occurs when Jackrabbit is deployed in the WEB-INF/lib directory of a web application in Tomcat.
+During dispose() jackrabbit tries to instantiate a few objects from classes which were not previously loaded by the webapp classloader, but tomcat doesn't allow to load new classes while shutting down.
+This causes the repository not to be closed properly, and an annoying set of stack traces are written to the log.
+
+It seems that there are only two classes which are loaded in this situation: org.apache.jackrabbit.core.observation.EventListenerIteratorImpl and org.apache.jackrabbit.core.fs.FileSystemPathUtil. This is the log from the server standard output:
+
+org.apache.catalina.loader.WebappClassLoader loadClass
+INFO: Illegal access: this web application instance has been stopped already.  Could not load org.apache.jackrabbit.core.observation.EventListenerIteratorImpl.  The eventual following stack trace is caused by an error thrown for debugging purposes as well as to attempt to terminate the thread which caused the illegal access, and has no functional impact.
+[repeaded more times at each shutdown]
+
+org.apache.catalina.loader.WebappClassLoader loadClass
+INFO: Illegal access: this web application instance has been stopped already.  Could not load org.apache.jackrabbit.core.fs.FileSystemPathUtil.  The eventual following stack trace is caused by an error thrown for debugging purposes as well as to attempt to terminate the thread which caused the illegal access, and has no functional impact.
+
+
+A quick fix is to force preloading of classes normally needed only during shutdown, simply adding a static block to caller classes. The following patch makes tomcat happy, causing classes to be loaded by the webapp classloaded when still allowed  (probably not really elegant, but perfectly working...)
+
+
+
+
+Index: org/apache/jackrabbit/core/fs/FileSystemResource.java
+===================================================================
+--- src\java\org\apache\jackrabbit\core\fs\FileSystemResource.java	(revision 169503)
++++ src\java\org\apache\jackrabbit\core\fs\FileSystemResource.java	(working copy)
+@@ -30,6 +30,11 @@
+ 
+     protected final String path;
+ 
++    static {
++        // preload FileSystemPathUtil to prevent classloader issues during shutdown
++        FileSystemPathUtil.class.hashCode();
++    }
++
+     /**
+      * Creates a new <code>FileSystemResource</code>
+      *
+Index: org/apache/jackrabbit/core/observation/ObservationManagerImpl.java
+===================================================================
+--- src\java\org\apache\jackrabbit\core\observation\ObservationManagerImpl.java	(revision 169503)
++++ src\java\org\apache\jackrabbit\core\observation\ObservationManagerImpl.java	(working copy)
+@@ -54,6 +54,11 @@
+      */
+     private final ObservationManagerFactory obsMgrFactory;
+ 
++    static {
++        // preload EventListenerIteratorImpl to prevent classloader issues during shutdown
++        EventListenerIteratorImpl.class.hashCode();
++    }
++
+     /**
+      * Creates an <code>ObservationManager</code> instance.
+      *
+
+
+

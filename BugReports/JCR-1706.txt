@@ -1,0 +1,9 @@
+Fix unexpected behavior of Text.getName()
+
+
+
+Description:
+Text.getName() and variants does return an empty string, if the given path is already a name. eg:
+
+Text.getName("foo") returns "" and not "foo" as one would expect for relative paths.
+suggest to change this.

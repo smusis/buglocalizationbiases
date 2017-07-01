@@ -1,0 +1,13 @@
+LuceneDictionary skips first word in enumeration
+
+
+
+Description:
+The current code for LuceneDictionary will always skip the first word of the TermEnum. The reason is that it doesn't initially retrieve TermEnum.term - its first call is to TermEnum.next, which moves it past the first term (line 76).
+To see this problem cause a failure, add this test to TestSpellChecker:
+similar = spellChecker.suggestSimilar("eihgt",2);
+      assertEquals(1, similar.length);
+      assertEquals(similar[0], "eight");
+
+Because "eight" is the first word in the index, it will fail.
+

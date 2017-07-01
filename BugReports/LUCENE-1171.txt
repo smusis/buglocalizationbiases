@@ -1,0 +1,16 @@
+Make DocumentsWriter more robust on hitting OOM
+
+
+
+Description:
+I've been stress testing DocumentsWriter by indexing wikipedia, but not
+giving enough memory to the JVM, in varying heap sizes to tickle the
+different interesting cases.  Sometimes DocumentsWriter can deadlock;
+other times it will hit a subsequent NPE or AIOOBE or assertion
+failure.
+
+I've fixed all the cases I've found, and added some more asserts.  Now
+it just produces plain OOM exceptions.  All changes are contained to
+DocumentsWriter.java.
+
+All tests pass.  I plan to commit in a day or two!

@@ -1,0 +1,7 @@
+Introduce cache for frequently used index lookups
+
+
+
+Description:
+Some queries heavily use hierarchy relations to resolve location steps. E.g. ChildAxisQuery or DescendantSelfAxisQuery. Currently those hierarchy relations are looked up from the native lucene index which is not very efficient. The index should maintain a cache of frequently used hierarchy lookups. 
+That is, calls like IndexReader.termDocs() on terms with field: UUID or PARENT

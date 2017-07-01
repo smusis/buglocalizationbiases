@@ -1,0 +1,11 @@
+WordListLoader.java should be able to read stopwords from a Reader
+
+
+
+Description:
+WordListLoader should be able to read the stopwords from a Reader.
+
+This would (for example) allow stopword lists to be stored as a resource in the
+jar file of a Lucene application.
+
+Diff is attached.

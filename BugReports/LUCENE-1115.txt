@@ -1,0 +1,40 @@
+Some small fixes to contrib/benchmark
+
+
+
+Description:
+I've fixed a few small issues I've hit in contrib/benchmark.
+
+First, this alg was only doing work on the first round.  All
+subsequent rounds immediately finished:
+
+{code}
+analyzer=org.apache.lucene.analysis.standard.StandardAnalyzer
+doc.maker=org.apache.lucene.benchmark.byTask.feeds.LineDocMaker
+work.dir = /lucene/work
+docs.file=work/reuters.lines.txt
+doc.maker.forever=false
+directory=FSDirectory
+doc.add.log.step=3000
+
+{ "Rounds"
+  ResetSystemErase
+  CreateIndex
+  { "AddDocs" AddDoc > : *
+  CloseIndex
+  NewRound
+} : 3
+{code}
+
+I think this is because we are failing to reset "exhausted" to false
+in PerfTask.doLogic(), so I added that.  Plus I had to re-open the
+file in LineDocMaker.
+
+Second, I made a small optimization to not call updateExhausted unless
+any of the child tasks are TaskSequence or ResetInputsTask (which I
+compute up-front).
+
+Finally, we were not allowing flushing by RAM and doc count, so I
+fixed the logic in Create/OpenIndexTask to set both RAMBufferSizeMB
+and MaxBufferedDocs.
+

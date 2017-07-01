@@ -1,0 +1,19 @@
+ClassDescriptor.hasIdField() fails if id is declared in upper class
+
+
+
+Description:
+org.apache.jackrabbit.ocm.mapper.model.ClassDescriptor.hasIdField() looks up only current class and not the whole hierarchy, so it fails when the id field is declared in a upper class.
+
+hasIdField should use getIdFieldDescriptor and not access idFieldDescriptor field directly, as follows :
+
+    public boolean hasIdField() {
+   		return (this.getIdFieldDescriptor() != null && this
+    				.getIdFieldDescriptor().isId());
+    }
+
+Please find patch enclosed.
+
+Sincerely yours,
+
+Stéphane Landelle

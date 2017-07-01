@@ -1,0 +1,45 @@
+Problems with BundleDbPersistenceManager getAllNodeIds
+
+
+
+Description:
+When using MySQL:
+The problem arises when the method parameter maxcount is less than the total amount of records in the bundle table.
+
+First of all I found out that mysql orders the nodeid objects different than jackrabbit does. The following test describes this idea:
+
+    public void testMySQLOrderByNodeId() throws Exception {
+        NodeId nodeId1 = new NodeId("7ff9e87c-f87f-4d35-9d61-2e298e56ac37");
+        NodeId nodeId2 = new NodeId("9fd0d452-b5d0-426b-8a0f-bef830ba0495");
+
+        PreparedStatement stmt = connection.prepareStatement("SELECT NODE_ID FROM DEFAULT_BUNDLE WHERE NODE_ID = ? OR NODE_ID = ? ORDER BY NODE_ID");
+
+        Object[] params = new Object[] { nodeId1.getRawBytes(), nodeId2.getRawBytes() };
+        stmt.setObject(1, params[0]);
+        stmt.setObject(2, params[1]);
+
+        ArrayList<NodeId> nodeIds = new ArrayList<NodeId>();
+        ResultSet resultSet = stmt.executeQuery();
+        while(resultSet.next()) {
+            NodeId nodeId = new NodeId(resultSet.getBytes(1));
+            System.out.println(nodeId);
+            nodeIds.add(nodeId);
+        }
+        Collections.sort(nodeIds);
+        for (NodeId nodeId : nodeIds) {
+            System.out.println(nodeId);
+        }
+    }
+
+Which results in the following output:
+
+7ff9e87c-f87f-4d35-9d61-2e298e56ac37
+9fd0d452-b5d0-426b-8a0f-bef830ba0495
+9fd0d452-b5d0-426b-8a0f-bef830ba0495
+7ff9e87c-f87f-4d35-9d61-2e298e56ac37
+
+
+Now the problem with the getAllNodeIds method is that it fetches an extra 10 records on top of maxcount (to avoid a problem where the first key is not the one you that is wanted). Afterwards it skips a number of records again, this time using nodeid.compareto. This compareto statement returns true unexpectedly for mysql because the code doesn't expect the mysql ordering.
+
+I had the situation where I had about 17000 records in the bundle table but consecutively getting the ids a thousand records at a time returned only about 8000 records in all.
+

@@ -1,0 +1,209 @@
+OverlappingFileLockException with JRE 1.6
+
+
+
+Description:
+Per email discussion:
+On Mon, 2007-02-26 at 10:26 +0100, Marcel Reutegger wrote:
+> > just my 2c, I didn't really investigated this issue in more detail...
+> >
+> > according to the javadoc of FileChannel.tryLock() the
+> > OverlappingFileLockException is thrown if the JVM already holds a lock on the
+> > channel.
+> >
+> > in contrast, the current check in the repository startup method primarily
+> > focuses on the situation where *two* JVMs start a repository on the same home
+> > directory.
+> >
+> > I'd say the OverlappingFileLockException is thrown because two repository
+> > instances are startup within the *same* JVM using the same repository home
+> > directory.
+> >
+> > I suggest we add a catch clause, which also covers OverlappingFileLockException
+> > in addition to IOException.
+> >
+> > regards
+> >   marcel
+> >
+> > Stefan Guggisberg wrote:
+> > > btw, afaik OverlappingFileLockException is only thrown on linux,
+> > > FileChannel#getLock on windows e.g. returns null in the same situation.
+> > >
+> > > you might want to test on a different platform to further isolate the
+> > > issue.
+> > > you could also place a breakpoint at the top of the
+> > > RepositoryImpl#acquireRepositoryLock
+> > > method, step through the code, verify the contents of your fs etc.
+> >
+>
+
+
+=== Original email
+
+On 2/19/07, Patrick Haggood <codezilla@> wrote:
+I'm using Linux, Sun Java 6 and Jackrabbit 1.3 with Derby persistance.
+I have a putNode(object) function that's giving the above error in unit
+tests.  It always fails after the second update, even when I swap tests
+(i.e. save user doc then save user).  Prior to each test, I delete the
+repository directory.
+
+Do I need to set explicit locks before/after each session.save()?
+
+*********** Unit Test
+DBConn dbc;
+
+    public SessionUtilTest(String testName) {
+        super(testName);
+        dbc = new DBConn();
+    }
+
+// Note - putUser and putDocument both use putNode after determining
+which rootnode will be used
+
+   /**
+     * Test of putUnityUser method, of class unityjsr170.jr.SessionUtil.
+     */
+    public void testPutUnityUser() {
+        System.out.println("putUnityUser");
+        UnityUser usr = usr1;
+        SessionUtil instance = dbc.getSutil();
+        String result = instance.putUnityUser(usr1);
+        assertNotNull(result);
+        usr = (UnityUser) instance.getUnityUserByID(result);
+        assertEquals(usr1.getName(),usr.getName());
+    }
+       
+    /**
+     * Test of putUnityDocument method, of class
+unityjsr170.jr.SessionUtil.
+     */
+    public void testPutUnityDocument() {
+        System.out.println("putUnityDocument");
+        UnityDocument udoc = adr1;
+        SessionUtil instance = dbc.getSutil();
+        String result = instance.putUnityDocument(udoc);   <---- File
+Lock Error
+        assertNotNull(result);
+        udoc = (UnityDocument) instance.getUnityDocumentByID(result);
+        assertEquals(adr1.getName(),udoc.getName());
+    }
+
+
+********* Here's where I setup my repository connection
+
+    public DBConn(){
+        sutil = null;
+        try {
+            rp = new TransientRepository();
+            sutil= new SessionUtil(rp);
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
+    }
+    
+    public void shutdown(){
+        sutil.closeAll();
+    }
+    
+    public SessionUtil getSutil(){
+        return sutil;
+    }
+
+****************  SessionUtil
+
+    public SessionUtil(Repository rp){
+        try {
+            session = rp.login(new
+SimpleCredentials("username","password".toCharArray()));
+            
+        } catch (LoginException ex) {
+            ex.printStackTrace();
+        } catch (RepositoryException ex) {
+            ex.printStackTrace();
+        } 
+        
+    }
+    
+    public void closeAll(){
+        try {
+            session.logout();
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            System.out.println("Error closing repository");
+        }
+    }
+    
+ // Put a node on the tree under the root node, return the uuid of the
+new or updated node
+    private String putNode(String nodetype, UnityBaseObject ubo){
+        String resultuuid =null;
+        String uname = ubo.getName();
+        String utype = ubo.getType();
+        String objectuid = ubo.getId();
+        Node pnode; //  node to add or update
+        Session ses = null;
+        try {
+            ses = getSession();
+            // Does updateable node already have node Id?
+            if (objectuid==null) {
+                Node rn = ses.getRootNode();
+                pnode = rn.addNode(utype);
+                pnode.addMixin("mix:referenceable");
+            } else{
+                // grab existing node by uuid
+                pnode = ses.getNodeByUUID(objectuid);
+            }
+            // Did we get an updateable node?
+            if (pnode!=null){
+                ubo.setId(pnode.getUUID());
+                String unityXML =
+utrans.getXMLStringFromUnityBaseObject(ubo);
+                // update all the properties
+                pnode.setProperty("name",ubo.getName());
+                pnode.setProperty("type",ubo.getType());
+                pnode.setProperty("xmldata",unityXML);
+                ses.save();
+                resultuuid = ubo.getId();
+            }
+        } catch(Exception e) {
+            e.printStackTrace();
+        } 
+        return resultuuid;
+    }
+
+    private Session getSession(){
+        return session;
+    }
+    
+
+************  repository.xml
+
+ <Workspace name="${wsp.name}">
+        <FileSystem
+class="org.apache.jackrabbit.core.fs.local.LocalFileSystem">
+            <param name="path" value="${wsp.home}"/>
+        </FileSystem>
+        <PersistenceManager
+class="org.apache.jackrabbit.core.state.db.DerbyPersistenceManager">
+            <param name="url" value="jdbc:derby:
+${wsp.home}/db;create=true"/>
+            <param name="schemaObjectPrefix" value="${wsp.name}_"/>
+        </PersistenceManager>
+        <SearchIndex
+class="org.apache.jackrabbit.core.query.lucene.SearchIndex">
+            <param name="path" value="${wsp.home}/index"/>
+            <param name="useCompoundFile" value="true"/>
+            <param name="minMergeDocs" value="100"/>
+            <param name="volatileIdleTime" value="3"/>
+            <param name="maxMergeDocs" value="100000"/>
+            <param name="mergeFactor" value="10"/>
+            <param name="bufferSize" value="10"/>
+            <param name="cacheSize" value="1000"/>
+            <param name="forceConsistencyCheck" value="false"/>
+            <param name="autoRepair" value="true"/>
+            <param name="analyzer"
+value="org.apache.lucene.analysis.standard.StandardAnalyzer"/>
+        </SearchIndex>
+    </Workspace>
+
+

@@ -1,0 +1,25 @@
+Null Pointer Exception while looking for a DavProperty that hasn't been set
+
+
+
+Description:
+Null pointer exception.
+Exception occurs because the DavPropertySet.map does not contain an expected entry: ItemResourceConstants.JCR_NAME
+
+Suggested fix: add the constant to the nameSet in RepositoryServiceImpl.java:760
+ nameSet.add(ItemResourceConstants.JCR_NAME);
+
+I tried that and it works. See stack trace at below.
+
+Exception in thread "main" java.lang.NullPointerException
+  at org.apache.jackrabbit.spi2dav.URIResolverImpl.buildPropertyId(URIResolverImpl.java:201)
+  at org.apache.jackrabbit.spi2dav.RepositoryServiceImpl.getNodeInfo(RepositoryServiceImpl.java:808)
+  at org.apache.jackrabbit.spi2dav.RepositoryServiceImpl.getItemInfos(RepositoryServiceImpl.java:834)
+  at org.apache.jackrabbit.jcr2spi.state.WorkspaceItemStateFactory.createNodeState(WorkspaceItemStateFactory.java:88)
+  at org.apache.jackrabbit.jcr2spi.state.TransientISFactory.createNodeState(TransientISFactory.java:99)
+  at org.apache.jackrabbit.jcr2spi.hierarchy.NodeEntryImpl.doResolve(NodeEntryImpl.java:959)
+  at org.apache.jackrabbit.jcr2spi.hierarchy.HierarchyEntryImpl.resolve(HierarchyEntryImpl.java:95)
+  at org.apache.jackrabbit.jcr2spi.hierarchy.HierarchyEntryImpl.getItemState(HierarchyEntryImpl.java:212)
+  at org.apache.jackrabbit.jcr2spi.ItemManagerImpl.getItem(ItemManagerImpl.java:157)
+  at org.apache.jackrabbit.jcr2spi.SessionImpl.getRootNode(SessionImpl.java:225)
+

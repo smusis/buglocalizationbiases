@@ -1,0 +1,9 @@
+TCK: more tests assuming that 'addMixin' immediately taking effect
+
+
+
+Description:
+jsr170 allows an implementation to have Node.addMixin only taking affect upon a save-call.
+
+some tests already got adjusted.
+attached patch for additional tests, that make usage of addMixin

@@ -1,0 +1,11 @@
+need to add a default constructor for Cookie
+
+
+
+Description:
+The Cookie class doesn't have a default (no argument) constructor. This is 
+causing problem for some framework which supports marshalling and unmarshalling 
+of data types. e.g. a SOAP implementation may need to do this to transfer it 
+between the SOAP server and SOAP client. It would be nice to add a default 
+constructor, as it won't break anything, follows JavaBean convention, and 
+potentially save user some trouble in the future.

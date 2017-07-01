@@ -1,0 +1,6 @@
+Extend Codec with a SegmentInfos writer / reader
+
+
+
+Description:
+I'm trying to implement a Codec that works with append-only filesystems (HDFS). It's _almost_ done, except for the SegmentInfos.write(dir), which uses ChecksumIndexOutput, which in turn uses IndexOutput.seek() - and seek is not supported on append-only output. I propose to extend the Codec interface to encapsulate also the details of SegmentInfos writing / reading. Patch to follow after some feedback ;)

@@ -1,0 +1,8 @@
+Add System.getProperty("tempDir") as final static to LuceneTestCase(J4)
+
+
+
+Description:
+Almost every test calls System.getProperty("tempDir") and some of them check the return value for null. In other cases the test simply fails from within eclipse.
+
+We should add this to LuceneTestCase(J4) as a static final constant. For enabling tests run in eclipse, we can add a fallback to ".", if the Sysprop is not defined.

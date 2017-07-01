@@ -1,0 +1,6 @@
+Moving a node while index is merged leads to inconsistent index
+
+
+
+Description:
+The IndexMerger keeps track of nodes that are deleted from the index and applies that change also to the merged index, but if the same node is added again to the index during the merge process the index becomes inconsistent.

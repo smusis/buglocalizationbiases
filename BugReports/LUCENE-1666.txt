@@ -1,0 +1,20 @@
+Constants causing NullPointerException when fetching metadata "Implementation Version" in MANIFEST
+
+
+
+Description:
+If the MANIFEST.MF file does not contain the metadata IMPLEMENTATION_VERSION, a null value is returned, causing NullPointerException during commit:
+
+Exception in thread "main" java.lang.NullPointerException
+	at org.apache.lucene.store.IndexOutput.writeString(IndexOutput.java:109)
+	at org.apache.lucene.store.IndexOutput.writeStringStringMap(IndexOutput.java:229)
+	at org.apache.lucene.index.SegmentInfo.write(SegmentInfo.java:558)
+	at org.apache.lucene.index.SegmentInfos.write(SegmentInfos.java:337)
+	at org.apache.lucene.index.SegmentInfos.prepareCommit(SegmentInfos.java:808)
+	at org.apache.lucene.index.IndexWriter.startCommit(IndexWriter.java:5319)
+	at org.apache.lucene.index.IndexWriter.prepareCommit(IndexWriter.java:3895)
+	at org.apache.lucene.index.IndexWriter.commit(IndexWriter.java:3956)
+
+This happened after having build a jar assembly using Maven, the original MANIFEST.MF of lucene jar has been overwritten, and didn't contain anynore the implementation version metadata.
+
+Path attached.

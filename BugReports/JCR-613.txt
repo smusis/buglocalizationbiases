@@ -1,0 +1,6 @@
+Implementation of a memory file system
+
+
+
+Description:
+I needed a memory file system for my test cases. A patch for a simple implementation the works well in my environment is attached

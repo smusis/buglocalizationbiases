@@ -1,0 +1,36 @@
+TestIndexWriterOnDiskFull.testAddDocumentOnDiskFull seed failure
+
+
+
+Description:
+version: trunk r1155278
+reproduce-able: always
+
+{code}
+    [junit] Testsuite: org.apache.lucene.index.TestIndexWriterOnDiskFull
+    [junit] Tests run: 1, Failures: 0, Errors: 1, Time elapsed: 0.847 sec
+    [junit] 
+    [junit] ------------- Standard Error -----------------
+    [junit] NOTE: reproduce with: ant test -Dtestcase=TestIndexWriterOnDiskFull -Dtestmethod=testAddDocumentOnDiskFull -Dtests.seed=-3cc23002ebad518d:70ae722281b31c9f:57406021f8789a22
+    [junit] NOTE: test params are: codec=RandomCodecProvider: {content=MockFixedIntBlock(blockSize=1081)}, locale=hr_HR, timezone=Atlantic/Jan_Mayen
+    [junit] NOTE: all tests run in this JVM:
+    [junit] [TestIndexWriterOnDiskFull]
+    [junit] NOTE: Linux 2.6.39-gentoo amd64/Sun Microsystems Inc. 1.6.0_26 (64-bit)/cpus=8,threads=1,free=85252968,total=125632512
+    [junit] ------------- ---------------- ---------------
+    [junit] Testcase: testAddDocumentOnDiskFull(org.apache.lucene.index.TestIndexWriterOnDiskFull):     Caused an ERROR
+    [junit] no segments* file found in MockDirWrapper(org.apache.lucene.store.RAMDirectory@65dcc2a3 lockFactory=MockLockFactoryWrapper(org.apache.lucene.store.SingleInstanceLockFactory@6e8f94)): files: [_1.cfs, _1.cfe, _0.cfe, _0.cfs]
+    [junit] org.apache.lucene.index.IndexNotFoundException: no segments* file found in MockDirWrapper(org.apache.lucene.store.RAMDirectory@65dcc2a3 lockFactory=MockLockFactoryWrapper(org.apache.lucene.store.SingleInstanceLockFactory@6e8f94)): files: [_1.cfs, _1.cfe, _0.cfe, _0.cfs]
+    [junit]     at org.apache.lucene.index.SegmentInfos$FindSegmentsFile.run(SegmentInfos.java:657)
+    [junit]     at org.apache.lucene.index.SegmentInfos$FindSegmentsFile.run(SegmentInfos.java:534)
+    [junit]     at org.apache.lucene.index.SegmentInfos.read(SegmentInfos.java:284)
+    [junit]     at org.apache.lucene.index.SegmentInfos.read(SegmentInfos.java:277)
+    [junit]     at org.apache.lucene.index.TestIndexWriter.assertNoUnreferencedFiles(TestIndexWriter.java:158)
+    [junit]     at org.apache.lucene.index.TestIndexWriterOnDiskFull.testAddDocumentOnDiskFull(TestIndexWriterOnDiskFull.java:114)
+    [junit]     at org.apache.lucene.util.LuceneTestCase$LuceneTestCaseRunner.runChild(LuceneTestCase.java:1526)
+    [junit]     at org.apache.lucene.util.LuceneTestCase$LuceneTestCaseRunner.runChild(LuceneTestCase.java:1428)
+    [junit] 
+    [junit] 
+    [junit] Test org.apache.lucene.index.TestIndexWriterOnDiskFull FAILED
+{code}
+
+

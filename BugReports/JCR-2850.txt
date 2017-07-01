@@ -1,0 +1,6 @@
+RMI problems prevent proper startup of the Jackrabbit webapp
+
+
+
+Description:
+A trouble in binding the repository to a RMI registry will prevent the entire Jackrabbit webapp from starting properly. Since RMI is seldom the primary function of the webapp, it's more appropriate to simply log a warning in such cases.

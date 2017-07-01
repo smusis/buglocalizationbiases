@@ -1,0 +1,7 @@
+MatchAllDocsQueryNode toString() creates invalid XML-Tag
+
+
+
+Description:
+MatchAllDocsQueryNode.toString() returns "<matchAllDocs field='*' term='*'>", which is inavlid XML should read "<matchAllDocs field='*' term='*' />.
+

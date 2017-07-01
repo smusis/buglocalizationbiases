@@ -1,0 +1,13 @@
+InternalVersion.getFrozenNode confused about root version?
+
+
+
+Description:
+It seems the javadoc for InternalVersion.getFrozenNode  is confused:
+
+     * Returns the frozen node of this version or <code>null</code> if this is
+     * the root version.
+
+AFAIU, the frozen node of the root version is always present to capture the node type of the versionable node.
+
+Does anybody recall how this got here? (SVN says it has been there forever)

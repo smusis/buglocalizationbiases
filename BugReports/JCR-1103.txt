@@ -1,0 +1,6 @@
+JCR2SPI: VersionManagerImpl.getVersionableNodeEntry uses toString() rather than getString() to obtain property value
+
+
+
+Description:
+VersionManagerImpl.getVersionableNodeEntry uses toString() rather than getString() to obtain property value.

@@ -1,0 +1,12 @@
+Jcr-server: Report#init limits the Report interface to DeltaV compliant resources
+
+
+
+Description:
+Although the REPORT features is defined by RFC 3253 and required for DeltaV compliant resources it is not limited to deltaV. See RFC 3744 (WebDAV Access Control Protocol) for additional usage of the REPORT functionality.
+
+In order to keep the Report interface open for later usage by resources providing support for RFC 3744,
+the init method signature could be modified as follows:
+
+Report#init(DavResource, ReportInfo) instead of
+Report#init(DeltaVResource, ReportInfo)

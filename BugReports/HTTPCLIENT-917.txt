@@ -1,0 +1,14 @@
+When authentication is invalidated during redirection, proxy authentication also should be invalidated
+
+
+
+Description:
+This was discovered during use by Lucene Connector Framework, on 3.1.
+
+When a document is fetched through a proxy authenticated with NTLM, and
+that document is a redirection (301 or 302), the httpclient fails to
+properly use the right proxy credentials on the subsequent document
+fetch. This leads to 407 errors on these kinds of documents.
+
+I've attached a proposed patch.
+

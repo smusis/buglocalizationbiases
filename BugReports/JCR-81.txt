@@ -1,0 +1,12 @@
+Implement anonymous login with credentials
+
+
+
+Description:
+Jackrabbit currently implements anonymous login by detecting a null credentials argument on login. This is actually not compliant to the specification.
+
+<spec>
+If credentials is null, it is assumed that authentication is handled by a mechanism external to the repository itself (for example, through the JAAS framework) and that the repository implementation exists within a context (for example, an application server) that allows it to handle authorization of the request for access to the specified workspace.
+</spec>
+
+Jackrabbit should rather support anonymous login with a defined credential, either some subclass of SimpleCredentials or a predefined / known userId that has read-only access.

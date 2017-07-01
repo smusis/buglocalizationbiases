@@ -1,0 +1,10 @@
+HTMLTextExtractor modifying UTF-8 encoded String
+
+
+
+Description:
+Trying to extract an HTML that is UTF-8 encoded is modifying the UTF-8 special char (like á, é, ó, ã etc).
+
+This cause a wrong search, because lucene use this extractor to index content.
+
+See attachments for an example of the problem.

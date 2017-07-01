@@ -1,0 +1,10 @@
+Repository Home locked not released despite RepositoryException being thrown.
+
+
+
+Description:
+When an exception is thrown when calling RepositoryImpl.create(...) a .lock file is created in the repository home directory and not removed despite there no longer being an active connection.  If the user attempts to create the repository again (e.g recover from the exception because the url of the repository was temporarily unavailable) a RepositoryException is thrown again indicating that the repository home is locked by another process because there is a .lock file.  If a Repository is not successfully created then the repository home should not be locked.
+
+The lock is only released when the repository is shutdown but in this case the Repository object is never created successfully for that method to be called.
+
+

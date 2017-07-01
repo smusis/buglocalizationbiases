@@ -1,0 +1,13 @@
+provide a (relatively) simple way to disable anonymous access to the security workspace
+
+
+
+Description:
+As discussed in this thread: http://sling.markmail.org/thread/st52jejjuxykfxtj, the security workspace is, by default, configured with an AccessControlProvider which provides a fixed access control policy (i.e. o.a.j.core.security.user.UserAccessControlProvider). In order to prevent anonymous access to security-related nodes requires the use of an alternate AccessControlProvider.
+
+The attached patch provides a simpler mechanism. By adding
+
+<param name="anonymousAccessToSecurityWorkspace" value="false" />
+
+to the configuration of the DefaultSecurityManager, anonymous access to the security workspace is forbidden.
+

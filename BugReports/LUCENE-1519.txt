@@ -1,0 +1,59 @@
+Change Primitive Data Types from int to long in class SegmentMerger.java
+
+
+
+Description:
+Hi
+
+We are getting an exception while optimize. We are getting this exception "mergeFields produced an invalid result: docCount is 385282378 but fdx file size is 3082259028; now aborting this merge to prevent index corruption"
+ 
+I have  checked the code for class SegmentMerger.java and found this check 
+
+***********************************************************************************************************************************************************************
+if (4+docCount*8 != fdxFileLength)
+        // This is most likely a bug in Sun JRE 1.6.0_04/_05;
+        // we detect that the bug has struck, here, and
+        // throw an exception to prevent the corruption from
+        // entering the index.  See LUCENE-1282 for
+        // details.
+        throw new RuntimeException("mergeFields produced an invalid result: docCount is " + docCount + " but fdx file size is " + fdxFileLength + "; now aborting this merge to prevent index corruption");
+}
+***********************************************************************************************************************************************************************
+
+In our case docCount is 385282378 and fdxFileLength size is 3082259028, even though 4+385282378*8 is equal to 3082259028, the above code will not work because number 3082259028 is out of int range. So type of variable docCount needs to be changed to long
+
+I have written a small test for this 
+
+************************************************************************************************************************************************************************
+
+public class SegmentMergerTest {
+public static void main(String[] args) {
+int docCount = 385282378; 
+long fdxFileLength = 3082259028L; 
+if(4+docCount*8 != fdxFileLength) 
+System.out.println("No Match" + (4+docCount*8));
+else 
+System.out.println("Match" + (4+docCount*8));
+}
+}
+
+************************************************************************************************************************************************************************
+
+Above test will print No Match but if you change the data type of docCount to long, it will print Match
+
+Can you please advise us if this issue will be fixed in next release?
+
+Regards
+Deepak
+
+
+
+
+
+
+
+ 
+
+
+
+

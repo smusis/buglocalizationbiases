@@ -1,0 +1,6 @@
+Precedence query parser using the contrib/queryparser framework
+
+
+
+Description:
+Extend the current StandardQueryParser on contrib so it supports boolean precedence

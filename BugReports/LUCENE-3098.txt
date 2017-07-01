@@ -1,0 +1,10 @@
+Grouped total count
+
+
+
+Description:
+When grouping currently you can get two counts:
+* Total hit count. Which counts all documents that matched the query.
+* Total grouped hit count. Which counts all documents that have been grouped in the top N groups.
+
+Since the end user gets groups in his search result instead of plain documents with grouping. The total number of groups as total count makes more sense in many situations. 

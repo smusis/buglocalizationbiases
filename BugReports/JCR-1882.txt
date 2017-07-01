@@ -1,0 +1,9 @@
+Avoid ${project.version} in dependencies
+
+
+
+Description:
+Another one for Jackrabbit 1.5, we should avoid using ${project.version} for our dependencies and override the versions of any transitive dependencies that use ${project.version} (notably the Jetty dependencies in jackrabbit-standalone) to avoid problems with Maven < 2.0.9 caused by MNG-2339 [1].
+
+[1] http://jira.codehaus.org/browse/MNG-2339
+

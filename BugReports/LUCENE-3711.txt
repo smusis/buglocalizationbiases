@@ -1,0 +1,6 @@
+small SentinelIntSet can cause infinite loop on resize
+
+
+
+Description:
+A small initial size of <=4 can cause the set to not rehash soon enough and thus go into an infinite loop searching the table for an open space.

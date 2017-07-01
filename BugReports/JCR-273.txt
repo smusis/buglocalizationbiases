@@ -1,0 +1,17 @@
+Registering cyclic dependent nodetypes does not work
+
+
+
+Description:
+when registering the followin 2 nodetypes:
+
+[foo] 
++ mybar (bar)
+
+[bar]
++ myfoo (foo)
+
+NodeTypeRegistry.registerNodeTypes(Collection) throws:
+
+ org.apache.jackrabbit.core.nodetype.InvalidNodeTypeDefException: the following node types could not be registered because of unresolvable dependencies: {}foo {}bar 
+

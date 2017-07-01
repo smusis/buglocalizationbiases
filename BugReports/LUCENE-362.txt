@@ -1,0 +1,29 @@
+[PATCH] Extension to binary Fields that allows fixed byte buffer
+
+
+
+Description:
+This is a very simple patch that supports storing binary values in the index
+more efficiently.  A new Field constructor accepts a length argument, allowing a
+fixed byte[] to be reused acrossed multiple calls with arguments of different
+sizes.  A companion change to FieldsWriter uses this length when storing and/or
+compressing the field.
+
+There is one remaining case in Document.  Intentionally, no direct accessor to
+the length of a binary field is provided from Document, only from Field.  This
+is because Field's created by FieldReader will never have a specified length and
+this is usual case for Field's read from Document.  It seems less confusing for
+most users.
+
+I don't believe any upward incompatibility is introduced here (e.g., from the
+possibility of getting a larger byte[] than actually holds the value from
+Document), since no such byte[] values are possible without this patch anyway.
+
+The compression case is still inefficient (much copying), but it is hard to see
+how Lucene can do too much better.  However, the application can do the
+compression externally and pass in the reused compression-output buffer as a
+binary value (which is what I'm doing).  This represents a substantialy
+allocation savings for storing large documents bodies (compressed) into the
+Lucene index.
+
+Two patch files are attached, both created by svn on 3/17/05.

@@ -1,0 +1,8 @@
+IOExeception can cause loss of data due to premature segment deletion
+
+
+
+Description:
+If you hit an IOException, e.g., disk full, while making a cfs from its constituent parts, you may not be able to rollback to the before-merge process. This happens via addIndexes.
+
+I don't have a nice easy test for this; generating IOEs ain't so easy. But it does happen in the patch for the factored merge policy with the existing tests because the pseudo-randomly generated IOEs fall in a different place.

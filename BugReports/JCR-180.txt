@@ -1,0 +1,9 @@
+allow ResourceType dav property to have multiple values
+
+
+
+Description:
+attached is a patch that allows the ResourceType dav property to have multiple values (useful for dav protocol extensions such as caldav). 
+
+it is not a perfect patch, in that subclasses of ResourceType do not know about each others' resource types, but it is a decent start. one way to address this issue might be to have subclasses register extended resource types and their corresponding xml representations with ResourceType, removing the need for them to override resourceTypeToXml() and isValidResourceType().
+

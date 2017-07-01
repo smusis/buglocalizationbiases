@@ -1,0 +1,14 @@
+XPath relative path support missing for "is null" and "is not null"
+
+
+
+Description:
+I believe the change for issue JCR-247 is incomplete, for instance
+
+  //*[@x]
+
+and
+
+  //*[foo/@x]
+
+are parsed into the same query tree.

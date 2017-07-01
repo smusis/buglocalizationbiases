@@ -1,0 +1,8 @@
+Index sorter
+
+
+
+Description:
+A tool to sort index according to a float document weight. Documents with high weight are given low document numbers, which means that they will be first evaluated. When using a strategy of "early termination" of queries (see TimeLimitedCollector) such sorting significantly improves the quality of partial results.
+
+(Originally this tool was created by Doug Cutting in Nutch, and used norms as document weights - thus the ordering was limited by the limited resolution of norms. This is a pure Lucene version of the tool, and it uses arbitrary floats from a specified stored field).

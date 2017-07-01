@@ -1,0 +1,12 @@
+AbstractHttpProcessor hard-wired against a single context
+
+
+
+Description:
+I can't use the AbstractHttpProcessor as it is for asynchronously
+processing different requests, because it is hard-wired to use a
+single context which can not be changed. Async requires different
+contexts for requests. Patch follows.
+
+cheers,
+  Roland

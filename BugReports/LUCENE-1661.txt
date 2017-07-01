@@ -1,0 +1,18 @@
+Change visibility of getComparator method in SortField from protected to public
+
+
+
+Description:
+Hi,
+
+Currently I'm using SortField for the creation of FieldComparators, but I ran into an issue.
+I cannot invoke SortField.getComparator(...) directly from my code, which forces me to use a  workaround. (subclass SortField and override the getComparator method with visiblity public)
+I'm proposing to make this method public. Currently I do not see any problems changing the visibility to public, I do not know if there are any (and the reason why this method is currently protected)
+I think that this is a cleaner solution then the workaround I used and also other developers can benefit from it. I will also attach a patch to this issue based on the code in the trunk (26th of May). place). 
+Please let me know your thoughts about this.
+
+Cheers,
+
+Martijn
+
+ 

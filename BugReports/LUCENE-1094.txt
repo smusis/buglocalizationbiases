@@ -1,0 +1,16 @@
+Exception in DocumentsWriter.addDocument can corrupt stored fields file (fdt)
+
+
+
+Description:
+DocumentsWriter writes the number of stored fields, up front, into the
+fdtLocal buffer.  Then, as each field is processed, it writes each
+stored field into this buffer.  When the document is done, in a
+finally clause, it flushes the buffer to the real fdt file in the
+Directory.
+
+The problem is, if an exception is hit, that number of stored fields
+can be too high, which corrupts the fdt file.
+
+The solution is to not write it up front, and instead write only the
+number of fields we actually saw.

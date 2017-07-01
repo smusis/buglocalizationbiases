@@ -1,0 +1,17 @@
+Add AttributeSource.copyTo(AttributeSource)
+
+
+
+Description:
+One problem with AttributeSource at the moment is the missing "insight" into AttributeSource.State. If you want to create TokenStreams that inspect cpatured states, you have no chance. Making the contents of State public is a bad idea, as it does not help for inspecting (its a linked list, so you have to iterate).
+
+AttributeSource currently contains a cloneAttributes() call, which returns a new AttrubuteSource with all current attributes cloned. This is the (more expensive) captureState. The problem is that you cannot copy back the cloned AS (which is the restoreState). To use this behaviour (by the way, ShingleMatrix can use it), one can alternatively use cloneAttributes and copyTo. You can easily change the cloned attributes and store them in lists and copy them back. The only problem is lower performance of these calls (as State is a very optimized class).
+
+One use case could be:
+{code}
+AttributeSource state = cloneAttributes();
+// .... do something ...
+state.getAttribute(TermAttribute.class).setTermBuffer(foobar);
+// ... more work
+state.copyTo(this);
+{code}

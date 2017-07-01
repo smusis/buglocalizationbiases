@@ -1,0 +1,14 @@
+DocumentViewExportVisitor class incorrectly handles XML escaping for element names
+
+
+
+Description:
+The method private static String escapeName(String name) should have the following test:
+
+ if ((i == 0) ? XMLChar.isNCNameStart(ch) : XMLChar.isNCName(ch)) {
+
+changed into
+
+ if ((i == 0) ? !XMLChar.isNCNameStart(ch) :! XMLChar.isNCName(ch)) {
+
+in order to properly escape the text (those two methods in XMLChar return true when the character is valid, not the other way around.

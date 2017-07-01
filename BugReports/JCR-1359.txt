@@ -1,0 +1,74 @@
+Adding nodes from concurrently running sessions cause exceptions
+
+
+
+Description:
+Exceptions are thrown when trying to add child nodes to one parent node from different sessions running concurrently. One of the following exceptions is always thrown:
+
+ * Exception in thread "Thread-8" java.lang.RuntimeException: javax.jcr.nodetype.ConstraintViolationException: /A/7 needs to be saved as well.
+ * Exception in thread "Thread-8" java.lang.RuntimeException: javax.jcr.RepositoryException: /A: unable to update item.: Unable to
+resolve path for item: 016b885a-64aa-45b9-a990-05cbabb4586f/{http://www.jcp.org/jcr/1.0}primaryType: Unable to resolve path for item: 016b885a-64aa-45b9-a990-05cbabb4586f/{http://www.jcp.org/jcr/1.0}primaryType
+
+According to JCR-584 "Improve handling of concurrent node modifications" the following scenario "session 1 adds or removes child node 'x', session 2 adds or removes child node 'y'" should run gracefully, but the following test constantly fails:
+
+public void testSync() throws Exception
+{
+       Node rootNode = getSession ().getRootNode ();
+       rootNode.addNode ("A");
+       rootNode.save();
+
+       final Session session1 = getRepository().login (new SimpleCredentials ("userName", "password".toCharArray()));
+       final Session session2 = getRepository().login (new SimpleCredentials ("userName", "password".toCharArray()));
+
+       Thread thread1 = new Thread (new Runnable()
+       {
+               public void run()
+               {
+                       try
+                       {
+                               addNodes ("A", session1, 0);
+                       }
+                       catch (RepositoryException ex)
+                       {
+                               throw new RuntimeException (ex);
+                       }
+               }
+       });
+
+       Thread thread2 = new Thread (new Runnable()
+       {
+               public void run()
+               {
+                       try
+                       {
+                               addNodes ("A", session2, 1001);
+                       }
+                       catch (RepositoryException ex)
+                       {
+                               throw new RuntimeException (ex);
+                       }
+               }
+       });
+
+       thread1.start();
+       thread2.start();
+
+       thread1.join();
+       thread2.join();
+}
+
+private void addNodes (String parentName, Session session, int startIndex)
+       throws RepositoryException
+{
+       Node parentNode = session.getRootNode().getNode (parentName);
+       for (int i = startIndex; i < startIndex + 100; i++)
+       {
+               String name = Integer.toString (i);
+               parentNode.addNode (name);
+               parentNode.save();
+       }
+}
+
+BTW: exceptions were also thrown when I tried to add nodes from one thread and remove some of them from another one. Each thread used it's own session, each node had unique name.
+
+

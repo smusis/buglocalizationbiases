@@ -1,0 +1,16 @@
+Issue while loading list of classes at that path itself.
+
+
+
+Description:
+Hi,
+
+I cannot retrieve list of objects that are directly under the path that they were saved in. I did not know where to simulate this issue and hence I have used DigesterSimpleQueryTest. I have attached the path for the newly added test case testObjectListRetrievalAtBasePath. In case the patch is not up to the mark I have attached the modified file too.
+
+Instead of creating Page in /test if I create it in /sample/test and search in /sample/test it returns nothing but if I search in /sample it would return the object.
+
+Another important point here is that it is causing issues while retrieving Page class, the other test cases that are retrieving Paragraph class (embedded inside Page class) are still working fine!
+
+Regards,
+
+Kaizer

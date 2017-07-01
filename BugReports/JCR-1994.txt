@@ -1,0 +1,8 @@
+ExportSysViewTest fails with: System property org.xml.sax.driver not specified
+
+
+
+Description:
+The ExportSysViewTest class uses the XMLReaderFactory.createXMLReader() method that depends on the system property "org.xml.sax.driver" being specified. Apparently using a TransformerFactory works around this issue in some way, as the problem only appeared once we changed the XML export feature to use a custom serializer class instead of a JAXP Transformer for serialization (see JCR-1952).
+
+The current workaround is to explicitly force a Transformer to be loaded, but we really should fix the cause of this issue for example by replacing the XMLReader instance with a SAXParser.

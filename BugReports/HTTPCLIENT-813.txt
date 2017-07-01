@@ -1,0 +1,112 @@
+HttpClient throws NPE on Invalid Port when used with MultiThreadedHttpConnectionManager
+
+
+
+Description:
+The HttpClient throws NullPointerException in the main thread when an invalid port (like 80001) is used in the URL. An IllegalArgumentException is thrown in TimeoutGuard thread.
+ 
+Exception in thread "Timeout guard" java.lang.IllegalArgumentException: port out of range:80001
+	at java.net.InetSocketAddress.<init>(InetSocketAddress.java:118)
+	at java.net.Socket.<init>(Socket.java:240)
+	at org.apache.commons.httpclient.protocol.DefaultProtocolSocketFactory.createSocket(DefaultProtocolSocketFactory.java:80)
+	at org.apache.commons.httpclient.protocol.ControllerThreadSocketFactory$1.doit(ControllerThreadSocketFactory.java:91)
+	at org.apache.commons.httpclient.protocol.ControllerThreadSocketFactory$SocketTask.run(ControllerThreadSocketFactory.java:158)
+	at java.lang.Thread.run(Thread.java:613)
+Exception in thread "main" java.lang.NullPointerException
+	at org.apache.commons.httpclient.HttpConnection.open(HttpConnection.java:721)
+	at org.apache.commons.httpclient.MultiThreadedHttpConnectionManager$HttpConnectionAdapter.open(MultiThreadedHttpConnectionManager.java:1361)
+	at org.apache.commons.httpclient.HttpMethodDirector.executeWithRetry(HttpMethodDirector.java:387)
+	at org.apache.commons.httpclient.HttpMethodDirector.executeMethod(HttpMethodDirector.java:171)
+	at org.apache.commons.httpclient.HttpClient.executeMethod(HttpClient.java:397)
+	at org.apache.commons.httpclient.HttpClient.executeMethod(HttpClient.java:323)
+	at com.aol.test.HttpTest$PoolingHttpConnector.doGet(HttpTest.java:47)
+	at com.aol.test.HttpTest.main(HttpTest.java:17)
+
+It should throw a checked exception in main thread so caller can handle the error condition more gracefully.
+
+The test program is attached. This is caused by a race condition and it's not always reproducible. Running in debugger shows a different behavior.
+
+package com.aol.test;
+
+import java.io.IOException;
+
+import org.apache.commons.httpclient.HttpClient;
+import org.apache.commons.httpclient.HttpStatus;
+import org.apache.commons.httpclient.MultiThreadedHttpConnectionManager;
+import org.apache.commons.httpclient.methods.GetMethod;
+import org.apache.commons.httpclient.params.HttpConnectionManagerParams;
+
+public class HttpTest {
+	
+	public static void main(String[] args) {
+		PoolingHttpConnector conn = new PoolingHttpConnector();
+		
+		try {
+			String response = conn.doGet("http://www.aol.com:80001");
+			System.out.println("Response='" + response + "'");
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+
+
+	static class PoolingHttpConnector {
+		
+		public static final int MAX_TOTAL_CONNECTIONS = 16;
+		public static final int MAX_CONNECTIONS_PER_HOST = 8;
+		public static final int CONNECT_TIMEOUT = 5000;
+		public static final int SOCKET_TIMEOUT = 5000;
+		public static final boolean TCP_NO_DELAY = true;
+		
+	    private static MultiThreadedHttpConnectionManager poolManager;
+	    private static HttpConnectionManagerParams httpParams;
+	    private static HttpClient httpClient;
+	    private static boolean initialized = false;
+	    
+		public PoolingHttpConnector() 
+		{
+			initialize();
+		}
+
+		public String doGet(String url) throws IOException {
+			GetMethod method = new GetMethod(url);
+					
+			try {
+	            int status = httpClient.executeMethod(method);	            
+		        String response = new String(method.getResponseBody());
+	            
+	            if (status != HttpStatus.SC_OK)
+	            	throw new IOException("HTTP error: " + response);
+	            
+	            return response;
+	            
+			} finally {
+	            method.releaseConnection();
+			}
+	 	} 	
+	
+		private synchronized void initialize() {	
+			if (initialized)
+				return;
+			
+	        poolManager = new MultiThreadedHttpConnectionManager();
+	        httpParams = new HttpConnectionManagerParams();
+	        
+	        httpParams.setMaxTotalConnections(MAX_TOTAL_CONNECTIONS);
+	        httpParams.setDefaultMaxConnectionsPerHost(MAX_CONNECTIONS_PER_HOST);
+	        httpParams.setTcpNoDelay(TCP_NO_DELAY);
+	        httpParams.setSoTimeout(SOCKET_TIMEOUT);
+	        httpParams.setConnectionTimeout(CONNECT_TIMEOUT);
+	        
+	        poolManager.setParams(httpParams);
+	        httpClient = new HttpClient(poolManager);
+
+			initialized = true;
+		}
+		
+	}
+}
+
+
+
+

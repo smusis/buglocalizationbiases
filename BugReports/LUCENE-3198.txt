@@ -1,0 +1,8 @@
+Change default Directory impl on 64bit linux to MMap
+
+
+
+Description:
+Consistently in my NRT testing on Fedora 13 Linux, 64 bit JVM (Oracle 1.6.0_21) I see MMapDir getting better search and merge performance when compared to NIOFSDir.
+
+I think we should fix the default.

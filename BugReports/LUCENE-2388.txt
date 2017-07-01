@@ -1,0 +1,8 @@
+the unversioned site points to a dead trunk
+
+
+
+Description:
+The unversioned site needs to point to the new merged trunk.
+Currently it points to the closed-off dead trunk in two different places.
+

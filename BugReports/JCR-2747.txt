@@ -1,0 +1,23 @@
+ConcurrentModificationException in IndexMerger
+
+
+
+Description:
+The IndexMerger.start() method can cause the following ConcurrentModificationException to be thrown since it doesn't protect against concurrent access to the busyMergers list. The workers started by the start() method will remove themselves from the busyMergers list, which makes it possible for a quick worker to concurrently modify the list before the start() method is finished iterating through it.
+
+java.util.ConcurrentModificationException
+	at java.util.AbstractList$Itr.checkForComodification(AbstractList.java:372)
+	at java.util.AbstractList$Itr.next(AbstractList.java:343)
+	at org.apache.jackrabbit.core.query.lucene.IndexMerger.start(IndexMerger.java:122)
+	at org.apache.jackrabbit.core.query.lucene.MultiIndex.<init>(MultiIndex.java:325)
+	at org.apache.jackrabbit.core.query.lucene.SearchIndex.doInit(SearchIndex.java:507)
+	at org.apache.jackrabbit.core.query.AbstractQueryHandler.init(AbstractQueryHandler.java:78)
+	at org.apache.jackrabbit.core.config.RepositoryConfigurationParser$1.getQueryHandler(RepositoryConfigurationParser.java:630)
+	at org.apache.jackrabbit.core.config.WorkspaceConfig.getQueryHandler(WorkspaceConfig.java:215)
+	at org.apache.jackrabbit.core.config.WorkspaceConfig.getQueryHandler(WorkspaceConfig.java:215)
+	at org.apache.jackrabbit.core.SearchManager.<init>(SearchManager.java:173)
+	at org.apache.jackrabbit.core.RepositoryImpl$WorkspaceInfo.getSearchManager(RepositoryImpl.java:1868)
+	at org.apache.jackrabbit.core.RepositoryImpl$WorkspaceInfo.doPostInitialize(RepositoryImpl.java:2077)
+	at org.apache.jackrabbit.core.RepositoryImpl$WorkspaceInfo.initialize(RepositoryImpl.java:1996)
+	at org.apache.jackrabbit.core.RepositoryImpl.initStartupWorkspaces(RepositoryImpl.java:535)
+

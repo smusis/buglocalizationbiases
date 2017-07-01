@@ -1,0 +1,6 @@
+Supplementary Character Handling in CharTokenizer
+
+
+
+Description:
+CharTokenizer is an abstract base class for all Tokenizers operating on a character level. Yet, those tokenizers still use char primitives instead of int codepoints. CharTokenizer should operate on codepoints and preserve bw compatibility. 

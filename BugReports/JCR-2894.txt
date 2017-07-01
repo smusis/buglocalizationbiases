@@ -1,0 +1,7 @@
+AbstractLoginModule#logout() : credentials will not be clared as Subject.getPublicCredentials(Class) isn't backed by the subject internal set
+
+
+
+Description:
+AbstractLoginModule#logout()  clears the credentials list retrieved by calling Subject.getPublicCredentials(Class).
+this doesn't have the desired effect as the returned set isn't backed by the subjects internal credentials set. (see API documentation of javax.security.auth.Subject)

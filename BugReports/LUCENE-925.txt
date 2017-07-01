@@ -1,0 +1,6 @@
+Analysis Package Level Javadocs
+
+
+
+Description:
+Analysis package level javadocs need improving.  An overview of what an Analyzer does, and maybe some sample code showing how to write you own Analyzer, Tokenizer and TokenFilter would be really helpful.  Bonus would be some discussion on best practices for achieving performance during analysis. 

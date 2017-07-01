@@ -1,0 +1,6 @@
+Using explain may double ram reqs for fieldcaches when using ValueSourceQuery/CustomScoreQuery or for ConstantScoreQuerys that use a caching Filter.
+
+
+
+Description:
+

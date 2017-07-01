@@ -1,0 +1,24 @@
+Jar manifest should not contain ${user.name} of the person building
+
+
+
+Description:
+Not sure if it is a big deal, but I don't particularly like that my user id for my build machine is in the manifest of the JAR that I constructed.  It's a stretch, security-wise, I know, but I don't see how it serves any useful purpose.  We have signatures/logs/SVN tags so we know who built the particular item w/o needing to know what their local user account name is.
+
+The fix is:
+
+{code}
+Index: common-build.xml
+===================================================================
+--- common-build.xml    (revision 661027)
++++ common-build.xml    (working copy)
+@@ -281,7 +281,7 @@
+                <attribute name="Implementation-Title" value="org.apache.lucene"/>
+                <!-- impl version can be any string -->
+                <attribute name="Implementation-Version"
+-                          value="${version} ${svnversion} - ${user.name} - ${DSTAMP} ${TSTAMP}"/>
++                          value="${version} ${svnversion} - ${DSTAMP} ${TSTAMP}"/>
+                <attribute name="Implementation-Vendor"
+                           value="The Apache Software Foundation"/>
+                <attribute name="X-Compile-Source-JDK" 
+{code} 

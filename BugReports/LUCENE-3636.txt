@@ -1,0 +1,19 @@
+make it possible to use searchermanager with distributed stats
+
+
+
+Description:
+LUCENE-3555 added explicit stats methods to indexsearcher, but you must
+subclass to override this (e.g. populate with distributed stats).
+
+Its also impossible to then do this with SearcherManager.
+
+One idea is make this a factory method (or similar) on IndexSearcher instead,
+so you don't need to subclass it to override.
+
+Then you can initialize this in a SearcherWarmer, except there is currently
+a lot of hair in what this warming should be. This is a prime example where
+Searcher has different meaning from Reader, we should clean this up.
+
+Otherwise, lets make NRT/SearcherManager subclassable in such a way that 
+you can return a custom indexsearcher.

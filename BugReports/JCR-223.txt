@@ -1,0 +1,10 @@
+fix jackrabbit groupId
+
+
+
+Description:
+Actually the groupid used in maven project.xml is simply "jackrabbit".
+However, the new naming policy adopted by maven requires the groupid to mirror the main package name, so it should be changed to "org.apache.jackrabbit".
+Probably this could be a good moment to fix it, after the recent merge and modification of artifact ids.
+
+A note about the new policy for groupid can be found in http://maven.apache.org/reference/repository-upload.html

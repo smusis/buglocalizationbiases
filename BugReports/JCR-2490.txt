@@ -1,0 +1,134 @@
+jackrabbit wrongly think nodetype is changed on nodetype re-registration
+
+
+
+Description:
+When trying node type re-registration with jackrabbit 2.0, it wrongly detects a nodetype as having changed, with non-trivial changes. Example nodetype definition;
+
+[nen:profile] > mix:referenceable mixin orderable
+- nen:dn (string)
+- nen:cn (string)
+- * (string)
++ * multiple
+
+Exception on nodetype re-registration;
+
+javax.jcr.RepositoryException: The following nodetype change contains
+non-trivial changes.Up until now only trivial changes are supported.
+(see javadoc for org.apache.jackrabbit.core.nodetype.NodeTypeDefDiff):
+org.apache.jackrabbit.core.nodetype.NodeTypeDefDiff[
+       nodeTypeName={http://netenviron.com/nen/1.0}profile,
+       mixinFlagDiff=NONE,
+       supertypesDiff=NONE,
+       propertyDifferences=[
+               org.apache.jackrabbit.core.nodetype.NodeTypeDefDiff$PropDefDiff[itemName={http://netenviron.com/nen/1.0}dn,
+type=TRIVIAL, operation=MODIFIED],
+               org.apache.jackrabbit.core.nodetype.NodeTypeDefDiff$PropDefDiff[itemName={http://netenviron.com/nen/1.0}cn,
+type=TRIVIAL, operation=MODIFIED],
+               org.apache.jackrabbit.core.nodetype.NodeTypeDefDiff$PropDefDiff[itemName={}*,
+type=TRIVIAL, operation=MODIFIED]
+       ],
+       childNodeDifferences=[
+               org.apache.jackrabbit.core.nodetype.NodeTypeDefDiff$ChildNodeDefDiff[itemName={}*,
+type=MAJOR, operation=REMOVED],
+               org.apache.jackrabbit.core.nodetype.NodeTypeDefDiff$ChildNodeDefDiff[itemName={}*,
+type=TRIVIAL, operation=ADDED]
+       ]
+]
+
+       at org.apache.jackrabbit.core.nodetype.NodeTypeRegistry.reregisterNodeType(NodeTypeRegistry.java:442)
+       at org.apache.jackrabbit.core.nodetype.NodeTypeRegistry.reregisterNodeType(NodeTypeRegistry.java:363)
+       at org.apache.jackrabbit.core.nodetype.NodeTypeManagerImpl.registerNodeTypes(NodeTypeManagerImpl.java:589)
+       at org.apache.jackrabbit.commons.cnd.CndImporter.registerNodeTypes(CndImporter.java:118)
+       at com.netenviron.content.manager.SessionManager.checkRepositorySchema(SessionManager.java:355)
+       at com.netenviron.content.manager.SessionManager.afterPropertiesSet(SessionManager.java:199)
+       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.invokeInitMethods(AbstractAutowireCapableBeanFactory.java:1288)
+       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.initializeBean(AbstractAutowireCapableBeanFactory.java:1257)
+       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:438)
+       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory$1.run(AbstractAutowireCapableBeanFactory.java:383)
+       at java.security.AccessController.doPrivileged(Native Method)
+       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:353)
+       at org.springframework.beans.factory.support.AbstractBeanFactory$1.getObject(AbstractBeanFactory.java:245)
+       at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:169)
+       at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:242)
+       at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:164)
+       at org.springframework.beans.factory.support.BeanDefinitionValueResolver.resolveReference(BeanDefinitionValueResolver.java:269)
+       at org.springframework.beans.factory.support.BeanDefinitionValueResolver.resolveValueIfNecessary(BeanDefinitionValueResolver.java:104)
+       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.applyPropertyValues(AbstractAutowireCapableBeanFactory.java:1172)
+       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.populateBean(AbstractAutowireCapableBeanFactory.java:940)
+       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:437)
+       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory$1.run(AbstractAutowireCapableBeanFactory.java:383)
+       at java.security.AccessController.doPrivileged(Native Method)
+       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:353)
+       at org.springframework.beans.factory.support.AbstractBeanFactory$1.getObject(AbstractBeanFactory.java:245)
+       at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:169)
+       at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:242)
+       at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:164)
+       at org.springframework.beans.factory.support.BeanDefinitionValueResolver.resolveReference(BeanDefinitionValueResolver.java:269)
+       at org.springframework.beans.factory.support.BeanDefinitionValueResolver.resolveValueIfNecessary(BeanDefinitionValueResolver.java:104)
+       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.applyPropertyValues(AbstractAutowireCapableBeanFactory.java:1172)
+       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.populateBean(AbstractAutowireCapableBeanFactory.java:940)
+       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:437)
+       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory$1.run(AbstractAutowireCapableBeanFactory.java:383)
+       at java.security.AccessController.doPrivileged(Native Method)
+       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:353)
+       at org.springframework.beans.factory.support.AbstractBeanFactory$1.getObject(AbstractBeanFactory.java:245)
+       at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:169)
+       at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:242)
+       at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:164)
+       at org.springframework.beans.factory.support.AbstractBeanFactory.getTypeForFactoryBean(AbstractBeanFactory.java:1223)
+       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.getTypeForFactoryBean(AbstractAutowireCapableBeanFactory.java:582)
+       at org.springframework.beans.factory.support.AbstractBeanFactory.isTypeMatch(AbstractBeanFactory.java:438)
+       at org.springframework.beans.factory.support.DefaultListableBeanFactory.getBeanNamesForType(DefaultListableBeanFactory.java:214)
+       at org.springframework.beans.factory.support.DefaultListableBeanFactory.getBeanNamesForType(DefaultListableBeanFactory.java:189)
+       at org.springframework.beans.factory.BeanFactoryUtils.beanNamesForTypeIncludingAncestors(BeanFactoryUtils.java:143)
+       at org.springframework.beans.factory.support.DefaultListableBeanFactory.findAutowireCandidates(DefaultListableBeanFactory.java:614)
+       at org.springframework.beans.factory.support.DefaultListableBeanFactory.resolveDependency(DefaultListableBeanFactory.java:572)
+       at org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor$AutowiredMethodElement.inject(AutowiredAnnotationBeanPostProcessor.java:496)
+       at org.springframework.beans.factory.annotation.InjectionMetadata.injectMethods(InjectionMetadata.java:87)
+       at org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor.postProcessPropertyValues(AutowiredAnnotationBeanPostProcessor.java:250)
+       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.populateBean(AbstractAutowireCapableBeanFactory.java:928)
+       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:437)
+       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory$1.run(AbstractAutowireCapableBeanFactory.java:383)
+       at java.security.AccessController.doPrivileged(Native Method)
+       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:353)
+       at org.springframework.beans.factory.support.AbstractBeanFactory$1.getObject(AbstractBeanFactory.java:245)
+       at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:169)
+       at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:242)
+       at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:164)
+       at org.springframework.beans.factory.support.BeanDefinitionValueResolver.resolveReference(BeanDefinitionValueResolver.java:269)
+       at org.springframework.beans.factory.support.BeanDefinitionValueResolver.resolveValueIfNecessary(BeanDefinitionValueResolver.java:104)
+       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.applyPropertyValues(AbstractAutowireCapableBeanFactory.java:1172)
+       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.populateBean(AbstractAutowireCapableBeanFactory.java:940)
+       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:437)
+       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory$1.run(AbstractAutowireCapableBeanFactory.java:383)
+       at java.security.AccessController.doPrivileged(Native Method)
+       at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:353)
+       at org.springframework.beans.factory.support.AbstractBeanFactory$1.getObject(AbstractBeanFactory.java:245)
+       at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:169)
+       at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:242)
+       at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:164)
+       at org.springframework.beans.factory.support.DefaultListableBeanFactory.getBeansOfType(DefaultListableBeanFactory.java:299)
+       at org.springframework.context.support.AbstractApplicationContext.getBeansOfType(AbstractApplicationContext.java:955)
+       at org.springframework.context.support.AbstractApplicationContext.registerListeners(AbstractApplicationContext.java:712)
+       at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:366)
+       at org.springframework.web.context.ContextLoader.createWebApplicationContext(ContextLoader.java:261)
+       at org.springframework.web.context.ContextLoader.initWebApplicationContext(ContextLoader.java:199)
+       at org.springframework.web.context.ContextLoaderListener.contextInitialized(ContextLoaderListener.java:45)
+       at org.apache.catalina.core.StandardContext.listenerStart(StandardContext.java:3972)
+       at org.apache.catalina.core.StandardContext.start(StandardContext.java:4467)
+       at org.apache.catalina.core.ContainerBase.addChildInternal(ContainerBase.java:791)
+       at org.apache.catalina.core.ContainerBase.addChild(ContainerBase.java:771)
+       at org.apache.catalina.core.StandardHost.addChild(StandardHost.java:526)
+       at org.apache.catalina.startup.HostConfig.deployWAR(HostConfig.java:905)
+       at org.apache.catalina.startup.HostConfig.deployWARs(HostConfig.java:740)
+       at org.apache.catalina.startup.HostConfig.deployApps(HostConfig.java:500)
+       at org.apache.catalina.startup.HostConfig.check(HostConfig.java:1345)
+       at org.apache.catalina.startup.HostConfig.lifecycleEvent(HostConfig.java:303)
+       at org.apache.catalina.util.LifecycleSupport.fireLifecycleEvent(LifecycleSupport.java:119)
+       at org.apache.catalina.core.ContainerBase.backgroundProcess(ContainerBase.java:1337)
+       at org.apache.catalina.core.ContainerBase$ContainerBackgroundProcessor.processChildren(ContainerBase.java:1601)
+       at org.apache.catalina.core.ContainerBase$ContainerBackgroundProcessor.processChildren(ContainerBase.java:1610)
+       at org.apache.catalina.core.ContainerBase$ContainerBackgroundProcessor.run(ContainerBase.java:1590)
+       at java.lang.Thread.run(Thread.java:637)
+

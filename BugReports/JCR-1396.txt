@@ -1,0 +1,34 @@
+DateValue.getDate not a copy
+
+
+
+Description:
+I noticed that getDate() in org.apache.jackrabbit.value.DateValue is returned 
+by reference. According to the specification it should be a copy. (see.  JSR 170 section 6.2.7)
+
+ 
+ private Calendar date;
+ 
+ public Calendar getDate()
+             throws ValueFormatException, IllegalStateException,
+             RepositoryException {
+         setValueConsumed();
+ 
+         if (date != null) {
+             return date; // <-- HERE
+         } else {
+             throw new ValueFormatException("empty value");
+         }
+     }
+
+short test:
+
+ValueFactory factory = session.getValueFactory();
+ Value v = factory.createValue(GregorianCalendar.getInstance());
+ Calendar c0 = v.getDate();   
+ Calendar c1 = v.getDate();
+               
+ if(c0 == c1){
+                   out.println("error - references are equal");
+                    out.println(c0);
+ }

@@ -1,0 +1,6 @@
+Remove deprecated SpanQuery.getTerms() and generify Query.extractTerms(Set<Term>)
+
+
+
+Description:
+

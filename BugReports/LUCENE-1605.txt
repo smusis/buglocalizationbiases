@@ -1,0 +1,10 @@
+Add subset method to BitVector
+
+
+
+Description:
+Recently I needed the ability to efficiently compute subsets of a BitVector. The method is:
+  public BitVector subset(int start, int end)
+where "start" is the starting index, inclusive and "end" is the ending index, exclusive.
+
+Attached is a patch including the subset method as well as relevant unit tests.

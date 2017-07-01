@@ -1,0 +1,6 @@
+Add pattern matching for paths
+
+
+
+Description:
+I suggest to add utility classes to spi-commons which can be used to do pattern matching on paths similar to regular expressions. 

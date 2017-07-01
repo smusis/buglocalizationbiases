@@ -1,0 +1,6 @@
+maven 2 poms contain variables in dependency versions that are never resolved, breaking transitive dependency resolution
+
+
+
+Description:
+There are problems with the dependencies declared in jackrabbit-server-1.0 and other poms using variables for dependency versions. These variables are never resolved and break the transitive resolution of these dependencies

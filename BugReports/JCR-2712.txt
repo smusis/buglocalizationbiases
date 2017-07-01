@@ -1,0 +1,40 @@
+Dirty Internal State on Transaction-Rollback during Global Transaction (container managed transaction)
+
+
+
+Description:
+Running the following code inside an Global Transaction (JTA, container managed transaction) causes problems.
+
+Session session = getRepsoitorySession(); 
+      Node rootNode = session.getRootNode(); 
+
+      Node test = rootNode.addNode("test"); 
+      test.addMixin(CTVRepositoryKonstanten.NODE_MIX_TYP_VERSION); 
+      session.save(); 
+      throw new RuntimeException("testException");
+
+Everythink is fine, but if we execute it a second time we get an org.apache.jackrabbit.core.state.NoSuchItemStateException
+
+org.apache.jackrabbit.core.state.NoSuchItemStateException: b36d91bc-8687-428c-a767-2e087b13191a 
+at org.apache.jackrabbit.core.state.SharedItemStateManager.getItemState(SharedItemStateManager.java:270) 
+at org.apache.jackrabbit.core.state.LocalItemStateManager.getNodeState(LocalItemStateManager.java:107) 
+at org.apache.jackrabbit.core.state.LocalItemStateManager.getItemState(LocalItemStateManager.java:172) 
+at org.apache.jackrabbit.core.state.XAItemStateManager.getItemState(XAItemStateManager.java:260) 
+at org.apache.jackrabbit.core.version.NodeStateEx.store(NodeStateEx.java:519) 
+at org.apache.jackrabbit.core.version.NodeStateEx.store(NodeStateEx.java:489) 
+at org.apache.jackrabbit.core.version.AbstractVersionManager.getParentNode(AbstractVersionManager.java:414) 
+at org.apache.jackrabbit.core.version.AbstractVersionManager.createVersionHistory(AbstractVersionManager.java:357) 
+at org.apache.jackrabbit.core.version.XAVersionManager.createVersionHistory(XAVersionManager.java:148) 
+at org.apache.jackrabbit.core.version.AbstractVersionManager.getVersionHistory(AbstractVersionManager.java:273) 
+at org.apache.jackrabbit.core.ItemImpl.initVersionHistories(ItemImpl.java:738) 
+at org.apache.jackrabbit.core.ItemImpl.save(ItemImpl.java:1097) 
+at org.apache.jackrabbit.core.SessionImpl.save(SessionImpl.java:915) 
+at org.apache.jackrabbit.jca.JCASessionHandle.save(JCASessionHandle.java:180) 
+at de.continentale.repo.CTVRepository.erstelleDokument(CTVRepository.java:2267)
+
+We think that there is some internal state that is not cleaned up on rollback.
+Restarting the runtime (Application Server) "solved" this.
+
+May be there are some same causes like in: JCR-2503, JCR-2613
+
+

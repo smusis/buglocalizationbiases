@@ -1,0 +1,22 @@
+ConnectionRecoveryManager is created twice in DBDataStore init method
+
+
+
+Description:
+It seems that after introducing pool, old initizialization of ConnectionRecoveryManager has not been removed.
+
+Index: DbDataStore.java
+===================================================================
+--- DbDataStore.java	(revision 605626)
++++ DbDataStore.java	(working copy)
+@@ -479,8 +479,6 @@
+             initDatabaseType();
+             connectionPool = new Pool(this, maxConnections);
+             ConnectionRecoveryManager conn = getConnection();
+-            conn = new ConnectionRecoveryManager(false, driver, url, user, password);
+-            conn.setAutoReconnect(true);
+             DatabaseMetaData meta = conn.getConnection().getMetaData();
+             log.info("Using JDBC driver " + meta.getDriverName() + " " + meta.getDriverVersion());
+             meta.getDriverVersion();
+
+Duplicated initialization should be removed , but i've never run this code yet.

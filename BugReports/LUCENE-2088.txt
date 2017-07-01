@@ -1,0 +1,8 @@
+AttributeSource.addAttribute should only accept interfaces, the missing test leads to problems with Token.TOKEN_ATTRIBUTE_FACTORY
+
+
+
+Description:
+This is a blocker, because you can call addAttribute(Token.class) without getting an error message.
+
+I will commit the fix and restart the vote for 3.0. This also applies to 2.9, but there is no Token Attribute Factory. But I will merge to 2.9, too, if a 2.9.2 comes.

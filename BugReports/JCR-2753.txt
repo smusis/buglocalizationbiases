@@ -1,0 +1,15 @@
+Deadlock in DefaultISMLocking
+
+
+
+Description:
+There seems to be a bug in DefaultISMLocking which was detected as part of JCR-2746.
+
+1) The main thread gets a read lock.
+
+2) The ObservationManager thread tries to lock for writing, which is blocked because there is still a read lock.
+
+3) Then the main thread tries to get a second read lock, which is blocked because there is a waiting write lock.
+
+The bug was introduced as part of JCR-2089 (Use java.util.concurrent), revisions 995411 and 995412. I think the safe solution is to revert those to commits, and add a test case. If the DefaultISMLocking is changed later on, more test cases are required. An efficient solution is relatively complicated.
+

@@ -1,0 +1,85 @@
+ByteArrayBody as an alternative to InputStreamBody
+
+
+
+Description:
+InputStreamBody can not determine the content length, which in turn causes requests to be sent with a content length of 0, even though the content is there. .NET Servers have trouble dealing with this.
+
+ByteArrayBody provides an alternative that alliviates this limitation.
+
+Source:
+ 
+import java.io.IOException;
+import java.io.OutputStream;
+
+import org.apache.http.entity.mime.MIME;
+import org.apache.http.entity.mime.content.AbstractContentBody;
+
+/**
+ * Body part that is built using a byte array containing a file.
+ * 
+ * @author Axel Fontaine
+ */
+public class ByteArrayBody extends AbstractContentBody {
+    /**
+     * The contents of the file contained in this part.
+     */
+    private byte[] data;
+
+    /**
+     * The name of the file contained in this part.
+     */
+    private String filename;
+    
+    /**
+     * Creates a new ByteArrayBody.
+     * 
+     * @param data The contents of the file contained in this part.
+     * @param mimeType The mime type of the file contained in this part.
+     * @param filename The name of the file contained in this part.
+     */
+    public ByteArrayBody(final byte[] data, final String mimeType, final String filename) {
+        super(mimeType);
+        if (data == null) {
+            throw new IllegalArgumentException("byte[] may not be null");
+        }
+        this.data = data;
+        this.filename = filename;
+    }
+
+    /**
+     * Creates a new ByteArrayBody.
+     * 
+     * @param data The contents of the file contained in this part.
+     * @param filename The name of the file contained in this part.
+     */
+    public ByteArrayBody(final byte[] data, final String filename) {
+        this(data, "application/octet-stream", filename);
+    }
+
+    @Override
+    public String getFilename() {
+        return filename;
+    }
+
+    @Override
+    public void writeTo(OutputStream out) throws IOException {
+        out.write(data);
+    }
+
+    @Override
+    public String getCharset() {
+        return null;
+    }
+
+    @Override
+    public String getTransferEncoding() {
+        return MIME.ENC_BINARY;
+    }
+
+    @Override
+    public long getContentLength() {
+        return data.length;
+    }
+}
+

@@ -1,0 +1,15 @@
+A tokenfilter to decompose compound words
+
+
+
+Description:
+A tokenfilter to decompose compound words you find in many germanic languages (like German, Swedish, ...) into single tokens.
+
+An example: Donaudampfschiff would be decomposed to Donau, dampf, schiff so that you can find the word even when you only enter "Schiff".
+
+I use the hyphenation code from the Apache XML project FOP (http://xmlgraphics.apache.org/fop/) to do the first step of decomposition. Currently I use the FOP jars directly. I only use a handful of classes from the FOP project.
+
+My question now:
+Would it be OK to copy this classes over to the Lucene project (renaming the packages of course) or should I stick with the dependency to the FOP jars? The FOP code uses the ASF V2 license as well.
+
+What do you think?

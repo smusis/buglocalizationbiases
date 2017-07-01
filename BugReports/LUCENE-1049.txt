@@ -1,0 +1,8 @@
+Simple toString() for BooleanFilter
+
+
+
+Description:
+While working with BooleanFilter I wanted a basic toString() for debugging.
+
+This is what I came up.  It works ok for me.

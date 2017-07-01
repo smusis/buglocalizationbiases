@@ -1,0 +1,21 @@
+NPE in spi2dav when server does not send all headers
+
+
+
+Description:
+The ValueLoader may throw a NPE if the desired headers are not present in the response:
+
+org.apache.jackrabbit.spi2davex.ValueLoader:
+
+    public Map<String, String> loadHeaders(String uri, String[] headerNames) throws IOException, RepositoryException {
+    ....
+                for (String name : headerNames) {
+--->                headers.put(name, method.getResponseHeader(name).getValue());
+                }
+    .....
+    }
+
+In my case, the server does not return the ETag response header, but the 'loadHeaders' is indirectly called by the QValueFactoryImpl:
+
+                        this.preInitialize(new String[] {HEADER_ETAG, HEADER_LAST_MODIFIED});
+

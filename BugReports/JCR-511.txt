@@ -1,0 +1,9 @@
+TCK: Node types selected by SetValueValueFormatExceptionTest may lead to incorrect test failure
+
+
+
+Description:
+During setup, the test selects two node types, one with a BOOLEAN property and one with a DATE property, and creates nodes of these types as children of the target node.  Having the TCK select these node types creates two problems:  First, JSR-170 does not require an implementation to provide deterministic, stable ordering of node types returned by NodeTypeManager.  Consequently, the node types selected during test setup may vary from run to run, making test configuration difficult or impossible.  Second, if a repository imposes implementation-specific type constraints not discoverable through JSR-170, the TCK may select a node type inappropriate as a child of the test node.
+
+Proposal: introduce configuration properties which, if set, override the property definition and node type selected by NodeTypeUtil.
+

@@ -1,0 +1,8 @@
+Include generated website in the distribution
+
+
+
+Description:
+A user should be able to build the non-api docs as well.
+
+So it would be nice, to include xdocs in the source packages as well ...

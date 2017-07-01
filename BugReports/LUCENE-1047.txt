@@ -1,0 +1,8 @@
+Change MergePolicy & MergeScheduler to be abstract base classes instead of an interfaces
+
+
+
+Description:
+This gives us freedom to add methods with default base implementation over time w/o breaking backwards compatibility.
+
+Thanks to Hoss for raising this!

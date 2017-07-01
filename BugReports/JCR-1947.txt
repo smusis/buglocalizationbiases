@@ -1,0 +1,13 @@
+JSR 283: Node Type Attribute Subtyping Rules 
+
+
+
+Description:
+JCR 2.0 clarifies node type attribute subtyping rules whereas JCR 1.0 didn't mandate any specific behavior.
+
+"3.7.6.7 Node Type Attribute Subtyping Rules" states  (assume T' being a subtype of T):
+
+- if T has orderable child nodes then T' must have orderable child nodes
+- if T specifies a primary item then T' inherits that setting and must not override it
+
+

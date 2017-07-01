@@ -1,0 +1,18 @@
+Duplicate log of HTTP header
+
+
+
+Description:
+The HTTP header line:
+
+"HTTP/1.1 200 OK[\r][\n]" 
+
+is duplicated in the wire logs. Seems to be because the line is logged at:
+
+HttpParser [line: 131] - readLine(InputStream, String)
+
+and at:
+
+HttpMethodBase [line: 1980] - readStatusLine(HttpState, HttpConnection)
+
+It looks like the latter log should be removed?

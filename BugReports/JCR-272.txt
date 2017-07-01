@@ -1,0 +1,47 @@
+Removal of versions throws javax.jcr.ReferentialIntegrityException
+
+
+
+Description:
+From the following thread : http://www.mail-archive.com/jackrabbit-dev%40incubator.apache.org/msg03483.html
+
+When trying to remove a version of a Node  the VersionHistory.removeVersion() method throws : "javax.jcr.ReferentialIntegrityException: Unable to remove version. At least once referenced.".
+
+Secton 8.2.2.10 (Removal of Versions) of the specification indicates that the version graph should be automatically repaired upon removal. Then, VersionHistory.removeVersion() should take care of references. (In fact, a user cannot alter the references (jcr:predecessors and jcr:successors), since they are protected properties.)
+
+Here's the example (*updated) :
+
+Node root1 = session.getRootNode() ;
+Node test1 = root1.addNode("test") ;
+test1.addMixin("mix:versionable");
+test1.setProperty("test", "1");
+session.save();
+test1.checkin();
+
+test1.checkout();
+test1.setProperty("test", "2");
+session.save();
+test1.checkin();
+
+test1.checkout();
+test1.setProperty("test", "3");
+session.save();
+test1.checkin();
+
+String baseVersion = test1.getBaseVersion().getName();
+System.out.println("Base version name: " + baseVersion);
+
+VersionHistory vh = test1.getVersionHistory();
+for (VersionIterator vi = vh.getAllVersions(); vi.hasNext(); ) {
+    Version currenVersion = vi.nextVersion();
+    String versionName = currenVersion.getName();
+    if (!versionName.equals("jcr:rootVersion") && !versionName.equals(baseVersion)) { 
+        String propertyValue = currenVersion.getNode("jcr:frozenNode").getProperty("test").getString();
+        System.out.println("Removing version : " + versionName + " with value: " + propertyValue);
+        vh.removeVersion(versionName);
+    }
+}
+
+Regards, 
+
+Nicolas

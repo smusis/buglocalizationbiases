@@ -1,0 +1,16 @@
+Tests using Version.LUCENE_CURRENT will produce problems in backwards branch, when development for 3.2 starts
+
+
+
+Description:
+A lot of tests for the most-recent functionality in Lucene use Version.LUCENE_CURRENT, which is fine in trunk, as we use the most recent version without hassle and changing this in later versions.
+
+The problem is, if we copy these tests to backwards branch after 3.1 is out and then start to improve analyzers, we then will have the maintenance hell for backwards tests. And we loose backward compatibility testing for older versions. If we would specify a specific version like LUCENE_31 in our tests, after moving to backwards they must work without any changes!
+
+To not always modify all tests after a new version comes out (e.g. after switching to 3.2 dev), I propose to do the following:
+- declare a static final Version TEST_VERSION = Version.LUCENE_CURRENT (or better) Version.LUCENE_31 in LuceneTestCase(4J).
+- change all tests that use Version.LUCENE_CURRENT using eclipse refactor to use this constant and remove unneeded import statements.
+
+When we then move the tests to backward we must only change one line, depending on how we define this constant:
+- If in trunk LuceneTestCase it's Version.LUCENE_CURRENT, we just change the backwards branch to use the version numer of the released thing.
+- If trunk already uses the LUCENE_31 constant (I prefer this), we do not need to change backwards, but instead when switching version numbers we just move trunk forward to the next major version (after added to Version enum).

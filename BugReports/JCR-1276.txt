@@ -1,0 +1,6 @@
+A Property and a Node Can Have the Same Name 
+
+
+
+Description:
+according to paragraph "3.3.4" of the of the JSR 283 specification (Public Review Draft), a property and a node can have the same name. 

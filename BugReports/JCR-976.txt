@@ -1,0 +1,12 @@
+Misleading exception message when re-index fails
+
+
+
+Description:
+E.g. the log may say:
+
+19.06.2007 11:25:42 *ERROR* RepositoryImpl: Failed to initialize workspace 'default' (RepositoryImpl.java, line 382)
+javax.jcr.RepositoryException: Error indexing root node: 10022d38-c449-4751-b8f0-9d07ac45ead5:
+[...]
+
+The mentioned uuid is not the root node and the root cause is missing.

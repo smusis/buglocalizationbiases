@@ -1,0 +1,6 @@
+Disable consistency check per default
+
+
+
+Description:
+There should be a way to disable the consistency check entirely. Currently a consistency check is performed on startup whenever the redo log is applied. For large workspaces this may take a long time and should only be performed when 'requested'.

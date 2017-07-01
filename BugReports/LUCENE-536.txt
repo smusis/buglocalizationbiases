@@ -1,0 +1,6 @@
+JEDirectory delete issue
+
+
+
+Description:
+JEDirectory is not deleting files properly.  Blocks are left behind due to an error in cursor operations.

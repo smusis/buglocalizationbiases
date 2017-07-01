@@ -1,0 +1,6 @@
+jackrabbit-jcr-client should put all test data under ./target
+
+
+
+Description:
+Currently the jackrabbit-jcr-client component drops a "repository" directory and the "repository.xml" and "derby.log" files into the project root when running the test suite. These files should go inside "target".

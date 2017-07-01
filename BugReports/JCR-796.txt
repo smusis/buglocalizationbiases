@@ -1,0 +1,6 @@
+AbstractQueryTest does not handle unknown result size properly
+
+
+
+Description:
+If Node/RowIterator.getSize() returns -1 the method AbstractQueryTest.checkResult() should count the nodes in the iterator manually.

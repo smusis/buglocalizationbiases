@@ -1,0 +1,9 @@
+Improve Benchmark
+
+
+
+Description:
+Benchmark can be improved by incorporating recent suggestions posted
+on java-dev. M. McCandless' Python scripts that execute multiple
+rounds of tests can either be incorporated into the codebase or
+converted to Java.

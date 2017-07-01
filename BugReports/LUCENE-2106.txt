@@ -1,0 +1,6 @@
+Benchmark does not close its Reader when OpenReader/CloseReader are not used
+
+
+
+Description:
+Only the Searcher is closed, but because the reader is passed to the Searcher, the Searcher does not close the Reader, causing a resource leak.

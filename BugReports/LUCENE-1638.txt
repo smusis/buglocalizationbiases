@@ -1,0 +1,39 @@
+Thread safety issue can cause index corruption when autoCommit=true and multiple threads are committing
+
+
+
+Description:
+This is only present in 2.9 trunk, but has been there since
+LUCENE-1516 was committed I believe.
+
+It's rare to hit: it only happens if multiple calls to commit() are in
+flight (from different threads) and where at least one of those calls
+is due to a merge calling commit (because autoCommit is true).
+
+When it strikes, it leaves the index corrupt because it incorrectly
+removes an active segment.  It causes exceptions like this:
+{code}
+java.io.FileNotFoundException: _1e.fnm
+	at org.apache.lucene.store.MockRAMDirectory.openInput(MockRAMDirectory.java:246)
+	at org.apache.lucene.index.FieldInfos.<init>(FieldInfos.java:67)
+	at org.apache.lucene.index.SegmentReader.initialize(SegmentReader.java:536)
+	at org.apache.lucene.index.SegmentReader.get(SegmentReader.java:468)
+	at org.apache.lucene.index.SegmentReader.get(SegmentReader.java:414)
+	at org.apache.lucene.index.IndexWriter$ReaderPool.get(IndexWriter.java:641)
+	at org.apache.lucene.index.IndexWriter$ReaderPool.get(IndexWriter.java:627)
+	at org.apache.lucene.index.DocumentsWriter.applyDeletes(DocumentsWriter.java:923)
+	at org.apache.lucene.index.IndexWriter.applyDeletes(IndexWriter.java:4987)
+	at org.apache.lucene.index.IndexWriter.doFlushInternal(IndexWriter.java:4165)
+	at org.apache.lucene.index.IndexWriter.doFlush(IndexWriter.java:4025)
+	at org.apache.lucene.index.IndexWriter.flush(IndexWriter.java:4016)
+	at org.apache.lucene.index.IndexWriter.closeInternal(IndexWriter.java:2077)
+	at org.apache.lucene.index.IndexWriter.close(IndexWriter.java:2040)
+	at org.apache.lucene.index.IndexWriter.close(IndexWriter.java:2004)
+	at org.apache.lucene.index.TestStressIndexing2.indexRandom(TestStressIndexing2.java:210)
+	at org.apache.lucene.index.TestStressIndexing2.testMultiConfig(TestStressIndexing2.java:104)
+{code}
+
+It's caused by failing to increment changeCount inside the same
+synchronized block where segmentInfos was changed, in commitMerge.
+The fix is simple -- I plan to commit shortly.
+

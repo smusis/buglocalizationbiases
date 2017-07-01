@@ -1,0 +1,90 @@
+Add ability to specify compilation/matching flags to RegexCapabiltiies implementations
+
+
+
+Description:
+The Jakarta Regexp and Java Util Regex packages both support the ability to provides flags that alter the matching behavior of a given regular expression. While the java.util.regex.Pattern implementation supports providing these flags as part of the regular expression string, the Jakarta Regexp implementation does not.  Therefore, this improvement request is to add the capability to provide those modification flags to either implementation. 
+
+I've developed a working implementation that makes minor additions to the existing code. The default constructor is explicitly defined with no arguments, and then a new constructor with an additional "int flags" argument is provided. This provides complete backwards compatibility. For each RegexCapabilties implementation, the appropriate flags from the regular expression package is defined as  FLAGS_XXX static fields. These are pass through to the underlying implementation. They are re-defined to avoid bleeding the actual implementation classes into the caller namespace.
+
+Proposed changes:
+
+For the JavaUtilRegexCapabilities.java, the following is the changes made.
+
+  private int flags = 0;
+  
+  // Define the optional flags from Pattern that can be used.
+  // Do this here to keep Pattern contained within this class.
+  
+  public final int FLAG_CANON_EQ = Pattern.CANON_EQ;
+  public final int FLAG_CASE_INSENSATIVE = Pattern.CASE_INSENSATIVE;
+  public final int FLAG_COMMENTS = Pattern.COMMENTS;
+  public final int FLAG_DOTALL = Pattern.DOTALL;
+  public final int FLAG_LITERAL = Pattern.LITERAL;
+  public final int FLAG_MULTILINE = Pattern.MULTILINE;
+  public final int FLAG_UNICODE_CASE = Pattern.UNICODE_CASE;
+  public final int FLAG_UNIX_LINES = Pattern.UNIX_LINES;
+  
+  /**
+   * Default constructor that uses java.util.regex.Pattern 
+   * with its default flags.
+   */
+  public JavaUtilRegexCapabilities()  {
+    this.flags = 0;
+  }
+  
+  /**
+   * Constructor that allows for the modification of the flags that
+   * the java.util.regex.Pattern will use to compile the regular expression.
+   * This gives the user the ability to fine-tune how the regular expression 
+   * to match the functionlity that they need. 
+   * The {@link java.util.regex.Pattern Pattern} class supports specifying 
+   * these fields via the regular expression text itself, but this gives the caller
+   * another option to modify the behavior. Useful in cases where the regular expression text
+   * cannot be modified, or if doing so is undesired.
+   * 
+   * @flags The flags that are ORed together.
+   */
+  public JavaUtilRegexCapabilities(int flags) {
+    this.flags = flags;
+  }
+  
+  public void compile(String pattern) {
+    this.pattern = Pattern.compile(pattern, this.flags);
+  }
+
+
+For the JakartaRegexpCapabilties.java, the following is changed:
+
+  private int flags = RE.MATCH_NORMAL;
+
+  /**
+   * Flag to specify normal, case-sensitive matching behaviour. This is the default.
+   */
+  public static final int FLAG_MATCH_NORMAL = RE.MATCH_NORMAL;
+  
+  /**
+   * Flag to specify that matching should be case-independent (folded)
+   */
+  public static final int FLAG_MATCH_CASEINDEPENDENT = RE.MATCH_CASEINDEPENDENT;
+ 
+  /**
+   * Contructs a RegexCapabilities with the default MATCH_NORMAL match style.
+   */
+  public JakartaRegexpCapabilities() {}
+  
+  /**
+   * Constructs a RegexCapabilities with the provided match flags.
+   * Multiple flags should be ORed together.
+   * 
+   * @param flags The matching style
+   */
+  public JakartaRegexpCapabilities(int flags)
+  {
+    this.flags = flags;
+  }
+  
+  public void compile(String pattern) {
+    regexp = new RE(pattern, this.flags);
+  }
+

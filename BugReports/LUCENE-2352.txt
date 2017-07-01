@@ -1,0 +1,6 @@
+Add a new TestBackwardsCompatibility index for flex backwards (a 3.0 one with also numeric fields)
+
+
+
+Description:
+In flex we change also the encode/decoder for numeric fields (NumericTokenSteam) using BytesRef and also the collation filters. We should add a test index from 3.0 that contains these fields and do some validation, that field contents did not change when read with flex.

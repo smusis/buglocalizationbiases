@@ -1,0 +1,15 @@
+Exception shouldn't be thrown for unsupported authentication method
+
+
+
+Description:
+Currently, Authenticator will throw an UnsupportedOperationException for 
+unsupported authentication method (like NTLM). This is correct. However,  
+HttpMethodBase.execute only catches HttpException, so this 
+UnsupportedOperationException is leaked to the user. This is undesirable, 
+because user may want a chance to handle such such authentication themself. The 
+correct way is to pass the http status code to the user, just like how it 
+treats redirect to a different host.
+
+The simple fix is to catch all exceptions in HttpMethodBase.execute when 
+calling Authenticator.authenticate.

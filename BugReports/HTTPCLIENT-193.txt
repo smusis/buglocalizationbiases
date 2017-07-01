@@ -1,0 +1,22 @@
+Buffered output to socket
+
+
+
+Description:
+--Posted by Slavik Markovich:
+
+Hi all,
+
+This is probably a known issue (but I haven't found the answer for it yet).
+I'm using httpclient to post data to a remote server but as far as I can see
+(using ethereal) the client is writing every line to the wire without buffering.
+After examining the code, I can see that the HttpConnection class is using the
+output stream received from the socket directly.
+Is there a reason for the direct writing?
+This is a problem for me 'cause the remote server sets a very low timeout and
+returns a bad request response after receiving the request line (without any
+other header line or request body).
+
+Can I easily add a buffered behavior to the http client?
+
+10x

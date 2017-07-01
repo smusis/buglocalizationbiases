@@ -1,0 +1,14 @@
+Lock.obtain(timeout) behaves incorrectly for large timeouts
+
+
+
+Description:
+Because timeout is a long, but internal values derived from timeout
+are ints, its possible to overflow those internal values into negative
+numbers and cause incorrect behavior.
+
+Spinoff from this thread:
+
+  http://www.gossamer-threads.com/lists/lucene/java-user/54376
+
+

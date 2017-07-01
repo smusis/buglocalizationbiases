@@ -1,0 +1,11 @@
+Oracle JNDI DataSource support
+
+
+
+Description:
+When org.apache.jackrabbit.core.persistence.bundle.util.ConnectionFactory tries to get a connection from a JNDI Datasource without login and pasword, if no user/password are specified, they re retrieved as empty strings, not null, so it tries to do a ds.getConnection(user, password), which fails. Please complete the test line 66 as :
+if ((user == null || user.length() > 0) && (password == null || password.length() > 0)) {
+
+Sincerely,
+
+Stéphane Landelle

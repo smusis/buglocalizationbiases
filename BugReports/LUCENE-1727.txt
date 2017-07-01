@@ -1,0 +1,17 @@
+Order of stored Fields not maintained
+
+
+
+Description:
+As noted in these threads...
+
+http://www.nabble.com/Order-of-fields-returned-by-Document.getFields%28%29-to21034652.html
+http://www.nabble.com/Order-of-fields-within-a-Document-in-Lucene-2.4%2B-to24210597.html
+
+somewhere prior to Lucene 2.4.1 a change was introduced that prevents the Stored fields of a Document from being returned in same order that they were originally added in.  This can cause serious performance problems for people attempting to use LoadFirstFieldSelector or a custom FieldSelector with the LOAD_AND_BREAK, or the SIZE_AND_BREAK options (since the fields don't come back in the order they expect)
+
+Speculation in the email threads is that the origin of this bug is code introduced by LUCENE-1301 -- but the purpose of that issue was refactoring, so if it really is the cause of the change this would seem to be a bug, and not a side affect of a conscious implementation change.
+
+Someone who understands indexing internals should investigate this.  At a minimum, if it's decided that this is not actual a bug, then prior to resolving this bug the wiki docs and some of the FIeldSelector javadocs should be updated to make it clear what order Fields will be returned in.
+
+

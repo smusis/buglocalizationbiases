@@ -1,0 +1,14 @@
+Move Query.weight() to IndexSearcher as protected method
+
+
+
+Description:
+We had this issue several times, latest in LUCENE-3207.
+
+The method Query.weight() was left in Query for backwards reasons in Lucene 2.9 when we changed Weight class. This method is only to be called on top-level queries - and this is done by IndexSearcher. This method is just a utility method, that has nothing to do with the query itsself (it just combines the createWeight method and calls the normalization afterwards). 
+
+The problem we have is that any query that wraps other queries (like CustomScore, ConstantScore, Boolean) calls Query.weight() instead of Query.createWeight(), it will do normalization two times, leading to strange bugs.
+
+For 3.3 I will make Query.weight() simply delegate to IndexSearcher's replacement method with a big deprecation warning, so user sees this. In IndexSearcher itsself the method will be protected to only be called by itsself or subclasses of IndexSearcher. Delegation for backwards is no problem, as protected is accessible by classes in same package.
+
+I would suggest the method name to be IndexSearcher.createNormalizedWeight(Query q)

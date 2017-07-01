@@ -1,0 +1,8 @@
+IdleConnectionHandler can leave closed connections in a inconsistent state
+
+
+
+Description:
+IdleConnectionHandler when shutting down 'stale' connection does not update the state of AbstractPoolEntry thus causing an inconsistency between the state of the connection (closed) and that of the pool entry (still assumed open). The problem is mitigated by the fact that the pooling manager usually evicts closed connections almost immediately. There is a small window of time in the ThreadSafeClientConnManager#closeIdleConnection method, at which a connection can be closed by the IdleConnectionHandler and immediately leased from the pool by another thread in an inconsistent state before the main thread gets a chance to re-acquire the pool lock and clean out closed connections.
+
+For 4.0.x the problem can be worked around by retaining the pool lock for the entire span of the #closeIdleConnection. For the 4.1 branch a better solution should be devised. This probably means a complete rewrite or deprecation of IdleConnectionHandler.

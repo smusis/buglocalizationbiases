@@ -1,0 +1,15 @@
+Incorrect check for replace when importing item with colliding id
+
+
+
+Description:
+When fixing JCR-1128 bug was introduced due to incorrect check for UUID behavior. Current code is:
+201 : 	 if (!(existing.getId().equals(id)
+202 : 	&& (uuidBehavior == ImportUUIDBehavior.IMPORT_UUID_COLLISION_REMOVE_EXISTING
+203 :	|| uuidBehavior == ImportUUIDBehavior.IMPORT_UUID_COLLISION_REMOVE_EXISTING))) {
+204 :	throw new ItemExistsException(existing.safeGetJCRPath());
+205 :	}
+
+While it should check for ImportUUIDBehavior.IMPORT_UUID_COLLISION_REPLACE_EXISTING in one of the cases (line 202 or 203).
+Also it is possible that id of imported item is not known and therefore value of "id" variable is null and check will always fail. Would be nice if this case can be handled as well.
+

@@ -1,0 +1,18 @@
+HttpMultipart doesn't generate Content-Type part header in mode BROWSER_COMPATIBLE
+
+
+
+Description:
+Browsers (tested with Firefox 3.6 and IE6) send a Content-Type header for file parts, what org.apache.http.entity.mime.HttpMultipart doesn't do in BROWSER_COMPATIBLE mode.
+
+
+Example:
+
+-----------------------------142889018617181602061216500409
+
+Content-Disposition: form-data; name="myFileFieldName2"; filename="webtest.png"
+
+Content-Type: image/png
+
+
+In HtmlUnit we wil subclass HttpEntity and MultipartEntity to fix this problem.

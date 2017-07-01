@@ -1,0 +1,6 @@
+Change NumericRangeQuery to generics (for the numeric type)
+
+
+
+Description:
+NumericRangeQuery/Filter can use generics for more type-safety: NumericRangeQuery<T extends Number>

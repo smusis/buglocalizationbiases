@@ -1,0 +1,8 @@
+UUIDDocId should check IndexReader using equals()
+
+
+
+Description:
+The method UUIDDocId.getDocumentNumber(IndexReader) tests the passed index reader using its object identity.
+
+This is a left over when there was one index per workspace and no system index. When the system index was introduced each query execution will create a new CombinedIndexReader covering the workspace index and the system index. The method should now use the equals() method to test the passed IndexReader.

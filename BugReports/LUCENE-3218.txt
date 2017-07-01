@@ -1,0 +1,6 @@
+Make CFS appendable  
+
+
+
+Description:
+Currently CFS is created once all files are written during a flush / merge. Once on disk the files are copied into the CFS format which is basically a unnecessary for some of the files. We can at any time write at least one file directly into the CFS which can save a reasonable amount of IO. For instance stored fields could be written directly during indexing and during a Codec Flush one of the written files can be appended directly. This optimization is a nice sideeffect for lucene indexing itself but more important for DocValues and LUCENE-3216 we could transparently pack per field files into a single file only for docvalues without changing any code once LUCENE-3216 is resolved.

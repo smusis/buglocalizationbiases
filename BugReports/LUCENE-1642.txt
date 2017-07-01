@@ -1,0 +1,7 @@
+IndexWriter.addIndexesNoOptimize ignores the compound file setting of the destination index
+
+
+
+Description:
+IndexWriter.addIndexesNoOptimize(Directory[]) ignores the compound file setting of the destination index. It is using the compound file flags of segments in the source indexes.
+This sometimes causes undesired increase of the number of files in the destination index when non-compound file indexes are added until merge kicks in.

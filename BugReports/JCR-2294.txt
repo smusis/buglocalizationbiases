@@ -1,0 +1,6 @@
+Group.addMemeber() might add a REFERENCE instead of a WEAKREFERENCE
+
+
+
+Description:
+...and this causes that the member can't be removed afterwards.

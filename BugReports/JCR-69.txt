@@ -1,0 +1,43 @@
+removing source parent node after session move throws on save
+
+
+
+Description:
+the following code fragment illustrates the problem:
+
+        /**
+         * create the following node tree:
+         *     
+         *       + A
+         *         + B
+         *            + C
+         *         + D
+         */
+        Node A;
+        if (root.hasNode("A")) {
+            A = root.getNode("A");
+        } else {
+            A = root.addNode("A");
+        }
+        Node B = A.addNode("B");
+        Node C = B.addNode("C");
+        Node D = A.addNode("D");
+        root.save();
+
+        // move C under D
+        session.move("/A/B/C", "/A/D/C");
+        // remove B
+        A.getNode("B").remove();
+        /**
+         * the expected resulting node tree:
+         *     
+         *       + A
+         *         + D
+         *            + C
+         */
+        A.save();
+
+
+==> the last save() will throw 
+javax.jcr.RepositoryException: inconsistency: failed to retrieve transient state for ...
+ 

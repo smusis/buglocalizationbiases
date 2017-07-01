@@ -1,0 +1,8 @@
+TopDocsCollector should have bounded generic <T extends ScoreDoc>
+
+
+
+Description:
+TopDocsCollector was changed to be TopDocsCollector<T>. However it has methods which specifically assume the PQ stores ScoreDoc. Therefore, if someone extends it and defines a type which is not ScoreDoc, things will break.
+
+We shouldn't put <T> on TopDocsCollector at all, but rather change its ctor to *protected TopDocsCollector(PriorityQueue<? extends ScoreDoc> pq)*. TopDocsCollector should handle ScoreDoc types. If we do this, we'll need to change FieldValueHitQueue's Entry to extend ScoreDoc as well.

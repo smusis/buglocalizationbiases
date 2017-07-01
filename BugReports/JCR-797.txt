@@ -1,0 +1,13 @@
+Typo in the deploy/jboss/4.x/jcr-ds.xml file
+
+
+
+Description:
+
+The datasource descriptor in the jboss 4.x example xml file has a type in this line:
+
+<config-property name="bindSessionToTrasaction" type="java.lang.Boolean">true</config-property>
+
+bindSessionToTrasaction ought to be bindSessionToTransaction - there is an 'n' missing from Transaction.
+
+Found this on the tagged release in the subversion repo.

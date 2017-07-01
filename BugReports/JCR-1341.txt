@@ -1,0 +1,12 @@
+Cluster Journal directory should be created automatically
+
+
+
+Description:
+If the cluster journal directory does not exist when starting the cluster, an exception is thrown: ERROR org.apache.jackrabbit.core.RepositoryImpl - failed to start Repository: Directory specified does either not exist or is not a directory: ...
+
+As far as I know, this is not consistent with how all other components of Jackrabbit work. I think the directory should be created automatically if it does not exist:
+
+new File(...).mkdirs();
+
+I know you could argue this is not a bug, but in my view it is an important usability issue.

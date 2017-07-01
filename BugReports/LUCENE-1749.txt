@@ -1,0 +1,12 @@
+FieldCache introspection API
+
+
+
+Description:
+FieldCache should expose an Expert level API for runtime introspection of the FieldCache to provide info about what is in the FieldCache at any given moment.  We should also provide utility methods for sanity checking that the FieldCache doesn't contain anything "odd"...
+   * entries for the same reader/field with different types/parsers
+   * entries for the same field/type/parser in a reader and it's subreader(s)
+   * etc...
+
+
+

@@ -1,0 +1,6 @@
+TCK: Test root path not escaped when used in XPath queries
+
+
+
+Description:
+A repository implementation might use a test root path that contains names that need _xXXXX_ escaping when used in XPath queries. Currently the TCK just uses the test path as-is when constructing queries. Even though this only affects few repositories (I've heard of one legacy connector to run into this problem), it would be good to add the proper escaping.

@@ -1,0 +1,8 @@
+Transparent Content Coding support
+
+
+
+Description:
+I would like to see HttpClient features brought up to parity with other libraries, both in Java and other languages. c.f. Python's httplib2 (not yet in the standard library, but many would like to see it in there). That library transparently handles gzip and compress content codings.
+
+This issue is to capture possible solutions to providing this sort of innate functionality in HttpClient, so that users aren't required to know RFC2616 intimately. The HttpClient library should do the right thing and use the network in the most efficient manner possible.

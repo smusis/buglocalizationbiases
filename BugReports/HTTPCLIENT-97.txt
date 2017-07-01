@@ -1,0 +1,60 @@
+Error reading data
+
+
+
+Description:
+Hi,
+
+I have some problems with HttpClient HEAD. It works fine with a build of 
+20020720 of HttpClient though.
+
+It seems HttpClient is not reading correctly the returned HTTP response.
+
+I'm attaching the logs.
+
+Here is the output from Cactus build:
+
+
+
+     [java]     [junit] Testcase: testLongProcess took 3.645 sec
+     [java]     [junit]         Caused an ERROR
+     [java]     [junit] Failed to get the test results. This is probably due 
+to an error that happen
+ed on the server side when trying to execute the tests. Here is what was 
+returned by the server : [<
+html><head><Long Process></head><body>Some data</body></html>
+     [java]     [junit] ]
+     [java]     [junit] org.apache.cactus.util.ChainedRuntimeException: Failed 
+to get the test resul
+ts. This is probably due to an error that happened on the server side when 
+trying to execute the tes
+ts. Here is what was returned by the server : [<html><head><Long 
+Process></head><body>Some data</bod
+y></html>
+     [java]     [junit] ]
+     [java]     [junit]         at 
+org.apache.cactus.client.AbstractHttpClient.doTest(Unknown Source
+)
+     [java]     [junit]         at 
+org.apache.cactus.AbstractWebTestCase.runWebTest(Unknown Source)
+     [java]     [junit]         at 
+org.apache.cactus.AbstractWebTestCase.runGenericTest(Unknown Sour
+ce)
+     [java]     [junit]         at org.apache.cactus.ServletTestCase.runTest
+(Unknown Source)
+     [java]     [junit]         at org.apache.cactus.AbstractTestCase.runBare
+(Unknown Source)
+     [java]     [junit] org.apache.cactus.client.ParsingException: Not a valid 
+response. First 100 c
+haracters of the reponse: [</webresult>HTTP/1.1 200 OK
+     [java]     [junit] Server: Resin/2.1.2
+     [java]     [junit] Content-Length: 23
+     [java]     [junit] Date: Tue, 13 Aug 2002 08:45:2]
+     [java]     [junit]         at 
+org.apache.cactus.client.WebTestResultParser.readExceptionClassna
+me(Unknown Source)
+     [java]     [junit]         at 
+org.apache.cactus.client.WebTestResultParser.parse(Unknown Source
+
+Thanks
+-Vincent

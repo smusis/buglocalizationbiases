@@ -1,0 +1,8 @@
+FieldInfos should be read-only if loaded from disk
+
+
+
+Description:
+Currently FieldInfos create a private FieldNumberBiMap when they are loaded from a directory which is necessary due to some limitation we need to face with IW#addIndexes(Dir). If we add an index via a directory to an existing index field number can conflict with the global field numbers in the IW receiving the directories. Those field number conflicts will remain until those segments are merged and we stabilize again based on the IW global field numbers. Yet, we unnecessarily creating a BiMap here where we actually should enforce read-only semantics since nobody should modify this FieldInfos instance we loaded from the directory. If somebody needs to get a modifiable copy they should simply create a new one and all all FieldInfo instances to it.
+
+

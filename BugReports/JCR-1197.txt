@@ -1,0 +1,8 @@
+Node.restore() may throw InvalidItemStateException
+
+
+
+Description:
+It seems that ItemManager cache is not maintained correctly. I'm getting InvalidItemStateException: 'propertyId' has been modified externally tryin restore/checkout versionable nodes in single thread.
+
+ItemState should be evicted from ItemStateManager cache when modified, it seems that status of ItemState is changed to MODIFIED, but itemState remains in the cache.

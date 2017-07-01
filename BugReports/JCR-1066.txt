@@ -1,0 +1,6 @@
+Exclude system index for queries that restrict the result set to nodetypes not availble in the "jcr:system" subtree
+
+
+
+Description:
+We already have code that is able to decide whether the system index needs to be included in a search or not (see JCR-967). If I execute a query like "my:app//element(*, my:doc)" this will only search the workspace index. Unfortunately this is slower than "//element(*, my:doc)", since the first query can not be optimized as the second. In our case both queries return the same result set because we use application specific node types. Even though the second query includes the system index it is still faster than the first one. But it could be even faster because it doesn't need to search the system index because nodes with the application specific node type can't be added to the "jcr:system"-tree and are therefore are added never to the system index (am I right?).

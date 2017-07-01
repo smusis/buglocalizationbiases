@@ -1,0 +1,6 @@
+RepositoryImpl.activeSessions should use Session instead of SessionImpl
+
+
+
+Description:
+Turn Map<SessionImpl, SessionImpl> activeSessions into Map<Session, Session> activeSessions as there is not clear need for the use of SessionImpl.

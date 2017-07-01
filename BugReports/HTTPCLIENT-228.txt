@@ -1,0 +1,97 @@
+Request with DIGEST authentication fails when redirected
+
+
+
+Description:
+Request with DIGEST authentication fails when redirected due to invalid URI
+parameter.
+
+-- Client side log ----------------------------------------------------------
+
+[DEBUG] HttpClient - -Java version: 1.2.2
+[DEBUG] HttpClient - -Java vendor: Sun Microsystems Inc.
+[DEBUG] HttpClient - -Operating system name: Linux
+[DEBUG] HttpClient - -Operating system architecture: i386
+[DEBUG] HttpClient - -Operating system version: 2.4.20-13.9-ok
+[DEBUG] HttpClient - -SUN 1.2: SUN (DSA key/parameter generation; DSA signing;
+SHA-1, MD5 digests; SecureRandom; X.509 certificates; JKS keystore)
+[DEBUG] HttpClient - -SunJSSE 1.0301: Sun JSSE provider(implements RSA
+Signatures, PKCS12, SunX509 key/trust factories, SSLv3, TLSv1)
+[DEBUG] HttpConnection - -Creating connection for localhost using protocol http:80
+[DEBUG] HttpConnection - -HttpConnection.setSoTimeout(0)
+[DEBUG] HttpMethod - -Execute loop try 1
+[DEBUG] wire - ->> "GET /transfer HTTP/1.1[\r][\n]"
+[DEBUG] HttpMethod - -Adding Host request header
+[DEBUG] wire - ->> "User-Agent: Jakarta Commons-HttpClient/2.0beta1[\r][\n]"
+[DEBUG] wire - ->> "Host: localhost[\r][\n]"
+[DEBUG] wire - ->> "[\r][\n]"
+[DEBUG] wire - -<< "HTTP/1.1 401 Authorization Required[\r][\n]"
+[DEBUG] wire - -<< "Date: Fri, 20 Jun 2003 08:30:06 GMT[\r][\n]"
+[DEBUG] wire - -<< "Server: Apache/2.0.40 (Red Hat Linux)[\r][\n]"
+[DEBUG] wire - -<< "WWW-Authenticate: Digest realm="guest realm",
+nonce="ei+T7oPAAwA=53c8e6d609ff81a8dcbc370b51f8aadec565009a", algorithm=MD5,
+domain="/transfer", qop="auth"[\r][\n]"
+[DEBUG] wire - -<< "Vary: accept-language[\r][\n]"
+[DEBUG] wire - -<< "Accept-Ranges: bytes[\r][\n]"
+[DEBUG] wire - -<< "Content-Length: 1285[\r][\n]"
+[DEBUG] wire - -<< "Content-Type: text/html; charset=ISO-8859-1[\r][\n]"
+[DEBUG] HttpMethod - -Authorization required
+[DEBUG] HttpAuthenticator - -Using 'guest realm' authentication realm
+[DEBUG] HttpMethod - -HttpMethodBase.execute(): Server demanded authentication
+credentials, will try again.
+...
+[DEBUG] HttpMethod - -Resorting to protocol version default close connection policy
+[DEBUG] HttpMethod - -Should NOT close connection, using HTTP/1.1.
+[DEBUG] HttpMethod - -Execute loop try 2
+[DEBUG] wire - ->> "GET /transfer HTTP/1.1[\r][\n]"
+[DEBUG] HttpMethod - -Request to add Host header ignored: header already added
+[DEBUG] wire - ->> "User-Agent: Jakarta Commons-HttpClient/2.0beta1[\r][\n]"
+[DEBUG] wire - ->> "Host: localhost[\r][\n]"
+[DEBUG] wire - ->> "Authorization: Digest username="guest", realm="guest realm",
+nonce="ei+T7oPAAwA=53c8e6d609ff81a8dcbc370b51f8aadec565009a", uri="/transfer",
+qop="auth", algorithm="MD5", nc=00000001,
+cnonce="81d4b905a4e9def944beaed8daf79283",
+response="71394edcddf4bcee6237ea4bb50cfaa5"[\r][\n]"
+[DEBUG] wire - ->> "[\r][\n]"
+[DEBUG] wire - -<< "HTTP/1.1 301 Moved Permanently[\r][\n]"
+[DEBUG] wire - -<< "Date: Fri, 20 Jun 2003 08:30:06 GMT[\r][\n]"
+[DEBUG] wire - -<< "Server: Apache/2.0.40 (Red Hat Linux)[\r][\n]"
+[DEBUG] wire - -<< "Location: http://localhost/transfer/[\r][\n]"
+[DEBUG] wire - -<< "Content-Length: 302[\r][\n]"
+[DEBUG] wire - -<< "Content-Type: text/html; charset=iso-8859-1[\r][\n]"
+[DEBUG] HttpMethod - -Redirect required
+[DEBUG] HttpMethod - -Redirect requested to location 'http://localhost/transfer/'
+[DEBUG] HttpMethod - -Redirecting from 'http://localhost:80/transfer' to
+'http://localhost/transfer/
+...
+[DEBUG] HttpMethod - -Resorting to protocol version default close connection policy
+[DEBUG] HttpMethod - -Should NOT close connection, using HTTP/1.1.
+[DEBUG] HttpMethod - -Execute loop try 3
+[DEBUG] wire - ->> "GET /transfer/ HTTP/1.1[\r][\n]"
+[DEBUG] HttpMethod - -Request to add Host header ignored: header already added
+[DEBUG] wire - ->> "User-Agent: Jakarta Commons-HttpClient/2.0beta1[\r][\n]"
+[DEBUG] wire - ->> "Host: localhost[\r][\n]"
+[DEBUG] wire - ->> "Authorization: Digest username="guest", realm="guest realm",
+nonce="ei+T7oPAAwA=53c8e6d609ff81a8dcbc370b51f8aadec565009a", uri="/transfer",
+qop="auth", algorithm="MD5", nc=00000001,
+cnonce="81d4b905a4e9def944beaed8daf79283",
+response="71394edcddf4bcee6237ea4bb50cfaa5"[\r][\n]"
+[DEBUG] wire - ->> "[\r][\n]"
+[DEBUG] wire - -<< "HTTP/1.1 400 Bad Request[\r][\n]"
+[DEBUG] wire - -<< "Date: Fri, 20 Jun 2003 08:30:06 GMT[\r][\n]"
+[DEBUG] wire - -<< "Server: Apache/2.0.40 (Red Hat Linux)[\r][\n]"
+[DEBUG] wire - -<< "Vary: accept-language[\r][\n]"
+[DEBUG] wire - -<< "Accept-Ranges: bytes[\r][\n]"
+[DEBUG] wire - -<< "Content-Length: 973[\r][\n]"
+[DEBUG] wire - -<< "Connection: close[\r][\n]"
+[DEBUG] wire - -<< "Content-Type: text/html; charset=ISO-8859-1[\r][\n]"
+
+-- End of client side log -----------------------------------------------------
+
+
+-- Server side log ------------------------------------------------------------
+
+[Fri Jun 20 10:30:06 2003] [error] [client 127.0.0.1] Digest: uri mismatch -
+</transfer> does not match request-uri </transfer/>
+
+-- End of server side log -----------------------------------------------------

@@ -1,0 +1,16 @@
+document with no term vector fields after documents with term vector fields corrupts the index
+
+
+
+Description:
+If a document with no term-vector-enabled fields is added after
+document(s) that did have term vectors, as part of a single set of
+buffered docs, then the term-vector documents file is corrupted
+because we fail to write a "0" vInt.
+
+Thanks to Grant for spotting this!
+
+Spinoff from this thread:
+
+    http://www.gossamer-threads.com/lists/lucene/java-dev/53306
+

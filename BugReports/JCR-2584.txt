@@ -1,0 +1,6 @@
+Switch from log4j to Logback
+
+
+
+Description:
+Logback (http://logback.qos.ch/) is a native SLF4J implementation and is in many ways superior to log4j (see http://logback.qos.ch/reasonsToSwitch.html). Most notably it includes package version information in logged stack traces (http://logback.qos.ch/reasonsToSwitch.html#packagingData), which can be really useful in many cases.

@@ -1,0 +1,8 @@
+When reopen returns a new IndexReader, both IndexReaders may now control the lifecycle of the underlying Directory which is managed by reference counting
+
+
+
+Description:
+Rough summary. Basically, FSDirectory tracks references to FSDirectory and when IndexReader.reopen shares a Directory with a created IndexReader and closeDirectory is true, FSDirectory's ref management will see two decrements for one increment. You can end up getting an AlreadyClosed exception on the Directory when the IndexReader is open.
+
+I have a test I'll put up. A solution seems fairly straightforward (at least in what needs to be accomplished).

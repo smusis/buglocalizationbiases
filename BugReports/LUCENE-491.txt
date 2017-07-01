@@ -1,0 +1,17 @@
+DateTools needs to use UTC for correct collation,
+
+
+
+Description:
+If your local timezone is Europe/London then the times Sun, 30 Oct 2005 00:00:00 +0000 and exactly one hour later are both converted to 200530010000 by DateTools.dateToString() with minute resolution.   The Linux date command is useful in seeing why:
+
+    $ date --date "Sun, 30 Oct 2005 00:00:00 +0000"
+    Sun Oct 30 01:00:00 BST 2005
+
+    $ date --date "Sun, 30 Oct 2005 01:00:00 +0000"
+    Sun Oct 30 01:00:00 GMT 2005
+
+Both times are 1am in the morning, but one is when DST is in force, the other isn't.   Of course, these are actually different times!
+
+Of course, if dates are stored in the index with implicit timezone information then not only do we get problems when the clocks go back at the end of summer, but we also have problems crossing timezones.   If a database is created in California and used in Paris then the times are going to be badly skewed (there's a nine hour time difference most of the year).
+

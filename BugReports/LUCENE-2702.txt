@@ -1,0 +1,6 @@
+BytesRefHash#get() should expect a BytesRef instances for consistency
+
+
+
+Description:
+BytesRefHash#get should use a provided BytesRef instances instead of the internally used scratch. This is how all other APIs currently work and we should be consistent.

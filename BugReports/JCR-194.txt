@@ -1,0 +1,26 @@
+dead lock while locking or unlocking nodes
+
+
+
+Description:
+JackRabbit is still hanging on the Node.lock() or Node.unlock() function.
+
+... everything fine until here...
+s13: 4
+s13: 5
+s13: 6
+s13: 7   -> unlock()
+s14: started.
+s14: 1   -> session.getRootNode()
+s15: started.
+s15: 1
+s16: started.
+
+I just find this failure during the first run (emtpy repository home directory). 2nd and 3th run are fine after killing the vm from first run, but with already initialized repository directory these time.
+
+1. rm -rf repository.home
+2. run -> hang
+3. kill
+4. run -> ok
+5. run -> ok
+

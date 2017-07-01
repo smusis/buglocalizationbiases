@@ -1,0 +1,20 @@
+Cluster: Node type register/unregister deadlock
+
+
+
+Description:
+A deadlock can occur when two cluster nodes concurrently register or unregister node types.
+
+Reason: 
+
+NodeTypeRegistry.registerNodeTypes is synchronized, and calls eventChannel.registered(ntDefs), which calls AbstractJournal.lockAndSync(), which tries to lock AbstractJournal.rwLock.
+
+On the other hand, AbstractJournal.sync() locks AbstractJournal.rwLock, then calls NodeTypeRecord.process, which calls NodeTypeRegistry.unregisterNodeTypes, which is also synchronized.
+
+Possible solutions: Either 
+
+- NodeTypeRegistry doesn't synchronize on the object when calling a eventChannel method,
+
+- or NodeTypeRegistry locks AbstractJournal.rwLock before synchronizing.
+
+There might be other solutions.

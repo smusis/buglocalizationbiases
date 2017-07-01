@@ -1,0 +1,12 @@
+LOWER operand with nested LOCALNAME operand not work with SQL2
+
+
+
+Description:
+Below query was running successful using Query.SQL languange:
+SELECT * FROM nt:file WHERE (CONTAINS(*, 'Jon') OR  LOWER(fn:name()) LIKE '%jon%') AND jcr:path LIKE '/Resources/%' ORDER BY jcr:score()
+
+But equivalent next query in Query.JCR_SQL2 will fail with exception UnsupportedRepositoryOperationException():
+SELECT * FROM [nt:file] WHERE (CONTAINS([nt:file].*, 'Jon') OR  LOWER(LOCALNAME()) LIKE '%jon%') AND ISDESCENDANTNODE('/Resources') ORDER BY SCORE()
+
+From my investigation seems LOWER function will not work with nested function LOCALNAME. According to section "6.7.32 LowerCase" JCR 2.0 Specs, LOWER operand able to work on DynamicOperand argument.

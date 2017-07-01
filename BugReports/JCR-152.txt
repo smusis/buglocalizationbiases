@@ -1,0 +1,6 @@
+FAQ document
+
+
+
+Description:
+Collect the frequently discussed issues from the mailing list and the wiki into an FAQ document.

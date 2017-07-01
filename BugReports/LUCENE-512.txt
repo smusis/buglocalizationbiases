@@ -1,0 +1,16 @@
+ClassCastException in ParallelReader class
+
+
+
+Description:
+ClassCastException in ParalleReader when calling getTermFreqVectors on line 153
+
+Reason : 
+
+ cast of key and value is swapped
+
+Fixed with : 
+
+      IndexReader reader = (IndexReader)e.getValue();
+      String field = (String)e.getKey();
+

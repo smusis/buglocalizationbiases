@@ -1,0 +1,6 @@
+make spi query code compatible with JCR 2.0
+
+
+
+Description:
+SPI-Commons currently has it's own outdated copy of the new JCR 2.0 query interfaces.

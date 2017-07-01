@@ -1,0 +1,6 @@
+Allow similarity to encode norms other than a single byte
+
+
+
+Description:
+LUCENE-3628 cut over norms to docvalues. This removes the long standing limitation that norms are a single byte. Yet, we still need to expose this functionality to Similarity to write / encode norms in a different format. 

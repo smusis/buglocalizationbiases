@@ -1,0 +1,21 @@
+If the NRT reader hasn't changed then IndexReader.openIfChanged should return null
+
+
+
+Description:
+I hit a failure in TestSearcherManager (NOTE: doesn't always fail):
+
+{noformat}
+  ant test -Dtestcase=TestSearcherManager -Dtestmethod=testSearcherManager -Dtests.seed=459ac99a4256789c:-29b8a7f52497c3b4:145ae632ae9e1ecf
+{noformat}
+
+It was tripping the assert inside SearcherLifetimeManager.record,
+because two different IndexSearcher instances had different IR
+instances sharing the same version.  This was happening because
+IW.getReader always returns a new reader even when there are no
+changes.  I think we should fix that...
+
+Separately I found a deadlock in
+TestSearcherManager.testIntermediateClose, if the test gets
+SerialMergeScheduler and needs to merge during the second commit.
+

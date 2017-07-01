@@ -1,0 +1,21 @@
+src builds fail because of no "lib" directory
+
+
+
+Description:
+I just downloaded http://mirrors.ibiblio.org/pub/mirrors/apache/lucene/java/lucene-2.0.0-src.tar.gz and noticed that you can't compile and run the tests from that src build because it doesn't inlcude the lib dir (and the build file won't attempt to make it if it doesn't exist) ...
+
+hossman@coaster:~/tmp/l2$ tar -xzvf lucene-2.0.0-src.tar.gz
+  ...
+hossman@coaster:~/tmp/l2$ cd lucene-2.0.0/
+hossman@coaster:~/tmp/l2/lucene-2.0.0$ ant test
+  ...
+test:
+    [mkdir] Created dir: /home/hossman/tmp/l2/lucene-2.0.0/build/test
+
+BUILD FAILED
+/home/hossman/tmp/l2/lucene-2.0.0/common-build.xml:169: /home/hossman/tmp/l2/lucene-2.0.0/lib not found.
+
+(it's refrenced in junit.classpath, but i'm not relaly sure why)
+
+

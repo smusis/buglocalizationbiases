@@ -1,0 +1,7 @@
+javadocs cleanup
+
+
+
+Description:
+basic cleanup in core/contrib: typos, apache license header as javadoc, missing periods that screw up package summary, etc.
+

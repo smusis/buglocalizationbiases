@@ -1,0 +1,6 @@
+TestIndexwriterWithThreads#testCloseWithThreads hangs if a thread hit an exception before indexing its first document
+
+
+
+Description:
+in TestIndexwriterWithThreads#testCloseWithThreads we loop until all threads have indexed a single document but if one or more threads fail on before they index the first doc the test hangs forever. We should check if the thread is still alive unless it has indexed a document and fail if it already died.

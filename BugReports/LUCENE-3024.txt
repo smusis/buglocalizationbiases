@@ -1,0 +1,10 @@
+If index has more than Integer.MAX_VALUE terms, seeking can it AIOOBE due to long/int overflow
+
+
+
+Description:
+Tom hit a new long/int overflow case: http://markmail.org/thread/toyl2ujcl4suqvf3
+
+This is a regression, in 3.1, introduced with LUCENE-2075.
+
+Worse, our Test2BTerms failed to catch this, so I've fixed that test to show the failure.

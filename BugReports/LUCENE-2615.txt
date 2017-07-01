@@ -1,0 +1,8 @@
+DirectIOLinuxDirectory hardwires buffer size and creates files with invalid permissions
+
+
+
+Description:
+TestDemo fails if I use the DirectIOLinuxDirectory (using Robert's new -Dtests.directory=XXX), because when it O_CREATs a file, it fails to specify the mode, so [depending on C stack!] you can get permission denied.
+
+Also, we currently hardwire the buffer size to 1 MB (Mark found this)... I plan to add a "forcedBufferSize" to the DirectIOLinuxDir's ctor, to optionally override lucene's default buffer sizes (which are way too small for direct IO to get barely OK performance).  If you pass 0 for this then you get Lucene's default buffer sizes...

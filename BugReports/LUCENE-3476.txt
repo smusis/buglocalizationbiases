@@ -1,0 +1,6 @@
+SearcherManager misses to close IR if manager is closed during reopen
+
+
+
+Description:
+if we close SM while there is a thread calling maybReopen() and swapSearcher throws already closed exception we miss to close the searcher / reader.

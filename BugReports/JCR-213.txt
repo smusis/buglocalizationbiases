@@ -1,0 +1,9 @@
+Avoid creation of more than one jackrabbit instance with the same configuration
+
+
+
+Description:
+based on the mailing list archive, it seems new users often run more than one jackrabbit instance with the same configuration. I propose to lock the repository by creating an empty file called ".lock" at the repository home on startup and remove it on shutdown.
+If the lock file is found on jackrabbit startup the following message will be logged:
+"The repository home at " + home.getAbsolutePath() + " appears to be in use. If you are sure it's not in use please delete the file at  " + lock.getAbsolutePath() + ". Probably the repository was not shutdown properly."
+

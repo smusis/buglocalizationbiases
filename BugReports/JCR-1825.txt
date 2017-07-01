@@ -1,0 +1,8 @@
+DBDataStore doesn't support concurrent reads
+
+
+
+Description:
+My understanding is that setting parameter copyWhenReading to true should allow concurrent reads by spooling binary property to temporary file and free database resources (connection) immediately to make it available for other threads.
+
+After applying patch for JCR-1388, DBDataStore doesn't support concurrent reads anymore, resultSet is kept open and db connection is blocked until the stream is read and closed. When copyWhenReading is set to true db connection should be released immediately, this is the reason i guess why temporary file is used.

@@ -1,0 +1,8 @@
+Rename lucene/solr dev jar files to -SNAPSHOT.jar
+
+
+
+Description:
+Currently the lucene dev jar files end with '-dev.jar' this is all fine, but it makes people using maven jump through a few hoops to get the -SNAPSHOT naming convention required by maven.  If we want to publish snapshot builds with hudson, we would need to either write some crazy scripts or run the build twice.
+
+I suggest we switch to -SNAPSHOT.jar.  Hopefully for the 3.x branch and for the /trunk (4.x) branch

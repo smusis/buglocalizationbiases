@@ -1,0 +1,12 @@
+contrib/orm-persistence Node ordering not supported
+
+
+
+Description:
+Due to a limitation in the implementation, node ordering isn't supported (it is optional in the specification but Jackrabbit provides support for it) in the ORM persistence manager. This is due to the fact that in the database, although same-name sibling ordering is supported, no guarantee is given for the ordering of nodes in the child list.
+
+Jackrabbit has some tests that use node ordering, such as the DerefQueryLevel1Test, where we look for the first property of type reference by using the following code :
+
+        Property refProp = PropertyUtil.searchProp(session, testRootNode, PropertyType.REFERENCE);
+
+The searchProp method traverses the tree and stops at the first property of the type specified. If node ordering is not correct, we return a property that is not the expected one (in the case of the DerefTest we were returning a multi-values reference property), which can could test failures.

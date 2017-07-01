@@ -1,0 +1,8 @@
+Add a MBean method to programatically create a new Workspace.
+
+
+
+Description:
+Would be useful to have a mbean method to create a new workspace to use if with a jmx console.
+
+

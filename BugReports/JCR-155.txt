@@ -1,0 +1,21 @@
+renaming a node with Session.move() or Workspace.move() is not visible from other concurrent sessions
+
+
+
+Description:
+this is a CachingHierarchyManager issue.
+
+to reproduce:
+
+Node n1 = session1.getRootNode().getNode("foo");
+String path = n1.getPath();   // returns "/foo"
+
+Node n2 = session2.getRootNode().getNode("foo");
+path = n2.getPath();   // returns "/foo"
+
+session1.move("/foo", "/bar");
+session1.save();
+
+path = n1.getPath();   // returns "/bar"
+path = n2.getPath();   // should return "/bar" but still returns "/foo"
+

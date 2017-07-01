@@ -1,0 +1,6 @@
+Avoid item state reads during Session.logout()
+
+
+
+Description:
+This is a follow up issue for JCR-2231. There's a second CachingHierarchyManager attached to the LocalItemStateManager, which it unregistered too late and causes reads on the SharedItemStateManager on Session logout. The hierarchy manager should be unregistered as listener before the state manager is disposed.

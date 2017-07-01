@@ -1,0 +1,7 @@
+Restore to base version throws NullPointerException
+
+
+
+Description:
+This only happens when the operations are enclosed in an XA transaction.
+See test: org.apache.jackrabbit.core.version.RestoreTest

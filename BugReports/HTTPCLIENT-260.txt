@@ -1,0 +1,132 @@
+Authentication does not respond to stale nonce
+
+
+
+Description:
+When using digest authentication, HTTP allows the server to mark the nonce value
+as stale. The client then must re-authenticate with a new nonce value provided
+by the server. Currently, HttpClient does not support this functionality. I've
+created a patch that allows HttpClient to support stale nonce values. It is
+attached below. The patch should be applied to HttpMethodBase.java
+
+
+***
+/home/scohen/downloads/httpclient-src/commons-httpclient-2.0-rc1/src/java/org/apache/commons/httpclient/HttpMethodBase.java
+2003-07-31 22:15:26.000000000 -0400
+--- org/apache/commons/httpclient/HttpMethodBase.java   2003-08-20
+17:22:52.000000000 -0400
+***************
+*** 1351,1384 ****
+       *
+       * @throws IOException when errors occur reading or writing to/from the
+       *         connection
+       * @throws HttpException when a recoverable error occurs
+       */
+!     protected void addAuthorizationRequestHeader(HttpState state,
+!                                                  HttpConnection conn)
+!     throws IOException, HttpException {
+!         LOG.trace("enter HttpMethodBase.addAuthorizationRequestHeader("
+!                   + "HttpState, HttpConnection)");
+   
+          // add authorization header, if needed
+!         if (getRequestHeader(HttpAuthenticator.WWW_AUTH_RESP) == null) {
+!             Header[] challenges = getResponseHeaderGroup().getHeaders(
+!                                                HttpAuthenticator.WWW_AUTH);
+!             if (challenges.length > 0) {
+!                 try {
+!                     AuthScheme authscheme =
+HttpAuthenticator.selectAuthScheme(challenges);
+                      HttpAuthenticator.authenticate(authscheme, this, conn, state);
+!                 } catch (HttpException e) {
+!                     // log and move on
+!                     if (LOG.isErrorEnabled()) {
+!                         LOG.error(e.getMessage(), e);
+!                     }
+                  }
+              }
+          }
+      }
+                                                                                
+      /**
+       * Adds a <tt>Content-Length</tt> or <tt>Transfer-Encoding: Chunked</tt>
+       * request header, as long as no <tt>Content-Length</tt> request header
+       * already exists.
+       *
+--- 1351,1391 ----
+       *
+       * @throws IOException when errors occur reading or writing to/from the
+       *         connection
+       * @throws HttpException when a recoverable error occurs
+       */
+!     protected void addAuthorizationRequestHeader(HttpState state,
+HttpConnection conn)
+!         throws IOException, HttpException {
+!         LOG.trace("enter HttpMethodBase.addAuthorizationRequestHeader(" +
+"HttpState, HttpConnection)");
+                                                                                
+          // add authorization header, if needed
+!
+!         Header[] challenges =
+getResponseHeaderGroup().getHeaders(HttpAuthenticator.WWW_AUTH);
+!         if (challenges.length > 0) {
+!
+!             try {
+!                 AuthScheme authscheme =
+HttpAuthenticator.selectAuthScheme(challenges);
+!                 if (getRequestHeader(HttpAuthenticator.WWW_AUTH_RESP) == null
+!                     || isNonceStale(authscheme) ) {
+                      HttpAuthenticator.authenticate(authscheme, this, conn, state);
+!                 }
+!             } catch (HttpException e) {
+!                 // log and move on
+!                 if (LOG.isErrorEnabled()) {
+!                     LOG.error(e.getMessage(), e);
+                  }
+              }
+          }
+      }
+                                                                                
++
++     private boolean isNonceStale(AuthScheme authscheme) {
++         return authscheme.getSchemeName().equalsIgnoreCase("digest")
++             && "true".equalsIgnoreCase(authscheme.getParameter("stale"));
++     }
++
++
+      /**
+       * Adds a <tt>Content-Length</tt> or <tt>Transfer-Encoding: Chunked</tt>
+       * request header, as long as no <tt>Content-Length</tt> request header
+       * already exists.
+       *
+***************
+*** 2419,2430 ****
+                  buffer.append(port);
+              }
+              buffer.append('#');
+              buffer.append(authscheme.getID());
+              String realm = buffer.toString();
+!
+              if (realmsUsed.contains(realm)) {
+                  if (LOG.isInfoEnabled()) {
+                      LOG.info("Already tried to authenticate to \""
+                               + realm + "\" but still receiving "
+                               + statusCode + ".");
+                  }
+--- 2426,2442 ----
+                  buffer.append(port);
+              }
+              buffer.append('#');
+              buffer.append(authscheme.getID());
+              String realm = buffer.toString();
+!
+!                       // check to see if the server has made our nonce stale.
+!                       // if it has, re-auth
+              if (realmsUsed.contains(realm)) {
++               if ( isNonceStale(authscheme)) {
++                       return false;
++               }
+                  if (LOG.isInfoEnabled()) {
+                      LOG.info("Already tried to authenticate to \""
+                               + realm + "\" but still receiving "
+                               + statusCode + ".");
+                  }

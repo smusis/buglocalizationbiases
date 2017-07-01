@@ -1,0 +1,14 @@
+bad java practices which affect performance (result of code inspection)
+
+
+
+Description:
+IntelliJ IDEA found the following issues in the Lucense source code and tests:
+
+1) explicit for loops where calls to System.arraycopy() should have been
+2) calls to Boolean constructor (in stead of the appropriate static method/field)
+3) instantiation of unnecessary Integer instances for toString, instead of calling the static one
+4) String concatenation using + inside a call to StringBuffer.append(), in stead of chaining the append calls
+
+all minor issues. patch is forthcoming.
+

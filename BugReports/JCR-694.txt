@@ -1,0 +1,12 @@
+Remove query handler idleTime
+
+
+
+Description:
+The changes included in JCR-415 revealed a synchronization issue with the query handler idle timer task.
+
+See thread on dev-list: http://thread.gmane.org/gmane.comp.apache.jackrabbit.devel/10199
+
+We could either fix the synchronization issue in the SearchManager class or remove the functionality all together.
+
+Because the repository also supports a idle time parameter for the whole workspace (maxIdleTime in Workspaces element) the query handler idle time should be removed.

@@ -1,0 +1,12 @@
+caching module should use HttpParams-style configuration
+
+
+
+Description:
+The constructor for CachingHttpClient currently accepts combinations of:
+* HttpCache
+* HttpClient
+* integer for max object size in bytes
+
+As I started looking at being able to configure this for behaving as a non-shared cache, I realized that we actually want to be replacing that last int with an HttpParams argument, and tracking all the various options in that style. I have a patch with this update which I will upload shortly.
+

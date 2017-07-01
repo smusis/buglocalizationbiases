@@ -1,0 +1,9 @@
+CollationKeyFilter: convert tokens into CollationKeys encoded using IndexableBinaryStringTools
+
+
+
+Description:
+Converts each token into its CollationKey using the provided collator, and then encodes the CollationKey with IndexableBinaryStringTools, to allow it to be stored as an index term.
+
+This will allow for efficient range searches and Sorts over fields that need collation for proper ordering.
+

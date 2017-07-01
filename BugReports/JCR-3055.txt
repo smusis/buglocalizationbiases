@@ -1,0 +1,6 @@
+NPE in event polling thread
+
+
+
+Description:
+This exception occurs when running the jcr2dav integration tests. This surfaces as a  side effect of JCR-3046. The root cause is refresh(Event) not guarding against null values returned from Event.getItemId().

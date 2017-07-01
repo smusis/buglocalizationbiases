@@ -1,0 +1,37 @@
+Concurrent Session.move() operations failure
+
+
+
+Description:
+Performing concurrent move operations may cause failures similar to the following:
+
+javax.jcr.RepositoryException: Unable to update item: node /
+       at org.apache.jackrabbit.core.ItemImpl.save(ItemImpl.java:1147)
+       at org.apache.jackrabbit.core.SessionImpl.save(SessionImpl.java:920)
+       at ConcurrentMoveTest$1.execute(ConcurrentMoveTest.java:30)
+       at org.apache.jackrabbit.core.AbstractConcurrencyTest$Executor.run(AbstractConcurrencyTest.java:209)
+       at java.lang.Thread.run(Thread.java:637)
+Caused by: org.apache.jackrabbit.core.state.ItemStateException: Unable
+to resolve path for item: 79a0fbdb-49fd-4830-a842-5ab11842cd17
+       at org.apache.jackrabbit.core.observation.EventStateCollection.getPath(EventStateCollection.java:683)
+       at org.apache.jackrabbit.core.observation.EventStateCollection.createEventStates(EventStateCollection.java:268)
+       at org.apache.jackrabbit.core.state.SharedItemStateManager$Update.begin(SharedItemStateManager.java:702)
+       at org.apache.jackrabbit.core.state.SharedItemStateManager.beginUpdate(SharedItemStateManager.java:1110)
+       at org.apache.jackrabbit.core.state.SharedItemStateManager.update(SharedItemStateManager.java:1140)
+       at org.apache.jackrabbit.core.state.LocalItemStateManager.update(LocalItemStateManager.java:351)
+       at org.apache.jackrabbit.core.state.XAItemStateManager.update(XAItemStateManager.java:354)
+       at org.apache.jackrabbit.core.state.LocalItemStateManager.update(LocalItemStateManager.java:326)
+       at org.apache.jackrabbit.core.state.SessionItemStateManager.update(SessionItemStateManager.java:328)
+       at org.apache.jackrabbit.core.ItemImpl.save(ItemImpl.java:1141)
+       ... 4 more
+Caused by: javax.jcr.ItemNotFoundException: failed to build path of
+79a0fbdb-49fd-4830-a842-5ab11842cd17:
+826f0c19-9956-402a-9c0d-93089eedcc1c has no child entry for
+79a0fbdb-49fd-4830-a842-5ab11842cd17
+       at org.apache.jackrabbit.core.HierarchyManagerImpl.buildPath(HierarchyManagerImpl.java:291)
+       at org.apache.jackrabbit.core.CachingHierarchyManager.buildPath(CachingHierarchyManager.java:198)
+       at org.apache.jackrabbit.core.HierarchyManagerImpl.getPath(HierarchyManagerImpl.java:395)
+       at org.apache.jackrabbit.core.CachingHierarchyManager.getPath(CachingHierarchyManager.java:232)
+       at org.apache.jackrabbit.core.observation.EventStateCollection.getPath(EventStateCollection.java:678)
+       ... 13 more
+

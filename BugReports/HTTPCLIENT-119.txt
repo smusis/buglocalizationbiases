@@ -1,0 +1,17 @@
+[PATCH] FilePart fails to send data on second call to send
+
+
+
+Description:
+When using a FilePart with the MultipartPostMethod and a server that requires 
+authentication, the first call to FilePart.send() sends the data correctly and 
+HttpClient receives an unauthorized response from the server.  If HttpClient is 
+set to automatically handle authentication attempts it then attempts to send 
+the FilePart again at which time the InputStream FilePart reads from is empty 
+so it doesn't send any data.
+
+Due to this, the data actually sent by HttpClient doesn't match the content 
+length specified so the server continues to wait for the data and doesn't 
+respond, leaving HttpClient to timeout while waiting for a response.
+
+This occurs with the latest source from CVS as of 16 October 2002.

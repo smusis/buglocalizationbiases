@@ -1,0 +1,8 @@
+OOM in TestBeiderMorseFilter.testRandom
+
+
+
+Description:
+This has been OOM'ing a lot... we should see why, its likely a real bug.
+
+ant test -Dtestcase=TestBeiderMorseFilter -Dtestmethod=testRandom -Dtests.seed=2e18f456e714be89:310bba5e8404100d:-3bd11277c22f4591 -Dtests.multiplier=3 -Dargs="-Dfile.encoding=ISO8859-1"

@@ -1,0 +1,14 @@
+Wrong method signatures in AbstractHttpClient
+
+
+
+Description:
+The method signatures for removeRequestInterceptorByClass and removeResponseInterceptorByClass in AbstractHttpClient are wrong. Must be
+
+public void removeRequestInterceptorByClass(Class<? extends
+HttpRequestInterceptor> clazz);
+
+and
+
+public void removeResponseInterceptorByClass(Class<? extends
+HttpRequestInterceptor> clazz);

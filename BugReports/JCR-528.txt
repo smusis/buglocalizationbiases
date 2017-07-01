@@ -1,0 +1,9 @@
+TCK: GetPersistentQueryPathTest and SaveTest require nt:query
+
+
+
+Description:
+GetPersistentQueryPathTest and SaveTest require implementation to support nt:query node type.  This is an optional node type.
+
+Proposal: throw NotExecutableException if nt:query not in node type registry
+

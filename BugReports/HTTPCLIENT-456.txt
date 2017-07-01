@@ -1,0 +1,48 @@
+HttpClient should always override the host of HostConfiguration if an absolute request URI is given
+
+
+
+Description:
+This bug most likely occurs on all patforms and OS's, but I have only tested it
+on WinXP.
+
+The HttpClient.executeMethod(HostConfiguration,HttpMethod,HttpState) will
+receive and throw an IllegalArgumentException stating that "host parameter is
+null" when a  HostConfiguration object is passed in that ONLY has a proxy set
+(via HostConfiguration.setProxy(String, int)). Details to reproduce follow--the
+bug can be easily reproduced by using the Apache Axis 1.2 CommonsHTTPSender
+class (with JVM system props http.proxyHost, http.proxyPort set):
+
+There is a bug in the Apache Commons HTTP Client 3.0rc2 that does not set the
+hostname property
+in the <code>HostConfiguration</code> object if the following two steps
+are performed:<br>
+1. You call
+<code>HttpClient.executeMethod(HostConfiguration,HttpMethod,HttpState)</code>
+with a <code>HostConfiguration</code> object and an <code>HttpMethod</code> object
+(created using the HttpMethod(String uri) constructor).This method 
+is called in this exact way in the Apache Axis 1.2 client
+(CommonsHTTPSender.java lines 132 and 186).<br>
+2. That <code>HostConfiguration</code> object only has a proxy set (using
+setProxy(String, int)). This method 
+is called in this exact way in the Apache Axis 1.2 client
+(CommonsHTTPSender.java line 389).<br>
+
+Apache Axis 1.2rc3 CommonsHTTPSender.java did not expose this bug in Commons
+HTTP Client 3.0rc2 because
+it set the <code>HostConfiguration</code> in a different manner, as follows:<br>
+1. Call <code>HttpClient.setHostConfiguration(HostConfiguration)</code> first.
+Again,
+The <code>HostConfiguration</code> object must only have a proxy set and no host
+name.<br>
+2. Then call <code>HttpClient.executeMethod(HttpMethod)</code>.<br>
+
+Using the above steps (as in Axis 1.2rc3 CommonsHTTPSender.java, invoke()
+method), line 379 in HttpClient.java evaluates to true
+because the argument <code>hostConfiguration</code> is null (see line 324 in
+HttpClient.java) and the local 
+variable <code>defaultHostConfiguration</code> ==
+<code>HttpClient.setHostConfiguration(HostConfiguration)</code>
+which was set in item #1 above. The hostname then gets set in the
+<code>HostConfiguration</code>
+object in line 384 of HttpClient.java.

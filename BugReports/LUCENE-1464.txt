@@ -1,0 +1,14 @@
+FSDirectory.getDirectory always creates index path
+
+
+
+Description:
+This was reported to me as a Luke bug, but going deeper it proved to be a non-intuitive (broken?) behavior of FSDirectory.
+
+If you use FSDirectory.getDirectory(File nonexistent) on a nonexistent path, but one that is located under some existing parent path, then FSDirectory:174 uses file.mkdirs() to create this directory. One would expect a variant of the method with a boolean flag to decide whether or not to create the output path. However, the API with "create" flag is now deprecated, with a comment that points to IndexWriter's "create" flag. This comment is misleading, because the indicated path is created anyway in the file system just by calling FSDirectory.getDirectory().
+
+I propose to do one of the following:
+
+* reinstate the variant of the method with "create" flag. In case if this flag is false, and the index directory is missing, either return null or throw an IOException,
+
+* keep the API as it is now, but either return null or throw IOException if the index dir is missing. This breaks the backwards compatibility, because now users are required to do file.mkdirs() themselves prior to calling FSDirectory.getDirectory().

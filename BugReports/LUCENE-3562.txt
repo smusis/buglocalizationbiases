@@ -1,0 +1,26 @@
+Stop storing TermsEnum in CloseableThreadLocal inside Terms instance
+
+
+
+Description:
+We have sugar methods in Terms.java (docFreq, totalTermFreq, docs,
+docsAndPositions) that use a saved thread-private TermsEnum to do the
+lookups.
+
+But on apps that send many threads through Lucene, and/or have many
+segments, this can add up to a lot of RAM, especially if the codecs
+impl holds onto stuff.
+
+Also, Terms has a close method (closes the CloseableThreadLocal) which
+must be called, but we fail to do so in some places.
+
+These saved enums are the cause of the recent OOME in TestNRTManager
+(TestNRTManager.testNRTManager -seed
+2aa27e1aec20c4a2:-4a5a5ecf46837d0e:-7c4f651f1f0b75d7 -mult 3
+-nightly).
+
+Really sharing these enums is a holdover from before Lucene queries
+would share state (ie, save the TermState from the first pass, and use
+it later to pull enums, get docFreq, etc.).  It's not helpful anymore,
+and it can use gobbs of RAM, so I'd like to remove it.
+

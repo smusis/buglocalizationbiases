@@ -1,0 +1,6 @@
+SimpleTextCodec needs SimpleText DocValues impl
+
+
+
+Description:
+currently SimpleTextCodec uses binary docValues we should move that to a simple text impl.

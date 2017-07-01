@@ -1,0 +1,19 @@
+Wikipedia Document Generation Changes
+
+
+
+Description:
+The EnwikiDocMaker currently produces a fair number of documents that are in the download, but are of dubious use in terms of both benchmarking and indexing.  
+
+These issues are:
+
+# Redirect (it currently only handles REDIRECT and redirect, but there are documents as Redirect
+# Template files appear to be useless.  These are marked by the term Template: at the beginning of the body.  See for example: http://en.wikipedia.org/wiki/Template:=)
+# Image only pages, as in http://en.wikipedia.org/wiki/Image:Sciencefieldnewark.jpg.jpg  These are about as useful as the Redirects and Templates
+# Files pending deletion:  This one is a bit trickier to handle, but they are generally marked by "Wikipedia:Votes for deletion" or some variation of that depending where along it is in being deleted
+
+I think I can implement this such that it is backward compatible, if there is such a need when it comes to the contrib/benchmark suite.
+
+
+
+

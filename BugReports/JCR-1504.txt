@@ -1,0 +1,6 @@
+MS Excel Mime Type missing in MsExcelTextExtractor 
+
+
+
+Description:
+The MsExcelTextExtractor listens to mime type "application/vnd.ms-excel", but storing excels will result in mime type "application/msexcel", too. Such tagged files will not be indexed by the MsExcelTextExtractor. The class should register itself to both mime types like the MsWordTextExtractor does. 

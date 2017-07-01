@@ -1,0 +1,17 @@
+Demo HTML parser doesn't work for international documents
+
+
+
+Description:
+Javacc assumes ASCII so it won't work with, say, japanese documents. Ideally it would read the charset from the HTML markup, but that can by tricky. For now assuming unicode would do the trick:
+
+Add the following line marked with a + to HTMLParser.jj:
+
+options {
+  STATIC = false;
+  OPTIMIZE_TOKEN_MANAGER = true;
+  //DEBUG_LOOKAHEAD = true;
+  //DEBUG_TOKEN_MANAGER = true;
++  UNICODE_INPUT = true;
+}
+

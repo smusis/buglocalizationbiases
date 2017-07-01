@@ -1,0 +1,17 @@
+Extend mimetype list of text extractors
+
+
+
+Description:
+Do you think it would be possible to extend the mimetype list of the
+MsPowerpoint and MsExcel textextractors with "application/powerpoint" and
+"application/excel"? 
+
+It just took me half an hour to figure out why my
+documents didn't turn up in a jackrabbit fulltext-search and maybe other
+users might run into the same problem...
+
+I'm not sure if there is some kind of standard which lists the possible
+default mimetypes but after a quick google search it seems to me that they
+are not that uncommon.
+

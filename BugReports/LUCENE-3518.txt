@@ -1,0 +1,15 @@
+Add sort-by-term with DocValues
+
+
+
+Description:
+There are two sorted byte[] types with DocValues (BYTES_VAR_SORTED,
+BYTES_FIXED_SORTED), so you can index this type, but you can't yet
+sort by it.
+
+So I added a FieldComparator just like TermOrdValComparator, except it
+pulls from the doc values instead.
+
+There are some small diffs, eg with doc values there are never null
+values (see LUCENE-3504).
+

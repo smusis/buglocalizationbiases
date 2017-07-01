@@ -1,0 +1,8 @@
+LLRect.createBox returned box does not contains all points in (center,distance) disc
+
+
+
+Description:
+LLRect,createBox computation of a bouding box for a disc given center and distance doest not contains all the point in the distance.
+
+Example : the point north by distance doest not have Lat inferior of Lat of the UpperRight corner of the returned box

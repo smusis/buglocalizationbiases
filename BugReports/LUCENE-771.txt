@@ -1,0 +1,40 @@
+Change default write lock file location to index directory (not java.io.tmpdir)
+
+
+
+Description:
+Now that readers are read-only, we no longer need to store lock files
+in a different global lock directory than the index directory.  This
+has been a source of confusion and caused problems to users in the
+past.
+
+Furthermore, once the write lock is stored in the index directory, it
+no longer needs the big digest prefix that was previously required
+to make sure lock files in the global lock directory, from different
+indexes, did not conflict.
+
+This way, all files related to an index will appear in a single
+directory.  And you can easily list that directory to see if a
+"write.lock" is present to check whether a writer is open on the
+index.
+
+Note that this change just affects how FSDirectory creates its default
+lockFactory if no lockFactory was specified.  It is still possible
+(just no longer the default) to pick a different directory to store
+your lock files by pre-instantiating your own LockFactory.
+
+As part of this I would like to remove LOCK_DIR and the no-argument
+constructor, in SimpleFSLockFactory and NativeFSLockFactory.  I don't
+think we should have the notion of a global default lock directory
+anymore.  This is actually an API change.  However, neither
+SimpleFSLockFactory nor NativeFSLockFactory haver been released yet,
+so I think this API removal is allowed?
+
+Finally I want to deprecate (but not yet remove, because this has been
+in the API for many releases) the static LOCK_DIR that's in
+FSDirectory.  But it's now entirely unused.
+
+See here for discussion leading to this:
+
+  http://www.gossamer-threads.com/lists/lucene/java-dev/43940
+

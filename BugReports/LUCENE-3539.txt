@@ -1,0 +1,8 @@
+IndexFormatTooOld/NewExc should try to include fileName + directory when possible
+
+
+
+Description:
+(Spinoff from http://markmail.org/thread/t6s7nn3ve765nojc )
+
+When we throw a too old/new exc we should try to include the full path to the offending file, if possible.

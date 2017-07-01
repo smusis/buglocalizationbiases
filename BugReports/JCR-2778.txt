@@ -1,0 +1,6 @@
+Node.removeMixin fails if the mixin defines a protected child node
+
+
+
+Description:
+Node.removeMixin fails if the mixin to removed defines a protected child node.... the problem is caused by line 253 of RemoveMixinOperation.

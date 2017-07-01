@@ -1,0 +1,16 @@
+Contrib JCR-Server: improve handing of strong etags
+
+
+
+Description:
+copied from dev-mail:
+
+[..]
+
+so... could we
+- delegate the calculation of the etag to the
+  commands, letting them decide on whether they are able
+  to provide any and whether it would be a strong or a
+  weak one?
+- remove that additional method in NodeResource that is
+  not used? 

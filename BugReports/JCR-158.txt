@@ -1,0 +1,8 @@
+TextFilterService uses Sun specific classes
+
+
+
+Description:
+The TextFilterService uses the Sun specific and actually undocumented class sun.misc.Service class to lookup TextFilter implementations. This approach will not work on all JVM implementations.
+
+The Service should rather use javax.imageio.spi.ServiceRegistry, which is part of the standard J2SE API.

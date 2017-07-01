@@ -1,0 +1,8 @@
+when tests fail, sometimes the testmethod in 'reproduce with' is null
+
+
+
+Description:
+an example is the recent fail: https://builds.apache.org/job/Lucene-3.x/680/
+
+it would be better to not populate -Dtestmethod with anything here...

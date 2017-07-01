@@ -1,0 +1,6 @@
+PriorityQueue is inheriently broken if subclass attempts to use "heap" w/generic T bound to anything other then "Object"
+
+
+
+Description:
+as discovered in SOLR-2410 the fact that the protected "heap" variable in PriorityQueue is initialized using an Object[] makes it impossible for subclasses of PriorityQueue to exist and access the "heap" array unless they bind the generic to Object.

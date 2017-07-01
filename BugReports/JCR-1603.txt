@@ -1,0 +1,6 @@
+Remove getSafeJCRPath methods in HierarchyManagerImpl
+
+
+
+Description:
+The getSafeJCRPath utility methods in the HierarchyManagerImpl class have not been used since revision 485720, but their presence still causes the hierarchy managers to depend on namespace mapping information. I'll remove the methods to simplify things.

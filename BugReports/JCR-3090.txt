@@ -1,0 +1,38 @@
+setFetchSize() fails in getAllNodeIds()
+
+
+
+Description:
+I get the following exception from the PersistenceManagerIteratorTest on Windows:
+
+org.apache.jackrabbit.core.state.ItemStateException: getAllNodeIds failed.
+        at org.apache.jackrabbit.core.persistence.pool.BundleDbPersistenceManager.getAllNodeIds(BundleDbPersistenceManager.java:1043)
+        at org.apache.jackrabbit.core.data.PersistenceManagerIteratorTest.testGetAllNodeIds(PersistenceManagerIteratorTest.java:106)
+Caused by: java.sql.SQLException: Invalid parameter value '10'000' for Statement.setFetchSize(int rows).
+        at org.apache.derby.impl.jdbc.SQLExceptionFactory40.getSQLException(Unknown Source)
+        at org.apache.derby.impl.jdbc.Util.newEmbedSQLException(Unknown Source)
+        at org.apache.derby.impl.jdbc.Util.newEmbedSQLException(Unknown Source)
+        at org.apache.derby.impl.jdbc.Util.generateCsSQLException(Unknown Source)
+        at org.apache.derby.impl.jdbc.EmbedConnection.newSQLException(Unknown Source)
+        at org.apache.derby.impl.jdbc.ConnectionChild.newSQLException(Unknown Source)
+        at org.apache.derby.impl.jdbc.EmbedStatement.setFetchSize(Unknown Source)
+        at org.apache.commons.dbcp.DelegatingStatement.setFetchSize(DelegatingStatement.java:279)
+        at org.apache.commons.dbcp.DelegatingStatement.setFetchSize(DelegatingStatement.java:279)
+        at org.apache.jackrabbit.core.util.db.ConnectionHelper.reallyExec(ConnectionHelper.java:372)
+        at org.apache.jackrabbit.core.util.db.ConnectionHelper$3.call(ConnectionHelper.java:353)
+        at org.apache.jackrabbit.core.util.db.ConnectionHelper$3.call(ConnectionHelper.java:349)
+        at org.apache.jackrabbit.core.util.db.ConnectionHelper$RetryManager.doTry(ConnectionHelper.java:472)
+        at org.apache.jackrabbit.core.util.db.ConnectionHelper.exec(ConnectionHelper.java:349)
+        at org.apache.jackrabbit.core.persistence.pool.BundleDbPersistenceManager.getAllNodeIds(BundleDbPersistenceManager.java:1020)
+
+It's caused by the following code in ConnectionHelper when 0 < maxRows < 10000:
+
+            stmt.setMaxRows(maxRows);
+            stmt.setFetchSize(10000);
+
+A simple fix would be:
+
+
+            stmt.setMaxRows(maxRows);
+            stmt.setFetchSize(Math.min(10000, maxRows));
+

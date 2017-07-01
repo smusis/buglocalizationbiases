@@ -1,0 +1,36 @@
+Multiple namespace definitions in CND prevent definition of node type without child nodes
+
+
+
+Description:
+The BNF in http://jackrabbit.apache.org/api-1/org/apache/jackrabbit/core/nodetype/compact/CompactNodeTypeDefReader.html
+defines:
+
+[...]
+cnd ::= {ns_mapping | node_type_def}
+[...]
+
+so multiple namespace definitions should not affect the node type definitions.
+
+However, the following CND definition will fail:
+
+<namespace= 'http://www.mynamespace.co.uk/namespace'>
+<nt = 'http://www.jcp.org/jcr/nt/1.0'>
+[namespace:document] > nt:file
+   - namespace:name (string) mandatory
+
+<namespace= 'http://www.mynamespace.co.uk/namespace'>
+<nt = 'http://www.jcp.org/jcr/nt/1.0'>
+[namespace:document2] > nt:file
+   - namespace:name (string) mandatory
+
+
+Remove the second set of namespace definitions, and all's well:
+
+<namespace= 'http://www.mynamespace.co.uk/namespace'>
+<nt = 'http://www.jcp.org/jcr/nt/1.0'>
+[namespace:document] > nt:file
+   - namespace:name (string) mandatory
+
+[namespace:document2] > nt:file
+   - namespace:name (string) mandatory

@@ -1,0 +1,6 @@
+Add support for boolean values to QValue
+
+
+
+Description:
+I suggest to add support for reading and writing boolean values to QValue and QValueFactory. I find it strange that there is such support for the other data types but booleans must be constructed via strings. 

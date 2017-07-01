@@ -1,0 +1,6 @@
+Cookie docs are outdated.
+
+
+
+Description:
+The cookie docs do not reflect the latest code changes.

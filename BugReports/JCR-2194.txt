@@ -1,0 +1,6 @@
+EventImpl should implement toString
+
+
+
+Description:
+This would simplify logging and debugging.

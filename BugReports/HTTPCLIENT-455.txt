@@ -1,0 +1,22 @@
+Feature Request: include contributed code for Plugin Proxy Detection
+
+
+
+Description:
+Attached is a zip file containing two classes - PluginProxyUtil and
+ProxyDetectionException.  I've tested
+PluginProxyUtil.detectProxy(URL) on Windows XP(JRE's 1.3/1.4/1.5 with IE) and
+Solaris (JRE 1.4 with Netscape)
+and it correctly detects browser plugin settings.  I don't have access to MacOS
+X  to try it, but I doubt that
+it works there anyway based on Dmitri's comments here:
+
+http://forum.java.sun.com/thread.jspa?threadID=364342&tstart=120
+
+Please change the header and package as necessary to include it in the contrib
+section.  I plan to contribute
+an example Applet that uses this code at some point - our app is way too
+complicated to use as an example.
+If you want to wait until that is done to include it, that's fine too.  Just
+wanted to offer this up now in case
+anyone else is looking for it.

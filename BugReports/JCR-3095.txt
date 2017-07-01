@@ -1,0 +1,11 @@
+Move operation may turn AC caches stale
+
+
+
+Description:
+the EntryCollector instance associated with a given workspace is listening to any modifications made to the access control content
+(add, modification and removal of access control lists). however, due to the structure of the ac content (the ac node being attached to the affected nodes) 
+caches may become stale if a node is moved that contains ac information somewhere in the subtree.
+
+in order to circumvent that problem the EntryCollector should in addition collect any kind of move operations
+and make sure that the caches are updated accordingly.

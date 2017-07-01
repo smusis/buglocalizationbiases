@@ -1,0 +1,21 @@
+Path is not indexed when inserting a new node with SNS
+
+
+
+Description:
+Using Jackrabbit OCM, when inserting two nodes with the same path, the second node's path is not indexed. 
+Both nodes have the same path, and a search by path retrieves the first node only. 
+
+The node mapping included the following annotations:
+
+@Node(jcrMixinTypes="mix:referenceable,mix:lockable,mix:versionable") 
+public class Article { 
+
+        @Field(uuid=true) 
+        private String id = null; 
+        
+        @Field(path=true) 
+        private String path = null; 
+
+        ....
+}

@@ -1,0 +1,6 @@
+Item.isSame() may return true for 2 nodes from different workspaces.
+
+
+
+Description:
+the code in ItemImpl.isSame() only compares the item id, but not the source workspace.

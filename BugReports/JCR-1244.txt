@@ -1,0 +1,6 @@
+No need for NodeReferences in jcr2spi
+
+
+
+Description:
+I happened to come across the org.apache.jackrabbit.jcr2spi.state.NodeReferences interface, and realized that with the current SPI definitions there's really no need for that abstraction. The PropertyId array returned by NodeInfo.getReferences() is quite good enough for jcr2spi without any NodeReferences wrapping around it.

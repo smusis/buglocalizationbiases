@@ -1,0 +1,7 @@
+HttpOptions.getAllowedMethods expects single Allow header
+
+
+
+Description:
+In client.methods.HttpOptions.getAllowMethods(), a single Allow header is parsed to obtain the result. Since the value is a comma-separated list, servers can optionally return the values in multiple headers. HttpMethod.getHeaders(name) should be used instead of .getFirstHeader(name).
+

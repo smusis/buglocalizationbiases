@@ -1,0 +1,45 @@
+SpanOrQuery skipTo() doesn't always move forwards
+
+
+
+Description:
+In SpanOrQuery the skipTo() method is improperly implemented if the target doc is less than or equal to the current doc, since skipTo() may not be called for any of the clauses' spans:
+
+    public boolean skipTo(int target) throws IOException {
+          if (queue == null) {
+            return initSpanQueue(target);
+          }
+
+          while (queue.size() != 0 && top().doc() < target) {
+            if (top().skipTo(target)) {
+              queue.adjustTop();
+            } else {
+              queue.pop();
+            }
+          }
+          
+        	return queue.size() != 0;
+        }
+
+This violates the correct behavior (as described in the Spans interface documentation), that skipTo() should always move forwards, in other words the correct implementation would be:
+
+    public boolean skipTo(int target) throws IOException {
+          if (queue == null) {
+            return initSpanQueue(target);
+          }
+
+          boolean skipCalled = false;
+          while (queue.size() != 0 && top().doc() < target) {
+            if (top().skipTo(target)) {
+              queue.adjustTop();
+            } else {
+              queue.pop();
+            }
+            skipCalled = true;
+          }
+          
+          if (skipCalled) {
+        	return queue.size() != 0;
+          }
+          return next();
+        }

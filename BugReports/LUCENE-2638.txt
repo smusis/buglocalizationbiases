@@ -1,0 +1,6 @@
+Make HighFreqTerms.TermStats class public
+
+
+
+Description:
+It's not possible to use public methods in contrib/misc/... /HighFreqTerms from outside the package because the return type has package visibility. I propose to move TermStats class to a separate file and make it public.

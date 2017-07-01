@@ -1,0 +1,13 @@
+default value with autocreated fields like null
+
+
+
+Description:
+I have a custom nodetype which has two properties, both autocreated (but not mandatory).
+If I create the node and want to read the first property (not filling in any value), I get a:
+
+javax.jcr.RepositoryException: Unable to get value of /pages/mjo:page/jcr:content/mjo:title:java.lang.ArrayIndexOutOfBoundsException: 0
+ at org.apache.jackrabbit.core.PropertyImpl.getValue(PropertyImpl.java:378)
+ at de.freaquac.test.JCRTest.propIterator(JCRTest.java:207)
+
+After setting the property the exception is no longer thrown. Not sure if this really an error but is a little bit anyoing. Are there any default values (null) in jsr170?

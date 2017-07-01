@@ -1,0 +1,6 @@
+CompactNodeTypeDefReader could auto-provide default namespace mappings if omitted
+
+
+
+Description:
+the default namespaces for 'jcr', 'nt', 'mix', '' should  be automatically registered during parsing if needed.

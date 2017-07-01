@@ -1,0 +1,11 @@
+Update link for javadocs from 1.0 to 1.3
+
+
+
+Description:
+On this page: http://jackrabbit.apache.org/doc/arch/overview/jcrlevels.html
+
+You see this link:
+Browse current Jackrabbit API: http://jackrabbit.apache.org/api-1/index.html
+
+This should point to the latest javadoc version.

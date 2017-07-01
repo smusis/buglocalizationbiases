@@ -1,0 +1,18 @@
+SessionImpl#isSupportedOption: Skip descriptor evaluation if descriptor has not been loaded
+
+
+
+Description:
+followup issue for JCR-3076.
+
+as jukka stated changing the jcr-server to serve the repository-descriptor without mandating a successful login would
+require quite some changes on the server side as the current flow demands a successful repository login in order
+to be access any resource including the root resource that acts as parent for all (available) workspaces. since the
+repository-descriptor report has be requested one of the resources it also mandates a successful login although
+retrieving descriptors on the jcr-level is possible when just having the repository at hand.
+
+on the other hand i would assume that the descriptor functionality present on the Repository is rarely used.
+therefore i would suggest to just relax the check for supported options in the jcr2spi session implementation
+and skip the evaluation if the descriptor isn't available at all. consequently the failure of a non-supported
+feature would be postponed to the point it reaches the SPI (instead of informing the API consumer upfront). 
+on the other hand supported operations would not fail just because the descriptors have not been loaded.

@@ -1,0 +1,70 @@
+New TokenStream API
+
+
+
+Description:
+This is a very early version of the new TokenStream API that 
+we started to discuss here:
+
+http://www.gossamer-threads.com/lists/lucene/java-dev/66227
+
+This implementation is a bit different from what I initially
+proposed in the thread above. I introduced a new class called
+AttributedToken, which contains the same termBuffer logic 
+from Token. In addition it has a lazily-initialized map of
+Class<? extends Attribute> -> Attribute. Attribute is also a
+new class in a new package, plus several implementations like
+PositionIncrementAttribute, PayloadAttribute, etc.
+
+Similar to my initial proposal is the prototypeToken() method
+which the consumer (e. g. DocumentsWriter) needs to call.
+The token is created by the tokenizer at the end of the chain
+and pushed through all filters to the end consumer. The 
+tokenizer and also all filters can add Attributes to the 
+token and can keep references to the actual types of the
+attributes that they need to read of modify. This way, when
+boolean nextToken() is called, no casting is necessary.
+
+I added a class called TestNewTokenStreamAPI which is not 
+really a test case yet, but has a static demo() method, which
+demonstrates how to use the new API.
+
+The reason to not merge Token and TokenStream into one class 
+is that we might have caching (or tee/sink) filters in the 
+chain that might want to store cloned copies of the tokens
+in a cache. I added a new class NewCachingTokenStream that
+shows how such a class could work. I also implemented a deep
+clone method in AttributedToken and a 
+copyFrom(AttributedToken) method, which is needed for the 
+caching. Both methods have to iterate over the list of 
+attributes. The Attribute subclasses itself also have a
+copyFrom(Attribute) method, which unfortunately has to down-
+cast to the actual type. I first thought that might be very
+inefficient, but it's not so bad. Well, if you add all
+Attributes to the AttributedToken that our old Token class
+had (like offsets, payload, posIncr), then the performance
+of the caching is somewhat slower (~40%). However, if you 
+add less attributes, because not all might be needed, then
+the performance is even slightly faster than with the old API.
+Also the new API is flexible enough so that someone could
+implement a custom caching filter that knows all attributes
+the token can have, then the caching should be just as 
+fast as with the old API.
+
+
+This patch is not nearly ready, there are lot's of things 
+missing:
+
+- unit tests
+- change DocumentsWriter to use new API 
+  (in backwards-compatible fashion)
+- patch is currently java 1.5; need to change before 
+  commiting to 2.9
+- all TokenStreams and -Filters should be changed to use 
+  new API
+- javadocs incorrect or missing
+- hashcode and equals methods missing in Attributes and 
+  AttributedToken
+  
+I wanted to submit it already for brave people to give me 
+early feedback before I spend more time working on this.

@@ -1,0 +1,12 @@
+replace text from an online collection (used in few test cases) with text that is surely 100% free.
+
+
+
+Description:
+Text from an online firstaid collection (firstaid . ie . eu . org)  is used as arbitrary text for test documents creation, in:
+   o.a.l.analysis.Analyzer.FunctionTestSetup.DOC_TEXT_LINES
+   o.a.l.benchmark.byTask.feeds.SimpleDocMaker.DOC_TEXT
+
+I once got this text from Project Gutenberg and was sure that it is free. But now the referred Web site does not seem to respond, and I can no more find that firstaid eBook in the Project Gutenberg site.
+
+Since it doesn't matter what text we use there, I will just replace that with some of my own words...

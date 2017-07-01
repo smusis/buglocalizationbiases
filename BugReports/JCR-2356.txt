@@ -1,0 +1,6 @@
+Session holds LockToken after removeLockToken in XA Environment
+
+
+
+Description:
+

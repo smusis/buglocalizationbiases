@@ -1,0 +1,6 @@
+Codec is not consistently passed in internal API
+
+
+
+Description:
+While working on SOLR-1942 I ran into a couple of glitches with codec which is not consistently passed to SegmentsInfo and friends. Codecs should really be consistently passed though. I have fixed the pieces which lead to errors in Solr but I  guess there might be others too. Patch is coming up... 

@@ -1,0 +1,9 @@
+Infinite loop on NTLM authentication
+
+
+
+Description:
+I got an infinite loop on NTLM authentication if the authentication failed (bad credentials).
+
+The state FAILED of the NTLM sheme is never catched in the method authenticate of the class HttpAuthenticator (line 123).
+I fix temporatily this bug by adding a case for the protocol state HANDSHAKE.

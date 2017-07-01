@@ -1,0 +1,10 @@
+Reduce usage of String.intern(), performance is terrible
+
+
+
+Description:
+I profiled a simple MatchAllDocsQuery() against ~1.5 million documents (8 fields of short text, Field.Store.YES,Field.Index.NOT_ANALYZED_NO_NORMS), then retrieved all documents via searcher.doc(i, fs). String.intern() showed up as a top hotspot (see attached screenshot), so i implemented a small optimization to not intern() for every new Field(), instead forcing the intern in the FieldInfos class and adding a optional "internName" constructor to Field. This reduced execution time for searching and iterating through all documents by 35%. Results were similar for -server and -client.
+
+
+TRUNK (2.9) w/out patch: matched 1435563 in 8884 ms/search
+TRUNK (2.9) w/patch: matched 1435563 in 5786 ms/search

@@ -1,0 +1,229 @@
+Concurrent locking operations fail
+
+
+
+Description:
+I prepared simple test which tries to lock/unlock single node from many
+threads. I expected only LockExceptions thrown by some threads which can
+occur if node is already locked by other thread.
+
+But I get incorrect effect sporadically. It looks like some thread
+managed to acquire lock, but then can't release it.
+
+Following exception is thrown then :
+
+javax.jcr.InvalidItemStateException:
+7c198c7b-76c8-47c8-96a8-d9dfefd4b387 has been modified externally
+    at org.apache.jackrabbit.core.ItemImpl.save(ItemImpl.java:1193)
+    at org.apache.jackrabbit.core.NodeImpl.unlock(NodeImpl.java:3790)
+    at JrTestConcurrentLocks.run(JrTestConcurrentLocks.java:95)
+
+additionally warning appears in log
+
+org.apache.jackrabbit.core.lock.LockManagerImpl$LockInfo.loggingOut(LockManagerImpl.java:892)
+- Unable to unlock session-scoped lock on node
+'7c198c7b-76c8-47c8-96a8-d9dfefd4b387-W': Unable to unlock node. Node
+has pending changes: /folder
+
+In consequence node is left in locked state. It looks like a bug.
+If one thread locked node successfully, then none other can modify it,
+and the same thread should release lock without any problems.
+
+Shouldn't be lock operation atomic itself ?
+
+Przemo
+
+
+package com.oyster.mom.contentserver.jcr.transaction;
+
+import javax.jcr.Node;
+import javax.jcr.RepositoryException;
+import javax.jcr.Session;
+import javax.jcr.SimpleCredentials;
+import javax.jcr.lock.LockException;
+
+import org.apache.jackrabbit.core.RepositoryImpl;
+import org.apache.jackrabbit.core.config.RepositoryConfig;
+
+public class JrTestConcurrentLocks extends Thread {
+
+   private static final org.apache.commons.logging.Log log = org.apache.commons.logging.LogFactory.getLog(JrTestConcurrentLocks.class);
+
+   public static String REPOSITORY_HOME = "d:/repo/jackrabbit/";
+
+   public static String REPOSITORY_CONFIG = REPOSITORY_HOME + "repository.xml";
+
+   public static void main(String[] args) throws Exception {
+
+       JrTestConcurrentLocks test = new JrTestConcurrentLocks(-1);
+       test.startup();
+
+       JrTestConcurrentLocks tests[] = new JrTestConcurrentLocks[3];
+
+       for (int i = 0; i < tests.length; i++) {
+           JrTestConcurrentLocks x = new JrTestConcurrentLocks(i);
+           x.setSession(repository.login(new SimpleCredentials("admin", "admin".toCharArray())));
+           x.start();
+           tests[i] = x;
+       }
+
+       for (int i = 0; i < tests.length; i++) {
+           tests[i].join();
+           tests[i].getSession().logout();
+       }
+
+       test.shutdown();
+   }
+
+   private static RepositoryImpl repository;
+
+   private int id;
+
+   private Session session;
+
+   public void setSession(Session session) {
+       this.session = session;
+   }
+
+   public Session getSession() {
+       return this.session;
+   }
+
+   public JrTestConcurrentLocks(int i) {
+       this.id = i;
+   }
+
+   public void startup() throws Exception {
+       System.setProperty("java.security.auth.login.config", "c:/jaas.config");
+
+       RepositoryConfig config = RepositoryConfig.create(REPOSITORY_CONFIG, REPOSITORY_HOME);
+       repository = RepositoryImpl.create(config);
+
+       Session session = repository.login(new SimpleCredentials("admin", "admin".toCharArray()));
+       Node rootNode = session.getRootNode();
+       if (!rootNode.hasNode("folder")) {
+           Node folder = rootNode.addNode("folder");
+           folder.addMixin("mix:versionable");
+           folder.addMixin("mix:lockable");
+           rootNode.save();
+       }
+       session.logout();
+   }
+
+   public void shutdown() throws RepositoryException {
+       repository.shutdown();
+   }
+
+   public Node getFolder(Session session) throws RepositoryException {
+       return session.getRootNode().getNode("folder");
+   }
+
+   public void run() {
+
+       for (int i = 0; i < 10; i++) {
+           log.info("START id:" + id + ", i=" + i);
+
+           try {
+               session.refresh(false);
+
+               Node folder = getFolder(session);
+               folder.lock(false, true);
+               folder.unlock();
+
+               log.info("SUCCESS id:" + id + ", i=" + i);
+           }
+           catch (LockException e) {
+               log.info("FAIL:" + id + ", i=" + i);
+           }
+           catch (Exception e) {
+               log.warn("ERROR:" + id + ", i=" + i, e);
+           }
+
+
+       }
+
+   }
+}
+
+
+15:46:17 INFO  JrTestConcurrentLocks.run(JrTestConcurrentLocks.java:88) - START id:0, i=0
+15:46:17 INFO  JrTestConcurrentLocks.run(JrTestConcurrentLocks.java:88) - START id:1, i=0
+15:46:17 INFO  JrTestConcurrentLocks.run(JrTestConcurrentLocks.java:88) - START id:2, i=0
+15:46:17 INFO  JrTestConcurrentLocks.run(JrTestConcurrentLocks.java:100) - FAIL:0, i=0
+15:46:17 INFO  JrTestConcurrentLocks.run(JrTestConcurrentLocks.java:88) - START id:0, i=1
+15:46:17 INFO  JrTestConcurrentLocks.run(JrTestConcurrentLocks.java:100) - FAIL:0, i=1
+15:46:17 INFO  JrTestConcurrentLocks.run(JrTestConcurrentLocks.java:100) - FAIL:1, i=0
+15:46:17 INFO  JrTestConcurrentLocks.run(JrTestConcurrentLocks.java:88) - START id:1, i=1
+15:46:17 INFO  JrTestConcurrentLocks.run(JrTestConcurrentLocks.java:100) - FAIL:1, i=1
+15:46:17 INFO  JrTestConcurrentLocks.run(JrTestConcurrentLocks.java:88) - START id:1, i=2
+15:46:17 INFO  JrTestConcurrentLocks.run(JrTestConcurrentLocks.java:100) - FAIL:1, i=2
+15:46:17 INFO  JrTestConcurrentLocks.run(JrTestConcurrentLocks.java:88) - START id:1, i=3
+15:46:17 INFO  JrTestConcurrentLocks.run(JrTestConcurrentLocks.java:100) - FAIL:1, i=3
+15:46:17 INFO  JrTestConcurrentLocks.run(JrTestConcurrentLocks.java:88) - START id:1, i=4
+15:46:17 INFO  JrTestConcurrentLocks.run(JrTestConcurrentLocks.java:88) - START id:0, i=2
+15:46:17 INFO  JrTestConcurrentLocks.run(JrTestConcurrentLocks.java:100) - FAIL:0, i=2
+15:46:17 INFO  JrTestConcurrentLocks.run(JrTestConcurrentLocks.java:88) - START id:0, i=3
+15:46:17 INFO  JrTestConcurrentLocks.run(JrTestConcurrentLocks.java:100) - FAIL:0, i=3
+15:46:17 INFO  JrTestConcurrentLocks.run(JrTestConcurrentLocks.java:88) - START id:0, i=4
+15:46:17 INFO  JrTestConcurrentLocks.run(JrTestConcurrentLocks.java:100) - FAIL:0, i=4
+15:46:17 INFO  JrTestConcurrentLocks.run(JrTestConcurrentLocks.java:88) - START id:0, i=5
+15:46:17 INFO  JrTestConcurrentLocks.run(JrTestConcurrentLocks.java:97) - SUCCESS id:1, i=4
+15:46:17 WARN  JrTestConcurrentLocks.run(JrTestConcurrentLocks.java:103) - ERROR:0, i=5
+javax.jcr.ItemNotFoundException: 7c198c7b-76c8-47c8-96a8-d9dfefd4b387/{http://www.jcp.org/jcr/1.0}lockOwner
+       at org.apache.jackrabbit.core.ItemManager.createItemInstance(ItemManager.java:463)
+       at org.apache.jackrabbit.core.ItemManager.getItem(ItemManager.java:319)
+       at org.apache.jackrabbit.core.NodeImpl.getProperty(NodeImpl.java:1436)
+       at org.apache.jackrabbit.core.NodeImpl.getOrCreateProperty(NodeImpl.java:428)
+       at org.apache.jackrabbit.core.NodeImpl.internalSetProperty(NodeImpl.java:1267)
+       at org.apache.jackrabbit.core.NodeImpl.lock(NodeImpl.java:3740)
+       at JrTestConcurrentLocks.run(JrTestConcurrentLocks.java:94)
+15:46:17 WARN  JrTestConcurrentLocks.run(JrTestConcurrentLocks.java:103) - ERROR:2, i=0
+javax.jcr.InvalidItemStateException: 7c198c7b-76c8-47c8-96a8-d9dfefd4b387 has been modified externally
+       at org.apache.jackrabbit.core.ItemImpl.save(ItemImpl.java:1193)
+       at org.apache.jackrabbit.core.NodeImpl.unlock(NodeImpl.java:3790)
+       at JrTestConcurrentLocks.run(JrTestConcurrentLocks.java:95)
+15:46:17 INFO  JrTestConcurrentLocks.run(JrTestConcurrentLocks.java:88) - START id:1, i=5
+15:46:18 INFO  JrTestConcurrentLocks.run(JrTestConcurrentLocks.java:88) - START id:0, i=6
+15:46:18 INFO  JrTestConcurrentLocks.run(JrTestConcurrentLocks.java:88) - START id:2, i=1
+15:46:18 INFO  JrTestConcurrentLocks.run(JrTestConcurrentLocks.java:100) - FAIL:1, i=5
+15:46:18 INFO  JrTestConcurrentLocks.run(JrTestConcurrentLocks.java:100) - FAIL:0, i=6
+15:46:18 INFO  JrTestConcurrentLocks.run(JrTestConcurrentLocks.java:100) - FAIL:2, i=1
+15:46:18 INFO  JrTestConcurrentLocks.run(JrTestConcurrentLocks.java:88) - START id:1, i=6
+15:46:18 INFO  JrTestConcurrentLocks.run(JrTestConcurrentLocks.java:88) - START id:0, i=7
+15:46:18 INFO  JrTestConcurrentLocks.run(JrTestConcurrentLocks.java:88) - START id:2, i=2
+15:46:18 INFO  JrTestConcurrentLocks.run(JrTestConcurrentLocks.java:100) - FAIL:1, i=6
+15:46:18 INFO  JrTestConcurrentLocks.run(JrTestConcurrentLocks.java:100) - FAIL:0, i=7
+15:46:18 INFO  JrTestConcurrentLocks.run(JrTestConcurrentLocks.java:100) - FAIL:2, i=2
+15:46:18 INFO  JrTestConcurrentLocks.run(JrTestConcurrentLocks.java:88) - START id:1, i=7
+15:46:18 INFO  JrTestConcurrentLocks.run(JrTestConcurrentLocks.java:88) - START id:0, i=8
+15:46:18 INFO  JrTestConcurrentLocks.run(JrTestConcurrentLocks.java:88) - START id:2, i=3
+15:46:18 INFO  JrTestConcurrentLocks.run(JrTestConcurrentLocks.java:100) - FAIL:1, i=7
+15:46:18 INFO  JrTestConcurrentLocks.run(JrTestConcurrentLocks.java:100) - FAIL:0, i=8
+15:46:18 INFO  JrTestConcurrentLocks.run(JrTestConcurrentLocks.java:100) - FAIL:2, i=3
+15:46:18 INFO  JrTestConcurrentLocks.run(JrTestConcurrentLocks.java:88) - START id:1, i=8
+15:46:18 INFO  JrTestConcurrentLocks.run(JrTestConcurrentLocks.java:88) - START id:0, i=9
+15:46:18 INFO  JrTestConcurrentLocks.run(JrTestConcurrentLocks.java:88) - START id:2, i=4
+15:46:18 INFO  JrTestConcurrentLocks.run(JrTestConcurrentLocks.java:100) - FAIL:1, i=8
+15:46:18 INFO  JrTestConcurrentLocks.run(JrTestConcurrentLocks.java:100) - FAIL:0, i=9
+15:46:18 INFO  JrTestConcurrentLocks.run(JrTestConcurrentLocks.java:100) - FAIL:2, i=4
+15:46:18 INFO  JrTestConcurrentLocks.run(JrTestConcurrentLocks.java:88) - START id:1, i=9
+15:46:18 INFO  JrTestConcurrentLocks.run(JrTestConcurrentLocks.java:88) - START id:2, i=5
+15:46:18 INFO  JrTestConcurrentLocks.run(JrTestConcurrentLocks.java:100) - FAIL:2, i=5
+15:46:18 INFO  JrTestConcurrentLocks.run(JrTestConcurrentLocks.java:88) - START id:2, i=6
+15:46:18 WARN  JrTestConcurrentLocks.run(JrTestConcurrentLocks.java:103) - ERROR:1, i=9
+javax.jcr.InvalidItemStateException: /folder: the node cannot be saved because it has been modified externally.
+       at org.apache.jackrabbit.core.NodeImpl.makePersistent(NodeImpl.java:908)
+       at org.apache.jackrabbit.core.ItemImpl.persistTransientItems(ItemImpl.java:682)
+       at org.apache.jackrabbit.core.ItemImpl.save(ItemImpl.java:1173)
+       at org.apache.jackrabbit.core.NodeImpl.lock(NodeImpl.java:3744)
+       at JrTestConcurrentLocks.run(JrTestConcurrentLocks.java:94)
+15:46:18 INFO  JrTestConcurrentLocks.run(JrTestConcurrentLocks.java:100) - FAIL:2, i=6
+15:46:18 WARN  org.apache.jackrabbit.core.lock.LockManagerImpl$LockInfo.loggingOut(LockManagerImpl.java:892) - Unable to unlock session-scoped lock on node '7c198c7b-76c8-47c8-96a8-d9dfefd4b387-W': Unable to unlock node. Node has pending changes: /folder
+15:46:18 INFO  JrTestConcurrentLocks.run(JrTestConcurrentLocks.java:88) - START id:2, i=7
+15:46:18 INFO  JrTestConcurrentLocks.run(JrTestConcurrentLocks.java:100) - FAIL:2, i=7
+15:46:18 INFO  JrTestConcurrentLocks.run(JrTestConcurrentLocks.java:88) - START id:2, i=8
+15:46:18 INFO  JrTestConcurrentLocks.run(JrTestConcurrentLocks.java:100) - FAIL:2, i=8
+15:46:18 INFO  JrTestConcurrentLocks.run(JrTestConcurrentLocks.java:88) - START id:2, i=9
+15:46:18 INFO  JrTestConcurrentLocks.run(JrTestConcurrentLocks.java:100) - FAIL:2, i=9
+
+

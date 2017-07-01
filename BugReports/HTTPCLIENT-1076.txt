@@ -1,0 +1,12 @@
+[GSoC 2011] Fluent API to HttpClient
+
+
+
+Description:
+Develop fluent API / facade to HttpClient based on code currently maintained by Apache Stanbol and Apache Sling projects. 
+
+For details see 
+
+http://markmail.org/message/mmyljtgjp3za6kyz
+
+or contact Apache HttpComponents committers at dev@hc.apache.org

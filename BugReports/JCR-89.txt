@@ -1,0 +1,16 @@
+Calling PropertyDef.getDefaultValue() via RMI results in Exception
+
+
+
+Description:
+hi jukka
+
+30.03.2005 15:28:23 *MARK * servletengine: Servlet threw exception: 
+org.apache.jackrabbit.rmi.client.RemoteRuntimeException: java.rmi.UnmarshalException: error unmarshalling return; nested exception is: 
+	java.io.WriteAbortedException: writing aborted; java.io.NotSerializableException: javax.jcr.BooleanValue
+	at org.apache.jackrabbit.rmi.client.ClientPropertyDef.getDefaultValues(ClientPropertyDef.java:76)
+
+[...]
+
+regards
+angela

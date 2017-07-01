@@ -1,0 +1,15 @@
+jcr mapping layer (OCM) should expose lock owner
+
+
+
+Description:
+jcr mapping layer 's  persistencemanager.java  does not expose an API for returning lockowner. Ideally   , the following method 
+
+public String lock(final String absPath, final boolean isDeep, final boolean isSessionScoped) 
+
+should return a hashmap/String array containing locktoken as well as lockowner. 
+
+I tried having lockowner as a field in my java object and mapping it to jcr:lockOwner , so that I can just use getLockOwner() . But the problem is this property gets introduced in the node only if  the node is locked. So, when I try to insert a node , before I can even lock it , the insertion fails since there is no property like jcr:lockOwner   till then . 
+
+So, I feel there is need for the above API. It is ok to have it exposed via separate call in order to maintain backward compatability
+

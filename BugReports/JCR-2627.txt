@@ -1,0 +1,10 @@
+System-view export/import of multi-value property does not respect JCR 2.0
+
+
+
+Description:
+JCR 2.0 has a defined specification about system-view export of multi-value properties when these property have only one value.
+The attribute sv:multiple attribute of sv:property tag is not written in output stream result.
+
+Anyway if I add that one manually and try to import the modified system-view, multi-value properties with an only value are not recognized, and these properties are simply stored like a single-value ones.
+

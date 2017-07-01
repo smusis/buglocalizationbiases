@@ -1,0 +1,7 @@
+AIOOB thrown when length of termText is longer than 16384 characters (ArrayIndexOutOfBoundsException)
+
+
+
+Description:
+DocumentsWriter has a max term length of 16384; if you cross that you
+get an unfriendly ArrayIndexOutOfBoundsException.  We should fix to raise a clearer exception.

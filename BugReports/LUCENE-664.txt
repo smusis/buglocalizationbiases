@@ -1,0 +1,8 @@
+[PATCH] small fixes to the new scoring.html doc
+
+
+
+Description:
+This is an awesome initiative.  We need more docs that cleanly explain the inner workings of Lucene in general... thanks Grant & Steve & others!
+
+I have a few small initial proposed fixes, largely just adding some more description around the components of the formula.  But also a couple typos, another link out to Wikipedia, a missing closing ), etc.  I've only made it through the "Understanding the Scoring Formula" section so far.

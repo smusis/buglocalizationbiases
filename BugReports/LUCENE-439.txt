@@ -1,0 +1,6 @@
+Filters need hashCode() and equals()
+
+
+
+Description:
+Filters need to implement hashCode() and equals(), esp since certain query types can contain a filter (FilteredQuery, ConstantScoreQuery)

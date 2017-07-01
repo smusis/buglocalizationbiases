@@ -1,0 +1,30 @@
+Add utitily class to manage NRT reopening
+
+
+
+Description:
+I created a simple class, NRTManager, that tries to abstract away some
+of the reopen logic when using NRT readers.
+
+You give it your IW, tell it min and max nanoseconds staleness you can
+tolerate, and it privately runs a reopen thread to periodically reopen
+the searcher.
+
+It subsumes the SearcherManager from LIA2.  Besides running the reopen
+thread, it also adds the notion of a "generation" containing changes
+you've made.  So eg it has addDocument, returning a long.  You can
+then take that long value and pass it back to the getSearcher method
+and getSearcher will return a searcher that reflects the changes made
+in that generation.
+
+This gives your app the freedom to force "immediate" consistency (ie
+wait for the reopen) only for those searches that require it, like a
+verifier that adds a doc and then immediately searches for it, but
+also use "eventual consistency" for other searches.
+
+I want to also add support for the new "applyDeletions" option when
+pulling an NRT reader.
+
+Also, this is very new and I'm sure buggy -- the concurrency is either
+wrong over overly-locking.  But it's a start...
+

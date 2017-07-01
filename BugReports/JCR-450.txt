@@ -1,0 +1,8 @@
+Memory leak in UUIDDocId
+
+
+
+Description:
+The hierarchy cache of the search index uses DocId's to reference the parent of a Node. One implementation of a DocId is the UUIDDocId which may hold a reference to the IndexReader that was used to calculate the id. UUIDDocId's are invalidated on a lazy basis. That is the referenced IndexReader may still be present even though the IndexReader instance has long been closed.
+
+-> UUIDDocId should only hold a weak reference to the IndexReader.
